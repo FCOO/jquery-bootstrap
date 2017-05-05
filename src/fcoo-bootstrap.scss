@@ -1,0 +1,92 @@
+/***********************************************
+	fcoo-bootstrap.scss, 
+
+	(c) 2017, FCOO
+
+	https://github.com/FCOO/fcoo-bootstrap
+	https://github.com/FCOO
+
+
+************************************************/
+//BOURBON - http://bourbon.io/
+
+//MODERNIZR-MIXIN - https://github.com/danielguillan/modernizr-mixin
+@import "../bower_components/modernizr-mixin/stylesheets/modernizr";
+
+//MATHSASS - https://github.com/terkel/mathsass
+@import "../bower_components/mathsass/dist/math";
+
+
+
+//IMPORT BOOTSTROP SCSS
+@import "../bower_components/bootstrap/scss/variables";
+@import "../bower_components/bootstrap/scss/mixins";
+
+
+//Create differnet color-values = bg for buttons with colored bg
+.color-success   { color: $btn-success-bg !important; }
+.color-warning   { color: $btn-warning-bg !important; }
+.color-danger    { color: $btn-danger-bg !important;  }
+.color-info      { color: $btn-info-bg !important;    }
+.color-primary   { color: $btn-primary-bg !important;   }
+.color-secondary { color: $btn-secondary-bg !important; }
+
+
+//Container for popover with button-group
+.popover-content-buttongroup {
+    padding: 1px 1px;
+}
+
+
+//Including btn-xs btn-group-xs and .input-group-xs as in from Bootstrap 3
+/*
+//Bootstrap 3:
+$padding-small-vertical  :  5px !default;
+$padding-small-horizontal: 10px !default;
+
+$padding-xs-vertical     :  1px !default;
+$padding-xs-horizontal   :  5px !default;
+
+//Bootstrap 4: 
+$btn-padding-x-sm: .5rem !default;
+$btn-padding-y-sm: .25rem !default;
+*/
+
+$btn-padding-x-xs: $btn-padding-x-sm * ( 5 / 10 ); //Same relative size to $btn-padding-x-sm as $padding-xs-horizontal to $padding-small-horizontal 
+$btn-padding-y-xs: $btn-padding-y-sm * ( 1 /  5 ); ////Same relative size to $btn-padding-y-sm as $padding-xs-vertical to $padding-small-vertical 
+
+.btn-xs {
+    //Original Bootstrap 3 = @include button-size($padding-xs-vertical, $padding-xs-horizontal, $font-size-small, $line-height-small, $btn-border-radius-small);
+    @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-sm, $btn-border-radius-sm);
+}
+
+.btn-group-xs > .btn { @extend .btn-xs; }
+
+/*
+$input-padding-x   : .75rem !default;
+$input-padding-y   : .5rem !default;
+
+$input-padding-x-sm: .5rem !default;
+$input-padding-y-sm: .25rem !default;
+
+Bootstrap 4
+$input-padding-x-sm: .5rem !default;
+$input-padding-y-sm: .25rem !default;
+
+*/
+$input-padding-x-xs: $input-padding-x-sm * ( 5 / 10);
+$input-padding-y-xs: $input-padding-y-sm * ( 1 /  5);
+
+.form-control-xs {
+  padding: $input-padding-y-xs $input-padding-x-xs;
+  font-size: $font-size-sm;
+  @include border-radius($input-border-radius-sm);
+}
+
+.input-group-xs > .form-control,
+.input-group-xs > .input-group-addon,
+.input-group-xs > .input-group-btn > .btn {
+  @extend .form-control-xs;
+}
+
+
