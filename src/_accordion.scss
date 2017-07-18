@@ -1,0 +1,63 @@
+/************************************************************
+ACCORDION
+
+Using Bootstrap Collapse to create accordion
+************************************************************/
+.accordion {
+/*
+  border: $card-border-width solid $card-border-color;
+  @include border-radius($card-border-radius);
+
+*/
+    .card {
+        &.show {
+            border-color: $card-show-border-color;
+        }
+    }
+
+    .card-header {
+        cursor: pointer;        
+
+        @include title-color(true, '&.collapsed', true, true);// ($hover: false, $selected-class: '', $bg: true, $invers: false  );
+        @include title-variant();
+
+        @include right-side-icon-parent();
+
+        @include border-radius($card-border-radius);
+
+        //Sub accordion get smaller font-size. TODO: Måske skal de have samme størrelse
+        .accordion & { 
+//            font-size: 1.9em;
+        }
+
+        .chevrolet {
+            @include right-side-icon( '\f078' ); //Default open => fa-chevron-down
+        }
+        &.collapsed .chevrolet:before {
+            content: '\f054'; //fa-chevron-right
+        }
+
+    }
+    .card-block {
+        @include content-padding();
+        @include border-radius($card-border-radius);
+    }
+
+    .card-footer {
+        @include footer-variant();
+        @include border-radius($card-border-radius);
+    }
+}
+
+/* REMOVED - Only ONE size for accordions
+//Size and padding for small-version
+.accordion-sm {
+    .card-header {
+        @include title-variant-sm();
+
+    }
+    .card-block {
+        @include content-padding-sm();
+    }
+}
+*/

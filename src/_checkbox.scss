@@ -1,0 +1,305 @@
+/**************************************************
+CHECKBOX
+
+Checkbox and Radio
+Adjusted version of awesome-bootstrap-checkbox
+https://github.com/flatlogic/awesome-bootstrap-checkbox
+**************************************************/
+
+
+$font-family-icon: 'FontAwesome';
+$fa-checkbox-icon: "\f00c";
+
+$line-height : $btn-line-height;
+
+$icon-dim-factor: 0.8;    
+
+//$control-no-active-color-hover = 'Fade' color for the check/radio-icon when hover over unselected control
+$control-no-active-color-hover: darken($control-active-color, 20%);
+
+// Base style for checkbox and radio
+// All properties in regarding the placment and size
+// are set in @mixin checkbox-radio-size-variant
+
+div.checkbox, div.radio {
+    display    : flex;
+    align-items: center; 
+
+    line-height  : $line-height; 
+
+    cursor       : default;
+
+    @include modal-element-margin-bottom();
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        cursor: pointer;
+        opacity: 0;
+        z-index: 1;
+        //'hide' the checkbox
+        position: absolute;
+        left: -100px;
+
+        //Standard style
+        & + label {
+            position     : relative;
+            display      : inline;
+            cursor       : pointer;
+            height       : 100%;
+            padding      : 0;
+            margin-bottom: 0; //Standard margin-bottom only on outer-div
+
+            &::before, &::after{
+                display   : inline-block;
+                position  : absolute;
+                left      : 0;
+                cursor    : pointer;
+                text-align: center;
+                content   : "";
+            }
+            
+            //::before = border and background
+            &::before{
+                border: $border-width solid $input-border-color;
+                background-color: $btn-secondary-bg;
+
+                @include transition(border 0.15s ease-in-out, color 0.15s ease-in-out);
+            } 
+
+            //::after = icon
+            &::after{
+            }
+
+        } // & + label
+
+        //When checkbox has focus
+        &:focus + label::before{
+            outline: thin dotted;
+            outline: 5px auto -webkit-focus-ring-color;
+            outline-offset: -2px;
+        }
+
+        //When un-checked
+        &:not(:checked) + label::before {
+            background-color: $control-bg-color;
+        }
+
+        //hover on un-checked = same state as list-group items
+        &:not(:checked):not(:disabled):hover + label::before {
+            text-decoration: none;
+            background-color: $control-bg-color-hover;
+        }
+
+        //When checked
+        &:checked + label::before {
+            background-color: $control-active-bg-color; 
+        }
+        &:checked + label::after {
+            color: $control-active-color; 
+        }
+
+        
+        //hover on checked - only on checkbox
+        &[type="checkbox"]:checked:hover + label::before {
+            background-color: $control-active-bg-color-hover;
+        }
+  
+        //disabled = disabled item-list 
+        &:disabled + label{
+            color           : $list-group-disabled-color !important;
+            cursor          : $cursor-disabled !important;
+            background-color: $list-group-disabled-bg !important;
+            &::before{
+                background-color: $list-group-disabled-bg !important;    
+                cursor          : $cursor-disabled !important;
+            }
+            &::after{
+                color : $list-group-disabled-color !important;
+                cursor: $cursor-disabled !important;
+            }
+        }
+    }//input[type="checkbox"], ...
+} //div.checkbox, div.radio
+
+/* Special styles for div.checkbox */
+div.checkbox {
+    input[type="checkbox"],
+    input[type="radio"]{
+
+        //::before = border and background
+        & + label::before{
+        }
+
+        //::after = icon
+        & + label::after {
+            line-height: 1;
+            font-family: $font-family-icon;
+            text-align : center;
+            content    : '';
+            color      : $input-color;
+        }
+
+        &:not(:checked):not(:disabled):not(:focus):hover + label::after {
+            content: $fa-checkbox-icon;
+            color  : $control-no-active-color-hover;
+        }
+        &:checked + label::after { 
+            content: $fa-checkbox-icon;
+        }
+    }
+}
+
+/* Special styles for div.radio */
+div.radio {
+    input[type="checkbox"],
+    input[type="radio"]{
+        //::before = border and background
+        & + label::before {
+            border-radius: 50%;
+        }
+
+        //::after = icon
+        & + label::after {
+            border-radius  : 50%; 
+            border-style   : solid;
+            border-color   : transparent;
+            background-clip: padding-box;
+        }
+        &:not(:checked):not(:disabled):not(:focus):hover + label::after {
+            background-color: $control-no-active-color-hover;
+        }
+        &:checked + label::after { 
+            background-color: $control-active-color;
+        }
+    }
+}
+
+/***************************************************************************
+@mixin checkbox-radio-size-variant
+
+***************************************************************************/
+@mixin checkbox-radio-size-variant( $class-postfix, $font-size, $border-radius, $padding-vertical ){
+
+    $height: $font-size * $line-height  + 2 * $padding-vertical; 
+
+    //$box-dim = dimentions of checkbox and radio(-box)
+    $box-dim: 1.2 * $font-size; 
+
+    $label-padding-left: $box-dim + $border-radius; //Using border-radius as padding
+
+    $box-margin-top: 0; //($height - $box-dim)/2 - $padding-vertical;
+
+    $icon-dim      : $icon-dim-factor*$box-dim; 
+    $icon-font-size: $icon-dim;
+
+    $icon-radio-border-width: $box-dim / 4; //Add a transparent border to make radio-icon = 50% of box
+
+    div.checkbox#{$class-postfix}, div.radio#{$class-postfix} {
+        height   : $height;
+        font-size: $font-size;
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            //Standard style
+            & + label {
+
+                padding-left  : $label-padding-left;
+                padding-top   : $padding-vertical;
+                padding-bottom: $padding-vertical;
+
+                font-size    : $font-size;
+                
+                //::before = border and background
+                &::before{
+                    margin-top: $box-margin-top;
+                    width     : $box-dim;
+                    height    : $box-dim;
+                } 
+
+                //::after = icon
+                &::after{
+                    margin-top: $box-margin-top;
+                    width     : $box-dim;
+                    height    : $box-dim;
+                }
+            } // & + label
+
+        }//input[type="checkbox"], ...
+    } //div.checkbox, div.radio
+
+    /* Special styles for div.checkbox */
+    div.checkbox#{$class-postfix} {
+        input[type="checkbox"],
+        input[type="radio"]{
+            //::before = border and background
+            & + label::before {
+                border-radius: $border-radius;
+            }
+                
+            //::after = icon
+            & + label::after{
+                font-size  : $icon-font-size;
+                line-height: $box-dim / $icon-font-size; //Using line-height to vertical center
+            }
+        }
+    }
+
+    /* Special styles for div.radio */
+    div.radio#{$class-postfix} {
+        input[type="checkbox"],
+        input[type="radio"]{
+            //::before = border and background
+            & + label::before{
+            }
+                
+            //::after = icon
+            & + label::after{
+                border-width: $icon-radio-border-width;
+            }
+        }
+    }
+} //end of mixin
+
+
+//Creating different size variations. Using vertical-padding from smaller button
+
+//Standard 
+@include checkbox-radio-size-variant('',    $font-size-base, $btn-border-radius,    $btn-padding-y-sm );
+
+/*REMOVED - Only ONE size
+//Large and samll
+@include checkbox-radio-size-variant('-lg', $font-size-lg,   $btn-border-radius-lg, $btn-padding-y    );
+@include checkbox-radio-size-variant('-sm', $font-size-sm,   $btn-border-radius-sm, $btn-padding-y-xs );
+*/
+
+
+/***************************************************************************
+checkbox-group(-sm | -lg) and radio-group(-sm | -lg)
+***************************************************************************/
+/*REMOVED - Only ONE size
+.checkbox-group-sm > .checkbox,
+.radio-group-sm > .checkbox { @extend .checkbox-sm; }
+
+.checkbox-group-lg > .checkbox,
+.radio-group-lg > .checkbox { @extend .checkbox-lg; }
+
+.checkbox-group-sm > .radio,
+.radio-group-sm > .radio { @extend .radio-sm; }
+
+.checkbox-group-lg > .radio,
+.radio-group-lg > .radio { @extend .radio-lg; }
+*/
+
+/***************************************************************************
+checkbox-inline, radio-inline,
+checkbox-group-horizontal, radio-group-horizontal
+***************************************************************************/
+
+div.checkbox-inline, div.radio-inline,
+.checkbox-group-horizontal > .checkbox, 
+.checkbox-group-horizontal > .radio, 
+.radio-group-horizontal > .checkbox,
+.radio-group-horizontal > .radio {
+    display: inline-flex !important;
+}
+

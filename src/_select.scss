@@ -1,0 +1,125 @@
+/************************************************************
+SELECTBOX
+
+Implemented as a special version of dropdownmenu
+************************************************************/
+.dropdown.dropdown-selectbox {
+
+    @include modal-element-margin-bottom();
+    
+    > .btn {
+        width     : 100%;
+        text-align: left;
+        position  : relative;
+
+        @include right-side-icon-parent();
+
+        .arrow {
+//            @include right-side-icon();  //1:
+            @include right-side-icon('\f078'); //2:
+        }
+
+        .selected-content {
+            width        : 100%;
+            display      : inline-block;
+            padding-right: 0.8em;
+            @include text-truncate();
+
+            &.empty {
+                color: $input-color-placeholder;
+            }
+        }
+    }
+
+/* TODO: Decide if arrow should change orientation on open (1) or not (2)
+1:
+    &.show > .btn .arrow:before {
+        content: '\f078';
+    }
+*/
+    .dropdown-menu {
+        width: 100%;
+        border-top-left-radius : 0;
+        border-top-right-radius: 0;
+        margin-top             : -$dropdown-border-width; //Move up to align with bottom of button               
+
+        .dropdown-item {
+            cursor: pointer;
+            @include text-truncate();
+            @include control-active-color();
+        }
+    }
+
+    //Make the button 'active' when dropdown is open
+    &.show {
+        > .btn.btn-secondary {
+            //@include          ($color,               $color-hover,              $bg-color,              $bg-color-hover,              $hover, $bg)
+            @include color-hover($control-open-color,  $control-open-color-hover, $control-open-bg-color, $control-open-bg-color-hover, true, true);
+
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius : 0;
+        }
+
+        .dropdown-menu {
+        }
+    }
+
+
+    //If the select has a scrollbar the left margin is reduced with the scrollbar-width to vertical-align content
+    .dropdown-menu.scrollbar-vertical {
+        .btn, .dropdown-item, .dropdown-header { 
+            margin-left: -$scroll-size;    
+        }
+    }
+
+    
+//*REMOVED - Only ONE size
+    //Adjust size for different size. Horizontal padding-left is reduced
+    //Small
+    &.dropdown-selectbox-sm {
+        .btn, .dropdown-item, .dropdown-header { 
+            font-size   : $font-size-sm; 
+            padding     : $btn-padding-y-sm $btn-padding-x-xs;
+        }
+        .dropdown-header {
+            font-size: $font-size-header-sm;
+            //Items below header moves to the right
+            &  ~ .dropdown-item {
+                padding-left: $btn-padding-x-xs + $font-size-sm;
+            }
+        }
+    }
+//*/
+    //Normal
+    & {
+        .btn, .dropdown-item, .dropdown-header { 
+            padding     : $btn-padding-y $btn-padding-x-sm;
+        }
+        .dropdown-header {
+            font-size: $font-size-header; 
+
+            @include header-color(false); 
+
+            &  ~ .dropdown-item {
+                padding-left: $btn-padding-x-sm + $font-size-base;
+            }
+        }
+    }
+
+/*REMOVED - Only ONE size
+    //Large
+    &.dropdown-selectbox-lg {
+        .btn, .dropdown-item, .dropdown-header { 
+            font-size   : $font-size-lg; 
+            padding     : $btn-padding-y-lg $btn-padding-x;
+        }
+        .dropdown-header {
+            font-size: $font-size-header-lg;
+            &  ~ .dropdown-item {
+                padding-left: $btn-padding-x + $font-size-lg;
+            }
+        }
+    }
+*/
+
+}

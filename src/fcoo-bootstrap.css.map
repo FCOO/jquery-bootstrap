@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA;;;;;;;;;iDASiD;AAiBjD,cAAiB;EAAE,KAAK,EAAE,kBAA0B;;;AACpD,cAAiB;EAAE,KAAK,EAAE,kBAA0B;;;AACpD,aAAiB;EAAE,KAAK,EAAE,kBAAyB;;;AACnD,WAAiB;EAAE,KAAK,EAAE,kBAAuB;;;AACjD,cAAiB;EAAE,KAAK,EAAE,kBAA0B;;;AACpD,gBAAiB;EAAE,KAAK,EAAE,eAA4B;;;AAItD,4BAA6B;EACzB,OAAO,EAAE,OAAO;;;AAKpB;;;;;;;;;;;EAWE;AAKF,6BAAQ;ECyBN,OAAO,EAAE,eAAqB;EAC9B,SAAS,EC0KM,QAAO;ECzPpB,aAAa,EDmZgB,MAAiB;;;AFvVlD;;;;;;;;;;;EAWE;AAIF;;yCAAiB;EACf,OAAO,EAAE,eAAuC;EAChD,SAAS,EE4KM,QAAO;ECzPpB,aAAa,EDwagB,MAAiB",
-"sources": ["fcoo-bootstrap.scss","../bower_components/bootstrap/scss/mixins/_buttons.scss","../bower_components/bootstrap/scss/_variables.scss","../bower_components/bootstrap/scss/mixins/_border-radius.scss"],
-"names": [],
-"file": "fcoo-bootstrap.css"
-}

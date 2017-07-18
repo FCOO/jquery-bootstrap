@@ -1,0 +1,84 @@
+/************************************************************
+FCOO-BOOTSTRAP-VARIABLES
+************************************************************/
+
+
+/************************************************************
+Variables bassed on bootstrop variables
+************************************************************/
+//Modal size in rem
+$modal-sm-rem: $modal-sm*1rem/16px;
+$modal-md-rem: $modal-md*1rem/16px;
+$modal-lg-rem: $modal-lg*1rem/16px;
+
+
+/************************************************************
+Including "size" xs as in Bootstrap 3
+************************************************************/
+/*
+//Bootstrap 3:
+$padding-small-vertical  :  5px !default;
+$padding-small-horizontal: 10px !default;
+
+$padding-xs-vertical     :  1px !default;
+$padding-xs-horizontal   :  5px !default;
+
+//Bootstrap 4: 
+$btn-padding-x-sm: .5rem !default;
+$btn-padding-y-sm: .25rem !default;
+*/
+
+$btn-padding-x-xs: $btn-padding-x-sm * ( 5 / 10 ); //Same relative size to $btn-padding-x-sm as $padding-xs-horizontal to $padding-small-horizontal 
+$btn-padding-y-xs: $btn-padding-y-sm * ( 1 /  5 ); //Same relative size to $btn-padding-y-sm as $padding-xs-vertical to $padding-small-vertical 
+
+/*
+$input-padding-x   : .75rem !default;
+$input-padding-y   : .5rem !default;
+
+$input-padding-x-sm: .5rem !default;
+$input-padding-y-sm: .25rem !default;
+
+Bootstrap 4
+$input-padding-x-sm: .5rem !default;
+$input-padding-y-sm: .25rem !default;
+
+*/
+$input-padding-x-xs: $input-padding-x-sm * ( 5 / 10);
+$input-padding-y-xs: $input-padding-y-sm * ( 1 /  5);
+
+
+
+/************************************************************
+HEADER
+Font-sizes for headers are adjusted as 14/16
+************************************************************/
+$font-size-header-factor: $font-size-sm / $font-size-base;
+
+$font-size-header   : $font-size-base * $font-size-header-factor;
+$font-size-header-lg: $font-size-lg   * $font-size-header-factor;
+$font-size-header-sm: $font-size-sm   * $font-size-header-factor;
+
+
+/************************************************************
+CONTENT
+Unifies padding for modal, accordion, popup etc.
+Using smallest vertical/horizontal padding from buttons and
+correct (partly) for padding added when in a scrollbar-container
+************************************************************/
+
+//Using $scroll-size and $scrollbar-margin from jquery-scroll-container.
+@import "../bower_components/jquery-scroll-container/src/jquery-scroll-container-variables";
+
+//Minimum padding = scrollbar width plus extra margin
+$min-padding: $scroll-size + $scrollbar-margin;
+
+$content-lg-padding: max( min( $btn-padding-y-lg, $btn-padding-x-lg ), $min-padding);
+$content-padding   : max( min( $btn-padding-y,    $btn-padding-x    ), $min-padding);
+$content-sm-padding: max( min( $btn-padding-y-sm, $btn-padding-x-sm ), $min-padding);
+
+
+/************************************************************
+MARGIN-BOTTOM
+All elements in modal-windows get same margin-bottom
+************************************************************/
+$modal-element-margin-bottom: $form-check-margin-bottom;

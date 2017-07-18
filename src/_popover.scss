@@ -1,0 +1,67 @@
+/************************************************************
+POPOVER
+
+************************************************************/
+.popover {
+
+    //Reset padding for popover-title
+    .popover-title {
+        padding: 0 !important;
+    }
+
+    //Popover-title-content
+    .popover-title-content {     
+        @include header-variant();
+        @include header-color();
+        font-weight: $btn-font-weight; //Same as buttons
+        line-height: $btn-line-height; //Same as buttons
+
+        &.popover-close {
+            @include right-side-icon-parent(); 
+        }
+    
+    }
+
+    //Set small padding for no-default contents
+    .popover-content:not(.default-padding) {
+        padding: 1px 1px;
+    }
+
+    //Center button-group in popover
+    .popover-content > .btn-group {
+        @extend .mx-auto;
+    }
+    
+    
+    //Popover footer
+    .popover-footer {
+        @include footer-variant();
+/*
+        border-top: $modal-footer-border-width solid $modal-footer-border-color;
+
+        border-top-left-radius : 0 !important;
+        border-top-right-radius: 0 !important;
+    
+        @include header-variant();
+        margin-top: $btn-padding-y;
+        padding   : 0 !important;
+
+        //Hide when empty
+        &:empty { display: none; }
+*/
+    }
+
+    //Different size
+    &.popover-lg {
+        .popover-title-content, .popover-footer { @include header-variant-lg() }
+        .popover-footer                         { margin-top: $btn-padding-y-lg;   }
+    }
+    &.popover-sm {
+        .popover-title-content, .popover-footer { @include header-variant-sm() }
+        .popover-footer                         { margin-top: $btn-padding-y-sm;   }
+    }
+    &.popover-xs {
+        .popover-title-content, .popover-footer { @include header-variant-xs() }
+        .popover-footer                         { margin-top: $btn-padding-y-xs;   }
+    }
+}

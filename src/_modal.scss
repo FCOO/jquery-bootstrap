@@ -1,0 +1,116 @@
+/************************************************************
+MODAL
+
+Adjusting size etc. to have modal in normal and small size 
+and jusing standard header, buttons and sizes
+
+If the height (and width) of the content is variable (eq. accordion) the class
+.modal-flex is added to .modal given
+    width : max-width = $modal-md-rem (or $modal-lg-rem)
+    height: As default but with fixed height for small devices to prevent rapidly change of height
+
+************************************************************/
+
+//modal-close: 
+.modal-close {
+    @include right-side-icon( '\f00d', 1em, true );
+}
+
+.modal {
+    $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
+    $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
+
+    .modal-dialog {
+        display        : flex;
+        flex-direction : column;
+        justify-content: center;
+
+        margin   : $modal-dialog-margin auto;
+        
+        min-height: $modal-max-height; 
+
+        max-width: $modal-max-width;
+        width    : $modal-sm-rem;
+
+        html.medium-up &, &.modal-flex {
+            width: $modal-md-rem;
+        }
+        
+        .modal-content {
+            min-height: 100%; //Bug fix for IE11
+            max-height: $modal-max-height; //Modal window height adjust to contents
+        }
+
+        //Size of .jquery-scroll-container in fixed and flex mode
+        &:not(.modal-flex) .modal-content .jquery-scroll-container {
+            width: $modal-sm-rem - 2*$modal-content-border-width - 2*$content-padding; 
+            margin-left : auto;
+            margin-right: auto;
+        }
+
+        &.modal-flex .modal-content .jquery-scroll-container {
+            width: auto;
+        }
+    }
+
+
+    //Overwrite Bootstrap media-query setting max-width = 300px for modal-sm
+    &.modal-sm {
+        max-width: none !important;
+    }
+}
+
+ //Adjust header, fixed-body, body and footer
+.modal {
+    .modal-header {
+        flex-shrink: 0; //Only .modal-body is shrink
+        flex-grow  : 0; //Only .modal-body is growing
+        @include header-variant(); 
+        @include header-color(); 
+    }
+    .modal-body-fixed {
+        flex-shrink: 0; //Only .modal-body is shrink
+        flex-grow  : 0; //Only .modal-body is growing
+        overflow   : hidden;
+        @include content-padding();
+
+        &:empty { display: none; }
+    }
+    .modal-body {
+        flex-shrink: 1; //Only .modal-body is shrink
+        flex-grow  : 1; //Only .modal-body is growing
+        overflow   : hidden;
+        @include content-padding();
+    }
+    .modal-footer {
+        flex-shrink: 0; //Only .modal-body is shrink
+        flex-grow  : 0; //Only .modal-body is growing
+        padding: $btn-padding-x;
+    }
+}
+
+//No top- or bottom padding in modal-body and modal-body-fixed
+.modal.no-vertical-padding {
+    .modal-body-fixed, .modal-body {
+        padding-top   : 0;
+        padding-bottom: 0;
+    }
+}
+
+
+
+/* REMOVED - Only ONE size for modal
+.modal.modal-sm {
+    .modal-header {
+        padding: $btn-padding-x-sm;
+    }
+    .modal-body {
+        @include content-padding-sm();
+
+    }
+    .modal-footer {
+        padding: $btn-padding-x-sm;
+        .btn { @extend .btn-sm; }
+    }
+}
+*/

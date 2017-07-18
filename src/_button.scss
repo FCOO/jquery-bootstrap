@@ -1,0 +1,133 @@
+/************************************************************
+BUTTON
+
+************************************************************/
+
+/************************************************************
+To be able to control font-family etc. 'buttons'
+can be created as <div>
+cursor-style added to prevent text-cursor on buttons
+************************************************************/
+a.btn, a.list-group-item,
+div.btn, div.list-group-item {
+    cursor: pointer;
+}
+
+//Selected colors when button is active
+.btn.btn-secondary {
+    @include control-active-color();
+}
+
+//Icons in buttons get equal size to allow shift of icon
+.btn > i.fa {
+    min-width: 1em;
+    text-align: left;
+}
+
+
+/************************************************************
+Modernizr-test for elements with class="active" when selected
+************************************************************/
+@include show-and-hide-for-modernizr-test( 
+	'active', //$modernizr-test , 
+	'.btn',   //$parent-element-type: '', 
+	true,     //$incl-no-selector: true, 
+	true,     //$fail-as-default: false,
+	false     //$incl-table-display: true 
+);
+
+/************************************************************
+Including .btn-xs and btn-group-xs as in Bootstrap 3
+************************************************************/
+.btn-xs {
+    //Original Bootstrap 3 = @include button-size($padding-xs-vertical, $padding-xs-horizontal, $font-size-small, $line-height-small, $btn-border-radius-small);
+    @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-sm, $btn-border-radius-sm);
+}
+.btn-group-xs > .btn { @extend .btn-xs; }
+
+
+/************************************************************
+BUTTON-GROUP
+************************************************************/
+//Buttons in vertical button-groups with left-aligned contents (default = center)
+.btn-group-vertical.btn-group-left > .btn {
+    @extend .text-left;
+}
+
+//Vertical button-group insides in popover: width = 100%
+.popover-content .btn-group-vertical {
+    @extend .w-100;
+}
+
+/************************************************************
+LIST-GROUP and LIST-GROUP-ITEM
+************************************************************/
+//Horizontal list-group
+.list-group-horizontal {
+    display       : flex;
+    flex-direction: row;
+}
+
+// Size classes for items in lists
+.list-group > .list-group-item,
+.list-group-horizontal > .list-group-item { 
+    //Internal mixin
+
+    @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius); 
+    font-weight: $btn-font-weight; //Same as buttons
+    line-height: $btn-line-height; //Same as buttons
+
+    //Same colors as buttons
+    @include control-active-color();
+}
+
+//Overwrite Bootstrap border-radius
+.list-group > .list-group-item {
+    &:first-child { @include border-top-radius   ($btn-border-radius); }
+    &:last-child  { @include border-bottom-radius($btn-border-radius); }
+}
+
+//Set align-items equal to value for button.btn when list-group-item is a button
+.list-group > button.list-group-item,
+.list-group-horizontal > button.list-group-item { 
+    align-items: flex-start;
+}
+
+.list-group-lg > .list-group-item { 
+    @include button-size($btn-padding-y-lg, $btn-padding-x-lg, $font-size-lg, $btn-border-radius-lg); 
+}
+.list-group-sm > .list-group-item { 
+    @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-border-radius-sm);
+}
+.list-group-xs > .list-group-item { 
+    @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-sm, $btn-border-radius-sm); 
+}
+
+//List-items in list-groups with centered contents (default = left)
+.list-group.list-group-center > .list-group-item,
+.list-group-horizontal.list-group-center > .list-group-item {
+    @extend .justify-content-center;
+}
+
+
+//Remove round boarder from items depending on it place in the group
+.list-group > .list-group-item, 
+.list-group-horizontal > .list-group-item {
+    //No round border for items in the middle
+    &:not(:first-child):not(:last-child) {
+        border-radius: 0;
+    }
+}
+
+//Vertical => no bottom on first and no top on last
+.list-group > .list-group-item {
+    &:first-child:not(:last-child) { @include border-bottom-radius(0); }
+    &:last-child:not(:first-child) { @include border-top-radius(0);    }
+}
+
+//Horizontal => no right on first and no left on last
+.list-group-horizontal > .list-group-item {
+    &:first-child:not(:last-child) { @include border-right-radius(0); }
+    &:last-child:not(:first-child) { @include border-left-radius(0);  }
+}
+

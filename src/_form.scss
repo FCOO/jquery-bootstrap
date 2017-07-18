@@ -1,0 +1,24 @@
+/************************************************************
+FORM
+************************************************************/
+
+/************************************************************
+Including .form-control-xs and .input-group-xs as in Bootstrap 3
+************************************************************/
+.form-control-xs {
+  padding: $input-padding-y-xs $input-padding-x-xs;
+  font-size: $font-size-sm;
+  @include border-radius($input-border-radius-sm);
+}
+
+.input-group-xs > .form-control,
+.input-group-xs > .input-group-addon,
+.input-group-xs > .input-group-btn > .btn {
+  @extend .form-control-xs;
+}
+
+
+
+
+
+

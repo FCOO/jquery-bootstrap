@@ -1,0 +1,161 @@
+/************************************************************
+TABLE
+
+Adjustmernt to Bootstrap table
+************************************************************/
+
+.table {
+    @include modal-element-margin-bottom();
+
+    //Special version used to display headers and inside a scroll-container
+    &.table-with-header,
+    .scrollbar-vertical > & {
+        box-sizing: border-box;
+        padding: 0;
+        margin : 0;
+    }
+
+    /*************************************
+    Header
+    *************************************/
+    thead {
+        tr {
+
+            th {
+                @include title-color();   //Only color and background-color
+
+                &.sortable {
+                    @include title-color(true, '&.asc, &.desc'); // ($hover: false, $selected-class: '', $bg: true, $invers: false  );
+
+                    cursor: pointer;
+                    background-position: right center;
+                    background-repeat: no-repeat;
+                    background-size: 0.8em;
+
+                    padding-right: 1em; //Make space for sort-direction icons
+                    &.text-center {
+                        padding-left: 1em; //Center text
+                    }
+
+                    // src/_images/table-thead-background-image-sort-arrows-no-sort.png
+                    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwRJC7Z4CQBAAACPklEQVRo3u3Zu07DMBQG4N/EiA0hwQCIoRtMPAKoKzBCC2nLG8ALMCAGXgAWZi4pDR2BNRKPwAQbAwKGIrEiEh2GMqBc7VNbpahnqpyo/1dHjexjAXb5TlSlXUAcOa1KxP0WwY//OhVu9zN5o9tcAhPwO743AgsQj++FwAD4TniGrZQLTdnQJ2gDMuOZBE1AbjyLoAXwnfAcmwU3Xcq6DkEDoBSvTVAGKMdrEhQBvvN1IaqqWIBaozU1ghJAN16HoADgxKsTCgHceFXCSP7lQIYeNx4Q1dALZA8zEMjXC1S48T/lz9TKIQtgJL6QkAkI5JtHGwbiAYiraTeLkAEwGZ9PSAWYjs8jpAAC+drEutl4AEB7ZitJSPkbvuxbiQfWX/YVZuB27OMZU1YAQGdibuWzYAbeS9bigan3UnwoAWg84s4a4K7xWAgAsCOuQcbDSVxjJzmc8R44nxOGHwR16s/Gf9SwhjWsYf2L6vurOAXgLYpDWuW3r7IE4ob23Pv4cNq24ZiWDIcDgKA1jGO5cAbO5p0HC/E/FS3EVwSJ9cDkEzrW8juTT/GhBGDlk05s5dNJfEWYuiKaPUDbSn579iA5+Bc3JjYImlsz04S8zWlmg6IcTrvwjeT72fF/u0FhhFAQX9gjKofSpRY3nVrSzY8fhDYdl2CwUckhGG7Vdgl9bVZrEey065UJmgcWI+q3ApVI1tHMvaWpFz94h1a5BNaxndYj6FYlkg3y4qPkceIH9eg2TujD4XWXYOL4/htN/xm86wMQxwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wNy0xMlQxNzozNjo0NiswMjowMGyLBscAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDctMTJUMTc6MzY6NDYrMDI6MDAd1r57AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAABJRU5ErkJggg==');
+
+                    &.asc {
+                        // src/_images/table-thead-background-image-sort-arrows-sort-asc.png
+                        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPOR4W7fbLAAACBklEQVRo3u2ZvU7CUBSAz7FldcEBiYuTJiQ+goZVXS1awCcwvoATgy+gDswCRSqrs+9gYqKLYTDRgRcgtLmOEuv9Oz23MZEzNbTc70vbe3vOuQjkqInv42ekjoIc+DwKyIOnKyAXnqqAfHiaAnLiKQrIi7dXQG68rQLy4+0U0AXeRgHd4M0V0BXeVAHd4c0U0CXeRGFFffrRh5yhGwHVfz6bQ+64KdUTkgAPXqeA7vFqBSwCr1LAYvByBSwKL1NA/plvtypk1oHaGziM7OjZhWjTpUB29L/3CIoOdPMJ4kral7GMZSzjP4Rkeexv4BovSExb74YC0Q5eigPgXrkFPoiL8Onnz7+VDddi18W9FoewCnvaO9Db8l7cPfF0u/2qyQfKE5g640/LE21Csj8TXVd80d2fGWRE1Q6MnfDH1Y5xYfIZiSPmd/C+EhoWJi4UZHhlccqnIMcrsuJ6UgkhZuHHcry2QfExgCAvfr1JbFCwKGjw2sKknvihGJHn/cgP1XijNl3szQfYoOBLzSAlfo7zK5jhjVu1tgqmeItmdewlfTg2vPjOb5nhrdr1xgoWeMsNCyMFK7xlfyBI/RYMlZcM7fCETavYS3pwIsW37fCkbTupAgFPatEEqd8WUWbiRRQ8ees29ua3GC7iS6cUfI7N60UFOh7ylB+xlzbEOQBeeSMqHuALEGzMJuIB3qEAAAAASUVORK5CYII=');
+                    }
+
+                    &.desc {
+                        // src/_images/table-thead-background-image-sort-arrows-sort-desc.png
+                        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPNhKYw6YvAAAB9klEQVRo3u2ZP04CURCHZ2CJrQWFJBT0nsLWGkH+eQLxCtzBeAKFRdCS2G7CHaagoiFoAYmtYclaWCm7+2Zm3zOa7FQkkN/38R67y5tBUNe0uG9GNwB4W5w09toU1ON399j+eh35pSutAmbHZ1NAG/gsCqjBhw/Qinlj7PXkCmgNr1RAi3iVAgrxQ7g0fOjR60oU0DJerIDW8UIFZF94I2zyVyualDo8BXSBlyigGzxfAV3huQqF9LcDL/S1eABshn7gZViBwHsdQQOy1bTSOQtVAlbwRgVMxr/50QVYKXw6aScpoHt8ugL+Bj5NAWP3fgx1sF/PldahQsxluB44wQPU1wPGCrwcva+gDG5qc1w9/zCswLbmDA9Q3taMW9BbwNyZwLy34NyK+ziDyDo8whn02feBYRUtb0S06a4gr7zyyisv/l+yU/vPAiBkCriAJ0sU/twWuPz+cWtwuAJLp/zlf/gN3JVc4eOSEw4m1zsXeObBxI1CPD71cGpTIQlvOJ7bUkjGGxsUNhTS8MYeUXaFdDyjSZX1rkCoehraUiBjPqtRqVUgRjqzVatRIFY2u1ktVSBmsqBdL1Egdq5oYMFVIEGqcGTDUSBRpnhoZVIgYaJibJemQOI81eAySYEUacrRbZwCqbLUw+ufCqRMUgt8VyB1ziesOMqPm7tGQgAAAABJRU5ErkJggg==');
+                    }
+                }
+            }
+        }
+
+        //No header
+        &.no-header {
+            display: none;
+        }
+    }
+
+    
+    /*************************************
+    Rows
+    *************************************/
+    tbody tr:hover {
+        background-color: $header-bg-color;
+    }
+
+    //Selectable rows
+    &.table-selectable tbody tr {
+        @include control-active-color();
+        cursor: pointer;
+    }
+
+
+    /*************************************
+    Sizing tr and td
+    *************************************/
+    //SMALL
+    &.table-sm {
+        //Header
+        thead tr th { 
+            @include title-variant-sm();  
+        }
+
+        //Cell
+        tbody tr td { 
+            padding  : $btn-padding-y-sm;
+            font-size: $font-size-sm; 
+        }
+    }
+
+    //NORMAL
+    & {
+        //Header
+        thead tr th { @include title-variant(); }
+
+        //Cell
+        tbody tr td {
+            padding  : $btn-padding-y;
+            font-size: $font-size-base;
+        }
+    }
+
+
+    //LARGE
+    &.table-lg {
+        //Header
+        thead tr th { @include title-variant-lg();  }       
+
+        //Cell
+        tbody tr td { 
+            padding  : $btn-padding-y-lg;
+            font-size: $font-size-lg; 
+
+        }
+    }
+
+
+} //end of .table
+
+
+/*************************************
+Container for scrolling tables
+*************************************/
+.table-container {
+    position: relative;
+    clear   : both;
+    height  : 100%; 
+
+    //padding-bottom: XXpx; <- is set by JS
+
+    .table-header-container {
+        margin-left : $scroll-size; //Compensate for scrollbar-margin
+        margin-right: $scroll-size; //Compensate for scrollbar-margin
+    }
+
+    .table-body-container {
+        overflow-x: hidden;
+        overflow-y: auto;
+        height    : 100%;
+        table {
+            
+            //margin-top: -XXpx; <- is set by JS
+
+            //Hide the header - thay are cloned into .table-header-container
+            thead {
+                visibility: hidden;
+            }
+        }
+    }
+
+        
+    //Compencate for adjustment of negative margin-top of table
+    .table-body-container.scrollbar-vertical .jquery-scroll-container {
+//        margin-top: -$scroll-shadow-size;
+
+    }
+}
+
