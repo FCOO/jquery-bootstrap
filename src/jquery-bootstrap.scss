@@ -3,8 +3,8 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 
 ************************************************/
@@ -15,7 +15,7 @@
 //MATHSASS - https://github.com/terkel/mathsass
 @import "../bower_components/mathsass/dist/math";
 
-//MODERNIZR-SCSS - https://github.com/FCOO/modernizr-scss
+//MODERNIZR-SCSS - https://github.com/fcoo/modernizr-scss
 @import "../bower_components/modernizr-scss/dist/modernizr-scss";
 
 
@@ -35,7 +35,7 @@ $enable-print-styles:       true ; //true !default;
 $border-width: 1rem/16; //= 1px as rem
 
 //Reduce $modal-backdrop-opacity to allow for multi modals
-$modal-backdrop-opacity: .4; //.5 !default;
+$modal-backdrop-opacity: .3; //.5 !default;
 
 
 /***********************************************

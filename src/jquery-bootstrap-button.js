@@ -3,8 +3,8 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
@@ -67,7 +67,7 @@
         if (options.addOnClick && options.onClick)
             result.on('click', $.proxy( result._bsButtonOnClick, result ) );
 
-        result._bsAddHtml( options );
+        result._bsAddHtml( options, true, true );
 
         return result;
     };
@@ -91,6 +91,8 @@
     $.bsCheckboxButton = function( options ){
         //Clone options to avoid reflux
         options = $.extend({}, options);
+
+        options.class = 'allow-zero-selected';
 
         //Use modernizr-mode and classes if icon and/or text containe two values
         if ($.isArray(options.icon)){
@@ -140,10 +142,15 @@
         if (options.horizontalClassPostfix && !options.vertical)
             result.addClass(options.baseClass + options.horizontalClassPostfix );
 
+        if (options.allowZeroSelected)
+            result.addClass( 'allow-zero-selected' );
+
         if (options.attr)
             result.attr( options.attr );
+
         $.each( options.list, function(index, buttonOptions ){
-            $.bsButton( $.extend({}, options.buttonOptions, buttonOptions ) ).appendTo( result );
+            $.bsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
+                .appendTo( result );
         });
         return result;
     };
@@ -159,13 +166,8 @@
 
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){ 
-        options = 
-            $._bsAdjustOptions( options, 
-                {},
-                {
-                    addOnClick: false
-                }
-            );
+        options = $._bsAdjustOptions( options, {}, { addOnClick: false } );
+
         var result = $.bsButtonGroup( options );
 
         //Set options for RadioGroup
@@ -178,7 +180,7 @@
         });
         options.className = 'active';
         var radioGroup = $.radioGroup( options );
-        radioGroup.addElement( result.children(), options );
+        radioGroup.addElement( result.children('[id]'), options );
         result.data('radioGroup', radioGroup );
 
         return result;

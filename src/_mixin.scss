@@ -123,37 +123,55 @@ title-color - create colors for headers for table and accordion etc.
 control-active-color
 Mixin to set colors for selected elements and when hover
 ************************************************************/
-@mixin control-active-color(){
-    //Normal: Just bg-color on hover
-    @include color-hover(
-        false,  //$color
-        false,  //$color-hover
-        false,  //$bg-color
-        $control-bg-color-hover, //$bg-color-hover
-        true,   //$hover
-        true    //$bg    
-    );
-    //Active (selected)
-    &.active {
-        @include color-hover(
-            $control-active-color, //$color
-            false,                 //$color-hover
-            $control-active-bg-color,       //$bg-color
-            $control-active-bg-color-hover, //$bg-color-hover
-            false, //true, //$hover
-            true  //$bg    
-        );
+@mixin control-active-color( $selector: "", $allowZeroSelected: false ){
+    $allowZeroSelected-selector: ".allow-zero-selected";            
+    @if $allowZeroSelected {
+        $allowZeroSelected-selector: "";            
     }
-    //Active (selected) AND allowing unselection
-    .allow-zero-selected &.active {
-        @include color-hover(
-            $control-active-color, //$color
-            false,                 //$color-hover
-            red, //$control-active-bg-color,       //$bg-color
-            $control-active-bg-color-hover, //$bg-color-hover
-            true, //$hover
-            true  //$bg    
-        );
+            
+    @at-root {
+        #{$selector}{
+            //Normal: Just bg-color on hover
+            @include color-hover(
+                false,  //$color
+                false,  //$color-hover
+                false,  //$bg-color
+                $control-bg-color-hover, //$bg-color-hover
+                true,   //$hover
+                true    //$bg    
+            );
+
+            //Overwrite .active:active color
+            &:active { 
+                color: inherit; 
+            }
+
+            //Active (selected)
+            &.active  {
+                @include color-hover(
+                    $control-active-color,    //$color
+                    false, //$color-hover
+                    $control-active-bg-color, //$bg-color
+                    false, //$bg-color-hover
+                    false, //$hover
+                    true   //$bg    
+                );
+            }
+        }
+//       .allow-zero-selected#{$selector}{
+       #{$allowZeroSelected-selector}#{$selector}{
+            //Active (selected) AND allowing unselection
+            &.active {
+                @include color-hover(
+                    false, //$color
+                    false, //$color-hover
+                    false, //$bg-color
+                    $control-active-bg-color-hover, //$bg-color-hover
+                    true, //$hover
+                    true  //$bg    
+                );
+            }
+        }
     }
 }
 
@@ -171,35 +189,62 @@ Padding are set to button y-padding (moving text to the left)
 /************************************************************
 header-variant
 ************************************************************/
-@mixin header-variant($font-size-factor: $font-size-header-factor, $size: 'nm') { 
+@mixin header-variant($font-size-factor: $font-size-header-factor, $size: 'nm', $inline: false) { 
 
     font-weight: $font-weight-base;
     line-height: $line-height-base;
+
     @include span-text-truncate();
 
+    $padding-y: $btn-padding-y;
+    $padding-x: $btn-padding-x; 
+    $font-size: $font-size-base;
+    
     @if ($size == 'sm') {
-        @include button-size($btn-padding-y-sm, $btn-padding-y-sm, $font-size-factor * $font-size-sm,   initial); 
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
     } @else 
+
     if ($size == 'xs'){
-        @include button-size($btn-padding-y-xs, $btn-padding-y-xs, $font-size-factor * $font-size-sm,   initial); 
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
     } @else 
-    if ($size == 'nm') {
-        @include button-size($btn-padding-y,    $btn-padding-y,    $font-size-factor * $font-size-base, initial); 
-    } @else 
+
     if ($size == 'lg'){
-        @include button-size($btn-padding-y-lg, $btn-padding-y-lg, $font-size-factor * $font-size-lg,   initial); 
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
     }
 
+    //If not inline header => use reduce x-padding
+    @if not $inline { 
+        $padding-x: $padding-y; 
+    }
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
 
+    
 }
-@mixin header-variant-lg( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'lg' ); }
-@mixin header-variant-sm( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'sm' ); }
-@mixin header-variant-xs( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'xs' ); }
-
-
+@mixin header-variant-lg( $font-size-factor: $font-size-header-factor, $inline: false ) { @include header-variant( $font-size-factor, 'lg', $inline ); }
+@mixin header-variant-sm( $font-size-factor: $font-size-header-factor, $inline: false ) { @include header-variant( $font-size-factor, 'sm', $inline ); }
+@mixin header-variant-xs( $font-size-factor: $font-size-header-factor, $inline: false ) { @include header-variant( $font-size-factor, 'xs', $inline ); }
 
 /************************************************************
-title-variant
+header-inline--variant
+************************************************************/
+@mixin header-inline-variant( $size: 'nm' ){ 
+    @include header-variant( $font-size-header-factor, $size, true); 
+}
+
+@mixin header-inline-variant-lg() { @include header-inline-variant( 'lg' ); }
+@mixin header-inline-variant-sm() { @include header-inline-variant( 'sm' ); }
+@mixin header-inline-variant-xs() { @include header-inline-variant( 'xs' ); }
+
+/************************************************************
+title-variant - as header but with same font-size as siblings
 ************************************************************/
 @mixin title-variant( $size: 'nm' ) { 
     @include header-variant( 1.0, $size );

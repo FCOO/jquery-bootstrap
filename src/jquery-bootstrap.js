@@ -3,8 +3,8 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
@@ -27,7 +27,7 @@
     //Create namespace
 	var ns = window; 
 
-    ns.bsIsTouch     =  true; //false;        
+    ns.bsIsTouch =  true;
 
     $._bsGetSizeClass = function( options ){
         var size = '';
@@ -45,11 +45,8 @@
 
 
 
-    //$._bsAdjustOptions( options [, defaultOptions ): Adjust options to allow text/name/title/header etc.
-    $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
-        
-        options = $.extend( true, defaultOptions || {}, options, forceOptions || {} );
-
+    //$._bsAdjustContentOptions: Adjust options for the content of elements
+    $._bsAdjustContentOptions = function( options){
         options.icon     = options.icon || options.headerIcon || options.titleIcon;
         options.text     = options.text || options.header || options.title || options.name;
 
@@ -57,15 +54,40 @@
                             options.headerIconClass || options.headerIconClassName ||
                             options.titleIconClass  || options.titleIconClassName;
 
-        options.textClassName = options.textClass   || options.textClassName   || 
-                                options.headerClass || options.headerClassName || 
-                                options.titleClass  || options.titleClassName;
+        options.textClass = options.textClass   || options.textClassName   || 
+                            options.headerClass || options.headerClassName || 
+                            options.titleClass  || options.titleClassName;
+
+        return options;
+    };
+
+    //$._bsAdjustOptions: Adjust options to allow text/name/title/header etc.
+    $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
         
+        options = $.extend( true, defaultOptions || {}, options, forceOptions || {} );
+
         options.selected = options.selected || options.checked || options.active;
+        options.list     = options.list     || options.buttons || options.items || options.children;
 
-        options.list = options.list || options.buttons || options.items || options.children;
+        options = $._bsAdjustContentOptions( options );
+/*
+        //Create or adjust options.content. If no .content is given => create it from options
+        if (options.content == null){
+            //Craete .content from own values            
+            var ids = 'icon text vfFormat vfValue vfOptions textStyle link title iconClass textClass'.split(' ');
+            options.content = {};
+            $.each( ids, function(index, id ){
+                options.content[id] = options[id];
+            });
+        }
 
-        
+        if ($.isArray( options.content ) )
+            //Adjust each record in options.content
+            for (var i=0; i<options.content.length; i++ )
+                options.content[i] = $._bsAdjustContentOptions( options.content[i] );
+        else
+            options.content = $._bsAdjustContentOptions( options.content );
+*/
         return options;
     };
 
@@ -138,23 +160,60 @@
         textOptions: {
             icon     : String or array of String
             text     : String or array of String
+            vfFormat : String or array of String
+            vfValue  : any type or array of any-type
+            vfOptions: JSON-object or array of JSON-object
             textStyle: String or array of String
             link     : String or array of String
             title    : String or array of String
             iconClass: string or array of String
             textClass: string or array of String
-    }
+        }
+        checkForContent: [Boolean] If true AND options.content exists => use options.content instead
         ****************************************************************************************/
 
-        _bsAddHtml:  function( options ){
+        _bsAddHtml:  function( options, checkForContent, ignoreLink ){
+            //**************************************************
+            function create$text( link, title, textStyle, className ){
+                var $text;
+                if (link){
+                    $text = $('<a/>');
+                    if ($.isFunction( link ))
+                        $text
+                            .prop('href', 'javascript:undefined')
+                            .on('click', link );
+                    else 
+                        $text
+                            .i18n(link, 'href')
+                            .prop('target', '_blank');
+                }
+                else
+                    $text = $('<span/>');
+
+                if (title)
+                    $text.i18n(title, 'title');
+
+                $text._bsAddStyleClasses( textStyle || '' );
+
+                if (className)
+                    $text.addClass( className );
+
+                return $text;
+            }
+            //**************************************************
+            function getArray( input ){ 
+                return input ? $.isArray( input ) ? input : [input] : []; 
+            }
+            //**************************************************
+
+
+            if (checkForContent && (options.content != null))
+                return this._bsAddHtml( options.content );     
+
             options = options || '';
-            function getArray( input ){ return input ? $.isArray( input ) ? input : [input] : []; }
+
             var _this = this;
-    
-            //Simple version: options == string
-            if ($.type( options ) !== "object")
-                return this._bsAddHtml( {text: options} );              
-            
+
             //options = array => add each with space between            
             if ($.isArray( options )){
                 $.each( options, function( index, textOptions ){
@@ -164,15 +223,23 @@
                 });        
                 return this;    
             }
+
+            //Simple version: options == string
+            if ($.type( options ) != "object")
+                return this._bsAddHtml( {text: options} );              
+            
            
             //options = simple textOptions
-            var iconArray      = getArray( options.icon ),
-                textArray      = getArray( options.text ),
-                textStyleArray = getArray( options.textStyle ),
-                linkArray      = getArray( options.link ),
-                titleArray     = getArray( options.title ),
-                iconClassArray = getArray( options.iconClass ),
-                textClassArray = getArray( options.textClass );
+            var iconArray       = getArray( options.icon ),
+                textArray       = getArray( options.text ),
+                vfFormatArray   = getArray( options.vfFormat ),
+                vfValueArray    = getArray( options.vfValue ),
+                vfOptionsArray  = getArray( options.vfOptions ),
+                textStyleArray  = getArray( options.textStyle ),
+                linkArray       = getArray( ignoreLink ? [] : options.link || options.onClick ),
+                titleArray      = getArray( options.title ),
+                iconClassArray  = getArray( options.iconClass ),
+                textClassArray  = getArray( options.textClass );
 
             //Add icons (optional)
             $.each( iconArray, function( index, icon ){
@@ -189,31 +256,10 @@
             if (options.icon && options.text)
                 _this.append('&nbsp;');
 
+            //Add text
             $.each( textArray, function( index, text ){
-                var link = linkArray[ index ],
-                    title = titleArray[ index ],
-                    textStyle = textStyleArray[ index ] || '',
-                    $text;
-                if (link){
-                    $text = $('<a/>');
-                    if ($.isFunction( link ))
-                        $text
-                            .prop('href', 'javascript:undefined')
-                            .on('click', link );
-                    else 
-                        $text
-                            .i18n(link, 'href')
-                            .prop('target', '_blank');
-
-                }
-                else
-                    $text = $('<span/>');
-
-                if (title)
-                    $text.i18n(title, 'title');
-
-                $text._bsAddStyleClasses( textStyle );
-                
+                var $text = create$text( linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
+               
                 if ($.isFunction( text ))
                     text( $text );
                 else
@@ -224,6 +270,12 @@
                 $text.appendTo( _this );                
             });
             
+            //Add value-format content
+            $.each( vfValueArray, function( index, vfValue ){
+                create$text( linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
+                    .vfValueFormat( vfValue || '', vfFormatArray[index], vfOptionsArray[index] )
+                    .appendTo( _this );                
+            });
             
             return this;
         },

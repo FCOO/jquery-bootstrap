@@ -3,8 +3,11 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+TODO:
+- More than one card open at the same time (apply to one or all card(s) )
 
 ****************************************************************************/
 
@@ -67,7 +70,7 @@
 */
 
     /**********************************************************
-    bsAccordion( options ) - create a Bootstrap-modal
+    bsAccordion( options ) - create a Bootstrap-accordion
 
     <div id="accordion" class="accordion accordion-sm" role="tablist" aria-multiselectable="true">
         <div class="card">
@@ -154,7 +157,7 @@
                         'aria-controls': collapseId,
                         'aria-target': '#'+collapseId
                     })
-                    ._bsAddHtml( opt )
+                    ._bsAddHtml( opt.header )
                     //Add chevrolet-icon
                     .append( $('<i/>').addClass('fa chevrolet') )
                     
@@ -177,14 +180,13 @@
                         .addClass('card-block')
                         .appendTo( $outer );
 
-                //Add footer
-                if (opt.footer)
-                    $('<div/>')
-                        .addClass('card-footer')
-                        ._bsAddHtml( opt.footer )
-                        .appendTo( $outer );
+            //Add footer
+            if (opt.footer)
+                $('<div/>')
+                    .addClass('card-footer')
+                    ._bsAddHtml( opt.footer )
+                    .appendTo( $outer );
                     
-
             //Add content: string, element, function or children (=accordion)
             if (opt.content){
                 if ($.isFunction( opt.content ))

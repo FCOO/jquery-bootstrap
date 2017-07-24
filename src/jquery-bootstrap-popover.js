@@ -3,8 +3,8 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
@@ -35,44 +35,39 @@
     /**********************************************************
     bsPopover( options ) - create a Bootstrap-popover
     options
-
-        footer: {icon, text, link, title} or [] of {icon, text, link, title}
+        header      : {icon, text, link, title} or [] of {icon, text, link, title}
+        close       : [Boolean] - show close cross in header
+        trigger     : [String] 'click'	How popover is triggered - click | hover | focus | manual
+        vertical    : [Boolean]
+        closeOnClick: [Boolean] false - if true the popover will close when it is clicked
+        placement   : [String] "top", "bottom", "left", "right". Default = 'right' for vertical: false and 'top' for vertical:true
+        content     : The content (function, DOM-element, jQuery-object)
+        footer      : {icon, text, link, title} or [] of {icon, text, link, title}
     **********************************************************/
     $.fn.bsPopover = function( options ){
         options = $._bsAdjustOptions( options );
         
-        var title = options.text,
-            $this = $(this);
+        var $this = $(this),
+            $header;
 
-        //If title is a function => use it, else add a <span> with the i18n-text or object
-        if (options.text || options.icon){
-            title = 
+        //Add header (if any)
+        if (options.header){
+            $header = 
                 $('<div/>')
                     .addClass('popover-title-content')
-                    ._bsAddHtml( options );
+                    ._bsAddHtml( options.header );
 
-                if (options.close)
-                    title
-                        .addClass('popover-close')
-                        .append( 
-                            $('<i class="fa modal-close"/>') 
-                                .on('click', function(){ 
-                                    $this.popover('hide');
-                                } )
-                        );
+            if (options.close)
+                $header
+                    .addClass('popover-close')
+                    .append( 
+                        $('<i class="fa modal-close"/>') 
+                            .on('click', function(){ 
+                                $this.popover('hide');
+                            })
+                    );
         }
 
-
-        if (options.footer){
-            //Create function to create the footer
-            var footer = options.footer;
-            options.footer = function(){ 
-                if (footer){
-                    $(this)._bsAddHtml( footer ); 
-                    footer = null;                  
-                }
-            };
-        }
         var popoverOptions = {
                 trigger  :  options.trigger || 'click', //or 'hover' or 'focus' ORIGINAL='click'
                 //delay    : { show: 0, hide: 1000 },
@@ -86,9 +81,9 @@
                                 '<div class="popover-arrow"></div>' + 
                             '</div>',
 
-                title    : title,
+                title    : $header,
                 content  : options.content,
-                footer   : options.footer
+                footer   : options.footer ? $('<div/>')._bsAddHtml( options.footer ) : ''
             };
         
         return this.each(function() {
@@ -127,8 +122,8 @@
                                   )
             )
             this.focus();
-        else
-            $(this).popover('hide');
+//        else
+//            $(this).popover('hide');
         this.skipNextBlur = false;
     }
 
@@ -143,7 +138,6 @@
             options = $this.data('popover_options');
 
         this._$popover_element = popoverId ? $('#' + popoverId) : null;
-
         if (this._$popover_element){
             
             //Translate content

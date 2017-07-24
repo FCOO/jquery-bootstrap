@@ -3,8 +3,11 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+TODO:
+- More than one card open at the same time (apply to one or all card(s) )
 
 ****************************************************************************/
 
@@ -67,7 +70,7 @@
 */
 
     /**********************************************************
-    bsAccordion( options ) - create a Bootstrap-modal
+    bsAccordion( options ) - create a Bootstrap-accordion
 
     <div id="accordion" class="accordion accordion-sm" role="tablist" aria-multiselectable="true">
         <div class="card">
@@ -154,7 +157,7 @@
                         'aria-controls': collapseId,
                         'aria-target': '#'+collapseId
                     })
-                    ._bsAddHtml( opt )
+                    ._bsAddHtml( opt.header )
                     //Add chevrolet-icon
                     .append( $('<i/>').addClass('fa chevrolet') )
                     
@@ -177,14 +180,13 @@
                         .addClass('card-block')
                         .appendTo( $outer );
 
-                //Add footer
-                if (opt.footer)
-                    $('<div/>')
-                        .addClass('card-footer')
-                        ._bsAddHtml( opt.footer )
-                        .appendTo( $outer );
+            //Add footer
+            if (opt.footer)
+                $('<div/>')
+                    .addClass('card-footer')
+                    ._bsAddHtml( opt.footer )
+                    .appendTo( $outer );
                     
-
             //Add content: string, element, function or children (=accordion)
             if (opt.content){
                 if ($.isFunction( opt.content ))
@@ -242,8 +244,8 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
@@ -306,7 +308,7 @@
         if (options.addOnClick && options.onClick)
             result.on('click', $.proxy( result._bsButtonOnClick, result ) );
 
-        result._bsAddHtml( options );
+        result._bsAddHtml( options, true, true );
 
         return result;
     };
@@ -330,6 +332,8 @@
     $.bsCheckboxButton = function( options ){
         //Clone options to avoid reflux
         options = $.extend({}, options);
+
+        options.class = 'allow-zero-selected';
 
         //Use modernizr-mode and classes if icon and/or text containe two values
         if ($.isArray(options.icon)){
@@ -379,10 +383,15 @@
         if (options.horizontalClassPostfix && !options.vertical)
             result.addClass(options.baseClass + options.horizontalClassPostfix );
 
+        if (options.allowZeroSelected)
+            result.addClass( 'allow-zero-selected' );
+
         if (options.attr)
             result.attr( options.attr );
+
         $.each( options.list, function(index, buttonOptions ){
-            $.bsButton( $.extend({}, options.buttonOptions, buttonOptions ) ).appendTo( result );
+            $.bsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
+                .appendTo( result );
         });
         return result;
     };
@@ -398,13 +407,8 @@
 
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){ 
-        options = 
-            $._bsAdjustOptions( options, 
-                {},
-                {
-                    addOnClick: false
-                }
-            );
+        options = $._bsAdjustOptions( options, {}, { addOnClick: false } );
+
         var result = $.bsButtonGroup( options );
 
         //Set options for RadioGroup
@@ -417,7 +421,7 @@
         });
         options.className = 'active';
         var radioGroup = $.radioGroup( options );
-        radioGroup.addElement( result.children(), options );
+        radioGroup.addElement( result.children('[id]'), options );
         result.data('radioGroup', radioGroup );
 
         return result;
@@ -442,8 +446,8 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
@@ -456,7 +460,7 @@
     $.bsCheckbox = function( options ){ 
         options = 
             $._bsAdjustOptions( options, {
-                ///*REMOVED - Only ONE size addSizeClass: true,
+                //REMOVED - Only ONE size: addSizeClass: true,
                 baseClass   : options.type || 'checkbox'
             });
         
@@ -508,22 +512,29 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
 (function ($, window, document/*, undefined*/) {
 	"use strict";
 	
+
     /**********************************************************
     bsModal( options ) - create a Bootstrap-modal
 
     options
+        header
         fixedContent
-        content
         flex
         noVerticalPadding
+        content
+
+        buttons = options.buttons || [];
+
+        closeText
+
 
         REMOVED - getContentHeight: function( $container ) returns the max height of the content
     **********************************************************/
@@ -553,22 +564,26 @@
     //******************************************************
     //show_bs_modal - called when a modal is opening
     function show_bs_modal( /*event*/ ) {
+
+        var $this = $(this);        
         // if the z-index of this modal has been set, ignore.
-        if ( $(this).hasClass( modalStackClassName ) )
+        if ( $this.hasClass( modalStackClassName ) )
             return;
 
-        $(this).addClass( modalStackClassName );
+        $this.addClass( modalStackClassName );
 
         // keep track of the number of open modals
         var modalNumber = incOpenModals( +1 ); 
 
         //Move the modal to the front
-        $(this).css('z-index', 1040 + 10*modalNumber );
+        $this.css('z-index', 1040 + 10*modalNumber );
     }
 
     //******************************************************
     //shown_bs_modal - called when a modal is opened
     function shown_bs_modal( /*event*/ ) {
+        var $this = $(this);
+
         //Update other backdrop
         var modalNumber = incOpenModals(); 
         $( '.modal-backdrop' ).not( '.'+modalStackClassName )
@@ -578,9 +593,8 @@
         $( '.modal-backdrop' ).not( '.'+modalStackClassName )
             .addClass( modalStackClassName );
 
-
         //Focus on focus-element
-        var $focusElement = $(this).find('.init_focus').last();
+        var $focusElement = $this.find('.init_focus').last();
         if ($focusElement.length){
             document.activeElement.blur();
             $focusElement.focus();
@@ -590,16 +604,29 @@
     //******************************************************
     //hide_bs_modal - called when a modal is closing
     function hide_bs_modal( /*event*/ ) {
+
     }
 
     //******************************************************
     //hidden_bs_modal - called when a modal is closed/hidden
     function hidden_bs_modal( /*event*/ ) {
-        $(this).removeClass( modalStackClassName );
+        var $this = $(this);
+
+        $this.removeClass( modalStackClassName );
         var openModals = incOpenModals( -1 );
-        if (openModals)
+        if (openModals){
+            //Move focus to previous modal on top
+            var $modal = $('.modal.show').last(),
+                $nextFocus = $modal.find('.init_focus');
+
+            if ($nextFocus.length)
+                $nextFocus.focus();
+            else
+                $modal.focus();
+
             //Re-add class "modal-open" to body (it is removed by Bootstrap
             $('body').addClass('modal-open');
+        }
     }
 
     /******************************************************
@@ -635,10 +662,13 @@
                 //REMOVED - Only ONE size addSizeClass    : true,
                 content         : '',
                 show            : true,
+                closeText       : {da:'Luk', en:'Close'},
+                closeIcon       : 'fa-times', 
                 //REMOVED getContentHeight    : default_getContentHeight,
                 //REMOVED postGetContentHeight: default_postGetContentHeight
                                     
             });
+
 
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options )
@@ -666,7 +696,7 @@
         $modalContent.append(
             $('<div/>')
                 .addClass('modal-header right-side-icon-parent')
-                ._bsAddHtml( options )
+                ._bsAddHtml( options.header )
                 .append( $('<i class="fa modal-close" data-dismiss="modal" aria-label="Close"/>') )
         );
         
@@ -709,8 +739,8 @@
         //Add close-botton. Avoid by setting options.closeText == ""
         if (options.closeText != '')
             buttons.push({   
-                text        : options.closeText || {da:'Luk', en:'Close'}, 
-                icon        : options.closeIcon || 'fa-times', 
+                text        : options.closeText, 
+                icon        : options.closeIcon, 
                 closeOnClick: true,
 focus: true, //TODO: Skal checke om der er andre knapper, der skal have focus - feks. 'Save' eller 'Ok'
                 addOnClick  : false
@@ -774,19 +804,20 @@ focus: true,
         
         //Create as modal and adds methods
         $result.modal({
-            //Name      Value     Type	                Default Description
-            backdrop:   "static", //boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
-            keyboard:   true,     //boolean	            true	Closes the modal when escape key is pressed
-            focus	:   true,     //boolean	            true    Puts the focus on the modal when initialized.
-            show	:   false     //boolean	            true	Shows the modal when initialized.
+           //Name       Value     Type	                Default Description
+           backdrop :   "static", //boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
+           keyboard :   true,     //boolean	            true	Closes the modal when escape key is pressed
+           focus	:   true,     //boolean	            true    Puts the focus on the modal when initialized.
+           show	    :   false     //boolean	            true	Shows the modal when initialized.
         });
 
         $result.on({
-            'show.bs.modal'  : show_bs_modal, 
+            'show.bs.modal'  : show_bs_modal,
             'shown.bs.modal' : shown_bs_modal,
             'hide.bs.modal'  : hide_bs_modal,
             'hidden.bs.modal': hidden_bs_modal,
         });
+
 
         $result.appendTo( $('body') );        
 
@@ -818,8 +849,8 @@ focus: true,
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
@@ -850,44 +881,39 @@ focus: true,
     /**********************************************************
     bsPopover( options ) - create a Bootstrap-popover
     options
-
-        footer: {icon, text, link, title} or [] of {icon, text, link, title}
+        header      : {icon, text, link, title} or [] of {icon, text, link, title}
+        close       : [Boolean] - show close cross in header
+        trigger     : [String] 'click'	How popover is triggered - click | hover | focus | manual
+        vertical    : [Boolean]
+        closeOnClick: [Boolean] false - if true the popover will close when it is clicked
+        placement   : [String] "top", "bottom", "left", "right". Default = 'right' for vertical: false and 'top' for vertical:true
+        content     : The content (function, DOM-element, jQuery-object)
+        footer      : {icon, text, link, title} or [] of {icon, text, link, title}
     **********************************************************/
     $.fn.bsPopover = function( options ){
         options = $._bsAdjustOptions( options );
         
-        var title = options.text,
-            $this = $(this);
+        var $this = $(this),
+            $header;
 
-        //If title is a function => use it, else add a <span> with the i18n-text or object
-        if (options.text || options.icon){
-            title = 
+        //Add header (if any)
+        if (options.header){
+            $header = 
                 $('<div/>')
                     .addClass('popover-title-content')
-                    ._bsAddHtml( options );
+                    ._bsAddHtml( options.header );
 
-                if (options.close)
-                    title
-                        .addClass('popover-close')
-                        .append( 
-                            $('<i class="fa modal-close"/>') 
-                                .on('click', function(){ 
-                                    $this.popover('hide');
-                                } )
-                        );
+            if (options.close)
+                $header
+                    .addClass('popover-close')
+                    .append( 
+                        $('<i class="fa modal-close"/>') 
+                            .on('click', function(){ 
+                                $this.popover('hide');
+                            })
+                    );
         }
 
-
-        if (options.footer){
-            //Create function to create the footer
-            var footer = options.footer;
-            options.footer = function(){ 
-                if (footer){
-                    $(this)._bsAddHtml( footer ); 
-                    footer = null;                  
-                }
-            };
-        }
         var popoverOptions = {
                 trigger  :  options.trigger || 'click', //or 'hover' or 'focus' ORIGINAL='click'
                 //delay    : { show: 0, hide: 1000 },
@@ -901,9 +927,9 @@ focus: true,
                                 '<div class="popover-arrow"></div>' + 
                             '</div>',
 
-                title    : title,
+                title    : $header,
                 content  : options.content,
-                footer   : options.footer
+                footer   : options.footer ? $('<div/>')._bsAddHtml( options.footer ) : ''
             };
         
         return this.each(function() {
@@ -942,8 +968,8 @@ focus: true,
                                   )
             )
             this.focus();
-        else
-            $(this).popover('hide');
+//        else
+//            $(this).popover('hide');
         this.skipNextBlur = false;
     }
 
@@ -958,7 +984,6 @@ focus: true,
             options = $this.data('popover_options');
 
         this._$popover_element = popoverId ? $('#' + popoverId) : null;
-
         if (this._$popover_element){
             
             //Translate content
@@ -1048,8 +1073,13 @@ focus: true,
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+TODO:
+- Open up
+- Use scrollbar on list
+
 
 ****************************************************************************/
 
@@ -1061,6 +1091,10 @@ focus: true,
     **********************************************************/
     var selectboxId = 0;
 
+    function getSelectId(){
+        return '_bsSelectbox'+ selectboxId++;
+    }
+
     //Function called when a new item is selected: Update the dropdownmenu-button with the content from the selected item
     function postOnChange( $selectedItem ){
         if ($selectedItem.length == 0)
@@ -1069,20 +1103,58 @@ focus: true,
         var newContent = $selectedItem.find('._content').clone(true).addClass('selected-content');
         
         //Old content
-        $selectedItem.closest( '.dropdown-selectbox').find('.selected-content')
+        $selectedItem.closest( '.selectbox').find('.selected-content')
             .after( newContent ) //Insert new content after
             .remove();           //Remove old content
     }
 
+
+    //addSelectItems( $container, items,  ) - Create radioGroup and adds items
+    function addSelectItems( $container, options, inSpan ){
+        var radioGroup = $.radioGroup( 
+                            $.extend({}, options, {
+                                radioGroupId     : options.id, 
+                                className        : 'active', 
+                                allowZeroSelected: false
+                            })
+                         ); 
+
+        $.each( options.list, function( index, itemOptions ){
+            var isItem = (itemOptions.id != undefined ),
+                $item = $('<div/>')
+                            .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
+                            .addClass( options.center ? 'text-center' : '')
+                            .appendTo( $container );
+
+                if (inSpan)
+                    //Create contents inside a span-element to allow easy duplication
+                    $item
+                        .append(
+                            $('<span/>')
+                                .addClass('_content')
+                                ._bsAddHtml( itemOptions, true )
+                        )
+                else
+                    $item._bsAddHtml( itemOptions, true );
+
+                if (isItem)
+                    radioGroup.addElement( $item, itemOptions );
+        });
+
+        return $container;
+    }
+
+    
+    
     $.bsSelectbox = function( options ){
-        var id = '_bsSelectbox'+ selectboxId++;
         options = 
             $._bsAdjustOptions( options, {
-                baseClass   : 'dropdown-selectbox',
+                id          : getSelectId(),
+                baseClass   : 'selectbox',
                 class       : 'dropdown',
-                //REMOVED - Only ONE size 
-                addSizeClass: true,
+                addSizeClass: true, //false if only ONE size 
             });
+
 
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options );
@@ -1090,14 +1162,15 @@ focus: true,
         //Create the dropdown-button
         var placeholder = options.placeholder || {da:'Vælg...', en:'Select...'};
         $.bsButton({
-                tagName     : 'div',
+                tagName     : 'div', //'button',
                 class       : '',
                 addSizeClass: false,
                 addOnClick  : false
             })
             .attr({ 
-                'id'           : id,
+                'id'           : options.id,
                 'role'         : 'botton',
+                'tabindex'     : 0,
                 'data-toggle'  : 'dropdown',
                 'aria-haspopup': true,
                 'aria-expanded': false
@@ -1120,84 +1193,50 @@ focus: true,
 
         var $dropdown_menu = $('<div/>')
                                 .addClass('dropdown-menu')
-                                .attr('aria-labelledby', id )
-                                .appendTo( $result ),
+                                .attr('aria-labelledby', options.id )
+                                .appendTo( $result );
 
-            $dropdown_menu_content = $dropdown_menu.addScrollbar();
+        options.postOnChange = postOnChange;
 
-
-
-        var radioGroup = $.radioGroup( 
-                            $.extend({}, options, {
-                                radioGroupId     : options.id || id, 
-                                className        : 'active', 
-                                allowZeroSelected: false,
-                                postOnChange     : postOnChange
-                            })
-                         ); 
-
-        $.each( options.list, function( index, itemOptions ){
-            var isItem = (itemOptions.id != undefined ),
-                $item = $('<div/>')
-                            .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
-
-                            //Create contents inside a span-element to allow easy duplication
-                            .append(
-                                $('<span/>')
-                                    .addClass('_content')
-                                    ._bsAddHtml( itemOptions )
-                            )
-                            .appendTo( $dropdown_menu_content );
-
-                if (isItem)
-                    radioGroup.addElement( $item, itemOptions );
-        });
+        addSelectItems( $dropdown_menu.addScrollbar(), options, true );
 
 
         //Updates dropdownmenu-button with selected contents (if any)
-        postOnChange( $dropdown_menu_content.find( '.dropdown-item.active' ).first() );
+        postOnChange( /*$dropdown_menu_content*/$dropdown_menu.find( '.dropdown-item.active' ).first() );
 
 
-        
-        //REMOVED: Setting the width of the dropdown-button equal the width of the item-box. Need timeout to allow DOM in some browser to finish adding elements
-/*
+/* REMOVED        
+        //Setting the width of the dropdown-button equal the width of the item-box. Need timeout to allow DOM in some browser to finish adding elements
         setTimeout(function(){
             var bodyFontSize = parseFloat( $('body').css('font-size') ),
                 dropDownMenuWidth = $dropdown_menu.outerWidth()/bodyFontSize + 'rem';
                 $result.width( dropDownMenuWidth );
         }, 100);
 */
+
         return $result;
     };
 
 
     /**********************************************************
-    bsList( options ) - create a Bootstrap-list
-    **********************************************************/
-    function listOptions( options ){
-        return $.extend({
-            tagName               : 'div',
-            baseClass             : 'list-group',
-            leftClass             : '', //Overwrite leftClass for button-group
-            centerClass           : 'list-group-center',
-            addSizeClass          : true,
-            vertical              : true,
-            verticalClassPostfix  : '', 
-            horizontalClassPostfix: '-horizontal',
-            attr                  : '',
-            buttonOptions: {
-                baseClass   :'list-group-item list-group-item-action',
-                styleClass  : '',
-                addSizeClass: false                    
-            }
-        },
-        options );
-    }
-    /**********************************************************
     bsSelectList( options ) - create a Bootstrap-list with selection
     **********************************************************/
     $.bsSelectList = function( options ){ 
-        return $.bsRadioButtonGroup( listOptions( options ) );
+        options = 
+            $._bsAdjustOptions( options, {
+                id          : getSelectId(),
+                baseClass   : 'selectList',
+                class       : '',
+                addSizeClass: true, 
+            });
+
+
+        var $result = $('<div tabindex="0"/>')
+                        ._bsAddBaseClassAndSize( options );
+
+        addSelectItems( $result, options );
+
+        return $result;
     };
 
 
@@ -1220,8 +1259,8 @@ focus: true,
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
@@ -1265,8 +1304,9 @@ Add sort-functions + save col-index for sorted column
             contentType: 'default',
             align      : 'left',
             sortable   : false
-        };
+        },
 
+        dataTableId = 'bsTable_options';
 
     /**********************************************************
     Prototype for bsTable
@@ -1275,9 +1315,32 @@ Add sort-functions + save col-index for sorted column
         /**********************************************************
         addRow( rowContent)  - add a new row to the table
         **********************************************************/
-        addRow: function( /*rowContent*/ ){
+        addRow: function( rowContent ){
+            var options = this.data(dataTableId),
+                $tbody  = this.find('tbody').first(),
+                $tr     = $('<tr/>').appendTo( $tbody );
 
-    
+            if (options.selectable)
+                $tr.attr('id', rowContent.id || 'rowId_'+rowId++);                
+
+            $.each( options.columns, function( index, column ){
+                var content = rowContent[column.id],
+                    $td = $('<td/>')
+                            ._bsAddStyleClasses( column.textStyle ) 
+                            .addClass('align-middle')
+                            ._bsAddStyleClasses( column.align )
+                            .appendTo($tr);
+
+                //Build the content using _bsAddHtml or jquery-value-format                    
+                if (column.vfFormat)
+                    $td.vfValueFormat( content, column.vfFormat, column.vfOptions );
+                else
+                    $td._bsAddHtml( content );
+            });
+
+            //Add rows to radioGroup
+            if (options.selectable)
+                options.radioGroup.addElement( $tr );
         },
 
         /**********************************************************
@@ -1288,7 +1351,7 @@ Add sort-functions + save col-index for sorted column
             var $theadClone = this.find('thead').clone( true ),
                 $tableWithHeader =  
                     $('<table/>')
-                        ._bsAddBaseClassAndSize( this.data('bsTable_options') )
+                        ._bsAddBaseClassAndSize( this.data(dataTableId) )
                         .addClass('table-with-header')
                         .append( $theadClone ),
 
@@ -1355,11 +1418,10 @@ Add sort-functions + save col-index for sorted column
     bsTable( options ) - create a Bootstrap-table
     **********************************************************/
     var tableId  = 0,
-        columnId = 0,
         rowId    = 0;
 
     $.bsTable = function( options ){
-        options = $._bsAdjustOptions( options, defaultOptions );
+        options = $._bsAdjustOptions( options, defaultOptions ); 
         options.class = 
             (options.verticalBorder ? 'table-bordered ' : '' ) + 
             (options.selectable ? 'table-selectable ' : '' ) + 
@@ -1369,7 +1431,6 @@ Add sort-functions + save col-index for sorted column
         $.each( options.columns, function( index, column ){
             column = $.extend( true, {}, defaultColunmOptions, column ); 
 
-            column.id = column.id || 'bsColumn'+ columnId++;
             column.index = index;
 
             options.columns[index] = column;
@@ -1386,6 +1447,9 @@ Add sort-functions + save col-index for sorted column
                         .appendTo( $table ),
             $tr = $('<tr/>')
                     .appendTo( $thead );
+
+        //Extend with prototype
+        $table.init.prototype.extend( bsTable_prototype );
 
         //Create headers
         $.each( options.columns, function( index, column ){
@@ -1408,41 +1472,19 @@ Add sort-functions + save col-index for sorted column
         if (options.selectable){
             var radioGroupOptions = $.extend( true, options );
             radioGroupOptions.className = 'active';
-            var radioGroup = $.radioGroup( radioGroupOptions );            
+            options.radioGroup = $.radioGroup( radioGroupOptions );            
         }
+
+        $table.data(dataTableId, options);
         
+
         //Create tbody and all rows
-        var $tbody = $('<tbody/>').appendTo( $table );
-        $.each( options.data, function( index, rowData ){
-            $tr = $('<tr/>').appendTo( $tbody );
+        $table.append( $('<tbody/>') );
 
-            if (options.selectable)
-                $tr.attr('id', rowData.id || 'rowId_'+rowId++);                
-
-            $.each( options.columns, function( index, column ){
-                var content = rowData[column.id],
-                    $td = $('<td/>')
-                            ._bsAddStyleClasses( column.textStyle ) 
-                            .addClass('align-middle')
-                            ._bsAddStyleClasses( column.align )
-                            .appendTo($tr);
-
-                //Build the content using _bsAddHtml or jquery-value-format                    
-                if (column.vfFormat)
-                    $td.vfValueFormat( content, column.vfFormat, column.vfOptions );
-                else
-                    $td._bsAddHtml( content );
-            });
+        $.each( options.content, function( index, rowContent ){
+            $table.addRow( rowContent );
         });
         
-        //Add rows to radioGroup
-        if (options.selectable)
-            radioGroup.addElement( $tbody.children('tr'), radioGroupOptions );
-
-        $table.data('bsTable_options', options);
-
-        //Extend with prototype
-        $table.init.prototype.extend( bsTable_prototype );
 
         return $table; 
     };
@@ -1467,8 +1509,8 @@ Add sort-functions + save col-index for sorted column
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
@@ -1491,7 +1533,7 @@ Add sort-functions + save col-index for sorted column
     //Create namespace
 	var ns = window; 
 
-    ns.bsIsTouch     =  true; //false;        
+    ns.bsIsTouch =  true;
 
     $._bsGetSizeClass = function( options ){
         var size = '';
@@ -1509,11 +1551,8 @@ Add sort-functions + save col-index for sorted column
 
 
 
-    //$._bsAdjustOptions( options [, defaultOptions ): Adjust options to allow text/name/title/header etc.
-    $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
-        
-        options = $.extend( true, defaultOptions || {}, options, forceOptions || {} );
-
+    //$._bsAdjustContentOptions: Adjust options for the content of elements
+    $._bsAdjustContentOptions = function( options){
         options.icon     = options.icon || options.headerIcon || options.titleIcon;
         options.text     = options.text || options.header || options.title || options.name;
 
@@ -1521,15 +1560,40 @@ Add sort-functions + save col-index for sorted column
                             options.headerIconClass || options.headerIconClassName ||
                             options.titleIconClass  || options.titleIconClassName;
 
-        options.textClassName = options.textClass   || options.textClassName   || 
-                                options.headerClass || options.headerClassName || 
-                                options.titleClass  || options.titleClassName;
+        options.textClass = options.textClass   || options.textClassName   || 
+                            options.headerClass || options.headerClassName || 
+                            options.titleClass  || options.titleClassName;
+
+        return options;
+    };
+
+    //$._bsAdjustOptions: Adjust options to allow text/name/title/header etc.
+    $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
         
+        options = $.extend( true, defaultOptions || {}, options, forceOptions || {} );
+
         options.selected = options.selected || options.checked || options.active;
+        options.list     = options.list     || options.buttons || options.items || options.children;
 
-        options.list = options.list || options.buttons || options.items || options.children;
+        options = $._bsAdjustContentOptions( options );
+/*
+        //Create or adjust options.content. If no .content is given => create it from options
+        if (options.content == null){
+            //Craete .content from own values            
+            var ids = 'icon text vfFormat vfValue vfOptions textStyle link title iconClass textClass'.split(' ');
+            options.content = {};
+            $.each( ids, function(index, id ){
+                options.content[id] = options[id];
+            });
+        }
 
-        
+        if ($.isArray( options.content ) )
+            //Adjust each record in options.content
+            for (var i=0; i<options.content.length; i++ )
+                options.content[i] = $._bsAdjustContentOptions( options.content[i] );
+        else
+            options.content = $._bsAdjustContentOptions( options.content );
+*/
         return options;
     };
 
@@ -1602,23 +1666,60 @@ Add sort-functions + save col-index for sorted column
         textOptions: {
             icon     : String or array of String
             text     : String or array of String
+            vfFormat : String or array of String
+            vfValue  : any type or array of any-type
+            vfOptions: JSON-object or array of JSON-object
             textStyle: String or array of String
             link     : String or array of String
             title    : String or array of String
             iconClass: string or array of String
             textClass: string or array of String
-    }
+        }
+        checkForContent: [Boolean] If true AND options.content exists => use options.content instead
         ****************************************************************************************/
 
-        _bsAddHtml:  function( options ){
+        _bsAddHtml:  function( options, checkForContent, ignoreLink ){
+            //**************************************************
+            function create$text( link, title, textStyle, className ){
+                var $text;
+                if (link){
+                    $text = $('<a/>');
+                    if ($.isFunction( link ))
+                        $text
+                            .prop('href', 'javascript:undefined')
+                            .on('click', link );
+                    else 
+                        $text
+                            .i18n(link, 'href')
+                            .prop('target', '_blank');
+                }
+                else
+                    $text = $('<span/>');
+
+                if (title)
+                    $text.i18n(title, 'title');
+
+                $text._bsAddStyleClasses( textStyle || '' );
+
+                if (className)
+                    $text.addClass( className );
+
+                return $text;
+            }
+            //**************************************************
+            function getArray( input ){ 
+                return input ? $.isArray( input ) ? input : [input] : []; 
+            }
+            //**************************************************
+
+
+            if (checkForContent && (options.content != null))
+                return this._bsAddHtml( options.content );     
+
             options = options || '';
-            function getArray( input ){ return input ? $.isArray( input ) ? input : [input] : []; }
+
             var _this = this;
-    
-            //Simple version: options == string
-            if ($.type( options ) !== "object")
-                return this._bsAddHtml( {text: options} );              
-            
+
             //options = array => add each with space between            
             if ($.isArray( options )){
                 $.each( options, function( index, textOptions ){
@@ -1628,15 +1729,23 @@ Add sort-functions + save col-index for sorted column
                 });        
                 return this;    
             }
+
+            //Simple version: options == string
+            if ($.type( options ) != "object")
+                return this._bsAddHtml( {text: options} );              
+            
            
             //options = simple textOptions
-            var iconArray      = getArray( options.icon ),
-                textArray      = getArray( options.text ),
-                textStyleArray = getArray( options.textStyle ),
-                linkArray      = getArray( options.link ),
-                titleArray     = getArray( options.title ),
-                iconClassArray = getArray( options.iconClass ),
-                textClassArray = getArray( options.textClass );
+            var iconArray       = getArray( options.icon ),
+                textArray       = getArray( options.text ),
+                vfFormatArray   = getArray( options.vfFormat ),
+                vfValueArray    = getArray( options.vfValue ),
+                vfOptionsArray  = getArray( options.vfOptions ),
+                textStyleArray  = getArray( options.textStyle ),
+                linkArray       = getArray( ignoreLink ? [] : options.link || options.onClick ),
+                titleArray      = getArray( options.title ),
+                iconClassArray  = getArray( options.iconClass ),
+                textClassArray  = getArray( options.textClass );
 
             //Add icons (optional)
             $.each( iconArray, function( index, icon ){
@@ -1653,31 +1762,10 @@ Add sort-functions + save col-index for sorted column
             if (options.icon && options.text)
                 _this.append('&nbsp;');
 
+            //Add text
             $.each( textArray, function( index, text ){
-                var link = linkArray[ index ],
-                    title = titleArray[ index ],
-                    textStyle = textStyleArray[ index ] || '',
-                    $text;
-                if (link){
-                    $text = $('<a/>');
-                    if ($.isFunction( link ))
-                        $text
-                            .prop('href', 'javascript:undefined')
-                            .on('click', link );
-                    else 
-                        $text
-                            .i18n(link, 'href')
-                            .prop('target', '_blank');
-
-                }
-                else
-                    $text = $('<span/>');
-
-                if (title)
-                    $text.i18n(title, 'title');
-
-                $text._bsAddStyleClasses( textStyle );
-                
+                var $text = create$text( linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
+               
                 if ($.isFunction( text ))
                     text( $text );
                 else
@@ -1688,6 +1776,12 @@ Add sort-functions + save col-index for sorted column
                 $text.appendTo( _this );                
             });
             
+            //Add value-format content
+            $.each( vfValueArray, function( index, vfValue ){
+                create$text( linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
+                    .vfValueFormat( vfValue || '', vfFormatArray[index], vfOptionsArray[index] )
+                    .appendTo( _this );                
+            });
             
             return this;
         },

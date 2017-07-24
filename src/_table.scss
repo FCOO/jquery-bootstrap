@@ -69,7 +69,7 @@ Adjustmernt to Bootstrap table
 
     //Selectable rows
     &.table-selectable tbody tr {
-        @include control-active-color();
+        @include control-active-color(".table.table-selectable tbody tr");
         cursor: pointer;
     }
 

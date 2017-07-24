@@ -3,8 +3,8 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
@@ -17,7 +17,7 @@
     $.bsCheckbox = function( options ){ 
         options = 
             $._bsAdjustOptions( options, {
-                ///*REMOVED - Only ONE size addSizeClass: true,
+                //REMOVED - Only ONE size: addSizeClass: true,
                 baseClass   : options.type || 'checkbox'
             });
         

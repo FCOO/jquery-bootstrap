@@ -3,8 +3,13 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+TODO:
+- Open up
+- Use scrollbar on list
+
 
 ****************************************************************************/
 
@@ -16,6 +21,10 @@
     **********************************************************/
     var selectboxId = 0;
 
+    function getSelectId(){
+        return '_bsSelectbox'+ selectboxId++;
+    }
+
     //Function called when a new item is selected: Update the dropdownmenu-button with the content from the selected item
     function postOnChange( $selectedItem ){
         if ($selectedItem.length == 0)
@@ -24,20 +33,58 @@
         var newContent = $selectedItem.find('._content').clone(true).addClass('selected-content');
         
         //Old content
-        $selectedItem.closest( '.dropdown-selectbox').find('.selected-content')
+        $selectedItem.closest( '.selectbox').find('.selected-content')
             .after( newContent ) //Insert new content after
             .remove();           //Remove old content
     }
 
+
+    //addSelectItems( $container, items,  ) - Create radioGroup and adds items
+    function addSelectItems( $container, options, inSpan ){
+        var radioGroup = $.radioGroup( 
+                            $.extend({}, options, {
+                                radioGroupId     : options.id, 
+                                className        : 'active', 
+                                allowZeroSelected: false
+                            })
+                         ); 
+
+        $.each( options.list, function( index, itemOptions ){
+            var isItem = (itemOptions.id != undefined ),
+                $item = $('<div/>')
+                            .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
+                            .addClass( options.center ? 'text-center' : '')
+                            .appendTo( $container );
+
+                if (inSpan)
+                    //Create contents inside a span-element to allow easy duplication
+                    $item
+                        .append(
+                            $('<span/>')
+                                .addClass('_content')
+                                ._bsAddHtml( itemOptions, true )
+                        )
+                else
+                    $item._bsAddHtml( itemOptions, true );
+
+                if (isItem)
+                    radioGroup.addElement( $item, itemOptions );
+        });
+
+        return $container;
+    }
+
+    
+    
     $.bsSelectbox = function( options ){
-        var id = '_bsSelectbox'+ selectboxId++;
         options = 
             $._bsAdjustOptions( options, {
-                baseClass   : 'dropdown-selectbox',
+                id          : getSelectId(),
+                baseClass   : 'selectbox',
                 class       : 'dropdown',
-                //REMOVED - Only ONE size 
-                addSizeClass: true,
+                addSizeClass: true, //false if only ONE size 
             });
+
 
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options );
@@ -45,14 +92,15 @@
         //Create the dropdown-button
         var placeholder = options.placeholder || {da:'Vælg...', en:'Select...'};
         $.bsButton({
-                tagName     : 'div',
+                tagName     : 'div', //'button',
                 class       : '',
                 addSizeClass: false,
                 addOnClick  : false
             })
             .attr({ 
-                'id'           : id,
+                'id'           : options.id,
                 'role'         : 'botton',
+                'tabindex'     : 0,
                 'data-toggle'  : 'dropdown',
                 'aria-haspopup': true,
                 'aria-expanded': false
@@ -75,84 +123,50 @@
 
         var $dropdown_menu = $('<div/>')
                                 .addClass('dropdown-menu')
-                                .attr('aria-labelledby', id )
-                                .appendTo( $result ),
+                                .attr('aria-labelledby', options.id )
+                                .appendTo( $result );
 
-            $dropdown_menu_content = $dropdown_menu.addScrollbar();
+        options.postOnChange = postOnChange;
 
-
-
-        var radioGroup = $.radioGroup( 
-                            $.extend({}, options, {
-                                radioGroupId     : options.id || id, 
-                                className        : 'active', 
-                                allowZeroSelected: false,
-                                postOnChange     : postOnChange
-                            })
-                         ); 
-
-        $.each( options.list, function( index, itemOptions ){
-            var isItem = (itemOptions.id != undefined ),
-                $item = $('<div/>')
-                            .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
-
-                            //Create contents inside a span-element to allow easy duplication
-                            .append(
-                                $('<span/>')
-                                    .addClass('_content')
-                                    ._bsAddHtml( itemOptions )
-                            )
-                            .appendTo( $dropdown_menu_content );
-
-                if (isItem)
-                    radioGroup.addElement( $item, itemOptions );
-        });
+        addSelectItems( $dropdown_menu.addScrollbar(), options, true );
 
 
         //Updates dropdownmenu-button with selected contents (if any)
-        postOnChange( $dropdown_menu_content.find( '.dropdown-item.active' ).first() );
+        postOnChange( /*$dropdown_menu_content*/$dropdown_menu.find( '.dropdown-item.active' ).first() );
 
 
-        
-        //REMOVED: Setting the width of the dropdown-button equal the width of the item-box. Need timeout to allow DOM in some browser to finish adding elements
-/*
+/* REMOVED        
+        //Setting the width of the dropdown-button equal the width of the item-box. Need timeout to allow DOM in some browser to finish adding elements
         setTimeout(function(){
             var bodyFontSize = parseFloat( $('body').css('font-size') ),
                 dropDownMenuWidth = $dropdown_menu.outerWidth()/bodyFontSize + 'rem';
                 $result.width( dropDownMenuWidth );
         }, 100);
 */
+
         return $result;
     };
 
 
     /**********************************************************
-    bsList( options ) - create a Bootstrap-list
-    **********************************************************/
-    function listOptions( options ){
-        return $.extend({
-            tagName               : 'div',
-            baseClass             : 'list-group',
-            leftClass             : '', //Overwrite leftClass for button-group
-            centerClass           : 'list-group-center',
-            addSizeClass          : true,
-            vertical              : true,
-            verticalClassPostfix  : '', 
-            horizontalClassPostfix: '-horizontal',
-            attr                  : '',
-            buttonOptions: {
-                baseClass   :'list-group-item list-group-item-action',
-                styleClass  : '',
-                addSizeClass: false                    
-            }
-        },
-        options );
-    }
-    /**********************************************************
     bsSelectList( options ) - create a Bootstrap-list with selection
     **********************************************************/
     $.bsSelectList = function( options ){ 
-        return $.bsRadioButtonGroup( listOptions( options ) );
+        options = 
+            $._bsAdjustOptions( options, {
+                id          : getSelectId(),
+                baseClass   : 'selectList',
+                class       : '',
+                addSizeClass: true, 
+            });
+
+
+        var $result = $('<div tabindex="0"/>')
+                        ._bsAddBaseClassAndSize( options );
+
+        addSelectItems( $result, options );
+
+        return $result;
     };
 
 

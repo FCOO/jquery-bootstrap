@@ -2,9 +2,24 @@
 SELECTBOX
 
 Implemented as a special version of dropdownmenu
-************************************************************/
-.dropdown.dropdown-selectbox {
 
+Two versions:
+1: bsSelectbox
+    .dropdown.selectbox    
+        .btn
+        .dropdown-menu
+            .dropdown-item or .dropdown-header
+            ...
+
+2: bsSelectList
+    .selectList
+        .dropdown-item or .dropdown-header
+        ...
+
+************************************************************/
+
+//1: bsSelectbox
+.dropdown.selectbox {
     @include modal-element-margin-bottom();
     
     > .btn {
@@ -15,8 +30,7 @@ Implemented as a special version of dropdownmenu
         @include right-side-icon-parent();
 
         .arrow {
-//            @include right-side-icon();  //1:
-            @include right-side-icon('\f078'); //2:
+            @include right-side-icon('\f078'); 
         }
 
         .selected-content {
@@ -31,85 +45,123 @@ Implemented as a special version of dropdownmenu
         }
     }
 
-/* TODO: Decide if arrow should change orientation on open (1) or not (2)
-1:
-    &.show > .btn .arrow:before {
-        content: '\f078';
+    //Set size of button when size=sm
+    &.selectbox-sm > .btn {
+        @extend .btn-sm;
     }
-*/
+
     .dropdown-menu {
         width: 100%;
+        max-height: 120px;
         border-top-left-radius : 0;
         border-top-right-radius: 0;
         margin-top             : -$dropdown-border-width; //Move up to align with bottom of button               
-
-        .dropdown-item {
-            cursor: pointer;
-            @include text-truncate();
-            @include control-active-color();
-        }
+        padding                : 0;
     }
 
     //Make the button 'active' when dropdown is open
     &.show {
+
         > .btn.btn-secondary {
-            //@include          ($color,               $color-hover,              $bg-color,              $bg-color-hover,              $hover, $bg)
-            @include color-hover($control-open-color,  $control-open-color-hover, $control-open-bg-color, $control-open-bg-color-hover, true, true);
+            //@include          ($color,               $color-hover,              $bg-color,              $bg-color-hover,              $hover, $bg )
+            @include color-hover($control-open-color,  $control-open-color-hover, $control-open-bg-color, $control-open-bg-color-hover, true,   true);
 
             border-bottom-right-radius: 0;
             border-bottom-left-radius : 0;
+
+            border-color: $input-border-focus;
+            outline: none;
+
+            border-bottom-color: $btn-secondary-border;
         }
 
         .dropdown-menu {
+            border-color: $input-border-focus;
+            outline     : none;
+            border-top-color: $dropdown-border-color;
+
         }
     }
+} //end of .dropdown.selectbox  (1: bsSelectbox)
 
 
-    //If the select has a scrollbar the left margin is reduced with the scrollbar-width to vertical-align content
-    .dropdown-menu.scrollbar-vertical {
-        .btn, .dropdown-item, .dropdown-header { 
-            margin-left: -$scroll-size;    
-        }
+
+//2: bsSelectList    
+.selectList {
+    border: $input-btn-border-width solid $input-border-color;
+    border-radius: $input-border-radius;
+
+    &.selectList-sm {
+        border-radius: $input-border-radius-sm;
     }
-
     
-//*REMOVED - Only ONE size
-    //Adjust size for different size. Horizontal padding-left is reduced
-    //Small
-    &.dropdown-selectbox-sm {
-        .btn, .dropdown-item, .dropdown-header { 
-            font-size   : $font-size-sm; 
-            padding     : $btn-padding-y-sm $btn-padding-x-xs;
-        }
-        .dropdown-header {
-            font-size: $font-size-header-sm;
-            //Items below header moves to the right
-            &  ~ .dropdown-item {
-                padding-left: $btn-padding-x-xs + $font-size-sm;
-            }
+    @include box-shadow($input-box-shadow);
+    @include transition($input-transition);
+
+    &:focus, &:active {
+        border-color: $input-border-focus;
+        outline: none;
+        @include box-shadow($input-box-shadow-focus);
+    }
+}
+
+//If the select has a scrollbar the left margin is reduced with the scrollbar-width to vertical-align content
+.dropdown-menu.scrollbar-vertical {
+    .dropdown-item, .dropdown-header { 
+        margin-left: -$scroll-size;    
+        width: calc(100% + 2*#{$scroll-size});
+    }
+    &.ps--active-y {
+        .dropdown-item, .dropdown-header { 
+            width: calc(100% + #{$scroll-size});
         }
     }
-//*/
+}
+
+
+
+//.dropdown-item and .dropdown-header
+.dropdown.selectbox, .selectList {
+    
+    //Adjust size for different size.
     //Normal
     & {
-        .btn, .dropdown-item, .dropdown-header { 
-            padding     : $btn-padding-y $btn-padding-x-sm;
+        .dropdown-item { 
+            cursor: pointer;
+            @include text-truncate();
+
+            @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
+            @include control-active-color(".dropdown-item");
         }
         .dropdown-header {
-            font-size: $font-size-header; 
+            @include header-inline-variant(); 
 
-            @include header-color(false); 
-
+            //Items below header moves to the right
             &  ~ .dropdown-item {
-                padding-left: $btn-padding-x-sm + $font-size-base;
+                padding-left: $btn-padding-x + $font-size-base;
             }
         }
     }
 
-/*REMOVED - Only ONE size
+    //Small
+    &.selectbox-sm, &.selectList-sm {
+        .dropdown-item { 
+            @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-border-radius-sm);
+        }
+        .dropdown-header {
+            @include header-inline-variant-sm();
+
+            //Items below header moves to the right
+            &  ~ .dropdown-item {
+                padding-left: $btn-padding-x-sm + $font-size-sm;
+            }
+        }
+    }
+
+/*REMOVED - Only DEFAULT sizes (= small and normal)
     //Large
-    &.dropdown-selectbox-lg {
-        .btn, .dropdown-item, .dropdown-header { 
+    &.selectbox-lg {
+        .dropdown-item, .dropdown-header { 
             font-size   : $font-size-lg; 
             padding     : $btn-padding-y-lg $btn-padding-x;
         }

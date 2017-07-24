@@ -3,22 +3,29 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
 (function ($, window, document/*, undefined*/) {
 	"use strict";
 	
+
     /**********************************************************
     bsModal( options ) - create a Bootstrap-modal
 
     options
+        header
         fixedContent
-        content
         flex
         noVerticalPadding
+        content
+
+        buttons = options.buttons || [];
+
+        closeText
+
 
         REMOVED - getContentHeight: function( $container ) returns the max height of the content
     **********************************************************/
@@ -48,22 +55,26 @@
     //******************************************************
     //show_bs_modal - called when a modal is opening
     function show_bs_modal( /*event*/ ) {
+
+        var $this = $(this);        
         // if the z-index of this modal has been set, ignore.
-        if ( $(this).hasClass( modalStackClassName ) )
+        if ( $this.hasClass( modalStackClassName ) )
             return;
 
-        $(this).addClass( modalStackClassName );
+        $this.addClass( modalStackClassName );
 
         // keep track of the number of open modals
         var modalNumber = incOpenModals( +1 ); 
 
         //Move the modal to the front
-        $(this).css('z-index', 1040 + 10*modalNumber );
+        $this.css('z-index', 1040 + 10*modalNumber );
     }
 
     //******************************************************
     //shown_bs_modal - called when a modal is opened
     function shown_bs_modal( /*event*/ ) {
+        var $this = $(this);
+
         //Update other backdrop
         var modalNumber = incOpenModals(); 
         $( '.modal-backdrop' ).not( '.'+modalStackClassName )
@@ -73,9 +84,8 @@
         $( '.modal-backdrop' ).not( '.'+modalStackClassName )
             .addClass( modalStackClassName );
 
-
         //Focus on focus-element
-        var $focusElement = $(this).find('.init_focus').last();
+        var $focusElement = $this.find('.init_focus').last();
         if ($focusElement.length){
             document.activeElement.blur();
             $focusElement.focus();
@@ -85,16 +95,29 @@
     //******************************************************
     //hide_bs_modal - called when a modal is closing
     function hide_bs_modal( /*event*/ ) {
+
     }
 
     //******************************************************
     //hidden_bs_modal - called when a modal is closed/hidden
     function hidden_bs_modal( /*event*/ ) {
-        $(this).removeClass( modalStackClassName );
+        var $this = $(this);
+
+        $this.removeClass( modalStackClassName );
         var openModals = incOpenModals( -1 );
-        if (openModals)
+        if (openModals){
+            //Move focus to previous modal on top
+            var $modal = $('.modal.show').last(),
+                $nextFocus = $modal.find('.init_focus');
+
+            if ($nextFocus.length)
+                $nextFocus.focus();
+            else
+                $modal.focus();
+
             //Re-add class "modal-open" to body (it is removed by Bootstrap
             $('body').addClass('modal-open');
+        }
     }
 
     /******************************************************
@@ -130,10 +153,13 @@
                 //REMOVED - Only ONE size addSizeClass    : true,
                 content         : '',
                 show            : true,
+                closeText       : {da:'Luk', en:'Close'},
+                closeIcon       : 'fa-times', 
                 //REMOVED getContentHeight    : default_getContentHeight,
                 //REMOVED postGetContentHeight: default_postGetContentHeight
                                     
             });
+
 
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options )
@@ -161,7 +187,7 @@
         $modalContent.append(
             $('<div/>')
                 .addClass('modal-header right-side-icon-parent')
-                ._bsAddHtml( options )
+                ._bsAddHtml( options.header )
                 .append( $('<i class="fa modal-close" data-dismiss="modal" aria-label="Close"/>') )
         );
         
@@ -204,8 +230,8 @@
         //Add close-botton. Avoid by setting options.closeText == ""
         if (options.closeText != '')
             buttons.push({   
-                text        : options.closeText || {da:'Luk', en:'Close'}, 
-                icon        : options.closeIcon || 'fa-times', 
+                text        : options.closeText, 
+                icon        : options.closeIcon, 
                 closeOnClick: true,
 focus: true, //TODO: Skal checke om der er andre knapper, der skal have focus - feks. 'Save' eller 'Ok'
                 addOnClick  : false
@@ -269,19 +295,20 @@ focus: true,
         
         //Create as modal and adds methods
         $result.modal({
-            //Name      Value     Type	                Default Description
-            backdrop:   "static", //boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
-            keyboard:   true,     //boolean	            true	Closes the modal when escape key is pressed
-            focus	:   true,     //boolean	            true    Puts the focus on the modal when initialized.
-            show	:   false     //boolean	            true	Shows the modal when initialized.
+           //Name       Value     Type	                Default Description
+           backdrop :   "static", //boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
+           keyboard :   true,     //boolean	            true	Closes the modal when escape key is pressed
+           focus	:   true,     //boolean	            true    Puts the focus on the modal when initialized.
+           show	    :   false     //boolean	            true	Shows the modal when initialized.
         });
 
         $result.on({
-            'show.bs.modal'  : show_bs_modal, 
+            'show.bs.modal'  : show_bs_modal,
             'shown.bs.modal' : shown_bs_modal,
             'hide.bs.modal'  : hide_bs_modal,
             'hidden.bs.modal': hidden_bs_modal,
         });
+
 
         $result.appendTo( $('body') );        
 

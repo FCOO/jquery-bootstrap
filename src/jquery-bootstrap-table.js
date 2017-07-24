@@ -3,8 +3,8 @@
 
 	(c) 2017, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap
-	https://github.com/FCOO
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
 
 ****************************************************************************/
 
@@ -48,8 +48,9 @@ Add sort-functions + save col-index for sorted column
             contentType: 'default',
             align      : 'left',
             sortable   : false
-        };
+        },
 
+        dataTableId = 'bsTable_options';
 
     /**********************************************************
     Prototype for bsTable
@@ -58,9 +59,32 @@ Add sort-functions + save col-index for sorted column
         /**********************************************************
         addRow( rowContent)  - add a new row to the table
         **********************************************************/
-        addRow: function( /*rowContent*/ ){
+        addRow: function( rowContent ){
+            var options = this.data(dataTableId),
+                $tbody  = this.find('tbody').first(),
+                $tr     = $('<tr/>').appendTo( $tbody );
 
-    
+            if (options.selectable)
+                $tr.attr('id', rowContent.id || 'rowId_'+rowId++);                
+
+            $.each( options.columns, function( index, column ){
+                var content = rowContent[column.id],
+                    $td = $('<td/>')
+                            ._bsAddStyleClasses( column.textStyle ) 
+                            .addClass('align-middle')
+                            ._bsAddStyleClasses( column.align )
+                            .appendTo($tr);
+
+                //Build the content using _bsAddHtml or jquery-value-format                    
+                if (column.vfFormat)
+                    $td.vfValueFormat( content, column.vfFormat, column.vfOptions );
+                else
+                    $td._bsAddHtml( content );
+            });
+
+            //Add rows to radioGroup
+            if (options.selectable)
+                options.radioGroup.addElement( $tr );
         },
 
         /**********************************************************
@@ -71,7 +95,7 @@ Add sort-functions + save col-index for sorted column
             var $theadClone = this.find('thead').clone( true ),
                 $tableWithHeader =  
                     $('<table/>')
-                        ._bsAddBaseClassAndSize( this.data('bsTable_options') )
+                        ._bsAddBaseClassAndSize( this.data(dataTableId) )
                         .addClass('table-with-header')
                         .append( $theadClone ),
 
@@ -138,11 +162,10 @@ Add sort-functions + save col-index for sorted column
     bsTable( options ) - create a Bootstrap-table
     **********************************************************/
     var tableId  = 0,
-        columnId = 0,
         rowId    = 0;
 
     $.bsTable = function( options ){
-        options = $._bsAdjustOptions( options, defaultOptions );
+        options = $._bsAdjustOptions( options, defaultOptions ); 
         options.class = 
             (options.verticalBorder ? 'table-bordered ' : '' ) + 
             (options.selectable ? 'table-selectable ' : '' ) + 
@@ -152,7 +175,6 @@ Add sort-functions + save col-index for sorted column
         $.each( options.columns, function( index, column ){
             column = $.extend( true, {}, defaultColunmOptions, column ); 
 
-            column.id = column.id || 'bsColumn'+ columnId++;
             column.index = index;
 
             options.columns[index] = column;
@@ -169,6 +191,9 @@ Add sort-functions + save col-index for sorted column
                         .appendTo( $table ),
             $tr = $('<tr/>')
                     .appendTo( $thead );
+
+        //Extend with prototype
+        $table.init.prototype.extend( bsTable_prototype );
 
         //Create headers
         $.each( options.columns, function( index, column ){
@@ -191,41 +216,19 @@ Add sort-functions + save col-index for sorted column
         if (options.selectable){
             var radioGroupOptions = $.extend( true, options );
             radioGroupOptions.className = 'active';
-            var radioGroup = $.radioGroup( radioGroupOptions );            
+            options.radioGroup = $.radioGroup( radioGroupOptions );            
         }
+
+        $table.data(dataTableId, options);
         
+
         //Create tbody and all rows
-        var $tbody = $('<tbody/>').appendTo( $table );
-        $.each( options.data, function( index, rowData ){
-            $tr = $('<tr/>').appendTo( $tbody );
+        $table.append( $('<tbody/>') );
 
-            if (options.selectable)
-                $tr.attr('id', rowData.id || 'rowId_'+rowId++);                
-
-            $.each( options.columns, function( index, column ){
-                var content = rowData[column.id],
-                    $td = $('<td/>')
-                            ._bsAddStyleClasses( column.textStyle ) 
-                            .addClass('align-middle')
-                            ._bsAddStyleClasses( column.align )
-                            .appendTo($tr);
-
-                //Build the content using _bsAddHtml or jquery-value-format                    
-                if (column.vfFormat)
-                    $td.vfValueFormat( content, column.vfFormat, column.vfOptions );
-                else
-                    $td._bsAddHtml( content );
-            });
+        $.each( options.content, function( index, rowContent ){
+            $table.addRow( rowContent );
         });
         
-        //Add rows to radioGroup
-        if (options.selectable)
-            radioGroup.addElement( $tbody.children('tr'), radioGroupOptions );
-
-        $table.data('bsTable_options', options);
-
-        //Extend with prototype
-        $table.init.prototype.extend( bsTable_prototype );
 
         return $table; 
     };

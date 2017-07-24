@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="da" style="font-size: 100%; width:100%; height:100%;">
 <head>
-	<title>fcoo.dk - fcoo-bootstrap - Demo</title>
+	<title>fcoo.dk - jquery-bootstrap - Demo</title>
 	<meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta http-equiv='x-dns-prefetch-control' content='on'>
@@ -29,17 +29,21 @@
     <script src="../src/jquery-bootstrap-popover.js"></script>
 
 	<script>
-        window.fcoo.bsIsTouch = true;
-        window.fcoo.bsIsTouch = false;
+        window.bsIsTouch = true;
+        //window.bsIsTouch = false;
 
         i18next.init();        
         i18next.changeLanguage('da');
         var $body = $('body');
 
-$body._bsAddHtml([
-    { text:{da:'Navn=', en:'Name='} },
-    { text: 'DMI', link: 'link:dmi', title:'name:dmi' }
-]);
+
+        $.valueFormat.add({ 
+            id: 'myNumberFormat', 
+            format: function( value, options ){
+                return parseFloat(Math.round(value * 100) / 100).toFixed(2);
+            }
+        });
+
 
         $('<div/>')
             .i18n({da:'Klik for at skifte sprog', en:'Click to change language'})
@@ -49,33 +53,38 @@ $body._bsAddHtml([
             })
             .appendTo( $body );
 
-        var data = [
+        var content = [
             { 
                 id: 'first',
-                "name": {icon:"fa-lang-da", text:"bootstrap-table"},
-                "stargazers_count": 526,
+//                "name": {icon:"fa-lang-da", text:"bootstrap-table"},
+                "name": {vfFormat: "myNumberFormat", vfValue:123.456, textStyle:"italic"},
+                "stargazers_count": 5.26,
                 "forks_count": null,
                 "description": "An extended Bootstrap table with radio, checkbox, sort, pagination, and other added features. (supports twitter bootstrap v2 and v3) "
             },
             {
+                id: 'no2',
                 "name": "multiple-select",
-                "stargazers_count": 288,
+                "stargazers_count": 28.8,
                 "forks_count": "19650130",
                 "description": "A jQuery plugin to select multiple elements with checkboxes"
             },
             {
+                id: 'no3',
                 "name": "bootstrap-show-password",
-                "stargazers_count": 32,
+                "stargazers_count": 32.0001,
                 "forks_count": "20130101",
                 "description": {icon: 'fa-home',text:{da:"Vis/Skjul adgangskode...", en:"Show/hide password plugin for twitter bootstrap."}}
             },
             {
+                id: 'no4',
                 "name": "blog",
-                "stargazers_count": 13,
+                "stargazers_count": 13.99,
                 "forks_count": "01-01-2014",
                 "description": "my blog"
             },
             {
+                id: 'no5',
                 "name": "scutech-redmine",
                 "stargazers_count": 54,
                 "forks_count": null,
@@ -84,9 +93,13 @@ $body._bsAddHtml([
         ];
 
 
-        var longData = data;
+        var longContent = [];
         for (var i=0; i<10; i++ )
-            longData = longData.concat( data );    
+            for (var j=0; j<content.length; j++ ){
+                var next = $.extend({}, content[j]);
+                next.id = next.id+'_'+i;
+                longContent.push( next );    
+            }
         
         var myBsTable = $.bsTable({
             //showHeader: false,
@@ -96,15 +109,15 @@ $body._bsAddHtml([
                 console.log( 'Table id =' , id,' selected=',selected); 
             },
             selectedId: 'first',
-            allowZeroSelected: true,
+            //allowZeroSelected: true,
 
             columns: [
                 { id: 'name',               header: 'Name',  align: 'center'},
-                { id: 'stargazers_count',   header: 'Stars', align: 'center'},
+                { id: 'stargazers_count',   header: 'Stars', align: 'center', vfFormat:"myNumberFormat"},
                 { id: 'forks_count',        header: 'Forks', align: 'center'},
                 { id: 'description',        header:{icon: 'fa-home', text: 'Description'}}
             ],
-            data: longData
+            content: longContent
         });//
         
 
@@ -116,63 +129,64 @@ $body._bsAddHtml([
         $body
 
             .append( '<br>' )
-            .append( '<h4>Created by javascript (bsIsTouch='+window.fcoo.bsIsTouch+ ')</h4>' );
+            .append( '<h4>Created by javascript (bsIsTouch='+window.bsIsTouch+ ')</h4>' );
+
+        var selectItems = [
+                {id: 'slow',   icon: 'fa-bicycle'  , text:{da:'Meget langsomt___________________________', en: 'Slow'} },
+                {icon: 'fa-home'  , text:{da:'En overskrift', en: 'A Header'} },
+                {id: 'medium', icon: 'fa-car', text:{da:'Normalt', en: 'Normal'} },
+                {icon: 'fa-home',   text:{da:'En anden overskrift',en:'Another header'} },
+                {id: 'fast',   content:[{icon: 'fa-fighter-jet',   text:'Very fast!' },{icon: 'fa-fighter-jet',   text:'Very very fast!' }]}//icon: 'fa-fighter-jet'  , text:{da:'Hurtig', en: 'Very fast'} }
+            ];
 
         $.bsSelectbox({
-            selectedId: i ? 'medium' : null,
+           selectedId : 'fast',
            placeholder: {da:'Vælg hastighed...', en:'Select speed...'},
-           items: [
-                   {id: 'slow',   icon: 'fa-bicycle'  , text:{da:'Meget langsomt___________________________', en: 'Slow'} },
-                   {icon: 'fa-home'  , text:{da:'En overskrift', en: 'A Header'} },
-               
-                   {id: 'medium', icon: 'fa-car', text:{da:'Normalt', en: 'Normal'} },
-                   {id: 'fast',   icon: 'fa-fighter-jet'  , text:{da:'Hurtig', en: 'Very fast'} }
-           ],
-           onChange: function(id, selected, $buttonGroup){console.log('10'+(i+1)+': bsSelectbox', id, selected)},
+           items      : selectItems,
+           onChange   : function(id, selected, $buttonGroup){console.log('bsSelectbox', id, selected)},
        })
        .appendTo( $body );
 
-            
-            
-            
-            
-            
-            
-            $.bsButton({text: 'Davs med dig', icon: 'fa-home', size:''}).appendTo( $body );
-            //$body.append( '<hr>' );
+        $body.append('<hr>');
 
-            $.bsButton({text: 'Stort davs', icon: 'fa-home', size:'large'}).appendTo( $body );
-            //$body.append( '<hr>' );
-
-            $.bsButton({text: 'Lille davs', icon: 'fa-home', size:'small'}).appendTo( $body );
-            //$body.append( '<hr>' );
-
-            $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'fa-check-square-o'}).appendTo( $body );
-            //$body.append( '<hr>' );
+        $.bsSelectList({
+           selectedId: 'medium',
+           items     : selectItems,
+           onChange  : function(id, selected, $buttonGroup){console.log('bsSelectList', id, selected)},
+       })
+       .appendTo( $body );
             
-            $.bsButtonGroup({
-                vertical: false, 
-                buttons: [
-                    {id:'very_slow', icon: 'fa-bicycle', onClick: function(id, selected, ){console.log('1: bsButtonGroup', id, selected)} },
-                    {icon: 'fa-car'},
-                    {icon: 'fa-fighter-jet', color:'danger'},
-                ]
-            }).appendTo( $body );
+
+        $body.append('<hr>');
+           
+        $.bsButton({text: 'Davs med dig', icon: 'fa-home', size:''}).appendTo( $body );
+        $.bsButton({text: 'Stort davs', icon: 'fa-home', size:'large'}).appendTo( $body );
+        $.bsButton({text: 'Lille davs', icon: 'fa-home', size:'small'}).appendTo( $body );
+        $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'fa-check-square-o'}).appendTo( $body );
+            
+        $.bsButtonGroup({
+            vertical: false, 
+            buttons: [
+                {id:'very_slow', icon: 'fa-bicycle', onClick: function(id, selected ){console.log('1: bsButtonGroup', id, selected)} },
+                {icon: 'fa-car'},
+                {icon: 'fa-fighter-jet', color:'danger'},
+            ]
+        }).appendTo( $body );
 
         $body
-            //.append( '<hr>' )
-            .append( $.bsRadioButtonGroup({
-                vertical: true, 
-                allowZeroSelected: true, 
-                onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)}, 
-                buttons: [
-                    {id:'slow',   icon: 'fa-bicycle',   text:'Slow', active: true  },
-                    {id:'medium', icon: 'fa-car', text:'Normal'  },
-                    {id: 'fast',  icon: 'fa-fighter-jet',   text:'Very fast!' },
-                ]
-            }))
+            .append( 
+                $.bsRadioButtonGroup({
+                    vertical: true, 
+                    allowZeroSelected: true, 
+                    onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)}, 
+                    buttons: [
+                        {id:'slow',   icon: 'fa-bicycle',   text:'Slow', active: true  },
+                        {id:'medium', icon: 'fa-car', text:'Normal'  },
+                        {id: 'fast',  icon: 'fa-fighter-jet',   text:'Very fast!' },
+                    ]
+                })
+           )
 
-            //.append( '<hr>' );
 
         $.bsCheckboxButton({
             size: '',
@@ -186,35 +200,8 @@ $body._bsAddHtml([
         }).appendTo($body);
 
 
-        //$body.append('<hr>');
-
-        $.bsSelectList({
-            vertical: true,
-            center: true,
-            size: '',
-            onChange         : function(id, selected){console.log('4: bsSelectList',id, selected); },
-            //allowZeroSelected: true, 
-            items: [
-                {id:'slow',   icon: 'fa-bicycle',   text:{da:'Meget langsomt',en:'Very slow'} },
-                {id:'medium', icon: 'fa-car', text:'Normal'  },
-                {id: 'fast',  icon: 'fa-fighter-jet',   text:'Very fast!' },
-            ]
-        }).appendTo($body);
-        
-        $.bsSelectList({
-            vertical: false,
-
-            size: '',
-            onChange         : function(id, selected){console.log('4: bsSelectList',id, selected); },
-            //allowZeroSelected: true, 
-            items: [
-                {id:'slow',   icon: 'fa-bicycle',   text:{da:'Meget langsomt',en:'Very slow'} },
-                {id:'medium', icon: 'fa-car', text:'Normal'  },
-                {id: 'fast',  icon: 'fa-fighter-jet',   text:'Very fast!' },
-            ]
-        }).appendTo($body);
-        
-        //$body.append('<hr>');
+       
+        $body.append('<hr>');
 
        
         var titles = ['Small', 'Normal', 'Large'];
@@ -225,13 +212,11 @@ $body._bsAddHtml([
                 text: titles[i]
             })
             .appendTo( $body )
-
             .bsButtonGroupPopover({ 
                 onClick: function(id, selected, $buttonGroup){console.log('COMMON 6: bsButtonGroupPopover', id, selected)},
                 vertical: true,
                 size: titles[i].toLowerCase(),
-                title: titles[i],
-                icon: 'fa-home',
+                header: {icon:'fa-home', text:titles[i]},
                 buttons: [
                     {id:'slow',   _icon: 'fa-bicycle',   text:'X'},
                     {id:'medium', _icon: 'fa-car', text:'Xx'},
@@ -251,9 +236,7 @@ $body._bsAddHtml([
                 vertical: true,
                 close: true,
                 center: false,
-                icon: 'fa-home',
-                iconClass: 'text-warning',
-                title: {da:'Dansk', en:'English'},
+                header: {icon: 'fa-home',iconClass: 'text-warning', text: {da:'Dansk', en:'English'}},
                 footer: [{text: {da:'Format', en:'Format'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
 
                 defaultPadding: false,
@@ -263,18 +246,20 @@ $body._bsAddHtml([
                     {id: 'fast',  icon: 'fa-fighter-jet',   text:'XXX', color:'danger'}
                 ]
             })
+
         $.bsButton()
             .appendTo( $body )
             .bsSelectListPopover({
                 onChange: function(id, selected, $buttonGroup){console.log('7: bsSelectListPopover', id, selected)},                 
                 vertical: true,
+                center: true,
                 syncHtml: true,
                 closeOnClick: true,
                 selectedId: 'fast',
                 buttons: [
                     {id: 'slow',   icon: 'fa-bicycle'   },
                     {id: 'medium', icon: 'fa-car' },
-                    {id: 'fast',   icon: 'fa-fighter-jet'   }
+                    {id: 'fast',   icon: 'fa-fighter-jet' }
                 ]
             })
 
@@ -291,7 +276,8 @@ $body._bsAddHtml([
                 buttons: [
                     {id: 'm',   text: 'm'  },
                     {id: 'km',  text: 'km' },
-                    {id: 'nm',  text: 'nm' }
+                    {id: 'nm',  text: 'nm' },
+                    {id:'nm2km', content: [{text: 'nm', title:{da:"Konverter fra nm til km", en:"Convert from nm to km"}},{icon:'fa-caret-right'},{text:'km'}] }
                 ]
             })
 
@@ -305,155 +291,115 @@ $body._bsAddHtml([
 
 
 //*/
-            var testContent =   "Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch." 
-                                +   " Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS."
+        var testContent =   "Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch." 
+                            +   " Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS."
                                 ,
-                testContent2 = testContent + testContent,
-                accor_children =  [
-                        {icon: 'fa-home', text: {da:'Overskrift#1', en:'Header#1'}, children:[
-                            {icon: 'fa-home', title: {da:'Overskrift#1-1', en:'Header#1-1'}, content: 'Dette er en test 1-1<br>'+testContent },
-                            {icon: 'fa-home', text: {da:'Overskrift#1-2', en:'Header#1-2'}, content: 'Dette er en test 1-2<br>'+testContent2 },
-                            {icon: 'fa-home', text: {da:'Overskrift#1-3', en:'Header#1-3'}, content: 'Dette er en test 1-3<br>'+testContent, children: [ 
-                                {icon: 'fa-home', text: {da:'Overskrift#1-3-1', en:'Header#1-3-1'}, content: 'Dette er en test 1-3-1<br>'+testContent },
-                                {icon: 'fa-home', text: {da:'Overskrift#1-3-2', en:'Header#1-3-2'}, content: 'Dette er en test 1-3-2<br>'+testContent },
-                            ]
-                            },
-                        ]},
-//*
-                        {icon: 'fa-home', text: {da:'Overskrift#2', en:'Header#2'}, children:[
-                            {icon: 'fa-home', text: {da:'Overskrift#2-1', en:'Header#2-1'}, content: 'Dette er en test 2-1<br>'+testContent },
-                            {icon: 'fa-home', text: {da:'Overskrift#2-2', en:'Header#2-2'}, content: 'Dette er en test 2-2<br>'+testContent },
-              
-                        ]},
+            footer = [
+                {icon: 'fa-home', text:{da:"Kursiv", en:"Italic"}, textStyle:"italic"},
+                { text:{da:"store bogstaver", en:"uppercase letter"}, textStyle:"uppercase"},
+                {vfFormat: "myNumberFormat", vfValue:123.456, textStyle:"underline bold", link:function(){alert(123.456);}},
+            ],
+            testContent2 = testContent + testContent,
+            accor_children =  [
+                {
+                    header: {icon: 'fa-home', text: {da:'Overskrift#1', en:'Header#1'}}, 
+                    footer: footer,
+                    children:[
                         {
-                            icon: 'fa-home', 
-                            text: {da:'Overskrift#3', en:'Header#3'}, 
-                            content: 'Dette er en test 3<br>'+testContent,
-                            footer: [
-                                {icon: 'fa-home', text:{da:"Kursiv", en:"Italic"}, textStyle:"italic"},
-                                { text:{da:"store bogstaver", en:"uppercase letter"}, textStyle:"uppercase"}
+                            header: {icon: 'fa-home', text: {da:'Overskrift#1-1', en:'Header#1-1'}}, 
+                            content: 'Dette er en test 1-1<br>'+testContent 
+                        },
+                        {
+                            header: {icon: 'fa-home', text: {da:'Overskrift#1-2', en:'Header#1-2'}},
+                            content: 'Dette er en test 1-2<br>'+testContent2 
+                        },
+                        {
+                            header: {icon: 'fa-home', text: {da:'Overskrift#1-3', en:'Header#1-3'}}, 
+                            content: 'Dette er en test 1-3<br>'+testContent, 
+                            children: [ 
+                                {
+                                    header: {icon: 'fa-home', text: {da:'Overskrift#1-3-1', en:'Header#1-3-1'}},
+                                    content: 'Dette er en test 1-3-1<br>'+testContent 
+                                },
+                                {
+                                    header: {icon: 'fa-home', text: {da:'Overskrift#1-3-2', en:'Header#1-3-2'}}, 
+                                    content: 'Dette er en test 1-3-2<br>'+testContent 
+                                },
                             ]
                         },
-                        {text: 'En tabel', content: "myBsTable"
-/*
-                            $.bsTable({
-                                columns: [
-                                    { id: 'no',     text: 'No',   align: 'center'},
-                                    { id: 'name',   text: 'Name' }
-                                ],
-                                data: [
-                                    {no:2, name:'Et navn'},
-                                    {no:3, name:'Et andet navn'}
-                                ]
-                            })
-*/
-                        }
+                    ]
+                },
+                {
+                    header: {icon: 'fa-home', text: {da:'Overskrift#2', en:'Header#2'}}, 
+                    children:[
+                        {header:{icon: 'fa-home', text: {da:'Overskrift#2-1', en:'Header#2-1'}}, content: 'Dette er en test 2-1<br>'+testContent },
+                        {header:{icon: 'fa-home', text: {da:'Overskrift#2-2', en:'Header#2-2'}}, content: 'Dette er en test 2-2<br>'+testContent },
+                    ]
+                },
+                {
+                    header: { icon: 'fa-home', text: {da:'Overskrift#3', en:'Header#3'} }, 
+                    content: 'Dette er en test 3<br>'+testContent,
+                    footer: footer
+                },
+                {
+                    header: 'En tabel', 
+                    content: 'myBsTable'
+                }
+            ], //accor_children
+
+        $accordion = $.bsAccordion({ children: accor_children, footer: 'footer' }),
+        $accordion2 = $.bsAccordion({ children: accor_children, footer: 'footer'  });
 
 
-//*/
-                    ],
+        var m = $accordion.asModal({
+            header:{icon: 'fa-home', text:{da:'FLEX Overskrift',en:'Header'}},
+            show: false
+        });
+        var m_fixed = $accordion2.asModal({
+            flex: false, 
+            header:{icon: 'fa-home', text:{da:'FIXED Overskrift',en:'Header'}},
+            show: false
+        });
 
-            $accordion = $.bsAccordion({ children: accor_children }),
-            $accordion2 = $.bsAccordion({ children: accor_children });
+        var modals = [];
 
-            //.appendTo( $body );
-
-
-            var m = $accordion.asModal({
-                titleIcon: 'fa-home',
-                header:{da:'FLEX Overskrift',en:'Header'},
-                show: false
-            });
-            var m_fixed = $accordion2.asModal({
-                flex: false, 
-                titleIcon: 'fa-home',
-                header:{da:'FIXED Overskrift',en:'Header'},
-                show: false
-            });
-//m.modal('show');
-
-
-    
-    
-    
-    var modals = [];
-
-    function openModal( modalNumber ){
-        if (modals[modalNumber])
-            modals[modalNumber].show();
-        else { 
-            var content = 'Modal # = ' + modalNumber; 
-            for (var i=0; i<20-modalNumber; i++ )
-                content += '<br>' + i;
-            modals[ modalNumber ] =                 
-                $.bsModal({
-                    buttons: [{
-                        text:'Ny/New', 
-                        onClick: function(){ openModal( modalNumber+1 ) } ,
+        function openModal( modalNumber ){
+            if (modals[modalNumber])
+                modals[modalNumber].show();
+            else { 
+                var content = 'Modal # = ' + modalNumber; 
+                for (var i=0; i<20-modalNumber; i++ )
+                    content += '<br>' + i;
+                modals[ modalNumber ] =                 
+                    $.bsModal({
+                        buttons: [{
+                            text:'Ny - New', 
+                            onClick: function(){ 
+                                openModal( modalNumber+1 ); 
+                                return false;
+                            }
+                        }],
                         show: true,
-                    }],
-                    content: content
-                });
+                        content: content
+                    });
+            }
         }
-        
-//        modals[modalNumber].show();
-    }
 
-    m.assignTo(
-        $('<button>Flex-width</button>')
+        m.assignTo(
+            $('<button>Flex-width</button>')
+                .appendTo( $body)
+        );
+
+        $('<button>Fixed-width</button>')
             .appendTo( $body)
-//        .on('click', function(e){
-//            m.show();
-//    });
-    );
-    $('<button>Fixed-width</button>')
-        .appendTo( $body)
-        .on('click', function(e){
-            m_fixed.show();
-    });
-    $('<button>Multi modal</button>')
-        .appendTo( $body)
-        .on('click', function(){ openModal(0); });
+            .on('click', function(e){
+                m_fixed.show();
+        });
 
-//            .modal('show');
-/*
-            $.bsModal({
-                titleIcon: 'fa-home',
-                header:{da:'Overskrift',en:'Header'} ,
-                content: $accordion
-            }).modal('show');
-*/
-    
-    
-    
+        $('<button>Multi modal</button>')
+            .appendTo( $body)
+            .on('click', function(){ openModal(0); });
+
     </script>
-<!-- 
-<div class="accordion" id="bsAccordion0" role="tablist" aria-multiselectable="true">
-    <div class="card">
-        <div class="card-header" id="bsAccordion0header0" role="tab" data-toggle="collapse" _data-parent="#bsAccordion0" href="#bsAccordion0collapse0" aria-expanded="true" aria-controls="bsAccordion0collapse0" aria-target="#bsAccordion0collapse0">
-            <i class="fa fa-home"></i>&nbsp;<span data-i18n="__TEMP__:jqueryfni18n1">Overskrift#1</span>
-        </div>
-        <div class="collapse" id="bsAccordion0collapse0" role="tabpanel" aria-labelledby="bsAccordion0header0" aria-expanded="true">
-            <div class="card-block">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-header" id="bsAccordion0header1" role="tab" data-toggle="collapse" data-parent="#bsAccordion0" href="#bsAccordion0collapse1" aria-expanded="true" aria-controls="bsAccordion0collapse1" aria-target="#bsAccordion0collapse1">
-            <i class="fa fa-home"></i>&nbsp;<span data-i18n="__TEMP__:jqueryfni18n2">Overskrift#2</span>
-        </div>
-        <div class="collapse" id="bsAccordion0collapse1" role="tabpanel" aria-labelledby="bsAccordion0header1" aria-expanded="true">
-            <div class="card-block">Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</div>
-        </div>
-    </div>
-</div>
- -->
-
-
-
-
-
-
-
-
 </body>
 </html>

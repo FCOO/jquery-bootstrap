@@ -13,10 +13,10 @@ div.btn, div.list-group-item {
     cursor: pointer;
 }
 
-//Selected colors when button is active
-.btn.btn-secondary {
-    @include control-active-color();
-}
+//Selected colors when button is active or in a button-group
+@include control-active-color('.btn.btn-secondary');
+@include control-active-color('.btn-group .btn.btn-secondary');
+@include control-active-color('.btn-group-vertical .btn.btn-secondary');
 
 //Icons in buttons get equal size to allow shift of icon
 .btn > i.fa {
@@ -71,15 +71,13 @@ LIST-GROUP and LIST-GROUP-ITEM
 // Size classes for items in lists
 .list-group > .list-group-item,
 .list-group-horizontal > .list-group-item { 
-    //Internal mixin
-
     @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius); 
-    font-weight: $btn-font-weight; //Same as buttons
-    line-height: $btn-line-height; //Same as buttons
-
-    //Same colors as buttons
-    @include control-active-color();
 }
+
+//Same colors as buttons
+@include control-active-color(".list-group > .list-group-item:not(.disabled)");
+@include control-active-color(".list-group-horizontal > .list-group-item:not(.disabled)");
+
 
 //Overwrite Bootstrap border-radius
 .list-group > .list-group-item {
@@ -93,6 +91,7 @@ LIST-GROUP and LIST-GROUP-ITEM
     align-items: flex-start;
 }
 
+//Setting size
 .list-group-lg > .list-group-item { 
     @include button-size($btn-padding-y-lg, $btn-padding-x-lg, $font-size-lg, $btn-border-radius-lg); 
 }
@@ -103,12 +102,36 @@ LIST-GROUP and LIST-GROUP-ITEM
     @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-sm, $btn-border-radius-sm); 
 }
 
+
+//.list-group-item-header
+//.list-group > .list-group-item-header {
+//    cursor: auto !important; //Overwrite cursor from .disabled
+//    @include header-inline-variant();
+//}
+
+//.list-group-lg > .list-group-item-header { @include header-inline-variant-lg(); }
+//.list-group-sm > .list-group-item-header { @include header-inline-variant-sm(); }
+//.list-group-xs > .list-group-item-header { @include header-inline-variant-xs(); }
+
+//Adjust padding for list-items following a header in vertical and not centered list
+//.list-group:not(.list-group-horizontal):not(.list-group-center){
+//    .list-group-item-header ~ .list-group-item:not(.list-group-item-header) {
+//        //padding-left: $btn-padding-x-sm + $font-size-sm;
+//        padding-left: $btn-padding-x + $font-size-base;
+//    }
+//    &.list-group-sm {
+//        .list-group-item-header ~ .list-group-item:not(.list-group-item-header) {
+//            padding-left: $btn-padding-x-sm + $font-size-sm;
+//        }
+//    }
+//}
+
+
+
 //List-items in list-groups with centered contents (default = left)
-.list-group.list-group-center > .list-group-item,
-.list-group-horizontal.list-group-center > .list-group-item {
+.list-group-center > .list-group-item {
     @extend .justify-content-center;
 }
-
 
 //Remove round boarder from items depending on it place in the group
 .list-group > .list-group-item, 

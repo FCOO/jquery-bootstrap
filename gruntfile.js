@@ -1,7 +1,7 @@
 /***********************************************
-gruntfile.js for fcoo-bootstrap
+gruntfile.js for jquery-bootstrap
 
-https://github.com/FCOO/fcoo-bootstrap
+https://github.com/fcoo/jquery-bootstrap
 
 ***********************************************/
 
