@@ -62,6 +62,27 @@ correct (partly) for padding added when in a scrollbar-container
 @mixin content-padding-sm(){ @include _content-padding( $content-sm-padding ) }
 
 
+/************************************************************
+CONTROL-CONTAINER
+Style for div with controls. Must haave tabindex:"-1" to
+work with focus
+************************************************************/
+@mixin control-container(){ 
+    border: $input-btn-border-width solid $input-border-color;
+    border-radius: $input-border-radius;
+    &-sm {
+        border-radius: $input-border-radius-sm;
+    }
+    
+    @include box-shadow($input-box-shadow);
+    @include transition($input-transition);
+
+    &:focus, &:active {
+        border-color: $input-border-focus;
+        outline: none;
+        @include box-shadow($input-box-shadow-focus);
+    }
+}
 
 /************************************************************
 HEADER AND TITLE BACKGROUND-COLOR AND COLOR

@@ -968,8 +968,8 @@ focus: true,
                                   )
             )
             this.focus();
-//        else
-//            $(this).popover('hide');
+        else
+            $(this).popover('hide');
         this.skipNextBlur = false;
     }
 
@@ -1133,7 +1133,7 @@ TODO:
                             $('<span/>')
                                 .addClass('_content')
                                 ._bsAddHtml( itemOptions, true )
-                        )
+                        );
                 else
                     $item._bsAddHtml( itemOptions, true );
 

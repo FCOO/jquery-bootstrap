@@ -91,11 +91,13 @@ $max-items-visible-in-selectbox: 4;
 
 //2: bsSelectList    
 .selectList {
+    @include control-container();
+/*
     border: $input-btn-border-width solid $input-border-color;
     border-radius: $input-border-radius;
 
-    &.selectList-sm {
-        border-radius: $input-border-radius-sm;
+    &-sm {
+        $input-border-radius-sm;
     }
     
     @include box-shadow($input-box-shadow);
@@ -106,6 +108,7 @@ $max-items-visible-in-selectbox: 4;
         outline: none;
         @include box-shadow($input-box-shadow-focus);
     }
+*/
 }
 
 //If the select has a scrollbar the left margin is reduced with the scrollbar-width to vertical-align content

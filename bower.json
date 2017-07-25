@@ -1,55 +1,55 @@
 {
-    "name": "jquery-bootstrap",
-    "version": "0.1.0",
-    "homepage": "https://github.com/fcoo/jquery-bootstrap",
-    "authors": [
-        "NielsHolt"
-    ],
-    "description": "",
-    "main": [
-        "dist/jquery-bootstrap.js",
-        "dist/jquery-bootstrap.css"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/fcoo/jquery-bootstrap.git"
-    },
-    "dependencies": {
-        "jquery": "latest",
-        "bootstrap": "v4.0.0-alpha.6",
-        "i18next": "^8.1.0",
-        "jquery-i18next-phrases": "fcoo/jquery-i18next-phrases#^1.1.1",
-        "jquery-checkbox-radio-group": "fcoo/jquery-checkbox-radio-group#^1.0.0",
-        "jquery-scroll-container": "fcoo/jquery-scroll-container#^3.0.0",
-        "jquery-value-format": "fcoo/jquery-value-format#^1.6.0",
-        "bootstrap-popover-extensions": "fcoo/bootstrap-popover-extensions#^0.1.0"
-    },
-    "devDependencies": {
-        "bourbon": "latest",
-        "modernizr-mixin": "latest",
-        "mathsass": "latest",
-        "modernizr-scss": "fcoo/modernizr-scss#^2.1.2"
-    },
-    "overrides": {
-        "bootstrap": {
-            "main": [
-                "dist/js/bootstrap.js"
-            ]
-        }
-    },
-    "license": "MIT",
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ],
-    "moduleType": [
-        "es6"
-    ],
-    "resolutions": {
-        "jquery": ">=1.9.1",
-        "bootstrap": "v4.0.0-alpha.6"
+  "name": "jquery-bootstrap",
+  "version": "0.2.0",
+  "homepage": "https://github.com/fcoo/jquery-bootstrap",
+  "authors": [
+    "NielsHolt"
+  ],
+  "description": "",
+  "main": [
+    "dist/jquery-bootstrap.js",
+    "dist/jquery-bootstrap.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fcoo/jquery-bootstrap.git"
+  },
+  "dependencies": {
+    "jquery": "latest",
+    "bootstrap": "v4.0.0-alpha.6",
+    "i18next": "^8.1.0",
+    "jquery-i18next-phrases": "fcoo/jquery-i18next-phrases#^1.1.1",
+    "jquery-checkbox-radio-group": "fcoo/jquery-checkbox-radio-group#^1.0.0",
+    "jquery-scroll-container": "fcoo/jquery-scroll-container#^3.0.0",
+    "jquery-value-format": "fcoo/jquery-value-format#^1.6.0",
+    "bootstrap-popover-extensions": "fcoo/bootstrap-popover-extensions#^0.1.0"
+  },
+  "devDependencies": {
+    "bourbon": "latest",
+    "modernizr-mixin": "latest",
+    "mathsass": "latest",
+    "modernizr-scss": "fcoo/modernizr-scss#^2.1.2"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/js/bootstrap.js"
+      ]
     }
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "moduleType": [
+    "es6"
+  ],
+  "resolutions": {
+    "jquery": ">=1.9.1",
+    "bootstrap": "v4.0.0-alpha.6"
+  }
 }
