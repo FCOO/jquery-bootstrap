@@ -38,6 +38,18 @@ $border-width: 1rem/16; //= 1px as rem
 $modal-backdrop-opacity: .3; //.5 !default;
 
 
+//Setting padding around buttons etc. equal in both directions
+$btn-padding-x: .5rem;
+$btn-padding-y: .5rem;
+
+$btn-padding-x-sm: .25rem;
+$btn-padding-y-sm: .25rem;
+
+$btn-padding-x-lg: .75rem;
+$btn-padding-y-lg: .75rem;
+
+
+
 /***********************************************
 IMPORT BOOTSTROP SCSS
 ************************************************/

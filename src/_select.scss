@@ -17,6 +17,9 @@ Two versions:
         ...
 
 ************************************************************/
+$item-height   : $line-height-base * $font-size-base + 2*$btn-padding-y;
+$item-height-sm: $line-height-base * $font-size-sm + 2*$btn-padding-y-sm;
+$max-items-visible-in-selectbox: 4;
 
 //1: bsSelectbox
 .dropdown.selectbox {
@@ -51,8 +54,8 @@ Two versions:
     }
 
     .dropdown-menu {
-        width: 100%;
-        max-height: 120px;
+        width                   : 100%;
+//        max-height              : 120px;
         border-top-left-radius : 0;
         border-top-right-radius: 0;
         margin-top             : -$dropdown-border-width; //Move up to align with bottom of button               
@@ -126,6 +129,10 @@ Two versions:
     //Adjust size for different size.
     //Normal
     & {
+        .dropdown-menu {
+            max-height: $max-items-visible-in-selectbox*$item-height;
+        }
+        
         .dropdown-item { 
             cursor: pointer;
             @include text-truncate();
@@ -136,6 +143,8 @@ Two versions:
         .dropdown-header {
             @include header-inline-variant(); 
 
+            line-height: $line-height-base / $font-size-header-factor; //ASdjust line-height to make header and item same height
+
             //Items below header moves to the right
             &  ~ .dropdown-item {
                 padding-left: $btn-padding-x + $font-size-base;
@@ -145,11 +154,16 @@ Two versions:
 
     //Small
     &.selectbox-sm, &.selectList-sm {
+        .dropdown-menu {
+            max-height: $max-items-visible-in-selectbox*$item-height-sm;
+        }
+
         .dropdown-item { 
             @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-border-radius-sm);
         }
         .dropdown-header {
             @include header-inline-variant-sm();
+            line-height: $line-height-base / $font-size-header-factor; //ASdjust line-height to make header and item same height
 
             //Items below header moves to the right
             &  ~ .dropdown-item {
