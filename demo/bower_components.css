@@ -1,3 +1,36 @@
+/****************************************************************************
+	bootstrap-popover-extensions.scss, 
+
+	(c) 2017, FCOO
+
+	https://github.com/FCOO/bootstrap-popover-extensions
+	https://github.com/FCOO
+
+****************************************************************************/
+div.popover.popover-topleft:before, div.popover.popover-topleft:after, div.popover.popover-bottomleft:before, div.popover.popover-bottomleft:after {
+  left: calc(100% -  17px); }
+
+div.popover.popover-topright:before, div.popover.popover-topright:after, div.popover.popover-bottomright:before, div.popover.popover-bottomright:after {
+  left: 17px; }
+
+div.popover.popover-lefttop:before, div.popover.popover-lefttop:after, div.popover.popover-righttop:before, div.popover.popover-righttop:after {
+  top: calc(100% - 17px); }
+
+div.popover.popover-leftbottom:before, div.popover.popover-leftbottom:after, div.popover.popover-rightbottom:before, div.popover.popover-rightbottom:after {
+  top: 17px; }
+
+div.popover.popover-topleft, div.popover.popover-bottomleft {
+  margin-left: 17px; }
+
+div.popover.popover-topright, div.popover.popover-bottomright {
+  margin-left: -17px; }
+
+div.popover.popover-lefttop, div.popover.popover-righttop {
+  margin-top: 17px; }
+
+div.popover.popover-leftbottom, div.popover.popover-rightbottom {
+  margin-top: -17px; }
+
 /***********************************************
     jquery-scroll-container.scss, 
 

@@ -122,8 +122,8 @@
                                   )
             )
             this.focus();
-//        else
-//            $(this).popover('hide');
+        else
+            $(this).popover('hide');
         this.skipNextBlur = false;
     }
 

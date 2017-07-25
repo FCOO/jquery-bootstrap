@@ -63,7 +63,7 @@ TODO:
                             $('<span/>')
                                 .addClass('_content')
                                 ._bsAddHtml( itemOptions, true )
-                        )
+                        );
                 else
                     $item._bsAddHtml( itemOptions, true );
 
