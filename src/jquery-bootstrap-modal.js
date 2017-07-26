@@ -371,7 +371,7 @@
         $result.init.prototype.extend( bsModal_prototype );
 
         //Create modal content
-        $modalDialog.bsModalContent( options );
+        $modalDialog._bsModalContent( options );
 
         //Create as modal and adds methods
         $result.modal({

@@ -16,7 +16,7 @@ If the height (and width) of the content is variable (eq. accordion) the class
     @include right-side-icon( '\f00d', 1em, true );
 }
 
-.modal {
+.modal, .modal-inline {
     $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
     $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
 
@@ -61,7 +61,10 @@ If the height (and width) of the content is variable (eq. accordion) the class
 }
 
  //Adjust header, fixed-body, body and footer
-.modal {
+.modal, .modal-inline {
+
+    font-size: 1rem; //To avoid overwrite from other container
+
     .modal-header {
         flex-shrink: 0; //Only .modal-body is shrink
         flex-grow  : 0; //Only .modal-body is growing
@@ -98,13 +101,13 @@ If the height (and width) of the content is variable (eq. accordion) the class
 
         &:empty { display: none; }
     }
-}
 
-//No top- or bottom padding in modal-body and modal-body-fixed
-.modal.no-vertical-padding {
-    .modal-body-fixed, .modal-body {
-        padding-top   : 0;
-        padding-bottom: 0;
+    //No top- or bottom padding in modal-body and modal-body-fixed
+    &.no-vertical-padding {
+        .modal-body-fixed, .modal-body {
+            padding-top   : 0;
+            padding-bottom: 0;
+        }
     }
 }
 

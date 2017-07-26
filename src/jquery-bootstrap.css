@@ -6923,7 +6923,7 @@ If the height (and width) of the content is variable (eq. accordion) the class
     cursor: pointer;
     opacity: .75; }
 
-.modal .modal-dialog {
+.modal .modal-dialog, .modal-inline .modal-dialog {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6931,89 +6931,86 @@ If the height (and width) of the content is variable (eq. accordion) the class
   min-height: calc(100vh - 20px);
   max-width: calc(100vw - 20px);
   width: 18.75rem; }
-  html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex {
+  html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex, html.medium-up .modal-inline .modal-dialog, .modal-inline .modal-dialog.modal-flex {
     width: 31.25rem; }
-  .modal .modal-dialog .modal-content {
+  .modal .modal-dialog .modal-content, .modal-inline .modal-dialog .modal-content {
     min-height: 100%;
     max-height: calc(100vh - 20px); }
-  .modal .modal-dialog:not(.modal-flex) .modal-content .jquery-scroll-container {
+  .modal .modal-dialog:not(.modal-flex) .modal-content .jquery-scroll-container, .modal-inline .modal-dialog:not(.modal-flex) .modal-content .jquery-scroll-container {
     width: 17.125rem;
     margin-left: auto;
     margin-right: auto; }
-  .modal .modal-dialog.modal-flex .modal-content .jquery-scroll-container {
+  .modal .modal-dialog.modal-flex .modal-content .jquery-scroll-container, .modal-inline .modal-dialog.modal-flex .modal-content .jquery-scroll-container {
     width: auto; }
 
-.modal.modal-sm {
+.modal.modal-sm, .modal-inline.modal-sm {
   max-width: none !important; }
 
-.modal .modal-header {
-  flex-shrink: 0;
-  flex-grow: 0;
-  font-weight: normal;
-  line-height: 1.5;
-  padding: 0.5rem 0.5rem;
-  font-size: 0.875rem;
-  border-radius: inherit;
-  color: #636c72;
-  background-color: #f7f7f7; }
-  .modal .modal-header span {
+.modal, .modal-inline {
+  font-size: 1rem; }
+  .modal .modal-header, .modal-inline .modal-header {
+    flex-shrink: 0;
+    flex-grow: 0;
+    font-weight: normal;
+    line-height: 1.5;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: inherit;
+    color: #636c72;
+    background-color: #f7f7f7; }
+    .modal .modal-header span, .modal-inline .modal-header span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+  .modal .modal-body-fixed, .modal-inline .modal-body-fixed {
+    flex-shrink: 0;
+    flex-grow: 0;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; }
-
-.modal .modal-body-fixed {
-  flex-shrink: 0;
-  flex-grow: 0;
-  overflow: hidden;
-  padding: 0.75rem; }
-  .modal .modal-body-fixed.scrollbar-vertical {
-    padding-left: 0.1875rem;
-    padding-right: 0.1875rem; }
-  .modal .modal-body-fixed:empty {
-    display: none; }
-
-.modal .modal-body {
-  flex-shrink: 1;
-  flex-grow: 1;
-  overflow: hidden;
-  padding: 0.75rem; }
-  .modal .modal-body.scrollbar-vertical {
-    padding-left: 0.1875rem;
-    padding-right: 0.1875rem; }
-
-.modal .modal-footer-header {
-  flex-shrink: 0;
-  flex-grow: 0;
-  font-weight: normal;
-  line-height: 1.5;
-  padding: 0.5rem 0.5rem;
-  font-size: 0.875rem;
-  border-radius: inherit;
-  color: #636c72;
-  background-color: #f7f7f7;
-  line-height: 1;
-  border-top: 0.0625rem solid #eceeef;
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important; }
-  .modal .modal-footer-header span {
+    padding: 0.75rem; }
+    .modal .modal-body-fixed.scrollbar-vertical, .modal-inline .modal-body-fixed.scrollbar-vertical {
+      padding-left: 0.1875rem;
+      padding-right: 0.1875rem; }
+    .modal .modal-body-fixed:empty, .modal-inline .modal-body-fixed:empty {
+      display: none; }
+  .modal .modal-body, .modal-inline .modal-body {
+    flex-shrink: 1;
+    flex-grow: 1;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; }
-  .modal .modal-footer-header:empty {
-    display: none; }
-  .modal .modal-footer-header:empty {
-    display: none; }
-
-.modal .modal-footer {
-  flex-shrink: 0;
-  flex-grow: 0;
-  padding: 0.5rem; }
-  .modal .modal-footer:empty {
-    display: none; }
-
-.modal.no-vertical-padding .modal-body-fixed, .modal.no-vertical-padding .modal-body {
-  padding-top: 0;
-  padding-bottom: 0; }
+    padding: 0.75rem; }
+    .modal .modal-body.scrollbar-vertical, .modal-inline .modal-body.scrollbar-vertical {
+      padding-left: 0.1875rem;
+      padding-right: 0.1875rem; }
+  .modal .modal-footer-header, .modal-inline .modal-footer-header {
+    flex-shrink: 0;
+    flex-grow: 0;
+    font-weight: normal;
+    line-height: 1.5;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: inherit;
+    color: #636c72;
+    background-color: #f7f7f7;
+    line-height: 1;
+    border-top: 0.0625rem solid #eceeef;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important; }
+    .modal .modal-footer-header span, .modal-inline .modal-footer-header span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    .modal .modal-footer-header:empty, .modal-inline .modal-footer-header:empty {
+      display: none; }
+    .modal .modal-footer-header:empty, .modal-inline .modal-footer-header:empty {
+      display: none; }
+  .modal .modal-footer, .modal-inline .modal-footer {
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding: 0.5rem; }
+    .modal .modal-footer:empty, .modal-inline .modal-footer:empty {
+      display: none; }
+  .modal.no-vertical-padding .modal-body-fixed, .modal.no-vertical-padding .modal-body, .modal-inline.no-vertical-padding .modal-body-fixed, .modal-inline.no-vertical-padding .modal-body {
+    padding-top: 0;
+    padding-bottom: 0; }
 
 /* REMOVED - Only ONE size for modal
 .modal.modal-sm {
