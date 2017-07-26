@@ -6981,10 +6981,35 @@ If the height (and width) of the content is variable (eq. accordion) the class
     padding-left: 0.1875rem;
     padding-right: 0.1875rem; }
 
+.modal .modal-footer-header {
+  flex-shrink: 0;
+  flex-grow: 0;
+  font-weight: normal;
+  line-height: 1.5;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: inherit;
+  color: #636c72;
+  background-color: #f7f7f7;
+  line-height: 1;
+  border-top: 0.0625rem solid #eceeef;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important; }
+  .modal .modal-footer-header span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .modal .modal-footer-header:empty {
+    display: none; }
+  .modal .modal-footer-header:empty {
+    display: none; }
+
 .modal .modal-footer {
   flex-shrink: 0;
   flex-grow: 0;
   padding: 0.5rem; }
+  .modal .modal-footer:empty {
+    display: none; }
 
 .modal.no-vertical-padding .modal-body-fixed, .modal.no-vertical-padding .modal-body {
   padding-top: 0;

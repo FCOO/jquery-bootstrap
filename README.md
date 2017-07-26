@@ -115,6 +115,7 @@ If `options.context` is given, ALL functions in `options` (eg. `onClick`, `text`
 | `id` | `string` | `""` | Id of the button |
 | `selected` | `boolean` | `false` | If `true` the button is `selected` (blue) |
 | `focus` | `boolean` | `false` | If `true` the button get focus |
+| `primary` | `boolean` | `false` | If `true` the button get primary-class (blue) |
 | `attr` | `object` | `null` | |
 | `prop` | `object` | `null` | |
 | `onClick` | `function()` | `null` | function to be called on-click |

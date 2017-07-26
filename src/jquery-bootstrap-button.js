@@ -28,16 +28,18 @@
     Is also used to create list-items for select-lists
     **********************************************************/
     $.bsButton = function( options ){
+        options = options || {};
         options = 
             $._bsAdjustOptions( options, {
 //                tagName     : 'button',
                 tagName     : 'a',//Using <a> instead of <button> to be able to control font-family
                 baseClass   : 'btn',
-                styleClass  : ns.bsButtonClass,
+                styleClass  : options.primary ? ns.bsPrimaryButtonClass : ns.bsButtonClass,
                 class       : '',
                 addSizeClass: true,
                 addOnClick  : true
             });
+
 
         var result = $('<'+ options.tagName + '/>');
 

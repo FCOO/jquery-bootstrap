@@ -29,6 +29,8 @@
 
     ns.bsIsTouch =  true;
 
+    $.EMPTY_TEXT = '___***EMPTY***___';
+
     $._bsGetSizeClass = function( options ){
         var size = '';
         switch (options.size || 'normal'){
@@ -68,7 +70,7 @@
                 });
             
             return options;
-        };
+        }
         //*********************************************************************
         
         options = $.extend( true, defaultOptions || {}, options, forceOptions || {} );
@@ -178,7 +180,7 @@
 
         _bsAddHtml:  function( options, checkForContent, ignoreLink ){
             //**************************************************
-            function create$text( link, title, textStyle, className ){
+            function create$element( tagName, link, title, textStyle, className ){
                 var $text;
                 if (link){
                     $text = $('<a/>');
@@ -192,7 +194,7 @@
                             .prop('target', '_blank');
                 }
                 else
-                    $text = $('<span/>');
+                    $text = $('<'+tagName+'/>');
 
                 if (title)
                     $text.i18n(title, 'title');
@@ -250,7 +252,10 @@
                 var $icon = $('<i/>').addClass('fa '+icon);
                 if (index < iconClassArray.length)
                     $icon.addClass( iconClassArray[index] );
-                $icon.appendTo( _this );                
+                //$icon.appendTo( _this );                
+
+                create$element( 'i', null, titleArray[ index ], null, 'fa '+icon + ' ' + (iconClassArray[index] || '') )
+                    .appendTo( _this );
             });
                 
             //Add color (optional)
@@ -262,12 +267,15 @@
 
             //Add text
             $.each( textArray, function( index, text ){
-                var $text = create$text( linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
+                var $text = create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
                
                 if ($.isFunction( text ))
                     text( $text );
                 else
-                    $text.i18n( text );
+                    if (text == $.EMPTY_TEXT)
+                        $text.html( '&nbsp;');
+                    else
+                        $text.i18n( text );
 
                 if (index < textClassArray.length)
                     $text.addClass( textClassArray[index] );
@@ -276,7 +284,7 @@
             
             //Add value-format content
             $.each( vfValueArray, function( index, vfValue ){
-                create$text( linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
+                create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
                     .vfValueFormat( vfValue || '', vfFormatArray[index], vfOptionsArray[index] )
                     .appendTo( _this );                
             });

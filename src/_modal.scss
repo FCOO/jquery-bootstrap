@@ -82,10 +82,21 @@ If the height (and width) of the content is variable (eq. accordion) the class
         overflow   : hidden;
         @include content-padding();
     }
+
+    .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
+        flex-shrink: 0; //Only .modal-body is shrink
+        flex-grow  : 0; //Only .modal-body is growing
+        @include footer-variant();
+
+        &:empty { display: none; }
+    }
+
     .modal-footer {
         flex-shrink: 0; //Only .modal-body is shrink
         flex-grow  : 0; //Only .modal-body is growing
         padding: $btn-padding-x;
+
+        &:empty { display: none; }
     }
 }
 
