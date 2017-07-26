@@ -44,50 +44,54 @@
     };
 
 
-
-    //$._bsAdjustContentOptions: Adjust options for the content of elements
-    $._bsAdjustContentOptions = function( options){
-        options.icon     = options.icon || options.headerIcon || options.titleIcon;
-        options.text     = options.text || options.header || options.title || options.name;
-
-        options.iconClass = options.iconClass       || options.iconClassName       || 
-                            options.headerIconClass || options.headerIconClassName ||
-                            options.titleIconClass  || options.titleIconClassName;
-
-        options.textClass = options.textClass   || options.textClassName   || 
-                            options.headerClass || options.headerClassName || 
-                            options.titleClass  || options.titleClassName;
-
-        return options;
-    };
-
     //$._bsAdjustOptions: Adjust options to allow text/name/title/header etc.
     $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
+        //*********************************************************************
+        //adjustContentOptions: Adjust options for the content of elements
+        function adjustContentAndContextOptions( options, context ){
+            options.icon     = options.icon || options.headerIcon || options.titleIcon;
+            options.text     = options.text || options.header || options.title || options.name;
+
+            options.iconClass = options.iconClass       || options.iconClassName       || 
+                                options.headerIconClass || options.headerIconClassName ||
+                                options.titleIconClass  || options.titleIconClassName;
+
+            options.textClass = options.textClass   || options.textClassName   || 
+                                options.headerClass || options.headerClassName || 
+                                options.titleClass  || options.titleClassName;
+
+            //If context is given => convert all function to proxy
+            if (context)
+                $.each( options, function( id, value ){
+                    if ($.isFunction( value ))
+                        options[id] = $.proxy( value, context );
+                });
+            
+            return options;
+        };
+        //*********************************************************************
         
         options = $.extend( true, defaultOptions || {}, options, forceOptions || {} );
 
         options.selected = options.selected || options.checked || options.active;
         options.list     = options.list     || options.buttons || options.items || options.children;
 
-        options = $._bsAdjustContentOptions( options );
-/*
-        //Create or adjust options.content. If no .content is given => create it from options
-        if (options.content == null){
-            //Craete .content from own values            
-            var ids = 'icon text vfFormat vfValue vfOptions textStyle link title iconClass textClass'.split(' ');
-            options.content = {};
-            $.each( ids, function(index, id ){
-                options.content[id] = options[id];
-            });
+        options = adjustContentAndContextOptions( options, options.context );
+
+        //Adjust options.content
+        if (options.content){
+            if ($.isArray( options.content ) )
+                //Adjust each record in options.content
+                for (var i=0; i<options.content.length; i++ )
+                    options.content[i] = adjustContentAndContextOptions( options.content[i], options.context );
+            else
+                if ($.type( options.content ) == "object")
+                    options.content = adjustContentAndContextOptions( options.content, options.context );
         }
 
-        if ($.isArray( options.content ) )
-            //Adjust each record in options.content
-            for (var i=0; i<options.content.length; i++ )
-                options.content[i] = $._bsAdjustContentOptions( options.content[i] );
-        else
-            options.content = $._bsAdjustContentOptions( options.content );
-*/
+        //Sert context = null to avoid "double" proxy
+        options.context = null;
+        
         return options;
     };
 

@@ -101,6 +101,9 @@ If true it is allowed to deselect a selected child-element (e.q. in a radio-grou
 Use any of the following options
  `options.list, options.buttons, options.items, or options.children`
 
+### `context`
+If `options.context` is given, ALL functions in `options` (eg. `onClick`, `text`, etc.) is called with `this=context`
+
 <a name="button"></a>
 ## Button
 
@@ -114,7 +117,7 @@ Use any of the following options
 | `focus` | `boolean` | `false` | If `true` the button get focus |
 | `attr` | `object` | `null` | |
 | `prop` | `object` | `null` | |
-| `onClick` | `function()` | `null` | function to be called en-click |
+| `onClick` | `function()` | `null` | function to be called on-click |
 | `content` | `content` or `[] of content` | `""` | See above |
 
 #### Link-button
