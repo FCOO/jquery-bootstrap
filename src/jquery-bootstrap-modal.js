@@ -162,13 +162,13 @@
         var $modalContainer = this.bsModal.$container =
                 $('<div/>')
                     .addClass('modal-content')
-                    .appendTo( this ); //.appendTo( $modalDialog );
+                    .appendTo( this ); 
 
         //Append header
         if (options.forceHeader || options.header || options.close){
             var $modalHeader = this.bsModal.$header =
                     $('<div/>')
-                        .addClass('modal-header right-side-icon-parent')
+                        .addClass('modal-header')
                         ._bsAddHtml( options.header || $.EMPTY_TEXT )
                         .appendTo( $modalContainer );
 
@@ -179,6 +179,7 @@
                             .appendTo( $modalHeader );
                 addClose( $modalClose );
             }
+
         }
 
         //Append fixed content (if any)
@@ -293,7 +294,7 @@
 
         var $result, $modalDialog,
             id = options.id || '_bsModal'+ modalId++,
-            classNames = 'fade '+
+            classNames = (window.bsIsTouch ? '' : 'fade ')+
                          (options.noVerticalPadding ? 'no-vertical-padding ' : ''),
             //Create a close-function
             closeModalFunction = function(){ $result.modal('hide'); };
@@ -301,7 +302,7 @@
         //Adjust options
         options =
             $._bsAdjustOptions( options, {
-                baseClass  : 'modal modal-sm',
+                baseClass  : 'modal',
                 class      : classNames,
                 //REMOVED - Only ONE size addSizeClass    : true,
 

@@ -30,7 +30,7 @@ $max-items-visible-in-selectbox: 4;
         text-align: left;
         position  : relative;
 
-        @include right-side-icon-parent();
+        @include vertical-align-center();
 
         .arrow {
             @include right-side-icon('\f078'); 
@@ -144,7 +144,7 @@ $max-items-visible-in-selectbox: 4;
             @include control-active-color(".dropdown-item");
         }
         .dropdown-header {
-            @include header-inline-variant(); 
+            @include header-variant(); 
 
             line-height: $line-height-base / $font-size-header-factor; //ASdjust line-height to make header and item same height
 
@@ -165,7 +165,7 @@ $max-items-visible-in-selectbox: 4;
             @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-border-radius-sm);
         }
         .dropdown-header {
-            @include header-inline-variant-sm();
+            @include header-variant-sm();
             line-height: $line-height-base / $font-size-header-factor; //ASdjust line-height to make header and item same height
 
             //Items below header moves to the right

@@ -20,8 +20,9 @@ Adjustmernt to Bootstrap table
     *************************************/
     thead {
         tr {
-
             th {
+                display: table-cell !important; //To overwrite display: flex for headers
+
                 @include title-color();   //Only color and background-color
 
                 &.sortable {
@@ -94,7 +95,9 @@ Adjustmernt to Bootstrap table
     //NORMAL
     & {
         //Header
-        thead tr th { @include title-variant(); }
+        thead tr th { 
+            @include title-variant(); 
+        }
 
         //Cell
         tbody tr td {

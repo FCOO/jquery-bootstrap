@@ -5,7 +5,7 @@ MIXIN
 /************************************************************
 RIGHT-SIDE-ICON
 Add style to <i> to place it to the right and vertical center
-NOTE: Parent element MUST have @include right-side-icon-parent();
+NOTE: Parent element MUST have @include vertical-align-center();
 ************************************************************/
 @mixin right-side-icon( $content: '\f054', $font-size: 0.8em, $hover: false){
     font-size  : $font-size;
@@ -15,7 +15,7 @@ NOTE: Parent element MUST have @include right-side-icon-parent();
     line-height: 1;
 
     margin-left : auto;
-    margin-right: 0.5em;
+    margin-right: 0;
 
     &:before {
         content: "#{$content}";
@@ -35,12 +35,13 @@ NOTE: Parent element MUST have @include right-side-icon-parent();
     }
 }
 
-@mixin right-side-icon-parent() {
+@mixin vertical-align-center() { 
     display        : flex;
+    justify-content: normal;
     align-items    : center; // vertically center it
-    justify-content: space-between; // Put modal header elements (title and dismiss) on opposite ends
-    padding-right  : 0 !important;
+    > * {line-height:  inherit; }
 }
+
 
 
 /************************************************************
@@ -210,12 +211,14 @@ Padding are set to button y-padding (moving text to the left)
 /************************************************************
 header-variant
 ************************************************************/
-@mixin header-variant($font-size-factor: $font-size-header-factor, $size: 'nm', $inline: false) { 
+@mixin header-variant($font-size-factor: $font-size-header-factor, $size: 'nm' ) { 
 
     font-weight: $font-weight-base;
     line-height: $line-height-base;
 
     @include span-text-truncate();
+
+    @include vertical-align-center();
 
     $padding-y: $btn-padding-y;
     $padding-x: $btn-padding-x; 
@@ -241,28 +244,12 @@ header-variant
         $font-size: $font-size-lg;
     }
 
-    //If not inline header => use reduce x-padding
-    @if not $inline { 
-        $padding-x: $padding-y; 
-    }
     @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
-
-    
-}
-@mixin header-variant-lg( $font-size-factor: $font-size-header-factor, $inline: false ) { @include header-variant( $font-size-factor, 'lg', $inline ); }
-@mixin header-variant-sm( $font-size-factor: $font-size-header-factor, $inline: false ) { @include header-variant( $font-size-factor, 'sm', $inline ); }
-@mixin header-variant-xs( $font-size-factor: $font-size-header-factor, $inline: false ) { @include header-variant( $font-size-factor, 'xs', $inline ); }
-
-/************************************************************
-header-inline--variant
-************************************************************/
-@mixin header-inline-variant( $size: 'nm' ){ 
-    @include header-variant( $font-size-header-factor, $size, true); 
 }
 
-@mixin header-inline-variant-lg() { @include header-inline-variant( 'lg' ); }
-@mixin header-inline-variant-sm() { @include header-inline-variant( 'sm' ); }
-@mixin header-inline-variant-xs() { @include header-inline-variant( 'xs' ); }
+@mixin header-variant-lg( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'lg' ); }
+@mixin header-variant-sm( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'sm' ); }
+@mixin header-variant-xs( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'xs' ); }
 
 /************************************************************
 title-variant - as header but with same font-size as siblings

@@ -1,0 +1,58 @@
+/************************************************************
+MIXIN
+************************************************************/
+/************************************************************
+RIGHT-SIDE-ICON
+Add style to <i> to place it to the right and vertical center
+NOTE: Parent element MUST have @include vertical-align-center();
+************************************************************/
+/************************************************************
+CONTENT
+Unifies padding for modal, accordion, popup etc.
+Using smallest vertical/horizontal padding from buttons and
+correct (partly) for padding added when in a scrollbar-container
+************************************************************/
+/************************************************************
+CONTROL-CONTAINER
+Style for div with controls. Must haave tabindex:"-1" to
+work with focus
+************************************************************/
+/************************************************************
+HEADER AND TITLE BACKGROUND-COLOR AND COLOR
+Headers for modal, popover, popup etc. 
+************************************************************/
+/************************************************************
+color-hover - Background-color and text-color for 'normal' and hover
+************************************************************/
+/************************************************************
+header-color - Colors for headers
+************************************************************/
+/************************************************************
+title-color - create colors for headers for table and accordion etc.
+************************************************************/
+/************************************************************
+control-active-color
+Mixin to set colors for selected elements and when hover
+************************************************************/
+/************************************************************
+HEADER, TITLE, AND FOOTER PADDING AND FONT-SIZE
+Padding are set to button y-padding (moving text to the left)
+************************************************************/
+/************************************************************
+header-variant
+************************************************************/
+/************************************************************
+header-inline--variant
+************************************************************/
+/************************************************************
+title-variant - as header but with same font-size as siblings
+************************************************************/
+/************************************************************
+footer-variant
+************************************************************/
+/************************************************************
+MARGIN-BOTTOM FOR ELEMENTS IN MODAL
+All elements in modal-windows get same margin-bottom
+************************************************************/
+
+/*# sourceMappingURL=_mixin.css.map */

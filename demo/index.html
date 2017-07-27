@@ -165,9 +165,12 @@
 
         $body.append('<hr>');
            
-        $.bsButton({text: 'Davs med dig', icon: 'fa-home', size:''}).appendTo( $body );
-        $.bsButton({text: 'Stort davs', icon: 'fa-home', size:'large'}).appendTo( $body );
-        $.bsButton({text: 'Lille davs', icon: 'fa-home', size:'small'}).appendTo( $body );
+        $.bsButton({text: 'Size=large', icon: 'fa-home', size:'large'}).appendTo( $body );
+        $.bsButton({text: 'Size=normal', icon: 'fa-home', size:''}).appendTo( $body );
+        $.bsButton({text: 'Size=small', icon: 'fa-home', size:'small'}).appendTo( $body );
+
+        $body.append('<hr>');
+        
         $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'fa-check-square-o'}).appendTo( $body );
             
         $.bsButtonGroup({
@@ -224,6 +227,7 @@
                 placement: "righttop",
                 size: titles[i].toLowerCase(),
                 header: {icon:'fa-home', text:titles[i]},
+                footer: {icon:'fa-home', text:titles[i]},
                 buttons: [
                     {id:'slow',   _icon: 'fa-bicycle',   text:'X'},
                     {id:'medium', _icon: 'fa-car', text:'Xx'},
@@ -313,7 +317,7 @@
                     footer: footer,
                     children:[
                         {
-                            header: {icon: 'fa-home', text: {da:'Overskrift#1-1', en:'Header#1-1'}}, 
+                            header: [{icon: 'fa-home', text: {da:'Overskrift#1-1', en:'Header#1-1'}}, {icon: 'fa-home', text: {da:'Overskrift#1-1', en:'Header#1-1'}}], 
                             content: 'Dette er en test 1-1<br>'+testContent 
                         },
                         {
@@ -364,7 +368,7 @@
         });
         var m_fixed = $accordion2.asModal({
             flex: false, 
-            header:{icon: 'fa-home', text:{da:'FIXED Overskrift',en:'Header'}},
+            header:[{icon: 'fa-home', text:{da:'FIXED Overskrift',en:'Header'}}, {icon: 'fa-globe', text:{da:'Overskrift#2',en:'Header#2'}}],
             show: false
         });
 

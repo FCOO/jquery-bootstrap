@@ -59,7 +59,6 @@
 
             if (options.close)
                 $header
-                    .addClass('popover-close')
                     .append( 
                         $('<i class="fa modal-close"/>') 
                             .on('click', function(){ 

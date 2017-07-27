@@ -16,9 +16,7 @@ POPOVER
         font-weight: $btn-font-weight; //Same as buttons
         line-height: $btn-line-height; //Same as buttons
 
-        &.popover-close {
-            @include right-side-icon-parent(); 
-        }
+        @include vertical-align-center();
     
     }
 
@@ -36,32 +34,19 @@ POPOVER
     //Popover footer
     .popover-footer {
         @include footer-variant();
-/*
-        border-top: $modal-footer-border-width solid $modal-footer-border-color;
-
-        border-top-left-radius : 0 !important;
-        border-top-right-radius: 0 !important;
-    
-        @include header-variant();
-        margin-top: $btn-padding-y;
-        padding   : 0 !important;
-
-        //Hide when empty
-        &:empty { display: none; }
-*/
     }
 
     //Different size
     &.popover-lg {
-        .popover-title-content, .popover-footer { @include header-variant-lg() }
-        .popover-footer                         { margin-top: $btn-padding-y-lg;   }
+        .popover-title-content { @include header-variant-lg(); }
+        .popover-footer        { @include footer-variant-lg(); }
     }
     &.popover-sm {
-        .popover-title-content, .popover-footer { @include header-variant-sm() }
-        .popover-footer                         { margin-top: $btn-padding-y-sm;   }
+        .popover-title-content { @include header-variant-sm(); }
+        .popover-footer        { @include footer-variant-sm(); }
     }
     &.popover-xs {
-        .popover-title-content, .popover-footer { @include header-variant-xs() }
-        .popover-footer                         { margin-top: $btn-padding-y-xs;   }
+        .popover-title-content { @include header-variant-xs(); }
+        .popover-footer        { @include footer-variant-xs(); }
     }
 }

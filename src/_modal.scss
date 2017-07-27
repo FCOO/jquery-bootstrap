@@ -117,15 +117,19 @@ If the height (and width) of the content is variable (eq. accordion) the class
 
 
 // /* REMOVED - Only ONE size for modal
-.modal.modal-sm {
+.modal.modal-sm,
+.modal-inline.modal-sm {
     .modal-header {
         @include header-variant-sm(); 
-//        padding: $btn-padding-x-sm;
     }
     .modal-body {
         @include content-padding-sm();
 
     }
+    .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
+        @include footer-variant-sm();
+    }
+
     .modal-footer {
 //        padding: $btn-padding-x-sm;
 //        .btn { @extend .btn-sm; }
