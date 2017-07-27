@@ -18,7 +18,10 @@ If the height (and width) of the content is variable (eq. accordion) the class
 
 .modal, .modal-inline {
     $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
+//    $modal-max-height: calc(100% - #{2*$modal-dialog-margin});
+
     $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
+//    $modal-max-width : calc(100% - #{2*$modal-dialog-margin});
 
     .modal-dialog {
         display        : flex;
@@ -113,18 +116,19 @@ If the height (and width) of the content is variable (eq. accordion) the class
 
 
 
-/* REMOVED - Only ONE size for modal
+// /* REMOVED - Only ONE size for modal
 .modal.modal-sm {
     .modal-header {
-        padding: $btn-padding-x-sm;
+        @include header-variant-sm(); 
+//        padding: $btn-padding-x-sm;
     }
     .modal-body {
         @include content-padding-sm();
 
     }
     .modal-footer {
-        padding: $btn-padding-x-sm;
-        .btn { @extend .btn-sm; }
+//        padding: $btn-padding-x-sm;
+//        .btn { @extend .btn-sm; }
     }
 }
-*/
+//*/

@@ -229,7 +229,7 @@
 
             buttonOptions = {
                 class       : '',
-                addSizeClass: false,
+                addSizeClass: true,
                 addOnClick  : true
             };
 
@@ -301,7 +301,7 @@
         //Adjust options
         options =
             $._bsAdjustOptions( options, {
-                baseClass  : 'modal',
+                baseClass  : 'modal modal-sm',
                 class      : classNames,
                 //REMOVED - Only ONE size addSizeClass    : true,
 
