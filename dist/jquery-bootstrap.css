@@ -7012,21 +7012,23 @@ If the height (and width) of the content is variable (eq. accordion) the class
     padding-top: 0;
     padding-bottom: 0; }
 
-/* REMOVED - Only ONE size for modal
-.modal.modal-sm {
-    .modal-header {
-        padding: $btn-padding-x-sm;
-    }
-    .modal-body {
-        @include content-padding-sm();
+.modal.modal-sm .modal-header {
+  font-weight: normal;
+  line-height: 1.5;
+  padding: 0.25rem 0.25rem;
+  font-size: 0.765625rem;
+  border-radius: inherit; }
+  .modal.modal-sm .modal-header span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
 
-    }
-    .modal-footer {
-        padding: $btn-padding-x-sm;
-        .btn { @extend .btn-sm; }
-    }
-}
-*/
+.modal.modal-sm .modal-body {
+  padding: 0.75rem; }
+  .modal.modal-sm .modal-body.scrollbar-vertical {
+    padding-left: 0.1875rem;
+    padding-right: 0.1875rem; }
+
 /************************************************************
 FORM
 ************************************************************/
