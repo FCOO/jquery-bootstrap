@@ -82,7 +82,6 @@ TODO:
                 id          : getSelectId(),
                 baseClass   : 'selectbox',
                 class       : 'dropdown',
-                addSizeClass: true, //false if only ONE size 
             });
 
 
@@ -94,7 +93,6 @@ TODO:
         $.bsButton({
                 tagName     : 'div', //'button',
                 class       : '',
-                addSizeClass: false,
                 addOnClick  : false
             })
             .attr({ 
@@ -157,7 +155,7 @@ TODO:
                 id          : getSelectId(),
                 baseClass   : 'selectList',
                 class       : '',
-                addSizeClass: true, 
+                useTouchSize: true
             });
 
 

@@ -17,7 +17,7 @@
     $.bsCheckbox = function( options ){ 
         options = 
             $._bsAdjustOptions( options, {
-                //REMOVED - Only ONE size: addSizeClass: true,
+                useTouchSize: true,
                 baseClass   : options.type || 'checkbox'
             });
         

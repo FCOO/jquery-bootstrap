@@ -116,7 +116,6 @@ TODO:
                 baseClass   : 'accordion',
                 styleClass  : '',
                 class       : '',
-                ///*REMOVED - Only ONE size addSizeClass: true,
                 content     : ''
             });
 

@@ -73,7 +73,7 @@
                 toggle   :  options.toggle || 'popover', 
                 html     :  true,
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
-                template :  '<div class="popover ' + $._bsGetSizeClass({baseClass:'popover', size: options.size }) + '" role="tooltip">'+
+                template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + '" role="tooltip">'+
                                 '<div class="popover-title"></div>' + 
                                 '<div class="popover-content' + (options.defaultPadding ? ' default-padding' : '') + '"></div>' + 
                                 '<div class="popover-footer"></div>' + 

@@ -116,7 +116,6 @@ TODO:
                 baseClass   : 'accordion',
                 styleClass  : '',
                 class       : '',
-                ///*REMOVED - Only ONE size addSizeClass: true,
                 content     : ''
             });
 
@@ -277,7 +276,7 @@ TODO:
                 baseClass   : 'btn',
                 styleClass  : options.primary ? ns.bsPrimaryButtonClass : ns.bsButtonClass,
                 class       : '',
-                addSizeClass: true,
+                useTouchSize: true,
                 addOnClick  : true
             });
 
@@ -362,12 +361,9 @@ TODO:
                 verticalClassPostfix  : '-vertical',
                 horizontalClassPostfix: '',
                 center                : !options.vertical, //Default: center on horizontal and left on vertical
-                addSizeClass          : true,
+                useTouchSize          : true,
                 attr                  : { role: 'group' },
-                buttonOptions         : {
-                    addSizeClass: false,
-                    onClick     : options.onClick                    
-                }
+                buttonOptions         : { onClick: options.onClick }
             });
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
@@ -409,7 +405,7 @@ TODO:
 
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){ 
-        options = $._bsAdjustOptions( options, {}, { addOnClick: false } );
+        options = $._bsAdjustOptions( options, {}, { useTouchSize: true, addOnClick: false } );
 
         var result = $.bsButtonGroup( options );
 
@@ -462,7 +458,7 @@ TODO:
     $.bsCheckbox = function( options ){ 
         options = 
             $._bsAdjustOptions( options, {
-                //REMOVED - Only ONE size: addSizeClass: true,
+                useTouchSize: true,
                 baseClass   : options.type || 'checkbox'
             });
         
@@ -741,9 +737,8 @@ TODO:
 
             buttonOptions = {
                 class       : '',
-                addSizeClass: true,
                 addOnClick  : true,
-                size        : options.size
+                small       : options.small
             };
 
         //No button is given focus by options.focus: true => Last button gets focus
@@ -816,8 +811,6 @@ TODO:
             $._bsAdjustOptions( options, {
                 baseClass  : 'modal',
                 class      : classNames,
-                //REMOVED - Only ONE size addSizeClass    : true,
-                addSizeClass: !!options.size, //Only add size-class if size is given. Else use same size for touch and not-touch
 
                 //Header
                 forceHeader: true,
@@ -1004,7 +997,7 @@ TODO:
                 toggle   :  options.toggle || 'popover', 
                 html     :  true,
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
-                template :  '<div class="popover ' + $._bsGetSizeClass({baseClass:'popover', size: options.size }) + '" role="tooltip">'+
+                template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + '" role="tooltip">'+
                                 '<div class="popover-title"></div>' + 
                                 '<div class="popover-content' + (options.defaultPadding ? ' default-padding' : '') + '"></div>' + 
                                 '<div class="popover-footer"></div>' + 
@@ -1236,7 +1229,6 @@ TODO:
                 id          : getSelectId(),
                 baseClass   : 'selectbox',
                 class       : 'dropdown',
-                addSizeClass: true, //false if only ONE size 
             });
 
 
@@ -1248,7 +1240,6 @@ TODO:
         $.bsButton({
                 tagName     : 'div', //'button',
                 class       : '',
-                addSizeClass: false,
                 addOnClick  : false
             })
             .attr({ 
@@ -1311,7 +1302,7 @@ TODO:
                 id          : getSelectId(),
                 baseClass   : 'selectList',
                 class       : '',
-                addSizeClass: true, 
+                useTouchSize: true
             });
 
 
@@ -1378,8 +1369,6 @@ Add sort-functions + save col-index for sorted column
     var defaultOptions = {
             baseClass     : 'table',
             styleClass    : 'fixed',
-            addSizeClass  : true,
-
             showHeader    : true,
             verticalBorder: true
         },
@@ -1603,13 +1592,14 @@ Add sort-functions + save col-index for sorted column
 	
     /*
     
-
-    Many of the elements comes in tree different sizes: large, normal, small set by the options.size
+    Almost all elements comes in two sizes: normal and small set by options.small: false/true
 
     In jquery-bootstrap.scss sizing class-postfix -xs is added (from Bootstrap 3)
 
-    Since some of the 'large' Bootstrap elements are a bit to larges it is possible to use 
-    'normal' as large, 'small' as normal and 'extra-small' as 'small on desktop and still use original size on touch devices
+    Elements to click or touch has a special implementation:
+    For device with 'touch' the Bootstrap size 'normal' and 'small' are used
+    For desktop (only mouse) we using smaller version (large = Bootstrap normal, normal = Bootstrap small, small = Bootstrap x-small)
+
     The variable window.bsIsTouch must be overwriten with the correct value in the application
 
     */
@@ -1620,21 +1610,6 @@ Add sort-functions + save col-index for sorted column
     ns.bsIsTouch =  true;
 
     $.EMPTY_TEXT = '___***EMPTY***___';
-
-    $._bsGetSizeClass = function( options ){
-        var size = '';
-        switch (options.size || 'normal'){
-            case 'small': size = ns.bsIsTouch ? 'sm' : 'xs'; break;
-            case 'large': size = ns.bsIsTouch ? 'lg' :   ''; break;
-            default     : size = ns.bsIsTouch ?   '' : 'sm'; 
-        }
-        return size ? options.baseClass+'-'+size : '';
-    };
-
-    ns._bsGetSmallerSize = function( size ){
-        return (size || 'normal') == 'large' ? 'normal' : 'small';
-    };
-
 
     //$._bsAdjustOptions: Adjust options to allow text/name/title/header etc.
     $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
@@ -1696,20 +1671,38 @@ Add sort-functions + save col-index for sorted column
         options:
             baseClass           [string]
             baseClassPostfix    [string]
-            addSizeClass        [boolean]
             styleClass          [string]
             class               [string]
             textStyle           [string] or [object]. see _bsAddStyleClasses
+
+
+        baseClass: "BASE" useTouchSize: false
+            small: false => sizeClass = ''
+            small: true  => sizeClass = "BASE-sm"
+
+        baseClass: "BASE" useTouchSize: true
+            small: false => sizeClass = 'BASE-sm'
+            small: true  => sizeClass = "BASE-xs"
+        
+        
         ****************************************************************************************/
         _bsAddBaseClassAndSize: function( options ){
             var classNames = options.baseClass ? [options.baseClass + (options.baseClassPostfix || '')] : [],
-                sizeClass = '';
-            if (options.addSizeClass && options.baseClass){
-                sizeClass = $._bsGetSizeClass( options );
-                if (sizeClass)
-                  classNames.push( sizeClass );
-            }
+                sizeClassPostfix = '';
 
+            if (options.useTouchSize){
+                if (ns.bsIsTouch)
+                    sizeClassPostfix = options.small ? 'sm' : '';
+                else
+                    sizeClassPostfix = options.small ? 'xs' : 'sm';
+            }
+            else
+                sizeClassPostfix = options.small ? 'sm' : '';
+
+
+            if (sizeClassPostfix && options.baseClass)
+              classNames.push( options.baseClass + '-' + sizeClassPostfix );                
+            
             if (options.styleClass)
                 classNames.push( options.styleClass ); 
 
@@ -1718,7 +1711,6 @@ Add sort-functions + save col-index for sorted column
 
             this.addClass( classNames.join(' ') );
 
-    
             this._bsAddStyleClasses( options.textStyle );    
 
             return this;

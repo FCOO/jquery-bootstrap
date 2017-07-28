@@ -265,6 +265,7 @@ div.radio {
 
 //Standard 
 @include checkbox-radio-size-variant('',    $font-size-base, $btn-border-radius,    $btn-padding-y-sm );
+@include checkbox-radio-size-variant('-sm', $font-size-sm,   $btn-border-radius-sm, $btn-padding-y-xs );
 
 /*REMOVED - Only ONE size
 //Large and samll

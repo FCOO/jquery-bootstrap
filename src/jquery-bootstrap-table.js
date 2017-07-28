@@ -38,8 +38,6 @@ Add sort-functions + save col-index for sorted column
     var defaultOptions = {
             baseClass     : 'table',
             styleClass    : 'fixed',
-            addSizeClass  : true,
-
             showHeader    : true,
             verticalBorder: true
         },

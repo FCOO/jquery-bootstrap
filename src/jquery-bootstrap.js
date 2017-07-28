@@ -13,13 +13,14 @@
 	
     /*
     
-
-    Many of the elements comes in tree different sizes: large, normal, small set by the options.size
+    Almost all elements comes in two sizes: normal and small set by options.small: false/true
 
     In jquery-bootstrap.scss sizing class-postfix -xs is added (from Bootstrap 3)
 
-    Since some of the 'large' Bootstrap elements are a bit to larges it is possible to use 
-    'normal' as large, 'small' as normal and 'extra-small' as 'small on desktop and still use original size on touch devices
+    Elements to click or touch has a special implementation:
+    For device with 'touch' the Bootstrap size 'normal' and 'small' are used
+    For desktop (only mouse) we using smaller version (large = Bootstrap normal, normal = Bootstrap small, small = Bootstrap x-small)
+
     The variable window.bsIsTouch must be overwriten with the correct value in the application
 
     */
@@ -30,21 +31,6 @@
     ns.bsIsTouch =  true;
 
     $.EMPTY_TEXT = '___***EMPTY***___';
-
-    $._bsGetSizeClass = function( options ){
-        var size = '';
-        switch (options.size || 'normal'){
-            case 'small': size = ns.bsIsTouch ? 'sm' : 'xs'; break;
-            case 'large': size = ns.bsIsTouch ? 'lg' :   ''; break;
-            default     : size = ns.bsIsTouch ?   '' : 'sm'; 
-        }
-        return size ? options.baseClass+'-'+size : '';
-    };
-
-    ns._bsGetSmallerSize = function( size ){
-        return (size || 'normal') == 'large' ? 'normal' : 'small';
-    };
-
 
     //$._bsAdjustOptions: Adjust options to allow text/name/title/header etc.
     $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
@@ -106,20 +92,38 @@
         options:
             baseClass           [string]
             baseClassPostfix    [string]
-            addSizeClass        [boolean]
             styleClass          [string]
             class               [string]
             textStyle           [string] or [object]. see _bsAddStyleClasses
+
+
+        baseClass: "BASE" useTouchSize: false
+            small: false => sizeClass = ''
+            small: true  => sizeClass = "BASE-sm"
+
+        baseClass: "BASE" useTouchSize: true
+            small: false => sizeClass = 'BASE-sm'
+            small: true  => sizeClass = "BASE-xs"
+        
+        
         ****************************************************************************************/
         _bsAddBaseClassAndSize: function( options ){
             var classNames = options.baseClass ? [options.baseClass + (options.baseClassPostfix || '')] : [],
-                sizeClass = '';
-            if (options.addSizeClass && options.baseClass){
-                sizeClass = $._bsGetSizeClass( options );
-                if (sizeClass)
-                  classNames.push( sizeClass );
-            }
+                sizeClassPostfix = '';
 
+            if (options.useTouchSize){
+                if (ns.bsIsTouch)
+                    sizeClassPostfix = options.small ? 'sm' : '';
+                else
+                    sizeClassPostfix = options.small ? 'xs' : 'sm';
+            }
+            else
+                sizeClassPostfix = options.small ? 'sm' : '';
+
+
+            if (sizeClassPostfix && options.baseClass)
+              classNames.push( options.baseClass + '-' + sizeClassPostfix );                
+            
             if (options.styleClass)
                 classNames.push( options.styleClass ); 
 
@@ -128,7 +132,6 @@
 
             this.addClass( classNames.join(' ') );
 
-    
             this._bsAddStyleClasses( options.textStyle );    
 
             return this;

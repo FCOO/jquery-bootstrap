@@ -36,7 +36,7 @@
                 baseClass   : 'btn',
                 styleClass  : options.primary ? ns.bsPrimaryButtonClass : ns.bsButtonClass,
                 class       : '',
-                addSizeClass: true,
+                useTouchSize: true,
                 addOnClick  : true
             });
 
@@ -121,12 +121,9 @@
                 verticalClassPostfix  : '-vertical',
                 horizontalClassPostfix: '',
                 center                : !options.vertical, //Default: center on horizontal and left on vertical
-                addSizeClass          : true,
+                useTouchSize          : true,
                 attr                  : { role: 'group' },
-                buttonOptions         : {
-                    addSizeClass: false,
-                    onClick     : options.onClick                    
-                }
+                buttonOptions         : { onClick: options.onClick }
             });
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
@@ -168,7 +165,7 @@
 
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){ 
-        options = $._bsAdjustOptions( options, {}, { addOnClick: false } );
+        options = $._bsAdjustOptions( options, {}, { useTouchSize: true, addOnClick: false } );
 
         var result = $.bsButtonGroup( options );
 

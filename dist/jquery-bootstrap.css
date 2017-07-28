@@ -6761,6 +6761,44 @@ div.radio input[type="checkbox"] + label::after,
 div.radio input[type="radio"] + label::after {
   border-width: 0.3rem; }
 
+div.checkbox-sm, div.radio-sm {
+  height: 1.49375rem;
+  font-size: 0.875rem; }
+  div.checkbox-sm input[type="checkbox"] + label,
+  div.checkbox-sm input[type="radio"] + label, div.radio-sm input[type="checkbox"] + label,
+  div.radio-sm input[type="radio"] + label {
+    padding-left: 1.25rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    font-size: 0.875rem; }
+    div.checkbox-sm input[type="checkbox"] + label::before,
+    div.checkbox-sm input[type="radio"] + label::before, div.radio-sm input[type="checkbox"] + label::before,
+    div.radio-sm input[type="radio"] + label::before {
+      margin-top: 0;
+      width: 1.05rem;
+      height: 1.05rem; }
+    div.checkbox-sm input[type="checkbox"] + label::after,
+    div.checkbox-sm input[type="radio"] + label::after, div.radio-sm input[type="checkbox"] + label::after,
+    div.radio-sm input[type="radio"] + label::after {
+      margin-top: 0;
+      width: 1.05rem;
+      height: 1.05rem; }
+
+/* Special styles for div.checkbox */
+div.checkbox-sm input[type="checkbox"] + label::before,
+div.checkbox-sm input[type="radio"] + label::before {
+  border-radius: 0.2rem; }
+
+div.checkbox-sm input[type="checkbox"] + label::after,
+div.checkbox-sm input[type="radio"] + label::after {
+  font-size: 0.84rem;
+  line-height: 1.25; }
+
+/* Special styles for div.radio */
+div.radio-sm input[type="checkbox"] + label::after,
+div.radio-sm input[type="radio"] + label::after {
+  border-width: 0.2625rem; }
+
 /*REMOVED - Only ONE size
 //Large and samll
 @include checkbox-radio-size-variant('-lg', $font-size-lg,   $btn-border-radius-lg, $btn-padding-y    );
@@ -7199,9 +7237,7 @@ If the height (and width) of the content is variable (eq. accordion) the class
     padding-bottom: 0; }
 
 .modal.modal-sm .modal-header,
-.modal.modal-xs .modal-header,
-.modal-inline.modal-sm .modal-header,
-.modal-inline.modal-xs .modal-header {
+.modal-inline.modal-sm .modal-header {
   font-weight: normal;
   line-height: 1.5;
   display: flex;
@@ -7234,34 +7270,24 @@ If the height (and width) of the content is variable (eq. accordion) the class
   font-size: 0.75rem;
   border-radius: inherit; }
   .modal.modal-sm .modal-header span,
-  .modal.modal-xs .modal-header span,
-  .modal-inline.modal-sm .modal-header span,
-  .modal-inline.modal-xs .modal-header span {
+  .modal-inline.modal-sm .modal-header span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
   .modal.modal-sm .modal-header > *,
-  .modal.modal-xs .modal-header > *,
-  .modal-inline.modal-sm .modal-header > *,
-  .modal-inline.modal-xs .modal-header > * {
+  .modal-inline.modal-sm .modal-header > * {
     line-height: inherit; }
 
 .modal.modal-sm .modal-body,
-.modal.modal-xs .modal-body,
-.modal-inline.modal-sm .modal-body,
-.modal-inline.modal-xs .modal-body {
+.modal-inline.modal-sm .modal-body {
   padding: 0.75rem; }
   .modal.modal-sm .modal-body.scrollbar-vertical,
-  .modal.modal-xs .modal-body.scrollbar-vertical,
-  .modal-inline.modal-sm .modal-body.scrollbar-vertical,
-  .modal-inline.modal-xs .modal-body.scrollbar-vertical {
+  .modal-inline.modal-sm .modal-body.scrollbar-vertical {
     padding-left: 0.1875rem;
     padding-right: 0.1875rem; }
 
 .modal.modal-sm .modal-footer-header,
-.modal.modal-xs .modal-footer-header,
-.modal-inline.modal-sm .modal-footer-header,
-.modal-inline.modal-xs .modal-footer-header {
+.modal-inline.modal-sm .modal-footer-header {
   font-weight: normal;
   line-height: 1.5;
   display: flex;
@@ -7300,21 +7326,15 @@ If the height (and width) of the content is variable (eq. accordion) the class
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important; }
   .modal.modal-sm .modal-footer-header span,
-  .modal.modal-xs .modal-footer-header span,
-  .modal-inline.modal-sm .modal-footer-header span,
-  .modal-inline.modal-xs .modal-footer-header span {
+  .modal-inline.modal-sm .modal-footer-header span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
   .modal.modal-sm .modal-footer-header > *,
-  .modal.modal-xs .modal-footer-header > *,
-  .modal-inline.modal-sm .modal-footer-header > *,
-  .modal-inline.modal-xs .modal-footer-header > * {
+  .modal-inline.modal-sm .modal-footer-header > * {
     line-height: inherit; }
   .modal.modal-sm .modal-footer-header:empty,
-  .modal.modal-xs .modal-footer-header:empty,
-  .modal-inline.modal-sm .modal-footer-header:empty,
-  .modal-inline.modal-xs .modal-footer-header:empty {
+  .modal-inline.modal-sm .modal-footer-header:empty {
     display: none; }
 
 /************************************************************

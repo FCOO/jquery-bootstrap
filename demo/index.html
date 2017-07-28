@@ -178,9 +178,9 @@
 
         $body.append('<hr>');
            
-        $.bsButton({text: 'Size=large', icon: 'fa-home', size:'large'}).appendTo( $body );
-        $.bsButton({text: 'Size=normal', icon: 'fa-home', size:''}).appendTo( $body );
-        $.bsButton({text: 'Size=small', icon: 'fa-home', size:'small'}).appendTo( $body );
+//        $.bsButton({text: 'Size=large', icon: 'fa-home', size:'large'}).appendTo( $body );
+        $.bsButton({text: 'Normal', icon: 'fa-home'}).appendTo( $body );
+        $.bsButton({text: 'Small', icon: 'fa-home', small:true}).appendTo( $body );
 
         $body.append('<hr>');
         
@@ -188,6 +188,7 @@
             
         $.bsButtonGroup({
             vertical: false, 
+            small: true,
             buttons: [
                 {id:'very_slow', icon: 'fa-bicycle', onClick: function(id, selected ){console.log('1: bsButtonGroup', id, selected)} },
                 {icon: 'fa-car'},
@@ -195,23 +196,31 @@
             ]
         }).appendTo( $body );
 
-        $body
-            .append( 
-                $.bsRadioButtonGroup({
-                    vertical: true, 
-                    allowZeroSelected: true, 
-                    onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)}, 
-                    buttons: [
-                        {id:'slow',   icon: 'fa-bicycle',   text:'Slow', active: true  },
-                        {id:'medium', icon: 'fa-car', text:'Normal'  },
-                        {id: 'fast',  icon: 'fa-fighter-jet',   text:'Very fast!' },
-                    ]
-                })
-           )
+        $.bsRadioButtonGroup({
+            vertical: true, 
+            small: true,
+            allowZeroSelected: true, 
+            onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)}, 
+            buttons: [
+                {id:'slow',   icon: 'fa-bicycle',   text:'Slow', active: true  },
+                {id:'medium', icon: 'fa-car', text:'Normal'  },
+                {id: 'fast',  icon: 'fa-fighter-jet',   text:'Very fast!' },
+            ]
+        }).appendTo( $body );
+
+        $.bsRadioButtonGroup({
+            vertical: true, 
+            allowZeroSelected: true, 
+            onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)}, 
+            buttons: [
+                {id:'slow',   icon: 'fa-bicycle',   text:'Slow', active: true  },
+                {id:'medium', icon: 'fa-car', text:'Normal'  },
+                {id: 'fast',  icon: 'fa-fighter-jet',   text:'Very fast!' },
+            ]
+        }).appendTo( $body );
 
 
         $.bsCheckboxButton({
-            size: '',
 //            text: [{da:'Uvalgt', en:'Unselected'}, {da:'Valgt', en:'Selected'}], 
             text: {da:'Vælg mig', en:'Select me'}, 
             icon: ['fa-square-o ', 'fa-check-square-o'],
@@ -230,7 +239,7 @@
         
         for (var i=0; i<titles.length; i++ )
             $.bsButton({
-                size: titles[i].toLowerCase(),
+                small: !i,
                 text: titles[i]
             })
             .appendTo( $body )
@@ -238,7 +247,7 @@
                 onClick: function(id, selected, $buttonGroup){console.log('COMMON 6: bsButtonGroupPopover', id, selected)},
                 vertical: true,
                 placement: "righttop",
-                size: titles[i].toLowerCase(),
+                small: !i,
                 header: {icon:'fa-home', text:titles[i]},
                 footer: {icon:'fa-home', text:titles[i]},
                 buttons: [
@@ -391,7 +400,7 @@
             header:{icon: 'fa-home', text:{da:'Small Overskrift',en:'Small Header'}},
             footer: footer,
             show: false,
-            size: 'small'
+            small: true
         });
 
         var modals = [];
