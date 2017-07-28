@@ -146,7 +146,7 @@ $max-items-visible-in-selectbox: 4;
         .dropdown-header {
             @include header-variant(); 
 
-            line-height: $line-height-base / $font-size-header-factor; //ASdjust line-height to make header and item same height
+            line-height: $line-height-base * $font-size-base / $font-size-sm; //Adjust line-height to make header and item same height
 
             //Items below header moves to the right
             &  ~ .dropdown-item {
@@ -166,7 +166,7 @@ $max-items-visible-in-selectbox: 4;
         }
         .dropdown-header {
             @include header-variant-sm();
-            line-height: $line-height-base / $font-size-header-factor; //ASdjust line-height to make header and item same height
+            line-height: $line-height-base * $font-size-sm / $font-size-xs; //Adjust line-height to make header and item same height
 
             //Items below header moves to the right
             &  ~ .dropdown-item {

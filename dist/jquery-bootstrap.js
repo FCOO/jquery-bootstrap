@@ -673,13 +673,13 @@ TODO:
         var $modalContainer = this.bsModal.$container =
                 $('<div/>')
                     .addClass('modal-content')
-                    .appendTo( this ); //.appendTo( $modalDialog );
+                    .appendTo( this ); 
 
         //Append header
         if (options.forceHeader || options.header || options.close){
             var $modalHeader = this.bsModal.$header =
                     $('<div/>')
-                        .addClass('modal-header right-side-icon-parent')
+                        .addClass('modal-header')
                         ._bsAddHtml( options.header || $.EMPTY_TEXT )
                         .appendTo( $modalContainer );
 
@@ -690,6 +690,7 @@ TODO:
                             .appendTo( $modalHeader );
                 addClose( $modalClose );
             }
+
         }
 
         //Append fixed content (if any)
@@ -741,7 +742,8 @@ TODO:
             buttonOptions = {
                 class       : '',
                 addSizeClass: true,
-                addOnClick  : true
+                addOnClick  : true,
+                size        : options.size
             };
 
         //No button is given focus by options.focus: true => Last button gets focus
@@ -804,7 +806,7 @@ TODO:
 
         var $result, $modalDialog,
             id = options.id || '_bsModal'+ modalId++,
-            classNames = 'fade '+
+            classNames = (window.bsIsTouch ? '' : 'fade ')+
                          (options.noVerticalPadding ? 'no-vertical-padding ' : ''),
             //Create a close-function
             closeModalFunction = function(){ $result.modal('hide'); };
@@ -812,9 +814,10 @@ TODO:
         //Adjust options
         options =
             $._bsAdjustOptions( options, {
-                baseClass  : 'modal modal-sm',
+                baseClass  : 'modal',
                 class      : classNames,
                 //REMOVED - Only ONE size addSizeClass    : true,
+                addSizeClass: !!options.size, //Only add size-class if size is given. Else use same size for touch and not-touch
 
                 //Header
                 forceHeader: true,
@@ -987,7 +990,6 @@ TODO:
 
             if (options.close)
                 $header
-                    .addClass('popover-close')
                     .append( 
                         $('<i class="fa modal-close"/>') 
                             .on('click', function(){ 
@@ -1050,8 +1052,8 @@ TODO:
                                   )
             )
             this.focus();
-        else
-            $(this).popover('hide');
+//        else
+//            $(this).popover('hide');
         this.skipNextBlur = false;
     }
 

@@ -13,50 +13,25 @@ $modal-lg-rem: $modal-lg*1rem/16px;
 
 
 /************************************************************
-Including "size" xs as in Bootstrap 3
-************************************************************/
-/*
-//Bootstrap 3:
-$padding-small-vertical  :  5px !default;
-$padding-small-horizontal: 10px !default;
-
-$padding-xs-vertical     :  1px !default;
-$padding-xs-horizontal   :  5px !default;
-
-//Bootstrap 4: 
-$btn-padding-x-sm: .5rem !default;
-$btn-padding-y-sm: .25rem !default;
-*/
-
-$btn-padding-x-xs: $btn-padding-x-sm * ( 5 / 10 ); //Same relative size to $btn-padding-x-sm as $padding-xs-horizontal to $padding-small-horizontal 
-$btn-padding-y-xs: $btn-padding-y-sm * ( 1 /  5 ); //Same relative size to $btn-padding-y-sm as $padding-xs-vertical to $padding-small-vertical 
-
-/*
-$input-padding-x   : .75rem !default;
-$input-padding-y   : .5rem !default;
-
-$input-padding-x-sm: .5rem !default;
-$input-padding-y-sm: .25rem !default;
-
-Bootstrap 4
-$input-padding-x-sm: .5rem !default;
-$input-padding-y-sm: .25rem !default;
-
-*/
-$input-padding-x-xs: $input-padding-x-sm * ( 5 / 10);
-$input-padding-y-xs: $input-padding-y-sm * ( 1 /  5);
-
-
-
-/************************************************************
 HEADER
-Font-sizes for headers are adjusted as 14/16
+Font-sizes for headers are one 'size' smaller than normal font
+$font-size-lg  : 1.25rem    20px
+$font-size-base: 1rem       16px
+$font-size-sm  : .875rem    14px
+$font-size-xs  : .75rem     12px
+
 ************************************************************/
+/*
+HER
 $font-size-header-factor: $font-size-sm / $font-size-base;
 
-$font-size-header   : $font-size-base * $font-size-header-factor;
-$font-size-header-lg: $font-size-lg   * $font-size-header-factor;
-$font-size-header-sm: $font-size-sm   * $font-size-header-factor;
+$font-size-header   : $font-size-base * $font-size-header-factor; 
+$font-size-header-lg: $font-size-lg   * $font-size-header-factor; 
+$font-size-header-sm: $font-size-sm   * $font-size-header-factor; 
+*/
+
+$font-size-header   : $font-size-sm; 
+$font-size-header-sm: $font-size-xs; 
 
 
 /************************************************************

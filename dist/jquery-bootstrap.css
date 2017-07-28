@@ -12,6 +12,9 @@
 /***********************************************
 ADJUST BOOTSTRAP DEFAULT VALUES
 ************************************************/
+/************************************************************
+Including "size" xs as in Bootstrap 3
+************************************************************/
 /***********************************************
 IMPORT BOOTSTROP SCSS
 ************************************************/
@@ -1507,7 +1510,7 @@ pre {
 .form-control {
   display: block;
   width: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.5rem;
   font-size: 1rem;
   line-height: 1.25;
   color: #464a4c;
@@ -1586,7 +1589,7 @@ select.form-control:focus::-ms-value {
 .form-control-sm, .input-group-sm > .form-control,
 .input-group-sm > .input-group-addon,
 .input-group-sm > .input-group-btn > .btn {
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.25rem;
   font-size: 0.875rem;
   border-radius: 0.2rem; }
 
@@ -1598,7 +1601,7 @@ select.form-control-sm:not([size]):not([multiple]), .input-group-sm > select.for
 .form-control-lg, .input-group-lg > .form-control,
 .input-group-lg > .input-group-addon,
 .input-group-lg > .input-group-btn > .btn {
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 0.75rem;
   font-size: 1.25rem;
   border-radius: 0.3rem; }
 
@@ -1647,7 +1650,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 .form-control-success,
 .form-control-warning,
 .form-control-danger {
-  padding-right: 2.25rem;
+  padding-right: 1.5rem;
   background-repeat: no-repeat;
   background-position: center right 0.5625rem;
   background-size: 1.125rem 1.125rem; }
@@ -2384,7 +2387,7 @@ tbody.collapse.show {
   vertical-align: middle; }
 
 .input-group-addon {
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.5rem;
   margin-bottom: 0;
   font-size: 1rem;
   font-weight: normal;
@@ -2397,13 +2400,13 @@ tbody.collapse.show {
   .input-group-addon.form-control-sm,
   .input-group-sm > .input-group-addon,
   .input-group-sm > .input-group-btn > .input-group-addon.btn {
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.25rem;
     font-size: 0.875rem;
     border-radius: 0.2rem; }
   .input-group-addon.form-control-lg,
   .input-group-lg > .input-group-addon,
   .input-group-lg > .input-group-btn > .input-group-addon.btn {
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 0.75rem;
     font-size: 1.25rem;
     border-radius: 0.3rem; }
   .input-group-addon input[type="radio"],
@@ -6087,36 +6090,22 @@ VARIABLES
 Variables bassed on bootstrop variables
 ************************************************************/
 /************************************************************
-Including "size" xs as in Bootstrap 3
-************************************************************/
-/*
-//Bootstrap 3:
-$padding-small-vertical  :  5px !default;
-$padding-small-horizontal: 10px !default;
-
-$padding-xs-vertical     :  1px !default;
-$padding-xs-horizontal   :  5px !default;
-
-//Bootstrap 4: 
-$btn-padding-x-sm: .5rem !default;
-$btn-padding-y-sm: .25rem !default;
-*/
-/*
-$input-padding-x   : .75rem !default;
-$input-padding-y   : .5rem !default;
-
-$input-padding-x-sm: .5rem !default;
-$input-padding-y-sm: .25rem !default;
-
-Bootstrap 4
-$input-padding-x-sm: .5rem !default;
-$input-padding-y-sm: .25rem !default;
-
-*/
-/************************************************************
 HEADER
-Font-sizes for headers are adjusted as 14/16
+Font-sizes for headers are one 'size' smaller than normal font
+$font-size-lg  : 1.25rem    20px
+$font-size-base: 1rem       16px
+$font-size-sm  : .875rem    14px
+$font-size-xs  : .75rem     12px
+
 ************************************************************/
+/*
+HER
+$font-size-header-factor: $font-size-sm / $font-size-base;
+
+$font-size-header   : $font-size-base * $font-size-header-factor; 
+$font-size-header-lg: $font-size-lg   * $font-size-header-factor; 
+$font-size-header-sm: $font-size-sm   * $font-size-header-factor; 
+*/
 /************************************************************
 CONTENT
 Unifies padding for modal, accordion, popup etc.
@@ -6149,7 +6138,7 @@ MIXIN
 /************************************************************
 RIGHT-SIDE-ICON
 Add style to <i> to place it to the right and vertical center
-NOTE: Parent element MUST have @include right-side-icon-parent();
+NOTE: Parent element MUST have @include vertical-align-center();
 ************************************************************/
 /************************************************************
 CONTENT
@@ -6185,9 +6174,6 @@ Padding are set to button y-padding (moving text to the left)
 ************************************************************/
 /************************************************************
 header-variant
-************************************************************/
-/************************************************************
-header-inline--variant
 ************************************************************/
 /************************************************************
 title-variant - as header but with same font-size as siblings
@@ -6318,9 +6304,9 @@ Modernizr-test for elements with class="active" when selected
 Including .btn-xs and btn-group-xs as in Bootstrap 3
 ************************************************************/
 .btn-xs, .btn-group-xs > .btn {
-  padding: 0.05rem 0.125rem;
-  font-size: 0.875rem;
-  border-radius: 0.2rem; }
+  padding: 0.2rem 0.2rem;
+  font-size: 0.75rem;
+  border-radius: 0.1rem; }
 
 /************************************************************
 BUTTON-GROUP
@@ -6387,7 +6373,7 @@ LIST-GROUP and LIST-GROUP-ITEM
   border-radius: 0.2rem; }
 
 .list-group-xs > .list-group-item {
-  padding: 0.05rem 0.125rem;
+  padding: 0.2rem 0.2rem;
   font-size: 0.875rem;
   border-radius: 0.2rem; }
 
@@ -6421,22 +6407,50 @@ POPOVER
 .popover .popover-title-content {
   font-weight: normal;
   line-height: 1.5;
+  display: flex;
+  justify-content: normal;
+  align-items: center;
+  /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   border-radius: inherit;
   color: #636c72;
   background-color: #f7f7f7;
   font-weight: normal;
-  line-height: 1.25; }
+  line-height: 1.25;
+  display: flex;
+  justify-content: normal;
+  align-items: center; }
   .popover .popover-title-content span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
-  .popover .popover-title-content.popover-close {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-right: 0 !important; }
+  .popover .popover-title-content > * {
+    line-height: inherit; }
+  .popover .popover-title-content > * {
+    line-height: inherit; }
 
 .popover .popover-content:not(.default-padding) {
   padding: 1px 1px; }
@@ -6444,6 +6458,32 @@ POPOVER
 .popover .popover-footer {
   font-weight: normal;
   line-height: 1.5;
+  display: flex;
+  justify-content: normal;
+  align-items: center;
+  /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   border-radius: inherit;
@@ -6452,68 +6492,101 @@ POPOVER
   line-height: 1;
   border-top: 0.0625rem solid #eceeef;
   border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
-  /*
-        border-top: $modal-footer-border-width solid $modal-footer-border-color;
-
-        border-top-left-radius : 0 !important;
-        border-top-right-radius: 0 !important;
-    
-        @include header-variant();
-        margin-top: $btn-padding-y;
-        padding   : 0 !important;
-
-        //Hide when empty
-        &:empty { display: none; }
-*/ }
+  border-top-right-radius: 0 !important; }
   .popover .popover-footer span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .popover .popover-footer > * {
+    line-height: inherit; }
   .popover .popover-footer:empty {
     display: none; }
 
-.popover.popover-lg .popover-title-content, .popover.popover-lg .popover-footer {
+.popover.popover-sm .popover-title-content {
   font-weight: normal;
   line-height: 1.5;
-  padding: 0.75rem 0.75rem;
-  font-size: 1.09375rem;
-  border-radius: inherit; }
-  .popover.popover-lg .popover-title-content span, .popover.popover-lg .popover-footer span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; }
+  display: flex;
+  justify-content: normal;
+  align-items: center;
+  /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
 
-.popover.popover-lg .popover-footer {
-  margin-top: 0.75rem; }
+    } @else 
 
-.popover.popover-sm .popover-title-content, .popover.popover-sm .popover-footer {
-  font-weight: normal;
-  line-height: 1.5;
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
   padding: 0.25rem 0.25rem;
-  font-size: 0.765625rem;
+  font-size: 0.75rem;
   border-radius: inherit; }
-  .popover.popover-sm .popover-title-content span, .popover.popover-sm .popover-footer span {
+  .popover.popover-sm .popover-title-content span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .popover.popover-sm .popover-title-content > * {
+    line-height: inherit; }
 
 .popover.popover-sm .popover-footer {
-  margin-top: 0.25rem; }
-
-.popover.popover-xs .popover-title-content, .popover.popover-xs .popover-footer {
   font-weight: normal;
   line-height: 1.5;
-  padding: 0.05rem 0.05rem;
-  font-size: 0.765625rem;
-  border-radius: inherit; }
-  .popover.popover-xs .popover-title-content span, .popover.popover-xs .popover-footer span {
+  display: flex;
+  justify-content: normal;
+  align-items: center;
+  /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
+  padding: 0.25rem 0.25rem;
+  font-size: 0.75rem;
+  border-radius: inherit;
+  color: #636c72;
+  background-color: #f7f7f7;
+  line-height: 1;
+  border-top: 0.0625rem solid #eceeef;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important; }
+  .popover.popover-sm .popover-footer span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
-
-.popover.popover-xs .popover-footer {
-  margin-top: 0.05rem; }
+  .popover.popover-sm .popover-footer > * {
+    line-height: inherit; }
+  .popover.popover-sm .popover-footer:empty {
+    display: none; }
 
 /**************************************************
 CHECKBOX
@@ -6748,16 +6821,17 @@ Two versions:
     text-align: left;
     position: relative;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-right: 0 !important; }
+    justify-content: normal;
+    align-items: center; }
+    .dropdown.selectbox > .btn > * {
+      line-height: inherit; }
     .dropdown.selectbox > .btn .arrow {
       font-size: 0.8em;
       color: #000;
       text-shadow: 0 1px 0 #fff;
       line-height: 1;
       margin-left: auto;
-      margin-right: 0.5em;
+      margin-right: 0;
       opacity: .3; }
       .dropdown.selectbox > .btn .arrow:before {
         content: ""; }
@@ -6865,6 +6939,32 @@ Two versions:
   .dropdown.selectbox .dropdown-header, .selectList .dropdown-header {
     font-weight: normal;
     line-height: 1.5;
+    display: flex;
+    justify-content: normal;
+    align-items: center;
+    /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
     padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     border-radius: inherit;
@@ -6873,6 +6973,8 @@ Two versions:
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .dropdown.selectbox .dropdown-header > *, .selectList .dropdown-header > * {
+      line-height: inherit; }
     .dropdown.selectbox .dropdown-header ~ .dropdown-item, .selectList .dropdown-header ~ .dropdown-item {
       padding-left: 1.5rem; }
   .dropdown.selectbox.selectbox-sm .dropdown-menu, .dropdown.selectbox.selectList-sm .dropdown-menu, .selectList.selectbox-sm .dropdown-menu, .selectList.selectList-sm .dropdown-menu {
@@ -6884,14 +6986,42 @@ Two versions:
   .dropdown.selectbox.selectbox-sm .dropdown-header, .dropdown.selectbox.selectList-sm .dropdown-header, .selectList.selectbox-sm .dropdown-header, .selectList.selectList-sm .dropdown-header {
     font-weight: normal;
     line-height: 1.5;
+    display: flex;
+    justify-content: normal;
+    align-items: center;
+    /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
     padding: 0.25rem 0.25rem;
-    font-size: 0.765625rem;
+    font-size: 0.75rem;
     border-radius: inherit;
-    line-height: 1.7142857143; }
+    line-height: 1.75; }
     .dropdown.selectbox.selectbox-sm .dropdown-header span, .dropdown.selectbox.selectList-sm .dropdown-header span, .selectList.selectbox-sm .dropdown-header span, .selectList.selectList-sm .dropdown-header span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .dropdown.selectbox.selectbox-sm .dropdown-header > *, .dropdown.selectbox.selectList-sm .dropdown-header > *, .selectList.selectbox-sm .dropdown-header > *, .selectList.selectList-sm .dropdown-header > * {
+      line-height: inherit; }
     .dropdown.selectbox.selectbox-sm .dropdown-header ~ .dropdown-item, .dropdown.selectbox.selectList-sm .dropdown-header ~ .dropdown-item, .selectList.selectbox-sm .dropdown-header ~ .dropdown-item, .selectList.selectList-sm .dropdown-header ~ .dropdown-item {
       padding-left: 1.125rem; }
 
@@ -6913,7 +7043,7 @@ If the height (and width) of the content is variable (eq. accordion) the class
   text-shadow: 0 1px 0 #fff;
   line-height: 1;
   margin-left: auto;
-  margin-right: 0.5em;
+  margin-right: 0;
   opacity: .5; }
   .modal-close:before {
     content: ""; }
@@ -6953,6 +7083,32 @@ If the height (and width) of the content is variable (eq. accordion) the class
     flex-grow: 0;
     font-weight: normal;
     line-height: 1.5;
+    display: flex;
+    justify-content: normal;
+    align-items: center;
+    /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
     padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     border-radius: inherit;
@@ -6962,6 +7118,8 @@ If the height (and width) of the content is variable (eq. accordion) the class
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .modal .modal-header > *, .modal-inline .modal-header > * {
+      line-height: inherit; }
   .modal .modal-body-fixed, .modal-inline .modal-body-fixed {
     flex-shrink: 0;
     flex-grow: 0;
@@ -6985,6 +7143,32 @@ If the height (and width) of the content is variable (eq. accordion) the class
     flex-grow: 0;
     font-weight: normal;
     line-height: 1.5;
+    display: flex;
+    justify-content: normal;
+    align-items: center;
+    /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
     padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     border-radius: inherit;
@@ -6998,6 +7182,8 @@ If the height (and width) of the content is variable (eq. accordion) the class
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .modal .modal-footer-header > *, .modal-inline .modal-footer-header > * {
+      line-height: inherit; }
     .modal .modal-footer-header:empty, .modal-inline .modal-footer-header:empty {
       display: none; }
     .modal .modal-footer-header:empty, .modal-inline .modal-footer-header:empty {
@@ -7012,22 +7198,124 @@ If the height (and width) of the content is variable (eq. accordion) the class
     padding-top: 0;
     padding-bottom: 0; }
 
-.modal.modal-sm .modal-header {
+.modal.modal-sm .modal-header,
+.modal.modal-xs .modal-header,
+.modal-inline.modal-sm .modal-header,
+.modal-inline.modal-xs .modal-header {
   font-weight: normal;
   line-height: 1.5;
+  display: flex;
+  justify-content: normal;
+  align-items: center;
+  /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
   padding: 0.25rem 0.25rem;
-  font-size: 0.765625rem;
+  font-size: 0.75rem;
   border-radius: inherit; }
-  .modal.modal-sm .modal-header span {
+  .modal.modal-sm .modal-header span,
+  .modal.modal-xs .modal-header span,
+  .modal-inline.modal-sm .modal-header span,
+  .modal-inline.modal-xs .modal-header span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .modal.modal-sm .modal-header > *,
+  .modal.modal-xs .modal-header > *,
+  .modal-inline.modal-sm .modal-header > *,
+  .modal-inline.modal-xs .modal-header > * {
+    line-height: inherit; }
 
-.modal.modal-sm .modal-body {
+.modal.modal-sm .modal-body,
+.modal.modal-xs .modal-body,
+.modal-inline.modal-sm .modal-body,
+.modal-inline.modal-xs .modal-body {
   padding: 0.75rem; }
-  .modal.modal-sm .modal-body.scrollbar-vertical {
+  .modal.modal-sm .modal-body.scrollbar-vertical,
+  .modal.modal-xs .modal-body.scrollbar-vertical,
+  .modal-inline.modal-sm .modal-body.scrollbar-vertical,
+  .modal-inline.modal-xs .modal-body.scrollbar-vertical {
     padding-left: 0.1875rem;
     padding-right: 0.1875rem; }
+
+.modal.modal-sm .modal-footer-header,
+.modal.modal-xs .modal-footer-header,
+.modal-inline.modal-sm .modal-footer-header,
+.modal-inline.modal-xs .modal-footer-header {
+  font-weight: normal;
+  line-height: 1.5;
+  display: flex;
+  justify-content: normal;
+  align-items: center;
+  /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
+  padding: 0.25rem 0.25rem;
+  font-size: 0.75rem;
+  border-radius: inherit;
+  color: #636c72;
+  background-color: #f7f7f7;
+  line-height: 1;
+  border-top: 0.0625rem solid #eceeef;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important; }
+  .modal.modal-sm .modal-footer-header span,
+  .modal.modal-xs .modal-footer-header span,
+  .modal-inline.modal-sm .modal-footer-header span,
+  .modal-inline.modal-xs .modal-footer-header span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .modal.modal-sm .modal-footer-header > *,
+  .modal.modal-xs .modal-footer-header > *,
+  .modal-inline.modal-sm .modal-footer-header > *,
+  .modal-inline.modal-xs .modal-footer-header > * {
+    line-height: inherit; }
+  .modal.modal-sm .modal-footer-header:empty,
+  .modal.modal-xs .modal-footer-header:empty,
+  .modal-inline.modal-sm .modal-footer-header:empty,
+  .modal-inline.modal-xs .modal-footer-header:empty {
+    display: none; }
 
 /************************************************************
 FORM
@@ -7038,7 +7326,7 @@ Including .form-control-xs and .input-group-xs as in Bootstrap 3
 .form-control-xs, .input-group-xs > .form-control,
 .input-group-xs > .input-group-addon,
 .input-group-xs > .input-group-btn > .btn {
-  padding: 0.05rem 0.25rem;
+  padding: 0.2rem 0.2rem;
   font-size: 0.875rem;
   border-radius: 0.2rem; }
 
@@ -7057,7 +7345,21 @@ Adjustmernt to Bootstrap table
     *************************************/
   /*************************************
     Sizing tr and td
-    *************************************/ }
+    *************************************/
+  /* HER
+    //LARGE
+    &.table-lg {
+        //Header
+        thead tr th { @include title-variant-lg();  }       
+
+        //Cell
+        tbody tr td { 
+            padding  : $btn-padding-y-lg;
+            font-size: $font-size-lg; 
+
+        }
+    }
+*/ }
   .table:not(:last-child) {
     margin-bottom: 0.5rem; }
   .table.table-with-header,
@@ -7066,6 +7368,7 @@ Adjustmernt to Bootstrap table
     padding: 0;
     margin: 0; }
   .table thead tr th {
+    display: table-cell !important;
     color: #4b5257;
     background-color: #f0f0f0; }
     .table thead tr th.sortable {
@@ -7109,6 +7412,32 @@ Adjustmernt to Bootstrap table
   .table.table-sm thead tr th {
     font-weight: normal;
     line-height: 1.5;
+    display: flex;
+    justify-content: normal;
+    align-items: center;
+    /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
     padding: 0.25rem 0.25rem;
     font-size: 0.875rem;
     border-radius: inherit; }
@@ -7116,12 +7445,40 @@ Adjustmernt to Bootstrap table
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .table.table-sm thead tr th > * {
+      line-height: inherit; }
   .table.table-sm tbody tr td {
     padding: 0.25rem;
     font-size: 0.875rem; }
   .table thead tr th {
     font-weight: normal;
     line-height: 1.5;
+    display: flex;
+    justify-content: normal;
+    align-items: center;
+    /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
     padding: 0.5rem 0.5rem;
     font-size: 1rem;
     border-radius: inherit; }
@@ -7129,22 +7486,11 @@ Adjustmernt to Bootstrap table
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .table thead tr th > * {
+      line-height: inherit; }
   .table tbody tr td {
     padding: 0.5rem;
     font-size: 1rem; }
-  .table.table-lg thead tr th {
-    font-weight: normal;
-    line-height: 1.5;
-    padding: 0.75rem 0.75rem;
-    font-size: 1.25rem;
-    border-radius: inherit; }
-    .table.table-lg thead tr th span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap; }
-  .table.table-lg tbody tr td {
-    padding: 0.75rem;
-    font-size: 1.25rem; }
 
 /*************************************
 Container for scrolling tables
@@ -7182,13 +7528,38 @@ Using Bootstrap Collapse to create accordion
     background-color: #e0e0e0;
     font-weight: normal;
     line-height: 1.5;
+    display: flex;
+    justify-content: normal;
+    align-items: center;
+    /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
     padding: 0.5rem 0.5rem;
     font-size: 1rem;
     border-radius: inherit;
     display: flex;
+    justify-content: normal;
     align-items: center;
-    justify-content: space-between;
-    padding-right: 0 !important;
     border-radius: 0.25rem; }
     .accordion .card-header:hover {
       background-color: #d9d9d9; }
@@ -7202,13 +7573,17 @@ Using Bootstrap Collapse to create accordion
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .accordion .card-header > * {
+      line-height: inherit; }
+    .accordion .card-header > * {
+      line-height: inherit; }
     .accordion .card-header .chevrolet {
       font-size: 0.8em;
       color: #000;
       text-shadow: 0 1px 0 #fff;
       line-height: 1;
       margin-left: auto;
-      margin-right: 0.5em;
+      margin-right: 0;
       opacity: .3; }
       .accordion .card-header .chevrolet:before {
         content: ""; }
@@ -7223,6 +7598,32 @@ Using Bootstrap Collapse to create accordion
   .accordion .card-footer {
     font-weight: normal;
     line-height: 1.5;
+    display: flex;
+    justify-content: normal;
+    align-items: center;
+    /*    
+    @if ($size == 'sm') {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'xs'){
+        $padding-y: $btn-padding-y-xs;
+        $padding-x: $btn-padding-x-xs;
+        $font-size: $font-size-sm;
+
+    } @else 
+
+    if ($size == 'lg'){
+        $padding-y: $btn-padding-y-lg;
+        $padding-x: $btn-padding-x-lg;
+        $font-size: $font-size-lg;
+    }
+
+    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
     padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     border-radius: inherit;
@@ -7237,6 +7638,8 @@ Using Bootstrap Collapse to create accordion
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .accordion .card-footer > * {
+      line-height: inherit; }
     .accordion .card-footer:empty {
       display: none; }
 

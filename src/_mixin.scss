@@ -211,7 +211,8 @@ Padding are set to button y-padding (moving text to the left)
 /************************************************************
 header-variant
 ************************************************************/
-@mixin header-variant($font-size-factor: $font-size-header-factor, $size: 'nm' ) { 
+//HER @mixin header-variant($font-size-factor: $font-size-header-factor, $size: 'nm' ) { 
+@mixin header-variant($small: false, $bigger-font: false ) { 
 
     font-weight: $font-weight-base;
     line-height: $line-height-base;
@@ -222,8 +223,21 @@ header-variant
 
     $padding-y: $btn-padding-y;
     $padding-x: $btn-padding-x; 
-    $font-size: $font-size-base;
+    $font-size: $font-size-sm;
+    @if $bigger-font == true {
+        $font-size: $font-size-base;
+    } 
+
+    @if $small == true {
+        $padding-y: $btn-padding-y-sm;
+        $padding-x: $btn-padding-x-sm;
+        $font-size: $font-size-xs;
+        @if $bigger-font == true {
+            $font-size: $font-size-sm;
+        }
+    }
     
+/*    
     @if ($size == 'sm') {
         $padding-y: $btn-padding-y-sm;
         $padding-x: $btn-padding-x-sm;
@@ -245,29 +259,35 @@ header-variant
     }
 
     @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
+*/
+    @include button-size($padding-y, $padding-x, $font-size,   inherit); 
 }
 
-@mixin header-variant-lg( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'lg' ); }
-@mixin header-variant-sm( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'sm' ); }
-@mixin header-variant-xs( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'xs' ); }
+//@mixin header-variant-lg( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'lg' ); }
+//@mixin header-variant-sm( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'sm' ); }
+//@mixin header-variant-xs( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'xs' ); }
+@mixin header-variant-sm( $bigger-font: false ) { @include header-variant( true, $bigger-font ); }
 
 /************************************************************
 title-variant - as header but with same font-size as siblings
 ************************************************************/
-@mixin title-variant( $size: 'nm' ) { 
-    @include header-variant( 1.0, $size );
+//HER @mixin title-variant( $size: 'nm' ) { 
+@mixin title-variant( $small: false ) { 
+    @include header-variant( $small, true );
 }
 
-@mixin title-variant-lg() { @include title-variant( 'lg' ); }
-@mixin title-variant-sm() { @include title-variant( 'sm' ); }
-@mixin title-variant-xs() { @include title-variant( 'xs' ); }
+//@mixin title-variant-lg() { @include title-variant( 'lg' ); }
+//@mixin title-variant-sm() { @include title-variant( 'sm' ); }
+//@mixin title-variant-xs() { @include title-variant( 'xs' ); }
+@mixin title-variant-sm() { @include title-variant( true ); }
 
 
 /************************************************************
 footer-variant
 ************************************************************/
-@mixin footer-variant( $size: 'nm' ) { 
-    @include header-variant( $font-size-header-factor, $size );
+//HER @mixin footer-variant( $size: 'nm' ) { 
+@mixin footer-variant( $small: false ) { 
+    @include header-variant( $small );
     @include header-color();
 
     line-height: 1; //Decrease height
@@ -282,9 +302,10 @@ footer-variant
 
 }
 
-@mixin footer-variant-lg() { @include footer-variant( 'lg' ); }
-@mixin footer-variant-sm() { @include footer-variant( 'sm' ); }
-@mixin footer-variant-xs() { @include footer-variant( 'xs' ); }
+//@mixin footer-variant-lg() { @include footer-variant( 'lg' ); }
+//@mixin footer-variant-sm() { @include footer-variant( 'sm' ); }
+//@mixin footer-variant-xs() { @include footer-variant( 'xs' ); }
+@mixin footer-variant-sm() { @include footer-variant( true ); }
 
 
 

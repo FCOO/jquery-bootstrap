@@ -115,10 +115,11 @@ If the height (and width) of the content is variable (eq. accordion) the class
 }
 
 
-
-// /* REMOVED - Only ONE size for modal
+//size='small' both for sm and xs
 .modal.modal-sm,
-.modal-inline.modal-sm {
+.modal.modal-xs,
+.modal-inline.modal-sm,
+.modal-inline.modal-xs {
     .modal-header {
         @include header-variant-sm(); 
     }
@@ -131,8 +132,8 @@ If the height (and width) of the content is variable (eq. accordion) the class
     }
 
     .modal-footer {
-//        padding: $btn-padding-x-sm;
-//        .btn { @extend .btn-sm; }
+        //padding: $btn-padding-x-sm;
+        //.btn { @extend .btn-sm; }
     }
 }
 //*/

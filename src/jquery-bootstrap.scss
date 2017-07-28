@@ -42,14 +42,34 @@ $modal-backdrop-opacity: .3; //.5 !default;
 
 
 //Setting padding around buttons etc. equal in both directions
-$btn-padding-x: .5rem;
-$btn-padding-y: .5rem;
+$btn-padding-x-lg  : .75rem;
+$btn-padding-y-lg  : $btn-padding-x-lg;
+$input-padding-x-lg: $btn-padding-x-lg;
+$input-padding-y-lg: $btn-padding-x-lg;
 
-$btn-padding-x-sm: .25rem;
-$btn-padding-y-sm: .25rem;
+$btn-padding-x  : .5rem;
+$btn-padding-y  : $btn-padding-x;
+$input-padding-x: $btn-padding-x;
+$input-padding-y: $btn-padding-x;
 
-$btn-padding-x-lg: .75rem;
-$btn-padding-y-lg: .75rem;
+$btn-padding-x-sm  : .25rem;
+$btn-padding-y-sm  : $btn-padding-x-sm;
+$input-padding-x-sm: $btn-padding-x-sm;
+$input-padding-y-sm: $btn-padding-x-sm;
+
+
+
+/************************************************************
+Including "size" xs as in Bootstrap 3
+************************************************************/
+$btn-padding-x-xs  : .2rem;
+$btn-padding-y-xs  : $btn-padding-x-xs;
+$input-padding-x-xs: $btn-padding-x-xs;
+$input-padding-y-xs: $btn-padding-x-xs;
+
+$border-radius-xs      : .1rem;
+$btn-border-radius-xs  : $border-radius-xs;
+$input-border-radius-xs: $border-radius-xs;
 
 
 

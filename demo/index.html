@@ -29,8 +29,10 @@
     <script src="../src/jquery-bootstrap-popover.js"></script>
 
 	<script>
-        window.bsIsTouch = true;
-        //window.bsIsTouch = false;
+        //window.bsIsTouch = true;
+        window.bsIsTouch = false;
+
+        window.bsIsTouch = (window.location.search =='?touch');
 
         i18next.init();        
         i18next.changeLanguage('da');
@@ -45,6 +47,17 @@
         });
 
 
+        $body.append( '<h2>Created by javascript (bsIsTouch='+window.bsIsTouch+ ')</h2>' );
+        $('<div/>')
+            .i18n({da:'Klik for at skifte touch-mode', en:'Click to change touch-mode'})
+            .on('click', function(){
+                if (window.bsIsTouch)
+                    location.replace("index.html");
+                else
+                    location.replace("index.html?touch");
+            })
+            .appendTo( $body );
+
         $('<div/>')
             .i18n({da:'Klik for at skifte sprog', en:'Click to change language'})
             .on('click', function(){
@@ -52,6 +65,8 @@
                 $('*').localize();
             })
             .appendTo( $body );
+
+        $body.append( $('<hr>') );
 
         var content = [
             { 
@@ -120,7 +135,7 @@
             content: longContent
         });//
         
-
+/*
         myBsTable.asModal({
             header:'En stor tabel', 
             closeIcon: 'fa-globe',
@@ -128,14 +143,12 @@
             flex:true, 
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }]
         });
+*/
 //OR
 //        myBsTable.appendTo( $body );
 
 //*        
         $body
-
-            .append( '<br>' )
-            .append( '<h4>Created by javascript (bsIsTouch='+window.bsIsTouch+ ')</h4>' );
 
         var selectItems = [
                 {id: 'slow',   icon: 'fa-bicycle'  , text:{da:'Meget langsomt___________________________', en: 'Slow'} },
@@ -213,7 +226,7 @@
         $body.append('<hr>');
 
        
-        var titles = ['Small', 'Normal', 'Large'];
+        var titles = ['Small', 'Normal'];
         
         for (var i=0; i<titles.length; i++ )
             $.bsButton({
@@ -360,6 +373,7 @@
 
         $accordion = $.bsAccordion({ children: accor_children, footer: 'footer' }),
         $accordion2 = $.bsAccordion({ children: accor_children, footer: 'footer'  });
+        $accordion3 = $.bsAccordion({ children: accor_children, footer: 'footer'  });
 
 
         var m = $accordion.asModal({
@@ -370,6 +384,14 @@
             flex: false, 
             header:[{icon: 'fa-home', text:{da:'FIXED Overskrift',en:'Header'}}, {icon: 'fa-globe', text:{da:'Overskrift#2',en:'Header#2'}}],
             show: false
+        });
+
+        var m_small = $accordion3.asModal({
+            flex: false, 
+            header:{icon: 'fa-home', text:{da:'Small Overskrift',en:'Small Header'}},
+            footer: footer,
+            show: false,
+            size: 'small'
         });
 
         var modals = [];
@@ -407,6 +429,12 @@
             .on('click', function(e){
                 m_fixed.show();
         });
+        $('<button>Small modal</button>')
+            .appendTo( $body)
+            .on('click', function(e){
+                m_small.show();
+        });
+
 
         $('<button>Multi modal</button>')
             .appendTo( $body)

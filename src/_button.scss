@@ -20,7 +20,7 @@ div.btn, div.list-group-item {
 
 //Icons in buttons get equal size to allow shift of icon
 .btn > i.fa {
-    min-width: 1em;
+    min-width : 1em;
     text-align: left;
 }
 
@@ -40,8 +40,7 @@ Modernizr-test for elements with class="active" when selected
 Including .btn-xs and btn-group-xs as in Bootstrap 3
 ************************************************************/
 .btn-xs {
-    //Original Bootstrap 3 = @include button-size($padding-xs-vertical, $padding-xs-horizontal, $font-size-small, $line-height-small, $btn-border-radius-small);
-    @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-sm, $btn-border-radius-sm);
+    @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $btn-border-radius-xs);
 }
 .btn-group-xs > .btn { @extend .btn-xs; }
 

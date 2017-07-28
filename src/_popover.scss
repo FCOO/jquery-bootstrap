@@ -17,7 +17,6 @@ POPOVER
         line-height: $btn-line-height; //Same as buttons
 
         @include vertical-align-center();
-    
     }
 
     //Set small padding for no-default contents
@@ -30,23 +29,14 @@ POPOVER
         @extend .mx-auto;
     }
     
-    
     //Popover footer
     .popover-footer {
         @include footer-variant();
     }
 
-    //Different size
-    &.popover-lg {
-        .popover-title-content { @include header-variant-lg(); }
-        .popover-footer        { @include footer-variant-lg(); }
-    }
+    //Small size
     &.popover-sm {
         .popover-title-content { @include header-variant-sm(); }
         .popover-footer        { @include footer-variant-sm(); }
-    }
-    &.popover-xs {
-        .popover-title-content { @include header-variant-xs(); }
-        .popover-footer        { @include footer-variant-xs(); }
     }
 }

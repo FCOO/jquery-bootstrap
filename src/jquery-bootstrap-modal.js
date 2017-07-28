@@ -231,7 +231,8 @@
             buttonOptions = {
                 class       : '',
                 addSizeClass: true,
-                addOnClick  : true
+                addOnClick  : true,
+                size        : options.size
             };
 
         //No button is given focus by options.focus: true => Last button gets focus
@@ -305,6 +306,7 @@
                 baseClass  : 'modal',
                 class      : classNames,
                 //REMOVED - Only ONE size addSizeClass    : true,
+                addSizeClass: !!options.size, //Only add size-class if size is given. Else use same size for touch and not-touch
 
                 //Header
                 forceHeader: true,
