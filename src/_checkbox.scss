@@ -10,7 +10,7 @@ https://github.com/flatlogic/awesome-bootstrap-checkbox
 $font-family-icon: 'FontAwesome';
 $fa-checkbox-icon: "\f00c";
 
-$line-height : $btn-line-height;
+$line-height : $input-btn-line-height;
 
 $icon-dim-factor: 0.8;    
 
@@ -61,7 +61,7 @@ div.checkbox, div.radio {
             //::before = border and background
             &::before{
                 border: $border-width solid $input-border-color;
-                background-color: $btn-secondary-bg;
+                background-color: $control-bg-color; 
 
                 @include transition(border 0.15s ease-in-out, color 0.15s ease-in-out);
             } 
@@ -74,9 +74,7 @@ div.checkbox, div.radio {
 
         //When checkbox has focus
         &:focus + label::before{
-            outline: thin dotted;
-            outline: 5px auto -webkit-focus-ring-color;
-            outline-offset: -2px;
+            @include focus-style();
         }
 
         //When un-checked
@@ -87,7 +85,7 @@ div.checkbox, div.radio {
         //hover on un-checked = same state as list-group items
         &:not(:checked):not(:disabled):hover + label::before {
             text-decoration: none;
-            background-color: $control-bg-color-hover;
+            background-color: darken($control-bg-color, $darken-hover-percent);
         }
 
         //When checked
@@ -98,24 +96,43 @@ div.checkbox, div.radio {
             color: $control-active-color; 
         }
 
-        
         //hover on checked - only on checkbox
         &[type="checkbox"]:checked:hover + label::before {
-            background-color: $control-active-bg-color-hover;
+            background-color: darken($control-active-bg-color, $darken-hover-percent);
         }
   
+        //When semi-selected - used when a checkbox is for a group and not all children is selected. Only for checkbox
+        &[type="checkbox"].semi-selected:checked {
+
+//        &:checked + label::before {
+            & + label::before {
+                background-color: $semi-selected-bg-color; 
+            }
+            & + label::after {
+                color: $control-active-color; 
+            }
+
+            //hover on checked
+            &:hover + label::before {
+                background-color: darken($semi-selected-bg-color, $darken-hover-percent);
+            }
+        }
+
+
+
+
         //disabled = disabled item-list 
         &:disabled + label{
             color           : $list-group-disabled-color !important;
-            cursor          : $cursor-disabled !important;
+            cursor          : not-allowed !important;
             background-color: $list-group-disabled-bg !important;
             &::before{
                 background-color: $list-group-disabled-bg !important;    
-                cursor          : $cursor-disabled !important;
+                cursor          : not-allowed !important;
             }
             &::after{
                 color : $list-group-disabled-color !important;
-                cursor: $cursor-disabled !important;
+                cursor: not-allowed !important;
             }
         }
     }//input[type="checkbox"], ...

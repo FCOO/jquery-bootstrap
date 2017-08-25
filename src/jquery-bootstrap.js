@@ -148,17 +148,43 @@
         ****************************************************************************************/
         _bsAddStyleClasses: function( options ){
             options = options || {};
-            var styles = "left right center lowercase uppercase capitalize normal bold italic".split(' '),
-                classes = "text-left text-right text-center text-lowercase text-uppercase text-capitalize font-weight-normal font-weight-bold font-italic".split(' ');
-                
-            for (var i=0; i<styles.length; i++ ){
-                var nextStyle = styles[i]; 
+
+            var _this = this,
+
+                bsStyleClass = {
+                    //Text color
+                    "primary"     : "text-primary",
+                    "secondary"   : "text-secondary",
+                    "success"     : "text-success",
+                    "danger"      : "text-danger",
+                    "warning"     : "text-warning",
+                    "info"        : "text-info",
+                    "light"       : "text-light",
+                    "dark"        : "text-dark",
+
+                    //Align
+                    "left"        : "text-left",
+                    "right"       : "text-right",
+                    "center"      : "text-center",
+
+                    //Case
+                    "lowercase"   : "text-lowercase",
+                    "uppercase"   : "text-uppercase",
+                    "capitalize"  : "text-capitalize",
+
+                    //Weight
+                    "normal"      : "font-weight-normal",
+                    "bold"        : "font-weight-bold",
+                    "italic"      : "font-italic"
+                };
+
+            $.each( bsStyleClass, function( style, className ){
                 if (  
-                      ( (typeof options == 'string') && (options.indexOf(nextStyle) > -1 )  ) ||
-                      ( (typeof options == 'object') && (options[nextStyle]) ) 
+                      ( (typeof options == 'string') && (options.indexOf(style) > -1 )  ) ||
+                      ( (typeof options == 'object') && (options[style]) ) 
                     )
-                    this.addClass( classes[i] );                    
-            }
+                    _this.addClass( className );                    
+            });
             return this;
         },
 

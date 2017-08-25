@@ -3,6 +3,14 @@ VARIABLES
 ************************************************************/
 
 
+/***********************************************
+DEFINE BOOTSTRAP BUTTON STYLE
+$btn-style-name MUST correspond with ns.bsButtonClass 
+in src/jquery-bootstrap-button.js 
+************************************************/
+$btn-style-name: standard;
+
+
 /************************************************************
 Variables bassed on bootstrop variables
 ************************************************************/
@@ -21,35 +29,20 @@ $font-size-sm  : .875rem    14px
 $font-size-xs  : .75rem     12px
 
 ************************************************************/
-/*
-HER
-$font-size-header-factor: $font-size-sm / $font-size-base;
-
-$font-size-header   : $font-size-base * $font-size-header-factor; 
-$font-size-header-lg: $font-size-lg   * $font-size-header-factor; 
-$font-size-header-sm: $font-size-sm   * $font-size-header-factor; 
-*/
-
 $font-size-header   : $font-size-sm; 
 $font-size-header-sm: $font-size-xs; 
 
 
 /************************************************************
 CONTENT
-Unifies padding for modal, accordion, popup etc.
-Using smallest vertical/horizontal padding from buttons and
-correct (partly) for padding added when in a scrollbar-container
+Unifies padding and font-size for content of modal, accordion, popup etc.
+Using same font-size and vertical/horizontal padding as buttons
 ************************************************************/
+$content-padding-y   : $btn-padding-y;
+$content-padding-x   : $btn-padding-x;
 
-//Using $scroll-size and $scrollbar-margin from jquery-scroll-container.
-@import "../bower_components/jquery-scroll-container/src/jquery-scroll-container-variables";
-
-//Minimum padding = scrollbar width plus extra margin
-$min-padding: $scroll-size + $scrollbar-margin;
-
-$content-lg-padding: max( min( $btn-padding-y-lg, $btn-padding-x-lg ), $min-padding);
-$content-padding   : max( min( $btn-padding-y,    $btn-padding-x    ), $min-padding);
-$content-sm-padding: max( min( $btn-padding-y-sm, $btn-padding-x-sm ), $min-padding);
+$content-padding-y-sm: $btn-padding-y-sm;
+$content-padding-x-sm: $btn-padding-x-sm;
 
 
 /************************************************************
@@ -57,3 +50,7 @@ MARGIN-BOTTOM
 All elements in modal-windows get same margin-bottom
 ************************************************************/
 $modal-element-margin-bottom: $form-check-margin-bottom;
+
+
+
+

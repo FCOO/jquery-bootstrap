@@ -43,7 +43,7 @@ $max-items-visible-in-selectbox: 4;
             @include text-truncate();
 
             &.empty {
-                color: $input-color-placeholder;
+                color: $input-placeholder-color;
             }
         }
     }
@@ -54,8 +54,7 @@ $max-items-visible-in-selectbox: 4;
     }
 
     .dropdown-menu {
-        width                   : 100%;
-//        max-height              : 120px;
+        width                  : 100%;
         border-top-left-radius : 0;
         border-top-right-radius: 0;
         margin-top             : -$dropdown-border-width; //Move up to align with bottom of button               
@@ -64,25 +63,21 @@ $max-items-visible-in-selectbox: 4;
 
     //Make the button 'active' when dropdown is open
     &.show {
-
-        > .btn.btn-secondary {
-            //@include          ($color,               $color-hover,              $bg-color,              $bg-color-hover,              $hover, $bg )
-            @include color-hover($control-open-color,  $control-open-color-hover, $control-open-bg-color, $control-open-bg-color-hover, true,   true);
+        > .btn.btn-#{$btn-style-name} {
+            @include color-hover( $title-color, $title-bg-color, true, true);//TEST2
 
             border-bottom-right-radius: 0;
             border-bottom-left-radius : 0;
 
-            border-color: $input-border-focus;
-            outline: none;
-
-            border-bottom-color: $btn-secondary-border;
+            &, &:focus {
+                border-bottom-color: $control-border-color
+            }
+            
+            @include focus-style( bottom );
         }
 
         .dropdown-menu {
-            border-color: $input-border-focus;
-            outline     : none;
-            border-top-color: $dropdown-border-color;
-
+            @include focus-style( top );
         }
     }
 } //end of .dropdown.selectbox  (1: bsSelectbox)
@@ -92,23 +87,6 @@ $max-items-visible-in-selectbox: 4;
 //2: bsSelectList    
 .selectList {
     @include control-container();
-/*
-    border: $input-btn-border-width solid $input-border-color;
-    border-radius: $input-border-radius;
-
-    &-sm {
-        $input-border-radius-sm;
-    }
-    
-    @include box-shadow($input-box-shadow);
-    @include transition($input-transition);
-
-    &:focus, &:active {
-        border-color: $input-border-focus;
-        outline: none;
-        @include box-shadow($input-box-shadow-focus);
-    }
-*/
 }
 
 //If the select has a scrollbar the left margin is reduced with the scrollbar-width to vertical-align content
@@ -140,7 +118,7 @@ $max-items-visible-in-selectbox: 4;
             cursor: pointer;
             @include text-truncate();
 
-            @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $btn-border-radius);
+            @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $line-height-base, $btn-border-radius);
             @include control-active-color(".dropdown-item");
         }
         .dropdown-header {
@@ -162,7 +140,7 @@ $max-items-visible-in-selectbox: 4;
         }
 
         .dropdown-item { 
-            @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-border-radius-sm);
+            @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $line-height-base, $btn-border-radius-sm);
         }
         .dropdown-header {
             @include header-variant-sm();

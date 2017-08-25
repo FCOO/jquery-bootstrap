@@ -54,7 +54,7 @@
         if (options.header){
             $header = 
                 $('<div/>')
-                    .addClass('popover-title-content')
+                    .addClass('popover-header-content')
                     ._bsAddHtml( options.header );
 
             if (options.close)
@@ -74,10 +74,10 @@
                 html     :  true,
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
                 template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + '" role="tooltip">'+
-                                '<div class="popover-title"></div>' + 
-                                '<div class="popover-content' + (options.defaultPadding ? ' default-padding' : '') + '"></div>' + 
+                                '<div class="popover-header"></div>' + 
+                                '<div class="popover-body' + (options.defaultPadding ? ' default-padding' : '') + '"></div>' + 
                                 '<div class="popover-footer"></div>' + 
-                                '<div class="popover-arrow"></div>' + 
+                                '<div class="arrow"></div>' + 
                             '</div>',
 
                 title    : $header,
@@ -103,7 +103,6 @@
             //This event is fired when the popover has finished being hidden from the user (will wait for CSS transitions to complete).                        
             $this.on('hidden.bs.popover', popover_onHidden ); 		  
             
-            
             $this.data('popover_options', options);
             $this.popover( popoverOptions );
 
@@ -121,8 +120,8 @@
                                   )
             )
             this.focus();
-//        else
-//            $(this).popover('hide');
+        else
+            $(this).popover('hide');
         this.skipNextBlur = false;
     }
 

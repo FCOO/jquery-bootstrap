@@ -7,19 +7,19 @@
 This plugin contains jQuery methods to create different types of elements e.q. buttons, list, select, tables, modal windows etc. displayed in a adjusted version of Bootstrap 4 default theme
 
 ## Contents
-[Common](#common)
-[Button](#button)
-[Button-group](#buttongroup)
-[Radio-button-group](#radiobuttongroup)
-[Selectbox](#selectbox)
-[SelectList](#selectlist)
-[Radio and Checkbox](#radioandcheckbox)
-[Popover](#popover)
-[Button-group-popover](#buttongrouppopover)
-[SelectList-popover](#selectlistpopover)
-[Table](#table)
-[Accordion](#accordion)
-[Modal](#modal)
+- [Common](#common)
+- [Button](#button)
+- [Button-group](#buttongroup)
+- [Radio-button-group](#radiobuttongroup)
+- [Selectbox](#selectbox)
+- [SelectList](#selectlist)
+- [Radio and Checkbox](#radioandcheckbox)
+- [Popover](#popover)
+- [Button-group-popover](#buttongrouppopover)
+- [SelectList-popover](#selectlistpopover)
+- [Table](#table)
+- [Accordion](#accordion)
+- [Modal](#modal)
 
 ## Installation
 ### bower
@@ -60,7 +60,7 @@ No formats are defined in this package (See examples at [fcoo-value-format](http
 
 #### `textStyle`
 Is a `string` or `object` with info on text-style for the element
-Possible values: `left right center lowercase uppercase capitalize normal bold italic`
+Possible values: `primary secondary success danger warning info light dark left right center lowercase uppercase capitalize normal bold italic`
 
     { textStyle: "left capitalize" } //As string
     { textStyle: { left: true, capitalize: true} } //As object
@@ -323,6 +323,7 @@ Eq.
 | :--: | :--: | :-----: | --- |
 | `header` | `content` or `[] of content` | `""` | See above |
 | `flex` | `boolean` | `false` | The default width of a modal is 300px. If `true` the the width of the modal will adjust to the width of the browser up to 600px |
+| `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
 | `noVerticalPadding` | `boolean` | `false` | If `true` the the vertical padding around the contents is zero |
 | `show` | `boolean` |  `true` | The modal is shown after creation |
 | `fixedContent` |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |

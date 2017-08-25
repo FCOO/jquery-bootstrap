@@ -10,13 +10,12 @@
 	<meta name='owner' content='FCOO'>
 
   <link  href="bower_components.css" rel="stylesheet">
-  <link  href="../src/jquery-bootstrap.css" rel="stylesheet">	
+  <link  href="../src/jquery-bootstrap.css" rel="stylesheet">
   <link  href="font-awesome.css" rel="stylesheet">	
   <link  href="demo.css" rel="stylesheet">	
 </head>
 
 <body style="width:100%; height:100%; _background-color: #cccccc; padding: 0px">
-
     <div id="lang"></div>
     <script src="bower_components.js"></script>
     <script src="../src/jquery-bootstrap.js"></script>
@@ -29,15 +28,11 @@
     <script src="../src/jquery-bootstrap-popover.js"></script>
 
 	<script>
-        //window.bsIsTouch = true;
         window.bsIsTouch = false;
-
         window.bsIsTouch = (window.location.search =='?touch');
 
         i18next.init();        
         i18next.changeLanguage('da');
-        var $body = $('body');
-
 
         $.valueFormat.add({ 
             id: 'myNumberFormat', 
@@ -46,146 +41,75 @@
             }
         });
 
+        var $body = $('body');
+        var modals = [];
 
-        $body.append( '<h2>Created by javascript (bsIsTouch='+window.bsIsTouch+ ')</h2>' );
-        $('<div/>')
-            .i18n({da:'Klik for at skifte touch-mode', en:'Click to change touch-mode'})
-            .on('click', function(){
+        function header( text, first ){
+            if (!first)
+                $('<hr>').appendTo( $body );
+                
+            $('<h6>')
+                .i18n( text )
+                .appendTo( $body );
+        }
+
+        function demoBtn( options ){
+            var i = -1;
+            $.bsButton({ 
+                text: options.text,
+                onClick: function(){ 
+                    if (modals[i])
+                        modals[i].show();
+                    else {
+                        modals.push( $.bsModal(options) );
+                        i = modals.length-1;
+                    }                            
+                }
+            }).appendTo( $body );
+        }
+
+        header( 'Created by javascript (bsIsTouch='+window.bsIsTouch+ ')', true );
+
+        $.bsButton({
+            text: {da:'Klik for at skifte touch-mode', en:'Click to change touch-mode'},
+            onClick: function(){
                 if (window.bsIsTouch)
                     location.replace("index.html");
                 else
                     location.replace("index.html?touch");
-            })
-            .appendTo( $body );
+            }
+        }).appendTo( $body );
 
-        $('<div/>')
-            .i18n({da:'Klik for at skifte sprog', en:'Click to change language'})
-            .on('click', function(){
+        $('<br>').appendTo( $body );
+
+        $.bsButton({
+            text: {da:'Klik for at skifte sprog', en:'Click to change language'},
+            onClick: function(){
                 i18next.changeLanguage( i18next.language == 'en' ? 'da' : 'en' );
                 $('*').localize();
-            })
-            .appendTo( $body );
-
-        $body.append( $('<hr>') );
-
-        var content = [
-            { 
-                id: 'first',
-//                "name": {icon:"fa-lang-da", text:"bootstrap-table"},
-                "name": {vfFormat: "myNumberFormat", vfValue:123.456, textStyle:"italic"},
-                "stargazers_count": 5.26,
-                "forks_count": null,
-                "description": "An extended Bootstrap table with radio, checkbox, sort, pagination, and other added features. (supports twitter bootstrap v2 and v3) "
-            },
-            {
-                id: 'no2',
-                "name": "multiple-select",
-                "stargazers_count": 28.8,
-                "forks_count": "19650130",
-                "description": "A jQuery plugin to select multiple elements with checkboxes"
-            },
-            {
-                id: 'no3',
-                "name": "bootstrap-show-password",
-                "stargazers_count": 32.0001,
-                "forks_count": "20130101",
-                "description": {icon: 'fa-home',text:{da:"Vis/Skjul adgangskode...", en:"Show/hide password plugin for twitter bootstrap."}}
-            },
-            {
-                id: 'no4',
-                "name": "blog",
-                "stargazers_count": 13.99,
-                "forks_count": "01-01-2014",
-                "description": "my blog"
-            },
-            {
-                id: 'no5',
-                "name": "scutech-redmine",
-                "stargazers_count": 54,
-                "forks_count": null,
-                "description": "Redmine notification tools for chrome extension."
             }
-        ];
+        }).appendTo( $body );
 
-
-        var longContent = [];
-        for (var i=0; i<10; i++ )
-            for (var j=0; j<content.length; j++ ){
-                var next = $.extend({}, content[j]);
-                next.id = next.id+'_'+i;
-                longContent.push( next );    
-            }
-        
-        var myBsTable = $.bsTable({
-            //showHeader: false,
-            //verticalBorder: false,
-            selectable: true,
-            onChange: function( id, selected, tr ){
-                console.log( 'Table id =' , id,' selected=',selected); 
-            },
-            selectedId: 'first',
-            //allowZeroSelected: true,
-
-            columns: [
-                { id: 'name',               header: 'Name',  align: 'center'},
-                { id: 'stargazers_count',   header: 'Stars', align: 'center', vfFormat:"myNumberFormat"},
-                { id: 'forks_count',        header: 'Forks', align: 'center'},
-                { id: 'description',        header:{icon: 'fa-home', text: 'Description'}}
-            ],
-            content: longContent
-        });//
-        
-/*
-        myBsTable.asModal({
-            header:'En stor tabel', 
-            closeIcon: 'fa-globe',
-            closeText: {da:"Luk og rejs", en:"Close and go"},
-            flex:true, 
-            footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }]
-        });
-*/
-//OR
-//        myBsTable.appendTo( $body );
-
-//*        
-        $body
-
-        var selectItems = [
-                {id: 'slow',   icon: 'fa-bicycle'  , text:{da:'Meget langsomt___________________________', en: 'Slow'} },
-                {icon: 'fa-home'  , text:{da:'En overskrift', en: 'A Header'} },
-                {id: 'medium', icon: 'fa-car', text:{da:'Normalt', en: 'Normal'} },
-                {icon: 'fa-home',   text:{da:'En anden overskrift',en:'Another header'} },
-                {id: 'fast',   content:[{icon: 'fa-fighter-jet',   text:'Very fast!' },{icon: 'fa-fighter-jet',   text:'Very very fast!' }]}//icon: 'fa-fighter-jet'  , text:{da:'Hurtig', en: 'Very fast'} }
-            ];
-
-        $.bsSelectbox({
-           selectedId : 'fast',
-           placeholder: {da:'Vælg hastighed...', en:'Select speed...'},
-           items      : selectItems,
-           onChange   : function(id, selected, $buttonGroup){console.log('bsSelectbox', id, selected)},
-       })
-       .appendTo( $body );
-
-        $body.append('<hr>');
-
-        $.bsSelectList({
-           selectedId: 'medium',
-           items     : selectItems,
-           onChange  : function(id, selected, $buttonGroup){console.log('bsSelectList', id, selected)},
-       })
-       .appendTo( $body );
-            
-
-        $body.append('<hr>');
-           
-//        $.bsButton({text: 'Size=large', icon: 'fa-home', size:'large'}).appendTo( $body );
+        header('Buttons');
         $.bsButton({text: 'Normal', icon: 'fa-home'}).appendTo( $body );
+        $.bsButton({text: 'Primary', icon: 'fa-home', primary: true}).appendTo( $body );
         $.bsButton({text: 'Small', icon: 'fa-home', small:true}).appendTo( $body );
-
-        $body.append('<hr>');
-        
         $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'fa-check-square-o'}).appendTo( $body );
-            
+
+        demoBtn({
+            text: 'Buttons in modal', 
+            header: 'Buttons', 
+            footer: '', 
+            scroll: false,
+            content: [
+                $.bsButton({text: 'Normal', icon: 'fa-home'}), $('<br>'),
+                $.bsButton({text: 'Small', icon: 'fa-home', small:true}),
+                $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'fa-check-square-o'})
+            ]
+        });
+
+
+        header('Button groups');
         $.bsButtonGroup({
             vertical: false, 
             small: true,
@@ -199,7 +123,7 @@
         $.bsRadioButtonGroup({
             vertical: true, 
             small: true,
-            allowZeroSelected: true, 
+            //allowZeroSelected: true, 
             onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)}, 
             buttons: [
                 {id:'slow',   icon: 'fa-bicycle',   text:'Slow', active: true  },
@@ -220,6 +144,60 @@
         }).appendTo( $body );
 
 
+        header('SelectList & Selectbox (not fully working)');
+        var selectItems = [
+                {id: 'slow',   icon: 'fa-bicycle'  , text:{da:'Meget langsomt___________________________', en: 'Slow'} },
+                {icon: 'fa-home'  , text:{da:'En overskrift', en: 'A Header'} },
+                {id: 'medium', icon: 'fa-car', text:{da:'Normalt', en: 'Normal'} },
+                {icon: 'fa-home',   text:{da:'En anden overskrift',en:'Another header'} },
+                {id: 'fast',   content:[{icon: 'fa-fighter-jet',   text:'Very fast!' },{icon: 'fa-fighter-jet',   text:'Very very fast!' }]}//icon: 'fa-fighter-jet'  , text:{da:'Hurtig', en: 'Very fast'} }
+            ];
+
+        demoBtn({
+            text: 'SelectList', 
+            header: 'SelectList', 
+            footer: '', 
+            scroll: true,
+            content: 
+                $.bsSelectList({
+                    selectedId: 'medium',
+                    items     : selectItems,
+                    onChange  : function(id, selected, $buttonGroup){console.log('bsSelectList', id, selected)},
+                })
+        });
+
+
+        demoBtn({
+            text: 'Selectbox', 
+            header: 'Selectbox', 
+            footer: '', 
+            content: $.bsSelectbox({
+                        selectedId : 'fast',
+                        placeholder: {da:'Vælg hastighed...', en:'Select speed...'},
+                        items      : selectItems,
+                        onChange   : function(id, selected, $buttonGroup){console.log('bsSelectbox', id, selected)},
+                    }),
+            scroll: false 
+        });
+
+
+        header('Checkbox and checkbox-button');
+        $.bsCheckbox({
+            checked: true,
+            text: {da:'Vælg mig', en:'Check me'},
+            onChange: function(id, selected, $buttonGroup){console.log('9: bsSelectListPopover', id, selected)},
+        })
+        .appendTo( $body );
+
+        $.bsCheckbox({
+            className: 'semi-selected',
+            checked: true,
+            text: {da:'Vælg mig (semi)', en:'Check me (semi)'},
+            onChange: function(id, selected, $buttonGroup){console.log('9: bsSelectListPopover', id, selected)},
+        })
+        .appendTo( $body );
+
+
         $.bsCheckboxButton({
 //            text: [{da:'Uvalgt', en:'Unselected'}, {da:'Valgt', en:'Selected'}], 
             text: {da:'Vælg mig', en:'Select me'}, 
@@ -231,10 +209,8 @@
         }).appendTo($body);
 
 
-       
-        $body.append('<hr>');
-
-       
+      
+        header('Popover (click on buttons)');
         var titles = ['Small', 'Normal'];
         
         for (var i=0; i<titles.length; i++ )
@@ -315,20 +291,62 @@
             })
 
 
-        $.bsCheckbox({
-            checked: true,
-            text: {da:'Vælg mig', en:'Check me'},
-            onChange: function(id, selected, $buttonGroup){console.log('9: bsSelectListPopover', id, selected)},
-        })
-        .appendTo( $body );
+        header('Modal windows');
+
+        var tableContent = [
+            { 
+                id: 'first',
+//                "name": {icon:"fa-lang-da", text:"bootstrap-table"},
+                "name": {vfFormat: "myNumberFormat", vfValue:123.456, textStyle:"italic"},
+                "stargazers_count": 5.26,
+                "forks_count": null,
+                "description": "An extended Bootstrap table with radio, checkbox, sort, pagination, and other added features. (supports twitter bootstrap v2 and v3) "
+            },
+            {
+                id: 'no2',
+                "name": "multiple-select",
+                "stargazers_count": 28.8,
+                "forks_count": "19650130",
+                "description": "A jQuery plugin to select multiple elements with checkboxes"
+            },
+            {
+                id: 'no3',
+                "name": "bootstrap-show-password",
+                "stargazers_count": 32.0001,
+                "forks_count": "20130101",
+                "description": {icon: 'fa-home',text:{da:"Vis/Skjul adgangskode...", en:"Show/hide password plugin for twitter bootstrap."}}
+            },
+            {
+                id: 'no4',
+                "name": "blog",
+                "stargazers_count": 13.99,
+                "forks_count": "01-01-2014",
+                "description": "my blog"
+            },
+            {
+                id: 'no5',
+                "name": "scutech-redmine",
+                "stargazers_count": 54,
+                "forks_count": null,
+                "description": "Redmine notification tools for chrome extension."
+            }
+        ];
 
 
-//*/
+        var longTableContent = [];
+        for (var i=0; i<10; i++ )
+            for (var j=0; j<tableContent.length; j++ ){
+                var next = $.extend({}, tableContent[j]);
+                next.id = next.id+'_'+i;
+                longTableContent.push( next );    
+            }
+        
+       
         var testContent =   "Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch." 
                             +   " Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS."
                                 ,
             footer = [
-                {icon: 'fa-home', text:{da:"Kursiv", en:"Italic"}, textStyle:"italic"},
+                {icon: 'fa-home', text:{da:"Kursiv advarsel", en:"Italic warning"}, textStyle:"italic warning"},
                 { text:{da:"store bogstaver", en:"uppercase letter"}, textStyle:"uppercase"},
                 {vfFormat: "myNumberFormat", vfValue:123.456, textStyle:"underline bold", link:function(){alert(123.456);}},
             ],
@@ -339,7 +357,7 @@
                     footer: footer,
                     children:[
                         {
-                            header: [{icon: 'fa-home', text: {da:'Overskrift#1-1', en:'Header#1-1'}}, {icon: 'fa-home', text: {da:'Overskrift#1-1', en:'Header#1-1'}}], 
+                            header: {icon: 'fa-home', text: {da:'Overskrift#1-1', en:'Header#1-1'}}, 
                             content: 'Dette er en test 1-1<br>'+testContent 
                         },
                         {
@@ -376,43 +394,73 @@
                 },
                 {
                     header: 'En tabel', 
-                    content: 'myBsTable'
+                    content: 'Missing :-)'
                 }
             ], //accor_children
 
+
+        
+        myBsTable = $.bsTable({
+            //showHeader: false,
+            //verticalBorder: false,
+            selectable: true,
+            onChange: function( id, selected, tr ){
+                console.log( 'Table id =' , id,' selected=',selected); 
+            },
+            selectedId: 'first',
+            //allowZeroSelected: true,
+
+            columns: [
+                { id: 'name',               header: 'Name',  align: 'center', sortable: true},
+                { id: 'stargazers_count',   header: 'Stars', align: 'center', vfFormat:"myNumberFormat", sortable: true},
+                { id: 'forks_count',        header: 'Forks', align: 'center'},
+                { id: 'description',        header:{icon: 'fa-home', text: 'Description'}}
+            ],
+            content: longTableContent
+        }),
+
+        m_table = myBsTable.asModal({
+            header:'En stor tabel', 
+            closeIcon: 'fa-globe',
+            closeText: {da:"Luk og rejs", en:"Close and go"},
+            flex:true, 
+            footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
+            show: false
+        }),
+        
         $accordion = $.bsAccordion({ children: accor_children, footer: 'footer' }),
-        $accordion2 = $.bsAccordion({ children: accor_children, footer: 'footer'  });
-        $accordion3 = $.bsAccordion({ children: accor_children, footer: 'footer'  });
+        $accordion2 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
+        $accordion3 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
 
 
-        var m = $accordion.asModal({
+        m = $accordion.asModal({
             header:{icon: 'fa-home', text:{da:'FLEX Overskrift',en:'Header'}},
             show: false
-        });
-        var m_fixed = $accordion2.asModal({
+        }),
+        m_fixed = $accordion2.asModal({
             flex: false, 
             header:[{icon: 'fa-home', text:{da:'FIXED Overskrift',en:'Header'}}, {icon: 'fa-globe', text:{da:'Overskrift#2',en:'Header#2'}}],
             show: false
-        });
+        }),
 
-        var m_small = $accordion3.asModal({
+        m_small = $accordion3.asModal({
             flex: false, 
             header:{icon: 'fa-home', text:{da:'Small Overskrift',en:'Small Header'}},
             footer: footer,
             show: false,
             small: true
-        });
+        }),
 
-        var modals = [];
+        multi_modals = [];
 
         function openModal( modalNumber ){
-            if (modals[modalNumber])
-                modals[modalNumber].show();
+            if (multi_modals[modalNumber])
+                multi_modals[modalNumber].show();
             else { 
                 var content = 'Modal # = ' + modalNumber; 
                 for (var i=0; i<20-modalNumber; i++ )
                     content += '<br>' + i;
-                modals[ modalNumber ] =                 
+                multi_modals[ modalNumber ] =                 
                     $.bsModal({
                         buttons: [{
                             text:'Ny - New', 
@@ -427,6 +475,13 @@
                     });
             }
         }
+
+
+        
+        m_table.assignTo(
+            $('<button>Table</button>')
+                .appendTo( $body)
+        );
 
         m.assignTo(
             $('<button>Flex-width</button>')

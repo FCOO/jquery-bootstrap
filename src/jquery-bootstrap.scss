@@ -22,6 +22,12 @@
 @import "../bower_components/modernizr-scss/dist/modernizr-scss";
 
 
+@function map-replace($map, $key, $value){
+    @return map-merge(
+                map-remove( $map, $key ),
+                ( $key: $value )
+            );
+}
 
 /***********************************************
 ADJUST BOOTSTRAP DEFAULT VALUES
@@ -58,10 +64,14 @@ $input-padding-x-sm: $btn-padding-x-sm;
 $input-padding-y-sm: $btn-padding-x-sm;
 
 
+//Remove shadow from input
+$input-focus-box-shadow: none;
 
 /************************************************************
 Including "size" xs as in Bootstrap 3
 ************************************************************/
+$font-size-xs      : .75rem;
+
 $btn-padding-x-xs  : .2rem;
 $btn-padding-y-xs  : $btn-padding-x-xs;
 $input-padding-x-xs: $btn-padding-x-xs;
@@ -71,13 +81,10 @@ $border-radius-xs      : .1rem;
 $btn-border-radius-xs  : $border-radius-xs;
 $input-border-radius-xs: $border-radius-xs;
 
-
-
 /***********************************************
 IMPORT BOOTSTROP SCSS
 ************************************************/
 @import "../bower_components/bootstrap/scss/bootstrap";
-
 
 /***********************************************
 BACKGROUND-COLOR AND TEXT COLOR
@@ -88,6 +95,10 @@ BACKGROUND-COLOR AND TEXT COLOR
 VARIABLES
 ************************************************/
 @import "variables";
+
+//Using $scroll-size and $scrollbar-margin from jquery-scroll-container.
+@import "../bower_components/jquery-scroll-container/src/jquery-scroll-container-variables";
+
 
 /***********************************************
 MIXIN

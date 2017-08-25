@@ -251,16 +251,7 @@ TODO:
 (function (/*$, window/*, document, undefined*/) {
 	"use strict";
 	
-    /*
-    The buttons in Bootstrap can be styled in different ways (btn-primary, btn-outline-primary etc)
-    The variable window.bsButtonClass contain the selected class-name  
-    */
-
-    //Create namespace
-	var ns = window; 
-
-    ns.bsButtonClass        = 'btn-secondary'; 
-    ns.bsPrimaryButtonClass = 'btn-outline-primary';
+    var bsButtonClass = 'btn-standard';  //MUST correspond with $btn-style-name in src/_variables.scss
 
 
     /**********************************************************
@@ -271,11 +262,10 @@ TODO:
         options = options || {};
         options = 
             $._bsAdjustOptions( options, {
-//                tagName     : 'button',
-                tagName     : 'a',//Using <a> instead of <button> to be able to control font-family
+                tagName     : 'a', //Using <a> instead of <button> to be able to control font-family
                 baseClass   : 'btn',
-                styleClass  : options.primary ? ns.bsPrimaryButtonClass : ns.bsButtonClass,
-                class       : '',
+                styleClass  : bsButtonClass,
+                class       : options.primary ? 'primary' : '',
                 useTouchSize: true,
                 addOnClick  : true
             });
@@ -551,6 +541,7 @@ TODO:
 
     //Merthods to allow multi modal-windows
     var openModalDataId = 'bs_open_modals';
+
     function incOpenModals( number ){
         $('body').data(
             openModalDataId,
@@ -563,6 +554,9 @@ TODO:
     //******************************************************
     //show_bs_modal - called when a modal is opening
     function show_bs_modal( /*event*/ ) {
+
+        //Close all popover
+        $('.popover.show').popover('hide');
 
         var $this = $(this);
         // if the z-index of this modal has been set, ignore.
@@ -664,6 +658,11 @@ TODO:
             }
         }
 
+        //Set variables used to set scroll-bar (if any)
+        var hasScroll       = !!options.scroll,
+            scrollDirection = options.scroll === true ? 'vertical' : options.scroll,
+            scrollClass     = 'scrollbar-'+scrollDirection;
+
         this.bsModal = {};
 
         var $modalContainer = this.bsModal.$container =
@@ -692,7 +691,7 @@ TODO:
         //Append fixed content (if any)
         var $modalFixedContent = this.bsModal.$fixedContent =
                 $('<div/>')
-                    .addClass('modal-body-fixed')
+                    .addClass('modal-body-fixed' + (hasScroll ? ' '+scrollClass : ''))
                     .appendTo( $modalContainer );
         if (options.fixedContent){
             if ($.isFunction( options.fixedContent ))
@@ -708,8 +707,8 @@ TODO:
                     .appendTo( $modalContainer ),
 
             $modalContent = this.bsModal.$content =
-                options.scroll ? 
-                    $modalBody.addScrollbar() :
+                hasScroll ? 
+                    $modalBody.addScrollbar({ direction: scrollDirection }) :
                     $modalBody;
 
         //Add content
@@ -798,11 +797,9 @@ TODO:
     bsModal
     ******************************************************/
     $.bsModal = function( options ){
-
         var $result, $modalDialog,
             id = options.id || '_bsModal'+ modalId++,
-            classNames = (window.bsIsTouch ? '' : 'fade ')+
-                         (options.noVerticalPadding ? 'no-vertical-padding ' : ''),
+            classNames = options.noVerticalPadding ? 'no-vertical-padding' : '',
             //Create a close-function
             closeModalFunction = function(){ $result.modal('hide'); };
 
@@ -978,7 +975,7 @@ TODO:
         if (options.header){
             $header = 
                 $('<div/>')
-                    .addClass('popover-title-content')
+                    .addClass('popover-header-content')
                     ._bsAddHtml( options.header );
 
             if (options.close)
@@ -998,10 +995,10 @@ TODO:
                 html     :  true,
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
                 template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + '" role="tooltip">'+
-                                '<div class="popover-title"></div>' + 
-                                '<div class="popover-content' + (options.defaultPadding ? ' default-padding' : '') + '"></div>' + 
+                                '<div class="popover-header"></div>' + 
+                                '<div class="popover-body' + (options.defaultPadding ? ' default-padding' : '') + '"></div>' + 
                                 '<div class="popover-footer"></div>' + 
-                                '<div class="popover-arrow"></div>' + 
+                                '<div class="arrow"></div>' + 
                             '</div>',
 
                 title    : $header,
@@ -1027,7 +1024,6 @@ TODO:
             //This event is fired when the popover has finished being hidden from the user (will wait for CSS transitions to complete).                        
             $this.on('hidden.bs.popover', popover_onHidden ); 		  
             
-            
             $this.data('popover_options', options);
             $this.popover( popoverOptions );
 
@@ -1045,8 +1041,8 @@ TODO:
                                   )
             )
             this.focus();
-//        else
-//            $(this).popover('hide');
+        else
+            $(this).popover('hide');
         this.skipNextBlur = false;
     }
 
@@ -1186,6 +1182,11 @@ TODO:
     }
 
 
+    //scrollSelwectedItemIntoView
+    function scrollSelwectedItemIntoView(){
+        $(this).find( '.dropdown-item.active' ).first().scrollIntoView();
+    }
+    
     //addSelectItems( $container, items,  ) - Create radioGroup and adds items
     function addSelectItems( $container, options, inSpan ){
         var radioGroup = $.radioGroup( 
@@ -1229,8 +1230,8 @@ TODO:
                 id          : getSelectId(),
                 baseClass   : 'selectbox',
                 class       : 'dropdown',
+                useTouchSize: true
             });
-
 
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options );
@@ -1238,7 +1239,7 @@ TODO:
         //Create the dropdown-button
         var placeholder = options.placeholder || {da:'Vælg...', en:'Select...'};
         $.bsButton({
-                tagName     : 'div', //'button',
+                tagName     : 'div', 
                 class       : '',
                 addOnClick  : false
             })
@@ -1273,12 +1274,14 @@ TODO:
 
         options.postOnChange = postOnChange;
 
-        addSelectItems( $dropdown_menu.addScrollbar(), options, true );
+        addSelectItems( $dropdown_menu.addScrollbar() , options, true );
 
 
         //Updates dropdownmenu-button with selected contents (if any)
-        postOnChange( /*$dropdown_menu_content*/$dropdown_menu.find( '.dropdown-item.active' ).first() );
+        postOnChange( $dropdown_menu.find( '.dropdown-item.active' ).first() );
 
+        //Scroll selected item into view when opened        
+        $result.on('shown.bs.dropdown', scrollSelwectedItemIntoView );
 
 /* REMOVED        
         //Setting the width of the dropdown-button equal the width of the item-box. Need timeout to allow DOM in some browser to finish adding elements
@@ -1420,58 +1423,66 @@ Add sort-functions + save col-index for sorted column
         asModal - display the table in a modal-window with fixed header and scrolling content
         **********************************************************/
         asModal: function( modalOptions ){
-            //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
-            var $theadClone = this.find('thead').clone( true ),
+            var showHeader = this.find('.no-header').length == 0,
+                _this      = this,
+                $theadClone, 
+                $tableWithHeader = null, 
+                $result, $thead, count;
+                
+            if (showHeader){
+                //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
+                $theadClone = this.find('thead').clone( true );
                 $tableWithHeader =  
                     $('<table/>')
                         ._bsAddBaseClassAndSize( this.data(dataTableId) )
                         .addClass('table-with-header')
-                        .append( $theadClone ),
+                        .append( $theadClone );
+                $thead = this.find('thead');
+                count  = 20;
+            }
 
-                $result = $.bsModal( 
+
+            $result = $.bsModal( 
                             $.extend( modalOptions || {}, {
                                 flex             : true,
                                 noVerticalPadding: true,
                                 content          : this,
                                 fixedContent     : $tableWithHeader
                             })
-                          ),
+                          );
 
-            //Using timeout to wait for the browser to update DOM and get height of the header
-                _this = this,
-                $thead = this.find('thead'),
-                count = 20,
-
-                setHeaderHeight = function(){
-                    var height = $tableWithHeader.height(); 
-                    if (height <= 0){
-                        count--;
-                        if (count){
-                            setTimeout( setHeaderHeight, 50 );
-                            return;
+            if (showHeader){
+                //Using timeout to wait for the browser to update DOM and get height of the header
+                var setHeaderHeight = function(){ 
+                        var height = $tableWithHeader.outerHeight(); 
+                        if (height <= 0){
+                            count--;
+                            if (count){
+                                //Using timeout to wait for the browser to update DOM and get height of the header
+                                setTimeout( setHeaderHeight, 50 );
+                                return;
+                            }
                         }
-                    }
-                    
-                    _this.parent().css('padding-bottom', height+'px');     
-                    _this.css('margin-top', -height+'px');
+                   
+                        _this.css('margin-top', -height+'px');
+                        setHeaderWidth();
 
-                    setHeaderWidth();
-                },
+                        //Only set header-height once
+                        $result.off('shown.bs.modal.table', setHeaderHeight );
+                    },
                 
-                setHeaderWidth = function(){
-                    $thead.find('th').each(function( index, th ){
-                        $theadClone.find('th:nth-child(' + (index+1) + ')')
-                            .width( $(th).width()+'px' );
-                    });
-                    $tableWithHeader.width( _this.width()+'px' );
-                };
+                    setHeaderWidth = function(){
+                        $thead.find('th').each(function( index, th ){
+                            $theadClone.find('th:nth-child(' + (index+1) + ')')
+                                .width( $(th).width()+'px' );
+                        });
+                        $tableWithHeader.width( _this.width()+'px' );
+                    };
 
-            //Using timeout to wait for the browser to update DOM and get height of the header
-            //setHeaderHeight();
-            setTimeout( setHeaderHeight, 50 );
-
-            $thead.resize( setHeaderWidth );
-
+                $result.on('shown.bs.modal.table', setHeaderHeight );
+                $thead.resize( setHeaderWidth );
+            }
+            
             return $result;
         }
 
@@ -1480,11 +1491,14 @@ Add sort-functions + save col-index for sorted column
     //**********************************************************
     function table_th_onClick( event ){
         var $th = $( event.currentTarget ),
+            sortable = $th.hasClass('sortable'),
             newClass = $th.hasClass('desc') ? 'asc' : 'desc'; //desc = default
 
-        //Remove .asc and .desc from all th
-        $th.parent().find('th').removeClass('asc desc');
-        $th.addClass(newClass);
+        if (sortable){
+            //Remove .asc and .desc from all th
+            $th.parent().find('th').removeClass('asc desc');
+            $th.addClass(newClass);
+        }
     }
     
     /**********************************************************
@@ -1496,6 +1510,7 @@ Add sort-functions + save col-index for sorted column
     $.bsTable = function( options ){
         options = $._bsAdjustOptions( options, defaultOptions ); 
         options.class = 
+            (options.small ? 'table-sm ' : '' ) + 
             (options.verticalBorder ? 'table-bordered ' : '' ) + 
             (options.selectable ? 'table-selectable ' : '' ) + 
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' ),
@@ -1525,22 +1540,23 @@ Add sort-functions + save col-index for sorted column
         $table.init.prototype.extend( bsTable_prototype );
 
         //Create headers
-        $.each( options.columns, function( index, column ){
-            var $th = $('<th/>')
-                        ._bsAddStyleClasses( column.textStyle ) 
-                        .addClass('align-middle')
-                        .toggleClass('sortable', !!column.sortable )
-                        .on('click', table_th_onClick )
-                        .appendTo( $tr );
+        if (options.showHeader)
+            $.each( options.columns, function( index, column ){
+                var $th = $('<th/>')
+                            ._bsAddStyleClasses( column.textStyle ) 
+                            .addClass('align-middle')
+                            .toggleClass('sortable', !!column.sortable )
+                            .on('click', table_th_onClick )
+                            .appendTo( $tr );
 
-            //Adding sort-direction icons
-            if (column.sortable)
-                $th.addClass('sortable');
+                //Adding sort-direction icons
+                if (column.sortable)
+                    $th.addClass('sortable');
 
-            $th
-                ._bsAddStyleClasses( column.align )
-                ._bsAddHtml( column.header );
-        });
+                $th
+                    ._bsAddStyleClasses( column.align )
+                    ._bsAddHtml( column.header );
+            });
       
         if (options.selectable){
             var radioGroupOptions = $.extend( true, options );
@@ -1727,17 +1743,43 @@ Add sort-functions + save col-index for sorted column
         ****************************************************************************************/
         _bsAddStyleClasses: function( options ){
             options = options || {};
-            var styles = "left right center lowercase uppercase capitalize normal bold italic".split(' '),
-                classes = "text-left text-right text-center text-lowercase text-uppercase text-capitalize font-weight-normal font-weight-bold font-italic".split(' ');
-                
-            for (var i=0; i<styles.length; i++ ){
-                var nextStyle = styles[i]; 
+
+            var _this = this,
+
+                bsStyleClass = {
+                    //Text color
+                    "primary"     : "text-primary",
+                    "secondary"   : "text-secondary",
+                    "success"     : "text-success",
+                    "danger"      : "text-danger",
+                    "warning"     : "text-warning",
+                    "info"        : "text-info",
+                    "light"       : "text-light",
+                    "dark"        : "text-dark",
+
+                    //Align
+                    "left"        : "text-left",
+                    "right"       : "text-right",
+                    "center"      : "text-center",
+
+                    //Case
+                    "lowercase"   : "text-lowercase",
+                    "uppercase"   : "text-uppercase",
+                    "capitalize"  : "text-capitalize",
+
+                    //Weight
+                    "normal"      : "font-weight-normal",
+                    "bold"        : "font-weight-bold",
+                    "italic"      : "font-italic"
+                };
+
+            $.each( bsStyleClass, function( style, className ){
                 if (  
-                      ( (typeof options == 'string') && (options.indexOf(nextStyle) > -1 )  ) ||
-                      ( (typeof options == 'object') && (options[nextStyle]) ) 
+                      ( (typeof options == 'string') && (options.indexOf(style) > -1 )  ) ||
+                      ( (typeof options == 'object') && (options[style]) ) 
                     )
-                    this.addClass( classes[i] );                    
-            }
+                    _this.addClass( className );                    
+            });
             return this;
         },
 

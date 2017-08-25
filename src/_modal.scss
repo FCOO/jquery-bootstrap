@@ -11,22 +11,52 @@ If the height (and width) of the content is variable (eq. accordion) the class
 
 ************************************************************/
 
+//Calculate padding for modal-body when it is inside a jquery-scroll-container
+//Using $scroll-size and $scrollbar-margin from jquery-scroll-container.
+
+//Minimum padding = scrollbar width plus extra margin
+$min-padding: $scroll-size + $scrollbar-margin-extended; 
+
+//Padding for fixed content when modal-body has scrolling
+$modal-body-fixed-scroll-padding-x   : max( $content-padding-x, $min-padding);
+$modal-body-fixed-scroll-padding-x-sm: max( $content-padding-x-sm, $min-padding);
+
+//Setting the different padding to be the different between original-padding and scroll-margin (and >= 0)
+$modal-body-scroll-padding-y: max( 0, max( $content-padding-y, $min-padding) - $scroll-size );  
+$modal-body-scroll-padding-x: max( 0, $modal-body-fixed-scroll-padding-x - $scroll-size );  
+
+$modal-body-scroll-padding-y-sm: max( 0, max( $content-padding-y-sm, $min-padding) - $scroll-size );  
+$modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm - $scroll-size );  
+
 //modal-close: 
 .modal-close {
     @include right-side-icon( '\f00d', 1em, true );
 }
 
+@include media-breakpoint-down(xs) { 
+    niels: sx;
+}
+@include media-breakpoint-down(sm) { 
+    niels: sm;
+}
+
 .modal, .modal-inline {
     $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
-//    $modal-max-height: calc(100% - #{2*$modal-dialog-margin});
 
     $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
-//    $modal-max-width : calc(100% - #{2*$modal-dialog-margin});
 
     .modal-dialog {
+
         display        : flex;
         flex-direction : column;
+
         justify-content: center;
+    
+        //On small screens the modal is placed at the top
+        @media (max-height: 575px) {
+            justify-content: flex-start;
+        }
+
 
         margin   : $modal-dialog-margin auto;
         
@@ -38,22 +68,30 @@ If the height (and width) of the content is variable (eq. accordion) the class
         html.medium-up &, &.modal-flex {
             width: $modal-md-rem;
         }
-        
+
         .modal-content {
             min-height: 100%; //Bug fix for IE11
             max-height: $modal-max-height; //Modal window height adjust to contents
         }
 
-        //Size of .jquery-scroll-container in fixed and flex mode
-        &:not(.modal-flex) .modal-content .jquery-scroll-container {
-            width: $modal-sm-rem - 2*$modal-content-border-width - 2*$content-padding; 
+        //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
+        &:not(.modal-flex) .modal-content .modal-body > .jquery-scroll-container {
+            width: $modal-sm-rem - 2*$modal-content-border-width - 2*$modal-body-fixed-scroll-padding-x; 
             margin-left : auto;
-            margin-right: auto;
+            margin-right: auto; 
         }
 
-        &.modal-flex .modal-content .jquery-scroll-container {
+        &.modal-flex .modal-content .modal-body > .jquery-scroll-container {
             width: auto;
         }
+
+        //Force fading opacity
+        opacity: 0;
+        transition: opacity 0.3s linear;
+    }
+
+    &.show {
+        .modal-dialog { opacity: 1; }
     }
 
 
@@ -62,6 +100,8 @@ If the height (and width) of the content is variable (eq. accordion) the class
         max-width: none !important;
     }
 }
+
+//
 
  //Adjust header, fixed-body, body and footer
 .modal, .modal-inline {
@@ -77,15 +117,14 @@ If the height (and width) of the content is variable (eq. accordion) the class
     .modal-body-fixed {
         flex-shrink: 0; //Only .modal-body is shrink
         flex-grow  : 0; //Only .modal-body is growing
-        overflow   : hidden;
-        @include content-padding();
+        overflow   : hidden; 
 
+        @include content-padding();
         &:empty { display: none; }
     }
     .modal-body {
         flex-shrink: 1; //Only .modal-body is shrink
         flex-grow  : 1; //Only .modal-body is growing
-        overflow   : hidden;
         @include content-padding();
     }
 
@@ -93,7 +132,6 @@ If the height (and width) of the content is variable (eq. accordion) the class
         flex-shrink: 0; //Only .modal-body is shrink
         flex-grow  : 0; //Only .modal-body is growing
         @include footer-variant();
-
         &:empty { display: none; }
     }
 
@@ -101,29 +139,20 @@ If the height (and width) of the content is variable (eq. accordion) the class
         flex-shrink: 0; //Only .modal-body is shrink
         flex-grow  : 0; //Only .modal-body is growing
         padding: $btn-padding-x;
-
         &:empty { display: none; }
-    }
-
-    //No top- or bottom padding in modal-body and modal-body-fixed
-    &.no-vertical-padding {
-        .modal-body-fixed, .modal-body {
-            padding-top   : 0;
-            padding-bottom: 0;
-        }
     }
 }
 
 
-//size='small' both for sm and xs
+//size='small'
 .modal.modal-sm,
 .modal-inline.modal-sm {
     .modal-header {
         @include header-variant-sm(); 
     }
-    .modal-body {
+    .modal-body,
+    .modal-body-fixed {
         @include content-padding-sm();
-
     }
     .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
         @include footer-variant-sm();
@@ -133,4 +162,50 @@ If the height (and width) of the content is variable (eq. accordion) the class
         //padding: $btn-padding-x-sm;
     }
 }
-//*/
+
+
+//Adjust padding-left and padding-right if the body is a scroll
+.modal, .modal-inline {
+    .modal-body-fixed.scrollbar-vertical{
+        padding-left : $modal-body-fixed-scroll-padding-x;
+        padding-right: $modal-body-fixed-scroll-padding-x;
+    }
+    .modal-body.scrollbar-vertical {
+        padding-left : $modal-body-scroll-padding-x;
+        padding-right: $modal-body-scroll-padding-x;
+    }
+    .modal-body.scrollbar-horizontal {
+        padding-bottom: $modal-body-scroll-padding-y;
+    }
+}
+
+.modal.modal-sm,
+.modal-inline.modal-sm {
+    .modal-body-fixed.scrollbar-vertical {
+        padding-left : $modal-body-fixed-scroll-padding-x-sm;
+        padding-right: $modal-body-fixed-scroll-padding-x-sm;
+    }
+
+    .modal-body.scrollbar-vertical {
+        padding-left : $modal-body-scroll-padding-x-sm;
+        padding-right: $modal-body-scroll-padding-x-sm;
+    }
+    .modal-body.scrollbar-horizontal {
+        padding-bottom: $modal-body-scroll-padding-y-sm;
+    }
+}
+
+
+
+//No top- or bottom padding in modal-body and modal-body-fixed
+.modal, 
+.modal-inline,
+.modal.modal-sm,
+.modal-inline.modal-sm {
+    &.no-vertical-padding {
+        .modal-body-fixed, .modal-body {
+            padding-top   : 0;
+            padding-bottom: 0;
+        }
+    }
+}

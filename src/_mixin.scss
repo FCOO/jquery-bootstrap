@@ -35,7 +35,7 @@ NOTE: Parent element MUST have @include vertical-align-center();
     }
 }
 
-@mixin vertical-align-center() { 
+@mixin vertical-align-center() {
     display        : flex;
     justify-content: normal;
     align-items    : center; // vertically center it
@@ -43,24 +43,50 @@ NOTE: Parent element MUST have @include vertical-align-center();
 }
 
 
+/************************************************************
+FOCUS
+All elements get same outline when they have focus:
+No outline
+border-color = light blue
+************************************************************/
+@mixin focus-style( $except-border-side: false ){
+
+    outline: none !important;
+
+    @if ($except-border-side){
+        //Add border-color to each side individually
+        $sides: left right top bottom;
+        @each $side in $sides {
+            @if $side != $except-border-side {
+                border-#{$side}-color: $input-focus-border-color;
+            }
+        }
+    }
+    @else {
+        border-color: $input-focus-border-color;
+    }
+}
+
+@mixin focus( $except-border-side: "" ){
+    &:focus, &.focus {
+        @include focus-style( $except-border-side );
+    }
+}
+
 
 /************************************************************
 CONTENT
 Unifies padding for modal, accordion, popup etc.
-Using smallest vertical/horizontal padding from buttons and
-correct (partly) for padding added when in a scrollbar-container
 ************************************************************/
-@mixin _content-padding( $padding ){ 
-    padding: $padding;
-    &.scrollbar-vertical {
-        padding-left : max( 0, $padding - $scroll-size );
-        padding-right: max( 0, $padding - $scroll-size );
-    }
+@mixin content-padding()   {
+    padding: $content-padding-y $content-padding-x;
+    font-size: $font-size-base;
 }
 
-@mixin content-padding-lg(){ @include _content-padding( $content-lg-padding ) }
-@mixin content-padding()   { @include _content-padding( $content-padding    ) }
-@mixin content-padding-sm(){ @include _content-padding( $content-sm-padding ) }
+@mixin content-padding-sm(){
+    padding: $content-padding-y-sm $content-padding-x-sm;
+    font-size: $font-size-sm;
+}
 
 
 /************************************************************
@@ -68,31 +94,29 @@ CONTROL-CONTAINER
 Style for div with controls. Must haave tabindex:"-1" to
 work with focus
 ************************************************************/
-@mixin control-container(){ 
+@mixin control-container(){
     border: $input-btn-border-width solid $input-border-color;
     border-radius: $input-border-radius;
     &-sm {
         border-radius: $input-border-radius-sm;
     }
-    
+
     @include box-shadow($input-box-shadow);
     @include transition($input-transition);
 
     &:focus, &:active {
-        border-color: $input-border-focus;
-        outline: none;
-        @include box-shadow($input-box-shadow-focus);
+        @include focus-style();
     }
 }
 
 /************************************************************
 HEADER AND TITLE BACKGROUND-COLOR AND COLOR
-Headers for modal, popover, popup etc. 
+Headers for modal, popover, popup etc.
 ************************************************************/
 /************************************************************
 color-hover - Background-color and text-color for 'normal' and hover
 ************************************************************/
-@mixin color-hover($color, $color-hover, $bg-color, $bg-color-hover, $hover, $bg){
+@mixin color-hover($color, $bg-color, $hover, $bg){
     @if $color {
         color: $color;
     }
@@ -101,12 +125,12 @@ color-hover - Background-color and text-color for 'normal' and hover
     }
     @if $hover {
         &:hover {
-            @if $color-hover {
-                color: $color-hover;
+            @if $color {
+                color: darken($color, $darken-hover-percent);
             }
-            @if $bg and $bg-color-hover {
-                background-color: $bg-color-hover;
-            }    
+            @if $bg and $bg-color {
+                background-color: darken($bg-color, $darken-hover-percent);
+            }
         }
     }
 }
@@ -125,18 +149,12 @@ header-color - Colors for headers
 title-color - create colors for headers for table and accordion etc.
 ************************************************************/
 @mixin title-color($hover: false, $selected-selector: false, $bg: true, $invers: false ){
-    @if ($invers){
-        @include color-hover($title-open-color, $title-open-color-hover, $title-open-bg-color, $title-open-bg-color-hover, $hover, $bg);
-    } @else {
-        @include color-hover($title-color, $title-color-hover, $title-bg-color, $title-bg-color-hover, $hover, $bg);
-    }
+
+    @include color-hover( if($invers, $title-active-color, $title-color), if($invers, $title-active-bg-color, $title-bg-color), $hover, $bg);//TEST2
+
     @if ($selected-selector){
         #{$selected-selector} {
-            @if ($invers){
-                @include color-hover($title-color, $title-color-hover, $title-bg-color, $title-bg-color-hover, $hover, $bg);
-            } @else {
-                @include color-hover($title-open-color, $title-open-color-hover, $title-open-bg-color, $title-open-bg-color-hover, $hover, $bg);
-            }
+            @include color-hover( if($invers, $title-color, $title-active-color), if($invers, $title-bg-color, $title-active-bg-color), $hover, $bg);//TEST2
         }
     }
 }
@@ -146,51 +164,40 @@ control-active-color
 Mixin to set colors for selected elements and when hover
 ************************************************************/
 @mixin control-active-color( $selector: "", $allowZeroSelected: false ){
-    $allowZeroSelected-selector: ".allow-zero-selected";            
+    $allowZeroSelected-selector: ".allow-zero-selected";
     @if $allowZeroSelected {
-        $allowZeroSelected-selector: "";            
+        $allowZeroSelected-selector: "";
     }
-            
+
     @at-root {
         #{$selector}{
             //Normal: Just bg-color on hover
             @include color-hover(
-                false,  //$color
-                false,  //$color-hover
-                false,  //$bg-color
-                $control-bg-color-hover, //$bg-color-hover
-                true,   //$hover
-                true    //$bg    
+                $control-color,     //$color
+                $control-bg-color,  //$bg-color
+                true,               //$hover
+                true                //$bg
             );
-
-            //Overwrite .active:active color
-            &:active { 
-                color: inherit; 
-            }
 
             //Active (selected)
             &.active  {
                 @include color-hover(
-                    $control-active-color,    //$color
-                    false, //$color-hover
-                    $control-active-bg-color, //$bg-color
-                    false, //$bg-color-hover
-                    false, //$hover
-                    true   //$bg    
+                    $control-active-color,      //$color
+                    $control-active-bg-color,   //$bg-color
+                    false,                      //$hover
+                    true                        //$bg
                 );
             }
         }
-//       .allow-zero-selected#{$selector}{
-       #{$allowZeroSelected-selector}#{$selector}{
+
+       #{$allowZeroSelected-selector} #{$selector}{
             //Active (selected) AND allowing unselection
             &.active {
                 @include color-hover(
                     false, //$color
-                    false, //$color-hover
-                    false, //$bg-color
-                    $control-active-bg-color-hover, //$bg-color-hover
+                    $control-active-bg-color, //$bg-color
                     true, //$hover
-                    true  //$bg    
+                    true  //$bg
                 );
             }
         }
@@ -211,22 +218,20 @@ Padding are set to button y-padding (moving text to the left)
 /************************************************************
 header-variant
 ************************************************************/
-//HER @mixin header-variant($font-size-factor: $font-size-header-factor, $size: 'nm' ) { 
-@mixin header-variant($small: false, $bigger-font: false ) { 
+@mixin header-variant($small: false, $bigger-font: false ) {
 
     font-weight: $font-weight-base;
-    line-height: $line-height-base;
 
     @include span-text-truncate();
 
     @include vertical-align-center();
 
     $padding-y: $btn-padding-y;
-    $padding-x: $btn-padding-x; 
+    $padding-x: $btn-padding-x;
     $font-size: $font-size-sm;
     @if $bigger-font == true {
         $font-size: $font-size-base;
-    } 
+    }
 
     @if $small == true {
         $padding-y: $btn-padding-y-sm;
@@ -236,78 +241,41 @@ header-variant
             $font-size: $font-size-sm;
         }
     }
-    
-/*    
-    @if ($size == 'sm') {
-        $padding-y: $btn-padding-y-sm;
-        $padding-x: $btn-padding-x-sm;
-        $font-size: $font-size-sm;
 
-    } @else 
-
-    if ($size == 'xs'){
-        $padding-y: $btn-padding-y-xs;
-        $padding-x: $btn-padding-x-xs;
-        $font-size: $font-size-sm;
-
-    } @else 
-
-    if ($size == 'lg'){
-        $padding-y: $btn-padding-y-lg;
-        $padding-x: $btn-padding-x-lg;
-        $font-size: $font-size-lg;
-    }
-
-    @include button-size($padding-y, $padding-x, $font-size-factor * $font-size,   inherit); 
-*/
-    @include button-size($padding-y, $padding-x, $font-size,   inherit); 
+    @include button-size($padding-y, $padding-x, $font-size, $line-height-base, inherit);
 }
 
-//@mixin header-variant-lg( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'lg' ); }
-//@mixin header-variant-sm( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'sm' ); }
-//@mixin header-variant-xs( $font-size-factor: $font-size-header-factor ) { @include header-variant( $font-size-factor, 'xs' ); }
 @mixin header-variant-sm( $bigger-font: false ) { @include header-variant( true, $bigger-font ); }
 
 /************************************************************
 title-variant - as header but with same font-size as siblings
 ************************************************************/
-//HER @mixin title-variant( $size: 'nm' ) { 
-@mixin title-variant( $small: false ) { 
+@mixin title-variant( $small: false ) {
     @include header-variant( $small, true );
 }
-
-//@mixin title-variant-lg() { @include title-variant( 'lg' ); }
-//@mixin title-variant-sm() { @include title-variant( 'sm' ); }
-//@mixin title-variant-xs() { @include title-variant( 'xs' ); }
 @mixin title-variant-sm() { @include title-variant( true ); }
 
 
 /************************************************************
 footer-variant
 ************************************************************/
-//HER @mixin footer-variant( $size: 'nm' ) { 
-@mixin footer-variant( $small: false ) { 
+@mixin footer-variant( $small: false ) {
     @include header-variant( $small );
     @include header-color();
 
     line-height: 1; //Decrease height
-    
+
     border-top: $modal-footer-border-width solid $modal-footer-border-color;
 
     border-top-left-radius : 0 !important;
     border-top-right-radius: 0 !important;
-    
+
     //Hide when empty
     &:empty { display: none; }
 
 }
 
-//@mixin footer-variant-lg() { @include footer-variant( 'lg' ); }
-//@mixin footer-variant-sm() { @include footer-variant( 'sm' ); }
-//@mixin footer-variant-xs() { @include footer-variant( 'xs' ); }
 @mixin footer-variant-sm() { @include footer-variant( true ); }
-
-
 
 /************************************************************
 MARGIN-BOTTOM FOR ELEMENTS IN MODAL
@@ -320,3 +288,5 @@ All elements in modal-windows get same margin-bottom
         margin-bottom: $modal-element-margin-bottom;
     }
 }
+
+

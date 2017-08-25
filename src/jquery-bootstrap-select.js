@@ -39,6 +39,11 @@ TODO:
     }
 
 
+    //scrollSelwectedItemIntoView
+    function scrollSelwectedItemIntoView(){
+        $(this).find( '.dropdown-item.active' ).first().scrollIntoView();
+    }
+    
     //addSelectItems( $container, items,  ) - Create radioGroup and adds items
     function addSelectItems( $container, options, inSpan ){
         var radioGroup = $.radioGroup( 
@@ -82,8 +87,8 @@ TODO:
                 id          : getSelectId(),
                 baseClass   : 'selectbox',
                 class       : 'dropdown',
+                useTouchSize: true
             });
-
 
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options );
@@ -91,7 +96,7 @@ TODO:
         //Create the dropdown-button
         var placeholder = options.placeholder || {da:'Vælg...', en:'Select...'};
         $.bsButton({
-                tagName     : 'div', //'button',
+                tagName     : 'div', 
                 class       : '',
                 addOnClick  : false
             })
@@ -126,12 +131,14 @@ TODO:
 
         options.postOnChange = postOnChange;
 
-        addSelectItems( $dropdown_menu.addScrollbar(), options, true );
+        addSelectItems( $dropdown_menu.addScrollbar() , options, true );
 
 
         //Updates dropdownmenu-button with selected contents (if any)
-        postOnChange( /*$dropdown_menu_content*/$dropdown_menu.find( '.dropdown-item.active' ).first() );
+        postOnChange( $dropdown_menu.find( '.dropdown-item.active' ).first() );
 
+        //Scroll selected item into view when opened        
+        $result.on('shown.bs.dropdown', scrollSelwectedItemIntoView );
 
 /* REMOVED        
         //Setting the width of the dropdown-button equal the width of the item-box. Need timeout to allow DOM in some browser to finish adding elements

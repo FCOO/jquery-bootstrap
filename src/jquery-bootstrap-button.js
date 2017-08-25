@@ -11,16 +11,7 @@
 (function (/*$, window/*, document, undefined*/) {
 	"use strict";
 	
-    /*
-    The buttons in Bootstrap can be styled in different ways (btn-primary, btn-outline-primary etc)
-    The variable window.bsButtonClass contain the selected class-name  
-    */
-
-    //Create namespace
-	var ns = window; 
-
-    ns.bsButtonClass        = 'btn-secondary'; 
-    ns.bsPrimaryButtonClass = 'btn-outline-primary';
+    var bsButtonClass = 'btn-standard';  //MUST correspond with $btn-style-name in src/_variables.scss
 
 
     /**********************************************************
@@ -31,11 +22,10 @@
         options = options || {};
         options = 
             $._bsAdjustOptions( options, {
-//                tagName     : 'button',
-                tagName     : 'a',//Using <a> instead of <button> to be able to control font-family
+                tagName     : 'a', //Using <a> instead of <button> to be able to control font-family
                 baseClass   : 'btn',
-                styleClass  : options.primary ? ns.bsPrimaryButtonClass : ns.bsButtonClass,
-                class       : '',
+                styleClass  : bsButtonClass,
+                class       : options.primary ? 'primary' : '',
                 useTouchSize: true,
                 addOnClick  : true
             });

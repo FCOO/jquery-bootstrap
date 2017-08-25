@@ -4,28 +4,28 @@ POPOVER
 ************************************************************/
 .popover {
 
-    //Reset padding for popover-title
-    .popover-title {
+    //Reset padding for popover-header
+    .popover-header {
         padding: 0 !important;
     }
 
-    //Popover-title-content
-    .popover-title-content {     
+    //Popover-header-content
+    .popover-header-content {     
         @include header-variant();
         @include header-color();
         font-weight: $btn-font-weight; //Same as buttons
-        line-height: $btn-line-height; //Same as buttons
+        line-height: $input-btn-line-height; //Same as buttons
 
         @include vertical-align-center();
     }
 
     //Set small padding for no-default contents
-    .popover-content:not(.default-padding) {
+    .popover-body:not(.default-padding) {
         padding: 1px 1px;
     }
 
     //Center button-group in popover
-    .popover-content > .btn-group {
+    .popover-body > .btn-group {
         @extend .mx-auto;
     }
     
@@ -36,7 +36,7 @@ POPOVER
 
     //Small size
     &.popover-sm {
-        .popover-title-content { @include header-variant-sm(); }
+        .popover-header-content { @include header-variant-sm(); }
         .popover-footer        { @include footer-variant-sm(); }
     }
 }

@@ -9,70 +9,41 @@ headers modal, popover, tables, buttons, list-items etc.
 "$control-" is used for buttons, list-items etc.
 ************************************************************/
 
-/*
-Grayscale from Bootstrap:
-$gray-dark:                 #292b2c !default;
-$gray:                      #464a4c !default;
-$gray-light:                #636c72 !default;
-$gray-lighter:              #eceeef !default;
-$gray-lightest:             #f7f7f9 !default;
-*/
+//Persent to use to darken colors when active and on hover
+$darken-active-percent: 7.5%; 
+$darken-hover-percent : 5%;   
 
-$darken-percent: 3%; //Persent to use to darken colors
+//Bg-color and color for normal controls
+$control-bg-color: $gray-100; //#fff; 
+$control-color   : #111; 
 
-$default-bg-color: white;
-    $default-color: black; //TODO
+//Global border-color ofr buttons, lists, inputs etc.
+$control-border-color: $input-border-color; 
 
-//Bg-color for normal controls
-$control-bg-color: $default-bg-color; 
+//Bg-color and color for modal and popover header
+$header-bg-color: $gray-100;              
+$header-color   : $dropdown-header-color; //= $gray-600
 
-//Bg-color for modal and popover header
-$header-bg-color: darken($default-bg-color, $darken-percent);
-    $header-color: $gray-light; 
+//Bg-color and color for table, accordion etc.
+$title-bg-color: $table-head-bg;    //= $gray-200 
+$title-color   : $table-head-color; //= $gray-700 
 
-//Bg-color for table, accordion etc.
-$title-bg-color: darken($header-bg-color, $darken-percent);
-    $title-color: darken( $header-color, 10% );//Darker that modal headers
+//Bg-color and color for "open"/active table, accordion, bottons, list-items etc
+$title-active-bg-color: $gray-300; 
+$title-active-color   : $gray-800; 
 
-//Bg-color for hover on table, accordion, bottons, list-items etc
-$title-bg-color-hover: darken($title-bg-color, $darken-percent);
-$control-bg-color-hover: $title-bg-color-hover;
-    $title-color-hover: $gray-dark; // = $btn-secondary-color
-    $control-color-hover: $title-color-hover; 
-    
-//Bg-color for "open" table, accordion, bottons, list-items etc
-$title-open-bg-color: darken($title-bg-color-hover, $darken-percent);
-$control-open-bg-color: $title-open-bg-color;
-    $title-open-color: $title-color-hover;
-    $control-open-color: $title-open-color;
-
-
-//Bg-color for hover on "open" table, accordion, bottons, list-items etc
-$title-open-bg-color-hover: darken($title-open-bg-color, $darken-percent);
-$control-open-bg-color-hover: $title-open-bg-color-hover;
-    $title-open-color-hover: false; // => Same as $title-open-color
-    $control-open-color-hover: $title-open-color-hover;
-
- 
-/************************************************************
-Colors for selected (class="active") controls
-Using same structure as for $title-
-************************************************************/
-$darken-percent: 8%;
-
+//Bg-color and color for controls ~ buttons, list-items etc.
+//"Blue"-version
 $control-active-bg-color: $list-group-active-bg; 
-    $control-active-color: $list-group-active-color;
+$control-active-color   : $list-group-active-color;
 
-$control-active-bg-color-hover: darken($control-active-bg-color, $darken-percent); 
-    $control-active-color-hover: darken($control-active-color, $darken-percent); 
+//"Gray"-version
+//$control-active-bg-color: $title-active-bg-color;
+//$control-active-color   : $title-active-color;
 
-//TODO
-$semi-selected-bg      : $btn-warning-bg;
-$semi-selected-hover-bg: darken($semi-selected-bg, $darken-percent);
+//TODO Bg-color for semi-selected checkbox
+$semi-selected-bg-color      : $orange; //or $yellow;
+$semi-selected-bg-color-hover: darken($semi-selected-bg-color, $darken-hover-percent);
 
-
-/************************************************************
-
-************************************************************/
 //Border-color for open/show accordions/cards
-$card-show-border-color: rgba(0, 0, 0, 0.5);//darken( $card-border-color, 50% );
+$card-show-border-color: rgba(0, 0, 0, 0.4);

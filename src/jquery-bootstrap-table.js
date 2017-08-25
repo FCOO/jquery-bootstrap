@@ -89,58 +89,66 @@ Add sort-functions + save col-index for sorted column
         asModal - display the table in a modal-window with fixed header and scrolling content
         **********************************************************/
         asModal: function( modalOptions ){
-            //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
-            var $theadClone = this.find('thead').clone( true ),
+            var showHeader = this.find('.no-header').length == 0,
+                _this      = this,
+                $theadClone, 
+                $tableWithHeader = null, 
+                $result, $thead, count;
+                
+            if (showHeader){
+                //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
+                $theadClone = this.find('thead').clone( true );
                 $tableWithHeader =  
                     $('<table/>')
                         ._bsAddBaseClassAndSize( this.data(dataTableId) )
                         .addClass('table-with-header')
-                        .append( $theadClone ),
+                        .append( $theadClone );
+                $thead = this.find('thead');
+                count  = 20;
+            }
 
-                $result = $.bsModal( 
+
+            $result = $.bsModal( 
                             $.extend( modalOptions || {}, {
                                 flex             : true,
                                 noVerticalPadding: true,
                                 content          : this,
                                 fixedContent     : $tableWithHeader
                             })
-                          ),
+                          );
 
-            //Using timeout to wait for the browser to update DOM and get height of the header
-                _this = this,
-                $thead = this.find('thead'),
-                count = 20,
-
-                setHeaderHeight = function(){
-                    var height = $tableWithHeader.height(); 
-                    if (height <= 0){
-                        count--;
-                        if (count){
-                            setTimeout( setHeaderHeight, 50 );
-                            return;
+            if (showHeader){
+                //Using timeout to wait for the browser to update DOM and get height of the header
+                var setHeaderHeight = function(){ 
+                        var height = $tableWithHeader.outerHeight(); 
+                        if (height <= 0){
+                            count--;
+                            if (count){
+                                //Using timeout to wait for the browser to update DOM and get height of the header
+                                setTimeout( setHeaderHeight, 50 );
+                                return;
+                            }
                         }
-                    }
-                    
-                    _this.parent().css('padding-bottom', height+'px');     
-                    _this.css('margin-top', -height+'px');
+                   
+                        _this.css('margin-top', -height+'px');
+                        setHeaderWidth();
 
-                    setHeaderWidth();
-                },
+                        //Only set header-height once
+                        $result.off('shown.bs.modal.table', setHeaderHeight );
+                    },
                 
-                setHeaderWidth = function(){
-                    $thead.find('th').each(function( index, th ){
-                        $theadClone.find('th:nth-child(' + (index+1) + ')')
-                            .width( $(th).width()+'px' );
-                    });
-                    $tableWithHeader.width( _this.width()+'px' );
-                };
+                    setHeaderWidth = function(){
+                        $thead.find('th').each(function( index, th ){
+                            $theadClone.find('th:nth-child(' + (index+1) + ')')
+                                .width( $(th).width()+'px' );
+                        });
+                        $tableWithHeader.width( _this.width()+'px' );
+                    };
 
-            //Using timeout to wait for the browser to update DOM and get height of the header
-            //setHeaderHeight();
-            setTimeout( setHeaderHeight, 50 );
-
-            $thead.resize( setHeaderWidth );
-
+                $result.on('shown.bs.modal.table', setHeaderHeight );
+                $thead.resize( setHeaderWidth );
+            }
+            
             return $result;
         }
 
@@ -149,11 +157,14 @@ Add sort-functions + save col-index for sorted column
     //**********************************************************
     function table_th_onClick( event ){
         var $th = $( event.currentTarget ),
+            sortable = $th.hasClass('sortable'),
             newClass = $th.hasClass('desc') ? 'asc' : 'desc'; //desc = default
 
-        //Remove .asc and .desc from all th
-        $th.parent().find('th').removeClass('asc desc');
-        $th.addClass(newClass);
+        if (sortable){
+            //Remove .asc and .desc from all th
+            $th.parent().find('th').removeClass('asc desc');
+            $th.addClass(newClass);
+        }
     }
     
     /**********************************************************
@@ -165,6 +176,7 @@ Add sort-functions + save col-index for sorted column
     $.bsTable = function( options ){
         options = $._bsAdjustOptions( options, defaultOptions ); 
         options.class = 
+            (options.small ? 'table-sm ' : '' ) + 
             (options.verticalBorder ? 'table-bordered ' : '' ) + 
             (options.selectable ? 'table-selectable ' : '' ) + 
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' ),
@@ -194,22 +206,23 @@ Add sort-functions + save col-index for sorted column
         $table.init.prototype.extend( bsTable_prototype );
 
         //Create headers
-        $.each( options.columns, function( index, column ){
-            var $th = $('<th/>')
-                        ._bsAddStyleClasses( column.textStyle ) 
-                        .addClass('align-middle')
-                        .toggleClass('sortable', !!column.sortable )
-                        .on('click', table_th_onClick )
-                        .appendTo( $tr );
+        if (options.showHeader)
+            $.each( options.columns, function( index, column ){
+                var $th = $('<th/>')
+                            ._bsAddStyleClasses( column.textStyle ) 
+                            .addClass('align-middle')
+                            .toggleClass('sortable', !!column.sortable )
+                            .on('click', table_th_onClick )
+                            .appendTo( $tr );
 
-            //Adding sort-direction icons
-            if (column.sortable)
-                $th.addClass('sortable');
+                //Adding sort-direction icons
+                if (column.sortable)
+                    $th.addClass('sortable');
 
-            $th
-                ._bsAddStyleClasses( column.align )
-                ._bsAddHtml( column.header );
-        });
+                $th
+                    ._bsAddStyleClasses( column.align )
+                    ._bsAddHtml( column.header );
+            });
       
         if (options.selectable){
             var radioGroupOptions = $.extend( true, options );

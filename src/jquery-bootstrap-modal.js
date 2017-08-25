@@ -44,6 +44,7 @@
 
     //Merthods to allow multi modal-windows
     var openModalDataId = 'bs_open_modals';
+
     function incOpenModals( number ){
         $('body').data(
             openModalDataId,
@@ -56,6 +57,9 @@
     //******************************************************
     //show_bs_modal - called when a modal is opening
     function show_bs_modal( /*event*/ ) {
+
+        //Close all popover
+        $('.popover.show').popover('hide');
 
         var $this = $(this);
         // if the z-index of this modal has been set, ignore.
@@ -157,6 +161,11 @@
             }
         }
 
+        //Set variables used to set scroll-bar (if any)
+        var hasScroll       = !!options.scroll,
+            scrollDirection = options.scroll === true ? 'vertical' : options.scroll,
+            scrollClass     = 'scrollbar-'+scrollDirection;
+
         this.bsModal = {};
 
         var $modalContainer = this.bsModal.$container =
@@ -185,7 +194,7 @@
         //Append fixed content (if any)
         var $modalFixedContent = this.bsModal.$fixedContent =
                 $('<div/>')
-                    .addClass('modal-body-fixed')
+                    .addClass('modal-body-fixed' + (hasScroll ? ' '+scrollClass : ''))
                     .appendTo( $modalContainer );
         if (options.fixedContent){
             if ($.isFunction( options.fixedContent ))
@@ -201,8 +210,8 @@
                     .appendTo( $modalContainer ),
 
             $modalContent = this.bsModal.$content =
-                options.scroll ? 
-                    $modalBody.addScrollbar() :
+                hasScroll ? 
+                    $modalBody.addScrollbar({ direction: scrollDirection }) :
                     $modalBody;
 
         //Add content
@@ -291,11 +300,9 @@
     bsModal
     ******************************************************/
     $.bsModal = function( options ){
-
         var $result, $modalDialog,
             id = options.id || '_bsModal'+ modalId++,
-            classNames = (window.bsIsTouch ? '' : 'fade ')+
-                         (options.noVerticalPadding ? 'no-vertical-padding ' : ''),
+            classNames = options.noVerticalPadding ? 'no-vertical-padding' : '',
             //Create a close-function
             closeModalFunction = function(){ $result.modal('hide'); };
 
