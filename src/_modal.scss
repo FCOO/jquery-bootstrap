@@ -33,13 +33,6 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     @include right-side-icon( '\f00d', 1em, true );
 }
 
-@include media-breakpoint-down(xs) { 
-    niels: sx;
-}
-@include media-breakpoint-down(sm) { 
-    niels: sm;
-}
-
 .modal, .modal-inline {
     $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
 

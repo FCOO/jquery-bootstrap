@@ -6648,12 +6648,6 @@ If the height (and width) of the content is variable (eq. accordion) the class
     cursor: pointer;
     opacity: .75; }
 
-@media (max-width: 575px) {
-  niels: sx; }
-
-@media (max-width: 767px) {
-  niels: sm; }
-
 .modal .modal-dialog, .modal-inline .modal-dialog {
   display: flex;
   flex-direction: column;
