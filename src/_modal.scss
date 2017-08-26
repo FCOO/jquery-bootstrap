@@ -88,9 +88,15 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     }
 
 
-    //Overwrite Bootstrap media-query setting max-width = 300px for modal-sm
-    &.modal-sm {
+    //Overwrite Bootstrap media-query setting max-width = 300px for modal-sm but only for non inline modals
+    &:not(.modal-inline).modal-sm {
         max-width: none !important;
+    }
+
+
+    //No box-shadow on modal-content when inside a modal-inline
+    &.modal-inline .modal-content {
+        box-shadow: none;
     }
 }
 
@@ -133,6 +139,15 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
         flex-grow  : 0; //Only .modal-body is growing
         padding: $btn-padding-x;
         &:empty { display: none; }
+
+        &.modal-footer-vertical {
+            display         : flex;
+            flex-direction  : column;
+            align-items     : center;
+            justify-content : center;
+            > * { margin: 0;}
+            > *:not(:first-child) { margin-top: .25rem; }
+        }
     }
 }
 

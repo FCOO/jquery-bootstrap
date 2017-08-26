@@ -504,6 +504,29 @@
             .appendTo( $body)
             .on('click', function(){ openModal(0); });
 
+
+/* Test af modal-inline        
+        $('<div id="modal-inline" style="margin-left: 300px; border:1px solid red; max-width:200px; max-height:300px"></div>')
+            .appendTo( $body )
+
+            .addClass('modal-inline modal-sm')
+            ._bsModalContent({
+                    header: 'Dette er en meget lang header, der gerne skulle blive klippet af, da den er alt for lang',
+
+
+                    close: { onClick: function(){ alert('Luk'); } },
+                    content: 'Rigtig godt',
+                    footer: 'Helt fantastisk',
+                    smallButtons: true,
+                    verticalButtons: true,
+                    buttons: [
+                        {text: 'Nogen andet'}
+                        ]
+
+                });
+*/
+        
     </script>
+
 </body>
 </html>

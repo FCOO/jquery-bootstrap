@@ -6676,8 +6676,11 @@ If the height (and width) of the content is variable (eq. accordion) the class
 .modal.show .modal-dialog, .modal-inline.show .modal-dialog {
   opacity: 1; }
 
-.modal.modal-sm, .modal-inline.modal-sm {
+.modal:not(.modal-inline).modal-sm, .modal-inline:not(.modal-inline).modal-sm {
   max-width: none !important; }
+
+.modal.modal-inline .modal-content, .modal-inline.modal-inline .modal-content {
+  box-shadow: none; }
 
 .modal, .modal-inline {
   font-size: 1rem; }
@@ -6746,6 +6749,15 @@ If the height (and width) of the content is variable (eq. accordion) the class
     padding: 0.5rem; }
     .modal .modal-footer:empty, .modal-inline .modal-footer:empty {
       display: none; }
+    .modal .modal-footer.modal-footer-vertical, .modal-inline .modal-footer.modal-footer-vertical {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center; }
+      .modal .modal-footer.modal-footer-vertical > *, .modal-inline .modal-footer.modal-footer-vertical > * {
+        margin: 0; }
+      .modal .modal-footer.modal-footer-vertical > *:not(:first-child), .modal-inline .modal-footer.modal-footer-vertical > *:not(:first-child) {
+        margin-top: .25rem; }
 
 .modal.modal-sm .modal-header,
 .modal-inline.modal-sm .modal-header {

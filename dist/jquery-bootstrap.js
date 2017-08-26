@@ -645,6 +645,7 @@ TODO:
     Sets object with all parts of the result in this.modalParts
     ******************************************************/
     $.fn._bsModalContent = function( options ){
+        options = options || {};
 
         //addClose( $element ) - Add event/attr/data to $element to close the modal
         function addClose( $element ){
@@ -658,6 +659,23 @@ TODO:
             }
         }
 
+        options = $.extend( {
+            //Buttons
+            buttons  : [],
+            closeText: {da:'Luk', en:'Close'},
+            closeIcon: 'fa-times'
+        }, options );
+
+        //Add close-botton. Avoid by setting options.closeText == ""
+        if (options.closeText != '')
+            options.buttons.push({
+                text        : options.closeText,
+                icon        : options.closeIcon,
+                closeOnClick: true,
+                addOnClick  : false
+            });
+
+      
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
             scrollDirection = options.scroll === true ? 'vertical' : options.scroll,
@@ -729,15 +747,16 @@ TODO:
         var $modalButtonContainer = this.bsModal.$buttonContainer =
                 $('<div/>')
                     .addClass('modal-footer')
+                    .toggleClass('modal-footer-vertical', !!options.verticalButtons)
                     .appendTo( $modalContainer ),
             $modalButtons = this.bsModal.$buttons = [],
 
             buttons = options.buttons || [],
 
             buttonOptions = {
-                class       : '',
+                class       : options.verticalButtons ? 'btn-block' : '',
                 addOnClick  : true,
-                small       : options.small
+                small       : options.smallButtons
             };
 
         //No button is given focus by options.focus: true => Last button gets focus
@@ -816,12 +835,12 @@ TODO:
                 //Content
                 scroll     : true,
                 content    : '',
-
+/*
                 //Buttons
                 buttons  : [],
                 closeText: {da:'Luk', en:'Close'},
                 closeIcon: 'fa-times',
-
+*/
 
                 //Modal-options
                 show       : true,
@@ -833,7 +852,7 @@ TODO:
 
 
         //Adding default buttons
-
+/*test
         //Add close-botton. Avoid by setting options.closeText == ""
         if (options.closeText != '')
             options.buttons.push({
@@ -842,7 +861,7 @@ TODO:
                 closeOnClick: true,
                 addOnClick  : false
             });
-
+*/
 /*
         options.buttons.push({
             text: options.okText || {da:'Ok', en:'Ok'},
