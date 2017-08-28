@@ -322,6 +322,7 @@ Eq.
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
 | `header` | `content` or `[] of content` | `""` | See above |
+| `noHeader` | `boolean` | `false` | Prevent header even if `options.header` is set |
 | `flex` | `boolean` | `false` | The default width of a modal is 300px. If `true` the the width of the modal will adjust to the width of the browser up to 600px |
 | `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
 | `noVerticalPadding` | `boolean` | `false` | If `true` the the vertical padding around the contents is zero |

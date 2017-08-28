@@ -192,7 +192,7 @@
                     .appendTo( this ); 
 
         //Append header
-        if (options.forceHeader || options.header || options.close){
+        if (!options.noHeader &&  (options.header || options.close)){
             var $modalHeader = this.bsModal.$header =
                     $('<div/>')
                         .addClass('modal-header')
@@ -332,7 +332,7 @@
                 class      : classNames,
 
                 //Header
-                forceHeader: true,
+                noHeader   : false,
                 close      : { onClick: closeModalFunction },
 
                 //Content
