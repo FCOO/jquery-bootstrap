@@ -7,6 +7,7 @@
 This plugin contains jQuery methods to create different types of elements e.q. buttons, list, select, tables, modal windows etc. displayed in a adjusted version of Bootstrap 4 default theme
 
 ## Contents
+
 - [Common](#common)
 - [Button](#button)
 - [Button-group](#buttongroup)
@@ -329,8 +330,9 @@ Eq.
 | `show` | `boolean` |  `true` | The modal is shown after creation |
 | `fixedContent` |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
+| `closeButton` | `boolean` | `true` | If `true` a close button is added. See `closeText` and `closeIcon` below |
 | `buttons` | `[] of button-options` | `[]` | Array of options for buttons in the footer. See Button above. `closeOnClick: true/false` is added to set if the button closes the modal |
-| `closeText` | `string or i18n-record`| `{da:'Luk', en:'Close'}` | The text for the close-button. Set `closeText: ""` to remove close button |
+| `closeText` | `string or i18n-record`| `{da:'Luk', en:'Close'}` | The text for the close-button. |
 | `closeIcon` | `string`| `"fa-times"` | The icon for the close-button |
 
 ### Methods

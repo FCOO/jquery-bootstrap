@@ -661,13 +661,14 @@ TODO:
 
         options = $.extend( {
             //Buttons
-            buttons  : [],
-            closeText: {da:'Luk', en:'Close'},
-            closeIcon: 'fa-times'
+            buttons    : [],
+            closeButton: true,
+            closeText  : {da:'Luk', en:'Close'},
+            closeIcon  : 'fa-times',
         }, options );
 
-        //Add close-botton. Avoid by setting options.closeText == ""
-        if (options.closeText != '')
+        //Add close-botton. Avoid by setting options.closeButton  = false
+        if (options.closeButton)
             options.buttons.push({
                 text        : options.closeText,
                 icon        : options.closeIcon,
@@ -835,12 +836,6 @@ TODO:
                 //Content
                 scroll     : true,
                 content    : '',
-/*
-                //Buttons
-                buttons  : [],
-                closeText: {da:'Luk', en:'Close'},
-                closeIcon: 'fa-times',
-*/
 
                 //Modal-options
                 show       : true,
@@ -850,27 +845,6 @@ TODO:
 
             });
 
-
-        //Adding default buttons
-/*test
-        //Add close-botton. Avoid by setting options.closeText == ""
-        if (options.closeText != '')
-            options.buttons.push({
-                text        : options.closeText,
-                icon        : options.closeIcon,
-                closeOnClick: true,
-                addOnClick  : false
-            });
-*/
-/*
-        options.buttons.push({
-            text: options.okText || {da:'Ok', en:'Ok'},
-            icon: options.okIcon || 'fa-check',
-            primary: true,
-            closeOnClick: true,
-            onClick: function(){ alert('Hej :-)') },
-        });
-*/
 
         //Create the modal        
         $result = 
