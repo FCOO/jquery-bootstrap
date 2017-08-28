@@ -731,8 +731,15 @@ TODO:
                     $modalBody;
 
         //Add content
-        if ($.isFunction( options.content ))
-            options.content( $modalContent );
+        if ($.isFunction( options.content )){
+            var contentFunc = $.proxy( options.content, options.contentContext );
+
+            //Both support functions creating content on container and  functions returning content
+//            var content = options.content( $modalContent );
+            var content = contentFunc( $modalContent );
+            if (content)
+                options.append( content );                    
+        }
         else
             $modalContent.append( options.content );
 
