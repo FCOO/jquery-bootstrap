@@ -241,7 +241,7 @@
 //            var content = options.content( $modalContent );
             var content = contentFunc( $modalContent );
             if (content)
-                options.append( content );                    
+                $modalContent.append( content );                    
         }
         else
             $modalContent.append( options.content );
