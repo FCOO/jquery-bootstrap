@@ -32,6 +32,8 @@ $max-items-visible-in-selectbox: 4;
 
         @include vertical-align-center();
 
+        padding-right: $btn-padding-x /2;
+
         .arrow {
             @include right-side-icon('\f078'); 
         }
@@ -39,7 +41,6 @@ $max-items-visible-in-selectbox: 4;
         .selected-content {
             width        : 100%;
             display      : inline-block;
-            padding-right: 0.8em;
             @include text-truncate();
 
             &.empty {
@@ -51,20 +52,69 @@ $max-items-visible-in-selectbox: 4;
     //Set size of button when size=sm
     &.selectbox-sm > .btn {
         @extend .btn-sm;
+        padding-right: $btn-padding-x-sm / 2;
     }
 
+    //Style for dropdown-menu and button when selectbox is 'open' (.show). There are different in the style depending on the dropdown is open over or under the button
+    &.show {
+       
+        .dropdown-menu {
+            //Common style for both "on-top" and "on-bottom"
+            width  : 100%;
+            padding: 0;
+
+            //The button
+            & + .btn.btn-#{$btn-style-name} {
+                @include color-hover( $title-color, $title-bg-color, true, true);
+            }
+
+            //Style when open "on-bottom"
+            &[x-placement *= bottom] {
+                border-top-left-radius : 0;
+                border-top-right-radius: 0;
+                margin-top             : -$dropdown-border-width; //Move up to align with bottom of button               
+                @include focus-style( top );
+
+                //The button
+                & + .btn.btn-#{$btn-style-name} {
+                    border-bottom-right-radius: 0;
+                    border-bottom-left-radius : 0;
+                    &, &:focus { border-bottom-color: $control-border-color }
+                    @include focus-style( bottom );
+                }
+            }
+
+            //Style when open "on-top"
+            &[x-placement *= top] {
+                border-bottom-left-radius : 0;
+                border-bottom-right-radius: 0;
+                margin-bottom             : -$dropdown-border-width; //Move down to align with top of button               
+                @include focus-style( bottom );
+
+                //The button
+                & + .btn.btn-#{$btn-style-name} {
+                    border-top-right-radius: 0;
+                    border-top-left-radius : 0;
+                    &, &:focus { border-top-color: $control-border-color }
+                    @include focus-style( top );
+                }
+            }
+        }
+    }
+/* ORIGINAL
     .dropdown-menu {
-        width                  : 100%;
+        width  : 100%;
+        padding: 0;
+
         border-top-left-radius : 0;
         border-top-right-radius: 0;
         margin-top             : -$dropdown-border-width; //Move up to align with bottom of button               
-        padding                : 0;
     }
 
     //Make the button 'active' when dropdown is open
     &.show {
         > .btn.btn-#{$btn-style-name} {
-            @include color-hover( $title-color, $title-bg-color, true, true);//TEST2
+            @include color-hover( $title-color, $title-bg-color, true, true);
 
             border-bottom-right-radius: 0;
             border-bottom-left-radius : 0;
@@ -80,6 +130,10 @@ $max-items-visible-in-selectbox: 4;
             @include focus-style( top );
         }
     }
+
+
+*/
+
 } //end of .dropdown.selectbox  (1: bsSelectbox)
 
 
@@ -103,7 +157,6 @@ $max-items-visible-in-selectbox: 4;
 }
 
 
-
 //.dropdown-item and .dropdown-header
 .dropdown.selectbox, .selectList {
     
@@ -122,7 +175,7 @@ $max-items-visible-in-selectbox: 4;
             @include control-active-color(".dropdown-item");
         }
         .dropdown-header {
-            @include header-variant(); 
+            @include header-variant( false, false, false ); 
 
             line-height: $line-height-base * $font-size-base / $font-size-sm; //Adjust line-height to make header and item same height
 
@@ -143,7 +196,7 @@ $max-items-visible-in-selectbox: 4;
             @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $line-height-base, $btn-border-radius-sm);
         }
         .dropdown-header {
-            @include header-variant-sm();
+            @include header-variant-sm( false, false ); 
             line-height: $line-height-base * $font-size-sm / $font-size-xs; //Adjust line-height to make header and item same height
 
             //Items below header moves to the right
@@ -168,5 +221,4 @@ $max-items-visible-in-selectbox: 4;
         }
     }
 */
-
 }

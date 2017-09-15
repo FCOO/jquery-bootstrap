@@ -1,0 +1,86 @@
+/************************************************************
+BOOTSTRAP-VARIABLES
+************************************************************/
+
+@function map-replace($map, $key, $value){
+    @return map-merge(
+                map-remove( $map, $key ),
+                ( $key: $value )
+            );
+}
+
+/***********************************************
+ADJUST BOOTSTRAP DEFAULT VALUES
+************************************************/
+$enable-rounded:            true ; //true !default;
+$enable-shadows:            true ; //false !default;
+$enable-gradients:          true ; //false !default;
+$enable-transitions:        true ; //true !default;
+$enable-hover-media-query:  false; //false !default;
+$enable-grid-classes:       true ; //true !default;
+$enable-print-styles:       true ; //true !default;
+
+//Default border-width as rem
+//TODO $border-width: 1rem/16; //= 1px as rem
+
+//Reduce $modal-backdrop-opacity to allow for multi modals
+$modal-backdrop-opacity: .3; //.5 !default;
+
+
+//Setting padding around buttons etc. equal in both directions
+$btn-padding-x-lg  : .75rem;
+$btn-padding-y-lg  : $btn-padding-x-lg;
+$input-padding-x-lg: $btn-padding-x-lg;
+$input-padding-y-lg: $btn-padding-x-lg;
+
+$btn-padding-x  : .5rem;
+$btn-padding-y  : $btn-padding-x;
+$input-padding-x: $btn-padding-x;
+$input-padding-y: $btn-padding-x;
+
+$btn-padding-x-sm  : .25rem;
+$btn-padding-y-sm  : $btn-padding-x-sm;
+$input-padding-x-sm: $btn-padding-x-sm;
+$input-padding-y-sm: $btn-padding-x-sm;
+
+
+//Remove shadow from input
+$input-focus-box-shadow: none;
+
+//Darken color for headers in dropdown/selectbox/selectlist because $header-bg-color is darken in _color.scss
+$dropdown-header-color: #495057; // = $gray-700 Original = $gray-600
+
+//Popover - No inner padding in default popover
+$popover-inner-padding: 0; 
+
+//TODO set $popover-max-width as rem instead of px
+
+/************************************************************
+Including "size" xs as in Bootstrap 3
+************************************************************/
+$font-size-xs      : .75rem;
+
+$btn-padding-x-xs  : .2rem;
+$btn-padding-y-xs  : .1rem; //$btn-padding-x-xs;
+$input-padding-x-xs: $btn-padding-x-xs;
+$input-padding-y-xs: $btn-padding-y-xs;
+
+$border-radius-xs      : .1rem;
+$btn-border-radius-xs  : $border-radius-xs;
+$input-border-radius-xs: $border-radius-xs;
+
+/************************************************************
+Border-colors
+************************************************************/
+//Border-color for modal
+$modal-content-border-color: #868e96; //= $gray-600
+
+//Border-color for header (bottom) and footer (top)
+$modal-header-border-color: lighten( $modal-content-border-color, 7.5% );
+
+//Border-color for accordions/cards
+$card-border-color: lighten( $modal-header-border-color, 7.5% );
+
+//Popover get same border as modal
+$popover-border-color      : $modal-content-border-color;
+$popover-arrow-outer-color : $popover-border-color;

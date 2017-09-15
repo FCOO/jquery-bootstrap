@@ -10255,7 +10255,7 @@ return jQuery;
 ;
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.12.4
+ * @version 1.12.5
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -10601,20 +10601,18 @@ var isIE10$1 = function () {
   return isIE10;
 };
 
-function getSize(axis, body, html, computedStyle, includeScroll) {
-  return Math.max(body['offset' + axis], includeScroll ? body['scroll' + axis] : 0, html['client' + axis], html['offset' + axis], includeScroll ? html['scroll' + axis] : 0, isIE10$1() ? html['offset' + axis] + computedStyle['margin' + (axis === 'Height' ? 'Top' : 'Left')] + computedStyle['margin' + (axis === 'Height' ? 'Bottom' : 'Right')] : 0);
+function getSize(axis, body, html, computedStyle) {
+  return Math.max(body['offset' + axis], body['scroll' + axis], html['client' + axis], html['offset' + axis], html['scroll' + axis], isIE10$1() ? html['offset' + axis] + computedStyle['margin' + (axis === 'Height' ? 'Top' : 'Left')] + computedStyle['margin' + (axis === 'Height' ? 'Bottom' : 'Right')] : 0);
 }
 
 function getWindowSizes() {
-  var includeScroll = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
   var body = window.document.body;
   var html = window.document.documentElement;
   var computedStyle = isIE10$1() && window.getComputedStyle(html);
 
   return {
-    height: getSize('Height', body, html, computedStyle, includeScroll),
-    width: getSize('Width', body, html, computedStyle, includeScroll)
+    height: getSize('Height', body, html, computedStyle),
+    width: getSize('Width', body, html, computedStyle)
   };
 }
 
@@ -10864,7 +10862,7 @@ function getBoundaries(popper, reference, padding, boundariesElement) {
 
     // In case of HTML, we need a different computation
     if (boundariesNode.nodeName === 'HTML' && !isFixed(offsetParent)) {
-      var _getWindowSizes = getWindowSizes(false),
+      var _getWindowSizes = getWindowSizes(),
           height = _getWindowSizes.height,
           width = _getWindowSizes.width;
 
@@ -16561,7 +16559,7 @@ var Popover = function ($) {
     /****************************************************
     Overwrite Popover.show to save and modify new positions
     *****************************************************/
-    $.fn.popover.Constructor.prototype.show = function( _show ){
+    $.fn.tooltip.Constructor.prototype.show = function( _show ){
         return function(){
             //If first time: Save 'true' placement
             if (!this.config.truePlacement){
@@ -16573,34 +16571,39 @@ var Popover = function ($) {
             _show.apply(this, arguments);
 
             //Adjust popover
-            var $tip       = $(this.tip),
-                arrowDim   = $tip.find('.arrow').width() || 10,
+            var $tip        = $(this.tip),
+                arrowDim    = $tip.find('.arrow').width() || 10,
                 arrowOffset = 6 + arrowDim,
-                halfWidth  = $tip.width() / 2,
-                halfHeight = $tip.height() / 2,
-                offset     = 0;
+                offset      = 0,
+                sign        = 0;
+
+
 
             switch (this.config.truePlacement){
-                case "topleft"    : 
-                case "bottomleft" : offset = -halfWidth + arrowOffset; break;
+                case 'topright'   :
+                case 'rightbottom':
+                case 'bottomright':
+                case 'leftbottom' : sign = +1; break;
 
-                case "topright"   :
-                case "bottomright": offset =  halfWidth - arrowOffset; break;
+                case 'topleft'    :
+                case 'righttop'   :
+                case 'bottomleft' :
+                case 'lefttop'    : sign = -1; break;
 
-              
-                case "lefttop"    :
-                case "righttop"   : offset = -halfHeight + arrowOffset; break;
+                default           : sign = 0;
+            }
 
-                case "leftbottom": 
-                case "rightbottom": offset =  halfHeight - arrowOffset; break;
+            switch (sign) {
+                case +1: offset = `+50%p - ${arrowOffset}px`; break;
+                case -1: offset = `-50%p + ${arrowOffset}px`; break;
+                default: offset = 0;
             }
 
             this._popper.modifiers[1].offset = offset;
         };
 
-    }( $.fn.popover.Constructor.prototype.show );
-    
-   
+    }( $.fn.tooltip.Constructor.prototype.show );
+
 }(jQuery, this, document));
 ;
 (function (global, factory) {
@@ -19877,13 +19880,16 @@ return index;
             this._psSetShadow( this.scrollbarYRail , postfix, on );
         },
         _psUpdateShadow: function(){
+            //Round up due to some browser using decimal in scroll-values
+            var scrollLeft = Math.ceil( this.scrollLeft() ),
+                scrollTop  = Math.ceil( this.scrollTop()  );
+
+            this._psSetXShadow( 'left',   scrollLeft > 0 ); 
+            this._psSetXShadow( 'right',  scrollLeft < (this.get(0).scrollWidth - this.get(0).clientWidth) ); 
+
+            this._psSetYShadow( 'top',    scrollTop > 0 ); 
+            this._psSetYShadow( 'bottom', scrollTop < (this.get(0).scrollHeight - this.get(0).clientHeight) ); 
             
-            this._psSetXShadow( 'left',   this.scrollLeft() > 0 ); 
-            this._psSetXShadow( 'right',  this.scrollLeft() < (this.get(0).scrollWidth - this.get(0).clientWidth) ); 
-
-            this._psSetYShadow( 'top',    this.scrollTop() > 0 ); 
-            this._psSetYShadow( 'bottom', this.scrollTop() < (this.get(0).scrollHeight - this.get(0).clientHeight) ); 
-
         }
 
     });

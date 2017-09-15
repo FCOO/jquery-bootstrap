@@ -75,7 +75,7 @@
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
                 template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + '" role="tooltip">'+
                                 '<div class="popover-header"></div>' + 
-                                '<div class="popover-body' + (options.defaultPadding ? ' default-padding' : '') + '"></div>' + 
+                                '<div class="popover-body"></div>' + 
                                 '<div class="popover-footer"></div>' + 
                                 '<div class="arrow"></div>' + 
                             '</div>',

@@ -39,8 +39,8 @@ TODO:
     }
 
 
-    //scrollSelwectedItemIntoView
-    function scrollSelwectedItemIntoView(){
+    //scrollSelectedItemIntoView
+    function scrollSelectedItemIntoView(){
         $(this).find( '.dropdown-item.active' ).first().scrollIntoView();
     }
     
@@ -91,10 +91,14 @@ TODO:
             });
 
         var $result = $('<div/>')
-                        ._bsAddBaseClassAndSize( options );
+                        ._bsAddBaseClassAndSize( options ),
+            $dropdown_menu = $('<div/>')
+                                .addClass('dropdown-menu')
+                                .attr('aria-labelledby', options.id )
+                                .appendTo( $result ),
+            placeholder = options.placeholder || {da:'Vælg...', en:'Select...'};
 
         //Create the dropdown-button
-        var placeholder = options.placeholder || {da:'Vælg...', en:'Select...'};
         $.bsButton({
                 tagName     : 'div', 
                 class       : '',
@@ -124,11 +128,6 @@ TODO:
 
             .appendTo( $result );
 
-        var $dropdown_menu = $('<div/>')
-                                .addClass('dropdown-menu')
-                                .attr('aria-labelledby', options.id )
-                                .appendTo( $result );
-
         options.postOnChange = postOnChange;
 
         addSelectItems( $dropdown_menu.addScrollbar() , options, true );
@@ -138,7 +137,7 @@ TODO:
         postOnChange( $dropdown_menu.find( '.dropdown-item.active' ).first() );
 
         //Scroll selected item into view when opened        
-        $result.on('shown.bs.dropdown', scrollSelwectedItemIntoView );
+        $result.on('shown.bs.dropdown', scrollSelectedItemIntoView );
 
 /* REMOVED        
         //Setting the width of the dropdown-button equal the width of the item-box. Need timeout to allow DOM in some browser to finish adding elements

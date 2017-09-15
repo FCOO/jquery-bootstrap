@@ -7,10 +7,11 @@ RIGHT-SIDE-ICON
 Add style to <i> to place it to the right and vertical center
 NOTE: Parent element MUST have @include vertical-align-center();
 ************************************************************/
-@mixin right-side-icon( $content: '\f054', $font-size: 0.8em, $hover: false){
+@mixin right-side-icon( $content: '\f054', $font-size: 0.8em, $hover: false, $opacity: .3 ){
     font-size  : $font-size;
     color      : $close-color;
     text-shadow: $close-text-shadow;
+    cursor     : pointer;
 
     line-height: 1;
 
@@ -18,7 +19,8 @@ NOTE: Parent element MUST have @include vertical-align-center();
     margin-right: 0;
 
     &:before {
-        content: "#{$content}";
+        font-size: $font-size;
+        content  : "#{$content}";
     }
 
     @if ($hover) {
@@ -31,7 +33,7 @@ NOTE: Parent element MUST have @include vertical-align-center();
         }
 
     } @else {
-        opacity: .3;
+        opacity: $opacity;
     }
 }
 
@@ -39,7 +41,6 @@ NOTE: Parent element MUST have @include vertical-align-center();
     display        : flex;
     justify-content: normal;
     align-items    : center; // vertically center it
-    > * {line-height:  inherit; }
 }
 
 
@@ -91,21 +92,23 @@ Unifies padding for modal, accordion, popup etc.
 
 /************************************************************
 CONTROL-CONTAINER
-Style for div with controls. Must haave tabindex:"-1" to
-work with focus
+Style for div with controls inside modal. 
+Must have tabindex:"-1" to work with focus
 ************************************************************/
 @mixin control-container(){
-    border: $input-btn-border-width solid $input-border-color;
-    border-radius: $input-border-radius;
-    &-sm {
-        border-radius: $input-border-radius-sm;
-    }
+    .modal & {
+        border: $input-btn-border-width solid $input-border-color;
+        border-radius: $input-border-radius;
+        &-sm {
+            border-radius: $input-border-radius-sm;
+        }
 
-    @include box-shadow($input-box-shadow);
-    @include transition($input-transition);
+        @include box-shadow($input-box-shadow);
+        @include transition($input-transition);
 
-    &:focus, &:active {
-        @include focus-style();
+        &:focus, &:active {
+            @include focus-style();
+        }
     }
 }
 
@@ -204,7 +207,6 @@ Mixin to set colors for selected elements and when hover
     }
 }
 
-
 /************************************************************
 HEADER, TITLE, AND FOOTER PADDING AND FONT-SIZE
 Padding are set to button y-padding (moving text to the left)
@@ -214,11 +216,10 @@ Padding are set to button y-padding (moving text to the left)
     span { @include text-truncate(); }
 }
 
-
 /************************************************************
 header-variant
 ************************************************************/
-@mixin header-variant($small: false, $bigger-font: false ) {
+@mixin header-variant( $is-title: false, $incl-header: true, $small: false ) {
 
     font-weight: $font-weight-base;
 
@@ -229,7 +230,7 @@ header-variant
     $padding-y: $btn-padding-y;
     $padding-x: $btn-padding-x;
     $font-size: $font-size-sm;
-    @if $bigger-font == true {
+    @if $is-title == true {
         $font-size: $font-size-base;
     }
 
@@ -237,21 +238,27 @@ header-variant
         $padding-y: $btn-padding-y-sm;
         $padding-x: $btn-padding-x-sm;
         $font-size: $font-size-xs;
-        @if $bigger-font == true {
+        @if $is-title == true {
             $font-size: $font-size-sm;
         }
     }
 
     @include button-size($padding-y, $padding-x, $font-size, $line-height-base, inherit);
+
+    @if $incl-header == true {
+        border-bottom: $modal-header-border-width solid $modal-header-border-color;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius : 0;
+    }
 }
 
-@mixin header-variant-sm( $bigger-font: false ) { @include header-variant( true, $bigger-font ); }
+@mixin header-variant-sm( $is-title: false, $incl-header: true  ) { @include header-variant( $is-title, $incl-header, true ); }
 
 /************************************************************
 title-variant - as header but with same font-size as siblings
 ************************************************************/
 @mixin title-variant( $small: false ) {
-    @include header-variant( $small, true );
+    @include header-variant( true, false, $small );
 }
 @mixin title-variant-sm() { @include title-variant( true ); }
 
@@ -259,13 +266,15 @@ title-variant - as header but with same font-size as siblings
 /************************************************************
 footer-variant
 ************************************************************/
-@mixin footer-variant( $small: false ) {
-    @include header-variant( $small );
+@mixin footer-variant( $incl-border-top: true, $small: false ) {
+    @include header-variant( false, false, $small );
     @include header-color();
 
     line-height: 1; //Decrease height
 
-    border-top: $modal-footer-border-width solid $modal-footer-border-color;
+    @if $incl-border-top == true {
+        border-top: $modal-footer-border-width solid $modal-footer-border-color;
+    }
 
     border-top-left-radius : 0 !important;
     border-top-right-radius: 0 !important;
@@ -275,7 +284,8 @@ footer-variant
 
 }
 
-@mixin footer-variant-sm() { @include footer-variant( true ); }
+@mixin footer-variant-sm( $incl-border-top: true ) { @include footer-variant( $incl-border-top, true ); }
+
 
 /************************************************************
 MARGIN-BOTTOM FOR ELEMENTS IN MODAL

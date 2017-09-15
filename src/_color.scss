@@ -14,14 +14,14 @@ $darken-active-percent: 7.5%;
 $darken-hover-percent : 5%;   
 
 //Bg-color and color for normal controls
-$control-bg-color: $gray-100; //#fff; 
+$control-bg-color: $gray-100; 
 $control-color   : #111; 
 
-//Global border-color ofr buttons, lists, inputs etc.
+//Global border-color for buttons, lists, inputs etc.
 $control-border-color: $input-border-color; 
 
 //Bg-color and color for modal and popover header
-$header-bg-color: $gray-100;              
+$header-bg-color: rgb(242,242,242); //Same as tab-color on some browser. Original = $gray-100;  
 $header-color   : $dropdown-header-color; //= $gray-600
 
 //Bg-color and color for table, accordion etc.
@@ -41,9 +41,10 @@ $control-active-color   : $list-group-active-color;
 //$control-active-bg-color: $title-active-bg-color;
 //$control-active-color   : $title-active-color;
 
-//TODO Bg-color for semi-selected checkbox
-$semi-selected-bg-color      : $orange; //or $yellow;
+//Bg-color for semi-selected checkbox
+$semi-selected-bg-color      : $orange;
 $semi-selected-bg-color-hover: darken($semi-selected-bg-color, $darken-hover-percent);
 
 //Border-color for open/show accordions/cards
-$card-show-border-color: rgba(0, 0, 0, 0.4);
+$card-show-border-color: darken( $card-border-color, 25% );
+

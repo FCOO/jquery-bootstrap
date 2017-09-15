@@ -21,70 +21,17 @@
 //MODERNIZR-SCSS - https://github.com/fcoo/modernizr-scss
 @import "../bower_components/modernizr-scss/dist/modernizr-scss";
 
-
-@function map-replace($map, $key, $value){
-    @return map-merge(
-                map-remove( $map, $key ),
-                ( $key: $value )
-            );
-}
-
 /***********************************************
-ADJUST BOOTSTRAP DEFAULT VALUES
+SET AND ADJUST BOOTSTRAP DEFAULT VALUES
 ************************************************/
-$enable-rounded:            true ; //true !default;
-$enable-shadows:            true ; //false !default;
-$enable-gradients:          true ; //false !default;
-$enable-transitions:        true ; //true !default;
-$enable-hover-media-query:  false; //false !default;
-$enable-grid-classes:       true ; //true !default;
-$enable-print-styles:       true ; //true !default;
+@import "bootstrap-variables";
 
-//Default border-width as rem
-$border-width: 1rem/16; //= 1px as rem
-
-//Reduce $modal-backdrop-opacity to allow for multi modals
-$modal-backdrop-opacity: .3; //.5 !default;
-
-
-//Setting padding around buttons etc. equal in both directions
-$btn-padding-x-lg  : .75rem;
-$btn-padding-y-lg  : $btn-padding-x-lg;
-$input-padding-x-lg: $btn-padding-x-lg;
-$input-padding-y-lg: $btn-padding-x-lg;
-
-$btn-padding-x  : .5rem;
-$btn-padding-y  : $btn-padding-x;
-$input-padding-x: $btn-padding-x;
-$input-padding-y: $btn-padding-x;
-
-$btn-padding-x-sm  : .25rem;
-$btn-padding-y-sm  : $btn-padding-x-sm;
-$input-padding-x-sm: $btn-padding-x-sm;
-$input-padding-y-sm: $btn-padding-x-sm;
-
-
-//Remove shadow from input
-$input-focus-box-shadow: none;
-
-/************************************************************
-Including "size" xs as in Bootstrap 3
-************************************************************/
-$font-size-xs      : .75rem;
-
-$btn-padding-x-xs  : .2rem;
-$btn-padding-y-xs  : $btn-padding-x-xs;
-$input-padding-x-xs: $btn-padding-x-xs;
-$input-padding-y-xs: $btn-padding-x-xs;
-
-$border-radius-xs      : .1rem;
-$btn-border-radius-xs  : $border-radius-xs;
-$input-border-radius-xs: $border-radius-xs;
 
 /***********************************************
-IMPORT BOOTSTROP SCSS
+IMPORT BOOTSTRAP SCSS
 ************************************************/
 @import "../bower_components/bootstrap/scss/bootstrap";
+//@import "../../bootstrap/scss/bootstrap"; //TEST
 
 /***********************************************
 BACKGROUND-COLOR AND TEXT COLOR

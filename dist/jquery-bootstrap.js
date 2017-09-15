@@ -494,6 +494,8 @@ TODO:
 
 
 }(jQuery, this, document));
+
+
 ;
 /****************************************************************************
 	jquery-bootstrap-modal.js,
@@ -996,7 +998,7 @@ TODO:
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
                 template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + '" role="tooltip">'+
                                 '<div class="popover-header"></div>' + 
-                                '<div class="popover-body' + (options.defaultPadding ? ' default-padding' : '') + '"></div>' + 
+                                '<div class="popover-body"></div>' + 
                                 '<div class="popover-footer"></div>' + 
                                 '<div class="arrow"></div>' + 
                             '</div>',
@@ -1182,8 +1184,8 @@ TODO:
     }
 
 
-    //scrollSelwectedItemIntoView
-    function scrollSelwectedItemIntoView(){
+    //scrollSelectedItemIntoView
+    function scrollSelectedItemIntoView(){
         $(this).find( '.dropdown-item.active' ).first().scrollIntoView();
     }
     
@@ -1234,10 +1236,14 @@ TODO:
             });
 
         var $result = $('<div/>')
-                        ._bsAddBaseClassAndSize( options );
+                        ._bsAddBaseClassAndSize( options ),
+            $dropdown_menu = $('<div/>')
+                                .addClass('dropdown-menu')
+                                .attr('aria-labelledby', options.id )
+                                .appendTo( $result ),
+            placeholder = options.placeholder || {da:'Vælg...', en:'Select...'};
 
         //Create the dropdown-button
-        var placeholder = options.placeholder || {da:'Vælg...', en:'Select...'};
         $.bsButton({
                 tagName     : 'div', 
                 class       : '',
@@ -1267,11 +1273,6 @@ TODO:
 
             .appendTo( $result );
 
-        var $dropdown_menu = $('<div/>')
-                                .addClass('dropdown-menu')
-                                .attr('aria-labelledby', options.id )
-                                .appendTo( $result );
-
         options.postOnChange = postOnChange;
 
         addSelectItems( $dropdown_menu.addScrollbar() , options, true );
@@ -1281,7 +1282,7 @@ TODO:
         postOnChange( $dropdown_menu.find( '.dropdown-item.active' ).first() );
 
         //Scroll selected item into view when opened        
-        $result.on('shown.bs.dropdown', scrollSelwectedItemIntoView );
+        $result.on('shown.bs.dropdown', scrollSelectedItemIntoView );
 
 /* REMOVED        
         //Setting the width of the dropdown-button equal the width of the item-box. Need timeout to allow DOM in some browser to finish adding elements

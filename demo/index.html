@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="da" style="font-size: 100%; width:100%; height:100%;">
+<html lang="da" style="_font-size: 200%; width:100%; height:100%;">
 <head>
 	<title>fcoo.dk - jquery-bootstrap - Demo</title>
 	<meta charset="utf-8" />
@@ -15,7 +15,7 @@
   <link  href="demo.css" rel="stylesheet">	
 </head>
 
-<body style="width:100%; height:100%; _background-color: #cccccc; padding: 0px">
+<body style="_width:100%; _height:100%; _background-color: #cccccc; padding: 100px">
     <div id="lang"></div>
     <script src="bower_components.js"></script>
     <script src="../src/jquery-bootstrap.js"></script>
@@ -222,7 +222,7 @@
             .bsButtonGroupPopover({ 
                 onClick: function(id, selected, $buttonGroup){console.log('COMMON 6: bsButtonGroupPopover', id, selected)},
                 vertical: true,
-                placement: "righttop",
+                placement: "right",
                 small: !i,
                 header: {icon:'fa-home', text:titles[i]},
                 footer: {icon:'fa-home', text:titles[i]},
@@ -233,10 +233,10 @@
                 ]
             })
 
-
         $.bsButton({
-            text: {da:'Påp-op', en:'Popup'}, 
-            icon: 'fa-comment-o'
+            text: '|', 
+            _text: {da:'Påp-op', en:'Popup'}, 
+            _icon: 'fa-comment-o'
         })
             .appendTo( $body )
 
@@ -245,6 +245,7 @@
                 vertical: true,
                 close: true,
                 center: false,
+                placement: 'top',
                 header: {icon: 'fa-home',iconClass: 'text-warning', text: {da:'Dansk', en:'English'}},
                 footer: [{text: {da:'Format', en:'Format'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
 
@@ -262,6 +263,7 @@
                 onChange: function(id, selected, $buttonGroup){console.log('7: bsSelectListPopover', id, selected)},                 
                 vertical: true,
                 center: true,
+                placement: 'right',
                 syncHtml: true,
                 closeOnClick: true,
                 selectedId: 'fast',
@@ -281,6 +283,7 @@
                 vertical: true,
                 syncHtml: true,
                 closeOnClick: true,
+                placement: 'left',
                 selectedId: 'm',
                 buttons: [
                     {id: 'm',   text: 'm'  },
@@ -505,26 +508,26 @@
             .on('click', function(){ openModal(0); });
 
 
-/* Test af modal-inline        
-        $('<div id="modal-inline" style="margin-left: 300px; border:1px solid red; max-width:200px; max-height:300px"></div>')
+//* Test af modal-inline        
+        $('<div id="modal-inline" style="margin-left: 300px; _border:1px solid red; max-width:200px; max-height:300px"></div>')
             .appendTo( $body )
 
             .addClass('modal-inline modal-sm')
             ._bsModalContent({
-                    header: 'Dette er en meget lang header, der gerne skulle blive klippet af, da den er alt for lang',
+header: 'R - Dette er en meget lang header, der gerne skulle blive klippet af, da den er alt for lang',
 
-
+closeButton: true,
                     close: { onClick: function(){ alert('Luk'); } },
-                    content: 'Rigtig godt',
-                    footer: 'Helt fantastisk',
+                    content: 'R - Rigtig godt',
+                    footer: 'R - Helt fantastisk',
                     smallButtons: true,
-                    verticalButtons: true,
-                    buttons: [
+                    _verticalButtons: true,
+                    _buttons: [
                         {text: 'Nogen andet'}
                         ]
 
                 });
-*/
+// */
         
     </script>
 
