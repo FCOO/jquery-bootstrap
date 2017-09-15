@@ -111,9 +111,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     }
 }
 
-//
-
- //Adjust header, fixed-body, body and footer
+//Adjust header, fixed-body, body and footer
 .modal, .modal-inline {
 
     font-size: 1rem; //To avoid overwrite from other container
@@ -156,7 +154,10 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
         flex-grow  : 0; //Only .modal-body is growing
         padding: $btn-padding-x;
 
-        &:empty { display: none; }
+        &:empty,
+        &.modal-footer-vertical:empty { 
+            display: none; 
+        }
 
         &.modal-footer-vertical {
             display         : flex;

@@ -6805,7 +6805,7 @@ If the height (and width) of the content is variable (eq. accordion) the class
     flex-shrink: 0;
     flex-grow: 0;
     padding: 0.5rem; }
-    .modal .modal-footer:empty, .modal-inline .modal-footer:empty {
+    .modal .modal-footer:empty, .modal .modal-footer.modal-footer-vertical:empty, .modal-inline .modal-footer:empty, .modal-inline .modal-footer.modal-footer-vertical:empty {
       display: none; }
     .modal .modal-footer.modal-footer-vertical, .modal-inline .modal-footer.modal-footer-vertical {
       display: flex;
