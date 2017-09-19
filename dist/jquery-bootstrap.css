@@ -5923,7 +5923,7 @@ cursor-style added to prevent text-cursor on buttons
 ************************************************************/
 a.btn, a.list-group-item,
 div.btn, div.list-group-item {
-  cursor: pointer; }
+  cursor: default; }
 
 .btn.btn-standard {
   background-color: #f8f9fa;
@@ -6130,7 +6130,7 @@ POPOVER
     white-space: nowrap; }
 
 .popover .popover-body {
-  padding: 0 !important; }
+  padding: 1px !important; }
 
 .popover .popover-footer {
   font-weight: normal;
@@ -6211,7 +6211,6 @@ div.checkbox, div.radio {
   div.checkbox input[type="checkbox"],
   div.checkbox input[type="radio"], div.radio input[type="checkbox"],
   div.radio input[type="radio"] {
-    cursor: pointer;
     opacity: 0;
     z-index: 1;
     position: absolute;
@@ -6221,7 +6220,6 @@ div.checkbox, div.radio {
     div.radio input[type="radio"] + label {
       position: relative;
       display: inline;
-      cursor: pointer;
       height: 100%;
       padding: 0;
       margin-bottom: 0; }
@@ -6233,7 +6231,6 @@ div.checkbox, div.radio {
         display: inline-block;
         position: absolute;
         left: 0;
-        cursor: pointer;
         text-align: center;
         content: ""; }
       div.checkbox input[type="checkbox"] + label::before,
@@ -6514,7 +6511,7 @@ Two versions:
       font-size: 0.8em;
       color: #000;
       text-shadow: 0 1px 0 #fff;
-      cursor: pointer;
+      cursor: default;
       line-height: 1;
       margin-left: auto;
       margin-right: 0;
@@ -6613,7 +6610,7 @@ Two versions:
   .dropdown.selectbox .dropdown-menu, .selectList .dropdown-menu {
     max-height: 10rem; }
   .dropdown.selectbox .dropdown-item, .selectList .dropdown-item {
-    cursor: pointer;
+    cursor: default;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -6690,7 +6687,7 @@ If the height (and width) of the content is variable (eq. accordion) the class
   font-size: 1.2em;
   color: #000;
   text-shadow: 0 1px 0 #fff;
-  cursor: pointer;
+  cursor: default;
   line-height: 1;
   margin-left: auto;
   margin-right: 0;
@@ -6958,7 +6955,7 @@ Adjustmernt to Bootstrap table
     .table thead tr th.sortable {
       color: #495057;
       background-color: #e9ecef;
-      cursor: pointer;
+      cursor: default;
       background-position: right center;
       background-repeat: no-repeat;
       background-size: 0.8em;
@@ -6984,7 +6981,7 @@ Adjustmernt to Bootstrap table
   .table tbody tr:hover {
     background-color: #f2f2f2; }
   .table.table-selectable tbody tr {
-    cursor: pointer; }
+    cursor: default; }
     .table.table-selectable tbody tr {
       color: #111;
       background-color: #f8f9fa; }
@@ -7032,7 +7029,6 @@ Using Bootstrap Collapse to create accordion
   border-color: #6c757d; }
 
 .accordion .card-header {
-  cursor: pointer;
   color: #343a40;
   background-color: #dee2e6;
   font-weight: normal;
@@ -7064,7 +7060,7 @@ Using Bootstrap Collapse to create accordion
     font-size: 0.8em;
     color: #000;
     text-shadow: 0 1px 0 #fff;
-    cursor: pointer;
+    cursor: default;
     line-height: 1;
     margin-left: auto;
     margin-right: 0;

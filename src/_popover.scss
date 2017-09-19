@@ -21,7 +21,7 @@ POPOVER
 
     //Popover body
     .popover-body {
-        padding: 0 !important;
+        padding: 1px !important; //TODO Perhaps change back to 0 when Bootstrap bug fix regarding popover aarrow are ready
 
         //Center button-group in popover
         & > .btn-group {

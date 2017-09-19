@@ -11,7 +11,7 @@ NOTE: Parent element MUST have @include vertical-align-center();
     font-size  : $font-size;
     color      : $close-color;
     text-shadow: $close-text-shadow;
-    cursor     : pointer;
+    cursor     : default;
 
     line-height: 1;
 
@@ -28,7 +28,6 @@ NOTE: Parent element MUST have @include vertical-align-center();
         @include hover-focus {
             color: $close-color;
             text-decoration: none;
-            cursor: pointer;
             opacity: .75;
         }
 

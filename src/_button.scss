@@ -29,7 +29,7 @@ cursor-style added to prevent text-cursor on buttons
 ************************************************************/
 a.btn, a.list-group-item,
 div.btn, div.list-group-item {
-    cursor: pointer;
+    cursor: default;
 }
 
 .btn.btn-#{$btn-style-name}{

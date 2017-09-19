@@ -168,7 +168,7 @@ $max-items-visible-in-selectbox: 4;
         }
         
         .dropdown-item { 
-            cursor: pointer;
+            cursor: default;
             @include text-truncate();
 
             @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $line-height-base, $btn-border-radius);

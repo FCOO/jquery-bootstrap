@@ -33,7 +33,6 @@ div.checkbox, div.radio {
 
     input[type="checkbox"],
     input[type="radio"] {
-        cursor: pointer;
         opacity: 0;
         z-index: 1;
         //'hide' the checkbox
@@ -44,7 +43,6 @@ div.checkbox, div.radio {
         & + label {
             position     : relative;
             display      : inline;
-            cursor       : pointer;
             height       : 100%;
             padding      : 0;
             margin-bottom: 0; //Standard margin-bottom only on outer-div
@@ -53,7 +51,6 @@ div.checkbox, div.radio {
                 display   : inline-block;
                 position  : absolute;
                 left      : 0;
-                cursor    : pointer;
                 text-align: center;
                 content   : "";
             }

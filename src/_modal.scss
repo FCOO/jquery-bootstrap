@@ -30,6 +30,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 
 //modal-close: 
 .modal-close {
+
     @include right-side-icon( '\f05c', 1.2em, false, .6 ); //fa-times-circle-o
     &:hover {
         &:before { 
@@ -73,7 +74,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
             width: $modal-md-rem;
         }
 
-        .modal-content {
+        .modal-content { 
             min-height: 100%; //Bug fix for IE11
             max-height: $modal-max-height; //Modal window height adjust to contents
         }

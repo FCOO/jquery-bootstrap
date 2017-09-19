@@ -29,7 +29,7 @@ Adjustmernt to Bootstrap table
             &.sortable {
                 @include title-color(true, '&.asc, &.desc'); // ($hover: false, $selected-class: '', $bg: true, $invers: false  );
 
-                cursor: pointer;
+                cursor: default;
                 background-position: right center;
                 background-repeat: no-repeat;
                 background-size: 0.8em;
@@ -72,7 +72,7 @@ Adjustmernt to Bootstrap table
     //Selectable rows
     &.table-selectable tbody tr {
         @include control-active-color(".table.table-selectable tbody tr");
-        cursor: pointer;
+        cursor: default;
     }
 
     /*************************************
