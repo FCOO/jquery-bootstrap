@@ -8438,7 +8438,7 @@ POPOVER
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -8452,7 +8452,7 @@ POPOVER
   line-height: 1.25;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
 }
 .popover .popover-header-content span {
   overflow: hidden;
@@ -8466,7 +8466,7 @@ POPOVER
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -8490,7 +8490,7 @@ POPOVER
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -8508,7 +8508,7 @@ POPOVER
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -8876,7 +8876,7 @@ Two versions:
   position: relative;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding-right: 0.25rem;
 }
 .dropdown.selectbox > .btn .arrow {
@@ -9034,7 +9034,7 @@ Two versions:
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -9062,7 +9062,7 @@ Two versions:
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -9127,8 +9127,14 @@ Icons for modal header inside a container
 .modal-header-icon-container .modal-icon.modal-icon-extend:before {
   content: '\ea41';
 }
+.modal-extendable.modal-extended .modal-header-icon-container .modal-icon.modal-icon-extend {
+  display: none;
+}
 .modal-header-icon-container .modal-icon.modal-icon-diminish:before {
   content: '\ea43';
+}
+.modal-extendable:not(.modal-extended) .modal-header-icon-container .modal-icon.modal-icon-diminish {
+  display: none;
 }
 .modal-header-icon-container .modal-icon.modal-icon-close:before {
   content: '\ed65';
@@ -9188,19 +9194,13 @@ html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex, html.mediu
 .modal, .modal-inline {
   font-size: 1rem;
 }
-.modal .modal-content.modal-extended .hide-for-modal-extended, .modal-inline .modal-content.modal-extended .hide-for-modal-extended {
-  display: none !important;
-}
-.modal .modal-content.no-modal-extended .show-for-modal-extended, .modal-inline .modal-content.no-modal-extended .show-for-modal-extended {
-  display: none !important;
-}
 .modal .modal-content .modal-header, .modal-inline .modal-content .modal-header {
   flex-shrink: 0;
   flex-grow: 0;
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -9210,12 +9210,14 @@ html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex, html.mediu
   border-bottom-left-radius: 0;
   color: #495057;
   background-color: #f2f2f2;
-  cursor: default;
 }
 .modal .modal-content .modal-header span, .modal-inline .modal-content .modal-header span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.modal .modal-content.modal-extendable .modal-header *, .modal-inline .modal-content.modal-extendable .modal-header * {
+  cursor: default;
 }
 .modal .modal-content .modal-body-fixed, .modal-inline .modal-content .modal-body-fixed {
   flex-shrink: 0;
@@ -9240,7 +9242,7 @@ html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex, html.mediu
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -9289,7 +9291,7 @@ html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex, html.mediu
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -9316,7 +9318,7 @@ html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex, html.mediu
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -9366,13 +9368,13 @@ html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex, html.mediu
   padding-bottom: 0.0625rem;
 }
 
-.modal.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed, .modal.no-vertical-padding .modal-dialog .modal-content .modal-body,
-.modal-inline.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed,
-.modal-inline.no-vertical-padding .modal-dialog .modal-content .modal-body,
-.modal.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed,
-.modal.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body,
-.modal-inline.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed,
-.modal-inline.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body {
+.modal.no-vertical-padding .modal-body-fixed, .modal.no-vertical-padding .modal-body,
+.modal-inline.no-vertical-padding .modal-body-fixed,
+.modal-inline.no-vertical-padding .modal-body,
+.modal.modal-sm.no-vertical-padding .modal-body-fixed,
+.modal.modal-sm.no-vertical-padding .modal-body,
+.modal-inline.modal-sm.no-vertical-padding .modal-body-fixed,
+.modal-inline.modal-sm.no-vertical-padding .modal-body {
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -9421,7 +9423,7 @@ Adjustmernt to Bootstrap table
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 1rem;
   line-height: 1.5;
@@ -9503,7 +9505,7 @@ Adjustmernt to Bootstrap table
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -9535,14 +9537,14 @@ Using Bootstrap Collapse to create accordion
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 1rem;
   line-height: 1.5;
   border-radius: inherit;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   border-radius: 0.25rem;
 }
 .accordion .card-header:hover {
@@ -9588,7 +9590,7 @@ Using Bootstrap Collapse to create accordion
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -9614,7 +9616,7 @@ Using Bootstrap Collapse to create accordion
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -9636,7 +9638,7 @@ Using Bootstrap Collapse to create accordion
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
