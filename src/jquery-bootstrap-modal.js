@@ -11,7 +11,18 @@
 (function ($, window, document/*, undefined*/) {
 	"use strict";
 
-
+/*
+    var defa = {
+            close: { onClick: 'Default close.onClick' }
+        },
+        opt = {
+            close: { onClick: 'OVERWRITYE close.onClick', option2: 'Option2 for close' },
+            extend: { onClick: 'Default extend.onClick' }
+        }
+            
+opt = $.extend( true, defa, opt );
+console.log(opt);
+*/
     /**********************************************************
     bsModal( options ) - create a Bootstrap-modal
 
@@ -21,10 +32,18 @@
         flex
         noVerticalPadding
         content
+        extended: {
+            fixedContent
+            flex
+            noVerticalPadding
+            content
+        }        
+        icons: {
+            close   : {onClick, attr, className, data }
+            extend  : {onClick, attr, className, data }
+            diminish: {onClick, attr, className, data }
         footer 
-
         buttons = [];
-
         closeText
 
 
@@ -162,12 +181,29 @@
             }
         }
 
-        options = $.extend( {
+        //addExtend( $element ) - Add event/attr/data to $element to extend the modal
+        function addExtendAndDiminish( $element ){
+            $element.on('click', function(){ alert('extend OR diminish');});
+        }
+
+
+        var toogleExtended = $.proxy( function(){
+console.log(this);
+         
+        }, this );
+        
+        options = $.extend( true, {
             //Buttons
             buttons    : [],
             closeButton: true,
             closeText  : {da:'Luk', en:'Close'},
             closeIcon  : 'fa-times',
+
+            //Icons
+            icons    : {
+                extend  : options.extended ? { onClick: toogleExtended } : null,
+                diminish: options.extended ? { onClick: toogleExtended } : null
+            }
         }, options );
 
         //Add close-botton. Avoid by setting options.closeButton  = false
@@ -190,24 +226,63 @@
         var $modalContainer = this.bsModal.$container =
                 $('<div/>')
                     .addClass('modal-content')
+//                    .toggleClass('modal-extendable', options.) //TODO: Skal sættes af options OR FJERNES
                     .appendTo( this ); 
 
+        //Determinate if there are any icons
+        var inclIcons = false;
+        $.each( options.icons, function( id, iconOptions ){
+            inclIcons = inclIcons || (iconOptions !== null);        
+        });
+
         //Append header
-        if (!options.noHeader &&  (options.header || options.close)){
+        if (!options.noHeader &&  (options.header || inclIcons)){
             var $modalHeader = this.bsModal.$header =
                     $('<div/>')
                         .addClass('modal-header')
                         ._bsAddHtml( options.header || $.EMPTY_TEXT )
                         .appendTo( $modalContainer );
 
-            if (options.close){
-                //Add close-button
-                var $modalClose = this.bsModal.$close =
-                        $('<i class="fa modal-close"/>')
-                            .appendTo( $modalHeader );
-                addClose( $modalClose );
-            }
+$modalHeader.hammer({}).bind("swipeup", function(){
+    console.log('swipeup', arguments);
 
+});
+
+            if (inclIcons){
+                //Container for icons
+                var $iconContainer =
+                        $('<div/>')
+                            .addClass('modal-header-icon-container')
+                            .appendTo( $modalHeader );
+
+                $.each( ['diminish', 'extend', 'close'], function( index, id ){
+                    var iconOptions = options.icons[id];
+            
+                    if (iconOptions && iconOptions.onClick){
+                        var $icon = $('<i/>')
+                                        .addClass('modal-icon modal-icon-' + id )
+                                        .on('click', iconOptions.onClick)
+                                        .appendTo($iconContainer);
+                    }
+                });
+                
+                //Add extend and diminish icons
+/*
+                if (options.extended){
+                    addExtendAndDiminish( $('<i class="modal-icon modal-icon-extend"/>').appendTo($iconContainer) );
+                    addExtendAndDiminish( $('<i class="modal-icon modal-icon-diminish"/>').appendTo($iconContainer) );
+                }
+
+
+                //Add close-button
+                if (options.close){
+                    var $modalClose = this.bsModal.$close =
+                        $('<i class="modal-icon modal-icon-close"/>')
+                            .appendTo($iconContainer);
+                    addClose( $modalClose );
+                }
+*/
+            }
         }
 
         //Append fixed content (if any)
@@ -336,12 +411,16 @@
         //Adjust options
         options =
             $._bsAdjustOptions( options, {
-                baseClass  : 'modal',
-                class      : classNames,
+                baseClass: 'modal',
+                class    : classNames,
 
                 //Header
-                noHeader   : false,
-                close      : { onClick: closeModalFunction },
+                noHeader : false,
+
+                //Icons
+                icons    : {
+                    close   : { onClick: closeModalFunction }
+                },
 
                 //Content
                 scroll     : true,

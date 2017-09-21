@@ -28,22 +28,83 @@ $modal-body-scroll-padding-x: max( 0, $modal-body-fixed-scroll-padding-x - $scro
 $modal-body-scroll-padding-y-sm: max( 0, max( $content-padding-y-sm, $min-padding) - $scroll-size );  
 $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm - $scroll-size );  
 
-//modal-close: 
-.modal-close {
+/****************************************************
+Icons for modal header inside a container
+<i class="modal-header-icon modal-header-icon-XX [first-icon] [hidden][disabled]"/>
+****************************************************/
+.modal-header-icon-container {
+    $font-size: 1.1em;
+    $padding   : $btn-padding-x-sm / 2;
 
-    @include right-side-icon( '\f05c', 1.2em, false, .6 ); //fa-times-circle-o
-    &:hover {
-        &:before { 
-            content: "\f057"; //fa-times-circle
-        }
-        color  : $red;
-        opacity: 1;
+    margin-left : auto;
+    margin-right: - $padding;
 
-        &:active { 
-            color: darken($red, $darken-active-percent);
+    .modal-icon {
+        font-family: 'modal-header-icons' !important;
+
+        //Default font-icon style
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+
+
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
+        //Common style
+        font-size  : $font-size;
+        color      : $close-color;
+        text-shadow: $close-text-shadow;
+        opacity    : .5;
+        cursor     : default;
+
+        margin : 0;
+        padding: $padding;
+
+        &:not(.disabled):hover {
+            @include hover-focus {
+                color: $close-color;
+                text-decoration: none;
+                opacity: .75;
+            }
+            &:active { 
+                opacity: .9;
+           }
         }
-    } 
-} 
+
+        //modal-icon-extend and modal-icon-diminish: Icon to extend and diminish the modal
+        &.modal-icon-extend {
+            &:before   { content: '\ea41'; }
+            .modal-extendable.modal-extended & { display: none; }
+        }
+
+        &.modal-icon-diminish {
+            &:before { content: '\ea43'; }
+            .modal-extendable:not(.modal-extended) & { display: none; }        
+        }
+
+        //Special version for close-icon
+        &.modal-icon-close {
+            &:before { content: '\ed65'; }
+            &:hover {
+                &:before { content: "\ed66"; }
+                @include hover-focus {
+                    color  : $red;
+                    opacity: 1;
+                }
+                &:active { 
+                    color: darken($red, $darken-active-percent);
+                }
+            } 
+        }
+
+    } //end of .modal-icon {
+}
+
+
 
 .modal, .modal-inline {
     $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
@@ -116,57 +177,62 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 .modal, .modal-inline {
 
     font-size: 1rem; //To avoid overwrite from other container
-
-    .modal-header {
-        flex-shrink: 0; //Only .modal-body is shrink
-        flex-grow  : 0; //Only .modal-body is growing
-        @include header-variant(); 
-        @include header-color(); 
-    }
-    .modal-body-fixed {
-        flex-shrink: 0; //Only .modal-body is shrink
-        flex-grow  : 0; //Only .modal-body is growing
-        overflow   : hidden; 
-        @include content-padding();
-
-        &:empty { display: none; }
-    }
-    .modal-body {
-        flex-shrink: 1; //Only .modal-body is shrink
-        flex-grow  : 1; //Only .modal-body is growing
-        @include content-padding();
-        @include border-radius( calc( #{$border-radius-lg} - #{$modal-content-border-width} ) );    
-    }
-
-    .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
-        flex-shrink: 0; //Only .modal-body is shrink
-        flex-grow  : 0; //Only .modal-body is growing
-        @include footer-variant();
-
-
-        //Remove top-border to modal-footer it modal-footer-header isn't empty
-        &:not(:empty) + .modal-footer {
-            border-top: none; 
+    .modal-content {
+        .modal-header {
+            flex-shrink: 0; //Only .modal-body is shrink
+            flex-grow  : 0; //Only .modal-body is growing
+            @include header-variant(); 
+            @include header-color(); 
         }
-    }
-
-    .modal-footer {
-        flex-shrink: 0; //Only .modal-body is shrink
-        flex-grow  : 0; //Only .modal-body is growing
-        padding: $btn-padding-x;
-
-        &:empty,
-        &.modal-footer-vertical:empty { 
-            display: none; 
+        //Add cursor: default to all header children when modal is extendable
+        &.modal-extendable .modal-header * {
+            cursor: default; 
         }
 
-        &.modal-footer-vertical {
-            display         : flex;
-            flex-direction  : column;
-            align-items     : center;
-            justify-content : center;
-            > * { margin: 0;}
-            > *:not(:first-child) { margin-top: .25rem; }
+        .modal-body-fixed {
+            flex-shrink: 0; //Only .modal-body is shrink
+            flex-grow  : 0; //Only .modal-body is growing
+            overflow   : hidden; 
+            @include content-padding();
+
+            &:empty { display: none; }
+        }
+        .modal-body {
+            flex-shrink: 1; //Only .modal-body is shrink
+            flex-grow  : 1; //Only .modal-body is growing
+            @include content-padding();
+            @include border-radius( calc( #{$border-radius-lg} - #{$modal-content-border-width} ) );    
+        }
+
+        .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
+            flex-shrink: 0; //Only .modal-body is shrink
+            flex-grow  : 0; //Only .modal-body is growing
+            @include footer-variant();
+
+            //Remove top-border to modal-footer it modal-footer-header isn't empty
+            &:not(:empty) + .modal-footer {
+                border-top: none; 
+            }
+        }
+
+        .modal-footer {
+            flex-shrink: 0; //Only .modal-body is shrink
+            flex-grow  : 0; //Only .modal-body is growing
+            padding: $btn-padding-x;
+
+            &:empty,
+            &.modal-footer-vertical:empty { 
+                display: none; 
+            }
+
+            &.modal-footer-vertical {
+                display         : flex;
+                flex-direction  : column;
+                align-items     : center;
+                justify-content : center;
+                > * { margin: 0;}
+                > *:not(:first-child) { margin-top: .25rem; }
+            }
         }
     }
 }
@@ -175,19 +241,21 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 //size='small'
 .modal.modal-sm,
 .modal-inline.modal-sm {
-    .modal-header {
-        @include header-variant-sm(); 
-    }
-    .modal-body,
-    .modal-body-fixed {
-        @include content-padding-sm();
-    }
-    .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
-        @include footer-variant-sm();
-    }
+    .modal-content {
+        .modal-header {
+            @include header-variant-sm(); 
+        }
+        .modal-body,
+        .modal-body-fixed {
+            @include content-padding-sm();
+        }
+        .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
+            @include footer-variant-sm();
+        }
 
-    .modal-footer {
-        //padding: $btn-padding-x-sm;
+        .modal-footer {
+            //padding: $btn-padding-x-sm;
+        }
     }
 }
 
