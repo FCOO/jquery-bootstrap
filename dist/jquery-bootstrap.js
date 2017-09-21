@@ -516,14 +516,25 @@ TODO:
 
     options
         header
+        icons: {
+            close   : {onClick, attr, className, attr, data }
+            extend  : {onClick, attr, className, attr, data }
+            diminish: {onClick, attr, className, attr, data }
+}
         fixedContent
         flex
         noVerticalPadding
         content
-        footer 
-
+        extended: {
+            fixedContent
+            flex
+            noVerticalPadding
+            content
+            footer
+        }
+        isExtended: boolean
+        footer
         buttons = [];
-
         closeText
 
 
@@ -646,27 +657,46 @@ TODO:
     Create the content of a modal inside this
     Sets object with all parts of the result in this.modalParts
     ******************************************************/
+    $.fn._bsModalExtend = function(){
+        if (this.hasClass('no-modal-extended'))
+            this._bsModalToggle();
+    };        
+    $.fn._bsModalDiminish = function(){
+        if (this.hasClass('modal-extended'))
+            this._bsModalToggle();
+    };        
+    $.fn._bsModalToggle = function(){
+        this.modernizrToggle('modal-extended');        
+    };
+
+
     $.fn._bsModalContent = function( options ){
         options = options || {};
 
-        //addClose( $element ) - Add event/attr/data to $element to close the modal
-        function addClose( $element ){
-            if (options.close){
-                if (options.close.onClick)
-                    $element.on('click', options.close.onClick);
-                if (options.close.attr)
-                    $element.attr(options.close.attr);
-                if (options.close.data)
-                    $element.data(options.close.data);
-            }
-        }
+        this.bsModal = {};
+        var $modalContainer = this.bsModal.$container =
+                $('<div/>')
+                    .addClass('modal-content') 
+                    .modernizrToggle('modal-extended', !!options.isExtended )
+                    .appendTo( this );
 
-        options = $.extend( {
+
+        var modalExtend   = $.proxy( $modalContainer._bsModalExtend,   $modalContainer ),
+            modalDiminish = $.proxy( $modalContainer._bsModalDiminish, $modalContainer )/*,
+            modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer )*/;
+        
+        options = $.extend( true, {
             //Buttons
             buttons    : [],
             closeButton: true,
             closeText  : {da:'Luk', en:'Close'},
             closeIcon  : 'fa-times',
+
+            //Icons
+            icons    : {
+                extend  : { className: 'hide-for-modal-extended', swipeDirection: Hammer.DIRECTION_UP,   swipeEvent:'swipeup',   onClick: options.extended ? modalExtend   : null },
+                diminish: { className: 'show-for-modal-extended', swipeDirection: Hammer.DIRECTION_DOWN, swipeEvent:'swipedown', onClick: options.extended ? modalDiminish : null }
+            }
         }, options );
 
         //Add close-botton. Avoid by setting options.closeButton  = false
@@ -674,41 +704,69 @@ TODO:
             options.buttons.push({
                 text        : options.closeText,
                 icon        : options.closeIcon,
+
                 closeOnClick: true,
                 addOnClick  : false
             });
 
-      
+
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
             scrollDirection = options.scroll === true ? 'vertical' : options.scroll,
             scrollClass     = 'scrollbar-'+scrollDirection;
 
-        this.bsModal = {};
-
-        var $modalContainer = this.bsModal.$container =
-                $('<div/>')
-                    .addClass('modal-content')
-                    .appendTo( this ); 
+        //Determinate if there are any icons
+        var inclIcons = false,
+            inclSwipe = false;
+        $.each( options.icons, function( id, iconOptions ){
+            inclIcons = inclIcons || (iconOptions !== null);
+            inclSwipe = inclSwipe || (iconOptions && iconOptions.onClick && iconOptions.swipeDirection);
+        });
 
         //Append header
-        if (!options.noHeader &&  (options.header || options.close)){
+        if (!options.noHeader &&  (options.header || inclIcons)){
             var $modalHeader = this.bsModal.$header =
                     $('<div/>')
                         .addClass('modal-header')
                         ._bsAddHtml( options.header || $.EMPTY_TEXT )
                         .appendTo( $modalContainer );
 
-            if (options.close){
-                //Add close-button
-                var $modalClose = this.bsModal.$close =
-                        $('<i class="fa modal-close"/>')
+            //Craete Hammer on header if needed
+            var hammer         = inclSwipe ? $modalHeader.hammer().data('hammer') : null,
+                swipeDirection = 0;
+
+            if (inclIcons){
+                //Container for icons
+                var $iconContainer =
+                        $('<div/>')
+                            .addClass('modal-header-icon-container')
                             .appendTo( $modalHeader );
-                addClose( $modalClose );
+
+                //Add icons
+                $.each( ['diminish', 'extend', 'close'], function( index, id ){
+                    var iconOptions = options.icons[id];
+                    if (iconOptions && iconOptions.onClick){
+                        $('<i/>')
+                            .addClass('modal-icon modal-icon-' + id )
+                            .addClass( iconOptions.className || '')
+                            .on('click', iconOptions.onClick)
+                            .attr( iconOptions.attr || {})
+                            .data( iconOptions.data || {})
+                            .appendTo($iconContainer);
+
+                        //Add swipe-event and direction
+                        if (iconOptions.swipeDirection && iconOptions.swipeEvent){
+                            swipeDirection += iconOptions.swipeDirection;
+                            hammer.on( iconOptions.swipeEvent, iconOptions.onClick );
+                        }
+                    }
+                });
+
+                if (swipeDirection)
+                    hammer.get('swipe').set({ direction: swipeDirection });
             }
-
         }
-
+//HER FRA SKAL LAVES I FUNCTION **************************************************************
         //Append fixed content (if any)
         var $modalFixedContent = this.bsModal.$fixedContent =
                 $('<div/>')
@@ -728,7 +786,7 @@ TODO:
                     .appendTo( $modalContainer ),
 
             $modalContent = this.bsModal.$content =
-                hasScroll ? 
+                hasScroll ?
                     $modalBody.addScrollbar({ direction: scrollDirection }) :
                     $modalBody;
 
@@ -740,7 +798,7 @@ TODO:
 //            var content = options.content( $modalContent );
             var content = contentFunc( $modalContent );
             if (content)
-                $modalContent.append( content );                    
+                $modalContent.append( content );
         }
         else
             $modalContent.append( options.content );
@@ -752,7 +810,8 @@ TODO:
                     .addClass('modal-footer-header')
                     .appendTo( $modalContainer )
                     ._bsAddHtml( options.footer );
-        
+//HER TIL *******************************************************************
+
         //Add buttons (if any)
         var $modalButtonContainer = this.bsModal.$buttonContainer =
                 $('<div/>')
@@ -762,31 +821,40 @@ TODO:
             $modalButtons = this.bsModal.$buttons = [],
 
             buttons = options.buttons || [],
-
-            buttonOptions = {
-                class       : options.verticalButtons ? 'btn-block' : '',
+            defaultButtonClass = options.verticalButtons ? 'btn-block' : '',
+            defaultButtonOptions = {
                 addOnClick  : true,
                 small       : options.smallButtons
             };
 
-        //No button is given focus by options.focus: true => Last button gets focus
+        //If no button is given focus by options.focus: true => Last button gets focus
         var focusAdded = false;
-        for (var i=0; i<buttons.length; i++ ){
+        $.each( buttons, function( index, buttonOptions ){
 
-            focusAdded = focusAdded || buttons[i].focus;
-            if (!focusAdded && (i == (buttons.length-1) ) )
-                buttons[i].focus = true;                
+            focusAdded = focusAdded || buttonOptions.focus;
+            if (!focusAdded && (index+1 == buttons.length ) )
+                buttonOptions.focus = true;
 
+            //Add same onClick as close-icon if closeOnClick: true
+            if (buttonOptions.closeOnClick)
+                buttonOptions.equalIconId = (buttonOptions.equalIconId || '') + ' close';                    
+            
+            buttonOptions.class = defaultButtonClass + ' ' + (buttonOptions.className || '');
+            
             var $button =
-                $.bsButton( $.extend({}, buttonOptions, buttons[i] ) )
+                $.bsButton( $.extend({}, defaultButtonOptions, buttonOptions ) )
                     .appendTo( $modalButtonContainer );
-
-            if (buttons[i].closeOnClick)
-                addClose( $button );                
+        
+            //Add onClick from icons (if any)
+            buttonOptions.equalIconId = buttonOptions.equalIconId || '';
+            $.each( buttonOptions.equalIconId.split(' '), function( index, iconId ){
+                if (iconId && options.icons[iconId] && options.icons[iconId].onClick)
+                    $button.on('click', options.icons[iconId].onClick);                    
+            });
 
             $modalButtons.push( $button );
-        }
-        
+        });
+
 
 /* REMOVED FOR NOW BUT PERHAPS NEEDED LATER
         //Using timeout to wait for the browser to update DOM and get max height of the content
@@ -835,12 +903,16 @@ TODO:
         //Adjust options
         options =
             $._bsAdjustOptions( options, {
-                baseClass  : 'modal',
-                class      : classNames,
+                baseClass: 'modal',
+                class    : classNames,
 
                 //Header
-                noHeader   : false,
-                close      : { onClick: closeModalFunction },
+                noHeader : false,
+
+                //Icons
+                icons    : {
+                    close   : { onClick: closeModalFunction }
+                },
 
                 //Content
                 scroll     : true,
@@ -855,8 +927,8 @@ TODO:
             });
 
 
-        //Create the modal        
-        $result = 
+        //Create the modal
+        $result =
             $('<div/>')
                 ._bsAddBaseClassAndSize( options )
                 .attr({
@@ -866,7 +938,7 @@ TODO:
                     'aria-hidden': true
                 });
 
-        $modalDialog = 
+        $modalDialog =
             $('<div/>')
                 .addClass('modal-dialog')
                 .addClass(options.flex ? 'modal-flex' : '')

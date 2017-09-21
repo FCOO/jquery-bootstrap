@@ -5817,6 +5817,20 @@ All elements in modal-windows get same margin-bottom
 
 ************************************************/
 /***********************************************
+ICON FONTS
+************************************************/
+/************************************************************
+ICON-FONTS
+
+Special subset of different icon-fonts
+************************************************************/
+@font-face {
+  font-family: 'modal-header-icons';
+  src: url("fonts/modal-header-icons.woff?mhcpxw") format("woff");
+  font-weight: normal;
+  font-style: normal; }
+
+/***********************************************
 MIXIN
 ************************************************/
 /************************************************************
@@ -6109,7 +6123,7 @@ POPOVER
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -6123,7 +6137,7 @@ POPOVER
   line-height: 1.25;
   display: flex;
   justify-content: normal;
-  align-items: center; }
+  align-items: baseline; }
   .popover .popover-header-content span {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -6136,7 +6150,7 @@ POPOVER
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -6158,7 +6172,7 @@ POPOVER
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -6175,7 +6189,7 @@ POPOVER
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -6505,7 +6519,7 @@ Two versions:
     position: relative;
     display: flex;
     justify-content: normal;
-    align-items: center;
+    align-items: baseline;
     padding-right: 0.25rem; }
     .dropdown.selectbox > .btn .arrow {
       font-size: 0.8em;
@@ -6635,7 +6649,7 @@ Two versions:
     font-weight: normal;
     display: flex;
     justify-content: normal;
-    align-items: center;
+    align-items: baseline;
     padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     line-height: 1.5;
@@ -6658,7 +6672,7 @@ Two versions:
     font-weight: normal;
     display: flex;
     justify-content: normal;
-    align-items: center;
+    align-items: baseline;
     padding: 0.25rem 0.25rem;
     font-size: 0.75rem;
     line-height: 1.5;
@@ -6683,24 +6697,48 @@ If the height (and width) of the content is variable (eq. accordion) the class
     height: As default but with fixed height for small devices to prevent rapidly change of height
 
 ************************************************************/
-.modal-close {
-  font-size: 1.2em;
-  color: #000;
-  text-shadow: 0 1px 0 #fff;
-  cursor: default;
-  line-height: 1;
+/****************************************************
+Icons for modal header inside a container
+<i class="modal-header-icon modal-header-icon-XX [first-icon] [hidden][disabled]"/>
+****************************************************/
+.modal-header-icon-container {
   margin-left: auto;
-  margin-right: 0;
-  opacity: 0.6; }
-  .modal-close:before {
-    font-size: 1.2em;
-    content: ""; }
-  .modal-close:hover {
-    color: #dc3545;
-    opacity: 1; }
-    .modal-close:hover:before {
-      content: "\f057"; }
-    .modal-close:hover:active {
+  margin-right: -0.125rem; }
+  .modal-header-icon-container .modal-icon {
+    font-family: 'modal-header-icons' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 1.1em;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    cursor: default;
+    margin: 0;
+    padding: 0.125rem; }
+    .modal-header-icon-container .modal-icon:not(.disabled):hover:focus, .modal-header-icon-container .modal-icon:not(.disabled):hover:hover {
+      color: #000;
+      text-decoration: none;
+      opacity: .75; }
+    .modal-header-icon-container .modal-icon:not(.disabled):hover:active {
+      opacity: .9; }
+    .modal-header-icon-container .modal-icon.modal-icon-extend:before {
+      content: '\ea41'; }
+    .modal-header-icon-container .modal-icon.modal-icon-diminish:before {
+      content: '\ea43'; }
+    .modal-header-icon-container .modal-icon.modal-icon-close:before {
+      content: '\ed65'; }
+    .modal-header-icon-container .modal-icon.modal-icon-close:hover:before {
+      content: "\ed66"; }
+    .modal-header-icon-container .modal-icon.modal-icon-close:hover:focus, .modal-header-icon-container .modal-icon.modal-icon-close:hover:hover {
+      color: #dc3545;
+      opacity: 1; }
+    .modal-header-icon-container .modal-icon.modal-icon-close:hover:active {
       color: #c82333; }
 
 .modal .modal-dialog, .modal-inline .modal-dialog {
@@ -6715,7 +6753,7 @@ If the height (and width) of the content is variable (eq. accordion) the class
   transition: opacity 0.3s linear; }
   @media (max-height: 575px) {
     .modal .modal-dialog, .modal-inline .modal-dialog {
-      justify-content: flex-end; } }
+      justify-content: flex-start; } }
   html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex, html.medium-up .modal-inline .modal-dialog, .modal-inline .modal-dialog.modal-flex {
     width: 31.25rem; }
   .modal .modal-dialog .modal-content, .modal-inline .modal-dialog .modal-content {
@@ -6739,13 +6777,17 @@ If the height (and width) of the content is variable (eq. accordion) the class
 
 .modal, .modal-inline {
   font-size: 1rem; }
-  .modal .modal-header, .modal-inline .modal-header {
+  .modal .modal-content.modal-extended .hide-for-modal-extended, .modal-inline .modal-content.modal-extended .hide-for-modal-extended {
+    display: none !important; }
+  .modal .modal-content.no-modal-extended .show-for-modal-extended, .modal-inline .modal-content.no-modal-extended .show-for-modal-extended {
+    display: none !important; }
+  .modal .modal-content .modal-header, .modal-inline .modal-content .modal-header {
     flex-shrink: 0;
     flex-grow: 0;
     font-weight: normal;
     display: flex;
     justify-content: normal;
-    align-items: center;
+    align-items: baseline;
     padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     line-height: 1.5;
@@ -6754,32 +6796,33 @@ If the height (and width) of the content is variable (eq. accordion) the class
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     color: #495057;
-    background-color: #f2f2f2; }
-    .modal .modal-header span, .modal-inline .modal-header span {
+    background-color: #f2f2f2;
+    cursor: default; }
+    .modal .modal-content .modal-header span, .modal-inline .modal-content .modal-header span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
-  .modal .modal-body-fixed, .modal-inline .modal-body-fixed {
+  .modal .modal-content .modal-body-fixed, .modal-inline .modal-content .modal-body-fixed {
     flex-shrink: 0;
     flex-grow: 0;
     overflow: hidden;
     padding: 0.5rem 0.5rem;
     font-size: 1rem; }
-    .modal .modal-body-fixed:empty, .modal-inline .modal-body-fixed:empty {
+    .modal .modal-content .modal-body-fixed:empty, .modal-inline .modal-content .modal-body-fixed:empty {
       display: none; }
-  .modal .modal-body, .modal-inline .modal-body {
+  .modal .modal-content .modal-body, .modal-inline .modal-content .modal-body {
     flex-shrink: 1;
     flex-grow: 1;
     padding: 0.5rem 0.5rem;
     font-size: 1rem;
     border-radius: calc( 0.3rem - 1px); }
-  .modal .modal-footer-header, .modal-inline .modal-footer-header {
+  .modal .modal-content .modal-footer-header, .modal-inline .modal-content .modal-footer-header {
     flex-shrink: 0;
     flex-grow: 0;
     font-weight: normal;
     display: flex;
     justify-content: normal;
-    align-items: center;
+    align-items: baseline;
     padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     line-height: 1.5;
@@ -6790,36 +6833,36 @@ If the height (and width) of the content is variable (eq. accordion) the class
     border-top: 1px solid #9aa1a8;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important; }
-    .modal .modal-footer-header span, .modal-inline .modal-footer-header span {
+    .modal .modal-content .modal-footer-header span, .modal-inline .modal-content .modal-footer-header span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
-    .modal .modal-footer-header:empty, .modal-inline .modal-footer-header:empty {
+    .modal .modal-content .modal-footer-header:empty, .modal-inline .modal-content .modal-footer-header:empty {
       display: none; }
-    .modal .modal-footer-header:not(:empty) + .modal-footer, .modal-inline .modal-footer-header:not(:empty) + .modal-footer {
+    .modal .modal-content .modal-footer-header:not(:empty) + .modal-footer, .modal-inline .modal-content .modal-footer-header:not(:empty) + .modal-footer {
       border-top: none; }
-  .modal .modal-footer, .modal-inline .modal-footer {
+  .modal .modal-content .modal-footer, .modal-inline .modal-content .modal-footer {
     flex-shrink: 0;
     flex-grow: 0;
     padding: 0.5rem; }
-    .modal .modal-footer:empty, .modal .modal-footer.modal-footer-vertical:empty, .modal-inline .modal-footer:empty, .modal-inline .modal-footer.modal-footer-vertical:empty {
+    .modal .modal-content .modal-footer:empty, .modal .modal-content .modal-footer.modal-footer-vertical:empty, .modal-inline .modal-content .modal-footer:empty, .modal-inline .modal-content .modal-footer.modal-footer-vertical:empty {
       display: none; }
-    .modal .modal-footer.modal-footer-vertical, .modal-inline .modal-footer.modal-footer-vertical {
+    .modal .modal-content .modal-footer.modal-footer-vertical, .modal-inline .modal-content .modal-footer.modal-footer-vertical {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center; }
-      .modal .modal-footer.modal-footer-vertical > *, .modal-inline .modal-footer.modal-footer-vertical > * {
+      .modal .modal-content .modal-footer.modal-footer-vertical > *, .modal-inline .modal-content .modal-footer.modal-footer-vertical > * {
         margin: 0; }
-      .modal .modal-footer.modal-footer-vertical > *:not(:first-child), .modal-inline .modal-footer.modal-footer-vertical > *:not(:first-child) {
+      .modal .modal-content .modal-footer.modal-footer-vertical > *:not(:first-child), .modal-inline .modal-content .modal-footer.modal-footer-vertical > *:not(:first-child) {
         margin-top: .25rem; }
 
-.modal.modal-sm .modal-header,
-.modal-inline.modal-sm .modal-header {
+.modal.modal-sm .modal-content .modal-header,
+.modal-inline.modal-sm .modal-content .modal-header {
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -6827,25 +6870,25 @@ If the height (and width) of the content is variable (eq. accordion) the class
   border-bottom: 1px solid #9aa1a8;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0; }
-  .modal.modal-sm .modal-header span,
-  .modal-inline.modal-sm .modal-header span {
+  .modal.modal-sm .modal-content .modal-header span,
+  .modal-inline.modal-sm .modal-content .modal-header span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
 
-.modal.modal-sm .modal-body,
-.modal.modal-sm .modal-body-fixed,
-.modal-inline.modal-sm .modal-body,
-.modal-inline.modal-sm .modal-body-fixed {
+.modal.modal-sm .modal-content .modal-body,
+.modal.modal-sm .modal-content .modal-body-fixed,
+.modal-inline.modal-sm .modal-content .modal-body,
+.modal-inline.modal-sm .modal-content .modal-body-fixed {
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem; }
 
-.modal.modal-sm .modal-footer-header,
-.modal-inline.modal-sm .modal-footer-header {
+.modal.modal-sm .modal-content .modal-footer-header,
+.modal-inline.modal-sm .modal-content .modal-footer-header {
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -6856,13 +6899,13 @@ If the height (and width) of the content is variable (eq. accordion) the class
   border-top: 1px solid #9aa1a8;
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important; }
-  .modal.modal-sm .modal-footer-header span,
-  .modal-inline.modal-sm .modal-footer-header span {
+  .modal.modal-sm .modal-content .modal-footer-header span,
+  .modal-inline.modal-sm .modal-content .modal-footer-header span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
-  .modal.modal-sm .modal-footer-header:empty,
-  .modal-inline.modal-sm .modal-footer-header:empty {
+  .modal.modal-sm .modal-content .modal-footer-header:empty,
+  .modal-inline.modal-sm .modal-content .modal-footer-header:empty {
     display: none; }
 
 .modal .modal-body-fixed.scrollbar-vertical, .modal-inline .modal-body-fixed.scrollbar-vertical {
@@ -6890,13 +6933,13 @@ If the height (and width) of the content is variable (eq. accordion) the class
 .modal-inline.modal-sm .modal-body.scrollbar-horizontal {
   padding-bottom: 0.0625rem; }
 
-.modal.no-vertical-padding .modal-body-fixed, .modal.no-vertical-padding .modal-body,
-.modal-inline.no-vertical-padding .modal-body-fixed,
-.modal-inline.no-vertical-padding .modal-body,
-.modal.modal-sm.no-vertical-padding .modal-body-fixed,
-.modal.modal-sm.no-vertical-padding .modal-body,
-.modal-inline.modal-sm.no-vertical-padding .modal-body-fixed,
-.modal-inline.modal-sm.no-vertical-padding .modal-body {
+.modal.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed, .modal.no-vertical-padding .modal-dialog .modal-content .modal-body,
+.modal-inline.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed,
+.modal-inline.no-vertical-padding .modal-dialog .modal-content .modal-body,
+.modal.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed,
+.modal.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body,
+.modal-inline.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed,
+.modal-inline.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body {
   padding-top: 0;
   padding-bottom: 0; }
 
@@ -6941,7 +6984,7 @@ Adjustmernt to Bootstrap table
     font-weight: normal;
     display: flex;
     justify-content: normal;
-    align-items: center;
+    align-items: baseline;
     padding: 0.5rem 0.5rem;
     font-size: 1rem;
     line-height: 1.5;
@@ -7004,7 +7047,7 @@ Adjustmernt to Bootstrap table
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -7034,14 +7077,14 @@ Using Bootstrap Collapse to create accordion
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 1rem;
   line-height: 1.5;
   border-radius: inherit;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   border-radius: 0.25rem; }
   .accordion .card-header:hover {
     color: #292d32;
@@ -7080,7 +7123,7 @@ Using Bootstrap Collapse to create accordion
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -7103,7 +7146,7 @@ Using Bootstrap Collapse to create accordion
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -7124,7 +7167,7 @@ Using Bootstrap Collapse to create accordion
   font-weight: normal;
   display: flex;
   justify-content: normal;
-  align-items: center;
+  align-items: baseline;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;

@@ -161,14 +161,14 @@
     $.fn._bsModalExtend = function(){
         if (this.hasClass('no-modal-extended'))
             this._bsModalToggle();
-    }        
+    };        
     $.fn._bsModalDiminish = function(){
         if (this.hasClass('modal-extended'))
             this._bsModalToggle();
-    }        
+    };        
     $.fn._bsModalToggle = function(){
         this.modernizrToggle('modal-extended');        
-    }
+    };
 
 
     $.fn._bsModalContent = function( options ){
@@ -183,8 +183,8 @@
 
 
         var modalExtend   = $.proxy( $modalContainer._bsModalExtend,   $modalContainer ),
-            modalDiminish = $.proxy( $modalContainer._bsModalDiminish, $modalContainer ),
-            modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer );
+            modalDiminish = $.proxy( $modalContainer._bsModalDiminish, $modalContainer )/*,
+            modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer )*/;
         
         options = $.extend( true, {
             //Buttons
@@ -247,13 +247,13 @@
                 $.each( ['diminish', 'extend', 'close'], function( index, id ){
                     var iconOptions = options.icons[id];
                     if (iconOptions && iconOptions.onClick){
-                        var $icon = $('<i/>')
-                                        .addClass('modal-icon modal-icon-' + id )
-                                        .addClass( iconOptions.className || '')
-                                        .on('click', iconOptions.onClick)
-                                        .attr( iconOptions.attr || {})
-                                        .data( iconOptions.data || {})
-                                        .appendTo($iconContainer);
+                        $('<i/>')
+                            .addClass('modal-icon modal-icon-' + id )
+                            .addClass( iconOptions.className || '')
+                            .on('click', iconOptions.onClick)
+                            .attr( iconOptions.attr || {})
+                            .data( iconOptions.data || {})
+                            .appendTo($iconContainer);
 
                         //Add swipe-event and direction
                         if (iconOptions.swipeDirection && iconOptions.swipeEvent){
