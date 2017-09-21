@@ -1,6 +1,10 @@
 {
   "name": "jquery-bootstrap",
+<<<<<<< HEAD
   "version": "0.11.4",
+=======
+  "version": "0.11.1",
+>>>>>>> cafde19c94ef569c5143a470316fd5c0bcbde046
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "author": "NielsHolt nho@fcoo.dk",
   "description": "package.json is only use for building the package. see bower.json for more info",

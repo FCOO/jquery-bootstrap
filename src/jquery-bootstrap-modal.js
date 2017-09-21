@@ -301,6 +301,40 @@ $modalHeader.hammer(/*{
                 }
 
 
+<<<<<<< HEAD
+=======
+$modalHeader.hammer({}).bind("swipeup", function(){
+    console.log('swipeup', arguments);
+
+});
+
+            if (inclIcons){
+                //Container for icons
+                var $iconContainer =
+                        $('<div/>')
+                            .addClass('modal-header-icon-container')
+                            .appendTo( $modalHeader );
+
+                $.each( ['diminish', 'extend', 'close'], function( index, id ){
+                    var iconOptions = options.icons[id];
+            
+                    if (iconOptions && iconOptions.onClick){
+                        var $icon = $('<i/>')
+                                        .addClass('modal-icon modal-icon-' + id )
+                                        .on('click', iconOptions.onClick)
+                                        .appendTo($iconContainer);
+                    }
+                });
+                
+                //Add extend and diminish icons
+/*
+                if (options.extended){
+                    addExtendAndDiminish( $('<i class="modal-icon modal-icon-extend"/>').appendTo($iconContainer) );
+                    addExtendAndDiminish( $('<i class="modal-icon modal-icon-diminish"/>').appendTo($iconContainer) );
+                }
+
+
+>>>>>>> cafde19c94ef569c5143a470316fd5c0bcbde046
                 //Add close-button
                 if (options.close){
                     var $modalClose = this.bsModal.$close =
