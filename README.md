@@ -1,3 +1,6 @@
+---
+title: jquery-bootstrap
+---
 # jquery-bootstrap
 >
 [jquery-value-format]:https://github.com/fcoo/jquery-value-format
