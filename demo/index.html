@@ -520,20 +520,25 @@ header: 'R - Dette er en meget lang header, der gerne skulle blive klippet af, d
 closeButton: true,
                     icons: { 
                         close: { onClick: function(){ alert('Luk'); } },
-                        diminish: { onClick: function(){ alert('Mindre'); } }
+                        _diminish: { onClick: function(){ alert('Mindre'); } }
 
                     },
                     content: 'R - Rigtig godt',
                     footer: 'R - Helt fantastisk',
+                    extended: {
+                        content: 'EXTENDED<br>2. line'
+                    },
+                    isExtended: true,
                     smallButtons: true,
                     _verticalButtons: true,
-                    _buttons: [
-                        {text: 'Nogen andet'}
+                    buttons: [
+                        {text: 'Nogen andet', equalIconId: 'diminish', className:'hide-for-modal-extended'}
                         ]
 
                 });
 // */
-        
+
+
     </script>
 
 </body>

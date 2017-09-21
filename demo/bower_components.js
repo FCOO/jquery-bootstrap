@@ -20402,21 +20402,28 @@ return i18next;
 
 ****************************************************************************/
 
-(function ($, window/*, document, undefined*/) {
+(function ($, window, document, undefined) {
 	"use strict";
 	
 	var ns = window;
 
     //Extend the jQuery prototype
     $.fn.extend({
-        modernizrOn : function( test ){ return this.modernizrToggle( test, true ); },
+        modernizrOn : function( test ){ 
+            return this.modernizrToggle( test, true ); 
+        },
 
-        modernizrOff: function( test ){ return this.modernizrToggle( test, false ); },
+        modernizrOff: function( test ){ 
+            return this.modernizrToggle( test, false ); 
+        },
         
         modernizrToggle: function( test, on ){ 
-                            on = !!on; //on => Boolean
-                            return this.toggleClass( test, on ).toggleClass( 'no-' + test, !on );
-                         }
+		if ( on === undefined )
+            return this.modernizrToggle( test, !this.hasClass( test ) );
+
+            on = !!on; //on => Boolean
+            return this.toggleClass( test, on ).toggleClass( 'no-' + test, !on );
+        }
     });
 
 

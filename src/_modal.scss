@@ -76,15 +76,8 @@ Icons for modal header inside a container
         }
 
         //modal-icon-extend and modal-icon-diminish: Icon to extend and diminish the modal
-        &.modal-icon-extend {
-            &:before   { content: '\ea41'; }
-            .modal-extendable.modal-extended & { display: none; }
-        }
-
-        &.modal-icon-diminish {
-            &:before { content: '\ea43'; }
-            .modal-extendable:not(.modal-extended) & { display: none; }        
-        }
+        &.modal-icon-extend:before   { content: '\ea41'; }
+        &.modal-icon-diminish:before { content: '\ea43'; }
 
         //Special version for close-icon
         &.modal-icon-close {
@@ -106,10 +99,11 @@ Icons for modal header inside a container
 
 
 
+
 .modal, .modal-inline {
     $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
-
     $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
+
 
     .modal-dialog {
 
@@ -178,14 +172,16 @@ Icons for modal header inside a container
 
     font-size: 1rem; //To avoid overwrite from other container
     .modal-content {
+
+        //Create class show-for-modal-extended and hide-for-modal-extended 
+        //@include show-and-hide-for-modernizr-test( $modernizr-test , $parent-element-type: '', $incl-no-selector: true, $display-value: '', $incl-table-display: true )
+        @include show-and-hide-for-modernizr-test( modal-extended , '&', false, '', false );
+
         .modal-header {
             flex-shrink: 0; //Only .modal-body is shrink
             flex-grow  : 0; //Only .modal-body is growing
             @include header-variant(); 
             @include header-color(); 
-        }
-        //Add cursor: default to all header children when modal is extendable
-        &.modal-extendable .modal-header * {
             cursor: default; 
         }
 
@@ -299,9 +295,11 @@ Icons for modal header inside a container
 .modal.modal-sm,
 .modal-inline.modal-sm {
     &.no-vertical-padding {
-        .modal-body-fixed, .modal-body {
-            padding-top   : 0;
-            padding-bottom: 0;
+        .modal-dialog .modal-content {
+            .modal-body-fixed, .modal-body {
+                padding-top   : 0;
+                padding-bottom: 0;
+            }
         }
     }
 }
