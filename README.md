@@ -272,7 +272,7 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
 | `id` | `string` | `""` | Mandatory if the table has options `selecable: true`  |
-| column-id | `content` or `[] of content` | `""` | See above |
+| `[column-id]` | `content` or `[] of content` | `""` | See above |
 
 Eq.
 

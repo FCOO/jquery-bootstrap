@@ -474,7 +474,8 @@
                             }
                         }],
                         show: true,
-                        content: content
+                        content: content,
+                        extended: content
                     });
             }
         }
@@ -517,7 +518,11 @@
 header: 'R - Dette er en meget lang header, der gerne skulle blive klippet af, da den er alt for lang',
 
 closeButton: true,
-                    close: { onClick: function(){ alert('Luk'); } },
+                    icons: { 
+                        close: { onClick: function(){ alert('Luk'); } },
+                        diminish: { onClick: function(){ alert('Mindre'); } }
+
+                    },
                     content: 'R - Rigtig godt',
                     footer: 'R - Helt fantastisk',
                     smallButtons: true,
