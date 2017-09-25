@@ -6122,8 +6122,7 @@ POPOVER
 .popover .popover-header-content {
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -6136,8 +6135,7 @@ POPOVER
   font-weight: normal;
   line-height: 1.25;
   display: flex;
-  justify-content: normal;
-  align-items: baseline; }
+  align-items: center; }
   .popover .popover-header-content span {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -6149,8 +6147,7 @@ POPOVER
 .popover .popover-footer {
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -6171,8 +6168,7 @@ POPOVER
 .popover.popover-sm .popover-header-content {
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -6188,8 +6184,7 @@ POPOVER
 .popover.popover-sm .popover-footer {
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -6518,8 +6513,7 @@ Two versions:
     text-align: left;
     position: relative;
     display: flex;
-    justify-content: normal;
-    align-items: baseline;
+    align-items: center;
     padding-right: 0.25rem; }
     .dropdown.selectbox > .btn .arrow {
       font-size: 0.8em;
@@ -6648,8 +6642,7 @@ Two versions:
   .dropdown.selectbox .dropdown-header, .selectList .dropdown-header {
     font-weight: normal;
     display: flex;
-    justify-content: normal;
-    align-items: baseline;
+    align-items: center;
     padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     line-height: 1.5;
@@ -6671,8 +6664,7 @@ Two versions:
   .dropdown.selectbox.selectbox-sm .dropdown-header, .dropdown.selectbox.selectList-sm .dropdown-header, .selectList.selectbox-sm .dropdown-header, .selectList.selectList-sm .dropdown-header {
     font-weight: normal;
     display: flex;
-    justify-content: normal;
-    align-items: baseline;
+    align-items: center;
     padding: 0.25rem 0.25rem;
     font-size: 0.75rem;
     line-height: 1.5;
@@ -6702,19 +6694,25 @@ Icons for modal header inside a container
 <i class="modal-header-icon modal-header-icon-XX [first-icon] [hidden][disabled]"/>
 ****************************************************/
 .modal-header-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35em;
   margin-left: auto;
   margin-right: -0.125rem; }
+  .modal-header-icon-container.modal-header-icon-container-sm {
+    font-size: 1.1em; }
   .modal-header-icon-container .modal-icon {
     font-family: 'modal-header-icons' !important;
     speak: none;
     font-style: normal;
+    font-size: inherit;
     font-weight: normal;
     font-variant: normal;
     text-transform: none;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 1.1em;
     color: #000;
     text-shadow: 0 1px 0 #fff;
     opacity: .5;
@@ -6741,7 +6739,7 @@ Icons for modal header inside a container
     .modal-header-icon-container .modal-icon.modal-icon-close:hover:active {
       color: #c82333; }
 
-.modal .modal-dialog, .modal-inline .modal-dialog {
+.modal .modal-dialog {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -6752,27 +6750,29 @@ Icons for modal header inside a container
   opacity: 0;
   transition: opacity 0.3s linear; }
   @media (max-height: 575px) {
-    .modal .modal-dialog, .modal-inline .modal-dialog {
+    .modal .modal-dialog {
       justify-content: flex-start; } }
-  html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex, html.medium-up .modal-inline .modal-dialog, .modal-inline .modal-dialog.modal-flex {
+  html.medium-up .modal .modal-dialog, .modal .modal-dialog.modal-flex {
     width: 31.25rem; }
-  .modal .modal-dialog .modal-content, .modal-inline .modal-dialog .modal-content {
+  .modal .modal-dialog .modal-content {
     min-height: 100%;
     max-height: calc(100vh - 20px); }
-  .modal .modal-dialog:not(.modal-flex) .modal-content .modal-body > .jquery-scroll-container, .modal-inline .modal-dialog:not(.modal-flex) .modal-content .modal-body > .jquery-scroll-container {
+  .modal .modal-dialog:not(.modal-flex) .modal-content .modal-body > .jquery-scroll-container {
     width: calc( 18.75rem - 2*1px - 2*0.625rem);
     margin-left: auto;
     margin-right: auto; }
-  .modal .modal-dialog.modal-flex .modal-content .modal-body > .jquery-scroll-container, .modal-inline .modal-dialog.modal-flex .modal-content .modal-body > .jquery-scroll-container {
+  .modal .modal-dialog.modal-flex .modal-content .modal-body > .jquery-scroll-container {
     width: auto; }
 
-.modal.show .modal-dialog, .modal-inline.show .modal-dialog {
+.modal.show .modal-dialog {
   opacity: 1; }
 
-.modal:not(.modal-inline).modal-sm, .modal-inline:not(.modal-inline).modal-sm {
+.modal.modal-sm {
   max-width: none !important; }
 
-.modal.modal-inline .modal-content, .modal-inline.modal-inline .modal-content {
+.modal-inline .modal-content {
+  min-height: 100%;
+  max-height: inherit;
   box-shadow: none; }
 
 .modal, .modal-inline {
@@ -6786,8 +6786,7 @@ Icons for modal header inside a container
     flex-grow: 0;
     font-weight: normal;
     display: flex;
-    justify-content: normal;
-    align-items: baseline;
+    align-items: center;
     padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     line-height: 1.5;
@@ -6796,12 +6795,15 @@ Icons for modal header inside a container
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     color: #495057;
-    background-color: #f2f2f2;
-    cursor: default; }
+    background-color: #f2f2f2; }
     .modal .modal-content .modal-header span, .modal-inline .modal-content .modal-header span {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .modal .modal-content .modal-header.clickable, .modal-inline .modal-content .modal-header.clickable {
+      cursor: default; }
+      .modal .modal-content .modal-header.clickable:hover, .modal-inline .modal-content .modal-header.clickable:hover {
+        background-color: #e5e5e5; }
   .modal .modal-content .modal-body-fixed, .modal-inline .modal-content .modal-body-fixed {
     flex-shrink: 0;
     flex-grow: 0;
@@ -6821,8 +6823,7 @@ Icons for modal header inside a container
     flex-grow: 0;
     font-weight: normal;
     display: flex;
-    justify-content: normal;
-    align-items: baseline;
+    align-items: center;
     padding: 0.5rem 0.5rem;
     font-size: 0.875rem;
     line-height: 1.5;
@@ -6861,8 +6862,7 @@ Icons for modal header inside a container
 .modal-inline.modal-sm .modal-content .modal-header {
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -6887,8 +6887,7 @@ Icons for modal header inside a container
 .modal-inline.modal-sm .modal-content .modal-footer-header {
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;
@@ -6983,8 +6982,7 @@ Adjustmernt to Bootstrap table
     display: table-cell !important;
     font-weight: normal;
     display: flex;
-    justify-content: normal;
-    align-items: baseline;
+    align-items: center;
     padding: 0.5rem 0.5rem;
     font-size: 1rem;
     line-height: 1.5;
@@ -7046,8 +7044,7 @@ Adjustmernt to Bootstrap table
 .table.table-sm thead tr th {
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -7076,15 +7073,13 @@ Using Bootstrap Collapse to create accordion
   background-color: #dee2e6;
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.5rem 0.5rem;
   font-size: 1rem;
   line-height: 1.5;
   border-radius: inherit;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   border-radius: 0.25rem; }
   .accordion .card-header:hover {
     color: #292d32;
@@ -7122,8 +7117,7 @@ Using Bootstrap Collapse to create accordion
 .accordion .card-footer {
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.5rem 0.5rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -7145,8 +7139,7 @@ Using Bootstrap Collapse to create accordion
 .accordion-sm .card-header {
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -7166,8 +7159,7 @@ Using Bootstrap Collapse to create accordion
 .accordion-sm .card-footer {
   font-weight: normal;
   display: flex;
-  justify-content: normal;
-  align-items: baseline;
+  align-items: center;
   padding: 0.25rem 0.25rem;
   font-size: 0.75rem;
   line-height: 1.5;

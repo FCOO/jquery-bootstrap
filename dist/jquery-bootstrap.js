@@ -525,11 +525,13 @@ TODO:
         flex
         noVerticalPadding
         content
+        scroll: boolean | 'vertical' | 'horizontal'
         extended: {
             fixedContent
             flex
             noVerticalPadding
             content
+            scroll: boolean | 'vertical' | 'horizontal'
             footer
         }
         isExtended: boolean
@@ -653,125 +655,20 @@ TODO:
     };
 
     /******************************************************
-    _bsModalContent
-    Create the content of a modal inside this
-    Sets object with all parts of the result in this.modalParts
+    _bsModalBodyAndFooter
+    Create the body and footer content (exc header and bottoms) 
+    of a modal inside this. Created elements are saved in parts
     ******************************************************/
-    $.fn._bsModalExtend = function(){
-        if (this.hasClass('no-modal-extended'))
-            this._bsModalToggle();
-    };        
-    $.fn._bsModalDiminish = function(){
-        if (this.hasClass('modal-extended'))
-            this._bsModalToggle();
-    };        
-    $.fn._bsModalToggle = function(){
-        this.modernizrToggle('modal-extended');        
-    };
-
-
-    $.fn._bsModalContent = function( options ){
-        options = options || {};
-
-        this.bsModal = {};
-        var $modalContainer = this.bsModal.$container =
-                $('<div/>')
-                    .addClass('modal-content') 
-                    .modernizrToggle('modal-extended', !!options.isExtended )
-                    .appendTo( this );
-
-
-        var modalExtend   = $.proxy( $modalContainer._bsModalExtend,   $modalContainer ),
-            modalDiminish = $.proxy( $modalContainer._bsModalDiminish, $modalContainer )/*,
-            modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer )*/;
-        
-        options = $.extend( true, {
-            //Buttons
-            buttons    : [],
-            closeButton: true,
-            closeText  : {da:'Luk', en:'Close'},
-            closeIcon  : 'fa-times',
-
-            //Icons
-            icons    : {
-                extend  : { className: 'hide-for-modal-extended', swipeDirection: Hammer.DIRECTION_UP,   swipeEvent:'swipeup',   onClick: options.extended ? modalExtend   : null },
-                diminish: { className: 'show-for-modal-extended', swipeDirection: Hammer.DIRECTION_DOWN, swipeEvent:'swipedown', onClick: options.extended ? modalDiminish : null }
-            }
-        }, options );
-
-        //Add close-botton. Avoid by setting options.closeButton  = false
-        if (options.closeButton)
-            options.buttons.push({
-                text        : options.closeText,
-                icon        : options.closeIcon,
-
-                closeOnClick: true,
-                addOnClick  : false
-            });
-
-
+    $.fn._bsModalBodyAndFooter = function(options, parts, className){
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
-            scrollDirection = options.scroll === true ? 'vertical' : options.scroll,
-            scrollClass     = 'scrollbar-'+scrollDirection;
+            scrollDirection = options.scroll === true ? 'vertical' : options.scroll;
 
-        //Determinate if there are any icons
-        var inclIcons = false,
-            inclSwipe = false;
-        $.each( options.icons, function( id, iconOptions ){
-            inclIcons = inclIcons || (iconOptions !== null);
-            inclSwipe = inclSwipe || (iconOptions && iconOptions.onClick && iconOptions.swipeDirection);
-        });
-
-        //Append header
-        if (!options.noHeader &&  (options.header || inclIcons)){
-            var $modalHeader = this.bsModal.$header =
-                    $('<div/>')
-                        .addClass('modal-header')
-                        ._bsAddHtml( options.header || $.EMPTY_TEXT )
-                        .appendTo( $modalContainer );
-
-            //Craete Hammer on header if needed
-            var hammer         = inclSwipe ? $modalHeader.hammer().data('hammer') : null,
-                swipeDirection = 0;
-
-            if (inclIcons){
-                //Container for icons
-                var $iconContainer =
-                        $('<div/>')
-                            .addClass('modal-header-icon-container')
-                            .appendTo( $modalHeader );
-
-                //Add icons
-                $.each( ['diminish', 'extend', 'close'], function( index, id ){
-                    var iconOptions = options.icons[id];
-                    if (iconOptions && iconOptions.onClick){
-                        $('<i/>')
-                            .addClass('modal-icon modal-icon-' + id )
-                            .addClass( iconOptions.className || '')
-                            .on('click', iconOptions.onClick)
-                            .attr( iconOptions.attr || {})
-                            .data( iconOptions.data || {})
-                            .appendTo($iconContainer);
-
-                        //Add swipe-event and direction
-                        if (iconOptions.swipeDirection && iconOptions.swipeEvent){
-                            swipeDirection += iconOptions.swipeDirection;
-                            hammer.on( iconOptions.swipeEvent, iconOptions.onClick );
-                        }
-                    }
-                });
-
-                if (swipeDirection)
-                    hammer.get('swipe').set({ direction: swipeDirection });
-            }
-        }
-//HER FRA SKAL LAVES I FUNCTION **************************************************************
         //Append fixed content (if any)
-        var $modalFixedContent = this.bsModal.$fixedContent =
+        var $modalFixedContent = parts.$fixedContent =
                 $('<div/>')
-                    .addClass('modal-body-fixed' + (hasScroll ? ' '+scrollClass : ''))
-                    .appendTo( $modalContainer );
+                    .addClass('modal-body-fixed ' + className + (hasScroll ? ' scrollbar-'+scrollDirection : ''))
+                    .appendTo( this );
         if (options.fixedContent){
             if ($.isFunction( options.fixedContent ))
                 options.fixedContent( $modalFixedContent );
@@ -780,12 +677,12 @@ TODO:
         }
 
         //Append body and content
-        var $modalBody = this.bsModal.$body =
+        var $modalBody = parts.$body =
                 $('<div/>')
-                    .addClass('modal-body')
-                    .appendTo( $modalContainer ),
+                    .addClass('modal-body ' + className)
+                    .appendTo( this ),
 
-            $modalContent = this.bsModal.$content =
+            $modalContent = parts.$content =
                 hasScroll ?
                     $modalBody.addScrollbar({ direction: scrollDirection }) :
                     $modalBody;
@@ -805,13 +702,139 @@ TODO:
 
 
         //Add footer
-        this.bsModal.$footer =
+        parts.$footer =
                 $('<div/>')
-                    .addClass('modal-footer-header')
-                    .appendTo( $modalContainer )
+                    .addClass('modal-footer-header ' + className)
+                    .appendTo( this )
                     ._bsAddHtml( options.footer );
-//HER TIL *******************************************************************
+        return this;
+    };
+    
+    /******************************************************
+    _bsModalExtend, _bsModalDiminish, _bsModalToggle
+    Methods to change extended-mode
+    ******************************************************/
+    $.fn._bsModalExtend = function( event ){
+        if (this.hasClass('no-modal-extended'))
+            this._bsModalToggle( event );
+    };        
+    $.fn._bsModalDiminish = function( event ){
+        if (this.hasClass('modal-extended'))
+            this._bsModalToggle( event );
+    };        
+    $.fn._bsModalToggle = function( event ){
+        this.modernizrToggle('modal-extended');
+      
+        if (event && event.stopPropagation)
+            event.stopPropagation();
+    };
 
+    /******************************************************
+    _bsModalContent
+    Create the content of a modal inside this
+    Sets object with all parts of the result in this.modalParts
+    ******************************************************/
+    $.fn._bsModalContent = function( options ){
+        options = options || {};
+
+        
+        //this.bsModal contains all created elements
+        this.bsModal = {};
+
+        var $modalContainer = this.bsModal.$container =
+                $('<div/>')
+                    .addClass('modal-content') 
+                    .modernizrToggle('modal-extended', !!options.isExtended )
+                    .appendTo( this );
+
+
+        var modalExtend   = $.proxy( $modalContainer._bsModalExtend,   $modalContainer ),
+            modalDiminish = $.proxy( $modalContainer._bsModalDiminish, $modalContainer ),
+            modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer );
+        
+        options = $.extend( true, {
+            //Buttons
+            buttons    : [],
+            closeButton: true,
+            closeText  : {da:'Luk', en:'Close'},
+            closeIcon  : 'fa-times',
+
+            //Icons
+            icons    : {
+                extend  : { className: 'hide-for-modal-extended', altEvents:'swipeup',   onClick: options.extended ? modalExtend   : null },
+                diminish: { className: 'show-for-modal-extended', altEvents:'swipedown', onClick: options.extended ? modalDiminish : null }
+            }
+        }, options );
+
+        //Add close-botton. Avoid by setting options.closeButton  = false
+        if (options.closeButton)
+            options.buttons.push({
+                text        : options.closeText,
+                icon        : options.closeIcon,
+
+                closeOnClick: true,
+                addOnClick  : false
+            });
+
+        //Determinate if there are any icons
+        var inclIcons = false;
+        $.each( options.icons, function( id, iconOptions ){
+            inclIcons = inclIcons || (iconOptions !== null);
+        });
+
+        //Append header
+        if (!options.noHeader &&  (options.header || inclIcons)){
+            var $modalHeader = this.bsModal.$header =
+                    $('<div/>')
+                        .addClass('modal-header')
+                        ._bsAddHtml( options.header || $.EMPTY_TEXT )
+                        .appendTo( $modalContainer );
+
+            //Add dbl-click on header to change to/from extended
+            if (options.extended)
+                $modalHeader
+                    .addClass('clickable')
+                    .on('dblclick doubletap', modalToggle );
+
+            if (inclIcons){
+                //Container for icons
+                var $iconContainer =
+                        $('<div/>')
+                            ._bsAddBaseClassAndSize( {
+                                baseClass   :'modal-header-icon-container',
+                                useTouchSize: true
+                            })
+                            .appendTo( $modalHeader );
+
+                //Add icons
+                $.each( ['diminish', 'extend', 'close'], function( index, id ){
+                    var iconOptions = options.icons[id];
+                    if (iconOptions && iconOptions.onClick){
+                        $('<i/>')
+                            .addClass('modal-icon modal-icon-' + id )
+                            .addClass( iconOptions.className || '')
+                            .on('click', iconOptions.onClick)
+                            .attr( iconOptions.attr || {})
+                            .data( iconOptions.data || {})
+                            .appendTo($iconContainer);
+
+                        //Add alternative (swipe) event
+                        if (iconOptions.altEvents)
+                            $modalHeader.on( iconOptions.altEvents, iconOptions.onClick );
+                    }
+                });
+            }
+        }
+        
+        //Create normal content
+        $modalContainer._bsModalBodyAndFooter( options, this.bsModal, 'hide-for-modal-extended' );
+
+        //Create extended content (if any)
+        if (options.extended){
+            this.bsModal.extended = {};            
+            $modalContainer._bsModalBodyAndFooter( options.extended, this.bsModal.extended, 'show-for-modal-extended' );
+        }
+      
         //Add buttons (if any)
         var $modalButtonContainer = this.bsModal.$buttonContainer =
                 $('<div/>')

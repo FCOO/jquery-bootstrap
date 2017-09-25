@@ -37,9 +37,8 @@ NOTE: Parent element MUST have @include vertical-align-center();
 }
 
 @mixin vertical-align-center() {
-    display        : flex;
-    justify-content: normal;
-    align-items    : baseline; //center; // vertically center it
+    display    : flex;
+    align-items: center; // vertically center it
 }
 
 
