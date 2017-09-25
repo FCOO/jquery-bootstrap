@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "0.11.6",
+  "version": "0.12.0",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "authors": [
     "NielsHolt"
@@ -24,8 +24,8 @@
     "jquery-value-format": "fcoo/jquery-value-format#^1.6.0",
     "bootstrap-popover-extensions": "fcoo/bootstrap-popover-extensions#^1.0.1",
     "hammerjs": "hammer.js#^2.0.8",
-    "jquery-hammerjs": "hammerjs/jquery.hammer.js#^2.0.0",
-    "modernizr-javascript": "FCOO/modernizr-javascript#^1.1.0"
+    "modernizr-javascript": "FCOO/modernizr-javascript#^1.1.0",
+    "jquery-hammer.js": "fcoo/jquery-hammer.js#^0.1.0"
   },
   "devDependencies": {
     "bourbon": "latest",

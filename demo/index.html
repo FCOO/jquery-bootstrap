@@ -461,8 +461,11 @@
                 multi_modals[modalNumber].show();
             else { 
                 var content = 'Modal # = ' + modalNumber; 
-                for (var i=0; i<20-modalNumber; i++ )
+                var extendedContent = 'Modal # = ' + modalNumber; 
+                for (var i=0; i<2; i++ )
                     content += '<br>' + i;
+                for (var i=0; i<20-modalNumber; i++ )
+                    extendedContent += '<br>' + i;
                 multi_modals[ modalNumber ] =                 
                     $.bsModal({
                         buttons: [{
@@ -474,8 +477,12 @@
                             }
                         }],
                         show: true,
+                        scroll: false,
                         content: content,
-                        extended: content
+                        extended: {
+                            content: extendedContent,
+                            scroll: true
+                        }
                     });
             }
         }
@@ -510,7 +517,7 @@
 
 
 //* Test af modal-inline        
-        $('<div id="modal-inline" style="margin-left: 300px; _border:1px solid red; max-width:200px; max-height:300px"></div>')
+        $('<div id="modal-inline" style="margin-left: 300px; _border:1px solid red; max-width:200px; max-height:200px"></div>')
             .appendTo( $body )
 
             .addClass('modal-inline modal-sm')
@@ -523,16 +530,26 @@ closeButton: true,
                         _diminish: { onClick: function(){ alert('Mindre'); } }
 
                     },
-                    content: 'R - Rigtig godt',
-                    footer: 'R - Helt fantastisk',
+                    fixedContent: 'Normal fixed content',
+                    content: 'Normal content',
+                    footer: 'Normal footer',
                     extended: {
-                        content: 'EXTENDED<br>2. line'
+                        scroll: true,
+                        fixedContent: 'Extended fixed content',
+                        footer: 'Extended footer',
+                        content: function(){ 
+                                    var result = ''; 
+                                    for (var i=1; i<20; i++ )
+                                        result = result + (result ? '<br>' : '') + i + '. line';
+                                    return result;
+                                }()
+                                    
                     },
-                    isExtended: true,
+                    _isExtended: true,
                     smallButtons: true,
                     _verticalButtons: true,
                     buttons: [
-                        {text: 'Nogen andet', equalIconId: 'diminish', className:'hide-for-modal-extended'}
+                        {text: 'Extend', equalIconId: 'extend', className:'hide-for-modal-extended'}
                         ]
 
                 });
