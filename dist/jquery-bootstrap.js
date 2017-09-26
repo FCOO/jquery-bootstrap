@@ -722,11 +722,23 @@ TODO:
         if (this.hasClass('modal-extended'))
             this._bsModalToggle( event );
     };        
+
+    
     $.fn._bsModalToggle = function( event ){
+        var $this = $(this),
+            oldHeight = $this.outerHeight(),
+            newHeight;
+        
         this.modernizrToggle('modal-extended');
-      
+
+        newHeight = $this.outerHeight();
+        $this.height( oldHeight); 
+
+        $this.animate({height: newHeight}, 'fast', function() { $this.height('auto'); });
+
         if (event && event.stopPropagation)
             event.stopPropagation();
+        return false;
     };
 
     /******************************************************
@@ -776,6 +788,12 @@ TODO:
                 addOnClick  : false
             });
 
+        //If the modal has extended content: Normal and extended content get same scroll-options to have same horizontal padding in normal and extended mode
+        if (options.extended){
+            options.scroll = options.scroll || options.extended.scroll;            
+            options.extended.scroll = options.scroll;            
+        }
+        
         //Determinate if there are any icons
         var inclIcons = false;
         $.each( options.icons, function( id, iconOptions ){
@@ -794,7 +812,7 @@ TODO:
             if (options.extended)
                 $modalHeader
                     .addClass('clickable')
-                    .on('dblclick doubletap', modalToggle );
+                    .on('doubletap', modalToggle );
 
             if (inclIcons){
                 //Container for icons

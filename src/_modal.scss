@@ -137,7 +137,6 @@ Icons for modal header inside a container
         }
 
         .modal-content { 
-
             min-height: 100%; //Bug fix for IE11
             max-height: $modal-max-height; //Modal window height adjust to contents
         }

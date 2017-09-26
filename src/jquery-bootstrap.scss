@@ -31,7 +31,6 @@ SET AND ADJUST BOOTSTRAP DEFAULT VALUES
 IMPORT BOOTSTRAP SCSS
 ************************************************/
 @import "../bower_components/bootstrap/scss/bootstrap";
-//@import "../../bootstrap/scss/bootstrap"; //TEST
 
 /***********************************************
 BACKGROUND-COLOR AND TEXT COLOR
@@ -41,11 +40,10 @@ BACKGROUND-COLOR AND TEXT COLOR
 /***********************************************
 VARIABLES
 ************************************************/
-@import "variables";
-
 //Using $scroll-size and $scrollbar-margin from jquery-scroll-container.
 @import "../bower_components/jquery-scroll-container/src/jquery-scroll-container-variables";
 
+@import "variables";
 
 /***********************************************
 ICON FONTS
