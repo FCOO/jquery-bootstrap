@@ -6739,6 +6739,10 @@ Icons for modal header inside a container
     .modal-header-icon-container .modal-icon.modal-icon-close:hover:active {
       color: #c82333; }
 
+body.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: hidden; }
+
 .modal .modal-dialog {
   display: flex;
   flex-direction: column;
