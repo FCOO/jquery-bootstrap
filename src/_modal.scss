@@ -127,9 +127,11 @@ Icons for modal header inside a container
 
         margin   : $modal-dialog-margin auto;
         
-        min-height: $modal-max-height; 
 
+position: fixed;        
+        min-height: $modal-max-height; 
         max-width: $modal-max-width;
+
         width    : $modal-sm-rem;
 
         html.medium-up &, &.modal-flex {

@@ -10,7 +10,7 @@
 
 (function (/*$, window/*, document, undefined*/) {
 	"use strict";
-	
+
     /*
     
     Almost all elements comes in two sizes: normal and small set by options.small: false/true

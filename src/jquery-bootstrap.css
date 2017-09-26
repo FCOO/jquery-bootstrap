@@ -6744,6 +6744,7 @@ Icons for modal header inside a container
   flex-direction: column;
   justify-content: center;
   margin: 10px auto;
+  position: fixed;
   min-height: calc(100vh - 20px);
   max-width: calc(100vw - 20px);
   width: 18.75rem;
