@@ -1,5 +1,5 @@
 /****************************************************************************
-	jquery-bootstrap-popover.js, 
+	jquery-bootstrap-popover.js,
 
 	(c) 2017, FCOO
 
@@ -10,13 +10,13 @@
 
 (function (/*$, window/*, document, undefined*/) {
 	"use strict";
-	
+
     var Selector = {
         FOOTER: '.popover-footer'
     };
 
 	/***********************************************************
-	Extend the $.fn.popover.Constructor.prototype.setContent to 
+	Extend the $.fn.popover.Constructor.prototype.setContent to
     also construct footer
 	***********************************************************/
     $.fn.popover.Constructor.prototype.setContent = function (setContent) {
@@ -25,7 +25,7 @@
             //Add footer content
             var $tip = $(this.getTipElement());
             this.setElementContent($tip.find(Selector.FOOTER), this.config.footer);
-            
+
             //Original function/method
             setContent.apply(this, arguments);
 		};
@@ -46,22 +46,22 @@
     **********************************************************/
     $.fn.bsPopover = function( options ){
         options = $._bsAdjustOptions( options );
-        
+
         var $this = $(this),
             $header;
 
         //Add header (if any)
         if (options.header){
-            $header = 
+            $header =
                 $('<div/>')
                     .addClass('popover-header-content')
                     ._bsAddHtml( options.header );
 
             if (options.close)
                 $header
-                    .append( 
-                        $('<i class="fa modal-close"/>') 
-                            .on('click', function(){ 
+                    .append(
+                        $('<i class="fa modal-close"/>')
+                            .on('click', function(){
                                 $this.popover('hide');
                             })
                     );
@@ -70,52 +70,52 @@
         var popoverOptions = {
                 trigger  :  options.trigger || 'click', //or 'hover' or 'focus' ORIGINAL='click'
                 //delay    : { show: 0, hide: 1000 },
-                toggle   :  options.toggle || 'popover', 
+                toggle   :  options.toggle || 'popover',
                 html     :  true,
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
                 template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + '" role="tooltip">'+
-                                '<div class="popover-header"></div>' + 
-                                '<div class="popover-body"></div>' + 
-                                '<div class="popover-footer"></div>' + 
-                                '<div class="arrow"></div>' + 
+                                '<div class="popover-header"></div>' +
+                                '<div class="popover-body"></div>' +
+                                '<div class="popover-footer"></div>' +
+                                '<div class="arrow"></div>' +
                             '</div>',
 
                 title    : $header,
                 content  : options.content,
                 footer   : options.footer ? $('<div/>')._bsAddHtml( options.footer ) : ''
             };
-        
+
         return this.each(function() {
             var $this = $(this);
 
             if (popoverOptions.trigger == 'click')
                 $this.on('blur', popover_onBlur );
 
-            //This event fires immediately when the show instance method is called.            
-            $this.on('show.bs.popover', popover_onShow ); 	
+            //This event fires immediately when the show instance method is called.
+            $this.on('show.bs.popover', popover_onShow );
 
-            //This event is fired when the popover has been made visible to the user (will wait for CSS transitions to complete).            
-            $this.on('shown.bs.popover', popover_onShown ); 	
+            //This event is fired when the popover has been made visible to the user (will wait for CSS transitions to complete).
+            $this.on('shown.bs.popover', popover_onShown );
 
-            //This event is fired immediately when the hide instance method has been called.            
-            $this.on('hide.bs.popover', popover_onHide ); 		  
+            //This event is fired immediately when the hide instance method has been called.
+            $this.on('hide.bs.popover', popover_onHide );
 
-            //This event is fired when the popover has finished being hidden from the user (will wait for CSS transitions to complete).                        
-            $this.on('hidden.bs.popover', popover_onHidden ); 		  
-            
+            //This event is fired when the popover has finished being hidden from the user (will wait for CSS transitions to complete).
+            $this.on('hidden.bs.popover', popover_onHidden );
+
             $this.data('popover_options', options);
             $this.popover( popoverOptions );
 
             if (options.postCreate)
               options.postCreate( options.content );
- 
+
         });
     };
-    
-    function popover_onBlur(e){ 
+
+    function popover_onBlur(e){
         //If the focus is shifted to a element inside the popover => shift focus back to the element ELSE hide the popover
-        if ( this.skipNextBlur || ( !!this._$popover_element && 
-                                    !!e.relatedTarget && 
+        if ( this.skipNextBlur || ( !!this._$popover_element &&
+                                    !!e.relatedTarget &&
                                     $.contains( this._$popover_element[0], e.relatedTarget )
                                   )
             )
@@ -137,14 +137,14 @@
 
         this._$popover_element = popoverId ? $('#' + popoverId) : null;
         if (this._$popover_element){
-            
+
             //Translate content
             this._$popover_element.localize();
 
             //Prevent mousedown on header to close popover
             this._$popover_element.on('mousedown.bs.popover', function(){
                 _this.skipNextBlur = true;
-            }); 
+            });
 
             //Close the popup when anything is clicked
             if (options.closeOnClick){
@@ -162,13 +162,12 @@
 
     function popover_onHidden(){
         //Reset this._$popover_element
-        this._$popover_element = null;    
-   
+        this._$popover_element = null;
     }
-   
-            
 
-    
+
+
+
     /**********************************************************
     bsButtonGroupPopover( options ) - create a Bootstrap-popover with buttons
     **********************************************************/
@@ -184,11 +183,11 @@
     bsRadioButtonPopover( options ) - create a Bootstrap-popover with radio-buttons
     **********************************************************/
     $.fn.bsSelectListPopover = function( options ){
-        return this.bsButtonGroupPopover( $.extend({}, options, { 
+        return this.bsButtonGroupPopover( $.extend({}, options, {
                         postOnChange : $.proxy( selectListPopover_postOnChange, this ),
                         postCreate   : $.proxy( selectListPopover_postCreate, this ),
-                    }), 
-                    true 
+                    }),
+                    true
         );
     };
 
@@ -208,12 +207,12 @@
 
 
 	/******************************************
-	Initialize/ready 
+	Initialize/ready
 	*******************************************/
-	$(function() { 
+	$(function() {
 
-	
-	}); 
+
+	});
 	//******************************************
 
 
