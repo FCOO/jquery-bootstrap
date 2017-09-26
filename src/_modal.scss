@@ -112,6 +112,7 @@ Icons for modal header inside a container
     $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
 
 
+
     .modal-dialog {
 
         display        : flex;
@@ -128,7 +129,7 @@ Icons for modal header inside a container
         margin   : $modal-dialog-margin auto;
         
 
-position: fixed;        
+//position: fixed;        
         min-height: $modal-max-height; 
         max-width: $modal-max-width;
 
