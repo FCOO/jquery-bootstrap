@@ -23,11 +23,18 @@
     width: 15%;
     position:fixed;
     top:0;
+    display: flex;
+    
 }
 .type1 { height: 100%; left:0 }
 .type2 { height: 100vh; left:30%; }
-.type3 { display:none; height: 100vh; left:30%; }
-
+.type3 { left:60%; }
+.inner { 
+    box-sizing:border-box;
+    border: 2px solid blue;
+    width: 50%;
+    height: 50%;
+}
     </style>
 </head>
 
@@ -35,9 +42,9 @@
     <div id="body_container" class="no-bounce">
         <div id="lang"></div>
     </div>
-    <div class="type type1">type1<br>height:100%</div>
-    <div class="type type2">type2<br>height:100vh;</div>
-    <div class="type type3">type3</div>
+    <div class="type type1"><div class="inner"></div></div>
+    <div class="type type2"><div class="inner"></div></div>
+    <div class="type type3"><div class="inner"></div></div>
     <script src="bower_components.js"></script>
     <script src="../src/jquery-bootstrap.js"></script>
 	<script src="../src/jquery-bootstrap-table.js"></script>
@@ -49,6 +56,16 @@
     <script src="../src/jquery-bootstrap-popover.js"></script>
 
 	<script>
+        function resize(){
+            $('.type1').append('<br>'+ window.innerWidth +'x'+window.innerHeight);
+            $('.type3').outerHeight(window.innerHeight);
+        }
+
+        window.addEventListener('resize', resize, false );
+        window.addEventListener('orientationchange', resize, false );
+
+        resize();
+
         window.bsIsTouch = false;
         window.bsIsTouch = (window.location.search =='?touch');
 
