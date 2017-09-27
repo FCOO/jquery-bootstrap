@@ -109,8 +109,6 @@ Icons for modal header inside a container
 
 // SIZING IN MODAL 
 .modal {
-    $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
-//    $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
 
     //Overwrite default overflow
     body.modal-open & {
@@ -121,7 +119,6 @@ Icons for modal header inside a container
 
 
     .modal-dialog {
-background-color: red;
         display        : flex;
         flex-direction : column;
 
@@ -132,10 +129,9 @@ background-color: red;
             justify-content: flex-start;
         }
 
-//HER        margin   : $modal-dialog-margin auto;
         margin   : 0 auto;
 
-min-height: 100%; //OR 100vh;
+        min-height: 100%; 
         
         max-width: calc(100vw - #{2*$modal-dialog-margin});
         width    : $modal-sm-rem;
@@ -146,7 +142,6 @@ min-height: 100%; //OR 100vh;
 
         .modal-content { 
             min-height: 100%; //Bug fix for IE11
-//            max-height: $modal-max-height; //Modal window height adjust to contents
         }
 
         //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content

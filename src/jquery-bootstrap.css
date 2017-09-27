@@ -6745,7 +6745,6 @@ body.modal-open .modal {
   padding: 0 !important; }
 
 .modal .modal-dialog {
-  background-color: red;
   display: flex;
   flex-direction: column;
   justify-content: center;
