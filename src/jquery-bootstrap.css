@@ -6741,14 +6741,16 @@ Icons for modal header inside a container
 
 body.modal-open .modal {
   overflow-x: hidden;
-  overflow-y: hidden; }
+  overflow-y: hidden;
+  padding: 0 !important; }
 
 .modal .modal-dialog {
+  background-color: red;
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin: 0 auto;
-  min-height: calc(100vh - 20px);
+  min-height: 100%;
   max-width: calc(100vw - 20px);
   width: 18.75rem;
   opacity: 0;

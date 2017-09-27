@@ -106,21 +106,22 @@ Icons for modal header inside a container
 
 
 
-body.modal-open .modal {
-    overflow-x: hidden;
-    overflow-y: hidden;
-}
 
 // SIZING IN MODAL 
 .modal {
     $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
-    $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
+//    $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
 
-//    $modal-max-height: calc(100% - #{2*$modal-dialog-margin});
-//    $modal-max-width : calc(100% - #{2*$modal-dialog-margin});
+    //Overwrite default overflow
+    body.modal-open & {
+        overflow-x: hidden;
+        overflow-y: hidden;
+        padding: 0 !important;
+    }
+
 
     .modal-dialog {
-
+background-color: red;
         display        : flex;
         flex-direction : column;
 
@@ -132,11 +133,11 @@ body.modal-open .modal {
         }
 
 //HER        margin   : $modal-dialog-margin auto;
-        margin   : 0 auto; //HER
-        
-        min-height: $modal-max-height; 
-        max-width: $modal-max-width;
+        margin   : 0 auto;
 
+min-height: 100%; //OR 100vh;
+        
+        max-width: calc(100vw - #{2*$modal-dialog-margin});
         width    : $modal-sm-rem;
 
         html.medium-up &, &.modal-flex {
@@ -145,7 +146,7 @@ body.modal-open .modal {
 
         .modal-content { 
             min-height: 100%; //Bug fix for IE11
-//HER            max-height: $modal-max-height; //Modal window height adjust to contents
+//            max-height: $modal-max-height; //Modal window height adjust to contents
         }
 
         //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content

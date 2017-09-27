@@ -42,11 +42,19 @@
 
 
         REMOVED - getContentHeight: function( $container ) returns the max height of the content
+
     **********************************************************/
-    var modalId = 0,
-        modalStackClassName = 'fv-modal-stack'; //class-name for modals when added to the stack
 
+    /**********************************************************
+    MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
+    Due to an intential design in Safari it is not possible to 
+    use style a la max-height: calc(100vh - 20px) is not working
+    as expected/needed
+    Instead a resize-event is added to update the max-height of
+    elements with the current value of window.innerHeight
 
+    
+    **********************************************************/
 /* REMOVED
     function default_getContentHeight( $container ){
         return 0;
@@ -55,9 +63,28 @@
     }
 */
 
-    //Merthods to allow multi modal-windows
-    var openModalDataId = 'bs_open_modals';
+    var modalId = 0,
+        modalStackClassName = 'fv-modal-stack', //class-name for modals when added to the stack
+        openModalDataId = 'bs_open_modals',     //Merthods to allow multi modal-windows
+        modalVerticalMargin = 20;               //Top and bottom margin for modal windows      
 
+    //******************************************************
+    function adjustModalMaxHeight( $modal ){
+        $modal = $modal || $('.modal');
+        var $modalDialog  = $modal.find('.modal-dialog'),
+            $modalContent = $modalDialog.find('.modal-content'),
+            windowInnerHeight = parseInt(window.innerHeight);
+
+        $modalDialog.css('max-height', windowInnerHeight+'px');
+        $modalContent.css('max-height', (windowInnerHeight - 2*modalVerticalMargin)+'px');
+
+    }
+    
+   
+    window.addEventListener('resize',            function(){ adjustModalMaxHeight(); }, false );
+    window.addEventListener('orientationchange', function(){ adjustModalMaxHeight(); }, false );
+    
+    //******************************************************
     function incOpenModals( number ){
         $('body').data(
             openModalDataId,
@@ -92,6 +119,9 @@
     //shown_bs_modal - called when a modal is opened
     function shown_bs_modal( /*event*/ ) {
         var $this = $(this);
+
+        //Adjust max-height
+        adjustModalMaxHeight( $this );
 
         //Update other backdrop
         var modalNumber = incOpenModals();
@@ -473,6 +503,7 @@
         $result =
             $('<div/>')
                 ._bsAddBaseClassAndSize( options )
+//                .css('margin', 
                 .attr({
                     'id'         : id,
                     'tabindex'   : -1,
