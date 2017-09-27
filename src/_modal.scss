@@ -110,7 +110,7 @@ body.modal-open .modal {
     overflow-x: hidden;
     overflow-y: hidden;
 }
-
+$modal-dialog-margin: 100px;
 // SIZING IN MODAL 
 .modal {
     $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
@@ -128,12 +128,11 @@ body.modal-open .modal {
             justify-content: flex-start;
         }
 
+border: 10px solid red;
 
         margin   : $modal-dialog-margin auto;
         
-
-//position: fixed;        
-        min-height: $modal-max-height; 
+//        min-height: $modal-max-height; 
         max-width: $modal-max-width;
 
         width    : $modal-sm-rem;
