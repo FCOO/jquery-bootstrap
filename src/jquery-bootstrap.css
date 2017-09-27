@@ -6747,7 +6747,6 @@ body.modal-open .modal {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 10px solid blue;
   margin: 10px auto;
   max-width: calc(100vw - 20px);
   width: 18.75rem;
