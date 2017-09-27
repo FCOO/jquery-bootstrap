@@ -14,7 +14,7 @@
     <link  href="demo.css" rel="stylesheet">	
     <style>
         body { width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0; background: green; }
-        .no-bounce { display:none; width: 50%; height: 100%; overflow-y: hidden; -webkit-overflow-scrolling: touch; background-color:yellow}
+        .no-bounce { width: 100%; height: 100%; overflow-y: hidden; -webkit-overflow-scrolling: touch; background-color:yellow}
 //        .no-bounce > div { width: 100%; height: 100%; overflow-y: scroll; -webkit-overflow-scrolling: touch; }
 //        .no-bounce > div > div { width: 100%; min-height: 101%; font-size: 100%; }
 .type {
@@ -45,10 +45,10 @@
     <div id="body_container" class="no-bounce">
         <div id="lang"></div>
     </div>
-    <div class="type type1"><div class="inner"></div></div>
+    <!-- <div class="type type1"><div class="inner"></div></div>
     <div class="type type2"><div class="inner"></div></div>
     <div class="type type3"><div class="inner"></div></div>
-    <script src="bower_components.js"></script>
+ -->    <script src="bower_components.js"></script>
     <script src="../src/jquery-bootstrap.js"></script>
 	<script src="../src/jquery-bootstrap-table.js"></script>
 	<script src="../src/jquery-bootstrap-modal.js"></script>
@@ -59,6 +59,7 @@
     <script src="../src/jquery-bootstrap-popover.js"></script>
 
 	<script>
+/*
         function resize(){
             $('.type1').append('<br>'+ window.innerWidth +'x'+window.innerHeight);
             $('.type3').outerHeight(window.innerHeight);
@@ -74,7 +75,7 @@ $('.inner').on('click', function(){
     i++;
 });
 
-
+*/
 
 
 
