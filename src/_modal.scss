@@ -116,6 +116,9 @@ body.modal-open .modal {
     $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
     $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
 
+//    $modal-max-height: calc(100% - #{2*$modal-dialog-margin});
+//    $modal-max-width : calc(100% - #{2*$modal-dialog-margin});
+
     .modal-dialog {
 
         display        : flex;
@@ -128,9 +131,10 @@ body.modal-open .modal {
             justify-content: flex-start;
         }
 
-        margin   : $modal-dialog-margin auto;
+//HER        margin   : $modal-dialog-margin auto;
+        margin   : 0 auto; //HER
         
-//        min-height: $modal-max-height; 
+        min-height: $modal-max-height; 
         max-width: $modal-max-width;
 
         width    : $modal-sm-rem;
@@ -141,7 +145,7 @@ body.modal-open .modal {
 
         .modal-content { 
             min-height: 100%; //Bug fix for IE11
-            max-height: $modal-max-height; //Modal window height adjust to contents
+//HER            max-height: $modal-max-height; //Modal window height adjust to contents
         }
 
         //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content

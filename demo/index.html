@@ -57,14 +57,16 @@ position: fixed;
     </style>
 </head>
 
-<body>
+<body onload="resize()">
     <!-- <div id="body_container" class="no-bounce"> -->
         <div id="lang"></div>
     <!-- </div> -->
+
     <!-- <div class="type type1"><div class="inner"></div></div>
     <div class="type type2"><div class="inner"></div></div>
     <div class="type type3"><div class="inner"></div></div>
- -->    <script src="bower_components.js"></script>
+ --> 
+    <script src="bower_components.js"></script>
     <script src="../src/jquery-bootstrap.js"></script>
 	<script src="../src/jquery-bootstrap-table.js"></script>
 	<script src="../src/jquery-bootstrap-modal.js"></script>
@@ -79,12 +81,15 @@ position: fixed;
         function resize(){
 //            $('.type1').append('<br>'+ window.innerWidth +'x'+window.innerHeight);
 //            $('.type3').outerHeight(window.innerHeight);
-            $('#body_container').outerHeight(window.innerHeight);
+//            $('#body_container').outerHeight(window.innerHeight);
+            //$('.modal').outerHeight(window.innerHeight);
+            $('.modal .modal-dialog .modal-content').css('max-height', parseInt(window.innerHeight) - 100);
         }
 
         window.addEventListener('resize', resize, false );
         window.addEventListener('orientationchange', resize, false );
 
+        window.
         resize();
 /*
 var i = 0;
