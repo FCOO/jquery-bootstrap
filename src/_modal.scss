@@ -113,12 +113,8 @@ body.modal-open .modal {
 
 // SIZING IN MODAL 
 .modal {
-//    $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
-//    $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
-
-    $modal-max-height: calc(100% - #{2*$modal-dialog-margin});
-    $modal-max-width : calc(100% - #{2*$modal-dialog-margin});
-
+    $modal-max-height: calc(100vh - #{2*$modal-dialog-margin});
+    $modal-max-width : calc(100vw - #{2*$modal-dialog-margin});
 
     .modal-dialog {
 

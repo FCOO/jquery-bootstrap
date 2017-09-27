@@ -6748,8 +6748,8 @@ body.modal-open .modal {
   flex-direction: column;
   justify-content: center;
   margin: 10px auto;
-  min-height: calc(100% - 20px);
-  max-width: calc(100% - 20px);
+  min-height: calc(100vh - 20px);
+  max-width: calc(100vw - 20px);
   width: 18.75rem;
   opacity: 0;
   transition: opacity 0.3s linear; }
@@ -6760,7 +6760,7 @@ body.modal-open .modal {
     width: 31.25rem; }
   .modal .modal-dialog .modal-content {
     min-height: 100%;
-    max-height: calc(100% - 20px); }
+    max-height: calc(100vh - 20px); }
   .modal .modal-dialog:not(.modal-flex) .modal-content .modal-body > .jquery-scroll-container {
     width: calc( 18.75rem - 2*1px - 2*0.625rem);
     margin-left: auto;
