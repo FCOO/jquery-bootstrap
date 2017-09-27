@@ -23,7 +23,7 @@
     width: 15%;
     position:fixed;
     top:0;
-    display: flex;
+
     
 }
 .type1 { height: 100%; left:0 }
@@ -33,7 +33,10 @@
     box-sizing:border-box;
     border: 2px solid blue;
     width: 50%;
-    height: 50%;
+    height: auto;
+    min-height: 0;
+    max-height: calc(100% - 20px);
+    overflow: scroll;
 }
     </style>
 </head>
@@ -65,6 +68,20 @@
         window.addEventListener('orientationchange', resize, false );
 
         resize();
+var i = 0;
+$('.inner').on('click', function(){
+    $(this).append(i+'<br>');
+    i++;
+});
+
+
+
+
+
+
+
+
+
 
         window.bsIsTouch = false;
         window.bsIsTouch = (window.location.search =='?touch');
