@@ -47,14 +47,14 @@
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
-    Due to an intential design in Safari it is not possible to 
+    Due to an intended design in Safari it is not possible to 
     use style a la max-height: calc(100vh - 20px) is not working
     as expected/needed
     Instead a resize-event is added to update the max-height of
     elements with the current value of window.innerHeight
-
-    
     **********************************************************/
+
+
 /* REMOVED
     function default_getContentHeight( $container ){
         return 0;

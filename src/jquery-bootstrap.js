@@ -8,9 +8,36 @@
 
 ****************************************************************************/
 
-(function (/*$, window/*, document, undefined*/) {
+(function ($, window/*, document, undefined*/) {
 	"use strict";
 
+    /**********************************************************
+    BLUR ISSUES ON SAFARI
+    Due to an intended design in Safari a element only lose focus
+    if another element get focus. Thatr means that onBlur isn't fired
+    if the user tap or click on the body
+    This is in oppersition to all other browser
+    Therefore a fix is created
+    **********************************************************/
+    
+	$(function() { 
+
+        $('body').on('click', function( event ){
+//console.log(event.toElement, document.activeElement);
+$('body').css('background-color', document.activeElement ? 'green' : 'red' );
+           
+        });
+	
+	}); 
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /*
     
     Almost all elements comes in two sizes: normal and small set by options.small: false/true
@@ -330,7 +357,6 @@
 
 
     }); //$.fn.extend
-
 
 
 	/******************************************
