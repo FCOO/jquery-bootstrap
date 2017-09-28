@@ -23,8 +23,29 @@
 	$(function() { 
 
         $('body').on('click', function( event ){
-//console.log(event.toElement, document.activeElement);
-$('body').css('background-color', document.activeElement ? 'green' : 'red' );
+
+            var elem = event.toElement, //currentTarget, //event.target,
+                activeClicked = false;
+            while (elem){
+                if (elem == document.activeElement){
+                    elem = null;
+                    activeClicked = true;                    
+                }
+                else                
+                    elem = elem.parentElement;
+            }
+
+var bgcolor = 'red';
+if (document.activeElement === null)
+    bgcolor = 'yellow';
+else
+    if (activeClicked)
+        bgcolor = 'green';
+
+
+
+console.log(event);//elem, document.activeElement ,  event.target);//.toElement, document.activeElement);
+$('body').css('background-color', bgcolor);
            
         });
 	
