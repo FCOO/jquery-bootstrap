@@ -21,8 +21,18 @@
     **********************************************************/
     
 	$(function() { 
+        var $body = $('body');
+        var $box = $('<div></div>').appendTo( $body );
+        $body.on('click', function( event ){
 
-        $('body').on('click', function( event ){
+var focused = document.activeElement;
+if (!focused || focused == document.body)
+    focused = null;
+else if (document.querySelector)
+    focused = document.querySelector(":focus");
+
+$box.append((focused ? focused.tagName : 'NULL')+ '<br>');
+console.log(focused);
 
             var elem = event.toElement, //currentTarget, //event.target,
                 activeClicked = false;
@@ -36,7 +46,7 @@
             }
 
 var bgcolor = 'pink';
-if (document.activeElement === null)
+if (!document.activeElement)
     bgcolor = 'yellow';
 else
     if (activeClicked)
@@ -44,7 +54,7 @@ else
 
 
 
-console.log(event);//elem, document.activeElement ,  event.target);//.toElement, document.activeElement);
+//console.log(event);//elem, document.activeElement ,  event.target);//.toElement, document.activeElement);
 $('body').css('background-color', bgcolor);
            
         });
