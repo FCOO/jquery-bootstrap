@@ -6202,6 +6202,61 @@ POPOVER
   .popover.popover-sm .popover-footer:empty {
     display: none; }
 
+/************************************************************
+HEADER
+
+Style for header text and icons
+************************************************************/
+/****************************************************
+Icons for modal header inside a container
+<i class="header-icon header-icon-XX [hidden][disabled]"/>
+****************************************************/
+.header-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35em;
+  margin-left: auto;
+  margin-right: -0.125rem; }
+  .header-icon-container.header-icon-container-sm {
+    font-size: 1.1em; }
+  .header-icon-container .header-icon {
+    font-family: 'modal-header-icons' !important;
+    speak: none;
+    font-style: normal;
+    font-size: inherit;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    cursor: default;
+    margin: 0;
+    padding: 0.125rem; }
+    .header-icon-container .header-icon:not(.disabled):hover:focus, .header-icon-container .header-icon:not(.disabled):hover:hover {
+      color: #000;
+      text-decoration: none;
+      opacity: .75; }
+    .header-icon-container .header-icon:not(.disabled):hover:active {
+      opacity: .9; }
+    .header-icon-container .header-icon.header-icon-extend:before {
+      content: '\ea41'; }
+    .header-icon-container .header-icon.header-icon-diminish:before {
+      content: '\ea43'; }
+    .header-icon-container .header-icon.header-icon-close:before {
+      content: '\ed65'; }
+    .header-icon-container .header-icon.header-icon-close:hover:before {
+      content: "\ed66"; }
+    .header-icon-container .header-icon.header-icon-close:hover:focus, .header-icon-container .header-icon.header-icon-close:hover:hover {
+      color: #dc3545;
+      opacity: 1; }
+    .header-icon-container .header-icon.header-icon-close:hover:active {
+      color: #c82333; }
+
 /**************************************************
 CHECKBOX
 
@@ -6689,56 +6744,6 @@ If the height (and width) of the content is variable (eq. accordion) the class
     height: As default but with fixed height for small devices to prevent rapidly change of height
 
 ************************************************************/
-/****************************************************
-Icons for modal header inside a container
-<i class="modal-header-icon modal-header-icon-XX [first-icon] [hidden][disabled]"/>
-****************************************************/
-.modal-header-icon-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.35em;
-  margin-left: auto;
-  margin-right: -0.125rem; }
-  .modal-header-icon-container.modal-header-icon-container-sm {
-    font-size: 1.1em; }
-  .modal-header-icon-container .modal-icon {
-    font-family: 'modal-header-icons' !important;
-    speak: none;
-    font-style: normal;
-    font-size: inherit;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    opacity: .5;
-    cursor: default;
-    margin: 0;
-    padding: 0.125rem; }
-    .modal-header-icon-container .modal-icon:not(.disabled):hover:focus, .modal-header-icon-container .modal-icon:not(.disabled):hover:hover {
-      color: #000;
-      text-decoration: none;
-      opacity: .75; }
-    .modal-header-icon-container .modal-icon:not(.disabled):hover:active {
-      opacity: .9; }
-    .modal-header-icon-container .modal-icon.modal-icon-extend:before {
-      content: '\ea41'; }
-    .modal-header-icon-container .modal-icon.modal-icon-diminish:before {
-      content: '\ea43'; }
-    .modal-header-icon-container .modal-icon.modal-icon-close:before {
-      content: '\ed65'; }
-    .modal-header-icon-container .modal-icon.modal-icon-close:hover:before {
-      content: "\ed66"; }
-    .modal-header-icon-container .modal-icon.modal-icon-close:hover:focus, .modal-header-icon-container .modal-icon.modal-icon-close:hover:hover {
-      color: #dc3545;
-      opacity: 1; }
-    .modal-header-icon-container .modal-icon.modal-icon-close:hover:active {
-      color: #c82333; }
-
 body.modal-open .modal {
   overflow-x: hidden;
   overflow-y: hidden;

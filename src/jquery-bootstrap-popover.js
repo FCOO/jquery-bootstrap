@@ -12,31 +12,19 @@
 	"use strict";
 
     /**********************************************************
-    BLUR ISSUES ON SAFARI
-    Due to an intended design in Safari a element only lose focus
-    if another element get focus. Thatr means that onBlur isn't fired
-    if the user tap or click on the body
-    This is in oppersition to all other browser
-    Therefore a fix is created
+    To sequre that all popovers are closed when the user click or
+    tap outside the popover the following event are added
     **********************************************************/
-    var popoverClassName = 'davs';
+    var popoverClassName = 'hasPopover';
 
-	$(function() { 
-        var $body = $('body');
-
-//	    $body.on("touchstart", function( event ){
-	    $body.on("mousedown", function( event ){
-			$('.'+popoverClassName).each(function () {
-                var $this = $(this);
-				// hide any open popover when the anywhere else in the body is clicked
-				if (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0) {
-//console.log('close', $this);
-					$this.popover('hide');
-				}
-			});
-		});
-	}); 
-
+    $('body').on("touchstart mousedown", function( event ){
+        $('.'+popoverClassName).each(function () {
+            var $this = $(this);
+            // hide any open popover when the anywhere else in the body is clicked
+            if (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0)
+                $this.popover('hide');
+        });
+    });
 
     /***********************************************************
 	Extend the $.fn.popover.Constructor.prototype.setContent to
@@ -62,7 +50,7 @@
     /**********************************************************
     bsPopover( options ) - create a Bootstrap-popover
     options
-        header      : {icon, text, link, title} or [] of {icon, text, link, title}
+        header      : See jquery-bootstrap-header.js
         close       : [Boolean] - show close cross in header
         trigger     : [String] 'click'	How popover is triggered - click | hover | focus | manual
         vertical    : [Boolean]
@@ -78,20 +66,17 @@
             $header;
 
         //Add header (if any)
-        if (options.header){
+        if (options.header || options.close){
+            options.icons = options.icons || {};
+            options.headerClassName = 'popover-header-content';
+            if (options.close)
+                options.icons.close = { 
+                    onClick: function(){ $this.popover('hide'); } 
+                };
+
             $header =
                 $('<div/>')
-                    .addClass('popover-header-content')
-                    ._bsAddHtml( options.header );
-
-            if (options.close)
-                $header
-                    .append(
-                        $('<i class="fa modal-close"/>')
-                            .on('click', function(){
-                                $this.popover('hide');
-                            })
-                    );
+                    ._bsHeaderAndIcons( options );
         }
 
         var popoverOptions = {
@@ -120,9 +105,6 @@
 
             $this.addClass( popoverClassName );
 
-//TEST            if (popoverOptions.trigger == 'click')
-//TEST                $this.on('blur', popover_onBlur );
-
             //This event fires immediately when the show instance method is called.
             $this.on('show.bs.popover', popover_onShow );
 
@@ -144,26 +126,12 @@
         });
     };
 
-    function popover_onBlur(e){
-        //If the focus is shifted to a element inside the popover => shift focus back to the element ELSE hide the popover
-        if ( this.skipNextBlur || ( !!this._$popover_element &&
-                                    !!e.relatedTarget &&
-                                    $.contains( this._$popover_element[0], e.relatedTarget )
-                                  )
-            )
-            this.focus();
-        else
-            $(this).popover('hide');
-        this.skipNextBlur = false;
-    }
-
     function popover_onShow(){
     }
 
     function popover_onShown(){
         //Find the popover-element. It has id == aria-describedby
         var $this = $(this),
-            _this = this,
             popoverId = $this.attr('aria-describedby'),
             options = $this.data('popover_options');
 
@@ -172,11 +140,6 @@
 
             //Translate content
             this._$popover_element.localize();
-
-            //Prevent mousedown on header to close popover
-            this._$popover_element.on('mousedown.bs.popover', function(){
-                _this.skipNextBlur = true;
-            });
 
             //Close the popup when anything is clicked
             if (options.closeOnClick){
@@ -234,19 +197,5 @@
             //Update owner html to be equal to $item
             this.html( $item.html() );
     }
-
-
-
-
-	/******************************************
-	Initialize/ready
-	*******************************************/
-	$(function() {
-
-
-	});
-	//******************************************
-
-
 
 }(jQuery, this, document));

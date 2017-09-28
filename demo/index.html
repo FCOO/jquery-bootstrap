@@ -20,18 +20,17 @@
         body {
             width: 100%; 
             height: 100%; 
-width: -webkit-calc(100% - 0px);
-height: -webkit-calc(100% - 0px);
+            width: -webkit-calc(100% - 0px);
+            height: -webkit-calc(100% - 0px);
             margin: 0; 
             padding: 0; 
-            overflow: auto; //or hidden
-background: blue; 
+            overflow: hidden; 
 position: fixed;
         }
     </style>
 </head>
 
-<body style="background-color: lightgreen">
+<body>
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
@@ -43,6 +42,7 @@ position: fixed;
 	<script src="../src/jquery-bootstrap-button.js"></script>
 	<script src="../src/jquery-bootstrap-accordion.js"></script>
     <script src="../src/jquery-bootstrap-popover.js"></script>
+    <script src="../src/jquery-bootstrap-header.js"></script>
 
 	<script>
 
@@ -99,7 +99,7 @@ position: fixed;
             }
         }).appendTo( $body );
 
-        $('<br>').appendTo( $body );
+        $body.append( '&nbsp;' );
 
         $.bsButton({
             text: {da:'Klik for at skifte sprog', en:'Click to change language'},
@@ -127,7 +127,7 @@ position: fixed;
             ]
         });
 
-
+/*
         header('Button groups');
         $.bsButtonGroup({
             vertical: false, 
@@ -162,7 +162,7 @@ position: fixed;
             ]
         }).appendTo( $body );
 
-
+*/
         header('SelectList & Selectbox (not fully working)');
         var selectItems = [
                 {id: 'slow',   icon: 'fa-bicycle'  , text:{da:'Meget langsomt___________________________', en: 'Slow'} },
@@ -244,6 +244,7 @@ position: fixed;
                 placement: "right",
                 small: !i,
                 header: {icon:'fa-home', text:titles[i]},
+                close: i,
                 footer: {icon:'fa-home', text:titles[i]},
                 buttons: [
                     {id:'slow',   _icon: 'fa-bicycle',   text:'X'},
@@ -302,6 +303,10 @@ position: fixed;
                 vertical: true,
                 syncHtml: true,
                 closeOnClick: true,
+//Test of hover
+//trigger  :  'hover', // or 'focus' ORIGINAL='click'
+//delay    : { show: 1000, hide: 1000 },
+
                 placement: 'left',
                 selectedId: 'm',
                 buttons: [
@@ -535,7 +540,7 @@ position: fixed;
             .on('click', function(){ openModal(0); });
 
 
-//* Test af modal-inline        
+/* Test af modal-inline        
         $('<div id="modal-inline" style="margin-left: 300px; _border:1px solid red; max-width:200px; max-height:200px"></div>')
             .appendTo( $body )
 
@@ -572,16 +577,7 @@ closeButton: true,
                         ]
 
                 });
-// */
-
-        
-        $.bsButton({
-            small: true,
-            text: {da:'Menu', en:'Menu'}, 
-            icon: 'fa-comment-o'
-        })
-        .appendTo( $body );
-
+ */
 
     </script>
 </body>

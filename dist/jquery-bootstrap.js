@@ -27,49 +27,6 @@ TODO:
     }
 
     /**********************************************************
-    accordion_getContentHeight( $container )
-    Calculate the max height posible height of the accordion
-    **********************************************************/
-/*
-    function accordion_getContentHeight( $container ){
-        var $accordion = $container.find('.accordion').first(),
-            $cards     = $accordion.children('.card');
-        return getCardsMaxSize( $cards );
-    }
-
-    function getCardsMaxSize( $cards ){
-        var result = 0,
-            cardSizes = [];
-
-        $cards.each( function( index, card ){
-            //Get min and max size of eash card and push them to cardSizes
-            var $card      = $(card),
-                $collapse  = $card.find('.collapse').first(),
-                $accordion = $collapse.find('.accordion').first(),
-                $cards     = $accordion.children('.card');
-            cardSizes.push({
-                min: $card.outerHeight() - $collapse.outerHeight(), //Height when closed
-                max: $card.outerHeight() - ($accordion.length ? $accordion.outerHeight() : 0) + //Height of own header and padding around children 
-                       getCardsMaxSize( $cards ) //+ 
-            });
-        });
-
-        if (cardSizes.length){
-            cardSizes.sort( function( s1, s2) { return s2.max - s1.max; });
-            result = cardSizes[0].max;
-            for (var i=1; i<cardSizes.length; i++ )
-                result += cardSizes[i].min;
-        }
-        return result;
-    }        
-
-    function accordion_postGetContentHeight( $container ){
-        //Collaps all cards
-        $container.find('.REMOVE_SHOW').removeClass('show REMOVE_SHOW');
-    }
-*/
-
-    /**********************************************************
     bsAccordion( options ) - create a Bootstrap-accordion
 
     <div id="accordion" class="accordion accordion-sm" role="tablist" aria-multiselectable="true">
@@ -99,10 +56,8 @@ TODO:
 
     function bsAccordion_asModal( options ){
         return $.bsModal( $.extend( { 
-                              flex                : true,  
-                              content             : this,
-                              //REMOVED getContentHeight    : accordion_getContentHeight,
-                              //REMOVED postGetContentHeight: accordion_postGetContentHeight
+                              flex   : true,  
+                              content: this,
                           }, options) 
                );
     }
@@ -210,7 +165,6 @@ TODO:
         return $result;
     };
 
-
     /**********************************************************
     bsModalAccordion
     Create a modal box with accordion content
@@ -218,23 +172,11 @@ TODO:
         titleIcon
         header
         children
-
     **********************************************************/
     $.bsModalAccordion = function( options ){
         var $accordion = $.bsAccordion({ children: options.children });
         return $accordion.asModal( options );
     };
-
-	/******************************************
-	Initialize/ready 
-	*******************************************/
-	$(function() { 
-
-	
-	}); 
-	//******************************************
-
-
 
 }(jQuery, this, document));
 ;
@@ -271,7 +213,7 @@ TODO:
             });
 
 
-        var result = $('<'+ options.tagName + '/>');
+        var result = $('<'+ options.tagName + ' tabindex="0"/>');
 
         //Adding href that don't scroll to top to allow anchor to get focus
         if (options.tagName == 'a')
@@ -498,6 +440,79 @@ TODO:
 
 ;
 /****************************************************************************
+	jquery-bootstrap-header.js,
+
+	(c) 2017, FCOO
+
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+****************************************************************************/
+
+(function ($ /*, window, document, undefined*/) {
+	"use strict";
+
+    /******************************************************
+    _bsHeaderAndIcons(options)
+    Create the text and icon content of a header inside this
+    options: {
+        headerClassName: [string]
+        icons: {
+            close   : { className: [string], altEvents: [string], onClick: [function] },
+            extend  : { className: [string], altEvents: [string], onClick: [function] },
+            diminish: { className: [string], altEvents: [string], onClick: [function] },
+        }
+    }
+
+    ******************************************************/
+    $.fn._bsHeaderAndIcons = function(options){
+        var $this = this;
+
+        options = $.extend( true, {
+            headerClassName: '',    
+            icons          : {}
+            
+        }, options );
+
+        this
+            .addClass( options.headerClassName )
+            ._bsAddHtml( options.header || $.EMPTY_TEXT );
+
+        //Add icons (if any)
+        if ( !$.isEmptyObject(options.icons) ) {
+            //Container for icons
+            var $iconContainer =
+                    $('<div/>')
+                        ._bsAddBaseClassAndSize( {
+                            baseClass   :'header-icon-container',
+                            useTouchSize: true
+                        })
+                        .appendTo( this );
+
+            //Add icons
+            $.each( ['diminish', 'extend', 'close'], function( index, id ){
+                var iconOptions = options.icons[id];
+                if (iconOptions && iconOptions.onClick){
+                    $('<i/>')
+                        .addClass('header-icon header-icon-' + id )
+                        .addClass( iconOptions.className || '')
+                        .on('click', iconOptions.onClick)
+                        .attr( iconOptions.attr || {})
+                        .data( iconOptions.data || {})
+                        .appendTo($iconContainer);
+
+                    //Add alternative (swipe) event
+                    if (iconOptions.altEvents)
+                        $this.on( iconOptions.altEvents, iconOptions.onClick );
+                }
+            });
+        }
+        return this;
+    };
+
+}(jQuery, this, document));
+;
+/****************************************************************************
 	jquery-bootstrap-modal.js,
 
 	(c) 2017, FCOO
@@ -539,35 +554,20 @@ TODO:
         buttons = [];
         closeText
 
-
-        REMOVED - getContentHeight: function( $container ) returns the max height of the content
-
     **********************************************************/
-
-    /**********************************************************
-    MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
-    Due to an intential design in Safari it is not possible to 
-    use style a la max-height: calc(100vh - 20px) is not working
-    as expected/needed
-    Instead a resize-event is added to update the max-height of
-    elements with the current value of window.innerHeight
-
-    
-    **********************************************************/
-/* REMOVED
-    function default_getContentHeight( $container ){
-        return 0;
-    }
-    function default_postGetContentHeight( $container ){
-    }
-*/
-
     var modalId = 0,
         modalStackClassName = 'fv-modal-stack', //class-name for modals when added to the stack
         openModalDataId = 'bs_open_modals',     //Merthods to allow multi modal-windows
         modalVerticalMargin = 20;               //Top and bottom margin for modal windows      
 
-    //******************************************************
+    /**********************************************************
+    MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
+    Due to an intended design in Safari it is not possible to 
+    use style a la max-height: calc(100vh - 20px) is not working
+    as expected/needed
+    Instead a resize-event is added to update the max-height of
+    elements with the current value of window.innerHeight
+    **********************************************************/
     function adjustModalMaxHeight( $modal ){
         $modal = $modal || $('.modal');
         var $modalDialog  = $modal.find('.modal-dialog'),
@@ -578,8 +578,6 @@ TODO:
         $modalContent.css('max-height', (windowInnerHeight - 2*modalVerticalMargin)+'px');
 
     }
-    
-   
     window.addEventListener('resize',            function(){ adjustModalMaxHeight(); }, false );
     window.addEventListener('orientationchange', function(){ adjustModalMaxHeight(); }, false );
     
@@ -719,11 +717,8 @@ TODO:
 
         //Add content
         if ($.isFunction( options.content )){
-            var contentFunc = $.proxy( options.content, options.contentContext );
-
-            //Both support functions creating content on container and  functions returning content
-//            var content = options.content( $modalContent );
-            var content = contentFunc( $modalContent );
+            var contentFunc = $.proxy( options.content, options.contentContext ),
+                content = contentFunc( $modalContent );
             if (content)
                 $modalContent.append( content );
         }
@@ -795,6 +790,7 @@ TODO:
             modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer );
         
         options = $.extend( true, {
+            headerClassName: 'modal-header',
             //Buttons
             buttons    : [],
             closeButton: true,
@@ -808,7 +804,7 @@ TODO:
             }
         }, options );
 
-        //Add close-botton. Avoid by setting options.closeButton  = false
+        //Add close-botton. Avoid by setting options.closeButton = false
         if (options.closeButton)
             options.buttons.push({
                 text        : options.closeText,
@@ -824,18 +820,11 @@ TODO:
             options.extended.scroll = options.scroll;            
         }
         
-        //Determinate if there are any icons
-        var inclIcons = false;
-        $.each( options.icons, function( id, iconOptions ){
-            inclIcons = inclIcons || (iconOptions !== null);
-        });
-
         //Append header
-        if (!options.noHeader &&  (options.header || inclIcons)){
+        if (!options.noHeader &&  (options.header || !$.isEmptyObject(options.icons) ) ){
             var $modalHeader = this.bsModal.$header =
                     $('<div/>')
-                        .addClass('modal-header')
-                        ._bsAddHtml( options.header || $.EMPTY_TEXT )
+                        ._bsHeaderAndIcons( options )
                         .appendTo( $modalContainer );
 
             //Add dbl-click on header to change to/from extended
@@ -843,35 +832,6 @@ TODO:
                 $modalHeader
                     .addClass('clickable')
                     .on('doubletap', modalToggle );
-
-            if (inclIcons){
-                //Container for icons
-                var $iconContainer =
-                        $('<div/>')
-                            ._bsAddBaseClassAndSize( {
-                                baseClass   :'modal-header-icon-container',
-                                useTouchSize: true
-                            })
-                            .appendTo( $modalHeader );
-
-                //Add icons
-                $.each( ['diminish', 'extend', 'close'], function( index, id ){
-                    var iconOptions = options.icons[id];
-                    if (iconOptions && iconOptions.onClick){
-                        $('<i/>')
-                            .addClass('modal-icon modal-icon-' + id )
-                            .addClass( iconOptions.className || '')
-                            .on('click', iconOptions.onClick)
-                            .attr( iconOptions.attr || {})
-                            .data( iconOptions.data || {})
-                            .appendTo($iconContainer);
-
-                        //Add alternative (swipe) event
-                        if (iconOptions.altEvents)
-                            $modalHeader.on( iconOptions.altEvents, iconOptions.onClick );
-                    }
-                });
-            }
         }
         
         //Create normal content
@@ -925,39 +885,6 @@ TODO:
 
             $modalButtons.push( $button );
         });
-
-
-/* REMOVED FOR NOW BUT PERHAPS NEEDED LATER
-        //Using timeout to wait for the browser to update DOM and get max height of the content
-        var count = 20;
-        function testHeight(){
-            var height = $modalBodyContent.height();
-            if (!height){
-                count--;
-                if (count){
-                    setTimeout( testHeight, 50 );
-                    return;
-                }
-            }
-
-            //Get max height of contents
-            var maxContainerHeight = options.getContentHeight( $modalBodyContent ) +
-                                     parseInt( $modalBodyContent.css('padding-top') ) +
-                                     parseInt( $modalBodyContent.css('padding-bottom') );
-
-
-            //Call post-function
-            options.postGetContentHeight( $modalBodyContent );
-        }
-
-        setTimeout( testHeight, 50);
-*/
-//       options.postGetContentHeight( $modalBodyContent ); //Only when testHeight isn't used
-
-
-
-
-
         return this;
     };
 
@@ -990,11 +917,7 @@ TODO:
                 content    : '',
 
                 //Modal-options
-                show       : true,
-
-                //REMOVED getContentHeight    : default_getContentHeight,
-                //REMOVED postGetContentHeight: default_postGetContentHeight
-
+                show       : true
             });
 
 
@@ -1002,7 +925,6 @@ TODO:
         $result =
             $('<div/>')
                 ._bsAddBaseClassAndSize( options )
-//                .css('margin', 
                 .attr({
                     'id'         : id,
                     'tabindex'   : -1,
@@ -1048,21 +970,6 @@ TODO:
         return $result;
     };
 
-
-    /**********************************************************
-
-
-	/******************************************
-	Initialize/ready
-	*******************************************/
-	$(function() {
-
-
-	});
-	//******************************************
-
-
-
 }(jQuery, this, document));
 ;
 /****************************************************************************
@@ -1078,14 +985,29 @@ TODO:
 (function (/*$, window/*, document, undefined*/) {
 	"use strict";
 
+    /**********************************************************
+    To sequre that all popovers are closed when the user click or
+    tap outside the popover the following event are added
+    **********************************************************/
+    var popoverClassName = 'hasPopover';
+
+    $('body').on("touchstart mousedown", function( event ){
+        $('.'+popoverClassName).each(function () {
+            var $this = $(this);
+            // hide any open popover when the anywhere else in the body is clicked
+            if (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0)
+                $this.popover('hide');
+        });
+    });
+
+    /***********************************************************
+	Extend the $.fn.popover.Constructor.prototype.setContent to
+    also construct footer
+	***********************************************************/
     var Selector = {
         FOOTER: '.popover-footer'
     };
 
-	/***********************************************************
-	Extend the $.fn.popover.Constructor.prototype.setContent to
-    also construct footer
-	***********************************************************/
     $.fn.popover.Constructor.prototype.setContent = function (setContent) {
 		return function () {
 
@@ -1102,7 +1024,7 @@ TODO:
     /**********************************************************
     bsPopover( options ) - create a Bootstrap-popover
     options
-        header      : {icon, text, link, title} or [] of {icon, text, link, title}
+        header      : See jquery-bootstrap-header.js
         close       : [Boolean] - show close cross in header
         trigger     : [String] 'click'	How popover is triggered - click | hover | focus | manual
         vertical    : [Boolean]
@@ -1118,20 +1040,17 @@ TODO:
             $header;
 
         //Add header (if any)
-        if (options.header){
+        if (options.header || options.close){
+            options.icons = options.icons || {};
+            options.headerClassName = 'popover-header-content';
+            if (options.close)
+                options.icons.close = { 
+                    onClick: function(){ $this.popover('hide'); } 
+                };
+
             $header =
                 $('<div/>')
-                    .addClass('popover-header-content')
-                    ._bsAddHtml( options.header );
-
-            if (options.close)
-                $header
-                    .append(
-                        $('<i class="fa modal-close"/>')
-                            .on('click', function(){
-                                $this.popover('hide');
-                            })
-                    );
+                    ._bsHeaderAndIcons( options );
         }
 
         var popoverOptions = {
@@ -1140,6 +1059,7 @@ TODO:
                 toggle   :  options.toggle || 'popover',
                 html     :  true,
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
+                container:  'body',
                 template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + '" role="tooltip">'+
                                 '<div class="popover-header"></div>' +
                                 '<div class="popover-body"></div>' +
@@ -1151,12 +1071,13 @@ TODO:
                 content  : options.content,
                 footer   : options.footer ? $('<div/>')._bsAddHtml( options.footer ) : ''
             };
+        if (options.delay)
+            popoverOptions.delay = options.delay;
 
         return this.each(function() {
             var $this = $(this);
 
-            if (popoverOptions.trigger == 'click')
-                $this.on('blur', popover_onBlur );
+            $this.addClass( popoverClassName );
 
             //This event fires immediately when the show instance method is called.
             $this.on('show.bs.popover', popover_onShow );
@@ -1179,26 +1100,12 @@ TODO:
         });
     };
 
-    function popover_onBlur(e){
-        //If the focus is shifted to a element inside the popover => shift focus back to the element ELSE hide the popover
-        if ( this.skipNextBlur || ( !!this._$popover_element &&
-                                    !!e.relatedTarget &&
-                                    $.contains( this._$popover_element[0], e.relatedTarget )
-                                  )
-            )
-            this.focus();
-        else
-            $(this).popover('hide');
-        this.skipNextBlur = false;
-    }
-
     function popover_onShow(){
     }
 
     function popover_onShown(){
         //Find the popover-element. It has id == aria-describedby
         var $this = $(this),
-            _this = this,
             popoverId = $this.attr('aria-describedby'),
             options = $this.data('popover_options');
 
@@ -1207,11 +1114,6 @@ TODO:
 
             //Translate content
             this._$popover_element.localize();
-
-            //Prevent mousedown on header to close popover
-            this._$popover_element.on('mousedown.bs.popover', function(){
-                _this.skipNextBlur = true;
-            });
 
             //Close the popup when anything is clicked
             if (options.closeOnClick){
@@ -1269,20 +1171,6 @@ TODO:
             //Update owner html to be equal to $item
             this.html( $item.html() );
     }
-
-
-
-
-	/******************************************
-	Initialize/ready
-	*******************************************/
-	$(function() {
-
-
-	});
-	//******************************************
-
-
 
 }(jQuery, this, document));
 ;
@@ -1747,7 +1635,7 @@ Add sort-functions + save col-index for sorted column
 
 ****************************************************************************/
 
-(function (/*$, window/*, document, undefined*/) {
+(function ($, window/*, document, undefined*/) {
 	"use strict";
 
     /*
@@ -2069,7 +1957,6 @@ Add sort-functions + save col-index for sorted column
 
 
     }); //$.fn.extend
-
 
 
 	/******************************************

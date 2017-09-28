@@ -27,49 +27,6 @@ TODO:
     }
 
     /**********************************************************
-    accordion_getContentHeight( $container )
-    Calculate the max height posible height of the accordion
-    **********************************************************/
-/*
-    function accordion_getContentHeight( $container ){
-        var $accordion = $container.find('.accordion').first(),
-            $cards     = $accordion.children('.card');
-        return getCardsMaxSize( $cards );
-    }
-
-    function getCardsMaxSize( $cards ){
-        var result = 0,
-            cardSizes = [];
-
-        $cards.each( function( index, card ){
-            //Get min and max size of eash card and push them to cardSizes
-            var $card      = $(card),
-                $collapse  = $card.find('.collapse').first(),
-                $accordion = $collapse.find('.accordion').first(),
-                $cards     = $accordion.children('.card');
-            cardSizes.push({
-                min: $card.outerHeight() - $collapse.outerHeight(), //Height when closed
-                max: $card.outerHeight() - ($accordion.length ? $accordion.outerHeight() : 0) + //Height of own header and padding around children 
-                       getCardsMaxSize( $cards ) //+ 
-            });
-        });
-
-        if (cardSizes.length){
-            cardSizes.sort( function( s1, s2) { return s2.max - s1.max; });
-            result = cardSizes[0].max;
-            for (var i=1; i<cardSizes.length; i++ )
-                result += cardSizes[i].min;
-        }
-        return result;
-    }        
-
-    function accordion_postGetContentHeight( $container ){
-        //Collaps all cards
-        $container.find('.REMOVE_SHOW').removeClass('show REMOVE_SHOW');
-    }
-*/
-
-    /**********************************************************
     bsAccordion( options ) - create a Bootstrap-accordion
 
     <div id="accordion" class="accordion accordion-sm" role="tablist" aria-multiselectable="true">
@@ -99,10 +56,8 @@ TODO:
 
     function bsAccordion_asModal( options ){
         return $.bsModal( $.extend( { 
-                              flex                : true,  
-                              content             : this,
-                              //REMOVED getContentHeight    : accordion_getContentHeight,
-                              //REMOVED postGetContentHeight: accordion_postGetContentHeight
+                              flex   : true,  
+                              content: this,
                           }, options) 
                );
     }
@@ -210,7 +165,6 @@ TODO:
         return $result;
     };
 
-
     /**********************************************************
     bsModalAccordion
     Create a modal box with accordion content
@@ -218,22 +172,10 @@ TODO:
         titleIcon
         header
         children
-
     **********************************************************/
     $.bsModalAccordion = function( options ){
         var $accordion = $.bsAccordion({ children: options.children });
         return $accordion.asModal( options );
     };
-
-	/******************************************
-	Initialize/ready 
-	*******************************************/
-	$(function() { 
-
-	
-	}); 
-	//******************************************
-
-
 
 }(jQuery, this, document));

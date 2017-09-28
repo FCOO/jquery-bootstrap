@@ -40,10 +40,11 @@
         buttons = [];
         closeText
 
-
-        REMOVED - getContentHeight: function( $container ) returns the max height of the content
-
     **********************************************************/
+    var modalId = 0,
+        modalStackClassName = 'fv-modal-stack', //class-name for modals when added to the stack
+        openModalDataId = 'bs_open_modals',     //Merthods to allow multi modal-windows
+        modalVerticalMargin = 20;               //Top and bottom margin for modal windows      
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
@@ -53,22 +54,6 @@
     Instead a resize-event is added to update the max-height of
     elements with the current value of window.innerHeight
     **********************************************************/
-
-
-/* REMOVED
-    function default_getContentHeight( $container ){
-        return 0;
-    }
-    function default_postGetContentHeight( $container ){
-    }
-*/
-
-    var modalId = 0,
-        modalStackClassName = 'fv-modal-stack', //class-name for modals when added to the stack
-        openModalDataId = 'bs_open_modals',     //Merthods to allow multi modal-windows
-        modalVerticalMargin = 20;               //Top and bottom margin for modal windows      
-
-    //******************************************************
     function adjustModalMaxHeight( $modal ){
         $modal = $modal || $('.modal');
         var $modalDialog  = $modal.find('.modal-dialog'),
@@ -79,8 +64,6 @@
         $modalContent.css('max-height', (windowInnerHeight - 2*modalVerticalMargin)+'px');
 
     }
-    
-   
     window.addEventListener('resize',            function(){ adjustModalMaxHeight(); }, false );
     window.addEventListener('orientationchange', function(){ adjustModalMaxHeight(); }, false );
     
@@ -220,11 +203,8 @@
 
         //Add content
         if ($.isFunction( options.content )){
-            var contentFunc = $.proxy( options.content, options.contentContext );
-
-            //Both support functions creating content on container and  functions returning content
-//            var content = options.content( $modalContent );
-            var content = contentFunc( $modalContent );
+            var contentFunc = $.proxy( options.content, options.contentContext ),
+                content = contentFunc( $modalContent );
             if (content)
                 $modalContent.append( content );
         }
@@ -296,6 +276,7 @@
             modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer );
         
         options = $.extend( true, {
+            headerClassName: 'modal-header',
             //Buttons
             buttons    : [],
             closeButton: true,
@@ -309,7 +290,7 @@
             }
         }, options );
 
-        //Add close-botton. Avoid by setting options.closeButton  = false
+        //Add close-botton. Avoid by setting options.closeButton = false
         if (options.closeButton)
             options.buttons.push({
                 text        : options.closeText,
@@ -325,18 +306,11 @@
             options.extended.scroll = options.scroll;            
         }
         
-        //Determinate if there are any icons
-        var inclIcons = false;
-        $.each( options.icons, function( id, iconOptions ){
-            inclIcons = inclIcons || (iconOptions !== null);
-        });
-
         //Append header
-        if (!options.noHeader &&  (options.header || inclIcons)){
+        if (!options.noHeader &&  (options.header || !$.isEmptyObject(options.icons) ) ){
             var $modalHeader = this.bsModal.$header =
                     $('<div/>')
-                        .addClass('modal-header')
-                        ._bsAddHtml( options.header || $.EMPTY_TEXT )
+                        ._bsHeaderAndIcons( options )
                         .appendTo( $modalContainer );
 
             //Add dbl-click on header to change to/from extended
@@ -344,35 +318,6 @@
                 $modalHeader
                     .addClass('clickable')
                     .on('doubletap', modalToggle );
-
-            if (inclIcons){
-                //Container for icons
-                var $iconContainer =
-                        $('<div/>')
-                            ._bsAddBaseClassAndSize( {
-                                baseClass   :'modal-header-icon-container',
-                                useTouchSize: true
-                            })
-                            .appendTo( $modalHeader );
-
-                //Add icons
-                $.each( ['diminish', 'extend', 'close'], function( index, id ){
-                    var iconOptions = options.icons[id];
-                    if (iconOptions && iconOptions.onClick){
-                        $('<i/>')
-                            .addClass('modal-icon modal-icon-' + id )
-                            .addClass( iconOptions.className || '')
-                            .on('click', iconOptions.onClick)
-                            .attr( iconOptions.attr || {})
-                            .data( iconOptions.data || {})
-                            .appendTo($iconContainer);
-
-                        //Add alternative (swipe) event
-                        if (iconOptions.altEvents)
-                            $modalHeader.on( iconOptions.altEvents, iconOptions.onClick );
-                    }
-                });
-            }
         }
         
         //Create normal content
@@ -426,39 +371,6 @@
 
             $modalButtons.push( $button );
         });
-
-
-/* REMOVED FOR NOW BUT PERHAPS NEEDED LATER
-        //Using timeout to wait for the browser to update DOM and get max height of the content
-        var count = 20;
-        function testHeight(){
-            var height = $modalBodyContent.height();
-            if (!height){
-                count--;
-                if (count){
-                    setTimeout( testHeight, 50 );
-                    return;
-                }
-            }
-
-            //Get max height of contents
-            var maxContainerHeight = options.getContentHeight( $modalBodyContent ) +
-                                     parseInt( $modalBodyContent.css('padding-top') ) +
-                                     parseInt( $modalBodyContent.css('padding-bottom') );
-
-
-            //Call post-function
-            options.postGetContentHeight( $modalBodyContent );
-        }
-
-        setTimeout( testHeight, 50);
-*/
-//       options.postGetContentHeight( $modalBodyContent ); //Only when testHeight isn't used
-
-
-
-
-
         return this;
     };
 
@@ -491,11 +403,7 @@
                 content    : '',
 
                 //Modal-options
-                show       : true,
-
-                //REMOVED getContentHeight    : default_getContentHeight,
-                //REMOVED postGetContentHeight: default_postGetContentHeight
-
+                show       : true
             });
 
 
@@ -503,7 +411,6 @@
         $result =
             $('<div/>')
                 ._bsAddBaseClassAndSize( options )
-//                .css('margin', 
                 .attr({
                     'id'         : id,
                     'tabindex'   : -1,
@@ -548,20 +455,5 @@
 
         return $result;
     };
-
-
-    /**********************************************************
-
-
-	/******************************************
-	Initialize/ready
-	*******************************************/
-	$(function() {
-
-
-	});
-	//******************************************
-
-
 
 }(jQuery, this, document));
