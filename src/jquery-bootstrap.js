@@ -35,7 +35,7 @@
                     elem = elem.parentElement;
             }
 
-var bgcolor = 'red';
+var bgcolor = 'pink';
 if (document.activeElement === null)
     bgcolor = 'yellow';
 else
