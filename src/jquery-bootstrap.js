@@ -11,64 +11,6 @@
 (function ($, window/*, document, undefined*/) {
 	"use strict";
 
-    /**********************************************************
-    BLUR ISSUES ON SAFARI
-    Due to an intended design in Safari a element only lose focus
-    if another element get focus. Thatr means that onBlur isn't fired
-    if the user tap or click on the body
-    This is in oppersition to all other browser
-    Therefore a fix is created
-    **********************************************************/
-    
-	$(function() { 
-        var $body = $('body');
-        var $box = $('<div style="background-color:white; border:1px slid red"></div>').appendTo( $body );
-        $body.on('tap', function( event ){
-
-var focused = document.activeElement;
-if (!focused || focused == document.body)
-    focused = null;
-else 
-    focused = $(":focus").length ? $(":focus").get(0) : null;
-
-$box.html((focused ? focused.tagName : 'NULL'));
-console.log(focused);
-
-            var elem = event.toElement, //currentTarget, //event.target,
-                activeClicked = false;
-            while (elem){
-                if (elem == document.activeElement){
-                    elem = null;
-                    activeClicked = true;                    
-                }
-                else                
-                    elem = elem.parentElement;
-            }
-
-var bgcolor = 'pink';
-if (!document.activeElement)
-    bgcolor = 'yellow';
-else
-    if (activeClicked)
-        bgcolor = 'green';
-
-
-
-//console.log(event);//elem, document.activeElement ,  event.target);//.toElement, document.activeElement);
-//$('body').css('background-color', bgcolor);
-           
-        });
-	
-	}); 
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /*
     
     Almost all elements comes in two sizes: normal and small set by options.small: false/true

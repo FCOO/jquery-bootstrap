@@ -11,14 +11,41 @@
 (function (/*$, window/*, document, undefined*/) {
 	"use strict";
 
+    /**********************************************************
+    BLUR ISSUES ON SAFARI
+    Due to an intended design in Safari a element only lose focus
+    if another element get focus. Thatr means that onBlur isn't fired
+    if the user tap or click on the body
+    This is in oppersition to all other browser
+    Therefore a fix is created
+    **********************************************************/
+    var popoverClassName = 'davs';
+
+	$(function() { 
+        var $body = $('body');
+
+//	    $body.on("touchstart", function( event ){
+	    $body.on("mousedown", function( event ){
+			$('.'+popoverClassName).each(function () {
+                var $this = $(this);
+				// hide any open popover when the anywhere else in the body is clicked
+				if (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0) {
+//console.log('close', $this);
+					$this.popover('hide');
+				}
+			});
+		});
+	}); 
+
+
+    /***********************************************************
+	Extend the $.fn.popover.Constructor.prototype.setContent to
+    also construct footer
+	***********************************************************/
     var Selector = {
         FOOTER: '.popover-footer'
     };
 
-	/***********************************************************
-	Extend the $.fn.popover.Constructor.prototype.setContent to
-    also construct footer
-	***********************************************************/
     $.fn.popover.Constructor.prototype.setContent = function (setContent) {
 		return function () {
 
@@ -73,6 +100,7 @@
                 toggle   :  options.toggle || 'popover',
                 html     :  true,
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
+                container:  'body',
                 template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + '" role="tooltip">'+
                                 '<div class="popover-header"></div>' +
                                 '<div class="popover-body"></div>' +
@@ -84,12 +112,16 @@
                 content  : options.content,
                 footer   : options.footer ? $('<div/>')._bsAddHtml( options.footer ) : ''
             };
+        if (options.delay)
+            popoverOptions.delay = options.delay;
 
         return this.each(function() {
             var $this = $(this);
 
-            if (popoverOptions.trigger == 'click')
-                $this.on('blur', popover_onBlur );
+            $this.addClass( popoverClassName );
+
+//TEST            if (popoverOptions.trigger == 'click')
+//TEST                $this.on('blur', popover_onBlur );
 
             //This event fires immediately when the show instance method is called.
             $this.on('show.bs.popover', popover_onShow );
