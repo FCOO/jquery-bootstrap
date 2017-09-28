@@ -55,7 +55,7 @@ else
 
 
 //console.log(event);//elem, document.activeElement ,  event.target);//.toElement, document.activeElement);
-$('body').css('background-color', bgcolor);
+//$('body').css('background-color', bgcolor);
            
         });
 	
