@@ -28,8 +28,8 @@
 var focused = document.activeElement;
 if (!focused || focused == document.body)
     focused = null;
-else if (document.querySelector)
-    focused = document.querySelector(":focus");
+else 
+    focused = $(":focus").length ? $(":focus").get(0) : null;
 
 $box.append((focused ? focused.tagName : 'NULL')+ '<br>');
 console.log(focused);
