@@ -31,7 +31,7 @@
             });
 
 
-        var result = $('<'+ options.tagName + '/>');
+        var result = $('<'+ options.tagName + ' tabindex="0"/>');
 
         //Adding href that don't scroll to top to allow anchor to get focus
         if (options.tagName == 'a')

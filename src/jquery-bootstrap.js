@@ -22,7 +22,7 @@
     
 	$(function() { 
         var $body = $('body');
-        var $box = $('<div></div>').appendTo( $body );
+        var $box = $('<div style="background-color:white; border:1px slid red"></div>').appendTo( $body );
         $body.on('click', function( event ){
 
 var focused = document.activeElement;
@@ -31,7 +31,7 @@ if (!focused || focused == document.body)
 else 
     focused = $(":focus").length ? $(":focus").get(0) : null;
 
-$box.append((focused ? focused.tagName : 'NULL')+ '<br>');
+$box.html((focused ? focused.tagName : 'NULL'));
 console.log(focused);
 
             var elem = event.toElement, //currentTarget, //event.target,
