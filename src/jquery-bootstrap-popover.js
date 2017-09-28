@@ -68,7 +68,7 @@
         }
 
         var popoverOptions = {
-                trigger  :  options.trigger || 'click', //or 'hover' or 'focus' ORIGINAL='click'
+                trigger  :  options.trigger || 'focus', //'click', //or 'hover' or 'focus' ORIGINAL='click'
                 //delay    : { show: 0, hide: 1000 },
                 toggle   :  options.toggle || 'popover',
                 html     :  true,
