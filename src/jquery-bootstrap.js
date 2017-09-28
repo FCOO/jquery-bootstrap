@@ -23,7 +23,7 @@
 	$(function() { 
         var $body = $('body');
         var $box = $('<div style="background-color:white; border:1px slid red"></div>').appendTo( $body );
-        $body.on('click', function( event ){
+        $body.on('tap', function( event ){
 
 var focused = document.activeElement;
 if (!focused || focused == document.body)
