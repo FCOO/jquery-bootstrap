@@ -117,7 +117,15 @@ Headers for modal, popover, popup etc.
 /************************************************************
 color-hover - Background-color and text-color for 'normal' and hover
 ************************************************************/
-@mixin color-hover($color, $bg-color, $hover, $bg){
+@mixin color-hover($color, $bg-color, $hover, $bg, $color-hover: false, $bg-color-hover: false ){
+
+/*
+    @if $color-hover == false
+        $color-hover: darken($color, $darken-hover-percent);
+    
+    @if $bg-color-hover == false
+        $bg-color-hover: darken($bg-color, $darken-hover-percent);
+*/
     @if $color {
         color: $color;
     }
@@ -127,10 +135,10 @@ color-hover - Background-color and text-color for 'normal' and hover
     @if $hover {
         &:hover {
             @if $color {
-                color: darken($color, $darken-hover-percent);
+                color: if( $color-hover, $color-hover, darken($color, $darken-hover-percent) ); //darken($color, $darken-hover-percent);
             }
             @if $bg and $bg-color {
-                background-color: darken($bg-color, $darken-hover-percent);
+                background-color: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) ); //darken($bg-color, $darken-hover-percent);
             }
         }
     }

@@ -110,6 +110,8 @@ position: fixed;
         }).appendTo( $body );
 
         header('Buttons');
+        $.bsButton({text: 'Transparent', icon: 'fa-home', transparent: true}).appendTo( $body );
+
         $.bsButton({text: 'Normal', icon: 'fa-home'}).appendTo( $body );
         $.bsButton({text: 'Primary', icon: 'fa-home', primary: true}).appendTo( $body );
         $.bsButton({text: 'Small', icon: 'fa-home', small:true}).appendTo( $body );

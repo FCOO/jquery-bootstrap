@@ -13,7 +13,6 @@
 	
     var bsButtonClass = 'btn-standard';  //MUST correspond with $btn-style-name in src/_variables.scss
 
-
     /**********************************************************
     bsButton( options ) - create a Bootstrap-button
     Is also used to create list-items for select-lists
@@ -25,7 +24,7 @@
                 tagName     : 'a', //Using <a> instead of <button> to be able to control font-family
                 baseClass   : 'btn',
                 styleClass  : bsButtonClass,
-                class       : options.primary ? 'primary' : '',
+                class       : options.primary ? 'primary' : options.transparent ? 'transparent' : '',
                 useTouchSize: true,
                 addOnClick  : true
             });

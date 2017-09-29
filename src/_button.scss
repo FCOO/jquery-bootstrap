@@ -67,8 +67,36 @@ div.btn, div.list-group-item {
         min-width : 1em;
         text-align: left;
     }
-}
 
+
+    /************************************************************
+    Special version to have transparent button
+    Default is light color on dark background
+    TODO: Add transparent-on-light to have dark color og light background
+    ************************************************************/
+    &.transparent {
+        $transparent-bg-color: rgba(0,0,0,0);
+        $transparent-color   : #fff;
+
+        background-color: $transparent-bg-color;
+
+        @include color-hover(
+            $transparent-color,     //$color
+            $transparent-bg-color,  //$bg-color
+            true,                   //$hover
+            true,                   //$bg
+            darken($transparent-color, $darken-hover-percent), //$color-hover
+            rgba(0,0,0,.1)          //$bg-color-hover
+        );
+
+        &.focus, &:focus {
+            border-color: $control-border-color; //Default border-colro on focus
+        }
+        &:active {
+            background-color: rgba(0,0,0,.2);
+        }
+    }
+}
 
 /************************************************************
 Modernizr-test for elements with class="active" when selected
