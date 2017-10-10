@@ -90,11 +90,32 @@ div.btn, div.list-group-item {
         );
 
         &.focus, &:focus {
-            border-color: $control-border-color; //Default border-colro on focus
+            border-color: $control-border-color; //Default border-color on focus
         }
         &:active {
             background-color: rgba(0,0,0,.2);
         }
+    }
+
+
+    /************************************************************
+    Special version to have square buttons (with only icon)
+    ************************************************************/
+    &.square {
+        overflow        : hidden;
+
+        $dim: calc(2 * #{$input-btn-padding-y} + #{$font-size-base * $input-btn-line-height} + 2 * #{$border-width});
+        height: $dim;
+        min-width: $dim;
+        padding: $input-btn-padding-y;
+
+        &.btn-sm {
+            $small-dim: calc(2 * #{$input-btn-padding-y-sm} + #{$font-size-sm * $line-height-sm} + 2 * #{$border-width});
+            height: $small-dim;
+            min-width: $small-dim;
+            padding: $input-btn-padding-y-sm;
+        }
+
     }
 }
 
