@@ -5948,6 +5948,12 @@ div.btn, div.list-group-item {
     Special version to have transparent button
     Default is light color on dark background
     TODO: Add transparent-on-light to have dark color og light background
+    ************************************************************/
+  /************************************************************
+    Special version to have square buttons (with only icon)
+    ************************************************************/
+  /************************************************************
+    Special version to have extra large icon 
     ************************************************************/ }
   .btn.btn-standard.disabled, .btn.btn-standard:disabled {
     background-color: #f8f9fa; }
@@ -6018,6 +6024,8 @@ div.btn, div.list-group-item {
   .btn.btn-standard > i.fa {
     min-width: 1em;
     text-align: left; }
+    .btn.btn-standard > i.fa:only-child {
+      text-align: center; }
   .btn.btn-standard.transparent {
     background-color: transparent;
     /*
@@ -6036,6 +6044,27 @@ div.btn, div.list-group-item {
       border-color: rgba(0, 0, 0, 0.15); }
     .btn.btn-standard.transparent:active {
       background-color: rgba(0, 0, 0, 0.2); }
+  .btn.btn-standard.square {
+    overflow: hidden;
+    height: calc(2 * 0.5rem + 1.25rem + 2 * 1px);
+    min-width: calc(2 * 0.5rem + 1.25rem + 2 * 1px);
+    padding: 0.5rem; }
+    .btn.btn-standard.square.btn-sm, .btn-group-sm > .btn.btn-standard.square, .dropdown.selectbox.selectbox-sm > .btn.btn-standard.square {
+      height: calc(2 * 0.25rem + 1.3125rem + 2 * 1px);
+      min-width: calc(2 * 0.25rem + 1.3125rem + 2 * 1px);
+      padding: 0.25rem; }
+    .btn.btn-standard.square > i.fa {
+      text-align: center; }
+  .btn.btn-standard.big-icon {
+    line-height: 1;
+    padding: 0.125rem !important;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem; }
+    .btn.btn-standard.big-icon.btn-sm, .btn-group-sm > .btn.btn-standard.big-icon, .dropdown.selectbox.selectbox-sm > .btn.btn-standard.big-icon {
+      font-size: 1.5625rem; }
 
 /************************************************************
 Modernizr-test for elements with class="active" when selected

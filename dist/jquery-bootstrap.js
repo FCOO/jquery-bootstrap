@@ -181,7 +181,7 @@ TODO:
 }(jQuery, this, document));
 ;
 /****************************************************************************
-	jquery-bootstrap-button.js, 
+	jquery-bootstrap-button.js,
 
 	(c) 2017, FCOO
 
@@ -192,7 +192,7 @@ TODO:
 
 (function (/*$, window/*, document, undefined*/) {
 	"use strict";
-	
+
     var bsButtonClass = 'btn-standard';  //MUST correspond with $btn-style-name in src/_variables.scss
 
     /**********************************************************
@@ -200,15 +200,29 @@ TODO:
     Is also used to create list-items for select-lists
     **********************************************************/
     $.bsButton = function( options ){
+        var optionToClassName = {
+                primary    : 'primary',
+                transparent: 'transparent',
+                square     : 'square',
+                bigIcon    : 'big-icon'
+            };
+
         options = options || {};
-        options = 
+        options =
             $._bsAdjustOptions( options, {
-                tagName     : 'a', //Using <a> instead of <button> to be able to control font-family
-                baseClass   : 'btn',
-                styleClass  : bsButtonClass,
-                class       : options.primary ? 'primary' : options.transparent ? 'transparent' : '',
-                useTouchSize: true,
-                addOnClick  : true
+                tagName       : 'a', //Using <a> instead of <button> to be able to control font-family
+                baseClass     : 'btn',
+                styleClass    : bsButtonClass,
+                class         : function( opt ){
+                                    var result = '';
+                                    $.each( optionToClassName, function( id, className ){
+                                        if (opt[id])
+                                            result = result + (result?' ':'') + className;
+                                    });
+                                    return result;
+                                } (options),
+                useTouchSize  : true,
+                addOnClick    : true
             });
 
 
@@ -223,10 +237,10 @@ TODO:
         if (options.id)
             result.attr('id', options.id);
 
-        if (options.selected)  
+        if (options.selected)
             result.addClass('active');
 
-        if (options.focus)  
+        if (options.focus)
             result.addClass('init_focus');
 
         if (options.attr)
@@ -278,12 +292,12 @@ TODO:
         }
         return $.bsButton( options ).checkbox( $.extend(options, {className: 'active'}) );
     };
-    
+
     /**********************************************************
     bsButtonGroup( options ) - create a Bootstrap-buttonGroup
     **********************************************************/
     $.bsButtonGroup = function( options ){
-        options = 
+        options =
             $._bsAdjustOptions( options, {
                 tagName               : 'div',
                 baseClass             : 'btn-group',
@@ -335,7 +349,7 @@ TODO:
         buttons          : as bsButtonGroup
 
     **********************************************************/
-    $.bsRadioButtonGroup = function( options ){ 
+    $.bsRadioButtonGroup = function( options ){
         options = $._bsAdjustOptions( options, {}, { useTouchSize: true, addOnClick: false } );
 
         var result = $.bsButtonGroup( options );
@@ -358,12 +372,12 @@ TODO:
 
 
 	/******************************************
-	Initialize/ready 
+	Initialize/ready
 	*******************************************/
-	$(function() { 
+	$(function() {
 
-	
-	}); 
+
+	});
 	//******************************************
 
 

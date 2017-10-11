@@ -18,6 +18,13 @@
     Is also used to create list-items for select-lists
     **********************************************************/
     $.bsButton = function( options ){
+        var optionToClassName = {
+                primary    : 'primary',
+                transparent: 'transparent',
+                square     : 'square',
+                bigIcon    : 'big-icon'
+            };
+
         options = options || {};
         options =
             $._bsAdjustOptions( options, {
@@ -26,9 +33,9 @@
                 styleClass    : bsButtonClass,
                 class         : function( opt ){
                                     var result = '';
-                                    $.each( ['primary', 'transparent', 'square'], function( index, id ){
+                                    $.each( optionToClassName, function( id, className ){
                                         if (opt[id])
-                                            result = result + (result?' ':'') + id;
+                                            result = result + (result?' ':'') + className;
                                     });
                                     return result;
                                 } (options),

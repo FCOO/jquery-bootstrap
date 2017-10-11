@@ -120,7 +120,8 @@ If `options.context` is given, ALL functions in `options` (eg. `onClick`, `text`
 | `selected` | `boolean` | `false` | If `true` the button is `selected` (blue) |
 | `focus` | `boolean` | `false` | If `true` the button get focus |
 | `primary` | `boolean` | `false` | If `true` the button get primary-class (blue) |
-| `square` | `boolean` | `false` | If `true` the button get get equal `height` and `min-width` (used primarily for icon-buttons) |
+| `square` | `boolean` | `false` | If `true` the button get equal `height` and `min-width` (used primarily for icon-buttons) |
+| `bigIcon` | `boolean` | `false` | If `true` the button get a almost 100% height icon (used primarily for icon-buttons) |
 | `transparent` | `boolean` | `false` | If `true` the button get transparent and light text-color (assuming dark background) |
 | `attr` | `object` | `null` | |
 | `prop` | `object` | `null` | |
