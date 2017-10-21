@@ -168,7 +168,7 @@ position: fixed;
         }).appendTo( $body );
 
 */
-        header('SelectList & Selectbox (not fully working)');
+        header('SelectList & Selectbox');
         var selectItems = [
                 {id: 'slow',   icon: 'fa-bicycle'  , text:{da:'Meget langsomt___________________________', en: 'Slow'} },
                 {icon: 'fa-home'  , text:{da:'En overskrift', en: 'A Header'} },
@@ -441,6 +441,7 @@ position: fixed;
             },
             selectedId: 'first',
             //allowZeroSelected: true,
+            allowReselect: true, 
 
             columns: [
                 { id: 'name',               header: 'Name',  align: 'center', sortable: true},

@@ -101,6 +101,9 @@ Use any of the following options
 ### `allowZeroSelected [Boolean] default = false`
 If true it is allowed to deselect a selected child-element (e.q. in a radio-group)
 
+### `allowReselect [Boolean] default = false`
+If true the `onChange` is called when a selected item is reselected/clicked
+
 ### List/array of child-elements
 Use any of the following options
  `options.list, options.buttons, options.items, or options.children`
@@ -260,7 +263,8 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | `selectable` | `boolean` | `false` | Allow row to be selected |
 | `selectedId` | `string` | `""` | id for selected row |
 | `onChange` | `function(id, selected, trElement)` | `null` | Called when a row is selected or deselected (if `options.allowZeroSelected == true`) |
-| `allowZeroSelected` | `boolean` | `false` | See above |
+| `allowZeroSelected` | `boolean` | `false` | See above. Not together with `allowReselect` |
+| `allowReselect` | `boolean` | `false` | Allow a row to be selected when it is already selected. Not together with `allowZeroSelected` |
 | `columns` | `[] of columnOptions` | `[]` | |
 | `content` | `[] of contentOptions` | `[]` | |
 
