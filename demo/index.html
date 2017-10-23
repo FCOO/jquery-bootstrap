@@ -346,7 +346,7 @@ position: fixed;
                 "name": "bootstrap-show-password",
                 "stargazers_count": 32.0001,
                 "forks_count": "20130101",
-                "description": {icon: 'fa-home',text:{da:"Vis/Skjul adgangskode...", en:"Show/hide password plugin for twitter bootstrap."}}
+                "description": {icon: 'fa-home',text:{da:"Vis/Skjul adgangskode", en:"Show/hide password plugin for twitter bootstrap"}}
             },
             {
                 id: 'no4',
@@ -444,11 +444,11 @@ position: fixed;
             //allowReselect: true, 
 small: true,
             columns: [
-                { id: 'no',                 header: '#',     align: 'center', width: '1rem', noHorizontalPadding: true},
-                { id: 'name',               header: 'Name',  align: 'center', sortable: true},
-                { id: 'stargazers_count',   header: 'Stars', align: 'center', vfFormat:"myNumberFormat", sortable: true},
-                { id: 'forks_count',        header: 'Forks', align: 'center'},
-                { id: 'description',        header:{icon: 'fa-home', text: 'Description'}}
+                { id: 'no',                                 header: '#',     align: 'center', width: '1rem', noHorizontalPadding: true},
+                { id: 'name',               noWrap: true,   header: 'Name',  align: 'center', sortable: true},
+                { id: 'stargazers_count',                   header: 'Stars', align: 'center', vfFormat:"myNumberFormat", sortable: true},
+                { id: 'forks_count',        noWrap: true,   header: 'Forks', align: 'center'},
+                { id: 'description',        truncate: true, header:{icon: 'fa-home', text: 'Description'}}
             ],
             content: longTableContent
         }),

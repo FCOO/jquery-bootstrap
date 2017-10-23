@@ -21,7 +21,11 @@ options
         vfOptions:  The content of a element can be set and updated using [jquery-value-format].
                     The options vfFormat and (optional) vfOptions defines witch format used to display the content
 
-        align    :  'left','center','right'
+        align        :  'left','center','right'. Defalut = 'left'
+        verticalAlign: 'top', 'middle','bottom'. Default = 'middle'
+        noWrap       : false. If true the column will not be wrapped = fixed width
+TODO:         truncate     : false. If true the column will be truncated. Normally only one column get truncate: true
+
         sortable :  [boolean] false
     }
     showHeader: [boolean] true
@@ -45,11 +49,35 @@ Add sort-functions + save col-index for sorted column
         },
 
         defaultColunmOptions = {
-            align      : 'left',
-            sortable   : false
+            align        : 'left',
+            verticalAlign: 'middle',
+            noWrap       : false,
+            truncate     : false,
+            sortable     : false
         },
 
         dataTableId = 'bsTable_options';
+
+
+    //********************************************************************
+    function adjustThOrTd( $element, columnOptions, addWidth ){
+        $element
+            ._bsAddStyleClasses( columnOptions.textStyle )
+            .addClass('align-' + columnOptions.verticalAlign )
+            ._bsAddStyleClasses( columnOptions.align )
+            .toggleClass('text-nowrap', !!columnOptions.noWrap )
+//TODO            .toggleClass('text-truncate', !!columnOptions.truncate )
+
+            .toggleClass('no-horizontal-padding', !!columnOptions.noHorizontalPadding )
+
+        if (addWidth && columnOptions.width)
+            $element.css({
+                'width'    : columnOptions.width,
+                'max-width': columnOptions.width
+            });
+
+        return $element;
+    }
 
     /**********************************************************
     Prototype for bsTable
@@ -66,24 +94,15 @@ Add sort-functions + save col-index for sorted column
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
-            $.each( options.columns, function( index, column ){
-                var content = rowContent[column.id],
+            $.each( options.columns, function( index, columnOptions ){
+                var content = rowContent[columnOptions.id],
                     $td = $('<td/>')
-                            ._bsAddStyleClasses( column.textStyle )
-                            .addClass('align-middle')
-                            ._bsAddStyleClasses( column.align )
-.toggleClass('no-horizontal-padding', !!column.noHorizontalPadding )
                             .appendTo($tr);
-
-                    if (!options.showHeader && column.width)
-                        $td.css({
-                            'width'    : column.width,
-                            'max-width': column.width
-                        });
+                adjustThOrTd( $td, columnOptions, !options.showHeader );
 
                 //Build the content using _bsAddHtml or jquery-value-format
-                if (column.vfFormat)
-                    $td.vfValueFormat( content, column.vfFormat, column.vfOptions );
+                if (columnOptions.vfFormat)
+                    $td.vfValueFormat( content, columnOptions.vfFormat, columnOptions.vfOptions );
                 else
                     $td._bsAddHtml( content );
             });
@@ -215,27 +234,15 @@ Add sort-functions + save col-index for sorted column
 
         //Create headers
         if (options.showHeader)
-            $.each( options.columns, function( index, column ){
+            $.each( options.columns, function( index, columnOptions ){
                 var $th = $('<th/>')
-                            ._bsAddStyleClasses( column.textStyle )
-                            .addClass('align-middle')
-                            .toggleClass('sortable', !!column.sortable )
-                            .toggleClass('no-horizontal-padding', !!column.noHorizontalPadding )
+                            .toggleClass('sortable', !!columnOptions.sortable )
                             .on('click', table_th_onClick )
                             .appendTo( $tr );
-                if (column.width)
-                    $th.css({
-                        'width'    : column.width,
-                        'max-width': column.width
-                    });
 
-                //Adding sort-direction icons
-                if (column.sortable)
-                    $th.addClass('sortable');
+                adjustThOrTd( $th, columnOptions, true );
 
-                $th
-                    ._bsAddStyleClasses( column.align )
-                    ._bsAddHtml( column.header );
+                $th._bsAddHtml( columnOptions.header );
             });
 
         if (options.selectable){

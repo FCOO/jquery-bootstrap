@@ -7101,6 +7101,9 @@ Adjustmernt to Bootstrap table
     *************************************/
   /*************************************
     Cells
+    *************************************/
+  /*************************************
+    Truncation
     *************************************/ }
   .table:not(:last-child) {
     margin-bottom: 0.5rem; }
@@ -7218,6 +7221,14 @@ Adjustmernt to Bootstrap table
     .table tbody tr td.no-horizontal-padding {
       padding-left: 0;
       padding-right: 0; }
+  .table thead tr th.text-truncate span,
+  .table tbody tr td.text-truncate span {
+    display: inline-block;
+    width: 100%;
+    background-color: red;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
 
 .modal-sm .table thead tr th,
 .table.table-sm thead tr th {
@@ -7233,6 +7244,9 @@ Adjustmernt to Bootstrap table
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .modal-sm .table thead tr th.sortable,
+  .table.table-sm thead tr th.sortable {
+    padding-right: 1em; }
   .modal-sm .table thead tr th.no-horizontal-padding,
   .table.table-sm thead tr th.no-horizontal-padding {
     padding-left: 0;

@@ -91,6 +91,23 @@ Adjustmernt to Bootstrap table
         }
     }
 
+    /*************************************
+    Truncation
+    *************************************/
+    thead tr th,
+    tbody tr td {
+        &.text-truncate {
+            span {
+                display: inline-block;
+                width: 100%;
+                background-color: red;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+    }
+
 } //end of .table
 
 
@@ -100,6 +117,9 @@ Adjustmernt to Bootstrap table
     //Header
     thead tr th { 
         @include title-variant-sm();  
+        &.sortable {
+            padding-right: 1em; //Make space for sort-direction icons
+        }
         &.no-horizontal-padding {
             padding-left : 0;
             padding-right: 0;

@@ -274,6 +274,8 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | `id` | `string` | Mandatory |  |
 | `header` | `content` or `[] of content` | `""` | See above |
 | `align` | `string` | `"left"` | `"left", "center", or "right"`. Text alignment for the column |
+| `noWrap` | `boolean` | `false` | If `true` the column will not be wrapped = fixed width |
+| `truncate` | `boolean` | `false` | If `true` the column will be truncated. Normally only one column get `truncate: true` **NOT IMPLEMENTED** |
 | `sortable` | `boolean` | `false` | If `true` the column can be sorted. **NOT IMPLEMENTED** |
 | `vfFormat` | `string` | `""` | See above |
 | `vfOptions` | `object` | null | See above |
