@@ -54,7 +54,7 @@ Can be a standard class-name for a icon-font packages (eg. Fontawesome)
 
 #### `vfFormat`, `vfValue`, and `vfOptions`
 The content of a element can be set and updated using [jquery-value-format].
-The options `vfFormat`and (optional) `vfOptions` defines witch format used to display the content `vfValue`
+The options `vfFormat` and (optional) `vfOptions` defines witch format used to display the content `vfValue`
 
 No formats are defined in this package (See examples at [fcoo-value-format](https://github.com/fcoo/fcoo-value-format))
 
@@ -277,6 +277,8 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | `sortable` | `boolean` | `false` | If `true` the column can be sorted. **NOT IMPLEMENTED** |
 | `vfFormat` | `string` | `""` | See above |
 | `vfOptions` | `object` | null | See above |
+| `width` | `string` | null | The fixed width of the column |
+| `noHorizontalPadding` | `boolean` | `false` | If `true` the horizontal padding of the cells in the column is zero |
 
 #### contentOptions
 | Id | Type | Default | Description |

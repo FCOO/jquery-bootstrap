@@ -440,10 +440,11 @@ position: fixed;
                 console.log( 'Table id =' , id,' selected=',selected); 
             },
             selectedId: 'first',
-            //allowZeroSelected: true,
-            allowReselect: true, 
-
+            allowZeroSelected: true,
+            //allowReselect: true, 
+small: true,
             columns: [
+                { id: 'no',                 header: '#',     align: 'center', width: '1rem', noHorizontalPadding: true},
                 { id: 'name',               header: 'Name',  align: 'center', sortable: true},
                 { id: 'stargazers_count',   header: 'Stars', align: 'center', vfFormat:"myNumberFormat", sortable: true},
                 { id: 'forks_count',        header: 'Forks', align: 'center'},

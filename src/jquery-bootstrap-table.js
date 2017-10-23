@@ -1,5 +1,5 @@
 /****************************************************************************
-	jquery-bootstrap-table.js, 
+	jquery-bootstrap-table.js,
 
 	(c) 2017, FCOO
 
@@ -10,17 +10,19 @@
 
 (function ($/*, window, document, undefined*/) {
 	"use strict";
-	
+
 /******************************************************************
 bsTable( options )
 options
     columns = [] of {
         id,
-        header       : {icon, text, link, textStyle} or [] of {text,...}
-        contentType  : '', 'date', 'date-time',...
-        contentFormat: '', //Depends on contentType
-        align        : 'left','center','right'
-        sortable     : [boolean] false
+        header   :  {icon, text, link, textStyle} or [] of {text,...}
+        vfFormat,
+        vfOptions:  The content of a element can be set and updated using [jquery-value-format].
+                    The options vfFormat and (optional) vfOptions defines witch format used to display the content
+
+        align    :  'left','center','right'
+        sortable :  [boolean] false
     }
     showHeader: [boolean] true
     verticalBorder [boolean] true
@@ -28,13 +30,13 @@ options
     selectedId [string] "" id for selected row
     onChange          [function(id, selected, trElement)] null Called when a row is selected or unselected (if options.allowZeroSelected == true)
 	allowZeroSelected [boolean] false. If true it is allowed to un-select a selected row
-
+    allowReselect     [Boolean] false. If true the onChange is called when a selected item is reselected/clicked
 
 TODO
 Add sort-functions + save col-index for sorted column
 
 
-*******************************************************************/    
+*******************************************************************/
     var defaultOptions = {
             baseClass     : 'table',
             styleClass    : 'fixed',
@@ -43,7 +45,6 @@ Add sort-functions + save col-index for sorted column
         },
 
         defaultColunmOptions = {
-            contentType: 'default',
             align      : 'left',
             sortable   : false
         },
@@ -63,17 +64,24 @@ Add sort-functions + save col-index for sorted column
                 $tr     = $('<tr/>').appendTo( $tbody );
 
             if (options.selectable)
-                $tr.attr('id', rowContent.id || 'rowId_'+rowId++);                
+                $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
             $.each( options.columns, function( index, column ){
                 var content = rowContent[column.id],
                     $td = $('<td/>')
-                            ._bsAddStyleClasses( column.textStyle ) 
+                            ._bsAddStyleClasses( column.textStyle )
                             .addClass('align-middle')
                             ._bsAddStyleClasses( column.align )
+.toggleClass('no-horizontal-padding', !!column.noHorizontalPadding )
                             .appendTo($tr);
 
-                //Build the content using _bsAddHtml or jquery-value-format                    
+                    if (!options.showHeader && column.width)
+                        $td.css({
+                            'width'    : column.width,
+                            'max-width': column.width
+                        });
+
+                //Build the content using _bsAddHtml or jquery-value-format
                 if (column.vfFormat)
                     $td.vfValueFormat( content, column.vfFormat, column.vfOptions );
                 else
@@ -91,14 +99,14 @@ Add sort-functions + save col-index for sorted column
         asModal: function( modalOptions ){
             var showHeader = this.find('.no-header').length == 0,
                 _this      = this,
-                $theadClone, 
-                $tableWithHeader = null, 
+                $theadClone,
+                $tableWithHeader = null,
                 $result, $thead, count;
-                
+
             if (showHeader){
                 //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
                 $theadClone = this.find('thead').clone( true );
-                $tableWithHeader =  
+                $tableWithHeader =
                     $('<table/>')
                         ._bsAddBaseClassAndSize( this.data(dataTableId) )
                         .addClass('table-with-header')
@@ -108,7 +116,7 @@ Add sort-functions + save col-index for sorted column
             }
 
 
-            $result = $.bsModal( 
+            $result = $.bsModal(
                             $.extend( modalOptions || {}, {
                                 flex             : true,
                                 noVerticalPadding: true,
@@ -119,8 +127,8 @@ Add sort-functions + save col-index for sorted column
 
             if (showHeader){
                 //Using timeout to wait for the browser to update DOM and get height of the header
-                var setHeaderHeight = function(){ 
-                        var height = $tableWithHeader.outerHeight(); 
+                var setHeaderHeight = function(){
+                        var height = $tableWithHeader.outerHeight();
                         if (height <= 0){
                             count--;
                             if (count){
@@ -129,14 +137,14 @@ Add sort-functions + save col-index for sorted column
                                 return;
                             }
                         }
-                   
+
                         _this.css('margin-top', -height+'px');
                         setHeaderWidth();
 
                         //Only set header-height once
                         $result.off('shown.bs.modal.table', setHeaderHeight );
                     },
-                
+
                     setHeaderWidth = function(){
                         $thead.find('th').each(function( index, th ){
                             $theadClone.find('th:nth-child(' + (index+1) + ')')
@@ -148,7 +156,7 @@ Add sort-functions + save col-index for sorted column
                 $result.on('shown.bs.modal.table', setHeaderHeight );
                 $thead.resize( setHeaderWidth );
             }
-            
+
             return $result;
         }
 
@@ -166,7 +174,7 @@ Add sort-functions + save col-index for sorted column
             $th.addClass(newClass);
         }
     }
-    
+
     /**********************************************************
     bsTable( options ) - create a Bootstrap-table
     **********************************************************/
@@ -174,16 +182,16 @@ Add sort-functions + save col-index for sorted column
         rowId    = 0;
 
     $.bsTable = function( options ){
-        options = $._bsAdjustOptions( options, defaultOptions ); 
-        options.class = 
-            (options.small ? 'table-sm ' : '' ) + 
-            (options.verticalBorder ? 'table-bordered ' : '' ) + 
-            (options.selectable ? 'table-selectable ' : '' ) + 
+        options = $._bsAdjustOptions( options, defaultOptions );
+        options.class =
+            (options.small ? 'table-sm ' : '' ) +
+            (options.verticalBorder ? 'table-bordered ' : '' ) +
+            (options.selectable ? 'table-selectable ' : '' ) +
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' ),
 
         //Adjust text-style for each column
         $.each( options.columns, function( index, column ){
-            column = $.extend( true, {}, defaultColunmOptions, column ); 
+            column = $.extend( true, {}, defaultColunmOptions, column );
 
             column.index = index;
 
@@ -193,7 +201,7 @@ Add sort-functions + save col-index for sorted column
         var id = 'bsTable'+ tableId++,
             $table = $('<table/>')
                         ._bsAddBaseClassAndSize( options )
-                        .attr({ 
+                        .attr({
                             'id': id
                         }),
             $thead = $('<thead/>')
@@ -209,11 +217,17 @@ Add sort-functions + save col-index for sorted column
         if (options.showHeader)
             $.each( options.columns, function( index, column ){
                 var $th = $('<th/>')
-                            ._bsAddStyleClasses( column.textStyle ) 
+                            ._bsAddStyleClasses( column.textStyle )
                             .addClass('align-middle')
                             .toggleClass('sortable', !!column.sortable )
+                            .toggleClass('no-horizontal-padding', !!column.noHorizontalPadding )
                             .on('click', table_th_onClick )
                             .appendTo( $tr );
+                if (column.width)
+                    $th.css({
+                        'width'    : column.width,
+                        'max-width': column.width
+                    });
 
                 //Adding sort-direction icons
                 if (column.sortable)
@@ -223,15 +237,15 @@ Add sort-functions + save col-index for sorted column
                     ._bsAddStyleClasses( column.align )
                     ._bsAddHtml( column.header );
             });
-      
+
         if (options.selectable){
             var radioGroupOptions = $.extend( true, options );
             radioGroupOptions.className = 'active';
-            options.radioGroup = $.radioGroup( radioGroupOptions );            
+            options.radioGroup = $.radioGroup( radioGroupOptions );
         }
 
         $table.data(dataTableId, options);
-        
+
 
         //Create tbody and all rows
         $table.append( $('<tbody/>') );
@@ -239,20 +253,20 @@ Add sort-functions + save col-index for sorted column
         $.each( options.content, function( index, rowContent ){
             $table.addRow( rowContent );
         });
-        
 
-        return $table; 
+
+        return $table;
     };
 
 
 
 	/******************************************
-	Initialize/ready 
+	Initialize/ready
 	*******************************************/
-	$(function() { 
+	$(function() {
 
-	
-	}); 
+
+	});
 	//******************************************
 
 

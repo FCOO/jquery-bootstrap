@@ -25,6 +25,11 @@ Adjustmernt to Bootstrap table
 
             @include title-variant(); 
             @include title-color();   //Only color and background-color
+    
+            &.no-horizontal-padding {
+                padding-left : 0;
+                padding-right: 0;
+            }
 
             &.sortable {
                 @include title-color(true, '&.asc, &.desc'); // ($hover: false, $selected-class: '', $bg: true, $invers: false  );
@@ -80,6 +85,10 @@ Adjustmernt to Bootstrap table
     *************************************/
     tbody tr td {
         @include content-padding();
+        &.no-horizontal-padding {
+            padding-left : 0;
+            padding-right: 0;
+        }
     }
 
 } //end of .table
@@ -91,11 +100,19 @@ Adjustmernt to Bootstrap table
     //Header
     thead tr th { 
         @include title-variant-sm();  
+        &.no-horizontal-padding {
+            padding-left : 0;
+            padding-right: 0;
+        }
     }
 
     //Cell
     tbody tr td { 
         @include content-padding-sm();
+        &.no-horizontal-padding {
+            padding-left : 0;
+            padding-right: 0;
+        }
     }
 }
 

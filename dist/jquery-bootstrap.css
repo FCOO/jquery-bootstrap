@@ -7131,6 +7131,9 @@ Adjustmernt to Bootstrap table
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .table thead tr th.no-horizontal-padding {
+      padding-left: 0;
+      padding-right: 0; }
     .table thead tr th.sortable {
       /*
     @if $color-hover == false
@@ -7212,6 +7215,9 @@ Adjustmernt to Bootstrap table
   .table tbody tr td {
     padding: 0.5rem 0.5rem;
     font-size: 1rem; }
+    .table tbody tr td.no-horizontal-padding {
+      padding-left: 0;
+      padding-right: 0; }
 
 .modal-sm .table thead tr th,
 .table.table-sm thead tr th {
@@ -7227,11 +7233,19 @@ Adjustmernt to Bootstrap table
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .modal-sm .table thead tr th.no-horizontal-padding,
+  .table.table-sm thead tr th.no-horizontal-padding {
+    padding-left: 0;
+    padding-right: 0; }
 
 .modal-sm .table tbody tr td,
 .table.table-sm tbody tr td {
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem; }
+  .modal-sm .table tbody tr td.no-horizontal-padding,
+  .table.table-sm tbody tr td.no-horizontal-padding {
+    padding-left: 0;
+    padding-right: 0; }
 
 /************************************************************
 ACCORDION
