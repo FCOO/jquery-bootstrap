@@ -11,7 +11,6 @@
 (function ($, window, document/*, undefined*/) {
 	"use strict";
 
-
     /**********************************************************
     bsModal( options ) - create a Bootstrap-modal
 
@@ -42,13 +41,14 @@
 
     **********************************************************/
     var modalId = 0,
-        modalStackClassName = 'fv-modal-stack', //class-name for modals when added to the stack
-        openModalDataId = 'bs_open_modals',     //Merthods to allow multi modal-windows
-        modalVerticalMargin = 20;               //Top and bottom margin for modal windows      
+        openModals = 0,
+        modalVerticalMargin = 10; //Top and bottom margin for modal windows
+
+
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
-    Due to an intended design in Safari it is not possible to 
+    Due to an intended design in Safari it is not possible to
     use style a la max-height: calc(100vh - 20px) is not working
     as expected/needed
     Instead a resize-event is added to update the max-height of
@@ -66,36 +66,27 @@
     }
     window.addEventListener('resize',            function(){ adjustModalMaxHeight(); }, false );
     window.addEventListener('orientationchange', function(){ adjustModalMaxHeight(); }, false );
-    
-    //******************************************************
-    function incOpenModals( number ){
-        $('body').data(
-            openModalDataId,
-            ($('body').data( openModalDataId  ) || 0)
-                + (number || 0)
-        );
-        return $('body').data( openModalDataId  );
-     }
+
 
     //******************************************************
     //show_bs_modal - called when a modal is opening
     function show_bs_modal( /*event*/ ) {
-
         //Close all popover
         $('.popover.show').popover('hide');
 
         var $this = $(this);
-        // if the z-index of this modal has been set, ignore.
-        if ( $this.hasClass( modalStackClassName ) )
-            return;
 
-        $this.addClass( modalStackClassName );
+        openModals++;
 
-        // keep track of the number of open modals
-        var modalNumber = incOpenModals( +1 );
+        //Move up the backdrop
+        $._addModalBackdropLevel();
+
+        //Add layer for noty on the modal
+        $._bsNotyAddLayer( true );
 
         //Move the modal to the front
-        $this.css('z-index', 1040 + 10*modalNumber );
+        $this._setModalBackdropZIndex();
+
     }
 
     //******************************************************
@@ -105,15 +96,6 @@
 
         //Adjust max-height
         adjustModalMaxHeight( $this );
-
-        //Update other backdrop
-        var modalNumber = incOpenModals();
-        $( '.modal-backdrop' ).not( '.'+modalStackClassName )
-            .css( 'z-index', 1039 + 10*modalNumber );
-
-        //Set current backdrop
-        $( '.modal-backdrop' ).not( '.'+modalStackClassName )
-            .addClass( modalStackClassName );
 
         //Focus on focus-element
         var $focusElement = $this.find('.init_focus').last();
@@ -126,7 +108,8 @@
     //******************************************************
     //hide_bs_modal - called when a modal is closing
     function hide_bs_modal( /*event*/ ) {
-
+        //Remove all noty added on the modal and move down global backdrop
+        $._bsNotyRemoveLayer();
     }
 
     //******************************************************
@@ -134,8 +117,8 @@
     function hidden_bs_modal( /*event*/ ) {
         var $this = $(this);
 
-        $this.removeClass( modalStackClassName );
-        var openModals = incOpenModals( -1 );
+        openModals--;
+
         if (openModals){
             //Move focus to previous modal on top
             var $modal = $('.modal.show').last(),
@@ -170,7 +153,7 @@
 
     /******************************************************
     _bsModalBodyAndFooter
-    Create the body and footer content (exc header and bottoms) 
+    Create the body and footer content (exc header and bottoms)
     of a modal inside this. Created elements are saved in parts
     ******************************************************/
     $.fn._bsModalBodyAndFooter = function(options, parts, className){
@@ -220,7 +203,7 @@
                     ._bsAddHtml( options.footer );
         return this;
     };
-    
+
     /******************************************************
     _bsModalExtend, _bsModalDiminish, _bsModalToggle
     Methods to change extended-mode
@@ -228,22 +211,22 @@
     $.fn._bsModalExtend = function( event ){
         if (this.hasClass('no-modal-extended'))
             this._bsModalToggle( event );
-    };        
+    };
     $.fn._bsModalDiminish = function( event ){
         if (this.hasClass('modal-extended'))
             this._bsModalToggle( event );
-    };        
+    };
 
-    
+
     $.fn._bsModalToggle = function( event ){
         var $this = $(this),
             oldHeight = $this.outerHeight(),
             newHeight;
-        
+
         this.modernizrToggle('modal-extended');
 
         newHeight = $this.outerHeight();
-        $this.height( oldHeight); 
+        $this.height( oldHeight);
 
         $this.animate({height: newHeight}, 'fast', function() { $this.height('auto'); });
 
@@ -260,13 +243,13 @@
     $.fn._bsModalContent = function( options ){
         options = options || {};
 
-        
+
         //this.bsModal contains all created elements
         this.bsModal = {};
 
         var $modalContainer = this.bsModal.$container =
                 $('<div/>')
-                    .addClass('modal-content') 
+                    .addClass('modal-content')
                     .modernizrToggle('modal-extended', !!options.isExtended )
                     .appendTo( this );
 
@@ -274,7 +257,7 @@
         var modalExtend   = $.proxy( $modalContainer._bsModalExtend,   $modalContainer ),
             modalDiminish = $.proxy( $modalContainer._bsModalDiminish, $modalContainer ),
             modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer );
-        
+
         options = $.extend( true, {
             headerClassName: 'modal-header',
             //Buttons
@@ -290,6 +273,9 @@
             }
         }, options );
 
+        //Adjust for options.buttons: null
+        options.buttons = options.buttons || [];
+
         //Add close-botton. Avoid by setting options.closeButton = false
         if (options.closeButton)
             options.buttons.push({
@@ -302,10 +288,10 @@
 
         //If the modal has extended content: Normal and extended content get same scroll-options to have same horizontal padding in normal and extended mode
         if (options.extended){
-            options.scroll = options.scroll || options.extended.scroll;            
-            options.extended.scroll = options.scroll;            
+            options.scroll = options.scroll || options.extended.scroll;
+            options.extended.scroll = options.scroll;
         }
-        
+
         //Append header
         if (!options.noHeader &&  (options.header || !$.isEmptyObject(options.icons) ) ){
             var $modalHeader = this.bsModal.$header =
@@ -319,16 +305,16 @@
                     .addClass('clickable')
                     .on('doubletap', modalToggle );
         }
-        
+
         //Create normal content
         $modalContainer._bsModalBodyAndFooter( options, this.bsModal, 'hide-for-modal-extended' );
 
         //Create extended content (if any)
         if (options.extended){
-            this.bsModal.extended = {};            
+            this.bsModal.extended = {};
             $modalContainer._bsModalBodyAndFooter( options.extended, this.bsModal.extended, 'show-for-modal-extended' );
         }
-      
+
         //Add buttons (if any)
         var $modalButtonContainer = this.bsModal.$buttonContainer =
                 $('<div/>')
@@ -354,19 +340,19 @@
 
             //Add same onClick as close-icon if closeOnClick: true
             if (buttonOptions.closeOnClick)
-                buttonOptions.equalIconId = (buttonOptions.equalIconId || '') + ' close';                    
-            
+                buttonOptions.equalIconId = (buttonOptions.equalIconId || '') + ' close';
+
             buttonOptions.class = defaultButtonClass + ' ' + (buttonOptions.className || '');
-            
+
             var $button =
                 $.bsButton( $.extend({}, defaultButtonOptions, buttonOptions ) )
                     .appendTo( $modalButtonContainer );
-        
+
             //Add onClick from icons (if any)
             buttonOptions.equalIconId = buttonOptions.equalIconId || '';
             $.each( buttonOptions.equalIconId.split(' '), function( index, iconId ){
                 if (iconId && options.icons[iconId] && options.icons[iconId].onClick)
-                    $button.on('click', options.icons[iconId].onClick);                    
+                    $button.on('click', options.icons[iconId].onClick);
             });
 
             $modalButtons.push( $button );

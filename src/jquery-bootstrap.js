@@ -1,5 +1,5 @@
 /****************************************************************************
-	jquery-bootstrap.js, 
+	jquery-bootstrap.js,
 
 	(c) 2017, FCOO
 
@@ -12,7 +12,7 @@
 	"use strict";
 
     /*
-    
+
     Almost all elements comes in two sizes: normal and small set by options.small: false/true
 
     In jquery-bootstrap.scss sizing class-postfix -xs is added (from Bootstrap 3)
@@ -26,7 +26,7 @@
     */
 
     //Create namespace
-	var ns = window; 
+	var ns = window;
 
     ns.bsIsTouch =  true;
 
@@ -40,12 +40,12 @@
             options.icon     = options.icon || options.headerIcon || options.titleIcon;
             options.text     = options.text || options.header || options.title || options.name;
 
-            options.iconClass = options.iconClass       || options.iconClassName       || 
+            options.iconClass = options.iconClass       || options.iconClassName       ||
                                 options.headerIconClass || options.headerIconClassName ||
                                 options.titleIconClass  || options.titleIconClassName;
 
-            options.textClass = options.textClass   || options.textClassName   || 
-                                options.headerClass || options.headerClassName || 
+            options.textClass = options.textClass   || options.textClassName   ||
+                                options.headerClass || options.headerClassName ||
                                 options.titleClass  || options.titleClassName;
 
             //If context is given => convert all function to proxy
@@ -54,11 +54,11 @@
                     if ($.isFunction( value ))
                         options[id] = $.proxy( value, context );
                 });
-            
+
             return options;
         }
         //*********************************************************************
-        
+
         options = $.extend( true, defaultOptions || {}, options, forceOptions || {} );
 
         options.selected = options.selected || options.checked || options.active;
@@ -79,7 +79,7 @@
 
         //Sert context = null to avoid "double" proxy
         options.context = null;
-        
+
         return options;
     };
 
@@ -104,8 +104,8 @@
         baseClass: "BASE" useTouchSize: true
             small: false => sizeClass = 'BASE-sm'
             small: true  => sizeClass = "BASE-xs"
-        
-        
+
+
         ****************************************************************************************/
         _bsAddBaseClassAndSize: function( options ){
             var classNames = options.baseClass ? [options.baseClass + (options.baseClassPostfix || '')] : [],
@@ -122,17 +122,17 @@
 
 
             if (sizeClassPostfix && options.baseClass)
-              classNames.push( options.baseClass + '-' + sizeClassPostfix );                
-            
+              classNames.push( options.baseClass + '-' + sizeClassPostfix );
+
             if (options.styleClass)
-                classNames.push( options.styleClass ); 
+                classNames.push( options.styleClass );
 
             if (options.class)
-                classNames.push( options.class ); 
+                classNames.push( options.class );
 
             this.addClass( classNames.join(' ') );
 
-            this._bsAddStyleClasses( options.textStyle );    
+            this._bsAddStyleClasses( options.textStyle );
 
             return this;
         },
@@ -141,9 +141,9 @@
         _bsAddStyleClasses
         Add classes for text-styel
 
-        options [string] or [object]    
+        options [string] or [object]
             Style for the contents. String or object with part of the following
-            "left right center lowercase uppercase capitalize normal bold italic" or 
+            "left right center lowercase uppercase capitalize normal bold italic" or
             {left: true, right: true, center: true, lowercase: true, uppercase: true, capitalize: true, normal: true, bold: true, italic: true}
         ****************************************************************************************/
         _bsAddStyleClasses: function( options ){
@@ -179,11 +179,11 @@
                 };
 
             $.each( bsStyleClass, function( style, className ){
-                if (  
+                if (
                       ( (typeof options == 'string') && (options.indexOf(style) > -1 )  ) ||
-                      ( (typeof options == 'object') && (options[style]) ) 
+                      ( (typeof options == 'object') && (options[style]) )
                     )
-                    _this.addClass( className );                    
+                    _this.addClass( className );
             });
             return this;
         },
@@ -217,7 +217,7 @@
                         $text
                             .prop('href', 'javascript:undefined')
                             .on('click', link );
-                    else 
+                    else
                         $text
                             .i18n(link, 'href')
                             .prop('target', '_blank');
@@ -236,34 +236,34 @@
                 return $text;
             }
             //**************************************************
-            function getArray( input ){ 
-                return input ? $.isArray( input ) ? input : [input] : []; 
+            function getArray( input ){
+                return input ? $.isArray( input ) ? input : [input] : [];
             }
             //**************************************************
 
 
             if (checkForContent && (options.content != null))
-                return this._bsAddHtml( options.content );     
+                return this._bsAddHtml( options.content );
 
             options = options || '';
 
             var _this = this;
 
-            //options = array => add each with space between            
+            //options = array => add each with space between
             if ($.isArray( options )){
                 $.each( options, function( index, textOptions ){
                     if (index)
-                        _this.append('&nbsp;');                      
+                        _this.append('&nbsp;');
                     _this._bsAddHtml( textOptions );
-                });        
-                return this;    
+                });
+                return this;
             }
 
             //Simple version: options == string
             if ($.type( options ) != "object")
-                return this._bsAddHtml( {text: options} );              
-            
-           
+                return this._bsAddHtml( {text: options} );
+
+
             //options = simple textOptions
             var iconArray       = getArray( options.icon ),
                 textArray       = getArray( options.text ),
@@ -281,12 +281,12 @@
                 var $icon = $('<i/>').addClass('fa '+icon);
                 if (index < iconClassArray.length)
                     $icon.addClass( iconClassArray[index] );
-                //$icon.appendTo( _this );                
+                //$icon.appendTo( _this );
 
                 create$element( 'i', null, titleArray[ index ], null, 'fa '+icon + ' ' + (iconClassArray[index] || '') )
                     .appendTo( _this );
             });
-                
+
             //Add color (optional)
             if (options.color)
                 _this.addClass('text-'+ options.color);
@@ -297,27 +297,27 @@
             //Add text
             $.each( textArray, function( index, text ){
                 var $text = create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
-               
+
                 if ($.isFunction( text ))
                     text( $text );
                 else
                     if (text == $.EMPTY_TEXT)
                         $text.html( '&nbsp;');
                     else
-                        $text.i18n( text );
+                        $text.i18n( text, 'html' );
 
                 if (index < textClassArray.length)
                     $text.addClass( textClassArray[index] );
-                $text.appendTo( _this );                
+                $text.appendTo( _this );
             });
-            
+
             //Add value-format content
             $.each( vfValueArray, function( index, vfValue ){
                 create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
                     .vfValueFormat( vfValue || '', vfFormatArray[index], vfOptionsArray[index] )
-                    .appendTo( _this );                
+                    .appendTo( _this );
             });
-            
+
             return this;
         },
 
@@ -333,12 +333,12 @@
 
 
 	/******************************************
-	Initialize/ready 
+	Initialize/ready
 	*******************************************/
-	$(function() { 
+	$(function() {
 
-	
-	}); 
+
+	});
 	//******************************************
 
 

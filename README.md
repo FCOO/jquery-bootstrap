@@ -24,6 +24,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Table](#table)
 - [Accordion](#accordion)
 - [Modal](#modal)
+- [Noty](#noty)
 
 ## Installation
 ### bower
@@ -354,7 +355,31 @@ Eq.
 
     .show(); //Show the modal
 
-    
+
+<a name="noty"></a>
+## Noty
+
+Using [Noty](https://ned.im/noty) to create noty-messages
+
+    $myNoty = $.bsNoty( options ); 
+
+Each [modal](#modal) gets its own set of noty that are closed when the modal is closed
+
+### options
+
+Beside the normal [Noty options](https://ned.im/noty/#/options) the following new options and default are added
+
+| Id | Type | Default | Description |
+| :--: | :--: | :-----: | --- |
+| `text` or `content` | `content` or `[] of content` | `""` | See above |
+| `textAlign` | `string` | `"left"` | `"left"`, `"center"`, or `"right"`  |
+
+
+
+
+Each modal gets its own set of noty
+
+
 <!-- 
 ### **** NEW **** 
 #### options
@@ -380,4 +405,3 @@ Copyright (c) 2017 [FCOO](https://github.com/fcoo)
 NielsHolt nho@fcoo.dk
 
 
-## Credits and acknowledgments

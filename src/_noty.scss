@@ -1,0 +1,192 @@
+/************************************************************
+NOTY
+
+Additional and changed style for Noty
+************************************************************/
+
+//Overwrite noty to have faster animation
+.animated {
+    animation-duration: .3s; //Noty defalut = 1s
+}
+
+
+/*****************************************
+Create theme jquery-bootstrap
+To be able to control z-index of noty the complete scss
+for noty is copyed and modified
+*****************************************/
+$noty-theme-name: jquery-bootstrap;
+
+
+$deltaToCenter      : calc(-50% - #{$modal-content-border-width}/2);
+$translateZ         : translateZ(0);
+$scale              : scale(1.0, 1.0);
+
+$translateToCenter      : translate($deltaToCenter) $translateZ $scale;
+$translateToMiddle      : translate(0, $deltaToCenter) $translateZ $scale;
+$translateToCenterMiddle: translate($deltaToCenter, $deltaToCenter) $translateZ $scale;
+
+$corner-space: 20px;
+
+//.noty_modal is hidden. noty-layer-backdrop is used instead
+.noty_modal {
+    display : none;
+}
+
+/*******************************************
+.noty-layer
+*******************************************/
+.noty-layer {
+    position: fixed;
+    z-index : $zindex-modal-backdrop;
+
+    .noty-layer-backdrop {
+        position : fixed;
+        z-index  : inherit;
+        width   : 100%;
+        height  : 100%;
+        left    : 0;
+        top     : 0;
+        background-color: $modal-backdrop-bg;
+        opacity         : $modal-backdrop-opacity;
+    }
+}
+
+
+/*******************************************
+.noty-container and .noty-container-LAYOUT
+*******************************************/
+.noty-container {
+    //Default style
+    position : fixed;
+    z-index  : inherit;
+
+    margin   : 0;
+    padding  : 0;
+
+    transform: $translateZ $scale; 
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    filter   : blur(0);
+    width    : 325px;
+    max-width: 90%;
+
+    //Adjust width and left for full-width layout
+    &.noty-container-top,
+    &.noty-container-bottom {
+        left : 5%;
+        width: 90%;
+    }
+
+    //top or button position
+    &.noty-container-top {
+        top: 0; 
+    }
+    &.noty-container-topLeft, &.noty-container-topCenter, &.noty-container-topRight {
+        top: $corner-space;
+    }
+    &.noty-container-center, &.noty-container-centerLeft, &.noty-container-centerRight {
+        top: 50%;
+    }
+    &.noty-container-bottomLeft, &.noty-container-bottomCenter, &.noty-container-bottomRight {
+        bottom: $corner-space;
+    }
+    &.noty-container-bottom {
+        bottom: 0; 
+    }
+
+    //left or right position
+    &.noty-container-topLeft, &.noty-container-centerLeft, &.noty-container-bottomLeft {
+        left: $corner-space;
+    }
+    &.noty-container-topCenter, &.noty-container-center, &.noty-container-bottomCenter {
+        left: 50%;
+    }
+    &.noty-container-topRight, &.noty-container-centerRight, &.noty-container-bottomRight {
+        right: $corner-space;
+    }
+
+    //Transform
+    &.noty-container-topCenter, &.noty-container-bottomCenter {
+        transform: $translateToCenter; 
+    }
+    &.noty-container-center {
+        transform: $translateToCenterMiddle;
+    }
+    &.noty-container-centerLeft, &.noty-container-centerRight {
+        transform: $translateToMiddle; 
+    }
+} //end of .noty-container
+
+
+//Noty-bar ghost
+@keyframes noty_anim_height { 100% { height: 0; } }
+.noty_fix_effects_height {
+    animation: noty_anim_height 75ms ease-out;
+}
+
+
+/*******************************************
+.noty-bar, the theme and different types
+*******************************************/
+.noty_bar {
+
+    transform: $translateZ $scale; 
+    -webkit-font-smoothing: subpixel-antialiased;
+    overflow: hidden;
+
+    &.noty_theme__#{$noty-theme-name} { 
+        cursor: default;
+        margin: 4px 0;
+        overflow: hidden;
+        position: relative;
+
+        font-size: $font-size-sm; 
+
+        border: $modal-content-border-width solid $modal-content-border-color;
+        @include border-radius($border-radius-lg);
+        @include box-shadow($modal-content-box-shadow-xs);
+
+
+        .noty_body {
+            @include content-padding();
+            //font-size: $font-size-sm;
+        }
+
+        //Container for close-icon moves to top right corner
+        .header-icon-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            margin-top  : $btn-padding-y;
+            margin-right: $btn-padding-x;
+            &.header-icon-container-sm {
+                margin-top  : $btn-padding-y-sm;
+                margin-right: $btn-padding-x-sm;
+            }
+        }
+    }
+}
+
+
+
+//The five different bg-colors for the different type
+@mixin type-colors( $color-name, $color: theme-color-level($color-name, 6) ){
+    $background-color: theme-color-level($color-name, -10);
+    background-color: $background-color;
+    color           : $color;
+    &.noty_close_with_click:hover {
+        background-color: darken($background-color, $darken-hover-percent);
+        color           : darken($color, $darken-hover-percent);
+    }
+}
+.noty_theme__#{$noty-theme-name}.noty_type__alert {         @include type-colors(light);    }
+
+.noty_theme__#{$noty-theme-name}.noty_type__warning{        @include type-colors(warning);  }
+
+.noty_theme__#{$noty-theme-name}.noty_type__error {         @include type-colors(danger);   }
+
+.noty_theme__#{$noty-theme-name}.noty_type__info,
+.noty_theme__#{$noty-theme-name}.noty_type__information {   @include type-colors(info);     }
+
+.noty_theme__#{$noty-theme-name}.noty_type__success {       @include type-colors(success);  }

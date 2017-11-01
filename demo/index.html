@@ -37,12 +37,14 @@ position: fixed;
     <script src="../src/jquery-bootstrap.js"></script>
 	<script src="../src/jquery-bootstrap-table.js"></script>
 	<script src="../src/jquery-bootstrap-modal.js"></script>
+	<script src="../src/jquery-bootstrap-modal-backdrop.js"></script>
 	<script src="../src/jquery-bootstrap-checkbox.js"></script>
 	<script src="../src/jquery-bootstrap-select.js"></script>
 	<script src="../src/jquery-bootstrap-button.js"></script>
 	<script src="../src/jquery-bootstrap-accordion.js"></script>
     <script src="../src/jquery-bootstrap-popover.js"></script>
     <script src="../src/jquery-bootstrap-header.js"></script>
+    <script src="../src/jquery-bootstrap-noty.js"></script>
 
 	<script>
 
@@ -62,6 +64,8 @@ position: fixed;
         var $body = $('body');
 //        var $body = $('#body_container');
         var modals = [];
+
+
 
         function header( text, first ){
             if (!first)
@@ -119,6 +123,39 @@ position: fixed;
 
         $.bsButton({icon: 'fa-home', square: true}).appendTo( $body );
         $.bsButton({icon: 'fa-envelope-o', bigIcon: true}).appendTo( $body );
+
+        $.bsButton({text: 'Noty', onClick:function(){
+
+            var layout = ['topLeft', 'topCenter', 'topRight', 'centerRight', 'center','centerLeft', 'bottomLeft', 'bottomCenter', 'bottomRight', 'bottom', 'top'];
+            $.each(['alert', 'success', 'warning', 'error', 'info', 'alert', 'success', 'warning', 'error', 'info', 'info'], function(index, type){
+                $.bsNoty({ 
+                    type: type,
+                    queue: type,
+                    layout: layout[index],
+                    //modal: (type=='info'),
+                    //force: (type=='info'),
+                    text: [ {icon: 'fa-home', textClass: 'text-capitalize font-weight-bold', text: type},
+                            {text: {da: '<br>'+layout[index]+'<br>Noget tekst '+ Math.random(), en: type+'<br>'+layout[index]+'<br>Some notification text '+ Math.random()}}
+                          ],
+                    //show: true
+                    
+                });
+            });
+
+            $.bsNoty({ 
+                type: 'success', 
+                layout:'center', 
+                text: {
+                    icon: 'fa-check', 
+                    text:{da:'Opsæning gemt', en:'Settings saved'}
+                },
+                closeWith:['click'],
+                force: true, //timeout: 2000
+                modal: true,
+                textAlign: 'center'
+            });
+        
+        }}).appendTo( $body );
 
         demoBtn({
             text: 'Buttons in modal', 
@@ -499,7 +536,25 @@ small: true,
                     extendedContent += '<br>' + i;
                 multi_modals[ modalNumber ] =                 
                     $.bsModal({
-                        buttons: [{
+                        buttons: [
+                        {
+                            text: 'Noty',
+                            onClick: function(){
+                                var layout = ['topCenter', 'topRight', 'bottomLeft', 'centerRight', 'topCenter'];
+                                $.each(['alert', 'success', 'warning', 'error', 'info'], function(index, type){
+                                    $.bsNoty({ 
+                                        type: type,
+                                        queue: type,
+                                        layout: layout[index],
+                                        modal: (type=='info'),
+                                        force: (type=='info'),
+                                        text: {icon:'fa-home', text:type+'<br>'+layout[index]+'<br>Some notification text '+ Math.random()},
+                                        //show: true
+                                    });
+                                });
+                            }
+                        },
+                        {
                             text:'Ny - New', 
                             focus: true,
                             onClick: function(){ 

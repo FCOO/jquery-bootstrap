@@ -67,8 +67,7 @@ Add sort-functions + save col-index for sorted column
             ._bsAddStyleClasses( columnOptions.align )
             .toggleClass('text-nowrap', !!columnOptions.noWrap )
 //TODO            .toggleClass('text-truncate', !!columnOptions.truncate )
-
-            .toggleClass('no-horizontal-padding', !!columnOptions.noHorizontalPadding )
+            .toggleClass('no-horizontal-padding', !!columnOptions.noHorizontalPadding );
 
         if (addWidth && columnOptions.width)
             $element.css({
