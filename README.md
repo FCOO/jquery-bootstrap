@@ -379,6 +379,20 @@ Beside the normal [Noty options](https://ned.im/noty/#/options) the following ne
 
 Each modal gets its own set of noty
 
+### Methods
+    //Simple centered noty with centered text
+    window.notyOk( text );    
+    $.bsNotyOk( text );
+    
+    
+    //Simple error noty with header
+    window.notyError( text ); 
+    $.bsNotyError( text );
+    
+    //Simple warning noty with header
+    window.notyWarning( text );     
+    $.bsNotyWarning( text );
+
 
 <!-- 
 ### **** NEW **** 

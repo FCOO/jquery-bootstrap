@@ -11,12 +11,11 @@
 
 ****************************************************************************/
 
-(function ($, window, document/*, undefined*/) {
+(function ($, window/*, document, undefined*/) {
 	"use strict";
 
-    const zindexModalBackdrop = 1040; //MUST be equal to $zindex-modal-backdrop in bootstrap/scss/_variables.scss
-
-    var modalBackdropLevels = 0,
+    var zindexModalBackdrop = 1040, //MUST be equal to $zindex-modal-backdrop in bootstrap/scss/_variables.scss
+        modalBackdropLevels = 0,
         $modalBackdrop = null;
 
     /******************************************************

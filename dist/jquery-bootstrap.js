@@ -526,6 +526,73 @@ TODO:
 }(jQuery, this, document));
 ;
 /****************************************************************************
+	jquery-bootstrap-modal-backdrop.js,
+
+	(c) 2017, FCOO
+
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+
+    Global methods to provide backdrop for modal windows and noty
+
+****************************************************************************/
+
+(function ($, window/*, document, undefined*/) {
+	"use strict";
+
+    var zindexModalBackdrop = 1040, //MUST be equal to $zindex-modal-backdrop in bootstrap/scss/_variables.scss
+        modalBackdropLevels = 0,
+        $modalBackdrop = null;
+
+    /******************************************************
+    $.fn._setModalBackdropZIndex
+    Set the z-index of this to the current level
+    ******************************************************/
+    $.fn._setModalBackdropZIndex = function( delta ){
+        this.css('z-index', zindexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
+        return this;
+    };
+
+    /******************************************************
+    $._addModalBackdropLevel
+    Move the backdrop up in z-index
+    ******************************************************/
+    $._addModalBackdropLevel = function(){
+        modalBackdropLevels++;
+
+        if (!$modalBackdrop)
+            $modalBackdrop =
+                $('<div/>')
+                    .addClass('global-backdrop')
+                    .appendTo( $('body') );
+
+        $modalBackdrop
+            ._setModalBackdropZIndex( -1 )
+            .removeClass('hidden')
+            .addClass('show');
+    };
+
+    /******************************************************
+    $._removeModalBackdropLevel
+    Move the backdrop up in z-index
+    ******************************************************/
+    $._removeModalBackdropLevel = function(){
+        modalBackdropLevels--;
+
+        $modalBackdrop._setModalBackdropZIndex( -1 );
+        if (!modalBackdropLevels){
+            $modalBackdrop
+                .removeClass('show');
+            window.setTimeout( function(){
+                $modalBackdrop.addClass('hidden');
+            }, 200 );
+
+        }
+    };
+}(jQuery, this, document));
+;
+/****************************************************************************
 	jquery-bootstrap-modal.js,
 
 	(c) 2017, FCOO
@@ -537,7 +604,6 @@ TODO:
 
 (function ($, window, document/*, undefined*/) {
 	"use strict";
-
 
     /**********************************************************
     bsModal( options ) - create a Bootstrap-modal
@@ -569,13 +635,14 @@ TODO:
 
     **********************************************************/
     var modalId = 0,
-        modalStackClassName = 'fv-modal-stack', //class-name for modals when added to the stack
-        openModalDataId = 'bs_open_modals',     //Merthods to allow multi modal-windows
-        modalVerticalMargin = 20;               //Top and bottom margin for modal windows      
+        openModals = 0,
+        modalVerticalMargin = 10; //Top and bottom margin for modal windows
+
+
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
-    Due to an intended design in Safari it is not possible to 
+    Due to an intended design in Safari it is not possible to
     use style a la max-height: calc(100vh - 20px) is not working
     as expected/needed
     Instead a resize-event is added to update the max-height of
@@ -593,36 +660,27 @@ TODO:
     }
     window.addEventListener('resize',            function(){ adjustModalMaxHeight(); }, false );
     window.addEventListener('orientationchange', function(){ adjustModalMaxHeight(); }, false );
-    
-    //******************************************************
-    function incOpenModals( number ){
-        $('body').data(
-            openModalDataId,
-            ($('body').data( openModalDataId  ) || 0)
-                + (number || 0)
-        );
-        return $('body').data( openModalDataId  );
-     }
+
 
     //******************************************************
     //show_bs_modal - called when a modal is opening
     function show_bs_modal( /*event*/ ) {
-
         //Close all popover
         $('.popover.show').popover('hide');
 
         var $this = $(this);
-        // if the z-index of this modal has been set, ignore.
-        if ( $this.hasClass( modalStackClassName ) )
-            return;
 
-        $this.addClass( modalStackClassName );
+        openModals++;
 
-        // keep track of the number of open modals
-        var modalNumber = incOpenModals( +1 );
+        //Move up the backdrop
+        $._addModalBackdropLevel();
+
+        //Add layer for noty on the modal
+        $._bsNotyAddLayer( true );
 
         //Move the modal to the front
-        $this.css('z-index', 1040 + 10*modalNumber );
+        $this._setModalBackdropZIndex();
+
     }
 
     //******************************************************
@@ -632,15 +690,6 @@ TODO:
 
         //Adjust max-height
         adjustModalMaxHeight( $this );
-
-        //Update other backdrop
-        var modalNumber = incOpenModals();
-        $( '.modal-backdrop' ).not( '.'+modalStackClassName )
-            .css( 'z-index', 1039 + 10*modalNumber );
-
-        //Set current backdrop
-        $( '.modal-backdrop' ).not( '.'+modalStackClassName )
-            .addClass( modalStackClassName );
 
         //Focus on focus-element
         var $focusElement = $this.find('.init_focus').last();
@@ -653,16 +702,15 @@ TODO:
     //******************************************************
     //hide_bs_modal - called when a modal is closing
     function hide_bs_modal( /*event*/ ) {
-
+        //Remove all noty added on the modal and move down global backdrop
+        $._bsNotyRemoveLayer();
     }
 
     //******************************************************
     //hidden_bs_modal - called when a modal is closed/hidden
     function hidden_bs_modal( /*event*/ ) {
-        var $this = $(this);
+        openModals--;
 
-        $this.removeClass( modalStackClassName );
-        var openModals = incOpenModals( -1 );
         if (openModals){
             //Move focus to previous modal on top
             var $modal = $('.modal.show').last(),
@@ -697,7 +745,7 @@ TODO:
 
     /******************************************************
     _bsModalBodyAndFooter
-    Create the body and footer content (exc header and bottoms) 
+    Create the body and footer content (exc header and bottoms)
     of a modal inside this. Created elements are saved in parts
     ******************************************************/
     $.fn._bsModalBodyAndFooter = function(options, parts, className){
@@ -747,7 +795,7 @@ TODO:
                     ._bsAddHtml( options.footer );
         return this;
     };
-    
+
     /******************************************************
     _bsModalExtend, _bsModalDiminish, _bsModalToggle
     Methods to change extended-mode
@@ -755,22 +803,22 @@ TODO:
     $.fn._bsModalExtend = function( event ){
         if (this.hasClass('no-modal-extended'))
             this._bsModalToggle( event );
-    };        
+    };
     $.fn._bsModalDiminish = function( event ){
         if (this.hasClass('modal-extended'))
             this._bsModalToggle( event );
-    };        
+    };
 
-    
+
     $.fn._bsModalToggle = function( event ){
         var $this = $(this),
             oldHeight = $this.outerHeight(),
             newHeight;
-        
+
         this.modernizrToggle('modal-extended');
 
         newHeight = $this.outerHeight();
-        $this.height( oldHeight); 
+        $this.height( oldHeight);
 
         $this.animate({height: newHeight}, 'fast', function() { $this.height('auto'); });
 
@@ -787,13 +835,13 @@ TODO:
     $.fn._bsModalContent = function( options ){
         options = options || {};
 
-        
+
         //this.bsModal contains all created elements
         this.bsModal = {};
 
         var $modalContainer = this.bsModal.$container =
                 $('<div/>')
-                    .addClass('modal-content') 
+                    .addClass('modal-content')
                     .modernizrToggle('modal-extended', !!options.isExtended )
                     .appendTo( this );
 
@@ -801,7 +849,7 @@ TODO:
         var modalExtend   = $.proxy( $modalContainer._bsModalExtend,   $modalContainer ),
             modalDiminish = $.proxy( $modalContainer._bsModalDiminish, $modalContainer ),
             modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer );
-        
+
         options = $.extend( true, {
             headerClassName: 'modal-header',
             //Buttons
@@ -817,6 +865,9 @@ TODO:
             }
         }, options );
 
+        //Adjust for options.buttons: null
+        options.buttons = options.buttons || [];
+
         //Add close-botton. Avoid by setting options.closeButton = false
         if (options.closeButton)
             options.buttons.push({
@@ -829,10 +880,10 @@ TODO:
 
         //If the modal has extended content: Normal and extended content get same scroll-options to have same horizontal padding in normal and extended mode
         if (options.extended){
-            options.scroll = options.scroll || options.extended.scroll;            
-            options.extended.scroll = options.scroll;            
+            options.scroll = options.scroll || options.extended.scroll;
+            options.extended.scroll = options.scroll;
         }
-        
+
         //Append header
         if (!options.noHeader &&  (options.header || !$.isEmptyObject(options.icons) ) ){
             var $modalHeader = this.bsModal.$header =
@@ -846,16 +897,16 @@ TODO:
                     .addClass('clickable')
                     .on('doubletap', modalToggle );
         }
-        
+
         //Create normal content
         $modalContainer._bsModalBodyAndFooter( options, this.bsModal, 'hide-for-modal-extended' );
 
         //Create extended content (if any)
         if (options.extended){
-            this.bsModal.extended = {};            
+            this.bsModal.extended = {};
             $modalContainer._bsModalBodyAndFooter( options.extended, this.bsModal.extended, 'show-for-modal-extended' );
         }
-      
+
         //Add buttons (if any)
         var $modalButtonContainer = this.bsModal.$buttonContainer =
                 $('<div/>')
@@ -881,19 +932,19 @@ TODO:
 
             //Add same onClick as close-icon if closeOnClick: true
             if (buttonOptions.closeOnClick)
-                buttonOptions.equalIconId = (buttonOptions.equalIconId || '') + ' close';                    
-            
+                buttonOptions.equalIconId = (buttonOptions.equalIconId || '') + ' close';
+
             buttonOptions.class = defaultButtonClass + ' ' + (buttonOptions.className || '');
-            
+
             var $button =
                 $.bsButton( $.extend({}, defaultButtonOptions, buttonOptions ) )
                     .appendTo( $modalButtonContainer );
-        
+
             //Add onClick from icons (if any)
             buttonOptions.equalIconId = buttonOptions.equalIconId || '';
             $.each( buttonOptions.equalIconId.split(' '), function( index, iconId ){
                 if (iconId && options.icons[iconId] && options.icons[iconId].onClick)
-                    $button.on('click', options.icons[iconId].onClick);                    
+                    $button.on('click', options.icons[iconId].onClick);
             });
 
             $modalButtons.push( $button );
@@ -984,6 +1035,279 @@ TODO:
     };
 
 }(jQuery, this, document));
+;
+/****************************************************************************
+	jquery-bootstrap-noty.js,
+
+	(c) 2017, FCOO
+
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+****************************************************************************/
+
+(function ($, Noty, window/*, document, undefined*/) {
+	"use strict";
+
+
+    /******************************************************
+    To be able to have Noty on top of modal-windows the notys are
+    placed in different containers with increasing and decreasing
+    z-index.
+    A new container is added when a modal-window or modal noty is open
+    All noty in the top container is closed when the modal-window or
+    modal noty is closed. E.q. all noty opened on top of a modal-window is automatic
+    closed when the modal-window is closed
+    ******************************************************/
+    var bsNotyLayerList = [];
+    var $bsNotyLayer = null;
+
+    function notyQueueName(){
+        return 'bsNotyQueue'+ bsNotyLayerList.length;
+    }
+
+    //$._bsNotyAddLayer: add a new container for noty-containers
+    $._bsNotyAddLayer = function(){
+
+        $bsNotyLayer =
+            $('<div/>')
+                .addClass('noty-layer')
+                .appendTo( $('body') );
+
+        bsNotyLayerList.push( $bsNotyLayer );
+
+        $bsNotyLayer
+            .attr('id', notyQueueName())
+            ._setModalBackdropZIndex();
+    };
+
+
+    //$._bsNotyRemoveLayer: close all noty in current layer and remove the layer
+    $._bsNotyRemoveLayer = function(){
+        //Close all noty in current layer
+        Noty.closeAll(notyQueueName());
+
+        //Remove the layer
+        bsNotyLayerList.pop().remove();
+
+        $bsNotyLayer = bsNotyLayerList[ bsNotyLayerList.length - 1];
+
+        //Move down or hide the backdrop
+        $._removeModalBackdropLevel();
+    };
+
+
+    /******************************************************
+    Setting default options for Noty
+    ******************************************************/
+    Noty.overrideDefaults({
+        theme: 'jquery-bootstrap'
+    });
+
+
+    var defaultNotyOptions = {
+        layout   : 'topCenter',
+        type     : 'info',
+        closeWith: ['click', 'button'],
+        textAlign: 'left',
+        show     : true,
+    };
+
+
+    $.bsNoty = function(options){
+        options = $.extend({}, defaultNotyOptions, options );
+
+        //Set animation from layout
+        var animateOpen = 'fadeIn',
+            animateClose = 'fadeOut';
+        if (options.layout.indexOf('top') == 0){
+            //top, topLeft, topCenter, topRight
+            animateOpen  = 'fadeInDown';
+            animateClose = 'fadeOutUp';
+        }
+        else
+        if (options.layout.indexOf('bottom') == 0){
+            //bottom, bottomLeft, bottomCenter, bottomRight
+            animateOpen  = 'fadeInUp';
+            animateClose = 'fadeOutDown';
+        }
+        else
+        if (options.layout == 'centerLeft'){
+            //centerLeft
+            animateOpen  = 'fadeInLeft';
+            animateClose = 'fadeOutLeft';
+        }
+        else
+        if (options.layout == 'centerRight'){
+            //centerRight
+            animateOpen  = 'fadeInRight';
+            animateClose = 'fadeOutRight';
+        }
+        else
+        if (options.layout == 'center'){
+            //centerRight
+            animateOpen  = 'fadeIn';
+            animateClose = 'fadeOut';
+        }
+
+        options.animation = {
+            open : 'animated ' + animateOpen,
+            close: 'animated ' + animateClose
+        };
+
+        //Save closeWith and remove 'button' to prevent default close-button
+        var closeWith = options.closeWith;
+        options.closeWith = closeWith.includes('click') ? ['click'] : [];
+
+        //Save show and create the noty hidden
+        var show = options.show;
+        options.show = false;
+
+        //Create the noty empty and create the content in options.content
+        options.content = options.content || options.text;
+        options.text = '';
+
+        //Add header (if any)
+        if (options.header){
+            if (!$.isArray(options.content))
+                options.content = [options.content];
+
+            options.content.unshift('<br>');
+            options.content.unshift({
+                icon     : options.header.icon ? options.header.icon : null,
+                textClass: 'text-capitalize font-weight-bold',
+                text     : options.header.text ? options.header.text : options.header
+            });
+        }
+
+        //Force no progressBar
+        options.progressBar = false;
+
+        //Always force when modal
+        options.force = options.force || options.modal;
+
+        //Add callbacks.onTemplate to add content (and close-icon)
+        options.callbacks = options.callbacks || {};
+        options.callbacks.onTemplate = function() {
+            var _this = this,
+                $barDom = $(this.barDom),
+                $body = $barDom.find('.noty_body');
+
+            //Replace content with text as object {icon, txt,etc}
+            $body._bsAddHtml( options.content );
+
+            $body.addClass('text-'+options.textAlign);
+
+            if (closeWith.includes('button'))
+                //Add same close-icon as for modal-windows
+                $('<div/>')
+                    ._bsAddBaseClassAndSize( {
+                        baseClass   :'header-icon-container',
+                        useTouchSize: true
+                    })
+                    .appendTo($barDom)
+                    .append(
+                        $('<i/>')
+                            .addClass("header-icon header-icon-close")
+                            .on('click', function( event ){
+                                event.stopPropagation();
+                                _this.close();
+                            })
+                    );
+        };
+
+
+        //If it is a modal noty => add/move up backdrop
+        if (options.modal)
+            $._addModalBackdropLevel();
+
+        //Find or create layer and container for the noty
+        if (!$bsNotyLayer || options.modal){
+            $._bsNotyAddLayer();
+        }
+        var classNames = '.noty-container.noty-container-'+options.layout,
+            $container = $bsNotyLayer.find(classNames);
+        if (!$container.length){
+            $container =
+                $('<div/>')
+                    .addClass( classNames.split('.').join(' ') )
+                    .appendTo( $bsNotyLayer );
+        }
+
+        options.container = '#' + notyQueueName() + ' ' + classNames;
+
+        var result = new Noty( options );
+
+        //If it is a modal noty => remove/move down backdrop when closed
+        if (options.modal)
+            result.on('afterClose', $._bsNotyRemoveLayer);
+
+        if (show)
+            result.show();
+        return result;
+    };
+
+
+    /******************************************************
+    Create standard variations of sbNoty
+    ******************************************************/
+    //$.bsNotyIcon = icon-class for different noty-type
+    $.bsNotyIcon = {
+        info        : 'fa-info-circle',
+        information : 'fa-info-circle',
+        alert       : '',
+        success     : 'fa-check',
+        error       : 'fa-ban',
+        warning     : 'fa-exclamation-triangle',
+        help        : 'fa-question-circle'
+    };
+
+
+    //window.notyOk / $.bsNotyOk: Simple centered noty with centered text
+    window.notyOk = $.bsNotyOk = function( text, options ){
+        return $.bsNoty($.extend({}, {
+            type     : 'success',
+            layout   : 'center',
+            closeWith: ['click'],
+            content  : {
+                icon: $.bsNotyIcon['success'],
+                text: text
+            },
+            textAlign: 'center',
+            force    : true,
+            timeout  : 3000,
+            show     : true
+        }, options));
+    };
+
+    //window.notyError / $.bsNotyError: Simple error noty with header
+    window.notyError = $.bsNotyError = function( text, options ){
+        return $.bsNoty($.extend({}, {
+            type     : 'error',
+            header   : {
+                icon: $.bsNotyIcon['error'],
+                text: {da: 'Fejl', en:'Error'}
+            },
+            content  : text,
+            show     : true
+        }, options));
+    };
+
+    //window.notyError / $.bsNotyError: Simple warning noty with header
+    window.notyWarning = $.bsNotyWarning = function( text, options ){
+        return $.bsNoty($.extend({}, {
+            type     : 'warning',
+            header   : {
+                icon: $.bsNotyIcon['warning'],
+                text: {da: 'Advarsel', en:'Warning'}
+            },
+            content  : text,
+            show     : true
+        }, options));
+    };
+
+
+}(jQuery, this.Noty, this, document));
 ;
 /****************************************************************************
 	jquery-bootstrap-popover.js,
@@ -1446,8 +1770,7 @@ Add sort-functions + save col-index for sorted column
             ._bsAddStyleClasses( columnOptions.align )
             .toggleClass('text-nowrap', !!columnOptions.noWrap )
 //TODO            .toggleClass('text-truncate', !!columnOptions.truncate )
-
-            .toggleClass('no-horizontal-padding', !!columnOptions.noHorizontalPadding )
+            .toggleClass('no-horizontal-padding', !!columnOptions.noHorizontalPadding );
 
         if (addWidth && columnOptions.width)
             $element.css({
@@ -1660,7 +1983,7 @@ Add sort-functions + save col-index for sorted column
 }(jQuery, this, document));
 ;
 /****************************************************************************
-	jquery-bootstrap.js, 
+	jquery-bootstrap.js,
 
 	(c) 2017, FCOO
 
@@ -1673,7 +1996,7 @@ Add sort-functions + save col-index for sorted column
 	"use strict";
 
     /*
-    
+
     Almost all elements comes in two sizes: normal and small set by options.small: false/true
 
     In jquery-bootstrap.scss sizing class-postfix -xs is added (from Bootstrap 3)
@@ -1687,7 +2010,7 @@ Add sort-functions + save col-index for sorted column
     */
 
     //Create namespace
-	var ns = window; 
+	var ns = window;
 
     ns.bsIsTouch =  true;
 
@@ -1701,12 +2024,12 @@ Add sort-functions + save col-index for sorted column
             options.icon     = options.icon || options.headerIcon || options.titleIcon;
             options.text     = options.text || options.header || options.title || options.name;
 
-            options.iconClass = options.iconClass       || options.iconClassName       || 
+            options.iconClass = options.iconClass       || options.iconClassName       ||
                                 options.headerIconClass || options.headerIconClassName ||
                                 options.titleIconClass  || options.titleIconClassName;
 
-            options.textClass = options.textClass   || options.textClassName   || 
-                                options.headerClass || options.headerClassName || 
+            options.textClass = options.textClass   || options.textClassName   ||
+                                options.headerClass || options.headerClassName ||
                                 options.titleClass  || options.titleClassName;
 
             //If context is given => convert all function to proxy
@@ -1715,11 +2038,11 @@ Add sort-functions + save col-index for sorted column
                     if ($.isFunction( value ))
                         options[id] = $.proxy( value, context );
                 });
-            
+
             return options;
         }
         //*********************************************************************
-        
+
         options = $.extend( true, defaultOptions || {}, options, forceOptions || {} );
 
         options.selected = options.selected || options.checked || options.active;
@@ -1740,7 +2063,7 @@ Add sort-functions + save col-index for sorted column
 
         //Sert context = null to avoid "double" proxy
         options.context = null;
-        
+
         return options;
     };
 
@@ -1765,8 +2088,8 @@ Add sort-functions + save col-index for sorted column
         baseClass: "BASE" useTouchSize: true
             small: false => sizeClass = 'BASE-sm'
             small: true  => sizeClass = "BASE-xs"
-        
-        
+
+
         ****************************************************************************************/
         _bsAddBaseClassAndSize: function( options ){
             var classNames = options.baseClass ? [options.baseClass + (options.baseClassPostfix || '')] : [],
@@ -1783,17 +2106,17 @@ Add sort-functions + save col-index for sorted column
 
 
             if (sizeClassPostfix && options.baseClass)
-              classNames.push( options.baseClass + '-' + sizeClassPostfix );                
-            
+              classNames.push( options.baseClass + '-' + sizeClassPostfix );
+
             if (options.styleClass)
-                classNames.push( options.styleClass ); 
+                classNames.push( options.styleClass );
 
             if (options.class)
-                classNames.push( options.class ); 
+                classNames.push( options.class );
 
             this.addClass( classNames.join(' ') );
 
-            this._bsAddStyleClasses( options.textStyle );    
+            this._bsAddStyleClasses( options.textStyle );
 
             return this;
         },
@@ -1802,9 +2125,9 @@ Add sort-functions + save col-index for sorted column
         _bsAddStyleClasses
         Add classes for text-styel
 
-        options [string] or [object]    
+        options [string] or [object]
             Style for the contents. String or object with part of the following
-            "left right center lowercase uppercase capitalize normal bold italic" or 
+            "left right center lowercase uppercase capitalize normal bold italic" or
             {left: true, right: true, center: true, lowercase: true, uppercase: true, capitalize: true, normal: true, bold: true, italic: true}
         ****************************************************************************************/
         _bsAddStyleClasses: function( options ){
@@ -1840,11 +2163,11 @@ Add sort-functions + save col-index for sorted column
                 };
 
             $.each( bsStyleClass, function( style, className ){
-                if (  
+                if (
                       ( (typeof options == 'string') && (options.indexOf(style) > -1 )  ) ||
-                      ( (typeof options == 'object') && (options[style]) ) 
+                      ( (typeof options == 'object') && (options[style]) )
                     )
-                    _this.addClass( className );                    
+                    _this.addClass( className );
             });
             return this;
         },
@@ -1878,7 +2201,7 @@ Add sort-functions + save col-index for sorted column
                         $text
                             .prop('href', 'javascript:undefined')
                             .on('click', link );
-                    else 
+                    else
                         $text
                             .i18n(link, 'href')
                             .prop('target', '_blank');
@@ -1897,34 +2220,34 @@ Add sort-functions + save col-index for sorted column
                 return $text;
             }
             //**************************************************
-            function getArray( input ){ 
-                return input ? $.isArray( input ) ? input : [input] : []; 
+            function getArray( input ){
+                return input ? $.isArray( input ) ? input : [input] : [];
             }
             //**************************************************
 
 
             if (checkForContent && (options.content != null))
-                return this._bsAddHtml( options.content );     
+                return this._bsAddHtml( options.content );
 
             options = options || '';
 
             var _this = this;
 
-            //options = array => add each with space between            
+            //options = array => add each with space between
             if ($.isArray( options )){
                 $.each( options, function( index, textOptions ){
                     if (index)
-                        _this.append('&nbsp;');                      
+                        _this.append('&nbsp;');
                     _this._bsAddHtml( textOptions );
-                });        
-                return this;    
+                });
+                return this;
             }
 
             //Simple version: options == string
             if ($.type( options ) != "object")
-                return this._bsAddHtml( {text: options} );              
-            
-           
+                return this._bsAddHtml( {text: options} );
+
+
             //options = simple textOptions
             var iconArray       = getArray( options.icon ),
                 textArray       = getArray( options.text ),
@@ -1942,12 +2265,12 @@ Add sort-functions + save col-index for sorted column
                 var $icon = $('<i/>').addClass('fa '+icon);
                 if (index < iconClassArray.length)
                     $icon.addClass( iconClassArray[index] );
-                //$icon.appendTo( _this );                
+                //$icon.appendTo( _this );
 
                 create$element( 'i', null, titleArray[ index ], null, 'fa '+icon + ' ' + (iconClassArray[index] || '') )
                     .appendTo( _this );
             });
-                
+
             //Add color (optional)
             if (options.color)
                 _this.addClass('text-'+ options.color);
@@ -1958,27 +2281,27 @@ Add sort-functions + save col-index for sorted column
             //Add text
             $.each( textArray, function( index, text ){
                 var $text = create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
-               
+
                 if ($.isFunction( text ))
                     text( $text );
                 else
                     if (text == $.EMPTY_TEXT)
                         $text.html( '&nbsp;');
                     else
-                        $text.i18n( text );
+                        $text.i18n( text, 'html' );
 
                 if (index < textClassArray.length)
                     $text.addClass( textClassArray[index] );
-                $text.appendTo( _this );                
+                $text.appendTo( _this );
             });
-            
+
             //Add value-format content
             $.each( vfValueArray, function( index, vfValue ){
                 create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
                     .vfValueFormat( vfValue || '', vfFormatArray[index], vfOptionsArray[index] )
-                    .appendTo( _this );                
+                    .appendTo( _this );
             });
-            
+
             return this;
         },
 
@@ -1994,12 +2317,12 @@ Add sort-functions + save col-index for sorted column
 
 
 	/******************************************
-	Initialize/ready 
+	Initialize/ready
 	*******************************************/
-	$(function() { 
+	$(function() {
 
-	
-	}); 
+
+	});
 	//******************************************
 
 

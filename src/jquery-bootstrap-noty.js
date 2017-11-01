@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function ($ /*, window, document, undefined*/) {
+(function ($, Noty, window/*, document, undefined*/) {
 	"use strict";
 
 
@@ -40,8 +40,8 @@
 
         $bsNotyLayer
             .attr('id', notyQueueName())
-            ._setModalBackdropZIndex()
-    }
+            ._setModalBackdropZIndex();
+    };
 
 
     //$._bsNotyRemoveLayer: close all noty in current layer and remove the layer
@@ -56,14 +56,14 @@
 
         //Move down or hide the backdrop
         $._removeModalBackdropLevel();
-    }
+    };
 
 
     /******************************************************
     Setting default options for Noty
     ******************************************************/
     Noty.overrideDefaults({
-        theme    : 'jquery-bootstrap'
+        theme: 'jquery-bootstrap'
     });
 
 
@@ -125,28 +125,38 @@
         var show = options.show;
         options.show = false;
 
-        //Save text and create the noty empty
-        var text = options.text;
+        //Create the noty empty and create the content in options.content
+        options.content = options.content || options.text;
         options.text = '';
+
+        //Add header (if any)
+        if (options.header){
+            if (!$.isArray(options.content))
+                options.content = [options.content];
+
+            options.content.unshift('<br>');
+            options.content.unshift({
+                icon     : options.header.icon ? options.header.icon : null,
+                textClass: 'text-capitalize font-weight-bold',
+                text     : options.header.text ? options.header.text : options.header
+            });
+        }
 
         //Force no progressBar
         options.progressBar = false;
 
-
         //Always force when modal
         options.force = options.force || options.modal;
 
-
         //Add callbacks.onTemplate to add content (and close-icon)
         options.callbacks = options.callbacks || {};
-
         options.callbacks.onTemplate = function() {
             var _this = this,
                 $barDom = $(this.barDom),
                 $body = $barDom.find('.noty_body');
 
             //Replace content with text as object {icon, txt,etc}
-            $body._bsAddHtml( text || options.content );
+            $body._bsAddHtml( options.content );
 
             $body.addClass('text-'+options.textAlign);
 
@@ -166,7 +176,7 @@
                                 _this.close();
                             })
                     );
-        }
+        };
 
 
         //If it is a modal noty => add/move up backdrop
@@ -200,8 +210,63 @@
     };
 
 
+    /******************************************************
+    Create standard variations of sbNoty
+    ******************************************************/
+    //$.bsNotyIcon = icon-class for different noty-type
+    $.bsNotyIcon = {
+        info        : 'fa-info-circle',
+        information : 'fa-info-circle',
+        alert       : '',
+        success     : 'fa-check',
+        error       : 'fa-ban',
+        warning     : 'fa-exclamation-triangle',
+        help        : 'fa-question-circle'
+    };
 
 
+    //window.notyOk / $.bsNotyOk: Simple centered noty with centered text
+    window.notyOk = $.bsNotyOk = function( text, options ){
+        return $.bsNoty($.extend({}, {
+            type     : 'success',
+            layout   : 'center',
+            closeWith: ['click'],
+            content  : {
+                icon: $.bsNotyIcon['success'],
+                text: text
+            },
+            textAlign: 'center',
+            force    : true,
+            timeout  : 3000,
+            show     : true
+        }, options));
+    };
+
+    //window.notyError / $.bsNotyError: Simple error noty with header
+    window.notyError = $.bsNotyError = function( text, options ){
+        return $.bsNoty($.extend({}, {
+            type     : 'error',
+            header   : {
+                icon: $.bsNotyIcon['error'],
+                text: {da: 'Fejl', en:'Error'}
+            },
+            content  : text,
+            show     : true
+        }, options));
+    };
+
+    //window.notyError / $.bsNotyError: Simple warning noty with header
+    window.notyWarning = $.bsNotyWarning = function( text, options ){
+        return $.bsNoty($.extend({}, {
+            type     : 'warning',
+            header   : {
+                icon: $.bsNotyIcon['warning'],
+                text: {da: 'Advarsel', en:'Warning'}
+            },
+            content  : text,
+            show     : true
+        }, options));
+    };
 
 
-}(jQuery, this, document));
+}(jQuery, this.Noty, this, document));

@@ -115,8 +115,6 @@
     //******************************************************
     //hidden_bs_modal - called when a modal is closed/hidden
     function hidden_bs_modal( /*event*/ ) {
-        var $this = $(this);
-
         openModals--;
 
         if (openModals){

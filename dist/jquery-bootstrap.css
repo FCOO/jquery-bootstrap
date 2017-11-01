@@ -3346,7 +3346,7 @@ button.close {
   .modal-backdrop.fade {
     opacity: 0; }
   .modal-backdrop.show {
-    opacity: 0.3; }
+    opacity: 0.5; }
 
 .modal-header {
   display: flex;
@@ -7074,6 +7074,52 @@ body.modal-open .modal {
   padding-bottom: 0; }
 
 /************************************************************
+MODAL-BACKDROP
+
+
+************************************************************/
+.modal-backdrop {
+  display: none !important; }
+
+.global-backdrop {
+  position: fixed;
+  z-index: inherit;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: #000;
+  animation: fadeOutToNone .3s ease-out; }
+  .global-backdrop.hidden {
+    display: none; }
+  .global-backdrop.show {
+    display: block;
+    opacity: 0.5;
+    animation: fadeInFromNone .3s ease-out; }
+
+@keyframes fadeInFromNone {
+  0% {
+    display: none;
+    opacity: 0; }
+  1% {
+    display: block;
+    opacity: 0; }
+  100% {
+    display: block;
+    opacity: 0.5; } }
+
+@keyframes fadeOutToNone {
+  0% {
+    display: block;
+    opacity: 0.5; }
+  99% {
+    display: block;
+    opacity: 0; }
+  100% {
+    display: none;
+    opacity: 0; } }
+
+/************************************************************
 FORM
 ************************************************************/
 /************************************************************
@@ -7392,3 +7438,148 @@ Using Bootstrap Collapse to create accordion
   .modal-sm .accordion .card-footer:empty,
   .accordion-sm .card-footer:empty {
     display: none; }
+
+/************************************************************
+NOTY
+
+Additional and changed style for Noty
+************************************************************/
+.animated {
+  animation-duration: .3s; }
+
+/*****************************************
+Create theme jquery-bootstrap
+To be able to control z-index of noty the complete scss
+for noty is copyed and modified
+*****************************************/
+.noty_modal {
+  display: none; }
+
+/*******************************************
+.noty-layer
+*******************************************/
+.noty-layer {
+  position: fixed;
+  z-index: 1040; }
+  .noty-layer .noty-layer-backdrop {
+    position: fixed;
+    z-index: inherit;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: #000;
+    opacity: 0.5; }
+
+/*******************************************
+.noty-container and .noty-container-LAYOUT
+*******************************************/
+.noty-container {
+  position: fixed;
+  z-index: inherit;
+  margin: 0;
+  padding: 0;
+  transform: translateZ(0) scale(1, 1);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+  filter: blur(0);
+  width: 325px;
+  max-width: 90%; }
+  .noty-container.noty-container-top, .noty-container.noty-container-bottom {
+    left: 5%;
+    width: 90%; }
+  .noty-container.noty-container-top {
+    top: 0; }
+  .noty-container.noty-container-topLeft, .noty-container.noty-container-topCenter, .noty-container.noty-container-topRight {
+    top: 20px; }
+  .noty-container.noty-container-center, .noty-container.noty-container-centerLeft, .noty-container.noty-container-centerRight {
+    top: 50%; }
+  .noty-container.noty-container-bottomLeft, .noty-container.noty-container-bottomCenter, .noty-container.noty-container-bottomRight {
+    bottom: 20px; }
+  .noty-container.noty-container-bottom {
+    bottom: 0; }
+  .noty-container.noty-container-topLeft, .noty-container.noty-container-centerLeft, .noty-container.noty-container-bottomLeft {
+    left: 20px; }
+  .noty-container.noty-container-topCenter, .noty-container.noty-container-center, .noty-container.noty-container-bottomCenter {
+    left: 50%; }
+  .noty-container.noty-container-topRight, .noty-container.noty-container-centerRight, .noty-container.noty-container-bottomRight {
+    right: 20px; }
+  .noty-container.noty-container-topCenter, .noty-container.noty-container-bottomCenter {
+    transform: translate(calc(-50% - 1px/2)) translateZ(0) scale(1, 1); }
+  .noty-container.noty-container-center {
+    transform: translate(calc(-50% - 1px/2), calc(-50% - 1px/2)) translateZ(0) scale(1, 1); }
+  .noty-container.noty-container-centerLeft, .noty-container.noty-container-centerRight {
+    transform: translate(0, calc(-50% - 1px/2)) translateZ(0) scale(1, 1); }
+
+@keyframes noty_anim_height {
+  100% {
+    height: 0; } }
+
+.noty_fix_effects_height {
+  animation: noty_anim_height 75ms ease-out; }
+
+/*******************************************
+.noty-bar, the theme and different types
+*******************************************/
+.noty_bar {
+  transform: translateZ(0) scale(1, 1);
+  -webkit-font-smoothing: subpixel-antialiased;
+  overflow: hidden; }
+  .noty_bar.noty_theme__jquery-bootstrap {
+    cursor: default;
+    margin: 4px 0;
+    overflow: hidden;
+    position: relative;
+    font-size: 0.875rem;
+    border: 1px solid #868e96;
+    border-radius: 0.3rem;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5); }
+    .noty_bar.noty_theme__jquery-bootstrap .noty_body {
+      padding: 0.5rem 0.5rem;
+      font-size: 1rem; }
+    .noty_bar.noty_theme__jquery-bootstrap .header-icon-container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      margin-top: 0.5rem;
+      margin-right: 0.5rem; }
+      .noty_bar.noty_theme__jquery-bootstrap .header-icon-container.header-icon-container-sm {
+        margin-top: 0.25rem;
+        margin-right: 0.25rem; }
+
+.noty_theme__jquery-bootstrap.noty_type__alert {
+  background-color: #fefefe;
+  color: #818182; }
+  .noty_theme__jquery-bootstrap.noty_type__alert.noty_close_with_click:hover {
+    background-color: #f1f1f1;
+    color: #747475; }
+
+.noty_theme__jquery-bootstrap.noty_type__warning {
+  background-color: #fff3cd;
+  color: #856404; }
+  .noty_theme__jquery-bootstrap.noty_type__warning.noty_close_with_click:hover {
+    background-color: #ffedb4;
+    color: #6c5103; }
+
+.noty_theme__jquery-bootstrap.noty_type__error {
+  background-color: #f8d7da;
+  color: #721c24; }
+  .noty_theme__jquery-bootstrap.noty_type__error.noty_close_with_click:hover {
+    background-color: #f4c1c6;
+    color: #5e171e; }
+
+.noty_theme__jquery-bootstrap.noty_type__info,
+.noty_theme__jquery-bootstrap.noty_type__information {
+  background-color: #d1ecf1;
+  color: #0c5460; }
+  .noty_theme__jquery-bootstrap.noty_type__info.noty_close_with_click:hover,
+  .noty_theme__jquery-bootstrap.noty_type__information.noty_close_with_click:hover {
+    background-color: #bde4eb;
+    color: #094049; }
+
+.noty_theme__jquery-bootstrap.noty_type__success {
+  background-color: #d4edda;
+  color: #155724; }
+  .noty_theme__jquery-bootstrap.noty_type__success.noty_close_with_click:hover {
+    background-color: #c2e5cb;
+    color: #10421c; }
