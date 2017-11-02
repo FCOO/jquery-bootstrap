@@ -79,6 +79,9 @@
     $.bsNoty = function(options){
         options = $.extend({}, defaultNotyOptions, options );
 
+        if (options.type == 'information')
+            options.type = 'info';
+
         //Set animation from layout
         var animateOpen = 'fadeIn',
             animateClose = 'fadeOut';

@@ -5857,6 +5857,11 @@ Style for div with controls inside modal.
 Must have tabindex:"-1" to work with focus
 ************************************************************/
 /************************************************************
+TYPE-COLOR
+Bg-color and color for different 'type' (warning, alert, info, error, success)
+Used in Noty and Modal
+************************************************************/
+/************************************************************
 HEADER AND TITLE BACKGROUND-COLOR AND COLOR
 Headers for modal, popover, popup etc.
 ************************************************************/
@@ -6949,6 +6954,21 @@ body.modal-open .modal {
     padding: 0.5rem 0.5rem;
     font-size: 1rem;
     border-radius: calc( 0.3rem - 1px); }
+    .modal .modal-content .modal-body.modal-type-alert, .modal-inline .modal-content .modal-body.modal-type-alert {
+      background-color: #fefefe;
+      color: #818182; }
+    .modal .modal-content .modal-body.modal-type-success, .modal-inline .modal-content .modal-body.modal-type-success {
+      background-color: #d4edda;
+      color: #155724; }
+    .modal .modal-content .modal-body.modal-type-warning, .modal-inline .modal-content .modal-body.modal-type-warning {
+      background-color: #fff3cd;
+      color: #856404; }
+    .modal .modal-content .modal-body.modal-type-error, .modal-inline .modal-content .modal-body.modal-type-error {
+      background-color: #f8d7da;
+      color: #721c24; }
+    .modal .modal-content .modal-body.modal-type-info, .modal-inline .modal-content .modal-body.modal-type-info {
+      background-color: #d1ecf1;
+      color: #0c5460; }
   .modal .modal-content .modal-footer-header, .modal-inline .modal-content .modal-footer-header {
     flex-shrink: 0;
     flex-grow: 0;
@@ -7554,6 +7574,13 @@ for noty is copyed and modified
     background-color: #f1f1f1;
     color: #747475; }
 
+.noty_theme__jquery-bootstrap.noty_type__success {
+  background-color: #d4edda;
+  color: #155724; }
+  .noty_theme__jquery-bootstrap.noty_type__success.noty_close_with_click:hover {
+    background-color: #c2e5cb;
+    color: #10421c; }
+
 .noty_theme__jquery-bootstrap.noty_type__warning {
   background-color: #fff3cd;
   color: #856404; }
@@ -7568,18 +7595,9 @@ for noty is copyed and modified
     background-color: #f4c1c6;
     color: #5e171e; }
 
-.noty_theme__jquery-bootstrap.noty_type__info,
-.noty_theme__jquery-bootstrap.noty_type__information {
+.noty_theme__jquery-bootstrap.noty_type__info {
   background-color: #d1ecf1;
   color: #0c5460; }
-  .noty_theme__jquery-bootstrap.noty_type__info.noty_close_with_click:hover,
-  .noty_theme__jquery-bootstrap.noty_type__information.noty_close_with_click:hover {
+  .noty_theme__jquery-bootstrap.noty_type__info.noty_close_with_click:hover {
     background-color: #bde4eb;
     color: #094049; }
-
-.noty_theme__jquery-bootstrap.noty_type__success {
-  background-color: #d4edda;
-  color: #155724; }
-  .noty_theme__jquery-bootstrap.noty_type__success.noty_close_with_click:hover {
-    background-color: #c2e5cb;
-    color: #10421c; }

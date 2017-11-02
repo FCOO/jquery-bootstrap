@@ -142,6 +142,13 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
             flex-grow  : 1; //Only .modal-body is growing
             @include content-padding();
             @include border-radius( calc( #{$border-radius-lg} - #{$modal-content-border-width} ) );    
+
+            //Background-color and color for modal-type-NAME, NAME=alert, success, warning, error, info
+            @each $type in $type-list {
+                &.modal-type-#{$type} {
+                    @include type-colors( $type );
+                }
+            }
         }
 
         .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons

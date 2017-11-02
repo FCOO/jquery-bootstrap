@@ -544,12 +544,16 @@ small: true,
             else { 
                 var content = 'Modal # = ' + modalNumber; 
                 var extendedContent = 'Modal # = ' + modalNumber; 
+                var typeList = ['success', 'error', 'alert', 'info', 'warning'];
+                var type = typeList[ modalNumber % typeList.length];
                 for (var i=0; i<2; i++ )
                     content += '<br>' + i;
                 for (var i=0; i<20-modalNumber; i++ )
                     extendedContent += '<br>' + i;
                 multi_modals[ modalNumber ] =                 
                     $.bsModal({
+                        header: 'Nr '+modalNumber+' type='+type,
+                        type: type,
                         buttons: [
                         {
                             text: 'Noty',

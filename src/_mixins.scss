@@ -111,6 +111,51 @@ Must have tabindex:"-1" to work with focus
 }
 
 /************************************************************
+TYPE-COLOR
+Bg-color and color for different 'type' (warning, alert, info, error, success)
+Used in Noty and Modal
+************************************************************/
+
+//$type-theme = convert between type and Bootstrap theme
+$type-list: alert, success, warning, error, info;
+$type-theme: (
+    alert       : light,
+    success     : success,
+    warning     : warning,
+    error       : danger,
+    info        : info
+);
+$type-theme-color: (
+    alert       : false,//green,
+    success     : false,
+    warning     : false,
+    error       : false,
+    info        : false
+);
+
+
+@mixin type-colors( $type, $hover-class: false  ){
+    $color-name: map-get($type-theme, $type);
+    $background-color: theme-color-level($color-name, -10);
+
+    //Get color from $type-theme-color
+    $color: map-get($type-theme-color, $type);
+    @if ($color == false) {
+        $color: theme-color-level($color-name, 6);
+    }
+    background-color: $background-color;
+    color           : $color;
+
+    @if ($hover-class){
+        &.#{$hover-class}:hover {
+            background-color: darken($background-color, $darken-hover-percent);
+            color           : darken($color, $darken-hover-percent);
+        }
+    }
+}
+
+
+/************************************************************
 HEADER AND TITLE BACKGROUND-COLOR AND COLOR
 Headers for modal, popover, popup etc.
 ************************************************************/

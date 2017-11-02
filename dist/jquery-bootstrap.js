@@ -614,13 +614,14 @@ TODO:
             close   : {onClick, attr, className, attr, data }
             extend  : {onClick, attr, className, attr, data }
             diminish: {onClick, attr, className, attr, data }
-}
+}       type //"", "alert", "success", "warning", "error", "info"
         fixedContent
         flex
         noVerticalPadding
         content
         scroll: boolean | 'vertical' | 'horizontal'
         extended: {
+            type
             fixedContent
             flex
             noVerticalPadding
@@ -769,6 +770,7 @@ TODO:
         var $modalBody = parts.$body =
                 $('<div/>')
                     .addClass('modal-body ' + className)
+                    .toggleClass('modal-type-' + options.type, !!options.type)
                     .appendTo( this ),
 
             $modalContent = parts.$content =
@@ -1116,6 +1118,9 @@ TODO:
 
     $.bsNoty = function(options){
         options = $.extend({}, defaultNotyOptions, options );
+
+        if (options.type == 'information')
+            options.type = 'info';
 
         //Set animation from layout
         var animateOpen = 'fadeIn',

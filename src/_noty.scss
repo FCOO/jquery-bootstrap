@@ -171,22 +171,8 @@ $corner-space: 20px;
 
 
 //The five different bg-colors for the different type
-@mixin type-colors( $color-name, $color: theme-color-level($color-name, 6) ){
-    $background-color: theme-color-level($color-name, -10);
-    background-color: $background-color;
-    color           : $color;
-    &.noty_close_with_click:hover {
-        background-color: darken($background-color, $darken-hover-percent);
-        color           : darken($color, $darken-hover-percent);
+@each $type in $type-list {
+    .noty_theme__#{$noty-theme-name}.noty_type__#{$type} {
+        @include type-colors( $type, noty_close_with_click );
     }
 }
-.noty_theme__#{$noty-theme-name}.noty_type__alert {         @include type-colors(light);    }
-
-.noty_theme__#{$noty-theme-name}.noty_type__warning{        @include type-colors(warning);  }
-
-.noty_theme__#{$noty-theme-name}.noty_type__error {         @include type-colors(danger);   }
-
-.noty_theme__#{$noty-theme-name}.noty_type__info,
-.noty_theme__#{$noty-theme-name}.noty_type__information {   @include type-colors(info);     }
-
-.noty_theme__#{$noty-theme-name}.noty_type__success {       @include type-colors(success);  }

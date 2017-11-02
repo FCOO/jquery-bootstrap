@@ -341,6 +341,7 @@ Eq.
 | `noHeader` | `boolean` | `false` | Prevent header even if `options.header` is set |
 | `flex` | `boolean` | `false` | The default width of a modal is 300px. If `true` the the width of the modal will adjust to the width of the browser up to 600px |
 | `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
+| `type` | `string` | `""` | Sets `background-color` and `color` to match the [Noty](#noty) types<br> Possible value=`"alert"`, `"success"`, `"warning"`, `"error"`, `"info"`  |
 | `noVerticalPadding` | `boolean` | `false` | If `true` the the vertical padding around the contents is zero |
 | `show` | `boolean` |  `true` | The modal is shown after creation |
 | `fixedContent` |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
@@ -350,6 +351,7 @@ Eq.
 | `buttons` | `[] of button-options` | `[]` | Array of options for buttons in the footer. See Button above. `closeOnClick: true/false` is added to set if the button closes the modal |
 | `closeText` | `string or i18n-record`| `{da:'Luk', en:'Close'}` | The text for the close-button. |
 | `closeIcon` | `string`| `"fa-times"` | The icon for the close-button |
+| `extended` | `object`| `null` | The extended content. `{type, fixedContent, flex, noVerticalPadding, content, scroll, footer}`  |
 
 ### Methods
 
