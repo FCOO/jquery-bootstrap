@@ -245,7 +245,7 @@ Add sort-functions + save col-index for sorted column
             });
 
         if (options.selectable){
-            var radioGroupOptions = $.extend( true, options );
+            var radioGroupOptions = $.extend( true, {}, options );
             radioGroupOptions.className = 'active';
             options.radioGroup = $.radioGroup( radioGroupOptions );
         }

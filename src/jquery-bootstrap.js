@@ -59,7 +59,7 @@
         }
         //*********************************************************************
 
-        options = $.extend( true, defaultOptions || {}, options, forceOptions || {} );
+        options = $.extend( true, {}, defaultOptions || {}, options, forceOptions || {} );
 
         options.selected = options.selected || options.checked || options.active;
         options.list     = options.list     || options.buttons || options.items || options.children;

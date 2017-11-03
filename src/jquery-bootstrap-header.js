@@ -27,11 +27,13 @@
     $.fn._bsHeaderAndIcons = function(options){
         var $this = this;
 
-        options = $.extend( true, {
-            headerClassName: '',    
-            icons          : {}
-            
-        }, options );
+        options = $.extend( true,
+            {
+                headerClassName: '',
+                icons          : {}
+            },
+            options
+        );
 
         this
             .addClass( options.headerClassName )

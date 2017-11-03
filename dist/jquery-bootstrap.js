@@ -481,11 +481,13 @@ TODO:
     $.fn._bsHeaderAndIcons = function(options){
         var $this = this;
 
-        options = $.extend( true, {
-            headerClassName: '',    
-            icons          : {}
-            
-        }, options );
+        options = $.extend( true,
+            {
+                headerClassName: '',
+                icons          : {}
+            },
+            options
+        );
 
         this
             .addClass( options.headerClassName )
@@ -1968,7 +1970,7 @@ Add sort-functions + save col-index for sorted column
             });
 
         if (options.selectable){
-            var radioGroupOptions = $.extend( true, options );
+            var radioGroupOptions = $.extend( true, {}, options );
             radioGroupOptions.className = 'active';
             options.radioGroup = $.radioGroup( radioGroupOptions );
         }
@@ -2063,7 +2065,7 @@ Add sort-functions + save col-index for sorted column
         }
         //*********************************************************************
 
-        options = $.extend( true, defaultOptions || {}, options, forceOptions || {} );
+        options = $.extend( true, {}, defaultOptions || {}, options, forceOptions || {} );
 
         options.selected = options.selected || options.checked || options.active;
         options.list     = options.list     || options.buttons || options.items || options.children;
