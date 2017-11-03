@@ -375,8 +375,8 @@ Beside the normal [Noty options](https://ned.im/noty/#/options) the following ne
 | :--: | :--: | :-----: | --- |
 | `text` or `content` | `content` or `[] of content` | `""` | See above |
 | `textAlign` | `string` | `"left"` | `"left"`, `"center"`, or `"right"`  |
-
-
+| `header` | `content` | `""` | See above  |
+| `defaultHeader` | `boolean` | `false` | If `true` use default header (icon + name) defined in `$.bsNotyIcon` and `$.bsNotyName` |
 
 
 Each modal gets its own set of noty

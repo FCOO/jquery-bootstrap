@@ -1173,15 +1173,26 @@ TODO:
         options.text = '';
 
         //Add header (if any)
-        if (options.header){
+        if (options.header || options.defaultHeader){
             if (!$.isArray(options.content))
                 options.content = [options.content];
 
+            options.header = options.header || {};
+
+            var headerOptions =
+                options.defaultHeader ?
+                $.extend({},
+                    {
+                        icon: $.bsNotyIcon[options.type],
+                        text: $.bsNotyName[options.type]
+                    }, options.header || {})
+                : options.header || {};
+
             options.content.unshift('<br>');
             options.content.unshift({
-                icon     : options.header.icon ? options.header.icon : null,
+                icon     : headerOptions.icon,
                 textClass: 'text-capitalize font-weight-bold',
-                text     : options.header.text ? options.header.text : options.header
+                text     : headerOptions.text
             });
         }
 
@@ -1267,6 +1278,16 @@ TODO:
         help        : 'fa-question-circle'
     };
 
+    //$.bsNotyName = Name for different noty-type
+    $.bsNotyName = {
+        info        : {da:'Information', en:'Information'},
+        information : {da:'Information', en:'Information'},
+        alert       : {da:'Bemærk', en:'Note'},
+        success     : {da:'Succes', en:'Success'},
+        error       : {da:'Fejl', en:'Error'},
+        warning     : {da:'Advarsel', en:'Warning'},
+        help        : {da:'Hjælp', en:'Help'}
+    };
 
     //window.notyOk / $.bsNotyOk: Simple centered noty with centered text
     window.notyOk = $.bsNotyOk = function( text, options ){
@@ -1288,26 +1309,20 @@ TODO:
     //window.notyError / $.bsNotyError: Simple error noty with header
     window.notyError = $.bsNotyError = function( text, options ){
         return $.bsNoty($.extend({}, {
-            type     : 'error',
-            header   : {
-                icon: $.bsNotyIcon['error'],
-                text: {da: 'Fejl', en:'Error'}
-            },
-            content  : text,
-            show     : true
+            type         : 'error',
+            defaultHeader: true,
+            content      : text,
+            show         : true
         }, options));
     };
 
     //window.notyError / $.bsNotyError: Simple warning noty with header
     window.notyWarning = $.bsNotyWarning = function( text, options ){
         return $.bsNoty($.extend({}, {
-            type     : 'warning',
-            header   : {
-                icon: $.bsNotyIcon['warning'],
-                text: {da: 'Advarsel', en:'Warning'}
-            },
-            content  : text,
-            show     : true
+            type         : 'warning',
+            defaultHeader: true,
+            content      : text,
+            show         : true
         }, options));
     };
 
