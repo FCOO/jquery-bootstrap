@@ -1214,6 +1214,16 @@ TODO:
             //Replace content with text as object {icon, txt,etc}
             $body._bsAddHtml( options.content );
 
+            //Add footer (if any)
+            if (options.footer){
+                $body.append( $('<hr/>') );
+                $('<div/>')
+                    .addClass('noty_footer')
+                    .addClass('text-' + (options.footer.textAlign || 'left'))
+                    ._bsAddHtml( options.footer )
+                    .appendTo($body);
+            }
+
             $body.addClass('text-'+options.textAlign);
 
             if (closeWith.includes('button'))

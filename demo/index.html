@@ -143,6 +143,12 @@ position: fixed;
                     //modal: (type=='info'),
                     //force: (type=='info'),
                     defaultHeader: true,
+                    footer: {
+                        icon: 'fa-home',
+                        textAlign: 'right',
+                        text     : 'footer text'
+                    },
+
                     text: [
                         layout[index]+'<br>', 
                         {text: {da: 'Noget tekst ', en: 'Some text '}},
@@ -563,7 +569,8 @@ small: true,
                                         layout: layout[index],
                                         modal: (type=='info'),
                                         force: (type=='info'),
-                                        text: {icon:'fa-home', text:type+'<br>'+layout[index]+'<br>Some notification text '+ Math.random()},
+                                        defaultHeader: true,
+                                        text: 'Some notification text '+ Math.random(),
                                         //show: true
                                     });
                                 });
