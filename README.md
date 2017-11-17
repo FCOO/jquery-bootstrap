@@ -339,7 +339,8 @@ Eq.
 | :--: | :--: | :-----: | --- |
 | `header` | `content` or `[] of content` | `""` | See above |
 | `noHeader` | `boolean` | `false` | Prevent header even if `options.header` is set |
-| `flex` | `boolean` | `false` | The default width of a modal is 300px. If `true` the the width of the modal will adjust to the width of the browser up to 600px |
+| `flex` | `boolean` | `false` | The default width of a modal is 300px. If `true` the width of the modal will adjust to the width of the browser up to 500px |
+| `extraWidth` | `boolean` | `false` | Only when `flex` is set: If `true` the width of the modal will adjust to the width of the browser up to 800px |
 | `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
 | `type` | `string` | `""` | Sets `background-color` and `color` to match the [Noty](#noty) types<br> Possible value=`"alert"`, `"success"`, `"warning"`, `"error"`, `"info"`  |
 | `noVerticalPadding` | `boolean` | `false` | If `true` the the vertical padding around the contents is zero |

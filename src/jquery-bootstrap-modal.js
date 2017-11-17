@@ -408,6 +408,7 @@
             $('<div/>')
                 .addClass('modal-dialog')
                 .addClass(options.flex ? 'modal-flex' : '')
+                .addClass(options.flex && options.extraWidth ? 'extra-width' : '')
                 .attr( 'role', 'document')
                 .appendTo( $result );
 

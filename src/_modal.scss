@@ -57,9 +57,14 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
         max-width: calc(100vw - #{2*$modal-dialog-margin});
         width    : $modal-sm-rem;
 
-        html.medium-up &, &.modal-flex {
+        &.modal-flex {
             width: $modal-md-rem;
+
+            &.extra-width {
+                width: $modal-lg-rem;
+            }
         }
+
 
         .modal-content { 
             min-height: 100%; //Bug fix for IE11
