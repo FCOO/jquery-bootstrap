@@ -6886,9 +6886,6 @@ body.modal-open .modal {
   width: 18.75rem;
   opacity: 0;
   transition: opacity 0.3s linear; }
-  @media (max-height: 575px) {
-    .modal .modal-dialog {
-      justify-content: flex-start; } }
   .modal .modal-dialog.modal-flex {
     width: 31.25rem; }
     .modal .modal-dialog.modal-flex.extra-width {

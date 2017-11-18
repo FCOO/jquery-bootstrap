@@ -45,10 +45,10 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 
         justify-content: center;
     
-        //On small screens the modal is placed at the top
-        @media (max-height: 575px) {
-            justify-content: flex-start;
-        }
+        //On small screens the modal is placed at the top - REMOVED
+//        @media (max-height: 575px) {
+//            justify-content: flex-start;
+//        }
 
         margin   : 0 auto;
 
