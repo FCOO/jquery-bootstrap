@@ -1,5 +1,5 @@
 /***********************************************
-	jquery-bootstrap.scss, 
+	jquery-bootstrap.scss,
 
 	(c) 2017, FCOO
 
@@ -9,8 +9,8 @@
 
 ************************************************/
 
-//BOURBON - http://bourbon.io/
-@import "../bower_components/bourbon/app/assets/stylesheets/bourbon";
+//BOURBON - http://bourbon.io/ - version 5
+@import "../bower_components/bourbon/core/bourbon";
 
 //MODERNIZR-MIXIN - https://github.com/danielguillan/modernizr-mixin
 @import "../bower_components/modernizr-mixin/stylesheets/modernizr";
