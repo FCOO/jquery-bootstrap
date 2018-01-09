@@ -5,8 +5,8 @@ VARIABLES
 
 /***********************************************
 DEFINE BOOTSTRAP BUTTON STYLE
-$btn-style-name MUST correspond with ns.bsButtonClass 
-in src/jquery-bootstrap-button.js 
+$btn-style-name MUST correspond with ns.bsButtonClass
+in src/jquery-bootstrap-button.js
 ************************************************/
 $btn-style-name: standard;
 
@@ -29,8 +29,8 @@ $font-size-sm  : .875rem    14px
 $font-size-xs  : .75rem     12px
 
 ************************************************************/
-$font-size-header   : $font-size-sm; 
-$font-size-header-sm: $font-size-xs; 
+$font-size-header   : $font-size-sm;
+$font-size-header-sm: $font-size-xs;
 
 
 /************************************************************
@@ -39,7 +39,7 @@ Unifies padding and font-size for content of modal, accordion, popup etc.
 Using same font-size and vertical/horizontal padding as buttons
 ************************************************************/
 $content-padding-y   : $btn-padding-y;
-//$content-padding-x   : $scroll-size + $scrollbar-margin-extended; ; 
+//$content-padding-x   : $scroll-size + $scrollbar-margin-extended; ;
 $content-padding-x   : $btn-padding-x;
 
 $content-padding-y-sm: $btn-padding-y-sm;
@@ -50,7 +50,8 @@ $content-padding-x-sm: $btn-padding-x-sm;
 MARGIN-BOTTOM
 All elements in modal-windows get same margin-bottom
 ************************************************************/
-$modal-element-margin-bottom: $form-check-margin-bottom;
+//4.0.0-beta.3: $modal-element-margin-bottom: $modal-dialog-margin;
+$modal-element-margin-bottom: $form-check-margin-bottom; //4.0.0-beta
 
 
 

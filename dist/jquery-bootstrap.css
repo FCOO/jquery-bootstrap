@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /***********************************************
-	jquery-bootstrap.scss, 
+	jquery-bootstrap.scss,
 
 	(c) 2017, FCOO
 
@@ -5792,8 +5792,8 @@ VARIABLES
 ************************************************************/
 /***********************************************
 DEFINE BOOTSTRAP BUTTON STYLE
-$btn-style-name MUST correspond with ns.bsButtonClass 
-in src/jquery-bootstrap-button.js 
+$btn-style-name MUST correspond with ns.bsButtonClass
+in src/jquery-bootstrap-button.js
 ************************************************/
 /************************************************************
 Variables bassed on bootstrop variables

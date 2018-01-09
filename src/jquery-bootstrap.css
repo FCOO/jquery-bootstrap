@@ -5792,8 +5792,8 @@ VARIABLES
 ************************************************************/
 /***********************************************
 DEFINE BOOTSTRAP BUTTON STYLE
-$btn-style-name MUST correspond with ns.bsButtonClass 
-in src/jquery-bootstrap-button.js 
+$btn-style-name MUST correspond with ns.bsButtonClass
+in src/jquery-bootstrap-button.js
 ************************************************/
 /************************************************************
 Variables bassed on bootstrop variables
