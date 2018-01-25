@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "1.11.0",
+  "version": "1.11.1",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "authors": [
     "NielsHolt"
@@ -44,7 +44,6 @@
     },
     "bootstrap": {
       "main": [
-        "scss/bootstrap.scss",
         "dist/js/bootstrap.js"
       ]
     }
