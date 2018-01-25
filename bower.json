@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "1.10.2",
+  "version": "1.11.0",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "authors": [
     "NielsHolt"
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "jquery": "latest",
-    "bootstrap": "v4.0.0-beta",
+    "bootstrap": "^4.0.0",
     "i18next": "^10.0.0",
     "jquery-i18next-phrases": "fcoo/jquery-i18next-phrases#^1.1.1",
     "jquery-checkbox-radio-group": "fcoo/jquery-checkbox-radio-group#^1.0.0",
@@ -61,6 +61,6 @@
     "es6"
   ],
   "resolutions": {
-    "bootstrap": "v4.0.0-beta"
+    "bootstrap": "^4.0.0"
   }
 }
