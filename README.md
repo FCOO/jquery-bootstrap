@@ -362,7 +362,8 @@ Eq.
 <a name="noty"></a>
 ## Noty
 
-Using [Noty](https://ned.im/noty) to create noty-messages
+Using [Noty^3.1.3](https://ned.im/noty) to create noty-messages
+**NOTE: In Noty>=3.0.0 the method `window.noty` in removed. Is added in this packages**
 
     $myNoty = $.bsNoty( options ); 
 
@@ -396,6 +397,9 @@ Each modal gets its own set of noty
     window.notyWarning( text );     
     $.bsNotyWarning( text );
 
+    //window.noty: method to support noty^2 methods
+    window.noty( options );     
+    
 
 <!-- 
 ### **** NEW **** 

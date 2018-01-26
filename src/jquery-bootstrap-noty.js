@@ -235,7 +235,7 @@
 
 
     /******************************************************
-    Create standard variations of sbNoty
+    Create standard variations of bsNoty
     ******************************************************/
     //$.bsNotyIcon = icon-class for different noty-type
     $.bsNotyIcon = {
@@ -296,5 +296,15 @@
         }, options));
     };
 
+
+    //window.noty: Replacing window.noty from noty^2.4.1 that was removed in noty^3
+    window.noty = function( options ){
+        return $.bsNoty($.extend({}, {
+//            type         : 'warning',
+            defaultHeader: true,
+            content      : options.text || options.content,
+            show         : true
+        }, options));
+    };
 
 }(jQuery, this.Noty, this, document));

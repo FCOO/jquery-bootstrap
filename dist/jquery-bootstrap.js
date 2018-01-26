@@ -1278,7 +1278,7 @@ TODO:
 
 
     /******************************************************
-    Create standard variations of sbNoty
+    Create standard variations of bsNoty
     ******************************************************/
     //$.bsNotyIcon = icon-class for different noty-type
     $.bsNotyIcon = {
@@ -1340,6 +1340,16 @@ TODO:
     };
 
 
+    //window.noty: Replacing window.noty from noty^2.4.1 that was removed in noty^3
+    window.noty = function( options ){
+        return $.bsNoty($.extend({}, {
+//            type         : 'warning',
+            defaultHeader: true,
+            content      : options.text || options.content,
+            show         : true
+        }, options));
+    };
+
 }(jQuery, this.Noty, this, document));
 ;
 /****************************************************************************
@@ -1352,7 +1362,7 @@ TODO:
 
 ****************************************************************************/
 
-(function (/*$, window/*, document, undefined*/) {
+(function ($/*, window, document, undefined*/) {
 	"use strict";
 
     /**********************************************************
@@ -1407,15 +1417,15 @@ TODO:
         options = $._bsAdjustOptions( options );
 
         var $this = $(this),
-            $header;
+            $header = '';
 
         //Add header (if any)
         if (options.header || options.close){
             options.icons = options.icons || {};
             options.headerClassName = 'popover-header-content';
             if (options.close)
-                options.icons.close = { 
-                    onClick: function(){ $this.popover('hide'); } 
+                options.icons.close = {
+                    onClick: function(){ $this.popover('hide'); }
                 };
 
             $header =

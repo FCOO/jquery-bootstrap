@@ -10,21 +10,21 @@
 
     <link  href="bower_components.css" rel="stylesheet">
     <link  href="../src/jquery-bootstrap.css" rel="stylesheet">
-    <link  href="font-awesome.css" rel="stylesheet">	
-    <link  href="demo.css" rel="stylesheet">	
+    <link  href="font-awesome.css" rel="stylesheet">
+    <link  href="demo.css" rel="stylesheet">
     <style>
         html {
             height  : 100%;
             overflow: hidden;
         }
         body {
-            width: 100%; 
-            height: 100%; 
+            width: 100%;
+            height: 100%;
             width: -webkit-calc(100% - 0px);
             height: -webkit-calc(100% - 0px);
-            margin: 0; 
-            padding: 0; 
-            overflow: hidden; 
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
 position: fixed;
         }
     </style>
@@ -51,11 +51,11 @@ position: fixed;
         window.bsIsTouch = false;
         window.bsIsTouch = (window.location.search =='?touch');
 
-        i18next.init();        
+        i18next.init();
         i18next.changeLanguage('da');
 
-        $.valueFormat.add({ 
-            id: 'myNumberFormat', 
+        $.valueFormat.add({
+            id: 'myNumberFormat',
             format: function( value, options ){
                 return parseFloat(Math.round(value * 100) / 100).toFixed(2);
             }
@@ -70,7 +70,7 @@ position: fixed;
         function header( text, first ){
             if (!first)
                 $('<hr>').appendTo( $body );
-                
+
             $('<h6>')
                 .i18n( text )
                 .appendTo( $body );
@@ -78,15 +78,15 @@ position: fixed;
 
         function demoBtn( options ){
             var i = -1;
-            $.bsButton({ 
+            $.bsButton({
                 text: options.text,
-                onClick: function(){ 
+                onClick: function(){
                     if (modals[i])
                         modals[i].show();
                     else {
                         modals.push( $.bsModal(options) );
                         i = modals.length-1;
-                    }                            
+                    }
                 }
             }).appendTo( $body );
         }
@@ -123,8 +123,8 @@ position: fixed;
 
         $.bsButton({icon: 'fa-home', square: true}).appendTo( $body );
         $.bsButton({
-            icon: 'fa-envelope-o', 
-            bigIcon: true, 
+            icon: 'fa-envelope-o',
+            bigIcon: true,
             onClick:function(){
                 notyOk('Skide godt');
                 notyWarning('Pas på med at....');
@@ -136,7 +136,7 @@ position: fixed;
 
             var layout = ['topLeft', 'topCenter', 'topRight', 'centerRight', 'center','centerLeft', 'bottomLeft', 'bottomCenter', 'bottomRight', 'bottom', 'top'];
             $.each(['alert', 'success', 'warning', 'error', 'info', 'alert', 'success', 'warning', 'error', 'info', 'info'], function(index, type){
-                $.bsNoty({ 
+                $.bsNoty({
                     type: type,
                     queue: type,
                     layout: layout[index],
@@ -150,20 +150,20 @@ position: fixed;
                     },
 
                     text: [
-                        layout[index]+'<br>', 
+                        layout[index]+'<br>',
                         {text: {da: 'Noget tekst ', en: 'Some text '}},
                         Math.random()
                     ],
                     //show: true
-                    
+
                 });
             });
 
-            $.bsNoty({ 
-                type: 'success', 
-                layout:'center', 
+            $.bsNoty({
+                type: 'success',
+                layout:'center',
                 text: {
-                    icon: 'fa-check', 
+                    icon: 'fa-check',
                     text:{da:'Opsæning gemt', en:'Settings saved'}
                 },
                 closeWith:['click'],
@@ -171,13 +171,13 @@ position: fixed;
                 modal: true,
                 textAlign: 'center'
             });
-        
+
         }}).appendTo( $body );
 
         demoBtn({
-            text: 'Buttons in modal', 
-            header: 'Buttons', 
-            footer: '', 
+            text: 'Buttons in modal',
+            header: 'Buttons',
+            footer: '',
             scroll: false,
             content: [
                 $.bsButton({text: 'Normal', icon: 'fa-home'}), $('<br>'),
@@ -189,7 +189,7 @@ position: fixed;
 /*
         header('Button groups');
         $.bsButtonGroup({
-            vertical: false, 
+            vertical: false,
             small: true,
             buttons: [
                 {id:'very_slow', icon: 'fa-bicycle', onClick: function(id, selected ){console.log('1: bsButtonGroup', id, selected)} },
@@ -199,10 +199,10 @@ position: fixed;
         }).appendTo( $body );
 
         $.bsRadioButtonGroup({
-            vertical: true, 
+            vertical: true,
             small: true,
-            //allowZeroSelected: true, 
-            onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)}, 
+            //allowZeroSelected: true,
+            onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)},
             buttons: [
                 {id:'slow',   icon: 'fa-bicycle',   text:'Slow', active: true  },
                 {id:'medium', icon: 'fa-car', text:'Normal'  },
@@ -211,9 +211,9 @@ position: fixed;
         }).appendTo( $body );
 
         $.bsRadioButtonGroup({
-            vertical: true, 
-            allowZeroSelected: true, 
-            onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)}, 
+            vertical: true,
+            allowZeroSelected: true,
+            onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)},
             buttons: [
                 {id:'slow',   icon: 'fa-bicycle',   text:'Slow', active: true  },
                 {id:'medium', icon: 'fa-car', text:'Normal'  },
@@ -232,11 +232,11 @@ position: fixed;
             ];
 
         demoBtn({
-            text: 'SelectList', 
-            header: 'SelectList', 
-            footer: '', 
+            text: 'SelectList',
+            header: 'SelectList',
+            footer: '',
             scroll: true,
-            content: 
+            content:
                 $.bsSelectList({
                     selectedId: 'medium',
                     items     : selectItems,
@@ -246,16 +246,16 @@ position: fixed;
 
 
         demoBtn({
-            text: 'Selectbox', 
-            header: 'Selectbox', 
-            footer: '', 
+            text: 'Selectbox',
+            header: 'Selectbox',
+            footer: '',
             content: $.bsSelectbox({
                         selectedId : 'fast',
                         placeholder: {da:'Vælg hastighed...', en:'Select speed...'},
                         items      : selectItems,
                         onChange   : function(id, selected, $buttonGroup){console.log('bsSelectbox', id, selected)},
                     }),
-            scroll: false 
+            scroll: false
         });
 
 
@@ -277,8 +277,8 @@ position: fixed;
 
 
         $.bsCheckboxButton({
-//            text: [{da:'Uvalgt', en:'Unselected'}, {da:'Valgt', en:'Selected'}], 
-            text: {da:'Vælg mig', en:'Select me'}, 
+//            text: [{da:'Uvalgt', en:'Unselected'}, {da:'Valgt', en:'Selected'}],
+            text: {da:'Vælg mig', en:'Select me'},
             icon: ['fa-square-o ', 'fa-check-square-o'],
             selected: true,
             onChange: function(id, selected){
@@ -287,17 +287,17 @@ position: fixed;
         }).appendTo($body);
 
 
-      
+
         header('Popover (click on buttons)');
         var titles = ['Small', 'Normal'];
-        
+
         for (var i=0; i<titles.length; i++ )
             $.bsButton({
                 small: !i,
                 text: titles[i]
             })
             .appendTo( $body )
-            .bsButtonGroupPopover({ 
+            .bsButtonGroupPopover({
                 onClick: function(id, selected, $buttonGroup){console.log('COMMON 6: bsButtonGroupPopover', id, selected)},
                 vertical: true,
                 placement: "right",
@@ -313,13 +313,13 @@ position: fixed;
             })
 
         $.bsButton({
-            text: '|', 
-            _text: {da:'Påp-op', en:'Popup'}, 
+            text: '|',
+            _text: {da:'Påp-op', en:'Popup'},
             _icon: 'fa-comment-o'
         })
             .appendTo( $body )
 
-            .bsButtonGroupPopover({ 
+            .bsButtonGroupPopover({
                 onClick: function(id, selected, $buttonGroup){console.log('COMMON 6: bsButtonGroupPopover', id, selected)},
                 vertical: true,
                 close: true,
@@ -339,7 +339,7 @@ position: fixed;
         $.bsButton()
             .appendTo( $body )
             .bsSelectListPopover({
-                onChange: function(id, selected, $buttonGroup){console.log('7: bsSelectListPopover', id, selected)},                 
+                onChange: function(id, selected, $buttonGroup){console.log('7: bsSelectListPopover', id, selected)},
                 vertical: true,
                 center: true,
                 placement: 'right',
@@ -365,7 +365,6 @@ position: fixed;
 //Test of hover
 //trigger  :  'hover', // or 'focus' ORIGINAL='click'
 //delay    : { show: 1000, hide: 1000 },
-
                 placement: 'left',
                 selectedId: 'm',
                 buttons: [
@@ -380,7 +379,7 @@ position: fixed;
         header('Modal windows');
 
         var tableContent = [
-            { 
+            {
                 id: 'first',
 //                "name": {icon:"fa-lang-da", text:"bootstrap-table"},
                 "name": {vfFormat: "myNumberFormat", vfValue:123.456, textStyle:"italic"},
@@ -424,11 +423,11 @@ position: fixed;
             for (var j=0; j<tableContent.length; j++ ){
                 var next = $.extend({}, tableContent[j]);
                 next.id = next.id+'_'+i;
-                longTableContent.push( next );    
+                longTableContent.push( next );
             }
-        
-       
-        var testContent =   "Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch." 
+
+
+        var testContent =   "Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch."
                             +   " Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS."
                                 ,
             footer = [
@@ -439,63 +438,63 @@ position: fixed;
             testContent2 = testContent + testContent,
             accor_children =  [
                 {
-                    header: {icon: 'fa-home', text: {da:'Overskrift#1', en:'Header#1'}}, 
+                    header: {icon: 'fa-home', text: {da:'Overskrift#1', en:'Header#1'}},
                     footer: footer,
                     children:[
                         {
-                            header: {icon: 'fa-home', text: {da:'Overskrift#1-1', en:'Header#1-1'}}, 
-                            content: 'Dette er en test 1-1<br>'+testContent 
+                            header: {icon: 'fa-home', text: {da:'Overskrift#1-1', en:'Header#1-1'}},
+                            content: 'Dette er en test 1-1<br>'+testContent
                         },
                         {
                             header: {icon: 'fa-home', text: {da:'Overskrift#1-2', en:'Header#1-2'}},
-                            content: 'Dette er en test 1-2<br>'+testContent2 
+                            content: 'Dette er en test 1-2<br>'+testContent2
                         },
                         {
-                            header: {icon: 'fa-home', text: {da:'Overskrift#1-3', en:'Header#1-3'}}, 
-                            content: 'Dette er en test 1-3<br>'+testContent, 
-                            children: [ 
+                            header: {icon: 'fa-home', text: {da:'Overskrift#1-3', en:'Header#1-3'}},
+                            content: 'Dette er en test 1-3<br>'+testContent,
+                            children: [
                                 {
                                     header: {icon: 'fa-home', text: {da:'Overskrift#1-3-1', en:'Header#1-3-1'}},
-                                    content: 'Dette er en test 1-3-1<br>'+testContent 
+                                    content: 'Dette er en test 1-3-1<br>'+testContent
                                 },
                                 {
-                                    header: {icon: 'fa-home', text: {da:'Overskrift#1-3-2', en:'Header#1-3-2'}}, 
-                                    content: 'Dette er en test 1-3-2<br>'+testContent 
+                                    header: {icon: 'fa-home', text: {da:'Overskrift#1-3-2', en:'Header#1-3-2'}},
+                                    content: 'Dette er en test 1-3-2<br>'+testContent
                                 },
                             ]
                         },
                     ]
                 },
                 {
-                    header: {icon: 'fa-home', text: {da:'Overskrift#2', en:'Header#2'}}, 
+                    header: {icon: 'fa-home', text: {da:'Overskrift#2', en:'Header#2'}},
                     children:[
                         {header:{icon: 'fa-home', text: {da:'Overskrift#2-1', en:'Header#2-1'}}, content: 'Dette er en test 2-1<br>'+testContent },
                         {header:{icon: 'fa-home', text: {da:'Overskrift#2-2', en:'Header#2-2'}}, content: 'Dette er en test 2-2<br>'+testContent },
                     ]
                 },
                 {
-                    header: { icon: 'fa-home', text: {da:'Overskrift#3', en:'Header#3'} }, 
+                    header: { icon: 'fa-home', text: {da:'Overskrift#3', en:'Header#3'} },
                     content: 'Dette er en test 3<br>'+testContent,
                     footer: footer
                 },
                 {
-                    header: 'En tabel', 
+                    header: 'En tabel',
                     content: 'Missing :-)'
                 }
             ], //accor_children
 
 
-        
+
         myBsTable = $.bsTable({
             //showHeader: false,
             //verticalBorder: false,
             selectable: true,
             onChange: function( id, selected, tr ){
-                console.log( 'Table id =' , id,' selected=',selected); 
+                console.log( 'Table id =' , id,' selected=',selected);
             },
             selectedId: 'first',
             allowZeroSelected: true,
-            //allowReselect: true, 
+            //allowReselect: true,
 small: true,
             columns: [
                 { id: 'no',                                 header: '#',     align: 'center', width: '1rem', noHorizontalPadding: true},
@@ -508,15 +507,15 @@ small: true,
         }),
 
         m_table = myBsTable.asModal({
-            header:'En stor tabel', 
+            header:'En stor tabel',
             closeIcon: 'fa-globe',
             closeText: {da:"Luk og rejs", en:"Close and go"},
-            flex:true, 
+            flex:true,
             extraWidth: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             show: false
         }),
-        
+
         $accordion = $.bsAccordion({ children: accor_children, footer: 'footer' }),
         $accordion2 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
         $accordion3 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
@@ -527,13 +526,13 @@ small: true,
             show: false
         }),
         m_fixed = $accordion2.asModal({
-            flex: false, 
+            flex: false,
             header:[{icon: 'fa-home', text:{da:'FIXED Overskrift',en:'Header'}}, {icon: 'fa-globe', text:{da:'Overskrift#2',en:'Header#2'}}],
             show: false
         }),
 
         m_small = $accordion3.asModal({
-            flex: false, 
+            flex: false,
             header:{icon: 'fa-home', text:{da:'Small Overskrift',en:'Small Header'}},
             footer: footer,
             show: false,
@@ -545,16 +544,16 @@ small: true,
         function openModal( modalNumber ){
             if (multi_modals[modalNumber])
                 multi_modals[modalNumber].show();
-            else { 
-                var content = 'Modal # = ' + modalNumber; 
-                var extendedContent = 'Modal # = ' + modalNumber; 
+            else {
+                var content = 'Modal # = ' + modalNumber;
+                var extendedContent = 'Modal # = ' + modalNumber;
                 var typeList = ['success', 'error', 'alert', 'info', 'warning'];
                 var type = typeList[ modalNumber % typeList.length];
                 for (var i=0; i<2; i++ )
                     content += '<br>' + i;
                 for (var i=0; i<20-modalNumber; i++ )
                     extendedContent += '<br>' + i;
-                multi_modals[ modalNumber ] =                 
+                multi_modals[ modalNumber ] =
                     $.bsModal({
                         header: 'Nr '+modalNumber+' type='+type,
                         type: type,
@@ -564,7 +563,7 @@ small: true,
                             onClick: function(){
                                 var layout = ['topCenter', 'topRight', 'bottomLeft', 'centerRight', 'topCenter'];
                                 $.each(['alert', 'success', 'warning', 'error', 'info'], function(index, type){
-                                    $.bsNoty({ 
+                                    $.bsNoty({
                                         type: type,
                                         queue: type,
                                         layout: layout[index],
@@ -578,10 +577,10 @@ small: true,
                             }
                         },
                         {
-                            text:'Ny - New', 
+                            text:'Ny - New',
                             focus: true,
-                            onClick: function(){ 
-                                openModal( modalNumber+1 ); 
+                            onClick: function(){
+                                openModal( modalNumber+1 );
                                 return false;
                             }
                         }],
@@ -597,7 +596,7 @@ small: true,
         }
 
 
-        
+
         m_table.assignTo(
             $('<button>Table</button>')
                 .appendTo( $body)
@@ -625,7 +624,7 @@ small: true,
             .on('click', function(){ openModal(0); });
 
 
-/* Test af modal-inline        
+/* Test af modal-inline
         $('<div id="modal-inline" style="margin-left: 300px; _border:1px solid red; max-width:200px; max-height:200px"></div>')
             .appendTo( $body )
 
@@ -634,7 +633,7 @@ small: true,
 header: 'R - Dette er en meget lang header, der gerne skulle blive klippet af, da den er alt for lang',
 
 closeButton: true,
-                    icons: { 
+                    icons: {
                         close: { onClick: function(){ alert('Luk'); } },
                         _diminish: { onClick: function(){ alert('Mindre'); } }
 
@@ -646,13 +645,13 @@ closeButton: true,
                         scroll: true,
                         fixedContent: 'Extended fixed content',
                         footer: 'Extended footer',
-                        content: function(){ 
-                                    var result = ''; 
+                        content: function(){
+                                    var result = '';
                                     for (var i=1; i<20; i++ )
                                         result = result + (result ? '<br>' : '') + i + '. line';
                                     return result;
                                 }()
-                                    
+
                     },
                     _isExtended: true,
                     smallButtons: true,

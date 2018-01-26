@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function (/*$, window/*, document, undefined*/) {
+(function ($/*, window, document, undefined*/) {
 	"use strict";
 
     /**********************************************************
@@ -63,15 +63,15 @@
         options = $._bsAdjustOptions( options );
 
         var $this = $(this),
-            $header;
+            $header = '';
 
         //Add header (if any)
         if (options.header || options.close){
             options.icons = options.icons || {};
             options.headerClassName = 'popover-header-content';
             if (options.close)
-                options.icons.close = { 
-                    onClick: function(){ $this.popover('hide'); } 
+                options.icons.close = {
+                    onClick: function(){ $this.popover('hide'); }
                 };
 
             $header =
