@@ -1337,7 +1337,7 @@ TODO:
 
         //Set timeout
         if ( ((options.type == 'warning') || (options.type == 'success')) && !options.buttons && (!options.timeout || (options.timeout !== false)) )
-            options.timeout = 3000;
+            options.timeout = options.timeout || 3000;
         options.force = options.force || (options.timeout);
 
         //defaultHaeder
