@@ -384,21 +384,32 @@ Beside the normal [Noty options](https://ned.im/noty/#/options) the following ne
 Each modal gets its own set of noty
 
 ### Methods
-    //Simple centered noty with centered text
-    window.notyOk( text );    
-    $.bsNotyOk( text );
-    
-    
-    //Simple error noty with header
-    window.notyError( text ); 
-    $.bsNotyError( text );
-    
-    //Simple warning noty with header
-    window.notyWarning( text );     
-    $.bsNotyWarning( text );
+Five different methods are defined with default options depending of the type of noty:
+- `queue`: `"global"` but if `!= "global"` `options.killer` is set to `options.queue`
+- `killer`: if `options.queue != "global"` => `killer = queue` and the noty will close all noty with same queue.<br>To have unique queue and prevent closing: set `options.killer: false`<br>To close all noty set `options.killer: true`
+- `timeout`: If `type="warning"` or `"success"` timeout is set to 3000ms. Can be avoided by setting `options.timeout: false`
+- `defaultHeader`: If `type = "error": defaultHeader = true`
+- `textAlert`: `"left"` if any header else `"center"`
+- `closeWith`: if the noty has buttons then only button else only click
 
-    //window.noty: method to support noty^2 methods
-    window.noty( options );     
+		//Simple centered noty with centered text	
+		window.notySuccess( text [,options] ) / $.bsNotySuccess(...) / window.notyOk(...) / $.bsNotyOk(...)
+    	
+		//Simple error noty with header
+		window.notyError(...) / $.bsNotyError(...)
+
+    	//Simple warning noty with no header
+		window.notyWarning(...) / $.bsNotyWarning(...)
+    	
+		//Simple alert noty with no header
+		window.notyAlert(...) / $.bsNotyAlert(...)
+    	
+		//Simple info noty with no header
+		window.notyInfo(...) / $.bsNotyInfo(...)
+    
+   
+    	//window.noty: method to support noty^2 methods
+    	window.noty( options );     
     
 
 <!-- 

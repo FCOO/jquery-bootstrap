@@ -126,11 +126,23 @@ position: fixed;
             icon: 'fa-envelope-o',
             bigIcon: true,
             onClick:function(){
-                notyOk('Skide godt');
+                notyOk({da:'Skide godt', en:'Very good'});
                 notyWarning('Pas på med at....');
                 notyError('Ikke så godt');
             }
         }).appendTo( $body );
+
+        $.bsButton({
+            text: 'Test af Noty',
+            onClick:function(e){
+                notyOk('Opsætning gemt', {queue:'testAfNoty'});
+                notyWarning('notyWarning');
+                notyError({icon:"fa-home", text: {da: 'Noget error tekst ', en: 'Some error text '}});
+                notyAlert({icon:"fa-home", text: {da: 'Noget alert tekst ', en: 'Some alert text '}});
+                notyInfo({da: 'Noget info-tekst ', en: 'Some info text '}, {layout:'bottomLeft'});
+            }
+        }).appendTo( $body );
+
 
         $.bsButton({text: 'Noty', onClick:function(){
 

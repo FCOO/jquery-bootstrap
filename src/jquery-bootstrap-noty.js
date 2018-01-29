@@ -234,9 +234,21 @@
     };
 
 
-    /******************************************************
-    Create standard variations of bsNoty
-    ******************************************************/
+    /********************************************************************
+    *********************************************************************
+    Create standard variations of bsNoty:
+    notySuccess/notyOk, notyError, notyWarning, notyAlert, notyInfo (and dito $bsNoty[TYPE]
+    The following default options is used
+    queue: "global" but if != "global" options.killer is set to options.queue
+    killer: if options.queue != "global" => killer = queue and the noty will close all noty with same queue.
+            To have unique queue and prevent closing: set options.killer: false
+            To close all noty set options.killer: true
+    timeout: If type="warning" or "success" timeout is set to 3000ms. Can be avoided by setting options.timeout: false
+    defaultHeader: If type = "error": defaultHeader = true
+    textAlert: left if any header else center
+    closeWith: if the noty has buttons then only button else only click
+    *********************************************************************
+    *********************************************************************/
     //$.bsNotyIcon = icon-class for different noty-type
     $.bsNotyIcon = {
         info        : 'fa-info-circle',
@@ -259,48 +271,91 @@
         help        : {da:'Hjælp', en:'Help'}
     };
 
-    //window.notyOk / $.bsNotyOk: Simple centered noty with centered text
-    window.notyOk = $.bsNotyOk = function( text, options ){
-        return $.bsNoty($.extend({}, {
-            type     : 'success',
-            layout   : 'center',
-            closeWith: ['click'],
-            content  : {
-                icon: $.bsNotyIcon['success'],
-                text: text
-            },
-            textAlign: 'center',
-            force    : true,
-            timeout  : 3000,
-            show     : true
-        }, options));
+
+
+    /***************************************************************
+    window.notyDefault
+    Noty with default options as descried above
+    ****************************************************************/
+    function notyDefault( type, text, options ){
+        options = options || {};
+
+        options.type = type;
+
+        //Simple test if text=string or {da:"...", en:"..."} or {icon:"...", text:{da:"...", en:"..."}
+        if ($.isPlainObject(text) && !text.icon && !text.text)
+            text = {text:text};
+
+        options.content = text;
+
+        //Set killer
+        if (options.queue && (options.killer !== false) && (options.killer !== true))
+            options.killer = options.queue;
+
+        //Set timeout
+        if ( ((options.type == 'warning') || (options.type == 'success')) && !options.buttons && (!options.timeout || (options.timeout !== false)) )
+            options.timeout = 3000;
+        options.force = options.force || (options.timeout);
+
+        //defaultHaeder
+        options.defaultHeader = !options.header && (options.defaultHeader /*|| options.buttons*/ || ((options.type == 'error') && (options.defaultHeader !== false)));
+
+        //text-align: center if no header
+        options.textAlign = options.textAlign || (options.header || options.defaultHeader ? 'left' : 'center');
+
+        //Set closeWith
+        options.closeWith = options.closeWith || (options.buttons ? ['button'] : ['click']);
+
+        return $.bsNoty( options );
+
+    }
+
+    /***************************************************************
+    window.notySuccess / $.bsNotySuccess / window.notyOk / $.bsNotyOk
+    Simple centered noty with centered text
+    ****************************************************************/
+    window.notySuccess = $.bsNotySuccess = window.notyOk = $.bsNotyOk = function( text, options ){
+        return  notyDefault(
+                    'success',
+                    {icon: $.bsNotyIcon['success'], text: text},
+                    $.extend( options || {}, {layout: 'center'})
+                );
     };
 
-    //window.notyError / $.bsNotyError: Simple error noty with header
+    /***************************************************************
+    window.notyError / $.bsNotyError: Simple error noty with header
+    ****************************************************************/
     window.notyError = $.bsNotyError = function( text, options ){
-        return $.bsNoty($.extend({}, {
-            type         : 'error',
-            defaultHeader: true,
-            content      : text,
-            show         : true
-        }, options));
+        return  notyDefault( 'error', text, options );
     };
 
-    //window.notyError / $.bsNotyError: Simple warning noty with header
+    /***************************************************************
+    window.notyWarning / $.bsNotyWarning: Simple warning noty with header
+    ****************************************************************/
     window.notyWarning = $.bsNotyWarning = function( text, options ){
-        return $.bsNoty($.extend({}, {
-            type         : 'warning',
-            defaultHeader: true,
-            content      : text,
-            show         : true
-        }, options));
+        return  notyDefault( 'warning', text, options );
+    };
+
+    /***************************************************************
+    window.notyAlert / $.bsNotyAlert: Simple alert noty with header
+    ****************************************************************/
+    window.notyAlert = $.bsNotyAlert = function( text, options ){
+        return  notyDefault( 'alert', text, options );
+    };
+
+    /***************************************************************
+    window.notyInfo / $.bsNotyInfo: Simple info noty with header
+    ****************************************************************/
+    window.notyInfo = $.bsNotyInfo = function( text, options ){
+        return  notyDefault( 'info', text, options );
     };
 
 
-    //window.noty: Replacing window.noty from noty^2.4.1 that was removed in noty^3
+    /******************************************************************************
+    window.noty: Replacing window.noty from noty^2.4.1 that was removed in noty^3
+    *******************************************************************************/
     window.noty = function( options ){
         return $.bsNoty($.extend({}, {
-//            type         : 'warning',
             defaultHeader: true,
             content      : options.text || options.content,
             show         : true
