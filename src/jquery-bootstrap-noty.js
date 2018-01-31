@@ -70,7 +70,7 @@
     var defaultNotyOptions = {
         layout   : 'topCenter',
         type     : 'info',
-        closeWith: ['click', 'button'],
+        closeWith: ['click'],
         textAlign: 'left',
         show     : true,
     };
