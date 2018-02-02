@@ -6305,10 +6305,14 @@ To avoid forced shadow and to control color a own button-mixin is defined
 To be able to control font-family etc. 'buttons'
 can be created as <div>
 cursor-style added to prevent text-cursor on buttons
+Also overwrite default bootstrap behaviour
 ************************************************************/
 a.btn, a.list-group-item,
 div.btn, div.list-group-item {
   cursor: default; }
+
+.btn:not(:disabled):not(.disabled) {
+  cursor: default !important; }
 
 .btn.btn-standard {
   background-color: #f8f9fa;
@@ -6324,7 +6328,7 @@ div.btn, div.list-group-item {
     Special version to have square buttons (with only icon)
     ************************************************************/
   /************************************************************
-    Special version to have extra large icon 
+    Special version to have extra large icon
     ************************************************************/ }
   .btn.btn-standard.disabled, .btn.btn-standard:disabled {
     background-color: #f8f9fa; }

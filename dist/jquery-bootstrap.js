@@ -1165,7 +1165,7 @@ TODO:
 
         //Save closeWith and remove 'button' to prevent default close-button
         var closeWith = options.closeWith;
-        options.closeWith = closeWith.includes('click') ? ['click'] : [];
+        options.closeWith = closeWith.indexOf('click') >= 0 ? ['click'] : [];
 
         //Save show and create the noty hidden
         var show = options.show;
@@ -1227,7 +1227,7 @@ TODO:
 
             $body.addClass('text-'+options.textAlign);
 
-            if (closeWith.includes('button'))
+            if (closeWith.indexOf('button') >= 0)
                 //Add same close-icon as for modal-windows
                 $('<div/>')
                     ._bsAddBaseClassAndSize( {

@@ -26,10 +26,15 @@ To avoid forced shadow and to control color a own button-mixin is defined
 To be able to control font-family etc. 'buttons'
 can be created as <div>
 cursor-style added to prevent text-cursor on buttons
+Also overwrite default bootstrap behaviour
 ************************************************************/
 a.btn, a.list-group-item,
 div.btn, div.list-group-item {
     cursor: default;
+}
+
+.btn:not(:disabled):not(.disabled) {
+    cursor: default !important;
 }
 
 .btn.btn-#{$btn-style-name}{
@@ -43,16 +48,16 @@ div.btn, div.list-group-item {
 
     &:active,  &.active,  .show > &.dropdown-toggle {
         background-color: darken($control-bg-color, $darken-active-percent);
-        background-image: none; 
+        background-image: none;
         @include box-shadow($btn-active-box-shadow);
-        z-index: 3; 
+        z-index: 3;
     }
 
     @include button-color( $control-color, $control-border-color );
 
     &.primary {
         $color: map-get($theme-colors, primary );
-        @include button-color( $color ); //map-get($theme-colors, primary ) ); 
+        @include button-color( $color ); //map-get($theme-colors, primary ) );
         &:hover {
             //Keep color on hover
             color: darken($color, $darken-hover-percent);
@@ -124,7 +129,7 @@ div.btn, div.list-group-item {
     }
 
     /************************************************************
-    Special version to have extra large icon 
+    Special version to have extra large icon
     ************************************************************/
     $big-icon-padding: 0.125rem;
     @mixin big-icon-font-size( $original-padding-y, $original-font-size, $original-line-height ){
@@ -133,7 +138,7 @@ div.btn, div.list-group-item {
 
     &.big-icon {
         line-height    : 1;
-        padding        : $big-icon-padding !important; 
+        padding        : $big-icon-padding !important;
         display        : inline-flex;
         flex-direction : row;
         align-items    : center;
@@ -149,12 +154,12 @@ div.btn, div.list-group-item {
 /************************************************************
 Modernizr-test for elements with class="active" when selected
 ************************************************************/
-@include show-and-hide-for-modernizr-test( 
-	'active', //$modernizr-test , 
-	'.btn',   //$parent-element-type: '', 
-	true,     //$incl-no-selector: true, 
+@include show-and-hide-for-modernizr-test(
+	'active', //$modernizr-test ,
+	'.btn',   //$parent-element-type: '',
+	true,     //$incl-no-selector: true,
 	true,     //$fail-as-default: false,
-	false     //$incl-table-display: true 
+	false     //$incl-table-display: true
 );
 
 /************************************************************
@@ -190,8 +195,8 @@ LIST-GROUP and LIST-GROUP-ITEM
 
 // Size classes for items in lists
 .list-group > .list-group-item,
-.list-group-horizontal > .list-group-item { 
-    @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $input-btn-line-height, $btn-border-radius); 
+.list-group-horizontal > .list-group-item {
+    @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $input-btn-line-height, $btn-border-radius);
 }
 
 //Same colors as buttons
@@ -206,19 +211,19 @@ LIST-GROUP and LIST-GROUP-ITEM
 
 //Set align-items equal to value for button.btn when list-group-item is a button
 .list-group > button.list-group-item,
-.list-group-horizontal > button.list-group-item { 
+.list-group-horizontal > button.list-group-item {
     align-items: flex-start;
 }
 
 //Setting size
-.list-group-lg > .list-group-item { 
-    @include button-size($btn-padding-y-lg, $btn-padding-x-lg, $font-size-lg, $input-btn-line-height-lg, $btn-border-radius-lg); 
+.list-group-lg > .list-group-item {
+    @include button-size($btn-padding-y-lg, $btn-padding-x-lg, $font-size-lg, $input-btn-line-height-lg, $btn-border-radius-lg);
 }
-.list-group-sm > .list-group-item { 
+.list-group-sm > .list-group-item {
     @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $input-btn-line-height-sm, $btn-border-radius-sm);
 }
-.list-group-xs > .list-group-item { 
-    @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-sm, $input-btn-line-height-sm, $btn-border-radius-sm); 
+.list-group-xs > .list-group-item {
+    @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-sm, $input-btn-line-height-sm, $btn-border-radius-sm);
 }
 
 
@@ -228,7 +233,7 @@ LIST-GROUP and LIST-GROUP-ITEM
 }
 
 //Remove round boarder from items depending on it place in the group
-.list-group > .list-group-item, 
+.list-group > .list-group-item,
 .list-group-horizontal > .list-group-item {
     //No round border for items in the middle
     &:not(:first-child):not(:last-child) {

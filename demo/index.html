@@ -135,6 +135,7 @@ position: fixed;
         $.bsButton({
             text: 'Test af Noty',
             onClick:function(e){
+window.noty({text: 'window.noty(...)', type: 'error'});
                 notyOk('Opsætning gemt', {queue:'testAfNoty'});
                 notyWarning('notyWarning');
                 notyError({icon:"fa-home", text: {da: 'Noget error tekst ', en: 'Some error text '}});
