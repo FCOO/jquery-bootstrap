@@ -1341,7 +1341,7 @@ TODO:
         options.force = options.force || (options.timeout);
 
         //defaultHaeder
-        options.defaultHeader = !options.header && (options.defaultHeader /*|| options.buttons*/ || ((options.type == 'error') && (options.defaultHeader !== false)));
+        options.defaultHeader = !options.header && (options.defaultHeader || ((options.type == 'error') && (options.defaultHeader !== false)));
 
         //text-align: center if no header
         options.textAlign = options.textAlign || (options.header || options.defaultHeader ? 'left' : 'center');
@@ -1399,9 +1399,8 @@ TODO:
     *******************************************************************************/
     window.noty = function( options ){
         return $.bsNoty($.extend({}, {
-            defaultHeader: true,
-            content      : options.text || options.content,
-            show         : true
+            content: options.text || options.content,
+            show   : true
         }, options));
     };
 
