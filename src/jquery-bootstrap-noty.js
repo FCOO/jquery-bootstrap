@@ -120,9 +120,22 @@
             close: 'animated ' + animateClose
         };
 
+        //Save buttons and remove if from options to prevent default buttons
+        var buttons = options.buttons;
+        options.buttons = null;
+
         //Save closeWith and remove 'button' to prevent default close-button
-        var closeWith = options.closeWith;
-        options.closeWith = closeWith.indexOf('click') >= 0 ? ['click'] : [];
+        var closeWith = options.closeWith,
+            closeWithButton = closeWith.indexOf('button') >= 0,
+            closeWithClick = closeWith.indexOf('click') >= 0;
+
+
+        //Adjust closeWith
+        if (options.buttons)
+            closeWithClick = false;
+
+        options.closeWith = closeWithClick ? ['click'] : [];
+
 
         //Save show and create the noty hidden
         var show = options.show;
@@ -139,6 +152,9 @@
 
             options.header = options.header || {};
 
+            if ($.type( options.header ) == "string")
+                options.header = {text: options.header };
+
             var headerOptions =
                 options.defaultHeader ?
                 $.extend({},
@@ -147,13 +163,6 @@
                         text: $.bsNotyName[options.type]
                     }, options.header || {})
                 : options.header || {};
-
-            options.content.unshift('<br>');
-            options.content.unshift({
-                icon     : headerOptions.icon,
-                textClass: 'text-capitalize font-weight-bold',
-                text     : headerOptions.text
-            });
         }
 
         //Force no progressBar
@@ -169,22 +178,55 @@
                 $barDom = $(this.barDom),
                 $body = $barDom.find('.noty_body');
 
+            //Insert header before $body (if any)
+            //Use small header unless it is touch-mode and close with button (round x)
+            if (headerOptions)
+                $('<div/>')
+                    ._bsAddBaseClassAndSize( {
+                        baseClass   :'noty-header',
+                        useTouchSize: closeWithButton,
+                        small       : !closeWithButton
+                    })
+                    ._bsAddHtml( headerOptions )
+                    .insertBefore( $body );
+
             //Replace content with text as object {icon, txt,etc}
             $body._bsAddHtml( options.content );
+            $body.addClass('text-'+options.textAlign);
+
+            var closeFunc = function( event ){
+                                event.stopPropagation();
+                                _this.close();
+                            };
+
+            //Add buttons (if any)
+            if (buttons){
+                var $buttonContainer =
+                        $('<div/>')
+                            .addClass('noty-buttons modal-footer')  //modal-footer from Bootstrap also used in modal-windows for button-container
+                            .insertAfter($body),
+                    defaultButtonOptions = {
+                        closeOnClick: true
+                    };
+
+                $.each( buttons, function( index, buttonOptions ){
+                    buttonOptions = $.extend(true, defaultButtonOptions, buttonOptions );
+                    var $button = $.bsButton(buttonOptions).appendTo($buttonContainer);
+                    if (buttonOptions.closeOnClick)
+                        $button.on('click', closeFunc );
+                });
+            }
 
             //Add footer (if any)
             if (options.footer){
-                $body.append( $('<hr/>') );
                 $('<div/>')
-                    .addClass('noty_footer')
+                    .addClass('noty-footer')
                     .addClass('text-' + (options.footer.textAlign || 'left'))
                     ._bsAddHtml( options.footer )
-                    .appendTo($body);
+                    .insertAfter($body);
             }
 
-            $body.addClass('text-'+options.textAlign);
-
-            if (closeWith.indexOf('button') >= 0)
+            if (closeWithButton)
                 //Add same close-icon as for modal-windows
                 $('<div/>')
                     ._bsAddBaseClassAndSize( {
@@ -195,10 +237,7 @@
                     .append(
                         $('<i/>')
                             .addClass("header-icon header-icon-close")
-                            .on('click', function( event ){
-                                event.stopPropagation();
-                                _this.close();
-                            })
+                            .on('click', closeFunc )
                     );
         };
 

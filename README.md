@@ -348,6 +348,7 @@ Eq.
 | `fixedContent` |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `contentContext` |  | `null` | The context for `content` (only `function`) |
+| `footer` | `content` or `[] of content` | `""` | See above |
 | `closeButton` | `boolean` | `true` | If `true` a close button is added. See `closeText` and `closeIcon` below |
 | `buttons` | `[] of button-options` | `[]` | Array of options for buttons in the footer. See Button above. `closeOnClick: true/false` is added to set if the button closes the modal |
 | `closeText` | `string or i18n-record`| `{da:'Luk', en:'Close'}` | The text for the close-button. |
@@ -375,10 +376,12 @@ Beside the normal [Noty options](https://ned.im/noty/#/options) the following ne
 
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
-| `text` or `content` | `content` or `[] of content` | `""` | See above |
+| `text` or `content` | `content/jQuery-object` or `[] of content/jQuery-object` | `""` | See above |
 | `textAlign` | `string` | `"left"` | `"left"`, `"center"`, or `"right"`  |
 | `header` | `content` | `""` | See above  |
 | `defaultHeader` | `boolean` | `false` | If `true` use default header (icon + name) defined in `$.bsNotyIcon` and `$.bsNotyName` |
+| `footer` | `content` or `[] of content` | `""` | See above |
+| `buttons` | `[] of button-options` | `[]` | Array of options for buttons in the footer. See Button above. `closeOnClick: true/false (default:true)` is added to set if the button closes the modal |
 
 
 Each modal gets its own set of noty

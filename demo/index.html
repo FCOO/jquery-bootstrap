@@ -135,7 +135,12 @@ position: fixed;
         $.bsButton({
             text: 'Test af Noty',
             onClick:function(e){
-window.noty({text: 'window.noty(...)', type: 'error'});
+
+var $elem = $('<div/>').text('Dette er helt almindelig tekst');
+var $elem2 = $('<div/>').text('Dette er anden helt almindelig tekst').css('display','none');
+$.bsNoty({header: 'Davs', text: [$elem, $elem2]});
+return;
+                window.noty({text: 'window.noty(...)', type: 'error'});
                 notyOk('Opsætning gemt', {queue:'testAfNoty'});
                 notyWarning('notyWarning');
                 notyError({icon:"fa-home", text: {da: 'Noget error tekst ', en: 'Some error text '}});
@@ -145,7 +150,7 @@ window.noty({text: 'window.noty(...)', type: 'error'});
         }).appendTo( $body );
 
 
-        $.bsButton({text: 'Noty', onClick:function(){
+        $.bsButton({text: 'ALL Noty', onClick:function(){
 
             var layout = ['topLeft', 'topCenter', 'topRight', 'centerRight', 'center','centerLeft', 'bottomLeft', 'bottomCenter', 'bottomRight', 'bottom', 'top'];
             $.each(['alert', 'success', 'warning', 'error', 'info', 'alert', 'success', 'warning', 'error', 'info', 'info'], function(index, type){
@@ -155,12 +160,14 @@ window.noty({text: 'window.noty(...)', type: 'error'});
                     layout: layout[index],
                     //modal: (type=='info'),
                     //force: (type=='info'),
-                    defaultHeader: true,
-                    footer: {
-                        icon: 'fa-home',
-                        textAlign: 'right',
-                        text     : 'footer text'
-                    },
+                    defaultHeader: index % 5,
+                    header       : (index+1) % 5 ? null : {icon: 'fa-home', text:{da:'Hjem', en:'Home'}},
+                    buttons      : (index+2) % 5 ? null : [
+                                                            {icon:'fa-bicycle', text:{da:'En cykel', en:'A bicycle'}, onClick: function(){ console.log('En cykel klikket');}},
+                                                            {icon:'fa-car', text:{da:'En bil', en:'A Car'}, onClick: function(){ console.log('En bil klikket');}}
+                                                          ],
+                    closeWith    : (index+3) % 5 ? ['button'] : ['click'],
+                    footer       : (index+4) % 5 ? {icon: 'fa-home',textAlign: [null, 'right', 'center'][index % 3], text: 'footer text'} : null,
 
                     text: [
                         layout[index]+'<br>',

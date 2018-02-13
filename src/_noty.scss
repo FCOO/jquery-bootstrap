@@ -64,7 +64,7 @@ $corner-space: 20px;
     margin   : 0;
     padding  : 0;
 
-    transform: $translateZ $scale; 
+    transform: $translateZ $scale;
     backface-visibility: hidden;
     -webkit-font-smoothing: subpixel-antialiased;
     filter   : blur(0);
@@ -80,7 +80,7 @@ $corner-space: 20px;
 
     //top or button position
     &.noty-container-top {
-        top: 0; 
+        top: 0;
     }
     &.noty-container-topLeft, &.noty-container-topCenter, &.noty-container-topRight {
         top: $corner-space;
@@ -92,7 +92,7 @@ $corner-space: 20px;
         bottom: $corner-space;
     }
     &.noty-container-bottom {
-        bottom: 0; 
+        bottom: 0;
     }
 
     //left or right position
@@ -108,13 +108,13 @@ $corner-space: 20px;
 
     //Transform
     &.noty-container-topCenter, &.noty-container-bottomCenter {
-        transform: $translateToCenter; 
+        transform: $translateToCenter;
     }
     &.noty-container-center {
         transform: $translateToCenterMiddle;
     }
     &.noty-container-centerLeft, &.noty-container-centerRight {
-        transform: $translateToMiddle; 
+        transform: $translateToMiddle;
     }
 } //end of .noty-container
 
@@ -131,17 +131,17 @@ $corner-space: 20px;
 *******************************************/
 .noty_bar {
 
-    transform: $translateZ $scale; 
+    transform: $translateZ $scale;
     -webkit-font-smoothing: subpixel-antialiased;
     overflow: hidden;
 
-    &.noty_theme__#{$noty-theme-name} { 
+    &.noty_theme__#{$noty-theme-name} {
         cursor: default;
         margin: 4px 0;
         overflow: hidden;
         position: relative;
 
-        font-size: $font-size-sm; 
+        font-size: $font-size-sm;
 
         border: $modal-content-border-width solid $modal-content-border-color;
         @include border-radius($border-radius-lg);
@@ -167,14 +167,43 @@ $corner-space: 20px;
         }
     }
 
-    //<hr> and footer
+    //<hr>, footer, and button-container
+    .noty-header {
+        @include header-color();
+        @include header-variant( );
+        &.noty-header-sm {
+            @include header-variant-sm();
+        }
+    }
+
+    &.noty_close_with_click:hover .noty-header {
+        background-color: darken($header-bg-color, $darken-hover-percent); //Same as modal-header
+    }
+
     hr {
         padding: 0;
         margin : $content-padding-y 0;
     }
-    .noty_footer {
-        font-size: $font-size-xs;
+    .noty-footer {
+        @include footer-variant( true, true );
+
+//HER        border-top: $modal-footer-border-width solid $modal-footer-border-color;
+//HER        background-color: $modal-content-bg;
+//HER        font-size: $font-size-xs;
     }
+    .noty-buttons {
+        @include content-padding();
+        background-color: $modal-content-bg;
+        text-align: right;
+
+    }
+
+    //Remove top-border to noty-buttons it there are  footer
+    .noty-footer + .noty-buttons {
+        border-top: none;
+    }
+
+
 }
 
 

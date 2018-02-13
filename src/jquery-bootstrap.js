@@ -249,11 +249,9 @@
 
             var _this = this;
 
-            //options = array => add each with space between
+            //options = array => add each
             if ($.isArray( options )){
                 $.each( options, function( index, textOptions ){
-                    if (index)
-                        _this.append('&nbsp;');
                     _this._bsAddHtml( textOptions );
                 });
                 return this;
@@ -263,6 +261,11 @@
             if ($.type( options ) != "object")
                 return this._bsAddHtml( {text: options} );
 
+            //If the options is a jQuery-object: append it and return
+            if (options.jquery){
+                this.append( options );
+                return this;
+            }
 
             //options = simple textOptions
             var iconArray       = getArray( options.icon ),

@@ -279,8 +279,8 @@
         //Add close-botton. Avoid by setting options.closeButton = false
         if (options.closeButton)
             options.buttons.push({
-                text        : options.closeText,
-                icon        : options.closeIcon,
+                text: options.closeText,
+                icon: options.closeIcon,
 
                 closeOnClick: true,
                 addOnClick  : false
