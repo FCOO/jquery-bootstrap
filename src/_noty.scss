@@ -151,6 +151,9 @@ $corner-space: 20px;
         .noty_body {
             @include content-padding();
             font-size: $font-size-sm;
+            span {
+                word-wrap: break-word;
+            }
         }
 
         //Container for close-icon moves to top right corner
@@ -186,10 +189,6 @@ $corner-space: 20px;
     }
     .noty-footer {
         @include footer-variant( true, true );
-
-//HER        border-top: $modal-footer-border-width solid $modal-footer-border-color;
-//HER        background-color: $modal-content-bg;
-//HER        font-size: $font-size-xs;
     }
     .noty-buttons {
         @include content-padding();
