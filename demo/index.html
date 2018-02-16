@@ -138,7 +138,8 @@ position: fixed;
 
 var $elem = $('<div/>').text('Dette er helt almindelig tekst');
 var $elem2 = $('<div/>').text('Dette er anden helt almindelig tekst').css('display','none');
-$.bsNoty({header: 'Davs', text: [$elem, $elem2]});
+$.bsNoty({layout:'center', header: 'Davs', text: [$elem, $elem2], onTop: true});
+
 return;
                 window.noty({text: 'window.noty(...)', type: 'error'});
                 notyOk('Opsætning gemt', {queue:'testAfNoty'});

@@ -15,15 +15,17 @@
 	"use strict";
 
     var zindexModalBackdrop = 1040, //MUST be equal to $zindex-modal-backdrop in bootstrap/scss/_variables.scss
+        zindexAllwaysOnTop  = 9999,
         modalBackdropLevels = 0,
         $modalBackdrop = null;
 
     /******************************************************
     $.fn._setModalBackdropZIndex
     Set the z-index of this to the current level
+    If delta === true the z-index is set to zindexAllwaysOnTop (9999)
     ******************************************************/
     $.fn._setModalBackdropZIndex = function( delta ){
-        this.css('z-index', zindexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
+        this.css('z-index', delta === true  ? zindexAllwaysOnTop : zindexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
         return this;
     };
 

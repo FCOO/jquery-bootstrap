@@ -7927,6 +7927,8 @@ for noty is copyed and modified
       padding: 0.5rem 0.5rem;
       font-size: 1rem;
       font-size: 0.875rem; }
+      .noty_bar.noty_theme__jquery-bootstrap .noty_body span {
+        word-wrap: break-word; }
     .noty_bar.noty_theme__jquery-bootstrap .header-icon-container {
       position: fixed;
       top: 0;

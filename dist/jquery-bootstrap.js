@@ -544,15 +544,17 @@ TODO:
 	"use strict";
 
     var zindexModalBackdrop = 1040, //MUST be equal to $zindex-modal-backdrop in bootstrap/scss/_variables.scss
+        zindexAllwaysOnTop  = 9999,
         modalBackdropLevels = 0,
         $modalBackdrop = null;
 
     /******************************************************
     $.fn._setModalBackdropZIndex
     Set the z-index of this to the current level
+    If delta === true the z-index is set to zindexAllwaysOnTop (9999)
     ******************************************************/
     $.fn._setModalBackdropZIndex = function( delta ){
-        this.css('z-index', zindexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
+        this.css('z-index', delta === true  ? zindexAllwaysOnTop : zindexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
         return this;
     };
 
@@ -641,7 +643,7 @@ TODO:
         openModals = 0,
         modalVerticalMargin = 10; //Top and bottom margin for modal windows
 
-
+window._currentBsModal = null;
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
@@ -679,10 +681,19 @@ TODO:
         $._addModalBackdropLevel();
 
         //Add layer for noty on the modal
-        $._bsNotyAddLayer( true );
+        $._bsNotyAddLayer();
 
         //Move the modal to the front
         $this._setModalBackdropZIndex();
+
+        //Prevent the modal from closing with esc if there are a modal noty
+        $(this).keydown( function( event ){
+            if (window._bsNotyModal){
+                window._bsNotyModal.close();
+                event.stopImmediatePropagation();
+                return false;
+            }
+        });
 
     }
 
@@ -1051,7 +1062,7 @@ TODO:
 
 ****************************************************************************/
 
-(function ($, Noty, window/*, document, undefined*/) {
+(function ($, Noty, window, document/*, undefined*/) {
 	"use strict";
 
 
@@ -1059,31 +1070,51 @@ TODO:
     To be able to have Noty on top of modal-windows the notys are
     placed in different containers with increasing and decreasing
     z-index.
-    A new container is added when a modal-window or modal noty is open
+    A new container is added when a modal-window or modal-noty is open
     All noty in the top container is closed when the modal-window or
     modal noty is closed. E.q. all noty opened on top of a modal-window is automatic
     closed when the modal-window is closed
+    If options.onTop: true the noty is placed in a container that is allways on the top of other elements
     ******************************************************/
-    var bsNotyLayerList = [];
-    var $bsNotyLayer = null;
 
-    function notyQueueName(){
-        return 'bsNotyQueue'+ bsNotyLayerList.length;
+
+    var bsNotyLayerList   = [],
+        $bsNotyLayer      = null,
+        $bsNotyLayerOnTop = null;
+
+    //Global pointer to current modal noty (if any)
+    window._bsNotyModal = null;
+
+    //Add global event-function to close modal-noty by pressing esc
+    $(document).keydown( function( event ){
+        if (window._bsNotyModal && (event.which == 27))
+            window._bsNotyModal.close();
+    });
+
+
+    function notyQueueName(isOnTopLayer){
+        return 'bsNotyQueue'+ (isOnTopLayer ? 'ONTOP' : bsNotyLayerList.length);
     }
 
     //$._bsNotyAddLayer: add a new container for noty-containers
-    $._bsNotyAddLayer = function(){
+    $._bsNotyAddLayer = function( isOnTopLayer ){
 
-        $bsNotyLayer =
+        var $result =
             $('<div/>')
                 .addClass('noty-layer')
                 .appendTo( $('body') );
 
-        bsNotyLayerList.push( $bsNotyLayer );
+        if (!isOnTopLayer)
+            bsNotyLayerList.push( $result );
 
-        $bsNotyLayer
-            .attr('id', notyQueueName())
-            ._setModalBackdropZIndex();
+        $result
+            .attr('id', notyQueueName( isOnTopLayer ))
+            ._setModalBackdropZIndex( isOnTopLayer );
+
+        if (isOnTopLayer)
+            $bsNotyLayerOnTop = $result;
+        else
+            $bsNotyLayer = $result;
     };
 
 
@@ -1115,6 +1146,7 @@ TODO:
         type     : 'info',
         closeWith: ['click'],
         textAlign: 'left',
+        onTop    : false,
         show     : true,
     };
 
@@ -1171,7 +1203,6 @@ TODO:
         var closeWith = options.closeWith,
             closeWithButton = closeWith.indexOf('button') >= 0,
             closeWithClick = closeWith.indexOf('click') >= 0;
-
 
         //Adjust closeWith
         if (options.buttons)
@@ -1285,33 +1316,60 @@ TODO:
         };
 
 
+        var $bsNotyLayerToUse; //The noty-layer to contain the noty
+
         //If it is a modal noty => add/move up backdrop
         if (options.modal)
             $._addModalBackdropLevel();
 
         //Find or create layer and container for the noty
-        if (!$bsNotyLayer || options.modal){
-            $._bsNotyAddLayer();
+        if (options.onTop){
+
+            if (!$bsNotyLayerOnTop)
+                $._bsNotyAddLayer(true);
+            $bsNotyLayerToUse = $bsNotyLayerOnTop;
         }
+        else {
+            if (!$bsNotyLayer || options.modal)
+                $._bsNotyAddLayer();
+            $bsNotyLayerToUse = $bsNotyLayer;
+        }
+
         var classNames = '.noty-container.noty-container-'+options.layout,
-            $container = $bsNotyLayer.find(classNames);
+            $container = $bsNotyLayerToUse.find(classNames);
         if (!$container.length){
             $container =
                 $('<div/>')
                     .addClass( classNames.split('.').join(' ') )
-                    .appendTo( $bsNotyLayer );
+                    .appendTo( $bsNotyLayerToUse );
         }
 
-        options.container = '#' + notyQueueName() + ' ' + classNames;
+        options.container = '#' + notyQueueName(options.onTop) + ' ' + classNames;
+
+
+
+
 
         var result = new Noty( options );
 
         //If it is a modal noty => remove/move down backdrop when closed
-        if (options.modal)
+        if (options.modal){
             result.on('afterClose', $._bsNotyRemoveLayer);
+
+            result.on('onShow', function(){
+                this.prevBsNotyModal = window._bsNotyModal;
+                window._bsNotyModal = this;
+            });
+            result.on('afterClose', function(){
+                window._bsNotyModal = this.prevBsNotyModal;
+            });
+
+    }
+
 
         if (show)
             result.show();
+
         return result;
     };
 

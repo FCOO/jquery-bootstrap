@@ -45,7 +45,7 @@
         openModals = 0,
         modalVerticalMargin = 10; //Top and bottom margin for modal windows
 
-
+window._currentBsModal = null;
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
@@ -83,10 +83,19 @@
         $._addModalBackdropLevel();
 
         //Add layer for noty on the modal
-        $._bsNotyAddLayer( true );
+        $._bsNotyAddLayer();
 
         //Move the modal to the front
         $this._setModalBackdropZIndex();
+
+        //Prevent the modal from closing with esc if there are a modal noty
+        $(this).keydown( function( event ){
+            if (window._bsNotyModal){
+                window._bsNotyModal.close();
+                event.stopImmediatePropagation();
+                return false;
+            }
+        });
 
     }
 
