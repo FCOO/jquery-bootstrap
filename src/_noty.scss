@@ -151,7 +151,7 @@ $corner-space: 20px;
         .noty_body {
             @include content-padding();
             font-size: $font-size-sm;
-            span {
+            * {
                 word-wrap: break-word;
             }
         }
