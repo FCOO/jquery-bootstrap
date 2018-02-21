@@ -171,7 +171,8 @@
         if (options.buttons)
             closeWithClick = false;
 
-        options.closeWith = closeWithClick ? ['click'] : [];
+        //Set options.closeWith with not-empty content to allow closing by other notys
+        options.closeWith = closeWithClick ? ['click'] : closeWithButton ? ['NoEmpty'] : [];
 
 
         //Save show and create the noty hidden
