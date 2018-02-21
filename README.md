@@ -381,6 +381,7 @@ Beside the normal [Noty options](https://ned.im/noty/#/options) the following ne
 | `header` | `content` | `""` | See above  |
 | `defaultHeader` | `boolean` | `false` | If `true` use default header (icon + name) defined in `$.bsNotyIcon` and `$.bsNotyName` |
 | `onTop` | `boolean` | `false` | If `true` the noty is always on top of all other elements |
+| `flash` | `boolean` | `false` | If `true` the noty will flash for 3s when shown |
 | `footer` | `content` or `[] of content` | `""` | See above |
 | `buttons` | `[] of button-options` | `[]` | Array of options for buttons in the footer. See Button above. `closeOnClick: true/false (default:true)` is added to set if the button closes the modal |
 
@@ -388,6 +389,8 @@ Beside the normal [Noty options](https://ned.im/noty/#/options) the following ne
 Each modal gets its own set of noty
 
 ### Methods
+    noty.flash(); //Flash the noty for 3s (again)
+
 Five different methods are defined with default options depending of the type of noty:
 - `queue`: `"global"` but if `!= "global"` `options.killer` is set to `options.queue`
 - `killer`: if `options.queue != "global"` => `killer = queue` and the noty will close all noty with same queue.<br>To have unique queue and prevent closing: set `options.killer: false`<br>To close all noty set `options.killer: true`

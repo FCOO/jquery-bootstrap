@@ -90,7 +90,7 @@ Unifies padding for modal, accordion, popup etc.
 
 /************************************************************
 CONTROL-CONTAINER
-Style for div with controls inside modal. 
+Style for div with controls inside modal.
 Must have tabindex:"-1" to work with focus
 ************************************************************/
 @mixin control-container(){
@@ -125,26 +125,15 @@ $type-theme: (
     error       : danger,
     info        : info
 );
-$type-theme-color: (
-    alert       : false,//green,
-    success     : false,
-    warning     : false,
-    error       : false,
-    info        : false
-);
 
-
-@mixin type-colors( $type, $hover-class: false  ){
+@mixin type-colors( $type, $hover-class: false, $darken: 0  ){
     $color-name: map-get($type-theme, $type);
     $background-color: theme-color-level($color-name, -10);
 
-    //Get color from $type-theme-color
-    $color: map-get($type-theme-color, $type);
-    @if ($color == false) {
-        $color: theme-color-level($color-name, 6);
-    }
-    background-color: $background-color;
-    color           : $color;
+    $color: theme-color-level($color-name, 6);
+
+    background-color: darken($background-color, $darken);
+    color           : darken($color, $darken);
 
     @if ($hover-class){
         &.#{$hover-class}:hover {
@@ -167,7 +156,7 @@ color-hover - Background-color and text-color for 'normal' and hover
 /*
     @if $color-hover == false
         $color-hover: darken($color, $darken-hover-percent);
-    
+
     @if $bg-color-hover == false
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */

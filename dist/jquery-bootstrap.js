@@ -1077,7 +1077,6 @@ window._currentBsModal = null;
     If options.onTop: true the noty is placed in a container that is allways on the top of other elements
     ******************************************************/
 
-
     var bsNotyLayerList   = [],
         $bsNotyLayer      = null,
         $bsNotyLayerOnTop = null;
@@ -1132,6 +1131,24 @@ window._currentBsModal = null;
         $._removeModalBackdropLevel();
     };
 
+
+    /******************************************************
+    Extend Noty with flash
+    Turn flashing on for 3s
+    ******************************************************/
+    Noty.prototype.flash  = function(){
+        var $barDom = $(this.barDom);
+        if ($barDom.hasClass('flash')){
+            //Restart thr animation
+            //Thank to https://css-tricks.com/restart-css-animation/
+            $barDom.removeClass('flash');
+            void $barDom.find('.noty_body').get(0).offsetWidth;
+            $barDom.addClass('flash');
+        }
+        else
+            $barDom.addClass('flash');
+        return this;
+    };
 
     /******************************************************
     Setting default options for Noty
@@ -1346,11 +1363,12 @@ window._currentBsModal = null;
 
         options.container = '#' + notyQueueName(options.onTop) + ' ' + classNames;
 
-
-
-
-
         var result = new Noty( options );
+
+        //If options.flash => flash on show
+        if (options.flash)
+            result.on('onShow', result.flash, result );
+
 
         //If it is a modal noty => remove/move down backdrop when closed
         if (options.modal){

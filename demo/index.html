@@ -138,8 +138,8 @@ position: fixed;
 
 var $elem = $('<div/>').text('Dette er helt almindelig tekst');
 var $elem2 = $('<div/>').text('Dette er anden helt almindelig tekst').css('display','none');
-$.bsNoty({layout:'center', header: 'Davs', text: [$elem, $elem2], onTop: true});
-
+var flashingNoty = $.bsNoty({layout:'center', header: 'Davs', text: [$elem, $elem2], onTop: true, flash: true});
+window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 return;
                 window.noty({text: 'window.noty(...)', type: 'error'});
                 notyOk('Opsætning gemt', {queue:'testAfNoty'});

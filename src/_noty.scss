@@ -6,7 +6,7 @@ Additional and changed style for Noty
 
 //Overwrite noty to have faster animation
 .animated {
-    animation-duration: .3s; //Noty defalut = 1s
+    animation-duration: .3s; //Noty default = 1s
 }
 
 
@@ -209,7 +209,22 @@ $corner-space: 20px;
 
 //The five different bg-colors for the different type
 @each $type in $type-list {
+    $keyframes-name: noty_keyframes__#{$type};
+    @keyframes #{$keyframes-name} {
+        from, 50%, to { @include type-colors( $type, false     ); }
+        25%, 75%      { @include type-colors( $type, false, 20 ); }
+    }
+
     .noty_theme__#{$noty-theme-name}.noty_type__#{$type} {
         @include type-colors( $type, noty_close_with_click );
+
+
+        //Create darker bg-color when flashing
+        &.flash .noty_body {
+            animation-name: #{$keyframes-name};
+            animation-iteration-count: 3;
+            animation-duration: .5s;
+        }
+
     }
 }
