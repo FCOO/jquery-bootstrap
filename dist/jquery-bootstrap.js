@@ -551,10 +551,15 @@ TODO:
     /******************************************************
     $.fn._setModalBackdropZIndex
     Set the z-index of this to the current level
-    If delta === true the z-index is set to zindexAllwaysOnTop (9999)
+    If a className is given => use it, else
+    If delta === true the z-index is set to zindexAllwaysOnTop (9999), else
+    increase currwent z-index by 10
     ******************************************************/
-    $.fn._setModalBackdropZIndex = function( delta ){
-        this.css('z-index', delta === true  ? zindexAllwaysOnTop : zindexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
+    $.fn._setModalBackdropZIndex = function( delta, className ){
+        if (className)
+            this.addClass( className );
+        else
+            this.css('z-index', delta === true ? zindexAllwaysOnTop : zindexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
         return this;
     };
 
@@ -1342,9 +1347,8 @@ window._currentBsModal = null;
 
         //Find or create layer and container for the noty
         if (options.onTop){
-
             if (!$bsNotyLayerOnTop)
-                $._bsNotyAddLayer(true);
+                $._bsNotyAddLayer(true, options.onTopLayerClassName);
             $bsNotyLayerToUse = $bsNotyLayerOnTop;
         }
         else {

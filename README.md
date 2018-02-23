@@ -381,6 +381,7 @@ Beside the normal [Noty options](https://ned.im/noty/#/options) the following ne
 | `header` | `content` | `""` | See above  |
 | `defaultHeader` | `boolean` | `false` | If `true` use default header (icon + name) defined in `$.bsNotyIcon` and `$.bsNotyName` |
 | `onTop` | `boolean` | `false` | If `true` the noty is always on top of all other elements |
+| `onTopLayerClassName` | `string` | `""` | Alternative class-name for the container containing the top notys |
 | `flash` | `boolean` | `false` | If `true` the noty will flash for 3s when shown |
 | `footer` | `content` or `[] of content` | `""` | See above |
 | `buttons` | `[] of button-options` | `[]` | Array of options for buttons in the footer. See Button above. `closeOnClick: true/false (default:true)` is added to set if the button closes the modal |

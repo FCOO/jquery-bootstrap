@@ -288,9 +288,8 @@
 
         //Find or create layer and container for the noty
         if (options.onTop){
-
             if (!$bsNotyLayerOnTop)
-                $._bsNotyAddLayer(true);
+                $._bsNotyAddLayer(true, options.onTopLayerClassName);
             $bsNotyLayerToUse = $bsNotyLayerOnTop;
         }
         else {
