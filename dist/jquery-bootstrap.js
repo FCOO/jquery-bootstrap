@@ -1101,7 +1101,7 @@ window._currentBsModal = null;
     }
 
     //$._bsNotyAddLayer: add a new container for noty-containers
-    $._bsNotyAddLayer = function( isOnTopLayer ){
+    $._bsNotyAddLayer = function( isOnTopLayer, className ){
 
         var $result =
             $('<div/>')
@@ -1113,7 +1113,7 @@ window._currentBsModal = null;
 
         $result
             .attr('id', notyQueueName( isOnTopLayer ))
-            ._setModalBackdropZIndex( isOnTopLayer );
+            ._setModalBackdropZIndex( isOnTopLayer, className );
 
         if (isOnTopLayer)
             $bsNotyLayerOnTop = $result;
