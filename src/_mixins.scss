@@ -48,16 +48,16 @@ All elements get same outline when they have focus:
 No outline
 border-color = light blue
 ************************************************************/
-@mixin focus-style( $except-border-side: false ){
+@mixin focus-style( $except-border-side: "" ){
 
     outline: none !important;
 
-    @if ($except-border-side){
+    @if ($except-border-side != ""){
         //Add border-color to each side individually
         $sides: left right top bottom;
         @each $side in $sides {
             @if $side != $except-border-side {
-                border-#{$side}-color: $input-focus-border-color;
+                NIELS-border-#{$side}-color: $input-focus-border-color;
             }
         }
     }
