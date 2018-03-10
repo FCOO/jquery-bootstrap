@@ -6,7 +6,7 @@ Using Bootstrap Collapse to create accordion
 .accordion {
     .card {
         &.show {
-            border-color: $card-show-border-color;  
+            border-color: $card-show-border-color;
         }
     }
 
@@ -38,13 +38,14 @@ Using Bootstrap Collapse to create accordion
 .modal-sm .accordion,
 .accordion-sm {
     .card-header {
-        @include title-variant-sm(); 
+        @include title-variant-sm();
     }
     .card-block {
         @include content-padding-sm();
     }
     .card-footer {
         @include footer-variant-sm( false );
+        @include border-radius($card-border-radius);
     }
 }
 

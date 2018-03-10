@@ -375,7 +375,8 @@ window._currentBsModal = null;
     $.bsModal = function( options ){
         var $result, $modalDialog,
             id = options.id || '_bsModal'+ modalId++,
-            classNames = options.noVerticalPadding ? 'no-vertical-padding' : '',
+            classNames = (options.noVerticalPadding ? 'no-vertical-padding' : '') +
+                         (options.noHorizontalPadding ? ' no-horizontal-padding' : '')   ,
             //Create a close-function
             closeModalFunction = function(){ $result.modal('hide'); };
 
@@ -426,6 +427,7 @@ window._currentBsModal = null;
 
         //Create modal content
         $modalDialog._bsModalContent( options );
+        $result.data('bsModalDialog', $modalDialog);
 
         //Create as modal and adds methods
         $result.modal({

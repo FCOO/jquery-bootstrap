@@ -57,7 +57,7 @@ div.btn, div.list-group-item {
 
     &.primary {
         $color: map-get($theme-colors, primary );
-        @include button-color( $color ); //map-get($theme-colors, primary ) );
+        @include button-color( $color );
         &:hover {
             //Keep color on hover
             color: darken($color, $darken-hover-percent);
@@ -96,7 +96,7 @@ div.btn, div.list-group-item {
             darken($transparent-color, $darken-hover-percent), //$color-hover
             rgba(0,0,0,.1)          //$bg-color-hover
         );
-/* ER DET HER */
+
         &.focus, &:focus {
             border-color: $control-border-color; //Default border-color on focus
         }

@@ -20,12 +20,12 @@ Adjustmernt to Bootstrap table
     *************************************/
     thead {
 
-        tr th { 
+        tr th {
             display: table-cell !important; //To overwrite "display: flex;" for headers
 
-            @include title-variant(); 
+            @include title-variant();
             @include title-color();   //Only color and background-color
-    
+
             &.no-horizontal-padding {
                 padding-left : 0;
                 padding-right: 0;
@@ -47,7 +47,7 @@ Adjustmernt to Bootstrap table
                 // src/_images/table-thead-background-image-sort-arrows-no-sort.png
                 background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwRJC7Z4CQBAAACPklEQVRo3u3Zu07DMBQG4N/EiA0hwQCIoRtMPAKoKzBCC2nLG8ALMCAGXgAWZi4pDR2BNRKPwAQbAwKGIrEiEh2GMqBc7VNbpahnqpyo/1dHjexjAXb5TlSlXUAcOa1KxP0WwY//OhVu9zN5o9tcAhPwO743AgsQj++FwAD4TniGrZQLTdnQJ2gDMuOZBE1AbjyLoAXwnfAcmwU3Xcq6DkEDoBSvTVAGKMdrEhQBvvN1IaqqWIBaozU1ghJAN16HoADgxKsTCgHceFXCSP7lQIYeNx4Q1dALZA8zEMjXC1S48T/lz9TKIQtgJL6QkAkI5JtHGwbiAYiraTeLkAEwGZ9PSAWYjs8jpAAC+drEutl4AEB7ZitJSPkbvuxbiQfWX/YVZuB27OMZU1YAQGdibuWzYAbeS9bigan3UnwoAWg84s4a4K7xWAgAsCOuQcbDSVxjJzmc8R44nxOGHwR16s/Gf9SwhjWsYf2L6vurOAXgLYpDWuW3r7IE4ob23Pv4cNq24ZiWDIcDgKA1jGO5cAbO5p0HC/E/FS3EVwSJ9cDkEzrW8juTT/GhBGDlk05s5dNJfEWYuiKaPUDbSn579iA5+Bc3JjYImlsz04S8zWlmg6IcTrvwjeT72fF/u0FhhFAQX9gjKofSpRY3nVrSzY8fhDYdl2CwUckhGG7Vdgl9bVZrEey065UJmgcWI+q3ApVI1tHMvaWpFz94h1a5BNaxndYj6FYlkg3y4qPkceIH9eg2TujD4XWXYOL4/htN/xm86wMQxwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wNy0xMlQxNzozNjo0NiswMjowMGyLBscAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDctMTJUMTc6MzY6NDYrMDI6MDAd1r57AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAABJRU5ErkJggg==');
 
-                //Border-bottom-color darker when column is sorted 
+                //Border-bottom-color darker when column is sorted
                 &.asc, &.desc {
                     border-bottom-color: $title-active-bg-color;
                 }
@@ -66,7 +66,7 @@ Adjustmernt to Bootstrap table
 
     }
 
-    
+
     /*************************************
     Rows
     *************************************/
@@ -115,8 +115,8 @@ Adjustmernt to Bootstrap table
 .modal-sm .table,
 .table.table-sm {
     //Header
-    thead tr th { 
-        @include title-variant-sm();  
+    thead tr th {
+        @include title-variant-sm();
         &.sortable {
             padding-right: 1em; //Make space for sort-direction icons
         }
@@ -127,7 +127,7 @@ Adjustmernt to Bootstrap table
     }
 
     //Cell
-    tbody tr td { 
+    tbody tr td {
         @include content-padding-sm();
         &.no-horizontal-padding {
             padding-left : 0;

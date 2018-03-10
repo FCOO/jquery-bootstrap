@@ -1,8 +1,8 @@
 /************************************************************
 COLOR
 
-background-color and text-color for 
-headers modal, popover, tables, buttons, list-items etc. 
+background-color and text-color for
+headers modal, popover, tables, buttons, list-items etc.
 
 "$header-" is used for header to modal-windows and popover
 "$title-" is used for headers on content - table, accordion etc.
@@ -10,31 +10,31 @@ headers modal, popover, tables, buttons, list-items etc.
 ************************************************************/
 
 //Persent to use to darken colors when active and on hover
-$darken-active-percent: 7.5%; 
-$darken-hover-percent : 5%;   
+$darken-active-percent: 7.5%;
+$darken-hover-percent : 5%;
 
 //Bg-color and color for normal controls
-$control-bg-color: $gray-100; 
-$control-color   : #111; 
+$control-bg-color: $gray-100;
+$control-color   : #111;
 
 //Global border-color for buttons, lists, inputs etc.
-$control-border-color: $input-border-color; 
+$control-border-color: $input-border-color;
 
 //Bg-color and color for modal and popover header
-$header-bg-color: rgb(242,242,242); //Same as tab-color on some browser. Original = $gray-100;  
+$header-bg-color: rgb(242,242,242); //Same as tab-color on some browser. Original = $gray-100;
 $header-color   : $dropdown-header-color; //= $gray-600
 
 //Bg-color and color for table, accordion etc.
-$title-bg-color: $table-head-bg;    //= $gray-200 
-$title-color   : $table-head-color; //= $gray-700 
+$title-bg-color: $table-head-bg;    //= $gray-200
+$title-color   : $table-head-color; //= $gray-700
 
 //Bg-color and color for "open"/active table, accordion, bottons, list-items etc
-$title-active-bg-color: $gray-300; 
-$title-active-color   : $gray-800; 
+$title-active-bg-color: $gray-300;
+$title-active-color   : $gray-800;
 
 //Bg-color and color for controls ~ buttons, list-items etc.
 //"Blue"-version
-$control-active-bg-color: $list-group-active-bg; 
+$control-active-bg-color: $list-group-active-bg;
 $control-active-color   : $list-group-active-color;
 
 //"Gray"-version

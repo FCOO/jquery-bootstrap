@@ -6130,8 +6130,8 @@ BACKGROUND-COLOR AND TEXT COLOR
 /************************************************************
 COLOR
 
-background-color and text-color for 
-headers modal, popover, tables, buttons, list-items etc. 
+background-color and text-color for
+headers modal, popover, tables, buttons, list-items etc.
 
 "$header-" is used for header to modal-windows and popover
 "$title-" is used for headers on content - table, accordion etc.
@@ -6405,8 +6405,7 @@ div.btn, div.list-group-item {
         $bg-color-hover: darken($bg-color, $darken-hover-percent);
 */
     color: #fff;
-    background-color: transparent;
-    /* ER DET HER */ }
+    background-color: transparent; }
     .btn.btn-standard.transparent:hover {
       color: #f2f2f2;
       background-color: rgba(0, 0, 0, 0.1); }
@@ -7457,6 +7456,16 @@ body.modal-open .modal {
   padding-top: 0;
   padding-bottom: 0; }
 
+.modal.no-horizontal-padding .modal-dialog .modal-content .modal-body-fixed, .modal.no-horizontal-padding .modal-dialog .modal-content .modal-body,
+.modal-inline.no-horizontal-padding .modal-dialog .modal-content .modal-body-fixed,
+.modal-inline.no-horizontal-padding .modal-dialog .modal-content .modal-body,
+.modal.modal-sm.no-horizontal-padding .modal-dialog .modal-content .modal-body-fixed,
+.modal.modal-sm.no-horizontal-padding .modal-dialog .modal-content .modal-body,
+.modal-inline.modal-sm.no-horizontal-padding .modal-dialog .modal-content .modal-body-fixed,
+.modal-inline.modal-sm.no-horizontal-padding .modal-dialog .modal-content .modal-body {
+  padding-left: 0;
+  padding-right: 0; }
+
 /************************************************************
 MODAL-BACKDROP
 
@@ -7813,7 +7822,8 @@ Using Bootstrap Collapse to create accordion
   background-color: #f2f2f2;
   line-height: 1;
   border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important; }
+  border-top-right-radius: 0 !important;
+  border-radius: 0.25rem; }
   .modal-sm .accordion .card-footer span,
   .accordion-sm .card-footer span {
     overflow: hidden;
@@ -8092,3 +8102,129 @@ for noty is copyed and modified
     animation-name: noty_keyframes__info;
     animation-iteration-count: 3;
     animation-duration: .5s; }
+
+/************************************************************
+TABS
+
+Adjustment to Bootstrap tabs
+************************************************************/
+.nav-tabs {
+  border-bottom-color: #6c757d; }
+  .modal-dialog .nav-tabs {
+    margin-top: 0.25rem;
+    padding-left: 0.5625rem; }
+  .nav-tabs a.nav-item.nav-link {
+    cursor: default;
+    padding: 0.5rem 0.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color: #f8f9fa;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    color: #111;
+    border-color: #ced4da; }
+    .nav-tabs a.nav-item.nav-link:focus, .nav-tabs a.nav-item.nav-link.focus {
+      outline: none !important;
+      border-color: #80bdff; }
+    .nav-tabs a.nav-item.nav-link.disabled, .nav-tabs a.nav-item.nav-link:disabled {
+      border-color: #ced4da; }
+    .nav-tabs a.nav-item.nav-link:active, .nav-tabs a.nav-item.nav-link.active, .show > .nav-tabs a.nav-item.nav-link.dropdown-toggle {
+      border-color: #b8c1ca; }
+    .nav-tabs a.nav-item.nav-link:not(.active) {
+      border-bottom-color: #6c757d;
+      /*
+    @if $color-hover == false
+        $color-hover: darken($color, $darken-hover-percent);
+
+    @if $bg-color-hover == false
+        $bg-color-hover: darken($bg-color, $darken-hover-percent);
+*/
+      color: #111;
+      background-color: #f8f9fa;
+      margin-top: 2px; }
+      .nav-tabs a.nav-item.nav-link:not(.active):hover {
+        color: #040404;
+        background-color: #e9ecef; }
+    .nav-tabs a.nav-item.nav-link.active {
+      border-color: #6c757d;
+      border-bottom-color: #fff;
+      background-color: #fff; }
+  .nav-tabs.nav-tabs-sm a.nav-item.nav-link {
+    padding: 0.25rem 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px; }
+  .nav-tabs.nav-tabs-xs a.nav-item.nav-link {
+    padding: 0.1rem 0.2rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    border-radius: 0.1rem;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px; }
+
+.tab-content .tab-pane.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-height: 100%; }
+  .tab-content .tab-pane.active .tab-inner-content {
+    flex-shrink: 1;
+    flex-grow: 1;
+    background-color: #fff;
+    padding: 0.5rem 0.5rem;
+    font-size: 1rem; }
+  .tab-content .tab-pane.active .tab-footer {
+    flex-shrink: 0;
+    flex-grow: 0;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: inherit;
+    color: #495057;
+    background-color: #f2f2f2;
+    line-height: 1;
+    border-top: 1px solid #9aa1a8;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important; }
+    .tab-content .tab-pane.active .tab-footer span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    .tab-content .tab-pane.active .tab-footer:empty {
+      display: none; }
+    .tab-content .tab-pane.active .tab-footer:empty {
+      display: none; }
+
+.tab-content.tab-content-sm .tab-pane .tab-inner-content {
+  padding: 0.25rem 0.25rem;
+  font-size: 0.875rem; }
+
+.tab-content.tab-content-sm .tab-pane .tab-footer {
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.25rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  border-radius: inherit;
+  border-bottom: 1px solid #9aa1a8;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0; }
+  .tab-content.tab-content-sm .tab-pane .tab-footer span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+
+.modal-dialog .tab-content .tab-pane {
+  min-height: 100%;
+  max-height: 100%; }
+  .modal-dialog .tab-content .tab-pane .tab-inner-content {
+    padding-left: 0;
+    padding-right: 0; }

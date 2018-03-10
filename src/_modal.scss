@@ -245,7 +245,8 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 
 
 
-//No top- or bottom padding in modal-body and modal-body-fixed
+//no-vertical-padding: No top- or bottom-padding in modal-body and modal-body-fixed
+//no-horizontal-padding: No left- or rightpadding in modal-body and modal-body-fixed
 .modal,
 .modal-inline,
 .modal.modal-sm,
@@ -255,6 +256,14 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
             .modal-body-fixed, .modal-body {
                 padding-top   : 0;
                 padding-bottom: 0;
+            }
+        }
+    }
+    &.no-horizontal-padding {
+        .modal-dialog .modal-content {
+            .modal-body-fixed, .modal-body {
+                padding-left : 0;
+                padding-right: 0;
             }
         }
     }

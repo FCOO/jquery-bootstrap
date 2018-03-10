@@ -23,6 +23,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [SelectList-popover](#selectlistpopover)
 - [Table](#table)
 - [Accordion](#accordion)
+- [Tabs](#tabs)
 - [Modal](#modal)
 - [Noty](#noty)
 
@@ -328,6 +329,32 @@ Eq.
 ### Methods
 
     .asModal(  modalOptions ); //Return a bsModal (see below) with the accordion as content
+
+<a name="tabs"></a>
+## Tabs
+
+    $myAccordion = $.bsAccordion( options ); 
+
+### options
+
+| Id | Type | Default | Description |
+| :--: | :--: | :-----: | --- |
+| `children` (or `list`) | `[] of tabOptions` | `null` | The tabs |
+| `scroll` | `boolean` | `false` | Adds a scrollbar to the content |
+| `height` | `string` | `null` | The fixed height of all content-containers |
+
+### tabOptions
+    
+
+| Id | Type | Default | Description |
+| :--: | :--: | :-----: | --- |
+| `icon, text etc` | `content` or `[] of content` | `""` | See above |
+| `content` | | | The contents for the tab. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
+| `footer` | `content` or `[] of content` | `""` | See above |
+
+
+### Methods
+    .asModal(  modalOptions ); //Return a bsModal (see below) with the tabs as content
 
 <a name="modal"></a>
 ## Modal
