@@ -180,7 +180,7 @@
         options.show = false;
 
         //Create the noty empty and create the content in options.content
-        options.content = options.content || options.text;
+        options.content = options.content || $._bsAdjustIconAndText(options.text);
         options.text = '';
 
         //Add header (if any)
@@ -188,10 +188,7 @@
             if (!$.isArray(options.content))
                 options.content = [options.content];
 
-            options.header = options.header || {};
-
-            if ($.type( options.header ) == "string")
-                options.header = {text: options.header };
+            options.header = $._bsAdjustIconAndText(options.header) || {};
 
             var headerOptions =
                 options.defaultHeader ?
@@ -386,11 +383,7 @@
 
         options.type = type;
 
-        //Simple test if text=string or {da:"...", en:"..."} or {icon:"...", text:{da:"...", en:"..."}
-        if ($.isPlainObject(text) && !text.icon && !text.text)
-            text = {text:text};
-
-        options.content = text;
+        options.content = $._bsAdjustIconAndText( text );
 
         //Set killer
         if (options.queue && (options.killer !== false) && (options.killer !== true))

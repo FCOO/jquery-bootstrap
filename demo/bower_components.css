@@ -3547,3 +3547,37 @@ COLOR AND OPACITY
   .ps.scrollbar-vertical .ps__scrollbar-y-rail.shadow-bottom:after {
     display: inline-block;
     box-shadow: inset 0 0.375rem 0.375rem -0.25rem transparent, inset 0 -0.375rem 0.375rem -0.25rem rgba(0, 0, 0, 0.5); }
+
+/***********************************************
+	modernizr-mouse-events.scss,
+
+	(c) 2018, FCOO
+
+	https://github.com/FCOO/modernizr-mouse-events
+	https://github.com/FCOO
+
+
+************************************************/
+html.mouse .hide-for-mouse {
+  display: none !important; }
+
+html.mouse .show-for-no-mouse {
+  display: none !important; }
+
+html.no-mouse .show-for-mouse {
+  display: none !important; }
+
+html.no-mouse .hide-for-no-mouse {
+  display: none !important; }
+
+html.mouse-hover .hide-for-mouse-hover {
+  display: none !important; }
+
+html.mouse-hover .show-for-no-mouse-hover {
+  display: none !important; }
+
+html.no-mouse-hover .show-for-mouse-hover {
+  display: none !important; }
+
+html.no-mouse-hover .hide-for-no-mouse-hover {
+  display: none !important; }

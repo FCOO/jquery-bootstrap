@@ -1,0 +1,71 @@
+/************************************************************
+SELECTLIST
+
+bsSelectList
+    .selectList
+        .dropdown-item or .dropdown-header
+        ...
+
+************************************************************/
+.selectList {
+    @include control-container();
+}
+
+//If the select has a scrollbar the left margin is reduced with the scrollbar-width to vertical-align content
+.dropdown-menu.scrollbar-vertical {
+    .dropdown-item, .dropdown-header {
+        margin-left: -$scroll-size;
+        width: calc(100% + 2*#{$scroll-size});
+    }
+    &.ps--active-y {
+        .dropdown-item, .dropdown-header {
+            width: calc(100% + #{$scroll-size});
+        }
+    }
+}
+
+
+//Color
+@include select-list-color(".selectList .dropdown-item");
+
+//Adjust size for different size.
+.selectList {
+    //Normal
+    & {
+        .dropdown-item {
+            cursor: default;
+            @include text-truncate();
+
+            @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $line-height-base, $btn-border-radius);
+        }
+        .dropdown-header {
+            @include header-variant( false, false, false );
+            background-color: $selectlist-bg-color;
+            color: $selectlist-color;
+
+            line-height: $line-height-base * $font-size-base / $font-size-sm; //Adjust line-height to make header and item same height
+        }
+    }
+
+    //Small
+    &.selectList-sm {
+        .dropdown-item {
+            @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $line-height-base, $btn-border-radius-sm);
+        }
+        .dropdown-header {
+            @include header-variant-sm( false );
+            line-height: $line-height-base * $font-size-sm / $font-size-xs; //Adjust line-height to make header and item same height
+        }
+    }
+
+
+    //Extra small
+    &.selectList-xs {
+        .dropdown-item {
+            @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $line-height-base, $btn-border-radius-xs);
+        }
+        .dropdown-header {
+            @include header-variant-sm( false, true );
+        }
+    }
+}

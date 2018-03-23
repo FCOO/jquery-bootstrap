@@ -26,11 +26,15 @@ SET AND ADJUST BOOTSTRAP DEFAULT VALUES
 ************************************************/
 @import "bootstrap-variables";
 
-
 /***********************************************
 IMPORT BOOTSTRAP SCSS
 ************************************************/
 @import "../bower_components/bootstrap/scss/bootstrap";
+
+/***********************************************
+IMPORT SELECT2 SCSS
+************************************************/
+@import "../bower_components/select2/src/scss/core";
 
 /***********************************************
 BACKGROUND-COLOR AND TEXT COLOR
@@ -69,13 +73,15 @@ STYLE FOR DIFFERENT ELEMENTS
 
 @import "checkbox";
 
-@import "select";
+@import "selectlist";
 
 @import "modal";
 
 @import "modal-backdrop";
 
 @import "form";
+
+@import "float-label";
 
 @import "table";
 
@@ -84,4 +90,7 @@ STYLE FOR DIFFERENT ELEMENTS
 @import "noty";
 
 @import "tabs";
+
+@import "select2";
+
 

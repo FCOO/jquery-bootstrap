@@ -32,6 +32,34 @@
 
     $.EMPTY_TEXT = '___***EMPTY***___';
 
+    //$._bsAdjustIconAndText: Adjust options to fit with {icon"...", text:{da:"", en:".."}
+    // options == {da:"..", en:".."} => return {text: options}
+    // options == array of ?? => array of $._bsAdjustIconAndText( ??? )
+    // options == STRING           => return {text: options}
+
+    $._bsAdjustIconAndText = function( options ){
+        if (!options)
+            return options;
+        if ($.isArray( options )){
+            var result = [];
+            $.each( options, function(index, content){
+                result.push( $._bsAdjustIconAndText(content) );
+            });
+            return result;
+        }
+
+        if ($.type( options ) == "object"){
+            if (!options.icon && !options.text)
+                return {text: options }
+            else
+                return options;
+        }
+        else
+            //options == simple type (string, number etc.)
+            return {text: options }
+
+    };
+
     //$._bsAdjustOptions: Adjust options to allow text/name/title/header etc.
     $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
         //*********************************************************************
@@ -83,6 +111,32 @@
         return options;
     };
 
+
+    /****************************************************************************************
+    _bsGetSizeClass
+    baseClass: "BASE" useTouchSize: false
+        small: false => sizeClass = ''
+        small: true  => sizeClass = "BASE-sm"
+
+    baseClass: "BASE" useTouchSize: true
+        small: false => sizeClass = 'BASE-sm'
+        small: true  => sizeClass = "BASE-xs"
+    ****************************************************************************************/
+    $._bsGetSizeClass = function( options ){
+        var sizeClassPostfix = '';
+
+        if (options.useTouchSize){
+            if (ns.bsIsTouch)
+                sizeClassPostfix = options.small ? 'sm' : '';
+            else
+                sizeClassPostfix = options.small ? 'xs' : 'sm';
+        }
+        else
+            sizeClassPostfix = options.small ? 'sm' : '';
+
+        return sizeClassPostfix && options.baseClass ? options.baseClass + '-' + sizeClassPostfix : '';
+    };
+
     $.fn.extend({
         /****************************************************************************************
         _bsAddBaseClassAndSize
@@ -95,34 +149,11 @@
             styleClass          [string]
             class               [string]
             textStyle           [string] or [object]. see _bsAddStyleClasses
-
-
-        baseClass: "BASE" useTouchSize: false
-            small: false => sizeClass = ''
-            small: true  => sizeClass = "BASE-sm"
-
-        baseClass: "BASE" useTouchSize: true
-            small: false => sizeClass = 'BASE-sm'
-            small: true  => sizeClass = "BASE-xs"
-
-
         ****************************************************************************************/
         _bsAddBaseClassAndSize: function( options ){
-            var classNames = options.baseClass ? [options.baseClass + (options.baseClassPostfix || '')] : [],
-                sizeClassPostfix = '';
+            var classNames = options.baseClass ? [options.baseClass + (options.baseClassPostfix || '')] : [];
 
-            if (options.useTouchSize){
-                if (ns.bsIsTouch)
-                    sizeClassPostfix = options.small ? 'sm' : '';
-                else
-                    sizeClassPostfix = options.small ? 'xs' : 'sm';
-            }
-            else
-                sizeClassPostfix = options.small ? 'sm' : '';
-
-
-            if (sizeClassPostfix && options.baseClass)
-              classNames.push( options.baseClass + '-' + sizeClassPostfix );
+            classNames.push( $._bsGetSizeClass(options) );
 
             if (options.styleClass)
                 classNames.push( options.styleClass );
@@ -257,9 +288,11 @@
                 return this;
             }
 
-            //Simple version: options == string
-            if ($.type( options ) != "object")
-                return this._bsAddHtml( {text: options} );
+
+            //Adjust icon and/or text
+            options = $._bsAdjustIconAndText( options );
+
+            this.addClass('container-icon-and-text');
 
             //If the options is a jQuery-object: append it and return
             if (options.jquery){
@@ -293,9 +326,6 @@
             //Add color (optional)
             if (options.color)
                 _this.addClass('text-'+ options.color);
-
-            if (options.icon && options.text)
-                _this.append('&nbsp;');
 
             //Add text
             $.each( textArray, function( index, text ){

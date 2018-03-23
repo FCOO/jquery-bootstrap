@@ -6141,14 +6141,14 @@ headers modal, popover, tables, buttons, list-items etc.
 VARIABLES
 ************************************************/
 /***********************************************
-    _jquery-scroll-container-variables.scss, 
+    _jquery-scroll-container-variables.scss,
 
     (c) 2017, FCOO
 
     https://github.com/FCOO/jquery-scroll-container
     https://github.com/FCOO
 
-    USING MODIFIED VERSIONS OF THE STYLE 
+    USING MODIFIED VERSIONS OF THE STYLE
     FROM PERFECT-SCROLLBAR
     https://github.com/noraesae/perfect-scrollbar
 
@@ -6978,7 +6978,7 @@ Implemented as a special version of dropdownmenu
 
 Two versions:
 1: bsSelectbox
-    .dropdown.selectbox    
+    .dropdown.selectbox
         .btn
         .dropdown-menu
             .dropdown-item or .dropdown-header
@@ -6999,7 +6999,7 @@ Two versions:
 
         border-top-left-radius : 0;
         border-top-right-radius: 0;
-        margin-top             : -$dropdown-border-width; //Move up to align with bottom of button               
+        margin-top             : -$dropdown-border-width; //Move up to align with bottom of button
     }
 
     //Make the button 'active' when dropdown is open
@@ -7013,7 +7013,7 @@ Two versions:
             &, &:focus {
                 border-bottom-color: $control-border-color
             }
-            
+
             @include focus-style( bottom );
         }
 
@@ -7128,8 +7128,8 @@ Two versions:
   /*REMOVED - Only DEFAULT sizes (= small and normal)
     //Large
     &.selectbox-lg {
-        .dropdown-item, .dropdown-header { 
-            font-size   : $font-size-lg; 
+        .dropdown-item, .dropdown-header {
+            font-size   : $font-size-lg;
             padding     : $btn-padding-y-lg $btn-padding-x;
         }
         .dropdown-header {

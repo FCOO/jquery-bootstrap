@@ -2,22 +2,32 @@
 FORM
 ************************************************************/
 
-/************************************************************
-Including .form-control-xs and .input-group-xs as in Bootstrap 3
-************************************************************/
+//Add outline on the inside when focus
+.form-control {
+    @include focus();
+}
+
+//Including .form-control-xs and .input-group-xs as in Bootstrap 3
 .form-control-xs {
   padding: $input-padding-y-xs $input-padding-x-xs;
-  font-size: $font-size-sm;
-  @include border-radius($input-border-radius-sm);
+  font-size: $font-size-xs;
 }
 
-.input-group-xs > .form-control,
-.input-group-xs > .input-group-addon,
-.input-group-xs > .input-group-btn > .btn {
-  @extend .form-control-xs;
+.input-group-xs {
+    & > .form-control,
+    & > .input-group-prepend > .input-group-text,
+    & > .input-group-append > .input-group-text,
+    & > .input-group-prepend > .btn,
+    & > .input-group-append > .btn {
+        @extend .form-control-xs;
+    }
 }
 
 
+//Make form-control inherited size when they are inside a label with class=has-float-label
+.input-group-lg > label.has-float-label > .form-control { @extend .form-control-lg; }
+.input-group-sm > label.has-float-label > .form-control { @extend .form-control-sm; }
+.input-group-xs > label.has-float-label > .form-control { @extend .form-control-xs; }
 
 
 

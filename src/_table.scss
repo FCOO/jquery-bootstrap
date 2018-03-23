@@ -76,7 +76,7 @@ Adjustmernt to Bootstrap table
 
     //Selectable rows
     &.table-selectable tbody tr {
-        @include control-active-color(".table.table-selectable tbody tr");
+        @include select-list-color("&");
         cursor: default;
     }
 

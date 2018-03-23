@@ -1,0 +1,247 @@
+/************************************************************
+SELECT2
+
+Adjusted version of berkan52/select2-bootstrap4-theme
+https://github.com/berkan52/select2-bootstrap4-theme
+
+** ONLY CONTAINS STYLE FOR SINGLE MODE WITHOUT SEARCH BOX **
+
+************************************************************/
+
+$max-items-visible-in-selectbox: 4;
+
+$max-height   : $max-items-visible-in-selectbox * ( $btn-padding-y    + $font-size-base * $line-height-base + $btn-padding-y    );
+$max-height-sm: $max-items-visible-in-selectbox * ( $btn-padding-y-sm + $font-size-sm   * $line-height-base + $btn-padding-y-sm );
+$max-height-xs: $max-items-visible-in-selectbox * ( $btn-padding-y-xs + $font-size-xs   * $line-height-base + $btn-padding-y-xs );
+
+
+$select2-theme-name: 'standard';
+
+.select2-container--#{$select2-theme-name} {
+    display: block;
+
+    //Set background-color to common
+    .select2-dropdown {
+        background-color: $selectlist-bg-color;
+        color: $selectlist-color;
+
+    }
+
+    //If the results are placed in a scrollbar => set left margin of the scroll-container = 0 to align with selection
+    .jquery-scroll-container {
+        margin-left: 0;
+    }
+
+    .select2-selection {
+        height: auto;
+        @include button-size($input-btn-padding-y, $input-btn-padding-x, $font-size-base, $line-height-base, $btn-border-radius);
+        background-color: $selectlist-bg-color;
+        color: $selectlist-color;
+        border: $btn-border-width solid $control-border-color;
+        outline: 0;
+
+        .select2-selection__rendered {
+            padding-left: 0;
+        }
+    }
+
+    .select2-results {
+        max-height: $max-height;
+    }
+
+    .select2-results__option {
+        @include button-size($input-btn-padding-y, $input-btn-padding-x, $font-size-base, $line-height-base, $btn-border-radius);
+        &[role=group] { padding: 0; }
+
+        &[aria-disabled=true] {
+            color: $dropdown-link-disabled-color;
+        }
+
+        &[aria-selected=true] {
+            background: $control-selected-bg-color;
+            color     : $control-selected-color;
+        }
+        &--highlighted[aria-selected] {
+            background: $control-active-bg-color;
+            color     : $control-active-color;
+        }
+
+        .select2-results__option {
+            .select2-results__group {
+                padding-left: 0;
+            }
+        }
+    }
+
+    .select2-results__group {
+        @include header-variant( false, false, false );
+        color      : $dropdown-header-color;
+        display    : block;
+        white-space: nowrap;
+        line-height: $line-height-base * $font-size-base / $font-size-sm; //Adjust line-height to make header and item same height
+
+    }
+
+    &.select2-container--focus,
+    &.select2-container--open {
+        .select2-selection {
+            @include focus-style();
+        }
+    }
+
+    &.select2-container--open {
+        .select2-dropdown {
+            border-color: $input-focus-border-color;
+        }
+
+        &.select2-container--below {
+            .select2-selection {
+                @include border-bottom-radius(0);
+                border-bottom-color: $control-border-color;
+            }
+        }
+
+        &.select2-container--above {
+            .select2-selection {
+                @include border-top-radius(0);
+                border-top-color: $control-border-color;
+            }
+        }
+    }
+
+    &.select2-container--disabled {
+        .select2-selection,
+        .select2-selection--multiple .select2-selection__choice {
+            background: $input-disabled-bg;
+        }
+
+        .select2-selection__clear,
+        .select2-selection--multiple .select2-selection__choice__remove {
+            display: none;
+        }
+    }
+
+    .select2-results > .select2-results__options {
+//test        max-height: 200px;
+//test        overflow-y: auto;
+    }
+
+    .select2-selection--single {
+        cursor: default;
+        @include vertical-align-center();
+        i.select2-selection__arrow {
+            @include right-side-icon('\f078', 0.8em, false, 1 );
+        }
+
+        .select2-selection__placeholder {
+            color: $input-placeholder-color;
+        }
+    }
+
+    /******************************************************
+    Style for different size
+
+    TODO: Add rules for input.sm, input-group-sm, form-group-sm a al
+        .select2-selection--single.input-sm,
+        .input-group-sm & .select2-selection--single,
+        .form-group-sm & .select2-selection--single {...}
+
+
+    ******************************************************/
+    //Small
+//    .select2-sm {
+    &.select2-container-sm {
+        .select2-results {
+            max-height: $max-height-sm;
+        }
+
+        .select2-selection,
+        .select2-results__option {
+            @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $line-height-base, $btn-border-radius-sm);
+            &[role=group] { padding: 0; }
+        }
+
+        .select2-results__group {
+            @include header-variant-sm( false );
+            line-height: $line-height-base * $font-size-sm / $font-size-xs; //Adjust line-height to make header and item same height
+        }
+    }
+
+    //Extra small
+//    .select2-xs {
+    &.select2-container-xs {
+        .select2-results {
+            max-height: $max-height-xs;
+        }
+
+        .select2-selection,
+        .select2-results__option {
+            @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $line-height-base, $btn-border-radius-xs);
+            &[role=group] { padding: 0; }
+        }
+
+        .select2-results__group {
+            @include header-variant-sm( false, true );
+        }
+    }
+}  //end of .select2-container--#{$select2-theme-name}
+
+
+
+
+.input-group > .select2-hidden-accessible {
+    &:first-child + .select2-container--#{$select2-theme-name} > .selection > .select2-selection,
+    &:first-child + .select2-container--#{$select2-theme-name} > .selection > .select2-selection.form-control {
+        @include border-right-radius(0);
+    }
+
+    &:not(:first-child) + .select2-container--#{$select2-theme-name}:not(:last-child) > .selection > .select2-selection,
+    &:not(:first-child) + .select2-container--#{$select2-theme-name}:not(:last-child) > .selection > .select2-selection.form-control {
+        border-radius: 0;
+    }
+
+    &:not(:first-child):not(:last-child) + .select2-container--#{$select2-theme-name}:last-child > .selection > .select2-selection,
+    &:not(:first-child):not(:last-child) + .select2-container--#{$select2-theme-name}:last-child > .selection > .select2-selection.form-control {
+        @include border-left-radius(0);
+    }
+}
+
+/*
+.input-group > .select2-container--#{$select2-theme-name} { //TODO: Checkes
+    display: table;
+    table-layout: fixed;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin-bottom: 0;
+
+    > .selection > .select2-selection.form-control {
+        float: none;
+    }
+
+    &.select2-container--open,
+    &.select2-container--focus{
+        z-index: 3;
+    }
+
+
+    &,
+    .input-group-btn,
+    .input-group-btn .btn {
+        vertical-align: top;
+    }
+}
+*/
+
+.form-control.select2-hidden-accessible {
+    position: absolute !important;
+    width: 1px !important;
+}
+
+/*
+.form-inline .select2-container--#{$select2-theme-name} {  //TODO: Checkes
+    @include media-breakpoint-up(sm) {
+        display: inline-block;
+    }
+}
+*/

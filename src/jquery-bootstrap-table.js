@@ -93,6 +93,7 @@ Add sort-functions + save col-index for sorted column
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
+
             $.each( options.columns, function( index, columnOptions ){
                 var content = rowContent[columnOptions.id],
                     $td = $('<td/>')
@@ -107,8 +108,15 @@ Add sort-functions + save col-index for sorted column
             });
 
             //Add rows to radioGroup
-            if (options.selectable)
+            if (options.selectable){
                 options.radioGroup.addElement( $tr );
+                $tr
+                    .on('mouseenter', $.proxy($tr._selectlist_onMouseenter, $tr) )
+                    .on('mouseleave', $.proxy($tr._selectlist_onMouseleave, $tr) );
+
+//            .on('mouseleave', $.proxy($result._selectlist_onMouseleaveList, $result) )
+
+            }
         },
 
         /**********************************************************
@@ -259,6 +267,11 @@ Add sort-functions + save col-index for sorted column
         $.each( options.content, function( index, rowContent ){
             $table.addRow( rowContent );
         });
+
+        if (options.selectable)
+            $table
+                .on('mouseleave', $.proxy($table._selectlist_onMouseleaveList, $table) )
+                .find('.active').addClass('highlighted');
 
 
         return $table;

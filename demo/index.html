@@ -13,11 +13,11 @@
     <link  href="font-awesome.css" rel="stylesheet">
     <link  href="demo.css" rel="stylesheet">
     <style>
-        html {
+        _html {
             height  : 100%;
             overflow: hidden;
         }
-        body {
+        _body {
             width: 100%;
             height: 100%;
             width: -webkit-calc(100% - 0px);
@@ -30,7 +30,7 @@ position: fixed;
     </style>
 </head>
 
-<body style="padding-left: 20px">
+<body style="padding: 20px">
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
@@ -39,13 +39,17 @@ position: fixed;
 	<script src="../src/jquery-bootstrap-modal.js"></script>
 	<script src="../src/jquery-bootstrap-modal-backdrop.js"></script>
 	<script src="../src/jquery-bootstrap-checkbox.js"></script>
-	<script src="../src/jquery-bootstrap-select.js"></script>
+	<script src="../src/jquery-bootstrap-selectlist.js"></script>
+	<script src="../src/jquery-bootstrap-select2.js"></script>
 	<script src="../src/jquery-bootstrap-button.js"></script>
 	<script src="../src/jquery-bootstrap-accordion.js"></script>
     <script src="../src/jquery-bootstrap-popover.js"></script>
     <script src="../src/jquery-bootstrap-header.js"></script>
     <script src="../src/jquery-bootstrap-noty.js"></script>
     <script src="../src/jquery-bootstrap-tabs.js"></script>
+    <script src="../src/jquery-bootstrap-form.js"></script>
+
+    <script src="../bower_components/select2/dist/js/select2.js"></script>
 
 	<script>
 
@@ -163,7 +167,7 @@ return;
                     //modal: (type=='info'),
                     //force: (type=='info'),
                     defaultHeader: index % 5,
-                    header       : (index+1) % 5 ? null : {icon: 'fa-home', text:{da:'Hjem', en:'Home'}},
+                    header       : (index+1) % 5 ? null : {da:'DANSK', en:'ENGLISH'},//{icon: 'fa-home', text:{da:'Hjem', en:'Home'}},
                     buttons      : (index+2) % 5 ? null : [
                                                             {icon:'fa-bicycle', text:{da:'En cykel', en:'A bicycle'}, onClick: function(){ console.log('En cykel klikket');}},
                                                             {icon:'fa-car', text:{da:'En bil', en:'A Car'}, onClick: function(){ console.log('En bil klikket');}}
@@ -174,6 +178,7 @@ return;
                     text: [
                         layout[index]+'<br>',
                         {text: {da: 'Noget tekst ', en: 'Some text '}},
+                        {da: 'Noget mre tekst ', en: 'Some more text '},
                         Math.random()
                     ],
                     //show: true
@@ -246,13 +251,33 @@ return;
 */
         header('SelectList & Selectbox');
         var selectItems = [
-                {id: 'slow',   icon: 'fa-bicycle'  , text:{da:'Meget langsomt___________________________', en: 'Slow'} },
-                {icon: 'fa-home'  , text:{da:'En overskrift', en: 'A Header'} },
-                {id: 'medium', icon: 'fa-car', text:{da:'Normalt', en: 'Normal'} },
-                {icon: 'fa-home',   text:{da:'En anden overskrift',en:'Another header'} },
-                {id: 'fast',   content:[{icon: 'fa-fighter-jet',   text:'Very fast!' },{icon: 'fa-fighter-jet',   text:'Very very fast!' }]}//icon: 'fa-fighter-jet'  , text:{da:'Hurtig', en: 'Very fast'} }
-            ];
+                {               icon: 'fa-home'  , text:{da:'En overskrift', en: 'A Header'} },
+                {id: 'slow',    icon: 'fa-bicycle'  , text:{da:'Meget langsomt', en: 'Slow'} },
+                {id: 'medium',  icon: 'fa-car', text:{da:'Normal fart', en: 'Normal speed'} },
+                {id: 'fast',    content:[{icon: 'fa-fighter-jet',   text:'Very fast!' },{icon: 'fa-fighter-jet',   text:'Very very fast!' }]},
+                {               icon: 'fa-home',   text:{da:'En anden overskrift',en:'Another header'} },
+                {id: 'slow2',   icon: 'fa-bicycle'  , text:{da:'Meget langsomt', en: 'Slow'} },
+                {id: 'medium2', icon: 'fa-car', text:{da:'NORMAL (DA)', en: 'NORMAL (EN)'}},
+                {id: 'fast2',   icon: 'fa-fighter-jet',   text:{da:'Meget hurtigt', en:'Very fast!'}}
+            ]
 
+        var selectItems2 = [
+                {id: 'slow3',    icon: 'fa-bicycle'  ,   text:{da:'Meget langsomt', en: 'Very slow'} },
+                {id: 'medium3',  icon: 'fa-car',         text:{da:'Normal fart', en: 'Normal speed'} },
+                {id: 'fast3',    icon: 'fa-fighter-jet', text:{da:'Hurtigt', en: 'Fast'} },
+            ]
+
+        var selectItems3 = [
+                {id: 'item1', text:{da:'Emne#1', en: 'Item#1'} },
+                {id: 'item2', text:{da:'Emne#2', en: 'Item#2'} },
+                {id: 'item3', text:{da:'Emne#3', en: 'Item#3'} },
+                {id: 'item4', text:{da:'Emne#4', en: 'Item#4'} },
+                {id: 'item5', text:{da:'Emne#5', en: 'Item#5'} },
+                {id: 'item6', text:{da:'Emne#6', en: 'Item#6'} },
+                {id: 'item7', text:{da:'Emne#7', en: 'Item#7'} },
+                {id: 'item8', text:{da:'Emne#8', en: 'Item#8'} },
+            ]
+/*
         demoBtn({
             text: 'SelectList',
             header: 'SelectList',
@@ -265,18 +290,20 @@ return;
                     onChange  : function(id, selected, $buttonGroup){console.log('bsSelectList', id, selected)},
                 })
         });
-
+*/
 
         demoBtn({
             text: 'Selectbox',
             header: 'Selectbox',
             footer: '',
+
             content: $.bsSelectbox({
-                        selectedId : 'fast',
+                        _selectedId : 'fast',
                         placeholder: {da:'Vælg hastighed...', en:'Select speed...'},
-                        items      : selectItems,
+                        items      : selectItems3,
                         onChange   : function(id, selected, $buttonGroup){console.log('bsSelectbox', id, selected)},
                     }),
+
             scroll: false
         });
 
@@ -511,10 +538,11 @@ return;
             //showHeader: false,
             //verticalBorder: false,
             selectable: true,
+            selectedId: 'no4_0',
             onChange: function( id, selected, tr ){
                 console.log( 'Table id =' , id,' selected=',selected);
             },
-            selectedId: 'first',
+
             allowZeroSelected: true,
             //allowReselect: true,
 small: true,
@@ -694,7 +722,19 @@ closeButton: true,
                     content: 'SECOND Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. ',
                     footer: [{text: {da:'Format', en:'Format'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }]
                 },
-                {icon: 'fa-calendar', title:{da:'Dato og tid', en:'Date and time'}, content: 'THIRD', selected: true}
+                {
+                    icon: 'fa-calendar',
+                    title:{da:'Dato og tid', en:'Date and time'},
+                    selected: true,
+                    content:
+                        $.bsSelectList({
+                            selectedId: 'medium',
+                            items     : selectItems3,
+//                            width      : '100px',
+//                            placeholder: {icon:'fa fa-home', text: {da:'Dansk PH...', en:'English...'}},
+                            onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox2', id, selected)},
+                        })
+                }
             ],
             height: '150px', scroll: true
         }),
@@ -714,12 +754,204 @@ closeButton: true,
         list: [
             {icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'},
             {icon: 'fa-globe', title:{da:'Tidszone', en:'Time zone'}, content: 'SECOND'},
-            {icon: 'fa-calendar', title:{da:'Dato og tid', en:'Date and time'}, content: 'THIRD', selected: true}
+            {icon: 'fa-calendar', title:{da:'Dato og tid', en:'Date and time'}, content: 'THIRD',selected: true}
         ]
     }).appendTo($body );
 
     </script>
 
+<form style="width: 500px" onSubmit="return false;">
 
+<script>
+
+    $.bsSelectbox({
+        selectedId: 'fast2',
+        items     : selectItems,
+small: true,
+        width      : '500px',
+        placeholder: {icon:'fa fa-home', text: {da:'Dansk PH...', en:'English...'}},
+        onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox', id, selected)},
+    });//.appendTo( $body );
+
+    $.bsSelectbox({
+        selectedId: 'medium',
+        items     : selectItems2,
+        width      : '600px',
+        placeholder: {_icon:'fa fa-home', text: {da:'Dansk PH...', en:'English...'}},
+        onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox2', id, selected)},
+    }).appendTo( $body );
+
+$('<div class="form-group input-group input-group"/>')
+    .appendTo( $body )
+    .append(
+        $('<input type="text"/>')
+            .addClass('form-control')
+            ._wrapLabel({
+                label: {da:'DA label', en:'EN label'},
+//                {
+//                    icon:'fa-home',
+//                    text: 'DAVS'//{da:'DA label', en:'EN label'}
+//                },
+                placeholder: {da:'DA placeholder', en:'EN placeholder'}
+            })
+    );
+
+
+</script>
+<!--
+    <label class="form-group has-float-label">
+        <select class="form-control custom-select" placeholder="HER">
+            <optgroup label="America">
+            <option><i class="fa fa-home"/> United States</option>
+            <option>Canada</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+            <optgroup label="Europe">
+            <option>Denmark</option>
+            <option>Sweden</option>
+
+        </select>
+        <span>Country</span>
+    </label>
+    <button type="submit" class="btn btn-primary">Submit</button>
+     -->
+</form>
+
+    <!-- <option>Første</option>
+    <option>Anden</option>
+    <option>Tredje</option>
+    <option>Fjere</option>
+ -->
+</select>
+
+
+
+<!-- <div class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="inputGroup-sizing-sm">Small</span>
+  </div>
+  <input type="text" class="form-control form-control-with-label" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+</div>
+ -->
+<h4>Normal</h4>
+<div class="form-group input-group">
+    <label class="has-float-label">
+        <input class="form-control form-control-with-label" type="text" placeholder="First Name"/>
+        <span>First</span>
+    </label>
+</div>
+<div class="form-group input-group mb-3">
+    <div class="input-group-prepend">
+        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
+        <button class="btn btn-standard" type="button">Button</button>
+    </div>
+    <label class="has-float-label">
+        <input type="text" class="form-control form-control-with-label" placeholder="Dato dd-mm-yyyy"/>
+        <span>Dato</span>
+    </label>
+    <div class="input-group-append">
+        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
+        <button class="btn btn-standard" type="button">Button</button>
+    </div>
+</div>
+
+
+<h4>Small</h4>
+<div class="form-group input-group input-group-sm">
+    <label class="has-float-label">
+        <input class="form-control form-control-with-label" type="text" placeholder="First Name"/>
+        <span>First</span>
+    </label>
+</div>
+<div class="form-group input-group input-group-sm mb-3">
+    <div class="input-group-prepend">
+        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
+        <button class="btn btn-standard" type="button">Button</button>
+    </div>
+    <label class="has-float-label">
+        <input type="text" class="form-control form-control-with-label" placeholder="Dato dd-mm-yyyy"/>
+        <span>Dato</span>
+    </label>
+    <div class="input-group-append">
+        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
+        <button class="btn btn-standard" type="button">Button</button>
+    </div>
+</div>
+
+
+<h4>Extra small</h4>
+<div class="form-group input-group input-group-xs">
+    <label class="has-float-label">
+        <input class="form-control form-control-with-label" type="text" placeholder="First Name"/>
+        <span>First</span>
+    </label>
+</div>
+<div class="form-group input-group input-group-xs mb-3">
+    <div class="input-group-prepend">
+        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
+        <button class="btn btn-standard" type="button">Button</button>
+    </div>
+    <label class="has-float-label">
+        <input type="text" class="form-control form-control-with-label" placeholder="Dato dd-mm-yyyy"/>
+        <span>Dato</span>
+    </label>
+    <div class="input-group-append">
+        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
+        <button class="btn btn-standard" type="button">Button</button>
+    </div>
+</div>
+
+<!--
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ -->
 </body>
 </html>

@@ -48,27 +48,18 @@ All elements get same outline when they have focus:
 No outline
 border-color = light blue
 ************************************************************/
-@mixin focus-style( $except-border-side: "" ){
+@mixin focus-style(){
 
+    border-color: $input-focus-border-color;
     outline: none !important;
 
-    @if ($except-border-side != ""){
-        //Add border-color to each side individually
-        $sides: left right top bottom;
-        @each $side in $sides {
-            @if $side != $except-border-side {
-                NIELS-border-#{$side}-color: $input-focus-border-color;
-            }
-        }
-    }
-    @else {
-        border-color: $input-focus-border-color;
-    }
+//HER       outline: 1px solid $input-focus-border-color;
+//HER       outline-offset: -2px;
 }
 
-@mixin focus( $except-border-side: "" ){
+@mixin focus(){
     &:focus, &.focus {
-        @include focus-style( $except-border-side );
+        @include focus-style();
     }
 }
 
@@ -164,7 +155,8 @@ color-hover - Background-color and text-color for 'normal' and hover
         color: $color;
     }
     @if $bg and $bg-color {
-        background-color: $bg-color;
+//        background-color: $bg-color;
+        background: $bg-color;
     }
     @if $hover {
         &:hover {
@@ -172,7 +164,8 @@ color-hover - Background-color and text-color for 'normal' and hover
                 color: if( $color-hover, $color-hover, darken($color, $darken-hover-percent) ); //darken($color, $darken-hover-percent);
             }
             @if $bg and $bg-color {
-                background-color: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) ); //darken($bg-color, $darken-hover-percent);
+//                background-color: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) ); //darken($bg-color, $darken-hover-percent);
+                background: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) ); //darken($bg-color, $darken-hover-percent);
             }
         }
     }
@@ -193,12 +186,43 @@ title-color - create colors for headers for table and accordion etc.
 ************************************************************/
 @mixin title-color($hover: false, $selected-selector: false, $bg: true, $invers: false ){
 
-    @include color-hover( if($invers, $title-active-color, $title-color), if($invers, $title-active-bg-color, $title-bg-color), $hover, $bg);//TEST2
+    @include color-hover( if($invers, $title-active-color, $title-color), if($invers, $title-active-bg-color, $title-bg-color), $hover, $bg);
 
     @if ($selected-selector){
         #{$selected-selector} {
-            @include color-hover( if($invers, $title-color, $title-active-color), if($invers, $title-bg-color, $title-active-bg-color), $hover, $bg);//TEST2
+            @include color-hover( if($invers, $title-color, $title-active-color), if($invers, $title-bg-color, $title-active-bg-color), $hover, $bg);
         }
+    }
+}
+
+/************************************************************
+select-list-color
+Mixin to set colors for active and selected elements in select-list
+************************************************************/
+@mixin select-list-color( $selector: "&"){
+    #{$selector}{
+        font-size: 2rem;
+    }
+    #{$selector} {
+        color     : $selectlist-color;
+        background: $selectlist-bg-color;
+    }
+
+    html.mouse-hover #{$selector} {
+        //Active (selected)
+        &.active  {
+            color     : $control-selected-color;
+            background: $control-selected-bg-color;
+        }
+        &.active.highlighted, &.highlighted  {
+            color     : $control-active-color;
+            background: $control-active-bg-color;
+        }
+    }
+
+    html.no-mouse-hover #{$selector}.active {
+        color     : $control-active-color;
+        background: $control-active-bg-color;
     }
 }
 
@@ -206,7 +230,7 @@ title-color - create colors for headers for table and accordion etc.
 control-active-color
 Mixin to set colors for selected elements and when hover
 ************************************************************/
-@mixin control-active-color( $selector: "", $allowZeroSelected: false ){
+@mixin control-active-color( $selector: "&", $allowZeroSelected: false ){
     $allowZeroSelected-selector: ".allow-zero-selected";
     @if $allowZeroSelected {
         $allowZeroSelected-selector: "";
@@ -259,7 +283,7 @@ Padding are set to button y-padding (moving text to the left)
 /************************************************************
 header-variant
 ************************************************************/
-@mixin header-variant( $is-title: false, $incl-header: true, $small: false ) {
+@mixin header-variant( $is-title: false, $incl-header: true, $small: false, $xs-padding: false ) {
 
     font-weight: $font-weight-base;
 
@@ -277,6 +301,10 @@ header-variant
     @if $small == true {
         $padding-y: $btn-padding-y-sm;
         $padding-x: $btn-padding-x-sm;
+        @if $xs-padding == true {
+            $padding-y: $btn-padding-y-xs;
+            $padding-x: $btn-padding-x-xs;
+        }
         $font-size: $font-size-xs;
         @if $is-title == true {
             $font-size: $font-size-sm;
@@ -292,7 +320,7 @@ header-variant
     }
 }
 
-@mixin header-variant-sm( $is-title: false, $incl-header: true  ) { @include header-variant( $is-title, $incl-header, true ); }
+@mixin header-variant-sm( $incl-header: true, $xs-padding: false  ) { @include header-variant( false, $incl-header, true, $xs-padding ); }
 
 /************************************************************
 title-variant - as header but with same font-size as siblings

@@ -32,14 +32,19 @@ $title-color   : $table-head-color; //= $gray-700
 $title-active-bg-color: $gray-300;
 $title-active-color   : $gray-800;
 
+
+//Bg-color and color for lists (selectlist, selectbox etc.)
+$selectlist-bg-color: $control-bg-color; //or white;
+$selectlist-color   : $control-color;
+
 //Bg-color and color for controls ~ buttons, list-items etc.
 //"Blue"-version
 $control-active-bg-color: $list-group-active-bg;
 $control-active-color   : $list-group-active-color;
 
-//"Gray"-version
-//$control-active-bg-color: $title-active-bg-color;
-//$control-active-color   : $title-active-color;
+//"Gray"-version used for selected but not active eq. the style of the selected item when hover over another item
+$control-selected-bg-color: $title-active-bg-color;
+$control-selected-color   : $title-active-color;
 
 //Bg-color for semi-selected checkbox
 $semi-selected-bg-color      : $orange;

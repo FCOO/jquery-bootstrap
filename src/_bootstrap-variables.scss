@@ -24,30 +24,36 @@ $enable-print-styles:       true ; //true !default;
 //TODO $border-width: 1rem/16; //= 1px as rem
 
 //Setting padding around buttons etc. equal in both directions
-$btn-padding-x-lg  : .75rem;
-$btn-padding-y-lg  : $btn-padding-x-lg;
-$input-padding-x-lg: $btn-padding-x-lg;
-$input-padding-y-lg: $btn-padding-x-lg;
 
-$btn-padding-x  : .5rem;
-$btn-padding-y  : $btn-padding-x;
-$input-padding-x: $btn-padding-x;
-$input-padding-y: $btn-padding-x;
+$padding-factor: 1.5;
 
-$btn-padding-x-sm  : .25rem;
-$btn-padding-y-sm  : $btn-padding-x-sm;
-$input-padding-x-sm: $btn-padding-x-sm;
-$input-padding-y-sm: $btn-padding-x-sm;
+$input-btn-padding-y-lg: .75rem;
+$input-btn-padding-x-lg: $padding-factor * $input-btn-padding-y-lg;
 
+$input-btn-padding-y: .5rem;
+$input-btn-padding-x: $padding-factor * $input-btn-padding-y;
+
+$custom-select-padding-y: $input-btn-padding-y; //.375rem !default;
+$custom-select-padding-x: $padding-factor * $input-btn-padding-y; //.75rem !default;
+
+$input-btn-padding-y-sm: .25rem;
+$input-btn-padding-x-sm: $input-btn-padding-y-sm;
+
+//Set lighter color for placeholder
+$input-placeholder-color: #adb5bd; //=$gray-500. Original = $gray-600;
 
 //Remove shadow from input
 $input-focus-box-shadow: none;
+
+//Set focus and normal shadow for buttons the same
+$btn-box-shadow      : inset 0 1px 0 rgba(white, .15), 0 1px 1px rgba(black, .075); // = $btn-box-shadow
+$btn-focus-box-shadow: $btn-box-shadow;
 
 //Darken color for headers in dropdown/selectbox/selectlist because $header-bg-color is darken in _color.scss
 $dropdown-header-color: #495057; // = $gray-700 Original = $gray-600
 
 //Popover - No inner padding in default popover
-$popover-inner-padding: 0; 
+$popover-inner-padding: 0;
 
 //TODO set $popover-max-width as rem instead of px
 
@@ -56,8 +62,9 @@ Including "size" xs as in Bootstrap 3
 ************************************************************/
 $font-size-xs      : .75rem;
 
-$btn-padding-x-xs  : .2rem;
-$btn-padding-y-xs  : .1rem; //$btn-padding-x-xs;
+$btn-padding-y-xs  : .1rem;
+$btn-padding-x-xs  : $padding-factor * $btn-padding-y-xs;
+
 $input-padding-x-xs: $btn-padding-x-xs;
 $input-padding-y-xs: $btn-padding-y-xs;
 
@@ -80,3 +87,4 @@ $card-border-color: lighten( $modal-header-border-color, 7.5% );
 //Popover get same border as modal
 $popover-border-color      : $modal-content-border-color;
 $popover-arrow-outer-color : $popover-border-color;
+

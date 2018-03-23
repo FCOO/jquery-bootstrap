@@ -50,7 +50,7 @@ div.btn, div.list-group-item {
         background-color: darken($control-bg-color, $darken-active-percent);
         background-image: none;
         @include box-shadow($btn-active-box-shadow);
-        z-index: 3;
+        z-index: 2;
     }
 
     @include button-color( $control-color, $control-border-color );
@@ -64,8 +64,10 @@ div.btn, div.list-group-item {
         }
     }
 
-    //Selected colors when button is active
-    @include control-active-color(&);
+    //Selected colors when button is checkbox-style
+    &.allow-zero-selected {
+        @include control-active-color();
+    }
 
     //Icons in buttons get equal size to allow shift of icon
     & > i.fa {
@@ -185,8 +187,9 @@ BUTTON-GROUP
 }
 
 /************************************************************
-LIST-GROUP and LIST-GROUP-ITEM
+LIST-GROUP and LIST-GROUP-ITEM - REMOVED FOR NOW
 ************************************************************/
+/*
 //Horizontal list-group
 .list-group-horizontal {
     display       : flex;
@@ -252,4 +255,4 @@ LIST-GROUP and LIST-GROUP-ITEM
     &:first-child:not(:last-child) { @include border-right-radius(0); }
     &:last-child:not(:first-child) { @include border-left-radius(0);  }
 }
-
+*/
