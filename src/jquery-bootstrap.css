@@ -1830,7 +1830,7 @@ pre code {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), none;
 }
 .form-control::placeholder {
-  color: #adb5bd;
+  color: #6c757d;
   opacity: 1;
 }
 .form-control:disabled, .form-control[readonly] {
@@ -8939,7 +8939,10 @@ $font-size-lg  : 1.25rem    20px
 $font-size-base: 1rem       16px
 $font-size-sm  : .875rem    14px
 $font-size-xs  : .75rem     12px
-
+************************************************************/
+/************************************************************
+LABEL
+Font-sizes for labels are same siae as header but incl a xxs-size
 ************************************************************/
 /************************************************************
 CONTENT
@@ -8980,6 +8983,10 @@ FOCUS
 All elements get same outline when they have focus:
 No outline
 border-color = light blue
+************************************************************/
+/************************************************************
+CONTROL BORDER_COLOR
+All control elements get same border-color when normal, hover, active and error
 ************************************************************/
 /************************************************************
 CONTENT
@@ -9069,16 +9076,12 @@ Bootstrap allready have the following classes
 
 */
 .container-icon-and-text > *:not(:first-child) {
-  margin-left: 0.3em;
+  padding-left: 0.3em;
 }
 
 /************************************************************
 BUTTON
 
-************************************************************/
-/************************************************************
-BUTTON
-To avoid forced shadow and to control color a own button-mixin is defined
 ************************************************************/
 /************************************************************
 To be able to control font-family etc. 'buttons'
@@ -9099,7 +9102,8 @@ div.btn, div.list-group-item {
   background-color: #f8f9fa;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
   color: #111;
-  border-color: #ced4da;
+  border: 1px solid #ced4da;
+  outline: none !important;
   /************************************************************
   Special version to have transparent button
   Default is light color on dark background
@@ -9112,80 +9116,81 @@ div.btn, div.list-group-item {
   Special version to have extra large icon
   ************************************************************/
 }
-.btn.btn-standard.disabled, .btn.btn-standard:disabled {
-  background-color: #f8f9fa;
-}
-.btn.btn-standard:active, .btn.btn-standard.active, .show > .btn.btn-standard.dropdown-toggle {
+.btn.btn-standard:active, .btn.btn-standard.active {
   background-color: #e2e6ea;
   background-image: none;
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   z-index: 2;
 }
+.btn.btn-standard:active, .btn.btn-standard.active {
+  border-color: #b8c1ca;
+}
 .btn.btn-standard:focus, .btn.btn-standard.focus {
   border-color: #80bdff;
-  outline: none !important;
 }
 .btn.btn-standard.disabled, .btn.btn-standard:disabled {
   border-color: #ced4da;
 }
-.btn.btn-standard:active, .btn.btn-standard.active, .show > .btn.btn-standard.dropdown-toggle {
-  border-color: #b8c1ca;
+.btn.btn-standard.focus:not(:disabled):not(.disabled), .btn.btn-standard:focus:not(:disabled):not(.disabled), .mouse-hover .hover .btn.btn-standard:not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard.hover:not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard:hover:not(:disabled):not(.disabled) {
+  position: relative;
+  z-index: 4;
+}
+.mouse-hover .hover .btn.btn-standard:not(:focus):not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard.hover:not(:focus):not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard:hover:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #8C959D;
+}
+.has-warning .btn.btn-standard:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #dc3545;
+}
+.mouse-hover .has-warning .hover .btn.btn-standard:not(:focus):not(:disabled):not(.disabled), .mouse-hover .has-warning .btn.btn-standard.hover:not(:focus):not(:disabled):not(.disabled), .mouse-hover .has-warning .btn.btn-standard:hover:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #921925;
 }
 .btn.btn-standard.primary {
   color: #007bff;
-  border-color: #007bff;
+  border: 1px solid #007bff;
+  outline: none !important;
+}
+.btn.btn-standard.primary:active, .btn.btn-standard.primary.active {
+  border-color: #0069d9;
 }
 .btn.btn-standard.primary:focus, .btn.btn-standard.primary.focus {
   border-color: #80bdff;
-  outline: none !important;
 }
 .btn.btn-standard.primary.disabled, .btn.btn-standard.primary:disabled {
   border-color: #007bff;
 }
-.btn.btn-standard.primary:active, .btn.btn-standard.primary.active, .show > .btn.btn-standard.primary.dropdown-toggle {
-  border-color: #0069d9;
+.btn.btn-standard.primary.focus:not(:disabled):not(.disabled), .btn.btn-standard.primary:focus:not(:disabled):not(.disabled), .mouse-hover .hover .btn.btn-standard.primary:not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard.primary.hover:not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard.primary:hover:not(:disabled):not(.disabled) {
+  position: relative;
+  z-index: 4;
 }
-.btn.btn-standard.primary:hover {
-  color: #006fe6;
+.mouse-hover .hover .btn.btn-standard.primary:not(:focus):not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard.primary.hover:not(:focus):not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard.primary:hover:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #0056b3;
+}
+.has-warning .btn.btn-standard.primary:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #dc3545;
+}
+.mouse-hover .has-warning .hover .btn.btn-standard.primary:not(:focus):not(:disabled):not(.disabled), .mouse-hover .has-warning .btn.btn-standard.primary.hover:not(:focus):not(:disabled):not(.disabled), .mouse-hover .has-warning .btn.btn-standard.primary:hover:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #921925;
+}
+.btn.btn-standard.disabled, .btn.btn-standard:disabled {
+  background-color: #f8f9fa;
 }
 .btn.btn-standard.allow-zero-selected {
-  /*
-      @if $color-hover == false
-          $color-hover: darken($color, $darken-hover-percent);
-  
-      @if $bg-color-hover == false
-          $bg-color-hover: darken($bg-color, $darken-hover-percent);
-  */
   color: #111;
   background: #f8f9fa;
 }
-.btn.btn-standard.allow-zero-selected:hover {
+.mouse-hover .btn.btn-standard.allow-zero-selected:hover {
   color: #040404;
   background: #e9ecef;
 }
 .btn.btn-standard.allow-zero-selected.active {
-  /*
-      @if $color-hover == false
-          $color-hover: darken($color, $darken-hover-percent);
-  
-      @if $bg-color-hover == false
-          $bg-color-hover: darken($bg-color, $darken-hover-percent);
-  */
   color: #fff;
   background: #007bff;
 }
 
 .allow-zero-selected .btn.btn-standard.allow-zero-selected.active {
-  /*
-      @if $color-hover == false
-          $color-hover: darken($color, $darken-hover-percent);
-  
-      @if $bg-color-hover == false
-          $bg-color-hover: darken($bg-color, $darken-hover-percent);
-  */
   background: #007bff;
 }
-.allow-zero-selected .btn.btn-standard.allow-zero-selected.active:hover {
+.mouse-hover .allow-zero-selected .btn.btn-standard.allow-zero-selected.active:hover {
   background: #006fe6;
 }
 .btn.btn-standard > i.fa {
@@ -9197,25 +9202,27 @@ div.btn, div.list-group-item {
 }
 .btn.btn-standard.transparent {
   background-color: rgba(0, 0, 0, 0);
-  /*
-      @if $color-hover == false
-          $color-hover: darken($color, $darken-hover-percent);
-  
-      @if $bg-color-hover == false
-          $bg-color-hover: darken($bg-color, $darken-hover-percent);
-  */
   color: #fff;
   background: rgba(0, 0, 0, 0);
+  border-color: rgba(0, 0, 0, 0.1);
 }
-.btn.btn-standard.transparent:hover {
+.mouse-hover .btn.btn-standard.transparent:hover {
   color: #f2f2f2;
   background: rgba(0, 0, 0, 0.1);
 }
+.btn.btn-standard.transparent.focus:not(:disabled):not(.disabled), .btn.btn-standard.transparent:focus:not(:disabled):not(.disabled), .mouse-hover .hover .btn.btn-standard.transparent:not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard.transparent.hover:not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard.transparent:hover:not(:disabled):not(.disabled) {
+  position: relative;
+  z-index: 4;
+}
+.mouse-hover .hover .btn.btn-standard.transparent:not(:focus):not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard.transparent.hover:not(:focus):not(:disabled):not(.disabled), .mouse-hover .btn.btn-standard.transparent:hover:not(:focus):not(:disabled):not(.disabled) {
+  border-color: rgba(0, 0, 0, 0.15);
+}
 .btn.btn-standard.transparent.focus, .btn.btn-standard.transparent:focus {
-  border-color: #ced4da;
+  border-color: rgba(255, 255, 255, 0.5);
 }
 .btn.btn-standard.transparent:active {
-  background-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.15);
 }
 .btn.btn-standard.square {
   overflow: hidden;
@@ -9575,7 +9582,7 @@ div.radio input[type="radio"] + label::before {
 div.checkbox input[type="checkbox"]:focus + label::before,
 div.checkbox input[type="radio"]:focus + label::before, div.radio input[type="checkbox"]:focus + label::before,
 div.radio input[type="radio"]:focus + label::before {
-  border-color: #80bdff;
+  border-color: #80bdff !important;
   outline: none !important;
 }
 div.checkbox input[type="checkbox"]:not(:checked) + label::before,
@@ -9588,6 +9595,7 @@ div.checkbox input[type="radio"]:not(:checked):not(:disabled):hover + label::bef
 div.radio input[type="radio"]:not(:checked):not(:disabled):hover + label::before {
   text-decoration: none;
   background-color: #e9ecef;
+  border-color: #8C959D;
 }
 div.checkbox input[type="checkbox"]:checked + label::before,
 div.checkbox input[type="radio"]:checked + label::before, div.radio input[type="checkbox"]:checked + label::before,
@@ -9698,14 +9706,14 @@ div.radio input[type="radio"] + label {
 div.checkbox input[type="checkbox"] + label::before,
 div.checkbox input[type="radio"] + label::before, div.radio input[type="checkbox"] + label::before,
 div.radio input[type="radio"] + label::before {
-  margin-top: 0;
+  margin-top: 0.15rem;
   width: 1.2rem;
   height: 1.2rem;
 }
 div.checkbox input[type="checkbox"] + label::after,
 div.checkbox input[type="radio"] + label::after, div.radio input[type="checkbox"] + label::after,
 div.radio input[type="radio"] + label::after {
-  margin-top: 0;
+  margin-top: 0.15rem;
   width: 1.2rem;
   height: 1.2rem;
 }
@@ -9742,14 +9750,14 @@ div.radio-sm input[type="radio"] + label {
 div.checkbox-sm input[type="checkbox"] + label::before,
 div.checkbox-sm input[type="radio"] + label::before, div.radio-sm input[type="checkbox"] + label::before,
 div.radio-sm input[type="radio"] + label::before {
-  margin-top: 0;
+  margin-top: 0.13125rem;
   width: 1.05rem;
   height: 1.05rem;
 }
 div.checkbox-sm input[type="checkbox"] + label::after,
 div.checkbox-sm input[type="radio"] + label::after, div.radio-sm input[type="checkbox"] + label::after,
 div.radio-sm input[type="radio"] + label::after {
-  margin-top: 0;
+  margin-top: 0.13125rem;
   width: 1.05rem;
   height: 1.05rem;
 }
@@ -9823,7 +9831,7 @@ bsSelectList
   border-radius: 0.2rem;
 }
 .modal .selectList:focus, .modal .selectList:active {
-  border-color: #80bdff;
+  border-color: #80bdff !important;
   outline: none !important;
 }
 
@@ -9841,7 +9849,7 @@ bsSelectList
 
 .selectList .dropdown-item {
   color: #111;
-  background: #f8f9fa;
+  background: #fff;
 }
 
 html.mouse-hover .selectList .dropdown-item.active {
@@ -9876,7 +9884,7 @@ html.no-mouse-hover .selectList .dropdown-item.active {
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: inherit;
-  background-color: #f8f9fa;
+  background-color: #fff;
   color: #111;
   line-height: 1.7142857143;
 }
@@ -10267,9 +10275,31 @@ MODAL-BACKDROP
 /************************************************************
 FORM
 ************************************************************/
+.form-control {
+  border: 1px solid #ced4da;
+  outline: none !important;
+}
+.form-control:active, .form-control.active {
+  border-color: #b8c1ca;
+}
 .form-control:focus, .form-control.focus {
   border-color: #80bdff;
-  outline: none !important;
+}
+.form-control.disabled, .form-control:disabled {
+  border-color: #ced4da;
+}
+.form-control.focus:not(:disabled):not(.disabled), .form-control:focus:not(:disabled):not(.disabled), .mouse-hover .hover .form-control:not(:disabled):not(.disabled), .mouse-hover .form-control.hover:not(:disabled):not(.disabled), .mouse-hover .form-control:hover:not(:disabled):not(.disabled) {
+  position: relative;
+  z-index: 4;
+}
+.mouse-hover .hover .form-control:not(:focus):not(:disabled):not(.disabled), .mouse-hover .form-control.hover:not(:focus):not(:disabled):not(.disabled), .mouse-hover .form-control:hover:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #8C959D;
+}
+.has-warning .form-control:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #dc3545;
+}
+.mouse-hover .has-warning .hover .form-control:not(:focus):not(:disabled):not(.disabled), .mouse-hover .has-warning .form-control.hover:not(:focus):not(:disabled):not(.disabled), .mouse-hover .has-warning .form-control:hover:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #921925;
 }
 
 .form-control-xs, .input-group-xs > .form-control, .input-group-xs > .input-group-prepend > .input-group-text, .input-group-xs > .input-group-append > .input-group-text, .input-group-xs > .input-group-prepend > .btn, .input-group-xs > .input-group-append > .btn, .input-group-xs > label.has-float-label > .form-control {
@@ -10306,10 +10336,10 @@ Only supports the html-structure
   position: absolute;
   left: 0;
   top: 0;
-  cursor: text;
+  cursor: default;
   opacity: 1;
   transition: all .2s;
-  z-index: 3;
+  z-index: 4;
   line-height: 1;
   color: #495057;
   top: -.5em;
@@ -10329,6 +10359,9 @@ Only supports the html-structure
   background: white;
   content: " ";
 }
+.input-group .has-float-label > input[type="text"] + span {
+  cursor: text;
+}
 .input-group .has-float-label .form-control-with-label::-webkit-input-placeholder, .input-group .has-float-label .form-control-with-label::-moz-placeholder, .input-group .has-float-label .form-control-with-label:-ms-input-placeholder, .input-group .has-float-label .form-control-with-label::placeholder {
   opacity: 1;
   transition: all .2s;
@@ -10345,12 +10378,18 @@ Only supports the html-structure
 .input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus)::placeholder {
   opacity: 0;
 }
-.input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus) + * {
+.input-group .has-float-label .form-control-with-label.show-label-as-placeholder + *, .input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus) + * {
   font-size: 1rem;
-  color: #adb5bd;
+  color: #6c757d;
   line-height: 1.5;
-  top: 0.5rem;
+  top: calc(0.5rem + 1px);
 }
+
+.has-float-label.hide-float-label > span.container-icon-and-text:last-child {
+  display: relative;
+  z-index: 0;
+}
+
 .input-group .has-float-label:not(:last-child), .input-group .has-float-label:not(:last-child) .form-control {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
@@ -10364,18 +10403,18 @@ Only supports the html-structure
   font-size: 0.75rem;
   left: 0.25rem;
 }
-.input-group-sm.input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus) + * {
+.input-group-sm.input-group .has-float-label .form-control-with-label.show-label-as-placeholder + *, .input-group-sm.input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus) + * {
   font-size: 0.875rem;
-  top: 0.25rem;
+  top: calc(0.25rem + 1px);
 }
 
 .input-group-xs.input-group .has-float-label > span {
-  font-size: 0.75rem;
+  font-size: 0.65625rem;
   left: 0.15rem;
 }
-.input-group-xs.input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus) + * {
+.input-group-xs.input-group .has-float-label .form-control-with-label.show-label-as-placeholder + *, .input-group-xs.input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus) + * {
   font-size: 0.75rem;
-  top: 0.1rem;
+  top: calc(0.1rem + 1px);
 }
 
 /************************************************************
@@ -10415,13 +10454,6 @@ Adjustmernt to Bootstrap table
   font-size: 1rem;
   line-height: 1.5;
   border-radius: inherit;
-  /*
-      @if $color-hover == false
-          $color-hover: darken($color, $darken-hover-percent);
-  
-      @if $bg-color-hover == false
-          $bg-color-hover: darken($bg-color, $darken-hover-percent);
-  */
   color: #495057;
   background: #e9ecef;
 }
@@ -10435,13 +10467,6 @@ Adjustmernt to Bootstrap table
   padding-right: 0;
 }
 .table thead tr th.sortable {
-  /*
-      @if $color-hover == false
-          $color-hover: darken($color, $darken-hover-percent);
-  
-      @if $bg-color-hover == false
-          $bg-color-hover: darken($bg-color, $darken-hover-percent);
-  */
   color: #495057;
   background: #e9ecef;
   cursor: default;
@@ -10451,22 +10476,15 @@ Adjustmernt to Bootstrap table
   padding-right: 1em;
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwRJC7Z4CQBAAACPklEQVRo3u3Zu07DMBQG4N/EiA0hwQCIoRtMPAKoKzBCC2nLG8ALMCAGXgAWZi4pDR2BNRKPwAQbAwKGIrEiEh2GMqBc7VNbpahnqpyo/1dHjexjAXb5TlSlXUAcOa1KxP0WwY//OhVu9zN5o9tcAhPwO743AgsQj++FwAD4TniGrZQLTdnQJ2gDMuOZBE1AbjyLoAXwnfAcmwU3Xcq6DkEDoBSvTVAGKMdrEhQBvvN1IaqqWIBaozU1ghJAN16HoADgxKsTCgHceFXCSP7lQIYeNx4Q1dALZA8zEMjXC1S48T/lz9TKIQtgJL6QkAkI5JtHGwbiAYiraTeLkAEwGZ9PSAWYjs8jpAAC+drEutl4AEB7ZitJSPkbvuxbiQfWX/YVZuB27OMZU1YAQGdibuWzYAbeS9bigan3UnwoAWg84s4a4K7xWAgAsCOuQcbDSVxjJzmc8R44nxOGHwR16s/Gf9SwhjWsYf2L6vurOAXgLYpDWuW3r7IE4ob23Pv4cNq24ZiWDIcDgKA1jGO5cAbO5p0HC/E/FS3EVwSJ9cDkEzrW8juTT/GhBGDlk05s5dNJfEWYuiKaPUDbSn579iA5+Bc3JjYImlsz04S8zWlmg6IcTrvwjeT72fF/u0FhhFAQX9gjKofSpRY3nVrSzY8fhDYdl2CwUckhGG7Vdgl9bVZrEey065UJmgcWI+q3ApVI1tHMvaWpFz94h1a5BNaxndYj6FYlkg3y4qPkceIH9eg2TujD4XWXYOL4/htN/xm86wMQxwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wNy0xMlQxNzozNjo0NiswMjowMGyLBscAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDctMTJUMTc6MzY6NDYrMDI6MDAd1r57AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAABJRU5ErkJggg==");
 }
-.table thead tr th.sortable:hover {
+.mouse-hover .table thead tr th.sortable:hover {
   color: #3d4349;
   background: #dadfe4;
 }
 .table thead tr th.sortable.asc, .table thead tr th.sortable.desc {
-  /*
-      @if $color-hover == false
-          $color-hover: darken($color, $darken-hover-percent);
-  
-      @if $bg-color-hover == false
-          $bg-color-hover: darken($bg-color, $darken-hover-percent);
-  */
   color: #343a40;
   background: #dee2e6;
 }
-.table thead tr th.sortable.asc:hover, .table thead tr th.sortable.desc:hover {
+.mouse-hover .table thead tr th.sortable.asc:hover, .mouse-hover .table thead tr th.sortable.desc:hover {
   color: #292d32;
   background: #cfd5db;
 }
@@ -10493,7 +10511,7 @@ Adjustmernt to Bootstrap table
 }
 .table.table-selectable tbody tr {
   color: #111;
-  background: #f8f9fa;
+  background: #fff;
 }
 html.mouse-hover .table.table-selectable tbody tr.active {
   color: #343a40;
@@ -10570,13 +10588,6 @@ Using Bootstrap Collapse to create accordion
   border-color: #6c757d;
 }
 .accordion .card-header {
-  /*
-      @if $color-hover == false
-          $color-hover: darken($color, $darken-hover-percent);
-  
-      @if $bg-color-hover == false
-          $bg-color-hover: darken($bg-color, $darken-hover-percent);
-  */
   color: #343a40;
   background: #dee2e6;
   font-weight: 400;
@@ -10590,22 +10601,15 @@ Using Bootstrap Collapse to create accordion
   align-items: center;
   border-radius: 0.25rem;
 }
-.accordion .card-header:hover {
+.mouse-hover .accordion .card-header:hover {
   color: #292d32;
   background: #cfd5db;
 }
 .accordion .card-header.collapsed {
-  /*
-      @if $color-hover == false
-          $color-hover: darken($color, $darken-hover-percent);
-  
-      @if $bg-color-hover == false
-          $bg-color-hover: darken($bg-color, $darken-hover-percent);
-  */
   color: #495057;
   background: #e9ecef;
 }
-.accordion .card-header.collapsed:hover {
+.mouse-hover .accordion .card-header.collapsed:hover {
   color: #3d4349;
   background: #dadfe4;
 }
@@ -11063,34 +11067,40 @@ Adjustment to Bootstrap tabs
   background-color: #f8f9fa;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
   color: #111;
-  border-color: #ced4da;
+  border: 1px solid #ced4da;
+  outline: none !important;
+}
+.nav-tabs a.nav-item.nav-link:active, .nav-tabs a.nav-item.nav-link.active {
+  border-color: #b8c1ca;
 }
 .nav-tabs a.nav-item.nav-link:focus, .nav-tabs a.nav-item.nav-link.focus {
   border-color: #80bdff;
-  outline: none !important;
 }
 .nav-tabs a.nav-item.nav-link.disabled, .nav-tabs a.nav-item.nav-link:disabled {
   border-color: #ced4da;
 }
-.nav-tabs a.nav-item.nav-link:active, .nav-tabs a.nav-item.nav-link.active, .show > .nav-tabs a.nav-item.nav-link.dropdown-toggle {
-  border-color: #b8c1ca;
+.nav-tabs a.nav-item.nav-link.disabled {
+  color: #ced4da;
 }
 .nav-tabs a.nav-item.nav-link:not(.active) {
-  border-bottom-color: #6c757d;
-  /*
-      @if $color-hover == false
-          $color-hover: darken($color, $darken-hover-percent);
-  
-      @if $bg-color-hover == false
-          $bg-color-hover: darken($bg-color, $darken-hover-percent);
-  */
+  margin-top: 2px;
+  border-bottom-color: #6c757d !important;
+}
+.nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled) {
   color: #111;
   background: #f8f9fa;
   margin-top: 2px;
 }
-.nav-tabs a.nav-item.nav-link:not(.active):hover {
+.mouse-hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled):hover {
   color: #040404;
   background: #e9ecef;
+}
+.nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled).focus:not(:disabled):not(.disabled), .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled):focus:not(:disabled):not(.disabled), .mouse-hover .hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled):not(:disabled):not(.disabled), .mouse-hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled).hover:not(:disabled):not(.disabled), .mouse-hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled):hover:not(:disabled):not(.disabled) {
+  position: relative;
+  z-index: 4;
+}
+.mouse-hover .hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled):not(:focus):not(:disabled):not(.disabled), .mouse-hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled).hover:not(:focus):not(:disabled):not(.disabled), .mouse-hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled):hover:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #8C959D;
 }
 .nav-tabs a.nav-item.nav-link.active {
   border-color: #6c757d;
@@ -11198,19 +11208,12 @@ https://github.com/berkan52/select2-bootstrap4-theme
 ************************************************************/
 .select2-container--standard {
   display: block;
-    /******************************************************
-    Style for different size
-
-    TODO: Add rules for input.sm, input-group-sm, form-group-sm a al
-        .select2-selection--single.input-sm,
-        .input-group-sm & .select2-selection--single,
-        .form-group-sm & .select2-selection--single {...}
-
-
-    ******************************************************/
+  /******************************************************
+  Style for different size
+  ******************************************************/
 }
 .select2-container--standard .select2-dropdown {
-  background-color: #f8f9fa;
+  background-color: #fff;
   color: #111;
 }
 .select2-container--standard .jquery-scroll-container {
@@ -11222,10 +11225,31 @@ https://github.com/berkan52/select2-bootstrap4-theme
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 0.25rem;
-  background-color: #f8f9fa;
   color: #111;
   border: 1px solid #ced4da;
-  outline: 0;
+  outline: none !important;
+}
+.select2-container--standard .select2-selection:active, .select2-container--standard .select2-selection.active {
+  border-color: #b8c1ca;
+}
+.select2-container--standard .select2-selection:focus, .select2-container--standard .select2-selection.focus {
+  border-color: #80bdff;
+}
+.select2-container--standard .select2-selection.disabled, .select2-container--standard .select2-selection:disabled {
+  border-color: #ced4da;
+}
+.select2-container--standard .select2-selection.focus:not(:disabled):not(.disabled), .select2-container--standard .select2-selection:focus:not(:disabled):not(.disabled), .mouse-hover .hover .select2-container--standard .select2-selection:not(:disabled):not(.disabled), .mouse-hover .select2-container--standard .select2-selection.hover:not(:disabled):not(.disabled), .mouse-hover .select2-container--standard .select2-selection:hover:not(:disabled):not(.disabled) {
+  position: relative;
+  z-index: 4;
+}
+.mouse-hover .hover .select2-container--standard .select2-selection:not(:focus):not(:disabled):not(.disabled), .mouse-hover .select2-container--standard .select2-selection.hover:not(:focus):not(:disabled):not(.disabled), .mouse-hover .select2-container--standard .select2-selection:hover:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #8C959D;
+}
+.has-warning .select2-container--standard .select2-selection:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #dc3545;
+}
+.mouse-hover .has-warning .hover .select2-container--standard .select2-selection:not(:focus):not(:disabled):not(.disabled), .mouse-hover .has-warning .select2-container--standard .select2-selection.hover:not(:focus):not(:disabled):not(.disabled), .mouse-hover .has-warning .select2-container--standard .select2-selection:hover:not(:focus):not(:disabled):not(.disabled) {
+  border-color: #921925;
 }
 .select2-container--standard .select2-selection .select2-selection__rendered {
   padding-left: 0;
@@ -11275,21 +11299,21 @@ https://github.com/berkan52/select2-bootstrap4-theme
   white-space: nowrap;
 }
 .select2-container--standard.select2-container--focus .select2-selection, .select2-container--standard.select2-container--open .select2-selection {
-  border-color: #80bdff;
+  border-color: #80bdff !important;
   outline: none !important;
 }
 .select2-container--standard.select2-container--open .select2-dropdown {
-  border-color: #80bdff;
+  border-color: #80bdff !important;
 }
 .select2-container--standard.select2-container--open.select2-container--below .select2-selection {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-  border-bottom-color: #ced4da;
+  border-bottom-color: #ced4da !important;
 }
 .select2-container--standard.select2-container--open.select2-container--above .select2-selection {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border-top-color: #ced4da;
+  border-top-color: #ced4da !important;
 }
 .select2-container--standard.select2-container--disabled .select2-selection,
 .select2-container--standard.select2-container--disabled .select2-selection--multiple .select2-selection__choice {
@@ -11319,7 +11343,17 @@ https://github.com/berkan52/select2-bootstrap4-theme
   content: "";
 }
 .select2-container--standard .select2-selection--single .select2-selection__placeholder {
-  color: #adb5bd;
+  color: #6c757d;
+}
+.select2-container--standard .select2-selection__placeholder_label {
+  display: none;
+  color: #6c757d;
+}
+.select2-container--standard.select2-hide-placeholder .select2-selection--single .select2-selection__placeholder > .container-icon-and-text:first-child {
+  display: none;
+}
+.select2-container--standard.select2-hide-placeholder .select2-selection--single .select2-selection__placeholder .select2-selection__placeholder_label {
+  display: inline-block;
 }
 .select2-container--standard.select2-container-sm .select2-results {
   max-height: 7.25rem;
@@ -11379,41 +11413,31 @@ https://github.com/berkan52/select2-bootstrap4-theme
   white-space: nowrap;
 }
 
-.input-group > .select2-hidden-accessible:first-child + .select2-container--standard > .selection > .select2-selection, .input-group > .select2-hidden-accessible:first-child + .select2-container--standard > .selection > .select2-selection.form-control {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.input-group > .select2-hidden-accessible:not(:first-child) + .select2-container--standard:not(:last-child) > .selection > .select2-selection, .input-group > .select2-hidden-accessible:not(:first-child) + .select2-container--standard:not(:last-child) > .selection > .select2-selection.form-control {
-  border-radius: 0;
-}
-.input-group > .select2-hidden-accessible:not(:first-child):not(:last-child) + .select2-container--standard:last-child > .selection > .select2-selection, .input-group > .select2-hidden-accessible:not(:first-child):not(:last-child) + .select2-container--standard:last-child > .selection > .select2-selection.form-control {
+.input-group > .has-float-label:not(:first-child) .select2-container--standard .select2-selection {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-/*
-.input-group > .select2-container--standard { //TODO: Checkes
-    display: table;
-    table-layout: fixed;
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    margin-bottom: 0;
+.input-group > .has-float-label:not(:last-child) .select2-container--standard .select2-selection {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
 
-    > .selection > .select2-selection.form-control {
-        float: none;
+/* OLD VERSION
+.input-group > .select2-hidden-accessible {
+    &:first-child + .select2-container--standard > .selection > .select2-selection,
+    &:first-child + .select2-container--standard > .selection > .select2-selection.form-control {
+        @include border-right-radius(0);
     }
 
-    &.select2-container--open,
-    &.select2-container--focus{
-        z-index: 3;
+    &:not(:first-child) + .select2-container--standard:not(:last-child) > .selection > .select2-selection,
+    &:not(:first-child) + .select2-container--standard:not(:last-child) > .selection > .select2-selection.form-control {
+        border-radius: 0;
     }
 
-
-    &,
-    .input-group-btn,
-    .input-group-btn .btn {
-        vertical-align: top;
+    &:not(:first-child):not(:last-child) + .select2-container--standard:last-child > .selection > .select2-selection,
+    &:not(:first-child):not(:last-child) + .select2-container--standard:last-child > .selection > .select2-selection.form-control {
+        @include border-left-radius(0);
     }
 }
 */
@@ -11422,12 +11446,69 @@ https://github.com/berkan52/select2-bootstrap4-theme
   width: 1px !important;
 }
 
-/*
-.form-inline .select2-container--standard {  //TODO: Checkes
-    @include media-breakpoint-up(sm) {
-        display: inline-block;
-    }
+/***********************************************
+	fcoo-modal-form.scss,
+
+	(c) 2018, FCOO
+
+	https://github.com/FCOO/fcoo-modal-form
+	https://github.com/FCOO
+
+
+************************************************/
+/************************************************************
+Style for formValidation (via fcoo-formValidation)
+************************************************************/
+.form-group {
+  line-height: 1;
+  margin-bottom: 0;
+  padding-bottom: 1.675rem;
 }
-*/
+.form-group .form-control-feedback {
+  line-height: 1;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.form-group.has-warning {
+  padding-bottom: 0px;
+}
+.form-group .form-control-feedback {
+  height: 1.675rem;
+  font-size: 0.875rem;
+  color: #dc3545;
+  padding-left: 0.75rem;
+  vertical-align: top;
+}
+.form-group.has-warning .form-control-feedback[data-fv-result="INVALID"] {
+  display: inline-block !important;
+}
+
+.form-group.form-group-sm {
+  padding-bottom: 1.15rem;
+}
+.form-group.form-group-sm.has-warning {
+  padding-bottom: 0px;
+}
+.form-group.form-group-sm .form-control-feedback {
+  height: 1.15rem;
+  font-size: 0.75rem;
+  color: #dc3545;
+  padding-left: 0.25rem;
+  vertical-align: top;
+}
+
+.form-group.form-group-xs {
+  padding-bottom: 0.91rem;
+}
+.form-group.form-group-xs.has-warning {
+  padding-bottom: 0px;
+}
+.form-group.form-group-xs .form-control-feedback {
+  height: 0.91rem;
+  font-size: 0.75rem;
+  color: #dc3545;
+  padding-left: 0.15rem;
+  vertical-align: top;
+}
 
 /*# sourceMappingURL=jquery-bootstrap.css.map */

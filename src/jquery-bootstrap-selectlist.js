@@ -39,15 +39,18 @@
             });
 
 
-        var $result = $('<div tabindex="0"/>')
-                        ._bsAddBaseClassAndSize( options ),
-            radioGroup = $.radioGroup(
-                            $.extend({}, options, {
-                                radioGroupId     : options.id,
-                                className        : 'active',
-                                allowZeroSelected: false
-                            })
-                         );
+        var $result =
+                $('<div tabindex="0"/>')
+                    ._bsAddName( options )
+                    ._bsAddBaseClassAndSize( options ),
+            radioGroup =
+                $.radioGroup(
+                    $.extend({}, options, {
+                        radioGroupId     : options.id,
+                        className        : 'active',
+                        allowZeroSelected: false
+                    })
+                );
 
         $.each( options.list, function( index, itemOptions ){
             var isItem = (itemOptions.id != undefined ),

@@ -12,7 +12,7 @@ $fa-checkbox-icon: "\f00c";
 
 $line-height : $input-btn-line-height;
 
-$icon-dim-factor: 0.8;    
+$icon-dim-factor: 0.8;
 
 //$control-no-active-color-hover = 'Fade' color for the check/radio-icon when hover over unselected control
 $control-no-active-color-hover: darken($control-active-color, 20%);
@@ -23,11 +23,9 @@ $control-no-active-color-hover: darken($control-active-color, 20%);
 
 div.checkbox, div.radio {
     display    : flex;
-    align-items: center; 
-
-    line-height  : $line-height; 
-
-    cursor       : default;
+    align-items: center;
+    line-height: $line-height;
+    cursor     : default;
 
     @include modal-element-margin-bottom();
 
@@ -54,14 +52,14 @@ div.checkbox, div.radio {
                 text-align: center;
                 content   : "";
             }
-            
+
             //::before = border and background
             &::before{
-                border: $border-width solid $input-border-color;
-                background-color: $control-bg-color; 
+                border: $border-width solid $control-border-color;
+                background-color: $control-bg-color;
 
                 @include transition(border 0.15s ease-in-out, color 0.15s ease-in-out);
-            } 
+            }
 
             //::after = icon
             &::after{
@@ -83,30 +81,31 @@ div.checkbox, div.radio {
         &:not(:checked):not(:disabled):hover + label::before {
             text-decoration: none;
             background-color: darken($control-bg-color, $darken-hover-percent);
+            border-color: $control-border-color-hover;
         }
 
         //When checked
         &:checked + label::before {
-            background-color: $control-active-bg-color; 
+            background-color: $control-active-bg-color;
         }
         &:checked + label::after {
-            color: $control-active-color; 
+            color: $control-active-color;
         }
 
         //hover on checked - only on checkbox
         &[type="checkbox"]:checked:hover + label::before {
             background-color: darken($control-active-bg-color, $darken-hover-percent);
         }
-  
+
         //When semi-selected - used when a checkbox is for a group and not all children is selected. Only for checkbox
         &[type="checkbox"].semi-selected:checked {
 
 //        &:checked + label::before {
             & + label::before {
-                background-color: $semi-selected-bg-color; 
+                background-color: $semi-selected-bg-color;
             }
             & + label::after {
-                color: $control-active-color; 
+                color: $control-active-color;
             }
 
             //hover on checked
@@ -118,13 +117,13 @@ div.checkbox, div.radio {
 
 
 
-        //disabled = disabled item-list 
+        //disabled = disabled item-list
         &:disabled + label{
             color           : $list-group-disabled-color !important;
             cursor          : not-allowed !important;
             background-color: $list-group-disabled-bg !important;
             &::before{
-                background-color: $list-group-disabled-bg !important;    
+                background-color: $list-group-disabled-bg !important;
                 cursor          : not-allowed !important;
             }
             &::after{
@@ -157,7 +156,7 @@ div.checkbox {
             content: $fa-checkbox-icon;
             color  : $control-no-active-color-hover;
         }
-        &:checked + label::after { 
+        &:checked + label::after {
             content: $fa-checkbox-icon;
         }
     }
@@ -174,7 +173,7 @@ div.radio {
 
         //::after = icon
         & + label::after {
-            border-radius  : 50%; 
+            border-radius  : 50%;
             border-style   : solid;
             border-color   : transparent;
             background-clip: padding-box;
@@ -182,7 +181,7 @@ div.radio {
         &:not(:checked):not(:disabled):not(:focus):hover + label::after {
             background-color: $control-no-active-color-hover;
         }
-        &:checked + label::after { 
+        &:checked + label::after {
             background-color: $control-active-color;
         }
     }
@@ -194,16 +193,16 @@ div.radio {
 ***************************************************************************/
 @mixin checkbox-radio-size-variant( $class-postfix, $font-size, $border-radius, $padding-vertical ){
 
-    $height: $font-size * $line-height  + 2 * $padding-vertical; 
+    $height: $font-size * $line-height  + 2 * $padding-vertical;
 
     //$box-dim = dimentions of checkbox and radio(-box)
-    $box-dim: 1.2 * $font-size; 
+    $box-dim: 1.2 * $font-size;
 
     $label-padding-left: $box-dim + $border-radius; //Using border-radius as padding
 
-    $box-margin-top: 0; //($height - $box-dim)/2 - $padding-vertical;
+    $box-margin-top: ($height - $box-dim)/2 - $padding-vertical;
 
-    $icon-dim      : $icon-dim-factor*$box-dim; 
+    $icon-dim      : $icon-dim-factor*$box-dim;
     $icon-font-size: $icon-dim;
 
     $icon-radio-border-width: $box-dim / 4; //Add a transparent border to make radio-icon = 50% of box
@@ -222,13 +221,13 @@ div.radio {
                 padding-bottom: $padding-vertical;
 
                 font-size    : $font-size;
-                
+
                 //::before = border and background
                 &::before{
                     margin-top: $box-margin-top;
                     width     : $box-dim;
                     height    : $box-dim;
-                } 
+                }
 
                 //::after = icon
                 &::after{
@@ -249,7 +248,7 @@ div.radio {
             & + label::before {
                 border-radius: $border-radius;
             }
-                
+
             //::after = icon
             & + label::after{
                 font-size  : $icon-font-size;
@@ -265,7 +264,7 @@ div.radio {
             //::before = border and background
             & + label::before{
             }
-                
+
             //::after = icon
             & + label::after{
                 border-width: $icon-radio-border-width;
@@ -277,7 +276,7 @@ div.radio {
 
 //Creating different size variations. Using vertical-padding from smaller button
 
-//Standard 
+//Standard
 @include checkbox-radio-size-variant('',    $font-size-base, $btn-border-radius,    $btn-padding-y-sm );
 @include checkbox-radio-size-variant('-sm', $font-size-sm,   $btn-border-radius-sm, $btn-padding-y-xs );
 
@@ -311,8 +310,8 @@ checkbox-group-horizontal, radio-group-horizontal
 ***************************************************************************/
 
 div.checkbox-inline, div.radio-inline,
-.checkbox-group-horizontal > .checkbox, 
-.checkbox-group-horizontal > .radio, 
+.checkbox-group-horizontal > .checkbox,
+.checkbox-group-horizontal > .radio,
 .radio-group-horizontal > .checkbox,
 .radio-group-horizontal > .radio {
     display: inline-flex !important;

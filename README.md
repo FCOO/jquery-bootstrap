@@ -26,6 +26,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Tabs](#tabs)
 - [Modal](#modal)
 - [Noty](#noty)
+- [input](#input)
 
 ## Installation
 ### bower
@@ -446,8 +447,21 @@ Five different methods are defined with default options depending of the type of
     	//window.noty: method to support noty^2 methods
     	window.noty( options );     
     
+### **** NEW **** 
+#### options
+| Id | Type | Default | Description |
+| :--: | :--: | :-----: | --- |
+| `options1` | `boolean` | `true` | If `true` the ... |
+| `options2` | `string` | `null` | Contain the ... |
+
+### Methods
+
+    .methods1( arg1, arg2,...): Do something
+    .methods2( arg1, arg2,...): Do something else
 
 <!-- 
+<a name="input"></a>
+## INPUT
 ### **** NEW **** 
 #### options
 | Id | Type | Default | Description |

@@ -49,19 +49,75 @@ No outline
 border-color = light blue
 ************************************************************/
 @mixin focus-style(){
-
-    border-color: $input-focus-border-color;
+    border-color: $input-focus-border-color !important;
     outline: none !important;
-
-//HER       outline: 1px solid $input-focus-border-color;
-//HER       outline-offset: -2px;
 }
 
-@mixin focus(){
-    &:focus, &.focus {
-        @include focus-style();
+/************************************************************
+CONTROL BORDER_COLOR
+All control elements get same border-color when normal, hover, active and error
+************************************************************/
+@mixin control-border-color-hover( $border-color-hover: $control-border-color-hover){
+    //Move 'up' when focus or hover
+    &.focus:not(:disabled):not(.disabled),
+    &:focus:not(:disabled):not(.disabled),
+    .mouse-hover .hover &:not(:disabled):not(.disabled),
+    .mouse-hover &.hover:not(:disabled):not(.disabled),
+    .mouse-hover &:hover:not(:disabled):not(.disabled) {
+           position: relative;
+           z-index : 4;
+    }
+
+    //hover, not focus, not disabled
+    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
+        border-color: $border-color-hover;
     }
 }
+
+@mixin control-border-color( $border-color: $control-border-color, $border-color-hover: $control-border-color-hover, $incl-error: true ){
+    //Normal
+//HER       border-color: $border-color;
+    border : $border-width solid $border-color;
+    outline: none !important;
+
+
+    //:active
+    &:active,  &.active     {   border-color: darken($border-color, $darken-active-percent);    }
+    //:focus
+    &:focus, &.focus        {   border-color: $input-focus-border-color;                        }
+
+    // Disabled comes last to overwrite active and focus
+    //:disabled
+    &.disabled,  &:disabled {   border-color: $border-color;                                    }
+
+
+    @if $border-color-hover != false {
+        @include control-border-color-hover($border-color-hover);
+    }
+
+    @if $incl-error == true {
+        $border-color-error      : $red;
+        $border-color-error-hover: darken($border-color-error, 20%);
+
+        .has-warning &:not(:focus):not(:disabled):not(.disabled) {
+            border-color: $border-color-error;
+        }
+        .mouse-hover .has-warning .hover &:not(:focus):not(:disabled):not(.disabled),
+        .mouse-hover .has-warning &.hover:not(:focus):not(:disabled):not(.disabled),
+        .mouse-hover .has-warning &:hover:not(:focus):not(:disabled):not(.disabled) {
+            border-color: $border-color-error-hover;
+        }
+    }
+}
+
+@mixin control-color-and-border-color( $color: $control-color, $border-color: $control-border-color, $border-color-hover: $control-border-color-hover, $incl-error: true ){
+    color: $color;
+    @include control-border-color ( $border-color, $border-color-hover, $incl-error );
+}
+
+
 
 
 /************************************************************
@@ -143,14 +199,6 @@ Headers for modal, popover, popup etc.
 color-hover - Background-color and text-color for 'normal' and hover
 ************************************************************/
 @mixin color-hover($color, $bg-color, $hover, $bg, $color-hover: false, $bg-color-hover: false ){
-
-/*
-    @if $color-hover == false
-        $color-hover: darken($color, $darken-hover-percent);
-
-    @if $bg-color-hover == false
-        $bg-color-hover: darken($bg-color, $darken-hover-percent);
-*/
     @if $color {
         color: $color;
     }
@@ -159,13 +207,12 @@ color-hover - Background-color and text-color for 'normal' and hover
         background: $bg-color;
     }
     @if $hover {
-        &:hover {
+        .mouse-hover &:hover {
             @if $color {
-                color: if( $color-hover, $color-hover, darken($color, $darken-hover-percent) ); //darken($color, $darken-hover-percent);
+                color: if( $color-hover, $color-hover, darken($color, $darken-hover-percent) );
             }
             @if $bg and $bg-color {
-//                background-color: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) ); //darken($bg-color, $darken-hover-percent);
-                background: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) ); //darken($bg-color, $darken-hover-percent);
+                background: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) );
             }
         }
     }

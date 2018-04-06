@@ -12,6 +12,7 @@
     <link  href="../src/jquery-bootstrap.css" rel="stylesheet">
     <link  href="font-awesome.css" rel="stylesheet">
     <link  href="demo.css" rel="stylesheet">
+    <link  href="fcoo-formValidation.css" rel="stylesheet">
     <style>
         _html {
             height  : 100%;
@@ -49,7 +50,8 @@ position: fixed;
     <script src="../src/jquery-bootstrap-tabs.js"></script>
     <script src="../src/jquery-bootstrap-form.js"></script>
 
-    <script src="../bower_components/select2/dist/js/select2.js"></script>
+    <script src="fcoo-formValidation.js"></script>
+
 
 	<script>
 
@@ -264,6 +266,7 @@ return;
         var selectItems2 = [
                 {id: 'slow3',    icon: 'fa-bicycle'  ,   text:{da:'Meget langsomt', en: 'Very slow'} },
                 {id: 'medium3',  icon: 'fa-car',         text:{da:'Normal fart', en: 'Normal speed'} },
+                {id: 'test',  text:{da:'Label Dansk', en: 'Normal speed'} },
                 {id: 'fast3',    icon: 'fa-fighter-jet', text:{da:'Hurtigt', en: 'Fast'} },
             ]
 
@@ -646,7 +649,6 @@ small: true,
         }
 
 
-
         m_table.assignTo(
             $('<button>Table</button>')
                 .appendTo( $body)
@@ -760,10 +762,49 @@ closeButton: true,
 
     </script>
 
-<form style="width: 500px" onSubmit="return false;">
+
+<h4>Normal</h4>
+<form id="formTest">
+    <div class="form-group">
+        <div class="input-group">
+            <label class="has-float-label">
+                <input name="TEST_NAME" class="form-control-border form-control form-control-with-label" type="text" placeholder="First Name"/>
+                <span>First</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
+                <button class="btn btn-standard" disabled type="button">:disabled</button>
+            </div>
+            <label class="has-float-label">
+                <input name="TEST_DATE" type="text" class="form-control-border form-control form-control-with-label" placeholder="Dato dd-mm-yyyy" required/>
+                <span>Dato</span>
+            </label>
+            <label class="has-float-label">
+                <input name="TEST_DATE2" type="text" class="form-control-border form-control form-control-with-label" placeholder="dd-mm-yyyy" required/>
+                <span>Dato2</span>
+            </label>
+            <div class="input-group-append">
+                <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
+                <button class="btn btn-standard primary" disabled type="button">:disabled</button>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-standard primary" type="submit">Submit form</button>
+    <a class="disabled">
+</form>
+
+
+
+
+
 
 <script>
-
+/*
     $.bsSelectbox({
         selectedId: 'fast2',
         items     : selectItems,
@@ -772,139 +813,162 @@ small: true,
         placeholder: {icon:'fa fa-home', text: {da:'Dansk PH...', en:'English...'}},
         onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox', id, selected)},
     });//.appendTo( $body );
-
+*/
+/*
     $.bsSelectbox({
-        selectedId: 'medium',
+        id: 'TEST_SELECT',
         items     : selectItems2,
-        width      : '600px',
-        placeholder: {_icon:'fa fa-home', text: {da:'Dansk PH...', en:'English...'}},
-        onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox2', id, selected)},
-    }).appendTo( $body );
+        placeholder: {icon:'fa fa-home', text: {da:'PH Dansk...', en:'PH English...'}},
+        label      : {da:'DA label', en:'EN label'},
 
-$('<div class="form-group input-group input-group"/>')
-    .appendTo( $body )
-    .append(
-        $('<input type="text"/>')
-            .addClass('form-control')
-            ._wrapLabel({
-                label: {da:'DA label', en:'EN label'},
-//                {
-//                    icon:'fa-home',
-//                    text: 'DAVS'//{da:'DA label', en:'EN label'}
-//                },
-                placeholder: {da:'DA placeholder', en:'EN placeholder'}
-            })
-    );
+        onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox2', id, selected)},
+    })
+        ._wrapFormGroup({})
+        .prependTo( $('#formTest') );
+*/
+    $.bsFormGroup({
+//    $.bsInputGroup({
+        id:'NIELS_ER_SMART',
+        placeholder:'Placeholder (NIELS)',
+        label: {icon:'fa-home', text:{da:'Label (DK)',en:'Label (ENG)'}},
+        after : {type:'button', text:{da:'kr.', en:'£'}},
+        before: {type:'button', icon:'fa-calculator'},
+type: 'select',
+        items: [
+            {id:'item1', icon:'fa-home', text:{da:'Hjem'}},
+            {id:'item2', icon:'fa-map', text:{da:'Ud'}},
+            {id:'item3', icon:'', text:'NIELS_HOLT'}
+        ],
+        onChange: function(){ console.log('GODT', arguments);},
+    })
+        .prependTo( $('#formTest') );
+
+
+    $.bsFormGroup({
+//    $.bsInputGroup({
+        id:'NIELS_ER_SMART2',
+        placeholder:'Placeholder (NIELS)',
+        text: {da: 'Checkbox på dansk', en:'Checkbox in english'},
+type: 'checkbox',
+        onChange: function(){ console.log('CHECKBOX', arguments);},
+    })
+        .prependTo( $('#formTest') );
+
+    $.bsFormGroup({
+        id:'NIELS_ER_SMART3',
+        placeholder:'Placeholder (INPUT)',
+        label: 'Label (NIELS)',
+        after : {type:'button', text:{da:'kr.', en:'£'}},
+        before: {type:'button', icon:'fa-calculator'}
+    })
+        .prependTo( $('#formTest') );
+
+
+$(function() {
+    $('#formTest').formValidation({
+        framework: 'bootstrap4',
+        autoFocus: false,
+button: {
+    // The submit buttons selector
+    selector: '[type="submit"]:not([formnovalidate])', //TODO i modal: Select button outside form
+
+    // The disabled class
+    disabled: ''
+
+
+},
+
+   icon: {
+//HER          valid: 'fa fa-check',
+//HER          invalid: 'fa fa-times',
+//HER          validating: 'fa fa-refresh',
+//       feedback: '', //'_form-control-feedback'
+            //      valid: 'fa fa-check',
+            //      invalid: 'fa fa-times',
+            //      validating: 'fa fa-refresh',
+            //      feedback: 'form-control-feedback' <-
+    },
+
+//live: String — Live validating mode. Can be one of three values:
+
+//live: 'enabled', // default	The plugin validates fields as soon as they are changed
+//live: 'disabled', // Disable the live validating. The error messages are only shown after the form is submitted
+live: 'submitted', // The live validating is enabled after the form is submitted
+
+
+verbose: false,
+//err: {
+//    clazz: 'HER_form-control-feedback',
+//},
+
+
+        fields: {
+            NIELS_ER_SMART: {
+                validators: {
+                    notEmpty: {
+                        message: 'NIELS_ER_SMART is required'
+                    }
+                }
+            },
+            NIELS_ER_SMART3: {
+                validators: {
+                    notEmpty: {
+                        message: 'NIELS_ER_SMART3 is required'
+                    }
+                }
+            },
+            TEST_SELECT: {
+                validators: {
+                    notEmpty: {
+                        message: 'The %s is required'
+                    }
+                }
+            },
+            TEST_NAME: {
+                validators: {
+                    notEmpty: {
+                        message: 'The %s is required'
+                    },
+                    stringLength: {
+                        min: 6,
+                        max: 30,
+                        message: 'The name must be more than %s and less than %s characters long'
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9_]+$/,
+                        message: 'The name can only consist of alphabetical, number and underscore'
+                    }
+                }
+            },
+            TEST_DATE: {
+                validators: {
+                    notEmpty: {
+                        message: 'The date is required'
+                    },
+                    numeric: {
+                        message: 'The date must be a number'
+                    }
+                }
+            },
+            TEST_DATE2: {
+                validators: {
+                    notEmpty: {
+                        message: 'The date2 is required'
+                    },
+                    numeric: {
+                        message: 'The date2 must be a number'
+                    }
+                }
+            }
+
+        }
+    })
+});
 
 
 </script>
+
 <!--
-    <label class="form-group has-float-label">
-        <select class="form-control custom-select" placeholder="HER">
-            <optgroup label="America">
-            <option><i class="fa fa-home"/> United States</option>
-            <option>Canada</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-            <optgroup label="Europe">
-            <option>Denmark</option>
-            <option>Sweden</option>
-
-        </select>
-        <span>Country</span>
-    </label>
-    <button type="submit" class="btn btn-primary">Submit</button>
-     -->
-</form>
-
-    <!-- <option>Første</option>
-    <option>Anden</option>
-    <option>Tredje</option>
-    <option>Fjere</option>
- -->
-</select>
-
-
-
-<!-- <div class="input-group input-group-sm mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-sm">Small</span>
-  </div>
-  <input type="text" class="form-control form-control-with-label" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
-</div>
- -->
-<h4>Normal</h4>
-<div class="form-group input-group">
-    <label class="has-float-label">
-        <input class="form-control form-control-with-label" type="text" placeholder="First Name"/>
-        <span>First</span>
-    </label>
-</div>
-<div class="form-group input-group mb-3">
-    <div class="input-group-prepend">
-        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
-        <button class="btn btn-standard" type="button">Button</button>
-    </div>
-    <label class="has-float-label">
-        <input type="text" class="form-control form-control-with-label" placeholder="Dato dd-mm-yyyy"/>
-        <span>Dato</span>
-    </label>
-    <div class="input-group-append">
-        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
-        <button class="btn btn-standard" type="button">Button</button>
-    </div>
-</div>
-
-
 <h4>Small</h4>
 <div class="form-group input-group input-group-sm">
     <label class="has-float-label">
@@ -949,9 +1013,14 @@ $('<div class="form-group input-group input-group"/>')
         <button class="btn btn-standard" type="button">Button</button>
     </div>
 </div>
-
-<!--
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
  -->
+<!-- <br><br><br><br><br><br><br><br><br> -->
+
+
+
+
+
+
+
 </body>
 </html>

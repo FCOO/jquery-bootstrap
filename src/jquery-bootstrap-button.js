@@ -50,7 +50,9 @@
         if (options.tagName == 'a')
             result.prop('href', 'javascript:undefined');
 
-        result._bsAddBaseClassAndSize( options );
+        result
+            ._bsAddName( options )
+            ._bsAddBaseClassAndSize( options );
 
         if (options.id)
             result.attr('id', options.id);

@@ -2,25 +2,6 @@
 BUTTON
 
 ************************************************************/
-/************************************************************
-BUTTON
-To avoid forced shadow and to control color a own button-mixin is defined
-************************************************************/
-@mixin button-color($color, $border-color: $color) {
-    color       : $color;
-    border-color: $border-color;
-
-    @include focus();
-
-    // Disabled comes first so active can properly restyle
-    &.disabled,  &:disabled {
-        border-color: $border-color;
-    }
-
-    &:active,  &.active,  .show > &.dropdown-toggle {
-        border-color: darken($border-color, $darken-active-percent);
-    }
-}
 
 /************************************************************
 To be able to control font-family etc. 'buttons'
@@ -41,27 +22,23 @@ div.btn, div.list-group-item {
     background-color: $control-bg-color;
     @include box-shadow($btn-box-shadow);
 
-    // Disabled comes first so active can properly restyle
-    &.disabled,  &:disabled {
-        background-color: $control-bg-color;
-    }
-
-    &:active,  &.active,  .show > &.dropdown-toggle {
+    &:active,  &.active {
         background-color: darken($control-bg-color, $darken-active-percent);
         background-image: none;
         @include box-shadow($btn-active-box-shadow);
         z-index: 2;
     }
 
-    @include button-color( $control-color, $control-border-color );
+    @include control-color-and-border-color();
 
     &.primary {
         $color: map-get($theme-colors, primary );
-        @include button-color( $color );
-        &:hover {
-            //Keep color on hover
-            color: darken($color, $darken-hover-percent);
-        }
+        @include control-color-and-border-color( $color, $color, darken($color, $darken-border-color-hover-percent));
+    }
+
+    // Disabled comes last to overwrite active and focus
+    &.disabled,  &:disabled {
+        background-color: $control-bg-color;
     }
 
     //Selected colors when button is checkbox-style
@@ -98,12 +75,14 @@ div.btn, div.list-group-item {
             darken($transparent-color, $darken-hover-percent), //$color-hover
             rgba(0,0,0,.1)          //$bg-color-hover
         );
-
+        border-color: rgba(0,0,0, .1);
+        @include control-border-color-hover(rgba(0,0,0,.15));
         &.focus, &:focus {
-            border-color: $control-border-color; //Default border-color on focus
+            border-color: rgba(255, 255, 255, .5);
         }
         &:active {
-            background-color: rgba(0,0,0,.2);
+            border-color    : rgba(0,0,0, .2);
+            background-color: rgba(0,0,0, .15);
         }
     }
 

@@ -21,7 +21,6 @@
         return $result;
     }
 
-
     $.fn.select2.defaults.set( 'theme',                   'standard'         );
     $.fn.select2.defaults.set( 'templateResult',          formatSelectOption );
     $.fn.select2.defaults.set( 'templateSelection',       formatSelectOption );
@@ -52,17 +51,15 @@
                 useTouchSize: true,
 
                 //Options for select2
-                data: []
+                data: [],
             });
 
         //Convert placeholder (if any)
         if (options.placeholder){
-            var phText = $.extend(true, {}, options.placeholder);
-            if (phText.text)
-                phText = phText.text;
+            options.placeholder = $._bsAdjustIconAndText( options.placeholder );
             options.placeholder = $.extend(options.placeholder, {
                 id   : -1,
-                _text: phText,
+                _text: options.placeholder.text,
                 text : ''
             });
         }
@@ -76,7 +73,7 @@
             var dataOptions = $.extend(true, {}, itemOptions);
 
             //Save text as _text to prevent select2 to convert text to string
-            dataOptions._text = $.extend(true, {}, itemOptions.text);
+            dataOptions._text = itemOptions.text;
             dataOptions.text = '';
 
             if (itemOptions.id){
@@ -91,19 +88,19 @@
             }
         });
 
-
         //Create result and select-element
-//       var $result =  $('<div class="input-group"></div>'); //TODO
-        var $result =  $('<div class="form-control-with-label"></div>'); //TODO
-        var $select = $('<select/>');
-        $result.append( $select );
+        var $select =
+                $('<select/>')
+                    ._bsAddName( options ),
+            $result =
+                $('<div class="form-control-with-label"></div>')
+                    .append( $select );
 
         options.dropdownParent = $result;
 
         //Create select2
         $select.select2( options );
         var select2 = $select.data('select2');
-
 
         //Overwrite default ensureHighlightVisible
         select2.results.ensureHighlightVisible = ensureHighlightVisible;
@@ -115,7 +112,7 @@
                 useTouchSize: true
         });
         select2.$container.addClass( sizeClass );
-        select2.$dropdown.addClass( sizeClass );
+        select2.$dropdown.addClass ( sizeClass );
 
         //Replace default arrow with Chevrolet-style
         var $arrow = $('<i/>').addClass('fa select2-selection__arrow');
@@ -146,23 +143,40 @@
             .val(selectedIdExists ? options.selectedId : -1)
             .trigger('change');
 
+        //Add label as attr label to placeholder to make placeholder display label when no item is selected
+        select2.$selection.find('.select2-selection__placeholder').append(
+            $('<span/>')
+                .addClass('select2-selection__placeholder_label')
+                ._bsAddHtml( options.label )
+        );
+
+
+        var $label = $result._wrapLabel({ label: options.label });
+
         //Call onChange (if it and selectedId exists
         if (selectedIdExists && options.onChange)
             options.onChange( options.selectedId, true );
 
-/*
-var test = $('<div class="input-group"/>');
-test.append(
-    $result._wrapLabel({
-        label: {
-            _icon: 'fa-home',
-            text: {da:'DA label', en:'EN label'}
-        },
-        placeholder: {da:'DA placeholder', en:'EN placeholder'}
-    })
-);
-return test;
-*/
-        return $result;
+
+        function setLabelAsPlaceholder( hasFocus ){
+            var showLabelAsPlaceholder = !hasFocus && !$select.find(':selected').length;
+            $label.toggleClass('hide-float-label', showLabelAsPlaceholder);
+            $result.toggleClass('show-label-as-placeholder', showLabelAsPlaceholder);
+            select2.$container.toggleClass('select2-hide-placeholder', showLabelAsPlaceholder);
+        }
+
+        function onBlurOrFocus(){
+            setLabelAsPlaceholder(
+                select2.$container.hasClass('select2-container--open') ||
+                select2.$container.hasClass('select2-container--focus')
+            );
+        }
+
+        select2.on('focus', onBlurOrFocus);
+        select2.on('blur', onBlurOrFocus);
+
+        setLabelAsPlaceholder( false );
+
+        return $label;
     };
 }(jQuery, this, document));

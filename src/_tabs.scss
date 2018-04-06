@@ -20,17 +20,28 @@ Adjustment to Bootstrap tabs
         @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $input-btn-line-height, $btn-border-radius);
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
-outline: none !important;
+        outline: none !important;
         background-color: $control-bg-color;
         @include box-shadow(inset 0 1px 0 rgba($white, .15)); //Only top, left and right
 
-        @include button-color( $control-color, $control-border-color );
+        @include control-color-and-border-color( $control-color, $control-border-color, false, false );
+
+
+        //Disabled
+        &.disabled {
+            color: $control-border-color;
+        }
 
         //Not selected
         &:not(.active){
-            border-bottom-color: $card-show-border-color;
-            @include color-hover( $control-color, $control-bg-color, true, true );
             margin-top: 2px;
+            border-bottom-color: $card-show-border-color !important;
+
+            &:not(:disabled):not(.disabled){
+                @include color-hover( $control-color, $control-bg-color, true, true );
+                @include control-border-color-hover();
+                margin-top: 2px;
+            }
         }
 
         //Active (selected)

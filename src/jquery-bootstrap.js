@@ -138,6 +138,13 @@
     };
 
     $.fn.extend({
+
+        //_bsAddName
+        _bsAddName: function( options ){
+            this.attr('name', options.name || options.id || '');
+            return this;
+        },
+
         /****************************************************************************************
         _bsAddBaseClassAndSize
 
@@ -330,7 +337,6 @@
             //Add text
             $.each( textArray, function( index, text ){
                 var $text = create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
-
                 if ($.isFunction( text ))
                     text( $text );
                 else
@@ -369,8 +375,6 @@
 	Initialize/ready
 	*******************************************/
 	$(function() {
-
-
 	});
 	//******************************************
 

@@ -1,5 +1,5 @@
 /****************************************************************************
-	jquery-bootstrap-checkbox.js, 
+	jquery-bootstrap-checkbox.js,
 
 	(c) 2017, FCOO
 
@@ -10,30 +10,32 @@
 
 (function (/*$, window/*, document, undefined*/) {
 	"use strict";
-	
+
     /**********************************************************
     bsCheckbox( options ) - create a Bootstrap checkbox
     **********************************************************/
-    $.bsCheckbox = function( options ){ 
-        options = 
+    $.bsCheckbox = function( options ){
+        options =
             $._bsAdjustOptions( options, {
                 useTouchSize: true,
                 baseClass   : options.type || 'checkbox'
             });
-        
+
         //Create outer div
         var $result = $('<div/>')._bsAddBaseClassAndSize( options ),
 
         //Create input-element
-            $input = $('<input/>')
-                        .prop({
-                            type   : 'checkbox',
-                            checked: options.selected
-                        })
-                        .appendTo( $result );
+            $input =
+                $('<input/>')
+                    .prop({
+                        type   : 'checkbox',
+                        checked: options.selected
+                    })
+                    ._bsAddName( options )
+                    .appendTo( $result );
 
         //Create input-element as checkbox from jquery-checkbox-radio-group
-        $input.checkbox( options );        
+        $input.checkbox( options );
 
         //Get id and update input.id
         var id = $input.data('cbx_options').id;
@@ -48,19 +50,5 @@
 
         return $result;
     };
-
-
-
-	/******************************************
-	Initialize/ready 
-	*******************************************/
-	$(function() { 
-
-	
-	}); 
-	//******************************************
-
-
-
 }(jQuery, this, document));
 

@@ -35,10 +35,7 @@ $select2-theme-name: 'standard';
     .select2-selection {
         height: auto;
         @include button-size($input-btn-padding-y, $input-btn-padding-x, $font-size-base, $line-height-base, $btn-border-radius);
-        background-color: $selectlist-bg-color;
-        color: $selectlist-color;
-        border: $btn-border-width solid $control-border-color;
-        outline: 0;
+        @include control-color-and-border-color();
 
         .select2-selection__rendered {
             padding-left: 0;
@@ -91,20 +88,20 @@ $select2-theme-name: 'standard';
 
     &.select2-container--open {
         .select2-dropdown {
-            border-color: $input-focus-border-color;
+            border-color: $input-focus-border-color !important;
         }
 
         &.select2-container--below {
             .select2-selection {
                 @include border-bottom-radius(0);
-                border-bottom-color: $control-border-color;
+                border-bottom-color: $control-border-color !important;
             }
         }
 
         &.select2-container--above {
             .select2-selection {
                 @include border-top-radius(0);
-                border-top-color: $control-border-color;
+                border-top-color: $control-border-color !important;
             }
         }
     }
@@ -121,10 +118,6 @@ $select2-theme-name: 'standard';
         }
     }
 
-    .select2-results > .select2-results__options {
-//test        max-height: 200px;
-//test        overflow-y: auto;
-    }
 
     .select2-selection--single {
         cursor: default;
@@ -138,18 +131,24 @@ $select2-theme-name: 'standard';
         }
     }
 
+
+    //Special span to hold label inside placeholder. Only displayed when no item is selected
+    //Display special span and hide normal content of placeholder by setting .select2-hide-placeholder
+    .select2-selection__placeholder_label {
+        display: none;
+        color  : $input-placeholder-color;
+    }
+
+    &.select2-hide-placeholder .select2-selection--single .select2-selection__placeholder {
+        > .container-icon-and-text:first-child  { display: none;         }
+        .select2-selection__placeholder_label   { display: inline-block; }
+    }
+
+
     /******************************************************
     Style for different size
-
-    TODO: Add rules for input.sm, input-group-sm, form-group-sm a al
-        .select2-selection--single.input-sm,
-        .input-group-sm & .select2-selection--single,
-        .form-group-sm & .select2-selection--single {...}
-
-
     ******************************************************/
     //Small
-//    .select2-sm {
     &.select2-container-sm {
         .select2-results {
             max-height: $max-height-sm;
@@ -168,7 +167,6 @@ $select2-theme-name: 'standard';
     }
 
     //Extra small
-//    .select2-xs {
     &.select2-container-xs {
         .select2-results {
             max-height: $max-height-xs;
@@ -188,7 +186,15 @@ $select2-theme-name: 'standard';
 
 
 
+//Remove round border when between input-group-prepend/append
+.input-group > .has-float-label:not(:first-child) .select2-container--standard .select2-selection {
+    @include border-left-radius(0);
+}
+.input-group > .has-float-label:not(:last-child) .select2-container--standard .select2-selection {
+    @include border-right-radius(0);
+}
 
+/* OLD VERSION
 .input-group > .select2-hidden-accessible {
     &:first-child + .select2-container--#{$select2-theme-name} > .selection > .select2-selection,
     &:first-child + .select2-container--#{$select2-theme-name} > .selection > .select2-selection.form-control {
@@ -205,32 +211,6 @@ $select2-theme-name: 'standard';
         @include border-left-radius(0);
     }
 }
-
-/*
-.input-group > .select2-container--#{$select2-theme-name} { //TODO: Checkes
-    display: table;
-    table-layout: fixed;
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    margin-bottom: 0;
-
-    > .selection > .select2-selection.form-control {
-        float: none;
-    }
-
-    &.select2-container--open,
-    &.select2-container--focus{
-        z-index: 3;
-    }
-
-
-    &,
-    .input-group-btn,
-    .input-group-btn .btn {
-        vertical-align: top;
-    }
-}
 */
 
 .form-control.select2-hidden-accessible {
@@ -238,10 +218,3 @@ $select2-theme-name: 'standard';
     width: 1px !important;
 }
 
-/*
-.form-inline .select2-container--#{$select2-theme-name} {  //TODO: Checkes
-    @include media-breakpoint-up(sm) {
-        display: inline-block;
-    }
-}
-*/

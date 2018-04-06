@@ -4,7 +4,7 @@ FORM
 
 //Add outline on the inside when focus
 .form-control {
-    @include focus();
+    @include control-border-color();
 }
 
 //Including .form-control-xs and .input-group-xs as in Bootstrap 3
@@ -23,12 +23,7 @@ FORM
     }
 }
 
-
 //Make form-control inherited size when they are inside a label with class=has-float-label
 .input-group-lg > label.has-float-label > .form-control { @extend .form-control-lg; }
 .input-group-sm > label.has-float-label > .form-control { @extend .form-control-sm; }
 .input-group-xs > label.has-float-label > .form-control { @extend .form-control-xs; }
-
-
-
-

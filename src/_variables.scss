@@ -19,6 +19,8 @@ $modal-sm-rem: $modal-sm*1rem/16px;
 $modal-md-rem: $modal-md*1rem/16px;
 $modal-lg-rem: $modal-lg*1rem/16px;
 
+//Extra-extra-small font-size
+$font-size-xxs: .65625rem; //=10.5px
 
 /************************************************************
 HEADER
@@ -27,10 +29,18 @@ $font-size-lg  : 1.25rem    20px
 $font-size-base: 1rem       16px
 $font-size-sm  : .875rem    14px
 $font-size-xs  : .75rem     12px
-
 ************************************************************/
 $font-size-header   : $font-size-sm;
 $font-size-header-sm: $font-size-xs;
+$font-size-header-xs: $font-size-xs; //Same as $font-size-header-sm by design
+
+/************************************************************
+LABEL
+Font-sizes for labels are same siae as header but incl a xxs-size
+************************************************************/
+$font-size-label   : $font-size-header;
+$font-size-label-sm: $font-size-header-sm;
+$font-size-label-xs: $font-size-xxs;
 
 
 /************************************************************

@@ -45,7 +45,7 @@
         openModals = 0,
         modalVerticalMargin = 10; //Top and bottom margin for modal windows
 
-window._currentBsModal = null;
+    window._currentBsModal = null;
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
@@ -126,7 +126,6 @@ window._currentBsModal = null;
     //hidden_bs_modal - called when a modal is closed/hidden
     function hidden_bs_modal( /*event*/ ) {
         openModals--;
-
         if (openModals){
             //Move focus to previous modal on top
             var $modal = $('.modal.show').last(),
@@ -137,7 +136,7 @@ window._currentBsModal = null;
             else
                 $modal.focus();
 
-            //Re-add class "modal-open" to body (it is removed by Bootstrap
+            //Re-add class "modal-open" to body (it is removed by Bootstrap)
             $('body').addClass('modal-open');
         }
     }
@@ -423,7 +422,7 @@ window._currentBsModal = null;
                 .appendTo( $result );
 
         //Extend with prototype
-        $result.init.prototype.extend( bsModal_prototype );
+        $result.extend( bsModal_prototype );
 
         //Create modal content
         $modalDialog._bsModalContent( options );

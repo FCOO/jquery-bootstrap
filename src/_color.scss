@@ -18,10 +18,16 @@ $control-bg-color: $gray-100;
 $control-color   : #111;
 
 //Global border-color for buttons, lists, inputs etc.
-$control-border-color: $input-border-color;
+$control-border-color      : $input-border-color; // = $gray-400
+//$control-border-color-hover: $gray-500;
+//$control-border-color-hover: $gray-600;
+$control-border-color-hover: #8C959D; //= ($gray-500 + $gray-600) / 2
+
+
+$darken-border-color-hover-percent: 15%;
 
 //Bg-color and color for modal and popover header
-$header-bg-color: rgb(242,242,242); //Same as tab-color on some browser. Original = $gray-100;
+$header-bg-color: rgb(242,242,242);        //Same as tab-color on some browser. Original = $gray-100;
 $header-color   : $dropdown-header-color; //= $gray-600
 
 //Bg-color and color for table, accordion etc.
@@ -34,7 +40,7 @@ $title-active-color   : $gray-800;
 
 
 //Bg-color and color for lists (selectlist, selectbox etc.)
-$selectlist-bg-color: $control-bg-color; //or white;
+$selectlist-bg-color: $input-bg;
 $selectlist-color   : $control-color;
 
 //Bg-color and color for controls ~ buttons, list-items etc.

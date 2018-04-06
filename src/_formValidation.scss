@@ -1,0 +1,66 @@
+/***********************************************
+	fcoo-modal-form.scss,
+
+	(c) 2018, FCOO
+
+	https://github.com/FCOO/fcoo-modal-form
+	https://github.com/FCOO
+
+
+************************************************/
+//BOURBON - http://bourbon.io/
+@import "../bower_components/bourbon/core/bourbon";
+
+//MODERNIZR-MIXIN - https://github.com/danielguillan/modernizr-mixin
+@import "../bower_components/modernizr-mixin/stylesheets/modernizr";
+
+//MATHSASS - https://github.com/terkel/mathsass
+@import "../bower_components/mathsass/dist/math";
+
+
+
+/************************************************************
+Style for formValidation (via fcoo-formValidation)
+************************************************************/
+@mixin form-control-feedback( $font-size, $padding-bottom, $padding-left ){
+    $padding-factor: 1.6;
+    $height: $font-size + $padding-factor * $padding-bottom;
+    padding-bottom: $height;
+    &.has-warning {
+        padding-bottom: 0px;
+    }
+
+    .form-control-feedback {
+        height        : $height;
+        font-size     : $font-size;
+        color         : $red;
+        padding-left  : $padding-left;
+        vertical-align: top;
+    }
+
+}
+
+.form-group  {
+    line-height   : 1;
+    margin-bottom : 0;
+    .form-control-feedback {
+        line-height   : 1;
+        padding-top   : 0;
+        padding-bottom: 0;
+    }
+    @include form-control-feedback( $font-size-header, $input-padding-y, $input-padding-x);
+
+    //Bug fix ? to prevent previous error to disappear when reused
+    &.has-warning .form-control-feedback[data-fv-result="INVALID"]{
+        display: inline-block !important;
+    }
+}
+
+
+//Different size
+.form-group.form-group-sm {
+    @include form-control-feedback( $font-size-header-sm, $input-padding-y-sm, $input-padding-x-sm);
+}
+.form-group.form-group-xs {
+    @include form-control-feedback( $font-size-header-xs, $input-padding-y-xs, $input-padding-x-xs);
+}

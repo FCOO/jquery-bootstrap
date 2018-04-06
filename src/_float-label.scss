@@ -30,18 +30,18 @@ Only supports the html-structure
         position   : absolute;
         left       : 0;
         top        : 0;
-        cursor     : text;
+        cursor     : default;
         opacity    : 1;
         transition : all .2s;
-        z-index    : 3;
+        z-index    : 4;
         line-height: 1;
         color      : $title-color;
-        top      : -.5em;
-        padding  : 0;
+        top        : -.5em;
+        padding    : 0;
         margin-left: $input-border-width; //Compensates for border
 
         //Specicial for size
-        font-size: $font-size-sm;
+        font-size: $font-size-label;
         left     : $input-padding-x;
 
         &::after {
@@ -58,6 +58,11 @@ Only supports the html-structure
         }
     }
 
+    //Text-cursor for input type=text
+    & > input[type="text"] + span {
+        cursor     : text;
+    }
+
     .form-control-with-label {
         //Placeholder: opacity and transition
         &::-webkit-input-placeholder,
@@ -68,7 +73,7 @@ Only supports the html-structure
             transition: all .2s;
         }
 
-        //Hide placeholder when not focus (for unknown reason they need to be in separate lines...)
+        //Hide placeholder when not focus. (For unknown reason they need to be in separate lines...)
         &:placeholder-shown:not(:focus)::-webkit-input-placeholder { opacity: 0; }
         &:placeholder-shown:not(:focus)::-moz-placeholder          { opacity: 0; }
         &:placeholder-shown:not(:focus):-ms-input-placeholder      { opacity: 0; }
@@ -76,20 +81,28 @@ Only supports the html-structure
 
 
         //Placeholder when empty and no focus
+        &.show-label-as-placeholder + *,
         &:placeholder-shown:not(:focus) + * {
             font-size: $font-size-base;
             color      : $input-placeholder-color;
             line-height: $input-line-height;
-            top        : $input-padding-y;
+            top        : calc(#{$input-padding-y} + #{$input-border-width});
         }
     }
+}
 
+//Hide the label when outer label has class hide-float-label
+.has-float-label.hide-float-label > span.container-icon-and-text:last-child {
+    display: relative;
+    z-index: 0;
+}
+
+.input-group .has-float-label {
     //Remove round border
     &:not(:last-child),
     &:not(:last-child) .form-control {
         border-bottom-right-radius: 0;
         border-top-right-radius   : 0;
-//        border-right              : 0;
     }
     &:not(:first-child),
     &:not(:first-child) .form-control {
@@ -102,29 +115,34 @@ Only supports the html-structure
 //Small
 .input-group-sm.input-group .has-float-label {
     & > span {
-        font-size: $font-size-xs;
+        font-size: $font-size-label-sm;
         left     : $input-padding-x-sm;
     }
 
-    //Placeholder when empty and no focus
-    .form-control-with-label:placeholder-shown:not(:focus) + * {
-        font-size: $font-size-sm;
-        top      : $input-padding-y-sm;
-
+    .form-control-with-label {
+        //Placeholder when empty and no focus
+        &.show-label-as-placeholder + *,
+        &:placeholder-shown:not(:focus) + * {
+            font-size: $font-size-sm;
+            top      : calc(#{$input-padding-y-sm} + #{$input-border-width});
+        }
     }
 }
 
 //Extra small
 .input-group-xs.input-group .has-float-label {
     & > span {
-        font-size: $font-size-xs;
+        font-size: $font-size-label-xs;
         left     : $input-padding-x-xs;
     }
 
-    //Placeholder when empty and no focus
-    .form-control-with-label:placeholder-shown:not(:focus) + * {
-        font-size: $font-size-xs;
-        top      : $input-padding-y-xs;
+    .form-control-with-label {
+        //Placeholder when empty and no focus
+        &.show-label-as-placeholder + *,
+        &:placeholder-shown:not(:focus) + * {
+            font-size: $font-size-xs;
+            top      : calc(#{$input-padding-y-xs} + #{$input-border-width});
+        }
     }
 }
 
