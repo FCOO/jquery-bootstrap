@@ -7027,8 +7027,10 @@ Bootstrap allready have the following classes
 .font-italic
 
 */
-.container-icon-and-text > *:not(:first-child) {
-  padding-left: 0.3em; }
+.container-icon-and-text > * {
+  line-height: inherit !important; }
+  .container-icon-and-text > *.after-icon {
+    padding-left: 0.3em; }
 
 /************************************************************
 BUTTON
@@ -7304,7 +7306,7 @@ POPOVER
   display: flex;
   align-items: center;
   cursor: default;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 0.75rem;
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: inherit;
@@ -7330,7 +7332,7 @@ POPOVER
   display: flex;
   align-items: center;
   cursor: default;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 0.75rem;
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: inherit;
@@ -7762,7 +7764,7 @@ html.no-mouse-hover .selectList .dropdown-item.active {
   display: flex;
   align-items: center;
   cursor: default;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 0.75rem;
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: inherit;
@@ -7806,7 +7808,7 @@ html.no-mouse-hover .selectList .dropdown-item.active {
   display: flex;
   align-items: center;
   cursor: default;
-  padding: 0.1rem 0.15rem;
+  padding: 0.15rem 0.15rem;
   font-size: 0.75rem;
   line-height: 1.5;
   border-radius: inherit; }
@@ -7879,7 +7881,7 @@ body.modal-open .modal {
     display: flex;
     align-items: center;
     cursor: default;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0.75rem;
     font-size: 0.875rem;
     line-height: 1.5;
     border-radius: inherit;
@@ -7932,7 +7934,7 @@ body.modal-open .modal {
     display: flex;
     align-items: center;
     cursor: default;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0.75rem;
     font-size: 0.875rem;
     line-height: 1.5;
     border-radius: inherit;
@@ -8278,7 +8280,7 @@ Adjustmernt to Bootstrap table
     display: flex;
     align-items: center;
     cursor: default;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
     border-radius: inherit;
@@ -8397,7 +8399,7 @@ Using Bootstrap Collapse to create accordion
   display: flex;
   align-items: center;
   cursor: default;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 0.75rem;
   font-size: 1rem;
   line-height: 1.5;
   border-radius: inherit;
@@ -8442,7 +8444,7 @@ Using Bootstrap Collapse to create accordion
   display: flex;
   align-items: center;
   cursor: default;
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 0.75rem;
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: inherit;
@@ -8622,7 +8624,7 @@ for noty is copyed and modified
     display: flex;
     align-items: center;
     cursor: default;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0.75rem;
     font-size: 0.875rem;
     line-height: 1.5;
     border-radius: inherit;
@@ -8909,7 +8911,7 @@ Adjustment to Bootstrap tabs
     display: flex;
     align-items: center;
     cursor: default;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0.75rem;
     font-size: 0.875rem;
     line-height: 1.5;
     border-radius: inherit;
@@ -9025,7 +9027,7 @@ https://github.com/berkan52/select2-bootstrap4-theme
     display: flex;
     align-items: center;
     cursor: default;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0.75rem;
     font-size: 0.875rem;
     line-height: 1.5;
     border-radius: inherit;
@@ -9122,7 +9124,7 @@ https://github.com/berkan52/select2-bootstrap4-theme
     display: flex;
     align-items: center;
     cursor: default;
-    padding: 0.1rem 0.15rem;
+    padding: 0.15rem 0.15rem;
     font-size: 0.75rem;
     line-height: 1.5;
     border-radius: inherit; }

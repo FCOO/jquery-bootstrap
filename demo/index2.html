@@ -14,24 +14,32 @@
     <link  href="demo.css" rel="stylesheet">
     <link  href="fcoo-formValidation.css" rel="stylesheet">
     <style>
-        _html {
+        html {
             height  : 100%;
             overflow: hidden;
         }
-        _body {
+        body {
             width: 100%;
             height: 100%;
             width: -webkit-calc(100% - 0px);
             height: -webkit-calc(100% - 0px);
             margin: 0;
             padding: 0;
-            overflow: hidden;
-position: fixed;
+            overflow: scroll; //hidden;
+//position: fixed;
         }
     </style>
 </head>
 
 <body style="padding: 20px">
+<div id="container" style="background-color:white; width:300px; height:300px; overflow-y:scroll; border:1px solid black; position:absolute; top: 20">
+START<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div id="referenceElement" style="width:100px; height:100px; background-color: red; position: relative;">HER</div>
+    <div id="popoverElement" style="width:100px; height:100px; background-color: blue;">popover</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>SLUT
+</div>
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
@@ -52,8 +60,13 @@ position: fixed;
 
     <script src="fcoo-formValidation.js"></script>
 
-
 	<script>
+//var popper = new Popper($('#referenceElement'), $('#popoverElement'), {
+//    placement: 'left',
+//});
+
+$('#referenceElement').bsPopover( {placement:'left', header:'header', content:'HER' });
+//$('#container').addScrollbar();
 
         window.bsIsTouch = false;
         window.bsIsTouch = (window.location.search =='?touch');
@@ -344,11 +357,12 @@ return;
         var titles = ['Small', 'Normal'];
 
         for (var i=0; i<titles.length; i++ )
-            $.bsButton({
+var t=             $.bsButton({
                 small: !i,
                 text: titles[i]
             })
-            .appendTo( $body )
+            .prependTo( $body )
+//            .appendTo( $body )
             .bsButtonGroupPopover({
                 onClick: function(id, selected, $buttonGroup){console.log('COMMON 6: bsButtonGroupPopover', id, selected)},
                 vertical: true,
@@ -358,12 +372,12 @@ return;
                 close: i,
                 footer: {icon:'fa-home', text:titles[i]},
                 buttons: [
-                    {id:'slow',   _icon: 'fa-bicycle',   text:'X'},
+                    {id:'slow',   _icon: 'fa-bicycle',   text:'X', onClick:function(){t.popover('update')}},
                     {id:'medium', _icon: 'fa-car', text:'Xx'},
                     {id:'fast',   _icon: 'fa-fighter-jet',   text:'Xxx'}
                 ]
             })
-
+$body.prepend('<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>');
         $.bsButton({
             text: '|',
             _text: {da:'Påp-op', en:'Popup'},
@@ -974,7 +988,6 @@ verbose: false,
         }
     })
 });
-
 
 </script>
 

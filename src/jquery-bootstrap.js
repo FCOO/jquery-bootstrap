@@ -346,6 +346,12 @@
 
                 if (index < textClassArray.length)
                     $text.addClass( textClassArray[index] );
+
+                //If the text is 'together' with an icon => add class "after-icon"
+                if (index < iconArray.length)
+                    $text.addClass( 'after-icon' );
+
+
                 $text.appendTo( _this );
             });
 
