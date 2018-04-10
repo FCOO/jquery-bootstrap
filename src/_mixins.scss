@@ -340,8 +340,7 @@ header-variant
 
     @include vertical-align-center();
 
-    $padding-y: $btn-padding-y;
-    $padding-x: $btn-padding-x;
+    $padding: $btn-padding-x;
     $font-size: $font-size-sm;
     @if $is-title == true {
         $font-size: $font-size-base;
@@ -350,11 +349,9 @@ header-variant
     cursor: default;
 
     @if $small == true {
-        $padding-y: $btn-padding-y-sm;
-        $padding-x: $btn-padding-x-sm;
+        $padding: $btn-padding-x-sm;
         @if $xs-padding == true {
-            $padding-y: $btn-padding-y-xs;
-            $padding-x: $btn-padding-x-xs;
+            $padding: $btn-padding-x-xs;
         }
         $font-size: $font-size-xs;
         @if $is-title == true {
@@ -362,7 +359,7 @@ header-variant
         }
     }
 
-    @include button-size($padding-y, $padding-x, $font-size, $line-height-base, inherit);
+    @include button-size($padding, $padding, $font-size, $line-height-base, inherit);
 
     @if $incl-header == true {
         border-bottom: $modal-header-border-width solid $modal-header-border-color;
