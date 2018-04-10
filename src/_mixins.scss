@@ -57,15 +57,17 @@ border-color = light blue
 CONTROL BORDER_COLOR
 All control elements get same border-color when normal, hover, active and error
 ************************************************************/
-@mixin control-border-color-hover( $border-color-hover: $control-border-color-hover){
-    //Move 'up' when focus or hover
-    &.focus:not(:disabled):not(.disabled),
-    &:focus:not(:disabled):not(.disabled),
-    .mouse-hover .hover &:not(:disabled):not(.disabled),
-    .mouse-hover &.hover:not(:disabled):not(.disabled),
-    .mouse-hover &:hover:not(:disabled):not(.disabled) {
-           position: relative;
-           z-index : 4;
+@mixin control-border-color-hover( $border-color-hover: $control-border-color-hover, $incl-z-index: true){
+    @if $incl-z-index == true {
+        //Move 'up' when focus or hover
+        &.focus:not(:disabled):not(.disabled),
+        &:focus:not(:disabled):not(.disabled),
+        .mouse-hover .hover &:not(:disabled):not(.disabled),
+        .mouse-hover &.hover:not(:disabled):not(.disabled),
+        .mouse-hover &:hover:not(:disabled):not(.disabled) {
+               position: relative;
+               z-index : 4;
+        }
     }
 
     //hover, not focus, not disabled
@@ -344,6 +346,8 @@ header-variant
     @if $is-title == true {
         $font-size: $font-size-base;
     }
+
+    cursor: default;
 
     @if $small == true {
         $padding-y: $btn-padding-y-sm;

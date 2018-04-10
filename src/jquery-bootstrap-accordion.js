@@ -1,5 +1,5 @@
 /****************************************************************************
-	jquery-bootstrap-accordion.js, 
+	jquery-bootstrap-accordion.js,
 
 	(c) 2017, FCOO
 
@@ -13,17 +13,17 @@ TODO:
 
 (function ($ /*, window, document, undefined*/) {
 	"use strict";
-	
+
     //Add/Remove class "show" to .card
-    function card_onShown(){ 
+    function card_onShown(){
         var $this = $(this);
         if ($this.children('.collapse.show').length)
-            $this.addClass('show'); 
+            $this.addClass('show');
     }
-    function card_onHidden(){ 
+    function card_onHidden(){
         var $this = $(this);
         if (!$this.children('.collapse.show').length)
-            $this.removeClass('show'); 
+            $this.removeClass('show');
     }
 
     /**********************************************************
@@ -55,10 +55,10 @@ TODO:
     var accordionId = 0;
 
     function bsAccordion_asModal( options ){
-        return $.bsModal( $.extend( { 
-                              flex   : true,  
+        return $.bsModal( $.extend( {
+                              flex   : true,
                               content: this,
-                          }, options) 
+                          }, options)
                );
     }
 
@@ -66,7 +66,7 @@ TODO:
 
         var id = 'bsAccordion'+ accordionId++;
 
-        options = 
+        options =
             $._bsAdjustOptions( options, {}, {
                 baseClass   : 'accordion',
                 styleClass  : '',
@@ -77,17 +77,17 @@ TODO:
 
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options )
-                        .attr({ 
+                        .attr({
                             'id'  : id,
-                            'tabindex'   : -1, 
+                            'tabindex'   : -1,
                             'role': "tablist",
                             'aria-multiselectable': true
                         });
-                            
+
         //Adding the children {icon, text, content}
         $.each( options.list, function( index, opt ){
             //Create the header
-            opt = $._bsAdjustOptions( opt ); 
+            opt = $._bsAdjustOptions( opt );
 
             var headerId   = id + 'header'+index,
                 collapseId = id + 'collapse'+index,
@@ -104,7 +104,7 @@ TODO:
                     .attr({
                         'id'           : headerId,
                         'role'         : 'tab',
-                        'data-toggle'  : "collapse", 
+                        'data-toggle'  : "collapse",
                         'data-parent'  : '#'+id,
                         'href'         : '#'+collapseId,
                         'aria-expanded': true,
@@ -114,13 +114,12 @@ TODO:
                     ._bsAddHtml( opt.header )
                     //Add chevrolet-icon
                     .append( $('<i/>').addClass('fa chevrolet') )
-                    
+
             );
 
             //Add content-container
-            var $outer = 
+            var $outer =
                 $('<div/>')
-//                    .addClass('collapse show REMOVE_SHOW')
                     .addClass('collapse')
                     .attr({
                         'id'             : collapseId,
@@ -128,7 +127,7 @@ TODO:
                         'aria-labelledby': headerId
                     })
                     .appendTo( $card ),
-                
+
                 $contentContainer =
                     $('<div/>')
                         .addClass('card-block')
@@ -140,21 +139,23 @@ TODO:
                     .addClass('card-footer')
                     ._bsAddHtml( opt.footer )
                     .appendTo( $outer );
-                    
+
             //Add content: string, element, function or children (=accordion)
-            if (opt.content){
-                if ($.isFunction( opt.content ))
-                    opt.content( $contentContainer );
-                else
-                    $contentContainer.append( opt.content );                                
-            }
+                if (opt.content)
+                    $contentContainer._bsAppendContent( opt.content );
+//HER               if (opt.content){
+//HER                   if ($.isFunction( opt.content ))
+//HER                       opt.content( $contentContainer );
+//HER                   else
+//HER                       $contentContainer.append( opt.content );
+//HER               }
 
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))
                 $.bsAccordion( { list: opt.list } )
                     .appendTo( $contentContainer );
         });
-        
+
 
         $result.collapse(/*options*/);
 

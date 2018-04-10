@@ -716,29 +716,39 @@ closeButton: true,
  */
 
         var $tabs = $.bsTabs({
+            hideNotSelectedText: true,
             list: [
                 {_selected: true, icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'},
                 {
                     icon: 'fa-globe',
                     title:{da:'Tidszone', en:'Time zone'},
-                    content: 'SECOND Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. ',
+                    content: {
+                        type: 'tabs',
+                        small: true,
+//                        scroll: true,
+//                        height: '334px',
+                        list: [
+                            {icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST  Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore.'},
+                            {icon: 'fa-globe', title:{da:'Tidszone', en:'Time zone'},content: 'SECOND'},
+                            {icon: 'fa-calendar',title:{da:'Dato og tid', en:'Date and time'},selected: true,content: '3.'}
+                        ],
+                    },
                     footer: [{text: {da:'Format', en:'Format'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }]
                 },
                 {
                     icon: 'fa-calendar',
                     title:{da:'Dato og tid', en:'Date and time'},
                     selected: true,
-                    content:
-                        $.bsSelectList({
-                            selectedId: 'medium',
-                            items     : selectItems3,
-//                            width      : '100px',
-//                            placeholder: {icon:'fa fa-home', text: {da:'Dansk PH...', en:'English...'}},
-                            onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox2', id, selected)},
-                        })
+                    content: {
+                        type: 'selectlist',
+                        selectedId: 'medium',
+                        items     : selectItems3,
+                        onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox2', id, selected)},
+                    }
                 }
             ],
-            height: '150px', scroll: true
+            height: 350/16 + 'rem',
+            //scroll: true
         }),
         tab_modal = $tabs.asModal({
             header: 'Header',
@@ -752,7 +762,7 @@ closeButton: true,
 
     $.bsTabs({
         height:'100px',scroll: true,
-        small: true,
+        //small: true,
         list: [
             {icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'},
             {icon: 'fa-globe', title:{da:'Tidszone', en:'Time zone'}, content: 'SECOND'},

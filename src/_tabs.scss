@@ -4,20 +4,44 @@ TABS
 Adjustment to Bootstrap tabs
 ************************************************************/
 
-.nav-tabs {
+$selected-margin: 2*$nav-tabs-border-width;
 
-    //Add extra top-margin and padding to edge when inside a modal-wondow
-    .modal-dialog & {
-        margin-top  : $btn-padding-y-sm;
-        padding-left: $scroll-size;
+@mixin tab-size-and-position( $padding-y, $padding-x, $font-size, $line-height ){
+
+    $border-width-rem: 1rem * $nav-tabs-border-width / 16px;
+    $width           : 2*$padding-x;
+
+    & {
+        margin-right: 1.5 * $padding-x;
     }
+    &:after {
+        border-top-right-radius: $width;
+        width: $width;
+        right: 2*$border-width-rem - $width;
+    }
+}
 
+
+
+.nav-tabs {
+    //Add extra top-margin and padding to edge
+    margin-top  : $btn-padding-y-sm;
+    padding-left: $scroll-size;
 
     border-bottom-color: $card-show-border-color;
 
+    //Tabs inside tabs: no padding, adjust horizontal margin to fit to border
+    .tab-inner-content & {
+        margin: 0 -1 * $scroll-size;
+    }
+
     a.nav-item.nav-link {
+        position: relative;
         cursor: default;
-        @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $input-btn-line-height, $btn-border-radius);
+
+        @include button-size          ( $btn-padding-y, $btn-padding-x, $font-size-base, $input-btn-line-height, $btn-border-radius );
+        @include tab-size-and-position( $btn-padding-y, $btn-padding-x, $font-size-base, $input-btn-line-height );
+
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
         outline: none !important;
@@ -26,6 +50,30 @@ Adjustment to Bootstrap tabs
 
         @include control-color-and-border-color( $control-color, $control-border-color, false, false );
 
+        //Adjust to :after with right side
+        border-right: none;
+        padding-right: 2*$nav-tabs-border-width !important;
+
+        &:after {
+            display : inline-block;
+            position: absolute;
+            z-index : 1;
+            top: -1 * $nav-tabs-border-width;
+
+            content: ' ';
+            background-color: inherit;
+
+            padding    : 0;
+            margin     : 0;
+            line-height: inherit;
+            font-size  : inherit;
+
+            border      : inherit;
+            border-left : none;
+            border-right: $nav-tabs-border-width solid $control-border-color;
+
+            height: calc(100% + 2*#{$nav-tabs-border-width});
+        }
 
         //Disabled
         &.disabled {
@@ -34,13 +82,16 @@ Adjustment to Bootstrap tabs
 
         //Not selected
         &:not(.active){
-            margin-top: 2px;
+            margin-top: $selected-margin;
             border-bottom-color: $card-show-border-color !important;
 
             &:not(:disabled):not(.disabled){
                 @include color-hover( $control-color, $control-bg-color, true, true );
-                @include control-border-color-hover();
-                margin-top: 2px;
+                @include control-border-color-hover($control-border-color-hover, false);
+                margin-top: $selected-margin;
+                &:hover:after {
+                    border-color: $control-border-color-hover;
+                }
             }
         }
 
@@ -49,18 +100,31 @@ Adjustment to Bootstrap tabs
             border-color       : $card-show-border-color;
             border-bottom-color: $white;
             background-color   : $white;
+            z-index: 2;
+            &:after {
+                border-color: inherit;
+//                height: calc(100% +  2*#{$nav-tabs-border-width} + #{$selected-margin});
+            }
         }
     }
 
+    //Special style: Hide text when tab is not selected
+    &.hide-not-selected-text a.nav-item.nav-link:not(.active) span:last-child:not(:first-child) {
+        display: none;
+    }
+
+
     //Adjust size when -sm
     &.nav-tabs-sm  a.nav-item.nav-link {
-        @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-line-height-sm, $btn-border-radius-sm);
+        @include button-size          ( $btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-line-height-sm, $btn-border-radius-sm );
+        @include tab-size-and-position( $btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $btn-line-height-sm );
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
     }
     //Adjust size when -xs
     &.nav-tabs-xs  a.nav-item.nav-link {
-        @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $input-btn-line-height-sm, $btn-border-radius-xs);
+        @include button-size          ( $btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $input-btn-line-height-sm, $btn-border-radius-xs );
+        @include tab-size-and-position( $btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $input-btn-line-height-sm );
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
     }
@@ -71,14 +135,22 @@ Adjustment to Bootstrap tabs
     display        : flex;
     flex-direction : column;
     justify-content: center;
-    max-height : 100%;
+    max-height     : 100%;
 
     .tab-inner-content {
         flex-shrink: 1;
         flex-grow  : 1;
         background-color: $white;
         @include content-padding();
+        padding-left : $scroll-size;
+        padding-right: $scroll-size;
+
+        //No padding when inside scrollbar or when inside another tabs
+        &.scrollbar-vertical, .tab-content & {
+            padding: 0;
+        }
     }
+
     .tab-footer {
         flex-shrink: 0;
         flex-grow  : 0;
@@ -90,9 +162,6 @@ Adjustment to Bootstrap tabs
 }
 
 .tab-content.tab-content-sm .tab-pane {
-    .tab-inner-content{
-        @include content-padding-sm();
-    }
     .tab-footer {
         @include header-variant-sm();
     }
@@ -102,8 +171,4 @@ Adjustment to Bootstrap tabs
 .modal-dialog .tab-content .tab-pane {
     min-height: 100%;
     max-height: 100%;
-    .tab-inner-content{
-        padding-left : 0;
-        padding-right: 0;
-    }
 }

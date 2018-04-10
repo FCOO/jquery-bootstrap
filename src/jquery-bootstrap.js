@@ -50,13 +50,13 @@
 
         if ($.type( options ) == "object"){
             if (!options.icon && !options.text)
-                return {text: options }
+                return {text: options };
             else
                 return options;
         }
         else
             //options == simple type (string, number etc.)
-            return {text: options }
+            return {text: options };
 
     };
 
@@ -279,7 +279,6 @@
             }
             //**************************************************
 
-
             if (checkForContent && (options.content != null))
                 return this._bsAddHtml( options.content );
 
@@ -295,9 +294,9 @@
                 return this;
             }
 
-
-            //Adjust icon and/or text
-            options = $._bsAdjustIconAndText( options );
+            //Adjust icon and/or text if iot is not at format-options
+            if (!options.vfFormat)
+                options = $._bsAdjustIconAndText( options );
 
             this.addClass('container-icon-and-text');
 
@@ -365,9 +364,72 @@
             var options = this.data('bsButton_options');
             $.proxy( options.onClick, options.context )( options.id, null, this );
             return false;
+        },
+
+        /****************************************************************************************
+        _bsAddContent( options[, defaultType] )
+        Create and append any content to this.
+        options can be $-element, function, json-object or array of same
+        ****************************************************************************************/
+        _bsAppendContent: function( options, defaultType ){
+            var _this = this;
+
+            if (!options)
+                return this;
+
+            //Array of $-element, function etc
+            if ($.isArray( options )){
+                $.each(options, function( index, options){
+                    _this._bsAppendContent(options);
+                });
+                return this;
+            }
+
+            //Function
+            if ($.isFunction( options )){
+                options( this );
+                return this;
+            }
+
+            //json-object with options to create bs-elements
+            if ($.isPlainObject(options)){
+                options.type = options.type || defaultType || 'input';
+                var buildFunc;
+                switch (options.type.toLowerCase()){
+                    case 'input'        :   buildFunc = $.bsInput;          break;
+                    case 'button'       :   buildFunc = $.bsButton;         break;
+                    case 'select'       :   buildFunc = $.bsSelectBox;      break;
+                    case 'selectlist'   :   buildFunc = $.bsSelectList;     break;
+                    case 'checkbox'     :   buildFunc = $.bsCheckbox;       break;
+                    case 'tabs'         :   buildFunc = $.bsTabs;           break;
+                    case 'table'        :   buildFunc = $.bsTable;          break;
+                    case 'XX'           :   buildFunc = null;               break;
+
+                    default             :   buildFunc = $._bsAddHtml;       break;
+                }
+                buildFunc.apply( this, arguments ).appendTo( this );
+
+                var prepend = options.prepend || options.before;
+                if (prepend)
+                    $('<div/>')
+                        .addClass('input-group-prepend')
+                        ._bsAppendContent( prepend )
+                        .prependTo(this);
+                var append = options.append || options.after;
+                if (append)
+                    $('<div/>')
+                        .addClass('input-group-append')
+                        ._bsAppendContent( append )
+                        .appendTo(this);
+
+
+                return this;
+            }
+
+            //Assume it is a $-element or other object that can be appended directly
+            this.append( options );
+            return this;
         }
-
-
     }); //$.fn.extend
 
 

@@ -1,5 +1,5 @@
 /****************************************************************************
-	jquery-bootstrap-accordion.js, 
+	jquery-bootstrap-accordion.js,
 
 	(c) 2017, FCOO
 
@@ -13,17 +13,17 @@ TODO:
 
 (function ($ /*, window, document, undefined*/) {
 	"use strict";
-	
+
     //Add/Remove class "show" to .card
-    function card_onShown(){ 
+    function card_onShown(){
         var $this = $(this);
         if ($this.children('.collapse.show').length)
-            $this.addClass('show'); 
+            $this.addClass('show');
     }
-    function card_onHidden(){ 
+    function card_onHidden(){
         var $this = $(this);
         if (!$this.children('.collapse.show').length)
-            $this.removeClass('show'); 
+            $this.removeClass('show');
     }
 
     /**********************************************************
@@ -55,10 +55,10 @@ TODO:
     var accordionId = 0;
 
     function bsAccordion_asModal( options ){
-        return $.bsModal( $.extend( { 
-                              flex   : true,  
+        return $.bsModal( $.extend( {
+                              flex   : true,
                               content: this,
-                          }, options) 
+                          }, options)
                );
     }
 
@@ -66,7 +66,7 @@ TODO:
 
         var id = 'bsAccordion'+ accordionId++;
 
-        options = 
+        options =
             $._bsAdjustOptions( options, {}, {
                 baseClass   : 'accordion',
                 styleClass  : '',
@@ -77,17 +77,17 @@ TODO:
 
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options )
-                        .attr({ 
+                        .attr({
                             'id'  : id,
-                            'tabindex'   : -1, 
+                            'tabindex'   : -1,
                             'role': "tablist",
                             'aria-multiselectable': true
                         });
-                            
+
         //Adding the children {icon, text, content}
         $.each( options.list, function( index, opt ){
             //Create the header
-            opt = $._bsAdjustOptions( opt ); 
+            opt = $._bsAdjustOptions( opt );
 
             var headerId   = id + 'header'+index,
                 collapseId = id + 'collapse'+index,
@@ -104,7 +104,7 @@ TODO:
                     .attr({
                         'id'           : headerId,
                         'role'         : 'tab',
-                        'data-toggle'  : "collapse", 
+                        'data-toggle'  : "collapse",
                         'data-parent'  : '#'+id,
                         'href'         : '#'+collapseId,
                         'aria-expanded': true,
@@ -114,13 +114,12 @@ TODO:
                     ._bsAddHtml( opt.header )
                     //Add chevrolet-icon
                     .append( $('<i/>').addClass('fa chevrolet') )
-                    
+
             );
 
             //Add content-container
-            var $outer = 
+            var $outer =
                 $('<div/>')
-//                    .addClass('collapse show REMOVE_SHOW')
                     .addClass('collapse')
                     .attr({
                         'id'             : collapseId,
@@ -128,7 +127,7 @@ TODO:
                         'aria-labelledby': headerId
                     })
                     .appendTo( $card ),
-                
+
                 $contentContainer =
                     $('<div/>')
                         .addClass('card-block')
@@ -140,21 +139,23 @@ TODO:
                     .addClass('card-footer')
                     ._bsAddHtml( opt.footer )
                     .appendTo( $outer );
-                    
+
             //Add content: string, element, function or children (=accordion)
-            if (opt.content){
-                if ($.isFunction( opt.content ))
-                    opt.content( $contentContainer );
-                else
-                    $contentContainer.append( opt.content );                                
-            }
+                if (opt.content)
+                    $contentContainer._bsAppendContent( opt.content );
+//HER               if (opt.content){
+//HER                   if ($.isFunction( opt.content ))
+//HER                       opt.content( $contentContainer );
+//HER                   else
+//HER                       $contentContainer.append( opt.content );
+//HER               }
 
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))
                 $.bsAccordion( { list: opt.list } )
                     .appendTo( $contentContainer );
         });
-        
+
 
         $result.collapse(/*options*/);
 
@@ -232,7 +233,9 @@ TODO:
         if (options.tagName == 'a')
             result.prop('href', 'javascript:undefined');
 
-        result._bsAddBaseClassAndSize( options );
+        result
+            ._bsAddName( options )
+            ._bsAddBaseClassAndSize( options );
 
         if (options.id)
             result.attr('id', options.id);
@@ -385,7 +388,7 @@ TODO:
 }(jQuery, this, document));
 ;
 /****************************************************************************
-	jquery-bootstrap-checkbox.js, 
+	jquery-bootstrap-checkbox.js,
 
 	(c) 2017, FCOO
 
@@ -396,30 +399,32 @@ TODO:
 
 (function (/*$, window/*, document, undefined*/) {
 	"use strict";
-	
+
     /**********************************************************
     bsCheckbox( options ) - create a Bootstrap checkbox
     **********************************************************/
-    $.bsCheckbox = function( options ){ 
-        options = 
+    $.bsCheckbox = function( options ){
+        options =
             $._bsAdjustOptions( options, {
                 useTouchSize: true,
                 baseClass   : options.type || 'checkbox'
             });
-        
+
         //Create outer div
         var $result = $('<div/>')._bsAddBaseClassAndSize( options ),
 
         //Create input-element
-            $input = $('<input/>')
-                        .prop({
-                            type   : 'checkbox',
-                            checked: options.selected
-                        })
-                        .appendTo( $result );
+            $input =
+                $('<input/>')
+                    .prop({
+                        type   : 'checkbox',
+                        checked: options.selected
+                    })
+                    ._bsAddName( options )
+                    .appendTo( $result );
 
         //Create input-element as checkbox from jquery-checkbox-radio-group
-        $input.checkbox( options );        
+        $input.checkbox( options );
 
         //Get id and update input.id
         var id = $input.data('cbx_options').id;
@@ -434,23 +439,147 @@ TODO:
 
         return $result;
     };
-
-
-
-	/******************************************
-	Initialize/ready 
-	*******************************************/
-	$(function() { 
-
-	
-	}); 
-	//******************************************
-
-
-
 }(jQuery, this, document));
 
 
+;
+/****************************************************************************
+	jquery-bootstrap-form.js,
+
+	(c) 2017, FCOO
+
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+****************************************************************************/
+
+(function ($ /*, window, document, undefined*/) {
+	"use strict";
+
+    $.extend({
+        /******************************************************
+        $.bsInput( options )
+        Create a <input type="text" class="form-control"> inside a <label>
+        ******************************************************/
+        bsInput: function( options ){
+            return  $('<input/>')
+                        ._bsAddName( options )
+                        .addClass('form-control-border form-control')
+                        .attr('type', 'text')
+                        ._wrapLabel(options);
+        },
+
+        /******************************************************
+        The default bootstrap structure used for elements in a form is
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">               //optional
+                    <button class="btn btn-standard">..</buton> //optional 1-N times
+                </div>                                          //optional
+
+                <label class="has-float-label">
+                    <input class="form-control form-control-with-label" type="text" placeholder="The placeholder...">
+                    <span>The label</span>
+                </label>
+
+                <div class="input-group-append">                //optional
+                    <button class="btn btn-standard">..</buton> //optional 1-N times
+                </div>                                          //optional
+            </div>
+        </div>
+        ******************************************************/
+
+        /******************************************************
+        $.bsInputGroup
+        Create <div class="input-group"> with a input-control inside as descripted above
+        ******************************************************/
+        bsInputGroup: function( options, type ){
+            return $divXXGroup('input-group', options)
+                       ._bsAppendContent(options, type || 'input');
+        },
+
+        /******************************************************
+        $.bsFormGroup
+        Create <div class="form-group"><div class="input-group"> with a input-control inside as descripted above
+        ******************************************************/
+        bsFormGroup: function( options, type ){
+            return  $.bsInputGroup(options, type)
+                        ._wrapFormGroup(options);
+        }
+
+    }); //$.extend({
+
+
+    /******************************************************
+    $divXXGroup
+    ******************************************************/
+    function $divXXGroup( groupTypeClass, options ){
+        return $('<div/>')
+                   ._bsAddBaseClassAndSize( $.extend({}, options, {
+                       baseClass   : groupTypeClass,
+                       useTouchSize: true
+                   }));
+    }
+
+
+    $.fn.extend({
+        /******************************************************
+        $.fn._wrapFormGroup( options )
+        Wrap the element inside a form-group with a small-element to hold error-message
+        Return
+        <div class="form-group [form-group-sm/xs]">
+            element
+        </div>
+        ******************************************************/
+        _wrapFormGroup: function(options){
+            return $divXXGroup('form-group', options).append( this );
+        },
+
+        /******************************************************
+        $.fn._wrapInputGroup( options )
+        Wrap the element inside a input-group
+        Return
+        <div class="input-group [input-group-sm/xs]">
+            element
+        </div>
+        ******************************************************/
+        _wrapInputGroup: function(options){
+            return $divXXGroup('input-group', options).append( this );
+        },
+
+        /******************************************************
+        _wrapLabel( options )
+        Wrap the element inside a <label> and add
+        options.placeholder and options.label
+            <label class="has-float-label">
+                <THIS placeholder="options.placeholder"/>
+                <span>options.label</span>
+            </label>
+        Return the label-element
+        ******************************************************/
+        _wrapLabel: function(options){
+            this.addClass('form-control-with-label');
+
+            var $label = $('<label/>').addClass('has-float-label');
+            $label.append( this );
+
+            if (options.placeholder)
+                this.i18n( options.placeholder, 'placeholder' );
+
+            $('<span/>')
+                ._bsAddHtml( options.label )
+                .appendTo( $label )
+                .on('mouseenter', function(){ $label.addClass('hover');    })
+                .on('mouseleave', function(){ $label.removeClass('hover'); });
+
+            return $label;
+        },
+
+
+    }); //$.fn.extend({
+
+
+}(jQuery, this, document));
 ;
 /****************************************************************************
 	jquery-bootstrap-header.js,
@@ -648,7 +777,7 @@ TODO:
         openModals = 0,
         modalVerticalMargin = 10; //Top and bottom margin for modal windows
 
-window._currentBsModal = null;
+    window._currentBsModal = null;
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
@@ -729,7 +858,6 @@ window._currentBsModal = null;
     //hidden_bs_modal - called when a modal is closed/hidden
     function hidden_bs_modal( /*event*/ ) {
         openModals--;
-
         if (openModals){
             //Move focus to previous modal on top
             var $modal = $('.modal.show').last(),
@@ -740,7 +868,7 @@ window._currentBsModal = null;
             else
                 $modal.focus();
 
-            //Re-add class "modal-open" to body (it is removed by Bootstrap
+            //Re-add class "modal-open" to body (it is removed by Bootstrap)
             $('body').addClass('modal-open');
         }
     }
@@ -1026,7 +1154,7 @@ window._currentBsModal = null;
                 .appendTo( $result );
 
         //Extend with prototype
-        $result.init.prototype.extend( bsModal_prototype );
+        $result.extend( bsModal_prototype );
 
         //Create modal content
         $modalDialog._bsModalContent( options );
@@ -1241,7 +1369,7 @@ window._currentBsModal = null;
         options.show = false;
 
         //Create the noty empty and create the content in options.content
-        options.content = options.content || options.text;
+        options.content = options.content || $._bsAdjustIconAndText(options.text);
         options.text = '';
 
         //Add header (if any)
@@ -1249,10 +1377,7 @@ window._currentBsModal = null;
             if (!$.isArray(options.content))
                 options.content = [options.content];
 
-            options.header = options.header || {};
-
-            if ($.type( options.header ) == "string")
-                options.header = {text: options.header };
+            options.header = $._bsAdjustIconAndText(options.header) || {};
 
             var headerOptions =
                 options.defaultHeader ?
@@ -1447,11 +1572,7 @@ window._currentBsModal = null;
 
         options.type = type;
 
-        //Simple test if text=string or {da:"...", en:"..."} or {icon:"...", text:{da:"...", en:"..."}
-        if ($.isPlainObject(text) && !text.icon && !text.text)
-            text = {text:text};
-
-        options.content = text;
+        options.content = $._bsAdjustIconAndText( text );
 
         //Set killer
         if (options.queue && (options.killer !== false) && (options.killer !== true))
@@ -1731,192 +1852,262 @@ window._currentBsModal = null;
 }(jQuery, this, document));
 ;
 /****************************************************************************
-	jquery-bootstrap-select.js, 
+	jquery-bootstrap-select2.js,
 
 	(c) 2017, FCOO
 
 	https://github.com/fcoo/jquery-bootstrap
 	https://github.com/fcoo
 
-TODO:
-- Open up
-- Use scrollbar on list
-
+    $.bsSelectbox based on select2
 
 ****************************************************************************/
 
 (function (/*$, window/*, document, undefined*/) {
 	"use strict";
-	
+
+    //Setting defaults for select2
+    function formatSelectOption( options ) {
+        options.text = options._text;
+        var $result = $('<span/>')._bsAddHtml( options, true );
+        options.text = '';
+        return $result;
+    }
+
+    $.fn.select2.defaults.set( 'theme',                   'standard'         );
+    $.fn.select2.defaults.set( 'templateResult',          formatSelectOption );
+    $.fn.select2.defaults.set( 'templateSelection',       formatSelectOption );
+    $.fn.select2.defaults.set( 'minimumResultsForSearch', Infinity           );
+    $.fn.select2.defaults.set( 'width',                   "100%"             );
+    $.fn.select2.defaults.set( 'closeOnSelect',           true               ); ////ONLY when testing: false
+
+    //Override default Results.ensureHighlightVisible to use scrollbar
+    function ensureHighlightVisible(){
+        var $highlightedItem = this.getHighlightedResults();
+        if ($highlightedItem.length)
+            $highlightedItem.scrollIntoView();
+    }
+
+
+    var maxItemsVisibleInSelectbox = 4, //NB Must be equal with $max-items-visible-in-selectbox in _select2.scss
+        selectboxId = 0;
+
     /**********************************************************
-    bsSelectbox( options ) - create a Bootstrap-selectbox
+    bsSelectbox
     **********************************************************/
-    var selectboxId = 0;
-
-    function getSelectId(){
-        return '_bsSelectbox'+ selectboxId++;
-    }
-
-    //Function called when a new item is selected: Update the dropdownmenu-button with the content from the selected item
-    function postOnChange( $selectedItem ){
-        if ($selectedItem.length == 0)
-            return;
-        //Clone the new content from the selected element and replace the original content with the new
-        var newContent = $selectedItem.find('._content').clone(true).addClass('selected-content');
-        
-        //Old content
-        $selectedItem.closest( '.selectbox').find('.selected-content')
-            .after( newContent ) //Insert new content after
-            .remove();           //Remove old content
-    }
-
-
-    //scrollSelectedItemIntoView
-    function scrollSelectedItemIntoView(){
-        $(this).find( '.dropdown-item.active' ).first().scrollIntoView();
-    }
-    
-    //addSelectItems( $container, items,  ) - Create radioGroup and adds items
-    function addSelectItems( $container, options, inSpan ){
-        var radioGroup = $.radioGroup( 
-                            $.extend({}, options, {
-                                radioGroupId     : options.id, 
-                                className        : 'active', 
-                                allowZeroSelected: false
-                            })
-                         ); 
-
-        $.each( options.list, function( index, itemOptions ){
-            var isItem = (itemOptions.id != undefined ),
-                $item = $('<div/>')
-                            .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
-                            .addClass( options.center ? 'text-center' : '')
-                            .appendTo( $container );
-
-                if (inSpan)
-                    //Create contents inside a span-element to allow easy duplication
-                    $item
-                        .append(
-                            $('<span/>')
-                                .addClass('_content')
-                                ._bsAddHtml( itemOptions, true )
-                        );
-                else
-                    $item._bsAddHtml( itemOptions, true );
-
-                if (isItem)
-                    radioGroup.addElement( $item, itemOptions );
-        });
-
-        return $container;
-    }
-
-    
-    
-    $.bsSelectbox = function( options ){
-        options = 
+    $.bsSelectBox = $.bsSelectbox = function( options ){
+        options =
             $._bsAdjustOptions( options, {
-                id          : getSelectId(),
-                baseClass   : 'selectbox',
-                class       : 'dropdown',
-                useTouchSize: true
+                id          : '_bsSelectbox'+ selectboxId++,
+                baseClass   : 'select2-container',
+                class       : '',
+                useTouchSize: true,
+
+                //Options for select2
+                data: [],
             });
 
-        var $result = $('<div/>')
-                        ._bsAddBaseClassAndSize( options ),
-            $dropdown_menu = $('<div/>')
-                                .addClass('dropdown-menu')
-                                .attr('aria-labelledby', options.id )
-                                .appendTo( $result ),
-            placeholder = options.placeholder || {da:'Vælg...', en:'Select...'};
+        //Convert placeholder (if any)
+        if (options.placeholder){
+            options.placeholder = $._bsAdjustIconAndText( options.placeholder );
+            options.placeholder = $.extend(options.placeholder, {
+                id   : -1,
+                _text: options.placeholder.text,
+                text : ''
+            });
+        }
 
-        //Create the dropdown-button
-        $.bsButton({
-                tagName     : 'div', 
-                class       : '',
-                addOnClick  : false
-            })
-            .attr({ 
-                'id'           : options.id,
-                'role'         : 'botton',
-                'tabindex'     : 0,
-                'data-toggle'  : 'dropdown',
-                'aria-haspopup': true,
-                'aria-expanded': false
-               
-            })
+        //Append items
+        var currentData = options.data,
+            selectedIdExists = false;
 
-            //Append span with selected content or placeholder
-            .append( 
-                $('<span/>')
-                    .addClass( 'selected-content empty' )
-                    ._bsAddHtml( {text: placeholder } )
-             )
+        //Convert options.items to select2-data
+        $.each( options.items, function( index, itemOptions ){
+            var dataOptions = $.extend(true, {}, itemOptions);
 
-            //Append open-icon
-            .append( 
-                $('<i/>').addClass('fa arrow') 
-            )
+            //Save text as _text to prevent select2 to convert text to string
+            dataOptions._text = itemOptions.text;
+            dataOptions.text = '';
 
-            .appendTo( $result );
+            if (itemOptions.id){
+                currentData.push( dataOptions );
+                if (itemOptions.id == options.selectedId)
+                    selectedIdExists = true;
+            }
+            else {
+                dataOptions.children = [];
+                options.data.push( dataOptions );
+                currentData = dataOptions.children;
+            }
+        });
 
-        options.postOnChange = postOnChange;
+        //Create result and select-element
+        var $select =
+                $('<select/>')
+                    ._bsAddName( options ),
+            $result =
+                $('<div class="form-control-with-label"></div>')
+                    .append( $select );
 
-        addSelectItems( $dropdown_menu.addScrollbar() , options, true );
+        options.dropdownParent = $result;
+
+        //Create select2
+        $select.select2( options );
+        var select2 = $select.data('select2');
+
+        //Overwrite default ensureHighlightVisible
+        select2.results.ensureHighlightVisible = ensureHighlightVisible;
+
+        //Add size-class to both containers
+        var sizeClass = $._bsGetSizeClass({
+                baseClass   : 'select2-container',
+                small       : options.small,
+                useTouchSize: true
+        });
+        select2.$container.addClass( sizeClass );
+        select2.$dropdown.addClass ( sizeClass );
+
+        //Replace default arrow with Chevrolet-style
+        var $arrow = $('<i/>').addClass('fa select2-selection__arrow');
+        select2.$selection.find('.select2-selection__arrow')
+            .after($arrow)
+            .remove();
+
+        //If there are more than maxItemsVisibleInSelectbox items: Create scrollbar and move highlighted item into view
+        if (options.items.length > maxItemsVisibleInSelectbox){
+            //Wrap select2.$results inside a scrollbar
+            var $parent = select2.$results.parent();
+            select2.$results.detach();
+            $parent.addScrollbar().append(select2.$results);
+
+            //Scroll highlighted item into view when moving with keyboard
+            select2.$selection.on('keydown', $.proxy(ensureHighlightVisible, select2.results) );
+        }
+
+        //Create change/select-event-function
+        if (options.onChange)
+            $select.on('select2:select', function( event ){
+                var data = event.params.data;
+                options.onChange( data.id, data.selected );
+            });
+
+        //Set selected id or placeholder
+        $select
+            .val(selectedIdExists ? options.selectedId : -1)
+            .trigger('change');
+
+        //Add label as attr label to placeholder to make placeholder display label when no item is selected
+        select2.$selection.find('.select2-selection__placeholder').append(
+            $('<span/>')
+                .addClass('select2-selection__placeholder_label')
+                ._bsAddHtml( options.label )
+        );
 
 
-        //Updates dropdownmenu-button with selected contents (if any)
-        postOnChange( $dropdown_menu.find( '.dropdown-item.active' ).first() );
+        var $label = $result._wrapLabel({ label: options.label });
 
-        //Scroll selected item into view when opened        
-        $result.on('shown.bs.dropdown', scrollSelectedItemIntoView );
+        //Call onChange (if it and selectedId exists
+        if (selectedIdExists && options.onChange)
+            options.onChange( options.selectedId, true );
 
-/* REMOVED        
-        //Setting the width of the dropdown-button equal the width of the item-box. Need timeout to allow DOM in some browser to finish adding elements
-        setTimeout(function(){
-            var bodyFontSize = parseFloat( $('body').css('font-size') ),
-                dropDownMenuWidth = $dropdown_menu.outerWidth()/bodyFontSize + 'rem';
-                $result.width( dropDownMenuWidth );
-        }, 100);
-*/
 
-        return $result;
+        function setLabelAsPlaceholder( hasFocus ){
+            var showLabelAsPlaceholder = !hasFocus && !$select.find(':selected').length;
+            $label.toggleClass('hide-float-label', showLabelAsPlaceholder);
+            $result.toggleClass('show-label-as-placeholder', showLabelAsPlaceholder);
+            select2.$container.toggleClass('select2-hide-placeholder', showLabelAsPlaceholder);
+        }
+
+        function onBlurOrFocus(){
+            setLabelAsPlaceholder(
+                select2.$container.hasClass('select2-container--open') ||
+                select2.$container.hasClass('select2-container--focus')
+            );
+        }
+
+        select2.on('focus', onBlurOrFocus);
+        select2.on('blur', onBlurOrFocus);
+
+        setLabelAsPlaceholder( false );
+
+        return $label;
+    };
+}(jQuery, this, document));
+;
+/****************************************************************************
+	jquery-bootstrap-selectlist.js,
+
+	(c) 2017, FCOO
+
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+
+    bsSelectList( options ) - create a Bootstrap-list with selection
+
+****************************************************************************/
+
+(function (/*$, window/*, document, undefined*/) {
+	"use strict";
+
+    var selectlistId = 0;
+
+    $.fn._selectlist_onMouseenter = function(/*event*/){
+        this
+            .addClass('highlighted')
+            .siblings('.highlighted').removeClass('highlighted');
+    };
+    $.fn._selectlist_onMouseleave = function(/*event*/){
+        this.removeClass('highlighted');
+    };
+    $.fn._selectlist_onMouseleaveList = function(/*event*/){
+        this.find('.highlighted').removeClass('highlighted');
+        this.find('.active').addClass('highlighted');
     };
 
-
-    /**********************************************************
-    bsSelectList( options ) - create a Bootstrap-list with selection
-    **********************************************************/
-    $.bsSelectList = function( options ){ 
-        options = 
+    $.bsSelectList = $.bsSelectlist = function( options ){
+        options =
             $._bsAdjustOptions( options, {
-                id          : getSelectId(),
+                id          : '_bsSelectlist'+ selectlistId++,
                 baseClass   : 'selectList',
                 class       : '',
                 useTouchSize: true
             });
 
 
-        var $result = $('<div tabindex="0"/>')
-                        ._bsAddBaseClassAndSize( options );
+        var $result =
+                $('<div tabindex="0"/>')
+                    ._bsAddName( options )
+                    ._bsAddBaseClassAndSize( options ),
+            radioGroup =
+                $.radioGroup(
+                    $.extend({}, options, {
+                        radioGroupId     : options.id,
+                        className        : 'active',
+                        allowZeroSelected: false
+                    })
+                );
 
-        addSelectItems( $result, options );
+        $.each( options.list, function( index, itemOptions ){
+            var isItem = (itemOptions.id != undefined ),
+                $item = $(isItem ? '<button/>' : '<div/>');
+            $item
+                .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
+                .addClass( options.center ? 'text-center' : '')
+                .appendTo( $result )
+                ._bsAddHtml( itemOptions, true )
+                .on('mouseenter', $.proxy($item._selectlist_onMouseenter, $item) )
+                .on('mouseleave', $.proxy($item._selectlist_onMouseleave, $item) );
 
+            if (isItem)
+                radioGroup.addElement( $item, itemOptions );
+        });
+
+        $result
+            .on('mouseleave', $.proxy($result._selectlist_onMouseleaveList, $result) )
+            .find('.active').addClass('highlighted');
         return $result;
     };
-
-
-
-	/******************************************
-	Initialize/ready 
-	*******************************************/
-	$(function() { 
-
-	
-	}); 
-	//******************************************
-
-
 
 }(jQuery, this, document));
 ;
@@ -2015,6 +2206,7 @@ Add sort-functions + save col-index for sorted column
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
+
             $.each( options.columns, function( index, columnOptions ){
                 var content = rowContent[columnOptions.id],
                     $td = $('<td/>')
@@ -2029,8 +2221,15 @@ Add sort-functions + save col-index for sorted column
             });
 
             //Add rows to radioGroup
-            if (options.selectable)
+            if (options.selectable){
                 options.radioGroup.addElement( $tr );
+                $tr
+                    .on('mouseenter', $.proxy($tr._selectlist_onMouseenter, $tr) )
+                    .on('mouseleave', $.proxy($tr._selectlist_onMouseleave, $tr) );
+
+//            .on('mouseleave', $.proxy($result._selectlist_onMouseleaveList, $result) )
+
+            }
         },
 
         /**********************************************************
@@ -2182,6 +2381,11 @@ Add sort-functions + save col-index for sorted column
             $table.addRow( rowContent );
         });
 
+        if (options.selectable)
+            $table
+                .on('mouseleave', $.proxy($table._selectlist_onMouseleaveList, $table) )
+                .find('.active').addClass('highlighted');
+
 
         return $table;
     };
@@ -2240,7 +2444,7 @@ Add sort-functions + save col-index for sorted column
                         $._bsAdjustOptions( options, {}, {
                             baseClass   : 'nav-tabs',
                             styleClass  : '',
-                            class       : 'nav',
+                            class       : 'nav' + (options.hideNotSelectedText ? ' hide-not-selected-text' : ''),
                             useTouchSize: true
                         })
                     )
@@ -2296,32 +2500,26 @@ Add sort-functions + save col-index for sorted column
                         .addClass('tab-inner-content')
                         .appendTo( $container );
 
-                //Adding footer
-                $('<div/>')
-                    .addClass('tab-footer')
-                    ._bsAddHtml( opt.footer )
-                    .appendTo( $container );
+            //Adding footer
+            $('<div/>')
+                .addClass('tab-footer')
+                ._bsAddHtml( opt.footer )
+                .appendTo( $container );
+
+            if (opt.selected){
+                $tab
+                    .attr('aria-selected', true)
+                    .addClass('show active');
+                $container.addClass('show active');
+            }
+
+            $content = options.scroll ? $content.addScrollbar() : $content;
 
 
+            //Add content: string, element, function, setup-json-object, or children (=accordion)
+            if (opt.content)
+                $content._bsAppendContent( opt.content );
 
-
-                if (opt.selected){
-                    $tab
-                        .attr('aria-selected', true)
-                        .addClass('show active');
-                    $container.addClass('show active');
-                }
-
-                $content = options.scroll ? $content.addScrollbar() : $content;
-
-
-                //Add content: string, element, function or children (=accordion)
-                if (opt.content){
-                    if ($.isFunction( opt.content ))
-                        opt.content( $content );
-                    else
-                        $content.append( opt.content );
-                }
         });
         $result.asModal = bsTabs_asModal;
         $result._$tabs = $tabs;
@@ -2390,6 +2588,34 @@ Add sort-functions + save col-index for sorted column
 
     $.EMPTY_TEXT = '___***EMPTY***___';
 
+    //$._bsAdjustIconAndText: Adjust options to fit with {icon"...", text:{da:"", en:".."}
+    // options == {da:"..", en:".."} => return {text: options}
+    // options == array of ?? => array of $._bsAdjustIconAndText( ??? )
+    // options == STRING           => return {text: options}
+
+    $._bsAdjustIconAndText = function( options ){
+        if (!options)
+            return options;
+        if ($.isArray( options )){
+            var result = [];
+            $.each( options, function(index, content){
+                result.push( $._bsAdjustIconAndText(content) );
+            });
+            return result;
+        }
+
+        if ($.type( options ) == "object"){
+            if (!options.icon && !options.text)
+                return {text: options };
+            else
+                return options;
+        }
+        else
+            //options == simple type (string, number etc.)
+            return {text: options };
+
+    };
+
     //$._bsAdjustOptions: Adjust options to allow text/name/title/header etc.
     $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
         //*********************************************************************
@@ -2441,7 +2667,40 @@ Add sort-functions + save col-index for sorted column
         return options;
     };
 
+
+    /****************************************************************************************
+    _bsGetSizeClass
+    baseClass: "BASE" useTouchSize: false
+        small: false => sizeClass = ''
+        small: true  => sizeClass = "BASE-sm"
+
+    baseClass: "BASE" useTouchSize: true
+        small: false => sizeClass = 'BASE-sm'
+        small: true  => sizeClass = "BASE-xs"
+    ****************************************************************************************/
+    $._bsGetSizeClass = function( options ){
+        var sizeClassPostfix = '';
+
+        if (options.useTouchSize){
+            if (ns.bsIsTouch)
+                sizeClassPostfix = options.small ? 'sm' : '';
+            else
+                sizeClassPostfix = options.small ? 'xs' : 'sm';
+        }
+        else
+            sizeClassPostfix = options.small ? 'sm' : '';
+
+        return sizeClassPostfix && options.baseClass ? options.baseClass + '-' + sizeClassPostfix : '';
+    };
+
     $.fn.extend({
+
+        //_bsAddName
+        _bsAddName: function( options ){
+            this.attr('name', options.name || options.id || '');
+            return this;
+        },
+
         /****************************************************************************************
         _bsAddBaseClassAndSize
 
@@ -2453,34 +2712,11 @@ Add sort-functions + save col-index for sorted column
             styleClass          [string]
             class               [string]
             textStyle           [string] or [object]. see _bsAddStyleClasses
-
-
-        baseClass: "BASE" useTouchSize: false
-            small: false => sizeClass = ''
-            small: true  => sizeClass = "BASE-sm"
-
-        baseClass: "BASE" useTouchSize: true
-            small: false => sizeClass = 'BASE-sm'
-            small: true  => sizeClass = "BASE-xs"
-
-
         ****************************************************************************************/
         _bsAddBaseClassAndSize: function( options ){
-            var classNames = options.baseClass ? [options.baseClass + (options.baseClassPostfix || '')] : [],
-                sizeClassPostfix = '';
+            var classNames = options.baseClass ? [options.baseClass + (options.baseClassPostfix || '')] : [];
 
-            if (options.useTouchSize){
-                if (ns.bsIsTouch)
-                    sizeClassPostfix = options.small ? 'sm' : '';
-                else
-                    sizeClassPostfix = options.small ? 'xs' : 'sm';
-            }
-            else
-                sizeClassPostfix = options.small ? 'sm' : '';
-
-
-            if (sizeClassPostfix && options.baseClass)
-              classNames.push( options.baseClass + '-' + sizeClassPostfix );
+            classNames.push( $._bsGetSizeClass(options) );
 
             if (options.styleClass)
                 classNames.push( options.styleClass );
@@ -2599,7 +2835,6 @@ Add sort-functions + save col-index for sorted column
             }
             //**************************************************
 
-
             if (checkForContent && (options.content != null))
                 return this._bsAddHtml( options.content );
 
@@ -2615,9 +2850,11 @@ Add sort-functions + save col-index for sorted column
                 return this;
             }
 
-            //Simple version: options == string
-            if ($.type( options ) != "object")
-                return this._bsAddHtml( {text: options} );
+            //Adjust icon and/or text if iot is not at format-options
+            if (!options.vfFormat)
+                options = $._bsAdjustIconAndText( options );
+
+            this.addClass('container-icon-and-text');
 
             //If the options is a jQuery-object: append it and return
             if (options.jquery){
@@ -2652,13 +2889,9 @@ Add sort-functions + save col-index for sorted column
             if (options.color)
                 _this.addClass('text-'+ options.color);
 
-            if (options.icon && options.text)
-                _this.append('&nbsp;');
-
             //Add text
             $.each( textArray, function( index, text ){
                 var $text = create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
-
                 if ($.isFunction( text ))
                     text( $text );
                 else
@@ -2687,9 +2920,72 @@ Add sort-functions + save col-index for sorted column
             var options = this.data('bsButton_options');
             $.proxy( options.onClick, options.context )( options.id, null, this );
             return false;
+        },
+
+        /****************************************************************************************
+        _bsAddContent( options[, defaultType] )
+        Create and append any content to this.
+        options can be $-element, function, json-object or array of same
+        ****************************************************************************************/
+        _bsAppendContent: function( options, defaultType ){
+            var _this = this;
+
+            if (!options)
+                return this;
+
+            //Array of $-element, function etc
+            if ($.isArray( options )){
+                $.each(options, function( index, options){
+                    _this._bsAppendContent(options);
+                });
+                return this;
+            }
+
+            //Function
+            if ($.isFunction( options )){
+                options( this );
+                return this;
+            }
+
+            //json-object with options to create bs-elements
+            if ($.isPlainObject(options)){
+                options.type = options.type || defaultType || 'input';
+                var buildFunc;
+                switch (options.type.toLowerCase()){
+                    case 'input'        :   buildFunc = $.bsInput;          break;
+                    case 'button'       :   buildFunc = $.bsButton;         break;
+                    case 'select'       :   buildFunc = $.bsSelectBox;      break;
+                    case 'selectlist'   :   buildFunc = $.bsSelectList;     break;
+                    case 'checkbox'     :   buildFunc = $.bsCheckbox;       break;
+                    case 'tabs'         :   buildFunc = $.bsTabs;           break;
+                    case 'table'        :   buildFunc = $.bsTable;          break;
+                    case 'XX'           :   buildFunc = null;               break;
+
+                    default             :   buildFunc = $._bsAddHtml;       break;
+                }
+                buildFunc.apply( this, arguments ).appendTo( this );
+
+                var prepend = options.prepend || options.before;
+                if (prepend)
+                    $('<div/>')
+                        .addClass('input-group-prepend')
+                        ._bsAppendContent( prepend )
+                        .prependTo(this);
+                var append = options.append || options.after;
+                if (append)
+                    $('<div/>')
+                        .addClass('input-group-append')
+                        ._bsAppendContent( append )
+                        .appendTo(this);
+
+
+                return this;
+            }
+
+            //Assume it is a $-element or other object that can be appended directly
+            this.append( options );
+            return this;
         }
-
-
     }); //$.fn.extend
 
 
@@ -2697,8 +2993,6 @@ Add sort-functions + save col-index for sorted column
 	Initialize/ready
 	*******************************************/
 	$(function() {
-
-
 	});
 	//******************************************
 

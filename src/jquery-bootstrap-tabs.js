@@ -37,7 +37,7 @@
                         $._bsAdjustOptions( options, {}, {
                             baseClass   : 'nav-tabs',
                             styleClass  : '',
-                            class       : 'nav',
+                            class       : 'nav' + (options.hideNotSelectedText ? ' hide-not-selected-text' : ''),
                             useTouchSize: true
                         })
                     )
@@ -93,32 +93,26 @@
                         .addClass('tab-inner-content')
                         .appendTo( $container );
 
-                //Adding footer
-                $('<div/>')
-                    .addClass('tab-footer')
-                    ._bsAddHtml( opt.footer )
-                    .appendTo( $container );
+            //Adding footer
+            $('<div/>')
+                .addClass('tab-footer')
+                ._bsAddHtml( opt.footer )
+                .appendTo( $container );
+
+            if (opt.selected){
+                $tab
+                    .attr('aria-selected', true)
+                    .addClass('show active');
+                $container.addClass('show active');
+            }
+
+            $content = options.scroll ? $content.addScrollbar() : $content;
 
 
+            //Add content: string, element, function, setup-json-object, or children (=accordion)
+            if (opt.content)
+                $content._bsAppendContent( opt.content );
 
-
-                if (opt.selected){
-                    $tab
-                        .attr('aria-selected', true)
-                        .addClass('show active');
-                    $container.addClass('show active');
-                }
-
-                $content = options.scroll ? $content.addScrollbar() : $content;
-
-
-                //Add content: string, element, function or children (=accordion)
-                if (opt.content){
-                    if ($.isFunction( opt.content ))
-                        opt.content( $content );
-                    else
-                        $content.append( opt.content );
-                }
         });
         $result.asModal = bsTabs_asModal;
         $result._$tabs = $tabs;
