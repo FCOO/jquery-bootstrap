@@ -12,7 +12,6 @@
     <link  href="../src/jquery-bootstrap.css" rel="stylesheet">
     <link  href="font-awesome.css" rel="stylesheet">
     <link  href="demo.css" rel="stylesheet">
-    <link  href="fcoo-formValidation.css" rel="stylesheet">
     <style>
         _html {
             height  : 100%;
@@ -49,9 +48,6 @@ position: fixed;
     <script src="../src/jquery-bootstrap-noty.js"></script>
     <script src="../src/jquery-bootstrap-tabs.js"></script>
     <script src="../src/jquery-bootstrap-form.js"></script>
-
-    <script src="fcoo-formValidation.js"></script>
-
 
 	<script>
 
@@ -873,107 +869,6 @@ type: 'checkbox',
     })
         .prependTo( $('#formTest') );
 
-
-$(function() {
-    $('#formTest').formValidation({
-        framework: 'bootstrap4',
-        autoFocus: false,
-button: {
-    // The submit buttons selector
-    selector: '[type="submit"]:not([formnovalidate])', //TODO i modal: Select button outside form
-
-    // The disabled class
-    disabled: ''
-
-
-},
-
-   icon: {
-//HER          valid: 'fa fa-check',
-//HER          invalid: 'fa fa-times',
-//HER          validating: 'fa fa-refresh',
-//       feedback: '', //'_form-control-feedback'
-            //      valid: 'fa fa-check',
-            //      invalid: 'fa fa-times',
-            //      validating: 'fa fa-refresh',
-            //      feedback: 'form-control-feedback' <-
-    },
-
-//live: String — Live validating mode. Can be one of three values:
-
-//live: 'enabled', // default	The plugin validates fields as soon as they are changed
-//live: 'disabled', // Disable the live validating. The error messages are only shown after the form is submitted
-live: 'submitted', // The live validating is enabled after the form is submitted
-
-
-verbose: false,
-//err: {
-//    clazz: 'HER_form-control-feedback',
-//},
-
-
-        fields: {
-            NIELS_ER_SMART: {
-                validators: {
-                    notEmpty: {
-                        message: 'NIELS_ER_SMART is required'
-                    }
-                }
-            },
-            NIELS_ER_SMART3: {
-                validators: {
-                    notEmpty: {
-                        message: 'NIELS_ER_SMART3 is required'
-                    }
-                }
-            },
-            TEST_SELECT: {
-                validators: {
-                    notEmpty: {
-                        message: 'The %s is required'
-                    }
-                }
-            },
-            TEST_NAME: {
-                validators: {
-                    notEmpty: {
-                        message: 'The %s is required'
-                    },
-                    stringLength: {
-                        min: 6,
-                        max: 30,
-                        message: 'The name must be more than %s and less than %s characters long'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_]+$/,
-                        message: 'The name can only consist of alphabetical, number and underscore'
-                    }
-                }
-            },
-            TEST_DATE: {
-                validators: {
-                    notEmpty: {
-                        message: 'The date is required'
-                    },
-                    numeric: {
-                        message: 'The date must be a number'
-                    }
-                }
-            },
-            TEST_DATE2: {
-                validators: {
-                    notEmpty: {
-                        message: 'The date2 is required'
-                    },
-                    numeric: {
-                        message: 'The date2 must be a number'
-                    }
-                }
-            }
-
-        }
-    })
-});
 
 
 </script>
