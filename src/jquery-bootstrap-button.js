@@ -51,7 +51,7 @@
             result.prop('href', 'javascript:undefined');
 
         result
-            ._bsAddName( options )
+            ._bsAddIdAndName( options )
             ._bsAddBaseClassAndSize( options );
 
         if (options.id)

@@ -93,18 +93,18 @@ Add sort-functions + save col-index for sorted column
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
-
             $.each( options.columns, function( index, columnOptions ){
                 var content = rowContent[columnOptions.id],
                     $td = $('<td/>')
                             .appendTo($tr);
                 adjustThOrTd( $td, columnOptions, !options.showHeader );
 
-                //Build the content using _bsAddHtml or jquery-value-format
+                //Build the content using _bsAppendContent or jquery-value-format
                 if (columnOptions.vfFormat)
                     $td.vfValueFormat( content, columnOptions.vfFormat, columnOptions.vfOptions );
-                else
-                    $td._bsAddHtml( content );
+                else {
+                    $td._bsAppendContent( content );
+                }
             });
 
             //Add rows to radioGroup

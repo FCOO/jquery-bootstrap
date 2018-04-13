@@ -31,7 +31,7 @@
                         type   : 'checkbox',
                         checked: options.selected
                     })
-                    ._bsAddName( options )
+                    ._bsAddIdAndName( options )
                     .appendTo( $result );
 
         //Create input-element as checkbox from jquery-checkbox-radio-group

@@ -18,7 +18,7 @@
         ******************************************************/
         bsInput: function( options ){
             return  $('<input/>')
-                        ._bsAddName( options )
+                        ._bsAddIdAndName( options )
                         .addClass('form-control-border form-control')
                         .attr('type', 'text')
                         ._wrapLabel(options);
@@ -49,8 +49,9 @@
         Create <div class="input-group"> with a input-control inside as descripted above
         ******************************************************/
         bsInputGroup: function( options, type ){
+            options.type = options.type || 'input';
             return $divXXGroup('input-group', options)
-                       ._bsAppendContent(options, type || 'input');
+                       ._bsAppendContent(options);
         },
 
         /******************************************************

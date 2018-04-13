@@ -66,7 +66,7 @@
         //adjustContentOptions: Adjust options for the content of elements
         function adjustContentAndContextOptions( options, context ){
             options.icon     = options.icon || options.headerIcon || options.titleIcon;
-            options.text     = options.text || options.header || options.title || options.name;
+            options.text     = options.text || options.header || options.title;
 
             options.iconClass = options.iconClass       || options.iconClassName       ||
                                 options.headerIconClass || options.headerIconClassName ||
@@ -139,8 +139,9 @@
 
     $.fn.extend({
 
-        //_bsAddName
-        _bsAddName: function( options ){
+        //_bsAddIdAndName
+        _bsAddIdAndName: function( options ){
+            this.attr('id', options.id || '');
             this.attr('name', options.name || options.id || '');
             return this;
         },
@@ -373,13 +374,12 @@
         },
 
         /****************************************************************************************
-        _bsAddContent( options[, defaultType] )
+        _bsAddContent( options )
         Create and append any content to this.
         options can be $-element, function, json-object or array of same
         ****************************************************************************************/
-        _bsAppendContent: function( options, defaultType ){
+        _bsAppendContent: function( options ){
             var _this = this;
-
             if (!options)
                 return this;
 
@@ -399,20 +399,19 @@
 
             //json-object with options to create bs-elements
             if ($.isPlainObject(options)){
-                options.type = options.type || defaultType || 'input';
-                var buildFunc;
-                switch (options.type.toLowerCase()){
-                    case 'input'        :   buildFunc = $.bsInput;          break;
-                    case 'button'       :   buildFunc = $.bsButton;         break;
-                    case 'select'       :   buildFunc = $.bsSelectBox;      break;
-                    case 'selectlist'   :   buildFunc = $.bsSelectList;     break;
-                    case 'checkbox'     :   buildFunc = $.bsCheckbox;       break;
-                    case 'tabs'         :   buildFunc = $.bsTabs;           break;
-                    case 'table'        :   buildFunc = $.bsTable;          break;
-                    case 'XX'           :   buildFunc = null;               break;
+                var buildFunc = $.fn._bsAddHtml;
+                if (options.type)
+                    switch (options.type.toLowerCase()){
+                        case 'input'        :   buildFunc = $.bsInput;          break;
+                        case 'button'       :   buildFunc = $.bsButton;         break;
+                        case 'select'       :   buildFunc = $.bsSelectBox;      break;
+                        case 'selectlist'   :   buildFunc = $.bsSelectList;     break;
+                        case 'checkbox'     :   buildFunc = $.bsCheckbox;       break;
+                        case 'tabs'         :   buildFunc = $.bsTabs;           break;
+                        case 'table'        :   buildFunc = $.bsTable;          break;
+//                        case 'xx'           :   buildFunc = $.bsXx;               break;
+                    }
 
-                    default             :   buildFunc = $._bsAddHtml;       break;
-                }
                 buildFunc.apply( this, arguments ).appendTo( this );
 
                 var prepend = options.prepend || options.before;

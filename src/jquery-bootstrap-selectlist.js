@@ -41,7 +41,7 @@
 
         var $result =
                 $('<div tabindex="0"/>')
-                    ._bsAddName( options )
+                    ._bsAddIdAndName( options )
                     ._bsAddBaseClassAndSize( options ),
             radioGroup =
                 $.radioGroup(

@@ -91,7 +91,7 @@
         //Create result and select-element
         var $select =
                 $('<select/>')
-                    ._bsAddName( options ),
+                    ._bsAddIdAndName( options ),
             $result =
                 $('<div class="form-control-with-label"></div>')
                     .append( $select );

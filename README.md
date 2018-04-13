@@ -407,7 +407,7 @@ Beside the normal [Noty options](https://ned.im/noty/#/options) the following ne
 | `text` or `content` | `content/jQuery-object` or `[] of content/jQuery-object` | `""` | See above |
 | `textAlign` | `string` | `"left"` | `"left"`, `"center"`, or `"right"`  |
 | `header` | `content` | `""` | See above  |
-| `defaultHeader` | `boolean` | `false` | If `true` use default header (icon + name) defined in `$.bsNotyIcon` and `$.bsNotyName` |
+| `defaultHeader` | `boolean` | `false` | If `true` use default header (icon + text) defined in `$.bsNotyIcon` and `$.bsNotyName` |
 | `onTop` | `boolean` | `false` | If `true` the noty is always on top of all other elements |
 | `onTopLayerClassName` | `string` | `""` | Alternative class-name for the container containing the top notys |
 | `flash` | `boolean` | `false` | If `true` the noty will flash for 3s when shown |
