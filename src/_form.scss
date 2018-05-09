@@ -2,6 +2,12 @@
 FORM
 ************************************************************/
 
+//Making input-group single line inside form-group
+.form-group .input-group {
+    flex-wrap: nowrap;
+}
+
+
 //Add outline on the inside when focus
 .form-control {
     @include control-border-color();

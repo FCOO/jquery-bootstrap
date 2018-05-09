@@ -27,7 +27,7 @@
 </div>
     ******************************************************/
     var tabsId = 0;
-    $.bsTabs = function( options ){
+    $.bsTabs = function( options, insideFormGroup ){
         var $result = $('<div/>'),
             id = 'bsTabs'+ tabsId++,
 
@@ -111,7 +111,7 @@
 
             //Add content: string, element, function, setup-json-object, or children (=accordion)
             if (opt.content)
-                $content._bsAppendContent( opt.content );
+                $content._bsAppendContent( opt.content, insideFormGroup );
 
         });
         $result.asModal = bsTabs_asModal;

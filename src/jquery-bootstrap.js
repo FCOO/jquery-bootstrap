@@ -32,6 +32,22 @@
 
     $.EMPTY_TEXT = '___***EMPTY***___';
 
+
+
+
+    /******************************************************
+    $divXXGroup
+    ******************************************************/
+    function $divXXGroup( groupTypeClass, options ){
+        return $('<div/>')
+                   ._bsAddBaseClassAndSize( $.extend({}, options, {
+                       baseClass   : groupTypeClass,
+                       useTouchSize: true
+                   }));
+    }
+
+
+
     //$._bsAdjustIconAndText: Adjust options to fit with {icon"...", text:{da:"", en:".."}
     // options == {da:"..", en:".."} => return {text: options}
     // options == array of ?? => array of $._bsAdjustIconAndText( ??? )
@@ -374,32 +390,53 @@
         },
 
         /****************************************************************************************
-        _bsAddContent( options )
+        _bsAppendContent( options, insideFormGroup )
         Create and append any content to this.
         options can be $-element, function, json-object or array of same
+
+        The default bootstrap structure used for elements in a form is
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">               //optional
+                    <button class="btn btn-standard">..</buton> //optional 1-N times
+                </div>                                          //optional
+
+                <label class="has-float-label">
+                    <input class="form-control form-control-with-label" type="text" placeholder="The placeholder...">
+                    <span>The label</span>
+                </label>
+
+                <div class="input-group-append">                //optional
+                    <button class="btn btn-standard">..</buton> //optional 1-N times
+                </div>                                          //optional
+            </div>
+        </div>
+        if insideFormGroup == true OR options.
         ****************************************************************************************/
-        _bsAppendContent: function( options ){
-            var _this = this;
+        _bsAppendContent: function( options, insideFormGroup ){
+
             if (!options)
                 return this;
 
             //Array of $-element, function etc
             if ($.isArray( options )){
+                var _this = this;
                 $.each(options, function( index, options){
-                    _this._bsAppendContent(options);
+                    _this._bsAppendContent(options, insideFormGroup);
                 });
                 return this;
             }
 
             //Function
             if ($.isFunction( options )){
-                options( this );
+                options( this, insideFormGroup );
                 return this;
             }
 
             //json-object with options to create bs-elements
             if ($.isPlainObject(options)){
-                var buildFunc = $.fn._bsAddHtml;
+                var buildFunc = $.fn._bsAddHtml,
+                    neverInsideFormGroup = false;
                 if (options.type)
                     switch (options.type.toLowerCase()){
                         case 'input'        :   buildFunc = $.bsInput;          break;
@@ -407,25 +444,43 @@
                         case 'select'       :   buildFunc = $.bsSelectBox;      break;
                         case 'selectlist'   :   buildFunc = $.bsSelectList;     break;
                         case 'checkbox'     :   buildFunc = $.bsCheckbox;       break;
-                        case 'tabs'         :   buildFunc = $.bsTabs;           break;
-                        case 'table'        :   buildFunc = $.bsTable;          break;
+                        case 'tabs'         :   buildFunc = $.bsTabs;           neverInsideFormGroup = true; break;
+                        case 'table'        :   buildFunc = $.bsTable;          neverInsideFormGroup = true; break;
+                        case 'accordion'    :   buildFunc = $.bsAccordion;      neverInsideFormGroup = true; break;
 //                        case 'xx'           :   buildFunc = $.bsXx;               break;
                     }
 
-                buildFunc.apply( this, arguments ).appendTo( this );
+
+                //Set the parent-element where to append to created element(s)
+                var $parent = this,
+                    insideInputGroup = false;
+                if (insideFormGroup && !neverInsideFormGroup){
+                    //Create outer form-group
+                    insideInputGroup = true;
+                    $parent = $divXXGroup('form-group', options).appendTo( $parent );
+                }
+
+                if (insideInputGroup || options.prepend || options.before || options.append || options.after){
+                    //Create element inside input-group
+                    $parent = $divXXGroup('input-group', options).appendTo( $parent );
+
+                }
+
+                //Build the element inside $parent
+                buildFunc.apply( this, arguments ).appendTo( $parent );
 
                 var prepend = options.prepend || options.before;
                 if (prepend)
                     $('<div/>')
                         .addClass('input-group-prepend')
                         ._bsAppendContent( prepend )
-                        .prependTo(this);
+                        .prependTo( $parent /*this*/);
                 var append = options.append || options.after;
                 if (append)
                     $('<div/>')
                         .addClass('input-group-append')
                         ._bsAppendContent( append )
-                        .appendTo(this);
+                        .appendTo( $parent /*this*/);
 
 
                 return this;

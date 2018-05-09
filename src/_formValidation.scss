@@ -23,7 +23,7 @@
 Style for formValidation (via fcoo-formValidation)
 ************************************************************/
 @mixin form-control-feedback( $font-size, $padding-bottom, $padding-left ){
-    $padding-factor: 1.6;
+    $padding-factor: 2; //1.6;
     $height: $font-size + $padding-factor * $padding-bottom;
     padding-bottom: $height;
     &.has-warning {

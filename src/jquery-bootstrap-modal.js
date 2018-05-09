@@ -284,9 +284,10 @@
         //Adjust for options.buttons: null
         options.buttons = options.buttons || [];
 
-        //Add close-botton. Avoid by setting options.closeButton = false
+        //Add close-botton at beginning. Avoid by setting options.closeButton = false
         if (options.closeButton)
-            options.buttons.push({
+//            options.buttons.push({
+            options.buttons.unshift({
                 text: options.closeText,
                 icon: options.closeIcon,
 
@@ -392,6 +393,9 @@
                 icons    : {
                     close   : { onClick: closeModalFunction }
                 },
+
+                //Size
+                useTouchSize: true,
 
                 //Content
                 scroll     : true,

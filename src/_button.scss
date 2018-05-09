@@ -22,6 +22,11 @@ div.btn, div.list-group-item {
     background-color: $control-bg-color;
     @include box-shadow($btn-box-shadow);
 
+    //min-width used for buttons with short text ("Ok")
+    &.min-width {
+        min-width: 5em;
+    }
+
     &:active,  &.active {
         background-color: darken($control-bg-color, $darken-active-percent);
         background-image: none;

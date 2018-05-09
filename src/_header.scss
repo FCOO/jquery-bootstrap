@@ -47,13 +47,16 @@ Icons for modal header inside a container
         margin : 0;
         padding: $padding;
 
+        &.disabled {
+            opacity: .25;
+        }
         &:not(.disabled):hover {
             @include hover-focus {
                 color: $close-color;
                 text-decoration: none;
                 opacity: .75;
             }
-            &:active { 
+            &:active {
                 opacity: .9;
            }
         }
@@ -62,19 +65,27 @@ Icons for modal header inside a container
         &.header-icon-extend:before   { content: '\ea41'; }
         &.header-icon-diminish:before { content: '\ea43'; }
 
+        //modal-icon-back and modal-icon-forward
+        &.header-icon-back:before    { content: '\ea44'; }
+        &.header-icon-forward:before { content: '\ea42'; }
+
+        &.header-icon-info:before { content: '\ea0c'; }
+        &.header-icon-help:before { content: '\ea09'; }
+        &.header-icon-pin:before  { content: '\e946'; }
+
         //Special version for close-icon
         &.header-icon-close {
             &:before { content: '\ed65'; }
-            &:hover {
+            &:not(.disabled):hover {
                 &:before { content: "\ed66"; }
                 @include hover-focus {
                     color  : $red;
                     opacity: 1;
                 }
-                &:active { 
+                &:active {
                     color: darken($red, $darken-active-percent);
                 }
-            } 
+            }
         }
     } //end of .header-icon {
 } //end of .header-icon-container {

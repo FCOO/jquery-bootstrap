@@ -62,7 +62,7 @@ TODO:
                );
     }
 
-    $.bsAccordion = function( options ){
+    $.bsAccordion = function( options, insideFormGroup ){
 
         var id = 'bsAccordion'+ accordionId++;
 
@@ -142,13 +142,7 @@ TODO:
 
             //Add content: string, element, function or children (=accordion)
                 if (opt.content)
-                    $contentContainer._bsAppendContent( opt.content );
-//HER               if (opt.content){
-//HER                   if ($.isFunction( opt.content ))
-//HER                       opt.content( $contentContainer );
-//HER                   else
-//HER                       $contentContainer.append( opt.content );
-//HER               }
+                    $contentContainer._bsAppendContent( opt.content, insideFormGroup );
 
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))

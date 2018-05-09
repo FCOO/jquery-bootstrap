@@ -211,6 +211,31 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     }
 }
 
+//size='extra small'
+.modal.modal-xs,
+.modal-inline.modal-xs {
+    .modal-content {
+        .modal-header {
+            @include header-variant-sm(true, true);
+        }
+        .modal-body,
+        .modal-body-fixed {
+            @include content-padding-sm();
+        }
+        .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
+            @include footer-variant-sm();
+        }
+
+        .modal-footer {
+            padding-top: $btn-padding-x-sm;
+            padding-bottom: $btn-padding-x-sm;
+        }
+    }
+}
+
+
+
+
 
 //Adjust padding-left and padding-right if the body is a scroll
 .modal, .modal-inline {

@@ -27,7 +27,7 @@ Bootstrap allready have the following classes
 //.container-icon-and-text: used when adding icon and/or text to button, header etc.
 .container-icon-and-text {
     & > * {
-        line-height: inherit !important;
+//        line-height: inherit !important;
         &.after-icon {
             padding-left: 0.3em;
         }

@@ -96,7 +96,7 @@
                 $('<div class="form-control-with-label"></div>')
                     .append( $select );
 
-        options.dropdownParent = $result;
+        //Seems to be working without: options.dropdownParent = $result;
 
         //Create select2
         $select.select2( options );
