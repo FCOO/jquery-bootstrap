@@ -23,16 +23,26 @@ Using Bootstrap Collapse to create accordion
         }
     }
 
-    .card-block {
-        @include content-padding();
-        @include border-radius($card-border-radius);
+    .collapse {
+        .card-block {
+            @include content-padding();
+            @include border-radius($card-border-radius);
+        }
+
+        .card-footer {
+            @include footer-variant( false );
+            @include border-radius($card-border-radius);
+        }
     }
 
-    .card-footer {
-        @include footer-variant( false );
-        @include border-radius($card-border-radius);
+    &.no-transition .collapsing,
+    &.no-transition .collapse {
+        //no-transition allow to open or close card without animation
+        transition: none !important;
     }
 }
+
+
 
 //Size and padding for small-version
 .modal-sm .accordion,

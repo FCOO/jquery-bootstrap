@@ -138,28 +138,10 @@
                 options.onChange( data.id, data.selected );
             });
 
-        //Set selected id or placeholder
-        $select
-            .val(selectedIdExists ? options.selectedId : -1)
-            .trigger('change');
-
-        //Add label as attr label to placeholder to make placeholder display label when no item is selected
-        select2.$selection.find('.select2-selection__placeholder').append(
-            $('<span/>')
-                .addClass('select2-selection__placeholder_label')
-                ._bsAddHtml( options.label )
-        );
-
 
         var $label = $result._wrapLabel({ label: options.label });
-
-        //Call onChange (if it and selectedId exists
-        if (selectedIdExists && options.onChange)
-            options.onChange( options.selectedId, true );
-
-
-        function setLabelAsPlaceholder( hasFocus ){
-            var showLabelAsPlaceholder = !hasFocus && !$select.find(':selected').length;
+        function setLabelAsPlaceholder( hasFocus, TEST ){
+            var showLabelAsPlaceholder = TEST || (!hasFocus && !$select.find(':selected').length);
             $label.toggleClass('hide-float-label', showLabelAsPlaceholder);
             $result.toggleClass('show-label-as-placeholder', showLabelAsPlaceholder);
             select2.$container.toggleClass('select2-hide-placeholder', showLabelAsPlaceholder);
@@ -174,6 +156,20 @@
 
         select2.on('focus', onBlurOrFocus);
         select2.on('blur', onBlurOrFocus);
+
+        $select.on('change', function(){
+            setLabelAsPlaceholder();
+        });
+
+        //Set selected id or placeholder
+        $select
+            .val(selectedIdExists ? options.selectedId : -1)
+            .trigger('change.select2');
+
+
+        //Call onChange (if it and selectedId exists
+        if (selectedIdExists && options.onChange)
+            options.onChange( options.selectedId, true );
 
         setLabelAsPlaceholder( false );
 

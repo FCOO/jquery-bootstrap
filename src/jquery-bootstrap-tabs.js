@@ -72,6 +72,7 @@
                             'id'           : tabId,
                             'role'         : 'tab',
                             'data-toggle'  : "tab",
+                            'data-user-id' : opt.id || null,
                             'href'         : '#'+contentId,
                             'aria-controls': contentId
                         })
@@ -129,8 +130,8 @@
                         noVerticalPadding  : true,
                         noHorizontalPadding: true,
                         scroll             : false,
-                        content     : this._$contents,
-                        fixedContent: this._$tabs,
+                        content            : this._$contents,
+                        fixedContent       : this._$tabs,
                     }, options)
                );
 
@@ -141,8 +142,18 @@
         });
 
         return $result;
-
     }
 
+
+    //Extend $.fn with method to select a tab given by id (string) or index (integer)
+    $.fn.bsSelectTab = function( indexOrId ){
+        var $tab =
+            $.type(indexOrId) == 'number' ?
+            this.find('.nav-tabs a.nav-item:nth-of-type('+(indexOrId+1)+')') :
+            this.find('.nav-tabs a.nav-item[data-user-id="' + indexOrId + '"]');
+
+        if ($tab && $tab.length)
+            $tab.tab('show');
+    }
 
 }(jQuery, this, document));

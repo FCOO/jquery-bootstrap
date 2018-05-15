@@ -10762,7 +10762,7 @@ Only supports the html-structure
   top: 0;
   cursor: default;
   opacity: 1;
-  transition: all .2s;
+  transition: all .2s, visibility 0s;
   z-index: 4;
   line-height: 1;
   color: #495057;
@@ -10788,7 +10788,7 @@ Only supports the html-structure
 }
 .input-group .has-float-label .form-control-with-label::-webkit-input-placeholder, .input-group .has-float-label .form-control-with-label::-moz-placeholder, .input-group .has-float-label .form-control-with-label:-ms-input-placeholder, .input-group .has-float-label .form-control-with-label::placeholder {
   opacity: 1;
-  transition: all .2s;
+  transition: all .2s, visibility 0s;
 }
 .input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus)::-webkit-input-placeholder {
   opacity: 0;
@@ -11062,12 +11062,12 @@ Using Bootstrap Collapse to create accordion
 .accordion .card-header.collapsed .chevrolet:before {
   content: '\f054';
 }
-.accordion .card-block {
+.accordion .collapse .card-block {
   padding: 0.5rem 0.75rem;
   font-size: 1rem;
   border-radius: 0.25rem;
 }
-.accordion .card-footer {
+.accordion .collapse .card-footer {
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -11083,13 +11083,16 @@ Using Bootstrap Collapse to create accordion
   border-top-right-radius: 0 !important;
   border-radius: 0.25rem;
 }
-.accordion .card-footer span {
+.accordion .collapse .card-footer span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.accordion .card-footer:empty {
+.accordion .collapse .card-footer:empty {
   display: none;
+}
+.accordion.no-transition .collapsing, .accordion.no-transition .collapse {
+  transition: none !important;
 }
 
 .modal-sm .accordion .card-header,
@@ -11834,15 +11837,8 @@ https://github.com/berkan52/select2-bootstrap4-theme
 .select2-container--standard .select2-selection--single .select2-selection__placeholder {
   color: #6c757d;
 }
-.select2-container--standard .select2-selection__placeholder_label {
-  display: none;
-  color: #6c757d;
-}
 .select2-container--standard.select2-hide-placeholder .select2-selection--single .select2-selection__placeholder > .container-icon-and-text:first-child {
-  display: none;
-}
-.select2-container--standard.select2-hide-placeholder .select2-selection--single .select2-selection__placeholder .select2-selection__placeholder_label {
-  display: inline-block;
+  opacity: 0;
 }
 .select2-container--standard.select2-container-sm .select2-results {
   max-height: 7.25rem;
@@ -11948,11 +11944,12 @@ https://github.com/berkan52/select2-bootstrap4-theme
 
 ************************************************/
 /************************************************************
-Style for formValidation (via fcoo-formValidation)
+Style for formValidation (via fcoo-form-validation)
 ************************************************************/
 .form-group {
   line-height: 1;
   margin-bottom: 0;
+  padding-top: 0.5rem;
   padding-bottom: 1.875rem;
 }
 .form-group .form-control-feedback {
@@ -11975,6 +11972,7 @@ Style for formValidation (via fcoo-formValidation)
 }
 
 .form-group.form-group-sm {
+  padding-top: 0.25rem;
   padding-bottom: 1.25rem;
 }
 .form-group.form-group-sm.has-warning {
@@ -11989,6 +11987,7 @@ Style for formValidation (via fcoo-formValidation)
 }
 
 .form-group.form-group-xs {
+  padding-top: 0.1rem;
   padding-bottom: 0.95rem;
 }
 .form-group.form-group-xs.has-warning {
@@ -12000,6 +11999,10 @@ Style for formValidation (via fcoo-formValidation)
   color: #dc3545;
   padding-left: 0.15rem;
   vertical-align: top;
+}
+
+.form-group.fv-do-not-validate {
+  visibility: hidden;
 }
 
 /*# sourceMappingURL=jquery-bootstrap.css.map */

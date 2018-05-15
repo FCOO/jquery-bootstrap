@@ -286,7 +286,6 @@
 
         //Add close-botton at beginning. Avoid by setting options.closeButton = false
         if (options.closeButton)
-//            options.buttons.push({
             options.buttons.unshift({
                 text: options.closeText,
                 icon: options.closeIcon,
@@ -402,6 +401,7 @@
                 content    : '',
 
                 //Modal-options
+                static     : false,
                 show       : true
             });
 
@@ -434,11 +434,11 @@
 
         //Create as modal and adds methods
         $result.modal({
-           //Name       Value     Type	                Default Description
-           backdrop :   "static", //boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
-           keyboard :   true,     //boolean	            true	Closes the modal when escape key is pressed
-           focus	:   true,     //boolean	            true    Puts the focus on the modal when initialized.
-           show	    :   false     //boolean	            true	Shows the modal when initialized.
+           //Name       Value                                   Type                Default Description
+           backdrop :   options.static ? "static" : true,   //  boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
+           keyboard :   true,                               //  boolean	            true	Closes the modal when escape key is pressed
+           focus	:   true,                               //  boolean	            true    Puts the focus on the modal when initialized.
+           show	    :   false                               //  boolean	            true	Shows the modal when initialized.
         });
 
         $result.on({

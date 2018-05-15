@@ -6864,14 +6864,14 @@ headers modal, popover, tables, buttons, list-items etc.
 VARIABLES
 ************************************************/
 /***********************************************
-    _jquery-scroll-container-variables.scss, 
+    _jquery-scroll-container-variables.scss,
 
     (c) 2017, FCOO
 
     https://github.com/FCOO/jquery-scroll-container
     https://github.com/FCOO
 
-    USING MODIFIED VERSIONS OF THE STYLE 
+    USING MODIFIED VERSIONS OF THE STYLE
     FROM PERFECT-SCROLLBAR
     https://github.com/noraesae/perfect-scrollbar
 
@@ -9174,7 +9174,7 @@ https://github.com/berkan52/select2-bootstrap4-theme
 
 ************************************************/
 /************************************************************
-Style for formValidation (via fcoo-formValidation)
+Style for formValidation (via fcoo-form-validation)
 ************************************************************/
 .form-group {
   line-height: 1;

@@ -1,9 +1,9 @@
 /****************************************************************************
-	fcoo-formValidation.js,
+	fcoo-form-validation.js,
 
 	(c) 2018, FCOO
 
-	https://github.com/FCOO/fcoo-formValidation
+	https://github.com/FCOO/fcoo-form-validation
 	https://github.com/FCOO
 
     This is a copy of the javascript-files used by formValidation and contains copy of

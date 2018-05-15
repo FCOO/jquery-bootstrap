@@ -26,6 +26,20 @@ TODO:
             $this.removeClass('show');
     }
 
+
+    //card_onShow_close_siblings: Close all open siblings when card is shown
+    function card_onShow_close_siblings(){
+        $(this).siblings('.show').children('.collapse').collapse('hide');
+    }
+
+    //card_onShown_close_siblings: Close all open siblings when card is shown BUT without animation
+    function card_onShown_close_siblings(){
+        var $this = $(this);
+        $this.addClass('no-transition');
+        card_onShow_close_siblings.call(this);
+        $this.removeClass('no-transition');
+    }
+
     /**********************************************************
     bsAccordion( options ) - create a Bootstrap-accordion
 
@@ -65,7 +79,6 @@ TODO:
     $.bsAccordion = function( options, insideFormGroup ){
 
         var id = 'bsAccordion'+ accordionId++;
-
         options =
             $._bsAdjustOptions( options, {}, {
                 baseClass   : 'accordion',
@@ -78,9 +91,9 @@ TODO:
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options )
                         .attr({
-                            'id'  : id,
-                            'tabindex'   : -1,
-                            'role': "tablist",
+                            'id'      : id,
+                            'tabindex': -1,
+                            'role'    : "tablist",
                             'aria-multiselectable': true
                         });
 
@@ -93,8 +106,11 @@ TODO:
                 collapseId = id + 'collapse'+index,
                 $card = $('<div/>')
                             .addClass('card')
+                            .attr({'data-user-id': opt.id || null})
                             .on( 'shown.bs.collapse',  card_onShown )
-                            .on( 'hidden.bs.collapse',  card_onHidden )
+                            .on( 'hidden.bs.collapse', card_onHidden )
+                            .on( 'show.bs.collapse',   options.multiOpen ? null : card_onShow_close_siblings )
+                            .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShow_close_siblings )
                             .appendTo( $result );
 
             //Add header
@@ -150,15 +166,27 @@ TODO:
                     .appendTo( $contentContainer );
         });
 
-
         $result.collapse(/*options*/);
-
-
         $result.asModal = bsAccordion_asModal;
-
 
         return $result;
     };
+
+
+    //Extend $.fn with method to open a card given by id (string) or index (integer)
+    $.fn.bsOpenCard = function( indexOrId ){
+        this.addClass('no-transition');
+        var $card =
+                this.children(
+                    $.type(indexOrId) == 'number' ?
+                    'div.card:nth-of-type('+(indexOrId+1)+')' :
+                    'div.card[data-user-id="' + indexOrId + '"]'
+                );
+        if ($card && $card.length)
+            $card.children('.collapse').collapse('show');
+        this.removeClass('no-transition');
+    }
+
 
     /**********************************************************
     bsModalAccordion

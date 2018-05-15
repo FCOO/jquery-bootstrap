@@ -32,7 +32,7 @@ Only supports the html-structure
         top        : 0;
         cursor     : default;
         opacity    : 1;
-        transition : all .2s;
+        transition : all .2s, visibility 0s;
         z-index    : 4;
         line-height: 1;
         color      : $title-color;
@@ -70,7 +70,7 @@ Only supports the html-structure
         &:-ms-input-placeholder,
         &::placeholder {
             opacity   : 1;
-            transition: all .2s;
+            transition : all .2s, visibility 0s;
         }
 
         //Hide placeholder when not focus. (For unknown reason they need to be in separate lines...)

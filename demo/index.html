@@ -11,7 +11,7 @@
     <link  href="bower_components.css" rel="stylesheet">
     <link  href="../src/jquery-bootstrap.css" rel="stylesheet">
     <link  href="font-awesome.css" rel="stylesheet">
-    <link  href="fcoo-formValidation.css" rel="stylesheet">
+    <link  href="fcoo-form-validation.css" rel="stylesheet">
     <link  href="demo.css" rel="stylesheet">
     <style>
         html {
@@ -52,7 +52,7 @@ position: fixed;
     <script src="../src/jquery-bootstrap-tabs.js"></script>
     <script src="../src/jquery-bootstrap-input.js"></script>
 
-<script src="fcoo-formValidation.js"></script>
+<script src="fcoo-form-validation.js"></script>
 <script src="../src/fcoo-modal-form.js"></script>
 
 	<script>
@@ -89,12 +89,18 @@ position: fixed;
                     }
                 }
             ],
-            height: 350/16 + 'rem',
-            //scroll: true
+            height: 250/16 + 'rem',
+            scroll: true
         }
 
 
     var $testModal;
+    var myData = {
+            'mySelection': false,
+//            'formId1': 'formSelect3',
+//            'formId2-1': 'formSelect3',
+    }
+
     $(function() {
         $('#test').on('click', function(e){
             $testModal = $testModal ||
@@ -102,15 +108,19 @@ position: fixed;
                 id: 'formId',
                 show: false,
                 header: 'Davs',
-                buttons: [{icon:'fa-check',text:'HJAELP'}],
-                content: {
+                buttons: [
+                    {icon:'fa-check',text:'Reset'},
+                    {icon:'fa-check',text:'Set=2'}
+                ],
+                onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
+                content: /*{
                     type: 'accordion', //'tabs',
-                    list: [
-                        {
-                            header: {icon: 'fa-home',text:{da:'Hjem', en:'Home'}},
-                            content: [
+                    list: */[
+//HER                        {
+//HER                            header: {icon: 'fa-home',text:{da:'Hjem', en:'Home'}},
+//HER                            content: [
                                 {id:'mySelection', type:'checkbox', text: 'Vælg mig'},
-                                {id:'formId2', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
+//HER                                {id:'formId2', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
 /*
                                 {id:'formId5', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
                                 {id:'formId6', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
@@ -128,35 +138,39 @@ position: fixed;
                                 {id:'formIdI', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
                                 {id:'formIdJ', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
 */
-                                {id:'formId1', type: 'select', placeholder:"Placeholder", label:'Label', items:[
+                                {
+                                    id:'formId1', type: 'select', _selectedId: 'formSelect4', placeholder:"Placeholder", label:'Label',
+                                    items:[
+                                        {id:'formSelect1', icon:'fa-home', text: 'Davs'},
+                                        {id:'formSelect2', text:'Item 2'},
+                                        {id:'formSelect3', text:'Item 3 SKIDE GODT'},
+                                        {id:'formSelect4', text:'Item 4'},
+                                        {id:'formSelect5', text:'Item 5'}
+                                    ],
+                                    showWhen: {'mySelection': false }
+
+                                },
+//HER                            ]
+//HER                        },
+//HER                        {
+//HER                            header: { icon: 'fa-globe', text:{da:'Tidszone', en:'Time zone'}},
+//HER                            content: [
+                                {id:'formId2-1', type: 'select', _selectedId: 'formSelect4', placeholder:"Placeholder", label:'Label', items:[
                                     {id:'formSelect1', icon:'fa-home', text: 'Davs'},
-                                    {id:'formSelect2', text:'Itme 2'},
-                                    {id:'formSelect3', text:'Itme 3 SKIDE GODT'},
-                                    {id:'formSelect4', text:'Itme 4'},
-                                    {id:'formSelect5', text:'Itme 5'}
-                                ]}
-                            ]
-                        },
-                        {
-                            icon: 'fa-globe',
-                            text:{da:'Tidszone', en:'Time zone'},
-                            content: [
-                                {id:'formId2-1', type: 'select', placeholder:"Placeholder", label:'Label', items:[
-                                    {id:'formSelect1', icon:'fa-home', text: 'Davs'},
-                                    {id:'formSelect2', text:'Itme 2'},
-                                    {id:'formSelect3', text:'Itme 3 SKIDE GODT'},
-                                    {id:'formSelect4', text:'Itme 4'},
-                                    {id:'formSelect5', text:'Itme 5'}
+                                    {id:'formSelect2', text:'Item 2'},
+                                    {id:'formSelect3', text:'Item 3 SKIDE GODT'},
+                                    {id:'formSelect4', text:'Item 4'},
+                                    {id:'formSelect5', text:'Item 5'}
                                 ]},
 
-                                {id:'formId3', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                            ]
-                        }
+//HER                                {id:'formId3', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
+//HER                                {id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
+//HER                            ]
+//HER                        }
                     ]
-                }
+//                }
             });
-            $testModal.show();
+            $testModal.edit( myData );
         });
 	});
 
@@ -620,6 +634,7 @@ return;
             testContent2 = testContent + testContent,
             accor_children =  [
                 {
+                    id: 'ACCOR1',
                     header: {icon: 'fa-home', text: {da:'Overskrift#1', en:'Header#1'}},
                     footer: footer,
                     children:[
@@ -648,6 +663,7 @@ return;
                     ]
                 },
                 {
+                    id: 'ACCOR2',
                     header: {icon: 'fa-home', text: {da:'Overskrift#2', en:'Header#2'}},
                     children:[
                         {header:{icon: 'fa-home', text: {da:'Overskrift#2-1', en:'Header#2-1'}}, content: 'Dette er en test 2-1<br>'+testContent },
@@ -655,6 +671,7 @@ return;
                     ]
                 },
                 {
+                    id: 'ACCOR3',
                     header: { icon: 'fa-home', text: {da:'Overskrift#3', en:'Header#3'} },
                     content: 'Dette er en test 3<br>'+testContent,
                     footer: footer
@@ -699,13 +716,13 @@ small: true,
             show: false
         }),
 
-        $accordion = $.bsAccordion({ children: accor_children, footer: 'footer' }),
+        $accordion = $.bsAccordion({ _multiOpen: true, children: accor_children, footer: 'footer' }),
         $accordion2 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
         $accordion3 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
 
 
         m = $accordion.asModal({
-            header:{icon: 'fa-home', text:{da:'FLEX Overskrift',en:'Header'}},
+            header:{icon: 'fa-home', text:{da:'FLEX AND MULTIOPEN Overskrift',en:'Header'}},
             show: false
         }),
         m_fixed = $accordion2.asModal({
@@ -723,6 +740,11 @@ small: true,
         }),
 
         multi_modals = [];
+
+//$accordion.bsOpenCard(0);
+//$accordion.bsOpenCard(1);
+//$accordion.bsOpenCard(2);
+//$accordion.bsOpenCard(3);
 
         function openModal( modalNumber ){
             if (multi_modals[modalNumber])
@@ -786,6 +808,12 @@ small: true,
 
         m.assignTo(
             $('<button>Flex-width</button>')
+                .on('click', function(){
+$accordion.bsOpenCard(0);
+$accordion.bsOpenCard(1);
+//$accordion.bsOpenCard(2);
+//$accordion.bsOpenCard(3);
+                })
                 .appendTo( $body)
         );
 
@@ -855,16 +883,18 @@ closeButton: true,
             .appendTo( $body)
             .on('click', function(){ tab_modal.show(); });
 
-
+var $test =
     $.bsTabs({
         height:'100px',scroll: true,
         //small: true,
         list: [
-            {icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'},
+            {id: 'NIELS', icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'},
             {icon: 'fa-globe', title:{da:'Tidszone', en:'Time zone'}, content: 'SECOND'},
-            {icon: 'fa-calendar', title:{da:'Dato og tid', en:'Date and time'}, content: 'THIRD',selected: true}
+            {icon: 'fa-calendar', title:{da:'Dato og tid', en:'Date and time'}, content: 'THIRD',_selected: true}
         ]
     }).appendTo($body );
+
+$test.bsSelectTab('NIELS');
 
     </script>
 

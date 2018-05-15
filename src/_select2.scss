@@ -115,6 +115,7 @@ $select2-theme-name: 'standard';
         .select2-selection__clear,
         .select2-selection--multiple .select2-selection__choice__remove {
             display: none;
+//HERbackground-color: red;
         }
     }
 
@@ -134,14 +135,16 @@ $select2-theme-name: 'standard';
 
     //Special span to hold label inside placeholder. Only displayed when no item is selected
     //Display special span and hide normal content of placeholder by setting .select2-hide-placeholder
-    .select2-selection__placeholder_label {
-        display: none;
-        color  : $input-placeholder-color;
-    }
+//REMOVED    .select2-selection__placeholder_label {
+//REMOVED        display: none;
+//REMOVED        color  : $input-placeholder-color;
+//REMOVED    }
 
     &.select2-hide-placeholder .select2-selection--single .select2-selection__placeholder {
-        > .container-icon-and-text:first-child  { display: none;         }
-        .select2-selection__placeholder_label   { display: inline-block; }
+        > .container-icon-and-text:first-child  {
+            opacity: 0;
+        }
+//REMOVED        .select2-selection__placeholder_label   { display: inline-block; }
     }
 
 

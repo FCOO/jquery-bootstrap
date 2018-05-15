@@ -323,6 +323,7 @@ Eq.
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
 | `header` | `content` or `[] of content` | `""` | See above |
+| `multiOpen` | `boolean` | `false` | If `true` the different "children" can be open at the same time |
 | `content` | `jQuery-object` / `DOM-element` / `function( $container )` | `""` | The content of the accordion-card |
 | `children` (or `list`) | `[] of accordionChildOptions` | `null` | The children cards |
 | `footer` | `content` or `[] of content` | `""` | See above |
@@ -330,11 +331,13 @@ Eq.
 ### Methods
 
     .asModal(  modalOptions ); //Return a bsModal (see below) with the accordion as content
+    .bsOpenCard( indexOrId ); //Open the card with index (integer) or id (string) == indexOrId
+
 
 <a name="tabs"></a>
 ## Tabs
 
-    $myAccordion = $.bsAccordion( options ); 
+    $myTabs = $.bsTabs( options ); 
 
 ### options
 
@@ -348,14 +351,16 @@ Eq.
     
 
 | Id | Type | Default | Description |
-| :--: | :--: | :-----: | --- |
+| :--: | :--: | :-----: | :--- |
+| `id` | `string` | `""` |` `|
 | `icon, text etc` | `content` or `[] of content` | `""` | See above |
-| `content` | | | The contents for the tab. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
+| `content` | | | The contents for the tab.<br>Can be `DOM-element`, `jQuery-element`, `function( $container )` | | |  | 
 | `footer` | `content` or `[] of content` | `""` | See above |
 
 
 ### Methods
     .asModal(  modalOptions ); //Return a bsModal (see below) with the tabs as content
+    .bsSelectTab( indexOrId ); //Select the tab with index (integer) or id (string) == indexOrId
 
 <a name="modal"></a>
 ## Modal
@@ -371,8 +376,9 @@ Eq.
 | `extraWidth` | `boolean` | `false` | Only when `flex` is set: If `true` the width of the modal will adjust to the width of the browser up to 800px |
 | `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
 | `type` | `string` | `""` | Sets `background-color` and `color` to match the [Noty](#noty) types<br> Possible value=`"alert"`, `"success"`, `"warning"`, `"error"`, `"info"`  |
-| `noVerticalPadding` | `boolean` | `false` | If `true` the the vertical padding around the contents is zero |
+| `noVerticalPadding` | `boolean` | `false` | If `true` the vertical padding around the contents is zero |
 | `show` | `boolean` |  `true` | The modal is shown after creation |
+| `static` | `boolean` |  `false` | If `true` the modal can only be closed on top-right (x) or a button|
 | `fixedContent` |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `contentContext` |  | `null` | The context for `content` (only `function`) |
