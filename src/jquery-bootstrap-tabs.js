@@ -154,6 +154,6 @@
 
         if ($tab && $tab.length)
             $tab.tab('show');
-    }
+    };
 
 }(jQuery, this, document));

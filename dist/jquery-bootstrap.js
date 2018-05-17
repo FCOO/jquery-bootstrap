@@ -26,6 +26,20 @@ TODO:
             $this.removeClass('show');
     }
 
+
+    //card_onShow_close_siblings: Close all open siblings when card is shown
+    function card_onShow_close_siblings(){
+        $(this).siblings('.show').children('.collapse').collapse('hide');
+    }
+
+    //card_onShown_close_siblings: Close all open siblings when card is shown BUT without animation
+    function card_onShown_close_siblings(){
+        var $this = $(this);
+        $this.addClass('no-transition');
+        card_onShow_close_siblings.call(this);
+        $this.removeClass('no-transition');
+    }
+
     /**********************************************************
     bsAccordion( options ) - create a Bootstrap-accordion
 
@@ -62,10 +76,9 @@ TODO:
                );
     }
 
-    $.bsAccordion = function( options ){
+    $.bsAccordion = function( options, insideFormGroup ){
 
         var id = 'bsAccordion'+ accordionId++;
-
         options =
             $._bsAdjustOptions( options, {}, {
                 baseClass   : 'accordion',
@@ -78,9 +91,9 @@ TODO:
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options )
                         .attr({
-                            'id'  : id,
-                            'tabindex'   : -1,
-                            'role': "tablist",
+                            'id'      : id,
+                            'tabindex': -1,
+                            'role'    : "tablist",
                             'aria-multiselectable': true
                         });
 
@@ -93,8 +106,11 @@ TODO:
                 collapseId = id + 'collapse'+index,
                 $card = $('<div/>')
                             .addClass('card')
+                            .attr({'data-user-id': opt.id || null})
                             .on( 'shown.bs.collapse',  card_onShown )
-                            .on( 'hidden.bs.collapse',  card_onHidden )
+                            .on( 'hidden.bs.collapse', card_onHidden )
+                            .on( 'show.bs.collapse',   options.multiOpen ? null : card_onShow_close_siblings )
+                            .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
                             .appendTo( $result );
 
             //Add header
@@ -142,13 +158,7 @@ TODO:
 
             //Add content: string, element, function or children (=accordion)
                 if (opt.content)
-                    $contentContainer._bsAppendContent( opt.content );
-//HER               if (opt.content){
-//HER                   if ($.isFunction( opt.content ))
-//HER                       opt.content( $contentContainer );
-//HER                   else
-//HER                       $contentContainer.append( opt.content );
-//HER               }
+                    $contentContainer._bsAppendContent( opt.content, insideFormGroup );
 
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))
@@ -156,15 +166,27 @@ TODO:
                     .appendTo( $contentContainer );
         });
 
-
         $result.collapse(/*options*/);
-
-
         $result.asModal = bsAccordion_asModal;
-
 
         return $result;
     };
+
+
+    //Extend $.fn with method to open a card given by id (string) or index (integer)
+    $.fn.bsOpenCard = function( indexOrId ){
+        this.addClass('no-transition');
+        var $card =
+                this.children(
+                    $.type(indexOrId) == 'number' ?
+                    'div.card:nth-of-type('+(indexOrId+1)+')' :
+                    'div.card[data-user-id="' + indexOrId + '"]'
+                );
+        if ($card && $card.length)
+            $card.children('.collapse').collapse('show');
+        this.removeClass('no-transition');
+    };
+
 
     /**********************************************************
     bsModalAccordion
@@ -226,7 +248,6 @@ TODO:
                 addOnClick    : true
             });
 
-
         var result = $('<'+ options.tagName + ' tabindex="0"/>');
 
         //Adding href that don't scroll to top to allow anchor to get focus
@@ -234,7 +255,7 @@ TODO:
             result.prop('href', 'javascript:undefined');
 
         result
-            ._bsAddName( options )
+            ._bsAddIdAndName( options )
             ._bsAddBaseClassAndSize( options );
 
         if (options.id)
@@ -420,7 +441,7 @@ TODO:
                         type   : 'checkbox',
                         checked: options.selected
                     })
-                    ._bsAddName( options )
+                    ._bsAddIdAndName( options )
                     .appendTo( $result );
 
         //Create input-element as checkbox from jquery-checkbox-radio-group
@@ -442,144 +463,6 @@ TODO:
 }(jQuery, this, document));
 
 
-;
-/****************************************************************************
-	jquery-bootstrap-form.js,
-
-	(c) 2017, FCOO
-
-	https://github.com/fcoo/jquery-bootstrap
-	https://github.com/fcoo
-
-****************************************************************************/
-
-(function ($ /*, window, document, undefined*/) {
-	"use strict";
-
-    $.extend({
-        /******************************************************
-        $.bsInput( options )
-        Create a <input type="text" class="form-control"> inside a <label>
-        ******************************************************/
-        bsInput: function( options ){
-            return  $('<input/>')
-                        ._bsAddName( options )
-                        .addClass('form-control-border form-control')
-                        .attr('type', 'text')
-                        ._wrapLabel(options);
-        },
-
-        /******************************************************
-        The default bootstrap structure used for elements in a form is
-        <div class="form-group">
-            <div class="input-group">
-                <div class="input-group-prepend">               //optional
-                    <button class="btn btn-standard">..</buton> //optional 1-N times
-                </div>                                          //optional
-
-                <label class="has-float-label">
-                    <input class="form-control form-control-with-label" type="text" placeholder="The placeholder...">
-                    <span>The label</span>
-                </label>
-
-                <div class="input-group-append">                //optional
-                    <button class="btn btn-standard">..</buton> //optional 1-N times
-                </div>                                          //optional
-            </div>
-        </div>
-        ******************************************************/
-
-        /******************************************************
-        $.bsInputGroup
-        Create <div class="input-group"> with a input-control inside as descripted above
-        ******************************************************/
-        bsInputGroup: function( options, type ){
-            return $divXXGroup('input-group', options)
-                       ._bsAppendContent(options, type || 'input');
-        },
-
-        /******************************************************
-        $.bsFormGroup
-        Create <div class="form-group"><div class="input-group"> with a input-control inside as descripted above
-        ******************************************************/
-        bsFormGroup: function( options, type ){
-            return  $.bsInputGroup(options, type)
-                        ._wrapFormGroup(options);
-        }
-
-    }); //$.extend({
-
-
-    /******************************************************
-    $divXXGroup
-    ******************************************************/
-    function $divXXGroup( groupTypeClass, options ){
-        return $('<div/>')
-                   ._bsAddBaseClassAndSize( $.extend({}, options, {
-                       baseClass   : groupTypeClass,
-                       useTouchSize: true
-                   }));
-    }
-
-
-    $.fn.extend({
-        /******************************************************
-        $.fn._wrapFormGroup( options )
-        Wrap the element inside a form-group with a small-element to hold error-message
-        Return
-        <div class="form-group [form-group-sm/xs]">
-            element
-        </div>
-        ******************************************************/
-        _wrapFormGroup: function(options){
-            return $divXXGroup('form-group', options).append( this );
-        },
-
-        /******************************************************
-        $.fn._wrapInputGroup( options )
-        Wrap the element inside a input-group
-        Return
-        <div class="input-group [input-group-sm/xs]">
-            element
-        </div>
-        ******************************************************/
-        _wrapInputGroup: function(options){
-            return $divXXGroup('input-group', options).append( this );
-        },
-
-        /******************************************************
-        _wrapLabel( options )
-        Wrap the element inside a <label> and add
-        options.placeholder and options.label
-            <label class="has-float-label">
-                <THIS placeholder="options.placeholder"/>
-                <span>options.label</span>
-            </label>
-        Return the label-element
-        ******************************************************/
-        _wrapLabel: function(options){
-            this.addClass('form-control-with-label');
-
-            var $label = $('<label/>').addClass('has-float-label');
-            $label.append( this );
-
-            if (options.placeholder)
-                this.i18n( options.placeholder, 'placeholder' );
-
-            $('<span/>')
-                ._bsAddHtml( options.label )
-                .appendTo( $label )
-                .on('mouseenter', function(){ $label.addClass('hover');    })
-                .on('mouseleave', function(){ $label.removeClass('hover'); });
-
-            return $label;
-        },
-
-
-    }); //$.fn.extend({
-
-
-}(jQuery, this, document));
 ;
 /****************************************************************************
 	jquery-bootstrap-header.js,
@@ -653,6 +536,70 @@ TODO:
         }
         return this;
     };
+
+}(jQuery, this, document));
+;
+/****************************************************************************
+	jquery-bootstrap-input.js,
+
+	(c) 2017, FCOO
+
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+****************************************************************************/
+
+(function ($ /*, window, document, undefined*/) {
+	"use strict";
+
+    $.extend({
+        /******************************************************
+        $.bsInput( options )
+        Create a <input type="text" class="form-control"> inside a <label>
+        ******************************************************/
+        bsInput: function( options ){
+            return  $('<input/>')
+                        ._bsAddIdAndName( options )
+                        .addClass('form-control-border form-control')
+                        .attr('type', 'text')
+                        ._wrapLabel(options);
+        },
+
+    }); //$.extend({
+
+
+    $.fn.extend({
+        /******************************************************
+        _wrapLabel( options )
+        Wrap the element inside a <label> and add
+        options.placeholder and options.label
+            <label class="has-float-label">
+                <THIS placeholder="options.placeholder"/>
+                <span>options.label</span>
+            </label>
+        Return the label-element
+        ******************************************************/
+        _wrapLabel: function(options){
+            this.addClass('form-control-with-label');
+
+            var $label = $('<label/>').addClass('has-float-label');
+            $label.append( this );
+
+            if (options.placeholder)
+                this.i18n( options.placeholder, 'placeholder' );
+
+            $('<span/>')
+                ._bsAddHtml( options.label )
+                .appendTo( $label )
+                .on('mouseenter', function(){ $label.addClass('hover');    })
+                .on('mouseleave', function(){ $label.removeClass('hover'); });
+
+            return $label;
+        },
+
+
+    }); //$.fn.extend({
+
 
 }(jQuery, this, document));
 ;
@@ -1016,9 +963,9 @@ TODO:
         //Adjust for options.buttons: null
         options.buttons = options.buttons || [];
 
-        //Add close-botton. Avoid by setting options.closeButton = false
+        //Add close-botton at beginning. Avoid by setting options.closeButton = false
         if (options.closeButton)
-            options.buttons.push({
+            options.buttons.unshift({
                 text: options.closeText,
                 icon: options.closeIcon,
 
@@ -1125,11 +1072,15 @@ TODO:
                     close   : { onClick: closeModalFunction }
                 },
 
+                //Size
+                useTouchSize: true,
+
                 //Content
                 scroll     : true,
                 content    : '',
 
                 //Modal-options
+                static     : false,
                 show       : true
             });
 
@@ -1162,11 +1113,11 @@ TODO:
 
         //Create as modal and adds methods
         $result.modal({
-           //Name       Value     Type	                Default Description
-           backdrop :   "static", //boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
-           keyboard :   true,     //boolean	            true	Closes the modal when escape key is pressed
-           focus	:   true,     //boolean	            true    Puts the focus on the modal when initialized.
-           show	    :   false     //boolean	            true	Shows the modal when initialized.
+           //Name       Value                                   Type                Default Description
+           backdrop :   options.static ? "static" : true,   //  boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
+           keyboard :   true,                               //  boolean	            true	Closes the modal when escape key is pressed
+           focus	:   true,                               //  boolean	            true    Puts the focus on the modal when initialized.
+           show	    :   false                               //  boolean	            true	Shows the modal when initialized.
         });
 
         $result.on({
@@ -1944,12 +1895,12 @@ TODO:
         //Create result and select-element
         var $select =
                 $('<select/>')
-                    ._bsAddName( options ),
+                    ._bsAddIdAndName( options ),
             $result =
                 $('<div class="form-control-with-label"></div>')
                     .append( $select );
 
-        options.dropdownParent = $result;
+        //Seems to be working without: options.dropdownParent = $result;
 
         //Create select2
         $select.select2( options );
@@ -1991,28 +1942,10 @@ TODO:
                 options.onChange( data.id, data.selected );
             });
 
-        //Set selected id or placeholder
-        $select
-            .val(selectedIdExists ? options.selectedId : -1)
-            .trigger('change');
-
-        //Add label as attr label to placeholder to make placeholder display label when no item is selected
-        select2.$selection.find('.select2-selection__placeholder').append(
-            $('<span/>')
-                .addClass('select2-selection__placeholder_label')
-                ._bsAddHtml( options.label )
-        );
-
 
         var $label = $result._wrapLabel({ label: options.label });
-
-        //Call onChange (if it and selectedId exists
-        if (selectedIdExists && options.onChange)
-            options.onChange( options.selectedId, true );
-
-
-        function setLabelAsPlaceholder( hasFocus ){
-            var showLabelAsPlaceholder = !hasFocus && !$select.find(':selected').length;
+        function setLabelAsPlaceholder( hasFocus, TEST ){
+            var showLabelAsPlaceholder = TEST || (!hasFocus && !$select.find(':selected').length);
             $label.toggleClass('hide-float-label', showLabelAsPlaceholder);
             $result.toggleClass('show-label-as-placeholder', showLabelAsPlaceholder);
             select2.$container.toggleClass('select2-hide-placeholder', showLabelAsPlaceholder);
@@ -2027,6 +1960,20 @@ TODO:
 
         select2.on('focus', onBlurOrFocus);
         select2.on('blur', onBlurOrFocus);
+
+        $select.on('change', function(){
+            setLabelAsPlaceholder();
+        });
+
+        //Set selected id or placeholder
+        $select
+            .val(selectedIdExists ? options.selectedId : -1)
+            .trigger('change.select2');
+
+
+        //Call onChange (if it and selectedId exists
+        if (selectedIdExists && options.onChange)
+            options.onChange( options.selectedId, true );
 
         setLabelAsPlaceholder( false );
 
@@ -2077,7 +2024,7 @@ TODO:
 
         var $result =
                 $('<div tabindex="0"/>')
-                    ._bsAddName( options )
+                    ._bsAddIdAndName( options )
                     ._bsAddBaseClassAndSize( options ),
             radioGroup =
                 $.radioGroup(
@@ -2206,18 +2153,18 @@ Add sort-functions + save col-index for sorted column
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
-
             $.each( options.columns, function( index, columnOptions ){
                 var content = rowContent[columnOptions.id],
                     $td = $('<td/>')
                             .appendTo($tr);
                 adjustThOrTd( $td, columnOptions, !options.showHeader );
 
-                //Build the content using _bsAddHtml or jquery-value-format
+                //Build the content using _bsAppendContent or jquery-value-format
                 if (columnOptions.vfFormat)
                     $td.vfValueFormat( content, columnOptions.vfFormat, columnOptions.vfOptions );
-                else
-                    $td._bsAddHtml( content );
+                else {
+                    $td._bsAppendContent( content );
+                }
             });
 
             //Add rows to radioGroup
@@ -2434,7 +2381,7 @@ Add sort-functions + save col-index for sorted column
 </div>
     ******************************************************/
     var tabsId = 0;
-    $.bsTabs = function( options ){
+    $.bsTabs = function( options, insideFormGroup ){
         var $result = $('<div/>'),
             id = 'bsTabs'+ tabsId++,
 
@@ -2479,6 +2426,7 @@ Add sort-functions + save col-index for sorted column
                             'id'           : tabId,
                             'role'         : 'tab',
                             'data-toggle'  : "tab",
+                            'data-user-id' : opt.id || null,
                             'href'         : '#'+contentId,
                             'aria-controls': contentId
                         })
@@ -2518,7 +2466,7 @@ Add sort-functions + save col-index for sorted column
 
             //Add content: string, element, function, setup-json-object, or children (=accordion)
             if (opt.content)
-                $content._bsAppendContent( opt.content );
+                $content._bsAppendContent( opt.content, insideFormGroup );
 
         });
         $result.asModal = bsTabs_asModal;
@@ -2536,8 +2484,8 @@ Add sort-functions + save col-index for sorted column
                         noVerticalPadding  : true,
                         noHorizontalPadding: true,
                         scroll             : false,
-                        content     : this._$contents,
-                        fixedContent: this._$tabs,
+                        content            : this._$contents,
+                        fixedContent       : this._$tabs,
                     }, options)
                );
 
@@ -2548,9 +2496,19 @@ Add sort-functions + save col-index for sorted column
         });
 
         return $result;
-
     }
 
+
+    //Extend $.fn with method to select a tab given by id (string) or index (integer)
+    $.fn.bsSelectTab = function( indexOrId ){
+        var $tab =
+            $.type(indexOrId) == 'number' ?
+            this.find('.nav-tabs a.nav-item:nth-of-type('+(indexOrId+1)+')') :
+            this.find('.nav-tabs a.nav-item[data-user-id="' + indexOrId + '"]');
+
+        if ($tab && $tab.length)
+            $tab.tab('show');
+    };
 
 }(jQuery, this, document));
 ;
@@ -2588,6 +2546,22 @@ Add sort-functions + save col-index for sorted column
 
     $.EMPTY_TEXT = '___***EMPTY***___';
 
+
+
+
+    /******************************************************
+    $divXXGroup
+    ******************************************************/
+    function $divXXGroup( groupTypeClass, options ){
+        return $('<div/>')
+                   ._bsAddBaseClassAndSize( $.extend({}, options, {
+                       baseClass   : groupTypeClass,
+                       useTouchSize: true
+                   }));
+    }
+
+
+
     //$._bsAdjustIconAndText: Adjust options to fit with {icon"...", text:{da:"", en:".."}
     // options == {da:"..", en:".."} => return {text: options}
     // options == array of ?? => array of $._bsAdjustIconAndText( ??? )
@@ -2622,7 +2596,7 @@ Add sort-functions + save col-index for sorted column
         //adjustContentOptions: Adjust options for the content of elements
         function adjustContentAndContextOptions( options, context ){
             options.icon     = options.icon || options.headerIcon || options.titleIcon;
-            options.text     = options.text || options.header || options.title || options.name;
+            options.text     = options.text || options.header || options.title;
 
             options.iconClass = options.iconClass       || options.iconClassName       ||
                                 options.headerIconClass || options.headerIconClassName ||
@@ -2695,8 +2669,9 @@ Add sort-functions + save col-index for sorted column
 
     $.fn.extend({
 
-        //_bsAddName
-        _bsAddName: function( options ){
+        //_bsAddIdAndName
+        _bsAddIdAndName: function( options ){
+            this.attr('id', options.id || '');
             this.attr('name', options.name || options.id || '');
             return this;
         },
@@ -2929,60 +2904,97 @@ Add sort-functions + save col-index for sorted column
         },
 
         /****************************************************************************************
-        _bsAddContent( options[, defaultType] )
+        _bsAppendContent( options, insideFormGroup )
         Create and append any content to this.
         options can be $-element, function, json-object or array of same
+
+        The default bootstrap structure used for elements in a form is
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">               //optional
+                    <button class="btn btn-standard">..</buton> //optional 1-N times
+                </div>                                          //optional
+
+                <label class="has-float-label">
+                    <input class="form-control form-control-with-label" type="text" placeholder="The placeholder...">
+                    <span>The label</span>
+                </label>
+
+                <div class="input-group-append">                //optional
+                    <button class="btn btn-standard">..</buton> //optional 1-N times
+                </div>                                          //optional
+            </div>
+        </div>
+        if insideFormGroup == true OR options.
         ****************************************************************************************/
-        _bsAppendContent: function( options, defaultType ){
-            var _this = this;
+        _bsAppendContent: function( options, insideFormGroup ){
 
             if (!options)
                 return this;
 
             //Array of $-element, function etc
             if ($.isArray( options )){
+                var _this = this;
                 $.each(options, function( index, options){
-                    _this._bsAppendContent(options);
+                    _this._bsAppendContent(options, insideFormGroup);
                 });
                 return this;
             }
 
             //Function
             if ($.isFunction( options )){
-                options( this );
+                options( this, insideFormGroup );
                 return this;
             }
 
             //json-object with options to create bs-elements
             if ($.isPlainObject(options)){
-                options.type = options.type || defaultType || 'input';
-                var buildFunc;
-                switch (options.type.toLowerCase()){
-                    case 'input'        :   buildFunc = $.bsInput;          break;
-                    case 'button'       :   buildFunc = $.bsButton;         break;
-                    case 'select'       :   buildFunc = $.bsSelectBox;      break;
-                    case 'selectlist'   :   buildFunc = $.bsSelectList;     break;
-                    case 'checkbox'     :   buildFunc = $.bsCheckbox;       break;
-                    case 'tabs'         :   buildFunc = $.bsTabs;           break;
-                    case 'table'        :   buildFunc = $.bsTable;          break;
-                    case 'XX'           :   buildFunc = null;               break;
+                var buildFunc = $.fn._bsAddHtml,
+                    neverInsideFormGroup = false;
+                if (options.type)
+                    switch (options.type.toLowerCase()){
+                        case 'input'        :   buildFunc = $.bsInput;          break;
+                        case 'button'       :   buildFunc = $.bsButton;         break;
+                        case 'select'       :   buildFunc = $.bsSelectBox;      break;
+                        case 'selectlist'   :   buildFunc = $.bsSelectList;     break;
+                        case 'checkbox'     :   buildFunc = $.bsCheckbox;       break;
+                        case 'tabs'         :   buildFunc = $.bsTabs;           neverInsideFormGroup = true; break;
+                        case 'table'        :   buildFunc = $.bsTable;          neverInsideFormGroup = true; break;
+                        case 'accordion'    :   buildFunc = $.bsAccordion;      neverInsideFormGroup = true; break;
+//                        case 'xx'           :   buildFunc = $.bsXx;               break;
+                    }
 
-                    default             :   buildFunc = $._bsAddHtml;       break;
+
+                //Set the parent-element where to append to created element(s)
+                var $parent = this,
+                    insideInputGroup = false;
+                if (insideFormGroup && !neverInsideFormGroup){
+                    //Create outer form-group
+                    insideInputGroup = true;
+                    $parent = $divXXGroup('form-group', options).appendTo( $parent );
                 }
-                buildFunc.apply( this, arguments ).appendTo( this );
+
+                if (insideInputGroup || options.prepend || options.before || options.append || options.after){
+                    //Create element inside input-group
+                    $parent = $divXXGroup('input-group', options).appendTo( $parent );
+
+                }
+
+                //Build the element inside $parent
+                buildFunc.apply( this, arguments ).appendTo( $parent );
 
                 var prepend = options.prepend || options.before;
                 if (prepend)
                     $('<div/>')
                         .addClass('input-group-prepend')
                         ._bsAppendContent( prepend )
-                        .prependTo(this);
+                        .prependTo( $parent /*this*/);
                 var append = options.append || options.after;
                 if (append)
                     $('<div/>')
                         .addClass('input-group-append')
                         ._bsAppendContent( append )
-                        .appendTo(this);
+                        .appendTo( $parent /*this*/);
 
 
                 return this;

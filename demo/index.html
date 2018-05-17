@@ -11,14 +11,14 @@
     <link  href="bower_components.css" rel="stylesheet">
     <link  href="../src/jquery-bootstrap.css" rel="stylesheet">
     <link  href="font-awesome.css" rel="stylesheet">
-    <link  href="fcoo-form-validation.css" rel="stylesheet">
+    <!-- <link  href="fcoo-form-validation.css" rel="stylesheet"> -->
     <link  href="demo.css" rel="stylesheet">
     <style>
-        html {
+        _html {
             height  : 100%;
             overflow: hidden;
         }
-        body {
+        _body {
             width: 100%;
             height: 100%;
             width: -webkit-calc(100% - 0px);
@@ -33,7 +33,6 @@ position: fixed;
 </head>
 
 <body style="padding: 20px">
-<button id="test">FORM</button>
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
@@ -51,9 +50,6 @@ position: fixed;
     <script src="../src/jquery-bootstrap-noty.js"></script>
     <script src="../src/jquery-bootstrap-tabs.js"></script>
     <script src="../src/jquery-bootstrap-input.js"></script>
-
-<script src="fcoo-form-validation.js"></script>
-<script src="../src/fcoo-modal-form.js"></script>
 
 	<script>
     var tabsOptions = {
@@ -92,87 +88,6 @@ position: fixed;
             height: 250/16 + 'rem',
             scroll: true
         }
-
-
-    var $testModal;
-    var myData = {
-            'mySelection': false,
-//            'formId1': 'formSelect3',
-//            'formId2-1': 'formSelect3',
-    }
-
-    $(function() {
-        $('#test').on('click', function(e){
-            $testModal = $testModal ||
-            $.bsModalForm({
-                id: 'formId',
-                show: false,
-                header: 'Davs',
-                buttons: [
-                    {icon:'fa-check',text:'Reset'},
-                    {icon:'fa-check',text:'Set=2'}
-                ],
-                onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
-                content: /*{
-                    type: 'accordion', //'tabs',
-                    list: */[
-//HER                        {
-//HER                            header: {icon: 'fa-home',text:{da:'Hjem', en:'Home'}},
-//HER                            content: [
-                                {id:'mySelection', type:'checkbox', text: 'Vælg mig'},
-//HER                                {id:'formId2', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-/*
-                                {id:'formId5', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formId6', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formId7', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formId8', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formId9', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formIdA', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formIdB', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formIdC', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formIdD', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formIdE', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formIdF', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formIdG', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formIdH', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formIdI', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-                                {id:'formIdJ', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-*/
-                                {
-                                    id:'formId1', type: 'select', _selectedId: 'formSelect4', placeholder:"Placeholder", label:'Label',
-                                    items:[
-                                        {id:'formSelect1', icon:'fa-home', text: 'Davs'},
-                                        {id:'formSelect2', text:'Item 2'},
-                                        {id:'formSelect3', text:'Item 3 SKIDE GODT'},
-                                        {id:'formSelect4', text:'Item 4'},
-                                        {id:'formSelect5', text:'Item 5'}
-                                    ],
-                                    showWhen: {'mySelection': false }
-
-                                },
-//HER                            ]
-//HER                        },
-//HER                        {
-//HER                            header: { icon: 'fa-globe', text:{da:'Tidszone', en:'Time zone'}},
-//HER                            content: [
-                                {id:'formId2-1', type: 'select', _selectedId: 'formSelect4', placeholder:"Placeholder", label:'Label', items:[
-                                    {id:'formSelect1', icon:'fa-home', text: 'Davs'},
-                                    {id:'formSelect2', text:'Item 2'},
-                                    {id:'formSelect3', text:'Item 3 SKIDE GODT'},
-                                    {id:'formSelect4', text:'Item 4'},
-                                    {id:'formSelect5', text:'Item 5'}
-                                ]},
-
-//HER                                {id:'formId3', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-//HER                                {id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'} },
-//HER                            ]
-//HER                        }
-                    ]
-//                }
-            });
-            $testModal.edit( myData );
-        });
-	});
 
 /*
 keyboardJS.bind('ctrl',

@@ -110,7 +110,7 @@ TODO:
                             .on( 'shown.bs.collapse',  card_onShown )
                             .on( 'hidden.bs.collapse', card_onHidden )
                             .on( 'show.bs.collapse',   options.multiOpen ? null : card_onShow_close_siblings )
-                            .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShow_close_siblings )
+                            .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
                             .appendTo( $result );
 
             //Add header
@@ -185,7 +185,7 @@ TODO:
         if ($card && $card.length)
             $card.children('.collapse').collapse('show');
         this.removeClass('no-transition');
-    }
+    };
 
 
     /**********************************************************
