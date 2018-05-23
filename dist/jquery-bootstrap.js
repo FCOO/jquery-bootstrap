@@ -2527,7 +2527,7 @@ Add sort-functions + save col-index for sorted column
 
     /*
 
-    Almost all elements comes in two sizes: normal and small set by options.small: false/true
+    Almost all elements comes in two sizes: normal and small set by options.small: ?lse/true
 
     In jquery-bootstrap.scss sizing class-postfix -xs is added (from Bootstrap 3)
 
@@ -2546,7 +2546,8 @@ Add sort-functions + save col-index for sorted column
 
     $.EMPTY_TEXT = '___***EMPTY***___';
 
-
+    //FONTAWESOME_PREFIX = the classname-prefix used when non is given. Fontawesome 4.X: 'fa', Fontawesome 5: Free: 'fas' Pro: 'far' or 'fal'
+    $.FONTAWESOME_PREFIX = $.FONTAWESOME_PREFIX || 'fa';
 
 
     /******************************************************
@@ -2762,7 +2763,7 @@ Add sort-functions + save col-index for sorted column
         Internal methods to add innerHTML to button or other element
         options: array of textOptions or textOptions
         textOptions: {
-            icon     : String or array of String
+            icon     : String / {class, data, attr} or array of String / {className, data, attr}
             text     : String or array of String
             vfFormat : String or array of String
             vfValue  : any type or array of any-type
@@ -2779,36 +2780,75 @@ Add sort-functions + save col-index for sorted column
         _bsAddHtml:  function( options, checkForContent, ignoreLink ){
             //**************************************************
             function create$element( tagName, link, title, textStyle, className ){
-                var $text;
+                var $result;
                 if (link){
-                    $text = $('<a/>');
+                    $result = $('<a/>');
                     if ($.isFunction( link ))
-                        $text
+                        $result
                             .prop('href', 'javascript:undefined')
                             .on('click', link );
                     else
-                        $text
+                        $result
                             .i18n(link, 'href')
                             .prop('target', '_blank');
                 }
                 else
-                    $text = $('<'+tagName+'/>');
+                    $result = $('<'+tagName+'/>');
 
                 if (title)
-                    $text.i18n(title, 'title');
+                    $result.i18n(title, 'title');
 
-                $text._bsAddStyleClasses( textStyle || '' );
+                $result._bsAddStyleClasses( textStyle || '' );
 
                 if (className)
-                    $text.addClass( className );
+                    $result.addClass( className );
 
-                return $text;
+                return $result;
             }
+            //**************************************************
+            function create$icon( options, $appendTo, title, className ){
+                if ($.type(options) == 'string')
+                    options = {class: options};
+
+                if ($.isArray( options)){
+                    $.each( options, function( index, opt ){
+                        create$icon ( opt, $appendTo, title, className );
+                    });
+                    return;
+                }
+
+                options.tagName = options.tagName || 'i';
+                var allClassNames = options.icon || options.class || '';
+
+                //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
+                if (allClassNames.search(/(fa.?\s)|(\sfa.?(\s|$))/g) == -1)
+                    allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
+
+                allClassNames = allClassNames + (className ? ' '+className : '');
+
+                var $icon = create$element( options.tagName, null, title, null, allClassNames ),
+                    attr = options.attr || {};
+                if (options.data){
+                    $icon.data(options.data);
+                    $.each(options.data, function(id, value){
+                        attr['data-'+id] = value;
+                    });
+                }
+
+                $icon.attr(attr);
+
+                var list  = options.list || options.children;
+                if (list)
+                    create$icon(list, $icon); //TODO: Skal title og className også med i children? , title, className );
+                $icon.appendTo( $appendTo );
+            }
+
             //**************************************************
             function getArray( input ){
                 return input ? $.isArray( input ) ? input : [input] : [];
             }
             //**************************************************
+
 
             if (checkForContent && (options.content != null))
                 return this._bsAddHtml( options.content );
@@ -2851,13 +2891,7 @@ Add sort-functions + save col-index for sorted column
 
             //Add icons (optional)
             $.each( iconArray, function( index, icon ){
-                var $icon = $('<i/>').addClass('fa '+icon);
-                if (index < iconClassArray.length)
-                    $icon.addClass( iconClassArray[index] );
-                //$icon.appendTo( _this );
-
-                create$element( 'i', null, titleArray[ index ], null, 'fa '+icon + ' ' + (iconClassArray[index] || '') )
-                    .appendTo( _this );
+                create$icon ( icon, _this, titleArray[ index ], iconClassArray[index] );
             });
 
             //Add color (optional)

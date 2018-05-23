@@ -44,7 +44,12 @@ There are some common options used for (almost) all types of elements
 `[] of {text, ..., title }`
 
 #### `icon`
-Can be a standard class-name for a icon-font packages (eg. Fontawesome)
+Can be a standard class-name for a icon-font packages (eg. Fontawesome) or a json-object used to build Fonawesome icons:
+
+    {icon:"fa-home", data:{..}, attr:{..}, list:[
+        {icon:"..",...},
+        {icon:"..",...},
+    ]}
 
 #### `text`
 - String - `{ text: "This is just a test" }`
