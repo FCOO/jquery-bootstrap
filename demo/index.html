@@ -191,7 +191,7 @@ $('body').on('wheel', function(e){
         $.bsButton({text: 'Normal', icon: 'fa fa-home'}).appendTo( $body );
         $.bsButton({text: 'Primary', icon: 'fa-home', primary: true}).appendTo( $body );
         $.bsButton({text: 'Small', icon: 'fa-home', small:true}).appendTo( $body );
-        $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'fa-check-square-o'}).appendTo( $body );
+        $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'far fa-check-square'}).appendTo( $body );
         $.bsButton({icon: 'fa-home', square: true}).appendTo( $body );
         $.bsButton({
             icon: 'fa-envelope',
@@ -395,7 +395,7 @@ return;
         $.bsCheckboxButton({
 //            text: [{da:'Uvalgt', en:'Unselected'}, {da:'Valgt', en:'Selected'}],
             text: {da:'Vælg mig', en:'Select me'},
-            icon: ['fa-square-o', 'fa-check-square-o'],
+            icon: ['far fa-square', 'far fa-check-square'],
             selected: true,
             onChange: function(id, selected){
                 console.log('3: bsCheckboxButton',id,selected);

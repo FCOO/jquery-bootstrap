@@ -263,17 +263,9 @@
 
             if (closeWithButton)
                 //Add same close-icon as for modal-windows
-                $('<div/>')
-                    ._bsAddBaseClassAndSize( {
-                        baseClass   :'header-icon-container',
-                        useTouchSize: true
-                    })
-                    .appendTo($barDom)
-                    .append(
-                        $('<i/>')
-                            .addClass("header-icon header-icon-close")
-                            .on('click', closeFunc )
-                    );
+                $barDom._bsHeaderAndIcons({
+                    icons: { close: { onClick: closeFunc }}
+                });
         };
 
 

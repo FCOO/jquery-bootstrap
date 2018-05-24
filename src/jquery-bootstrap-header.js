@@ -11,29 +11,57 @@
 (function ($ /*, window, document, undefined*/) {
 	"use strict";
 
+    /*
+    A header can contain any of the following icons:
+    back (<)
+    forward (>)
+    extend (^)
+    diminish
+    pin
+    pinned
+
+    close (x)
+
+    */
+
+    //$.bsHeaderIcons = class-names for the different icons on the header
+    $.bsHeaderIcons = {
+        back    : 'fa-chevron-left',
+        forward : 'fa-chevron-right',
+        extend  : 'fa-chevron-up',
+        diminish: 'fa-chevron-down',
+        pin     : 'fa-thumbtack',
+        pinned  : 'fa-thumbtack',
+        close   : 'fas fa-times',
+    };
+
+    //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
+    var mandatoryHeaderIconClassAndTitle = {
+        close: {class:'header-icon-close', title: {da:'Luk', en:'Close'}},
+    };
+
     /******************************************************
     _bsHeaderAndIcons(options)
     Create the text and icon content of a header inside this
     options: {
         headerClassName: [string]
         icons: {
-            close   : { className: [string], altEvents: [string], onClick: [function] },
-            extend  : { className: [string], altEvents: [string], onClick: [function] },
-            diminish: { className: [string], altEvents: [string], onClick: [function] },
+            back, forward, ..., close: { title: [string], disabled: [boolean], className: [string], altEvents: [string], onClick: [function] },
         }
     }
 
     ******************************************************/
+
+    function checkDisabled( event ){
+        var $target = $(event.target);
+        if ($target.hasClass('disabled') || $target.prop('disabled'))
+            event.stopImmediatePropagation();
+    }
+
     $.fn._bsHeaderAndIcons = function(options){
         var $this = this;
 
-        options = $.extend( true,
-            {
-                headerClassName: '',
-                icons          : {}
-            },
-            options
-        );
+        options = $.extend( true, {headerClassName: '', icons: {} }, options );
 
         this
             .addClass( options.headerClassName )
@@ -51,16 +79,21 @@
                         .appendTo( this );
 
             //Add icons
-            $.each( ['diminish', 'extend', 'close'], function( index, id ){
-                var iconOptions = options.icons[id];
+            $.each( ['back', 'forward', 'pin', 'extend', 'diminish', 'close'], function( index, id ){
+                var iconOptions = options.icons[id],
+                    classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
                 if (iconOptions && iconOptions.onClick){
-                    $('<i/>')
-                        .addClass('header-icon header-icon-' + id )
-                        .addClass( iconOptions.className || '')
-                        .on('click', iconOptions.onClick)
-                        .attr( iconOptions.attr || {})
-                        .data( iconOptions.data || {})
-                        .appendTo($iconContainer);
+
+                    $._bsCreateIcon(
+                        $.bsHeaderIcons[id] + ' header-icon ' + (classAndTitle.class || ''),
+                        $iconContainer,
+                        iconOptions.title || classAndTitle.title || '',
+                        iconOptions.className
+                    )
+                    .toggleClass('disabled', !!iconOptions.disabled)
+                    .attr('data-header-icon-id', id)
+                    .on('click', checkDisabled)
+                    .on('click', iconOptions.onClick);
 
                     //Add alternative (swipe) event
                     if (iconOptions.altEvents)

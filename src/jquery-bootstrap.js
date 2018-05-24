@@ -154,6 +154,80 @@
         return sizeClassPostfix && options.baseClass ? options.baseClass + '-' + sizeClassPostfix : '';
     };
 
+
+    /****************************************************************************************
+    $._bsCreateElement = internal method to create $-element
+    ****************************************************************************************/
+    $._bsCreateElement = function( tagName, link, title, textStyle, className ){
+        var $result;
+        if (link){
+            $result = $('<a/>');
+            if ($.isFunction( link ))
+                $result
+                    .prop('href', 'javascript:undefined')
+                    .on('click', link );
+            else
+                $result
+                    .i18n(link, 'href')
+                    .prop('target', '_blank');
+        }
+        else
+            $result = $('<'+tagName+'/>');
+
+        if (title)
+            $result.i18n(title, 'title');
+
+        $result._bsAddStyleClasses( textStyle || '' );
+
+        if (className)
+            $result.addClass( className );
+
+        return $result;
+    };
+
+    /****************************************************************************************
+    $._bsCreateIcon = internal method to create $-icon
+    ****************************************************************************************/
+    $._bsCreateIcon = function( options, $appendTo, title, className ){
+        if ($.type(options) == 'string')
+            options = {class: options};
+
+        if ($.isArray( options)){
+            $.each( options, function( index, opt ){
+                $._bsCreateIcon( opt, $appendTo, title, className );
+            });
+            return;
+        }
+
+        options.tagName = options.tagName || 'i';
+        var allClassNames = options.icon || options.class || '';
+
+        //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
+        if (allClassNames.search(/(fa.?\s)|(\sfa.?(\s|$))/g) == -1)
+            allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
+
+        allClassNames = allClassNames + (className ? ' '+className : '');
+
+        var $icon = $._bsCreateElement( options.tagName, null, title, null, allClassNames ),
+            attr = options.attr || {};
+        if (options.data){
+            $icon.data(options.data);
+            $.each(options.data, function(id, value){
+                attr['data-'+id] = value;
+            });
+        }
+
+        $icon.attr(attr);
+
+        var list  = options.list || options.children;
+        if (list)
+            $._bsCreateIcon(list, $icon);
+        $icon.appendTo( $appendTo );
+        return $icon;
+    };
+
+
+
     $.fn.extend({
 
         //_bsAddIdAndName
@@ -265,76 +339,10 @@
 
         _bsAddHtml:  function( options, checkForContent, ignoreLink ){
             //**************************************************
-            function create$element( tagName, link, title, textStyle, className ){
-                var $result;
-                if (link){
-                    $result = $('<a/>');
-                    if ($.isFunction( link ))
-                        $result
-                            .prop('href', 'javascript:undefined')
-                            .on('click', link );
-                    else
-                        $result
-                            .i18n(link, 'href')
-                            .prop('target', '_blank');
-                }
-                else
-                    $result = $('<'+tagName+'/>');
-
-                if (title)
-                    $result.i18n(title, 'title');
-
-                $result._bsAddStyleClasses( textStyle || '' );
-
-                if (className)
-                    $result.addClass( className );
-
-                return $result;
-            }
-            //**************************************************
-            function create$icon( options, $appendTo, title, className ){
-                if ($.type(options) == 'string')
-                    options = {class: options};
-
-                if ($.isArray( options)){
-                    $.each( options, function( index, opt ){
-                        create$icon ( opt, $appendTo, title, className );
-                    });
-                    return;
-                }
-
-                options.tagName = options.tagName || 'i';
-                var allClassNames = options.icon || options.class || '';
-
-                //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
-                if (allClassNames.search(/(fa.?\s)|(\sfa.?(\s|$))/g) == -1)
-                    allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
-
-                allClassNames = allClassNames + (className ? ' '+className : '');
-
-                var $icon = create$element( options.tagName, null, title, null, allClassNames ),
-                    attr = options.attr || {};
-                if (options.data){
-                    $icon.data(options.data);
-                    $.each(options.data, function(id, value){
-                        attr['data-'+id] = value;
-                    });
-                }
-
-                $icon.attr(attr);
-
-                var list  = options.list || options.children;
-                if (list)
-                    create$icon(list, $icon); //TODO: Skal title og className også med i children? , title, className );
-                $icon.appendTo( $appendTo );
-            }
-
-            //**************************************************
             function getArray( input ){
                 return input ? $.isArray( input ) ? input : [input] : [];
             }
             //**************************************************
-
 
             if (checkForContent && (options.content != null))
                 return this._bsAddHtml( options.content );
@@ -377,7 +385,7 @@
 
             //Add icons (optional)
             $.each( iconArray, function( index, icon ){
-                create$icon ( icon, _this, titleArray[ index ], iconClassArray[index] );
+                $._bsCreateIcon( icon, _this, titleArray[ index ], iconClassArray[index] );
             });
 
             //Add color (optional)
@@ -386,7 +394,7 @@
 
             //Add text
             $.each( textArray, function( index, text ){
-                var $text = create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
+                var $text = $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
                 if ($.isFunction( text ))
                     text( $text );
                 else
@@ -408,7 +416,7 @@
 
             //Add value-format content
             $.each( vfValueArray, function( index, vfValue ){
-                create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
+                $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
                     .vfValueFormat( vfValue || '', vfFormatArray[index], vfOptionsArray[index] )
                     .appendTo( _this );
             });

@@ -155,7 +155,22 @@
                 'data-toggle': 'modal',
                 'data-target': '#'+this.attr('id')
             });
+        },
+
+        getHeaderIcon: function(id){
+            return this.find('[data-header-icon-id="'+id+'"]');
+        },
+
+        setHeaderIconEnabled: function(id, disabled){
+            this.getHeaderIcon(id).toggleClass('disabled', !!disabled);
+        },
+
+        setHeaderIconDisabled: function(id){
+            this.setHeaderIconEnabled(id, true);
         }
+
+
+
     };
 
     /******************************************************

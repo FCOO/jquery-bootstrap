@@ -15,10 +15,11 @@
     bsCheckbox( options ) - create a Bootstrap checkbox
     **********************************************************/
     $.bsCheckbox = function( options ){
+        options.type = options.type || 'checkbox';
         options =
             $._bsAdjustOptions( options, {
                 useTouchSize: true,
-                baseClass   : options.type || 'checkbox'
+                baseClass   : options.type
             });
 
         //Create outer div
@@ -45,6 +46,11 @@
         var $label = $('<label/>')
                         .prop('for', id )
                         .appendTo( $result );
+
+        //Add <i> with check-icon if it is a checkbox
+        if (options.type == 'checkbox')
+            $('<i class="fas fa-check"/>').appendTo( $label );
+
         if (options.text)
             $('<span/>').i18n( options.text ).appendTo( $label );
 

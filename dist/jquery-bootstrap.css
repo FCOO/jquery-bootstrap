@@ -6924,20 +6924,6 @@ MARGIN-BOTTOM
 All elements in modal-windows get same margin-bottom
 ************************************************************/
 /***********************************************
-ICON FONTS
-************************************************/
-/************************************************************
-ICON-FONTS
-
-Special subset of different icon-fonts
-************************************************************/
-@font-face {
-  font-family: 'modal-header-icons';
-  src: url("fonts/modal-header-icons.woff?mhcpxw") format("woff");
-  font-weight: normal;
-  font-style: normal; }
-
-/***********************************************
 MIXINS
 ************************************************/
 /************************************************************
@@ -7410,7 +7396,7 @@ Style for header text and icons
 ************************************************************/
 /****************************************************
 Icons for modal header inside a container
-<i class="header-icon header-icon-XX [hidden][disabled]"/>
+<i class="header-icon fa-XX [hidden][disabled]"/>
 ****************************************************/
 .header-icon-container {
   display: flex;
@@ -7422,16 +7408,6 @@ Icons for modal header inside a container
   .header-icon-container.header-icon-container-sm {
     font-size: 1.1em; }
   .header-icon-container .header-icon {
-    font-family: 'modal-header-icons' !important;
-    speak: none;
-    font-style: normal;
-    font-size: inherit;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     color: #000;
     text-shadow: 0 1px 0 #fff;
     opacity: .5;
@@ -7446,24 +7422,6 @@ Icons for modal header inside a container
       opacity: .75; }
     .header-icon-container .header-icon:not(.disabled):hover:active {
       opacity: .9; }
-    .header-icon-container .header-icon.header-icon-extend:before {
-      content: '\ea41'; }
-    .header-icon-container .header-icon.header-icon-diminish:before {
-      content: '\ea43'; }
-    .header-icon-container .header-icon.header-icon-back:before {
-      content: '\ea44'; }
-    .header-icon-container .header-icon.header-icon-forward:before {
-      content: '\ea42'; }
-    .header-icon-container .header-icon.header-icon-info:before {
-      content: '\ea0c'; }
-    .header-icon-container .header-icon.header-icon-help:before {
-      content: '\ea09'; }
-    .header-icon-container .header-icon.header-icon-pin:before {
-      content: '\e946'; }
-    .header-icon-container .header-icon.header-icon-close:before {
-      content: '\ed65'; }
-    .header-icon-container .header-icon.header-icon-close:not(.disabled):hover:before {
-      content: "\ed66"; }
     .header-icon-container .header-icon.header-icon-close:not(.disabled):hover:hover, .header-icon-container .header-icon.header-icon-close:not(.disabled):hover:focus {
       color: #dc3545;
       opacity: 1; }
@@ -7578,22 +7536,21 @@ div.checkbox, div.radio {
         cursor: not-allowed !important; }
 
 /* Special styles for div.checkbox */
-div.checkbox input[type="checkbox"] + label::after,
-div.checkbox input[type="radio"] + label::after {
+div.checkbox input[type="checkbox"] + label i,
+div.checkbox input[type="radio"] + label i {
   line-height: 1;
-  font-family: "FontAwesome";
   text-align: center;
-  content: '';
-  color: #495057; }
+  color: transparent;
+  position: absolute;
+  left: 0px; }
 
-div.checkbox input[type="checkbox"]:not(:checked):not(:disabled):not(:focus):hover + label::after,
-div.checkbox input[type="radio"]:not(:checked):not(:disabled):not(:focus):hover + label::after {
-  content: "";
+div.checkbox input[type="checkbox"]:not(:checked):not(:disabled):not(:focus):hover + label i,
+div.checkbox input[type="radio"]:not(:checked):not(:disabled):not(:focus):hover + label i {
   color: #cccccc; }
 
-div.checkbox input[type="checkbox"]:checked + label::after,
-div.checkbox input[type="radio"]:checked + label::after {
-  content: ""; }
+div.checkbox input[type="checkbox"]:checked + label i,
+div.checkbox input[type="radio"]:checked + label i {
+  color: #fff; }
 
 /* Special styles for div.radio */
 div.radio input[type="checkbox"] + label::before,
@@ -7641,6 +7598,14 @@ div.checkbox, div.radio {
       margin-top: 0.15rem;
       width: 1.2rem;
       height: 1.2rem; }
+    div.checkbox input[type="checkbox"] + label i,
+    div.checkbox input[type="radio"] + label i, div.radio input[type="checkbox"] + label i,
+    div.radio input[type="radio"] + label i {
+      font-size: 0.8rem;
+      width: 0.8rem;
+      height: 0.8rem;
+      margin-top: 0.35rem;
+      margin-left: 0.2rem; }
 
 /* Special styles for div.checkbox */
 div.checkbox input[type="checkbox"] + label::before,
@@ -7679,6 +7644,14 @@ div.checkbox-sm, div.radio-sm {
       margin-top: 0.13125rem;
       width: 1.05rem;
       height: 1.05rem; }
+    div.checkbox-sm input[type="checkbox"] + label i,
+    div.checkbox-sm input[type="radio"] + label i, div.radio-sm input[type="checkbox"] + label i,
+    div.radio-sm input[type="radio"] + label i {
+      font-size: 0.7rem;
+      width: 0.7rem;
+      height: 0.7rem;
+      margin-top: 0.30625rem;
+      margin-left: 0.175rem; }
 
 /* Special styles for div.checkbox */
 div.checkbox-sm input[type="checkbox"] + label::before,

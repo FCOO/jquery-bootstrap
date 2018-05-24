@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "1.20.0",
+  "version": "1.21.0",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "authors": [
     "NielsHolt"
@@ -28,8 +28,7 @@
     "jquery-hammer.js": "fcoo/jquery-hammer.js#^0.1.0",
     "noty": "^3.1.3",
     "animate.css": "^3.5.2",
-    "select2": "^4.0.5",
-    "keyboardjs": "RobertWHurst/KeyboardJS#^2.4.1"
+    "select2": "^4.0.5"
   },
   "devDependencies": {
     "bourbon": "latest",
@@ -37,7 +36,8 @@
     "mathsass": "latest",
     "modernizr-scss": "FCOO/modernizr-scss#^2.1.2",
     "bootstrap-float-label": "tonystar/bootstrap-float-label#^4.0.2",
-    "select2-bootstrap4-theme": "^1.0.0"
+    "select2-bootstrap4-theme": "^1.0.0",
+    "fontawesome": "^5.0.13"
   },
   "overrides": {
     "select2": {

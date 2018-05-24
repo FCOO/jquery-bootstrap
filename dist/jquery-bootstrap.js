@@ -425,10 +425,11 @@ TODO:
     bsCheckbox( options ) - create a Bootstrap checkbox
     **********************************************************/
     $.bsCheckbox = function( options ){
+        options.type = options.type || 'checkbox';
         options =
             $._bsAdjustOptions( options, {
                 useTouchSize: true,
-                baseClass   : options.type || 'checkbox'
+                baseClass   : options.type
             });
 
         //Create outer div
@@ -455,6 +456,11 @@ TODO:
         var $label = $('<label/>')
                         .prop('for', id )
                         .appendTo( $result );
+
+        //Add <i> with check-icon if it is a checkbox
+        if (options.type == 'checkbox')
+            $('<i class="fas fa-check"/>').appendTo( $label );
+
         if (options.text)
             $('<span/>').i18n( options.text ).appendTo( $label );
 
@@ -477,29 +483,57 @@ TODO:
 (function ($ /*, window, document, undefined*/) {
 	"use strict";
 
+    /*
+    A header can contain any of the following icons:
+    back (<)
+    forward (>)
+    extend (^)
+    diminish
+    pin
+    pinned
+
+    close (x)
+
+    */
+
+    //$.bsHeaderIcons = class-names for the different icons on the header
+    $.bsHeaderIcons = {
+        back    : 'fa-chevron-left',
+        forward : 'fa-chevron-right',
+        extend  : 'fa-chevron-up',
+        diminish: 'fa-chevron-down',
+        pin     : 'fa-thumbtack',
+        pinned  : 'fa-thumbtack',
+        close   : 'fas fa-times',
+    };
+
+    //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
+    var mandatoryHeaderIconClassAndTitle = {
+        close: {class:'header-icon-close', title: {da:'Luk', en:'Close'}},
+    };
+
     /******************************************************
     _bsHeaderAndIcons(options)
     Create the text and icon content of a header inside this
     options: {
         headerClassName: [string]
         icons: {
-            close   : { className: [string], altEvents: [string], onClick: [function] },
-            extend  : { className: [string], altEvents: [string], onClick: [function] },
-            diminish: { className: [string], altEvents: [string], onClick: [function] },
+            back, forward, ..., close: { title: [string], disabled: [boolean], className: [string], altEvents: [string], onClick: [function] },
         }
     }
 
     ******************************************************/
+
+    function checkDisabled( event ){
+        var $target = $(event.target);
+        if ($target.hasClass('disabled') || $target.prop('disabled'))
+            event.stopImmediatePropagation();
+    }
+
     $.fn._bsHeaderAndIcons = function(options){
         var $this = this;
 
-        options = $.extend( true,
-            {
-                headerClassName: '',
-                icons          : {}
-            },
-            options
-        );
+        options = $.extend( true, {headerClassName: '', icons: {} }, options );
 
         this
             .addClass( options.headerClassName )
@@ -517,16 +551,21 @@ TODO:
                         .appendTo( this );
 
             //Add icons
-            $.each( ['diminish', 'extend', 'close'], function( index, id ){
-                var iconOptions = options.icons[id];
+            $.each( ['back', 'forward', 'pin', 'extend', 'diminish', 'close'], function( index, id ){
+                var iconOptions = options.icons[id],
+                    classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
                 if (iconOptions && iconOptions.onClick){
-                    $('<i/>')
-                        .addClass('header-icon header-icon-' + id )
-                        .addClass( iconOptions.className || '')
-                        .on('click', iconOptions.onClick)
-                        .attr( iconOptions.attr || {})
-                        .data( iconOptions.data || {})
-                        .appendTo($iconContainer);
+
+                    $._bsCreateIcon(
+                        $.bsHeaderIcons[id] + ' header-icon ' + (classAndTitle.class || ''),
+                        $iconContainer,
+                        iconOptions.title || classAndTitle.title || '',
+                        iconOptions.className
+                    )
+                    .toggleClass('disabled', !!iconOptions.disabled)
+                    .attr('data-header-icon-id', id)
+                    .on('click', checkDisabled)
+                    .on('click', iconOptions.onClick);
 
                     //Add alternative (swipe) event
                     if (iconOptions.altEvents)
@@ -834,7 +873,22 @@ TODO:
                 'data-toggle': 'modal',
                 'data-target': '#'+this.attr('id')
             });
+        },
+
+        getHeaderIcon: function(id){
+            return this.find('[data-header-icon-id="'+id+'"]');
+        },
+
+        setHeaderIconEnabled: function(id, disabled){
+            this.getHeaderIcon(id).toggleClass('disabled', !!disabled);
+        },
+
+        setHeaderIconDisabled: function(id){
+            this.setHeaderIconEnabled(id, true);
         }
+
+
+
     };
 
     /******************************************************
@@ -1403,17 +1457,9 @@ TODO:
 
             if (closeWithButton)
                 //Add same close-icon as for modal-windows
-                $('<div/>')
-                    ._bsAddBaseClassAndSize( {
-                        baseClass   :'header-icon-container',
-                        useTouchSize: true
-                    })
-                    .appendTo($barDom)
-                    .append(
-                        $('<i/>')
-                            .addClass("header-icon header-icon-close")
-                            .on('click', closeFunc )
-                    );
+                $barDom._bsHeaderAndIcons({
+                    icons: { close: { onClick: closeFunc }}
+                });
         };
 
 
@@ -2668,6 +2714,80 @@ Add sort-functions + save col-index for sorted column
         return sizeClassPostfix && options.baseClass ? options.baseClass + '-' + sizeClassPostfix : '';
     };
 
+
+    /****************************************************************************************
+    $._bsCreateElement = internal method to create $-element
+    ****************************************************************************************/
+    $._bsCreateElement = function( tagName, link, title, textStyle, className ){
+        var $result;
+        if (link){
+            $result = $('<a/>');
+            if ($.isFunction( link ))
+                $result
+                    .prop('href', 'javascript:undefined')
+                    .on('click', link );
+            else
+                $result
+                    .i18n(link, 'href')
+                    .prop('target', '_blank');
+        }
+        else
+            $result = $('<'+tagName+'/>');
+
+        if (title)
+            $result.i18n(title, 'title');
+
+        $result._bsAddStyleClasses( textStyle || '' );
+
+        if (className)
+            $result.addClass( className );
+
+        return $result;
+    };
+
+    /****************************************************************************************
+    $._bsCreateIcon = internal method to create $-icon
+    ****************************************************************************************/
+    $._bsCreateIcon = function( options, $appendTo, title, className ){
+        if ($.type(options) == 'string')
+            options = {class: options};
+
+        if ($.isArray( options)){
+            $.each( options, function( index, opt ){
+                $._bsCreateIcon( opt, $appendTo, title, className );
+            });
+            return;
+        }
+
+        options.tagName = options.tagName || 'i';
+        var allClassNames = options.icon || options.class || '';
+
+        //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
+        if (allClassNames.search(/(fa.?\s)|(\sfa.?(\s|$))/g) == -1)
+            allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
+
+        allClassNames = allClassNames + (className ? ' '+className : '');
+
+        var $icon = $._bsCreateElement( options.tagName, null, title, null, allClassNames ),
+            attr = options.attr || {};
+        if (options.data){
+            $icon.data(options.data);
+            $.each(options.data, function(id, value){
+                attr['data-'+id] = value;
+            });
+        }
+
+        $icon.attr(attr);
+
+        var list  = options.list || options.children;
+        if (list)
+            $._bsCreateIcon(list, $icon);
+        $icon.appendTo( $appendTo );
+        return $icon;
+    };
+
+
+
     $.fn.extend({
 
         //_bsAddIdAndName
@@ -2779,76 +2899,10 @@ Add sort-functions + save col-index for sorted column
 
         _bsAddHtml:  function( options, checkForContent, ignoreLink ){
             //**************************************************
-            function create$element( tagName, link, title, textStyle, className ){
-                var $result;
-                if (link){
-                    $result = $('<a/>');
-                    if ($.isFunction( link ))
-                        $result
-                            .prop('href', 'javascript:undefined')
-                            .on('click', link );
-                    else
-                        $result
-                            .i18n(link, 'href')
-                            .prop('target', '_blank');
-                }
-                else
-                    $result = $('<'+tagName+'/>');
-
-                if (title)
-                    $result.i18n(title, 'title');
-
-                $result._bsAddStyleClasses( textStyle || '' );
-
-                if (className)
-                    $result.addClass( className );
-
-                return $result;
-            }
-            //**************************************************
-            function create$icon( options, $appendTo, title, className ){
-                if ($.type(options) == 'string')
-                    options = {class: options};
-
-                if ($.isArray( options)){
-                    $.each( options, function( index, opt ){
-                        create$icon ( opt, $appendTo, title, className );
-                    });
-                    return;
-                }
-
-                options.tagName = options.tagName || 'i';
-                var allClassNames = options.icon || options.class || '';
-
-                //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
-                if (allClassNames.search(/(fa.?\s)|(\sfa.?(\s|$))/g) == -1)
-                    allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
-
-                allClassNames = allClassNames + (className ? ' '+className : '');
-
-                var $icon = create$element( options.tagName, null, title, null, allClassNames ),
-                    attr = options.attr || {};
-                if (options.data){
-                    $icon.data(options.data);
-                    $.each(options.data, function(id, value){
-                        attr['data-'+id] = value;
-                    });
-                }
-
-                $icon.attr(attr);
-
-                var list  = options.list || options.children;
-                if (list)
-                    create$icon(list, $icon); //TODO: Skal title og className også med i children? , title, className );
-                $icon.appendTo( $appendTo );
-            }
-
-            //**************************************************
             function getArray( input ){
                 return input ? $.isArray( input ) ? input : [input] : [];
             }
             //**************************************************
-
 
             if (checkForContent && (options.content != null))
                 return this._bsAddHtml( options.content );
@@ -2891,7 +2945,7 @@ Add sort-functions + save col-index for sorted column
 
             //Add icons (optional)
             $.each( iconArray, function( index, icon ){
-                create$icon ( icon, _this, titleArray[ index ], iconClassArray[index] );
+                $._bsCreateIcon( icon, _this, titleArray[ index ], iconClassArray[index] );
             });
 
             //Add color (optional)
@@ -2900,7 +2954,7 @@ Add sort-functions + save col-index for sorted column
 
             //Add text
             $.each( textArray, function( index, text ){
-                var $text = create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
+                var $text = $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
                 if ($.isFunction( text ))
                     text( $text );
                 else
@@ -2922,7 +2976,7 @@ Add sort-functions + save col-index for sorted column
 
             //Add value-format content
             $.each( vfValueArray, function( index, vfValue ){
-                create$element( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
+                $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
                     .vfValueFormat( vfValue || '', vfFormatArray[index], vfOptionsArray[index] )
                     .appendTo( _this );
             });
