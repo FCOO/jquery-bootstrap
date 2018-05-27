@@ -61,11 +61,12 @@
     $.fn._bsHeaderAndIcons = function(options){
         var $this = this;
 
-        options = $.extend( true, {headerClassName: '', icons: {} }, options );
+        options = $.extend( true, {headerClassName: '', inclHeader: true, icons: {} }, options );
 
-        this
-            .addClass( options.headerClassName )
-            ._bsAddHtml( options.header || $.EMPTY_TEXT );
+        if (options.inclHeader)
+            this
+                .addClass( options.headerClassName )
+                ._bsAddHtml( options.header || $.EMPTY_TEXT );
 
         //Add icons (if any)
         if ( !$.isEmptyObject(options.icons) ) {
@@ -79,7 +80,7 @@
                         .appendTo( this );
 
             //Add icons
-            $.each( ['back', 'forward', 'pin', 'extend', 'diminish', 'close'], function( index, id ){
+            $.each( ['back', 'forward', 'pin', 'pinned', 'extend', 'diminish', 'close'], function( index, id ){
                 var iconOptions = options.icons[id],
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
                 if (iconOptions && iconOptions.onClick){

@@ -117,8 +117,9 @@ div.btn, div.list-group-item {
     /************************************************************
     Special version to have extra large icon
     ************************************************************/
-    $big-icon-padding: 0.125rem;
+    $big-icon-padding: 0.25rem;
     @mixin big-icon-font-size( $original-padding-y, $original-font-size, $original-line-height ){
+        //Ensure that the dim of the button is the same with big icons
         font-size  : 2 * $original-padding-y + $original-font-size * $original-line-height - 2 * $big-icon-padding;
     }
 

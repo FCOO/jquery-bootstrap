@@ -211,7 +211,11 @@
         options.callbacks.onTemplate = function() {
             var _this = this,
                 $barDom = $(this.barDom),
-                $body = $barDom.find('.noty_body');
+                $body = $barDom.find('.noty_body'),
+                closeFunc = function( event ){
+                                event.stopPropagation();
+                                _this.close();
+                            };
 
             //Insert header before $body (if any)
             //Use small header unless it is touch-mode and close with button (round x)
@@ -228,11 +232,6 @@
             //Replace content with text as object {icon, txt,etc}
             $body._bsAddHtml( options.content );
             $body.addClass('text-'+options.textAlign);
-
-            var closeFunc = function( event ){
-                                event.stopPropagation();
-                                _this.close();
-                            };
 
             //Add buttons (if any)
             if (buttons){
@@ -264,7 +263,8 @@
             if (closeWithButton)
                 //Add same close-icon as for modal-windows
                 $barDom._bsHeaderAndIcons({
-                    icons: { close: { onClick: closeFunc }}
+                    inclHeader: false,
+                    icons     : { close: { onClick: closeFunc }}
                 });
         };
 
