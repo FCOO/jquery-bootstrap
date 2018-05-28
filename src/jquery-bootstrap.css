@@ -9365,6 +9365,18 @@ MARGIN-BOTTOM FOR ELEMENTS IN MODAL
 All elements in modal-windows get same margin-bottom
 ************************************************************/
 /************************************************
+ADDITIONS AND ADJUSTMENTS TO FONTAWESOME
+*************************************************/
+/************************************************************
+FONTAWESOME
+
+Additions and adjustments to Fontawesome 5 (when included)
+************************************************************/
+.fa-inside-circle {
+  font-size: 0.65em;
+}
+
+/************************************************
 STYLE FOR DIFFERENT ELEMENTS
 *************************************************/
 /************************************************************
@@ -9805,38 +9817,65 @@ Icons for modal header inside a container
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.35em;
   margin-left: auto;
-  margin-right: -0.125rem;
+  font-size: 1.35em;
+  margin-right: -0.375rem;
+}
+.header-icon-container > .header-icon {
+  margin: 0;
+  padding: 0 0.375rem;
+}
+.header-icon-container .fa-stack {
+  font-size: 1.35em;
+  height: 1.35em;
+  width: 1.35em;
+  line-height: 1.35em;
 }
 .header-icon-container.header-icon-container-sm {
-  font-size: 1.1em;
+  font-size: 1.2em;
+  margin-right: -0.125rem;
+}
+.header-icon-container.header-icon-container-sm > .header-icon {
+  margin: 0;
+  padding: 0 0.125rem;
+}
+.header-icon-container.header-icon-container-sm .fa-stack {
+  font-size: 1.2em;
+  height: 1.2em;
+  width: 1.2em;
+  line-height: 1.2em;
 }
 .header-icon-container .header-icon {
   color: #000;
   text-shadow: 0 1px 0 #fff;
   opacity: .5;
   cursor: default;
-  margin: 0;
-  padding: 0.125rem;
 }
 .header-icon-container .header-icon.disabled {
   opacity: .25;
 }
-.header-icon-container .header-icon:not(.disabled):hover:hover, .header-icon-container .header-icon:not(.disabled):hover:focus {
+.header-icon-container .header-icon .show-for-hover {
+  display: none;
+}
+.header-icon-container .header-icon:not(.disabled):hover {
   color: #000;
   text-decoration: none;
   opacity: .75;
 }
+.header-icon-container .header-icon:not(.disabled):hover .show-for-hover {
+  display: inherit;
+}
+.header-icon-container .header-icon:not(.disabled):hover .hide-for-hover {
+  display: none;
+}
 .header-icon-container .header-icon:not(.disabled):hover:active {
   opacity: .9;
 }
-.header-icon-container .header-icon.header-icon-close:not(.disabled):hover:hover, .header-icon-container .header-icon.header-icon-close:not(.disabled):hover:focus {
-  color: #dc3545;
-  opacity: 1;
+.header-icon-container .header-icon.header-icon-close:not(.disabled):hover {
+  opacity: .9;
 }
 .header-icon-container .header-icon.header-icon-close:not(.disabled):hover:active {
-  color: #c82333;
+  opacity: 1;
 }
 
 /**************************************************

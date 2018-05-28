@@ -30,9 +30,9 @@
         forward : 'fa-chevron-right',
         extend  : 'fa-chevron-up',
         diminish: 'fa-chevron-down',
-        pin     : 'fa-thumbtack',
+        pin     : ['fas fa-thumbtack fa-stack-1x fa-inside-circle', 'far fa-circle fa-stack-1x'],
         unpin   : 'fa-thumbtack text-danger',
-        close   : 'fas fa-times',
+        close   : ['far fa-times-circle fa-stack-1x hide-for-hover', 'fas fa-times-circle text-danger fa-stack-1x show-for-hover']
     };
 
     //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
@@ -86,10 +86,10 @@
                 if (iconOptions && iconOptions.onClick){
 
                     $._bsCreateIcon(
-                        $.bsHeaderIcons[id] + ' header-icon ' + (classAndTitle.class || ''),
+                        $.bsHeaderIcons[id],
                         $iconContainer,
                         iconOptions.title || classAndTitle.title || '',
-                        iconOptions.className
+                        (iconOptions.className || '') + ' header-icon ' + (classAndTitle.class || '')
                     )
                     .toggleClass('disabled', !!iconOptions.disabled)
                     .attr('data-header-icon-id', id)

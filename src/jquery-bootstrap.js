@@ -189,39 +189,30 @@
     $._bsCreateIcon = internal method to create $-icon
     ****************************************************************************************/
     $._bsCreateIcon = function( options, $appendTo, title, className ){
+        var $icon;
+
         if ($.type(options) == 'string')
             options = {class: options};
 
         if ($.isArray( options)){
+            //Create a stacked icon
+            $icon = $._bsCreateElement( 'span', null, title, null, 'fa-stack ' + (className || '')  );
+
             $.each( options, function( index, opt ){
-                $._bsCreateIcon( opt, $appendTo, title, className );
-            });
-            return;
-        }
-
-        options.tagName = options.tagName || 'i';
-        var allClassNames = options.icon || options.class || '';
-
-        //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
-        if (allClassNames.search(/(fa.?\s)|(\sfa.?(\s|$))/g) == -1)
-            allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
-
-        allClassNames = allClassNames + (className ? ' '+className : '');
-
-        var $icon = $._bsCreateElement( options.tagName, null, title, null, allClassNames ),
-            attr = options.attr || {};
-        if (options.data){
-            $icon.data(options.data);
-            $.each(options.data, function(id, value){
-                attr['data-'+id] = value;
+                $._bsCreateIcon( opt, $icon );
             });
         }
+        else {
+            var allClassNames = options.icon || options.class || '';
 
-        $icon.attr(attr);
+            //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
+            if (allClassNames.search(/(fa.?\s)|(\sfa.?(\s|$))/g) == -1)
+                allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
 
-        var list  = options.list || options.children;
-        if (list)
-            $._bsCreateIcon(list, $icon);
+            allClassNames = allClassNames + ' ' + (className || '');
+
+            $icon = $._bsCreateElement( 'i', null, title, null, allClassNames );
+        }
         $icon.appendTo( $appendTo );
         return $icon;
     };
@@ -229,7 +220,6 @@
 
 
     $.fn.extend({
-
         //_bsAddIdAndName
         _bsAddIdAndName: function( options ){
             this.attr('id', options.id || '');

@@ -12,15 +12,48 @@ Icons for modal header inside a container
 
     @include vertical-align-center();
     justify-content: center;
-    $padding   : $btn-padding-x-sm / 2;
+    margin-left : auto;
 
-    font-size  : 1.35em;
-    &.header-icon-container-sm {
-        font-size: 1.1em;
+
+    //Normal size
+    $padding   : $btn-padding-x / 2;
+    $font-size : 1.35em;
+
+    font-size  : $font-size;
+    margin-right: - $padding;
+
+    > .header-icon {
+        margin : 0;
+        padding: 0 $padding;
+    }
+    .fa-stack {
+        //Make stacked icon same size as single icons
+        font-size  : $font-size;
+        height     : $font-size;
+        width      : $font-size;
+        line-height: $font-size;
     }
 
-    margin-left : auto;
-    margin-right: - $padding;
+    //Small size
+    &.header-icon-container-sm {
+        $padding   : $btn-padding-x-sm / 2;
+        $font-size: 1.2em;
+
+        font-size   : $font-size;
+        margin-right: - $padding;
+
+        > .header-icon {
+            margin : 0;
+            padding: 0 $padding;
+        }
+        .fa-stack {
+            //Make stacked icon same size as single icons
+            font-size  : $font-size;
+            height     : $font-size;
+            width      : $font-size;
+            line-height: $font-size;
+        }
+    }
 
     .header-icon {
         //Common style
@@ -29,33 +62,28 @@ Icons for modal header inside a container
         opacity    : .5;
         cursor     : default;
 
-        margin : 0;
-        padding: $padding;
-
         &.disabled {
             opacity: .25;
         }
+
+        & .show-for-hover { display: none; }
+
         &:not(.disabled):hover {
-            @include hover-focus {
-                color: $close-color;
-                text-decoration: none;
-                opacity: .75;
-            }
-            &:active {
-                opacity: .9;
-           }
+            .show-for-hover { display: inherit; }
+            .hide-for-hover { display: none; }
+
+            color: $close-color;
+            text-decoration: none;
+            opacity: .75;
+
+            &:active { opacity: .9; }
         }
 
         //Special version for close-icon
         &.header-icon-close {
             &:not(.disabled):hover {
-                @include hover-focus {
-                    color  : $red;
-                    opacity: 1;
-                }
-                &:active {
-                    color: darken($red, $darken-active-percent);
-                }
+                opacity: .9;
+                &:active { opacity: 1; }
             }
         }
     } //end of .header-icon {

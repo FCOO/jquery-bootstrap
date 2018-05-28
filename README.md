@@ -393,6 +393,7 @@ Eq.
 | `closeText` | `string or i18n-record`| `{da:'Luk', en:'Close'}` | The text for the close-button. |
 | `closeIcon` | `string`| `"fa-times"` | The icon for the close-button |
 | `extended` | `object`| `null` | The extended content. `{type, fixedContent, flex, noVerticalPadding, content, scroll, footer}`  |
+| `onPin` | `function( pinned [boolean] )`| `null` | When given the icons for pin and unpin as shown. Also when pinned the modal can only be closed using the close icon or close-button |
 
 ### Methods
 
