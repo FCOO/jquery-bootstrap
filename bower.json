@@ -36,8 +36,7 @@
     "mathsass": "latest",
     "modernizr-scss": "FCOO/modernizr-scss#^2.1.2",
     "bootstrap-float-label": "tonystar/bootstrap-float-label#^4.0.2",
-    "select2-bootstrap4-theme": "^1.0.0",
-    "fontawesome": "^5.0.13"
+    "select2-bootstrap4-theme": "^1.0.0"
   },
   "overrides": {
     "select2": {

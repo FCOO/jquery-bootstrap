@@ -10346,6 +10346,12 @@ body.modal-open .modal {
 .modal .modal-content.no-modal-extended .show-for-modal-extended, .modal-inline .modal-content.no-modal-extended .show-for-modal-extended {
   display: none !important;
 }
+.modal .modal-content.modal-pinned .hide-for-modal-pinned, .modal-inline .modal-content.modal-pinned .hide-for-modal-pinned {
+  display: none !important;
+}
+.modal .modal-content.no-modal-pinned .show-for-modal-pinned, .modal-inline .modal-content.no-modal-pinned .show-for-modal-pinned {
+  display: none !important;
+}
 .modal .modal-content .modal-header, .modal-inline .modal-content .modal-header {
   flex-shrink: 0;
   flex-grow: 0;

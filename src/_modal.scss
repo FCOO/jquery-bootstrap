@@ -117,8 +117,10 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     .modal-content {
 
         //Create class show-for-modal-extended and hide-for-modal-extended
+        //         and show-for-modal-pinned and hide-for-modal-pined
         //@include show-and-hide-for-modernizr-test( $modernizr-test , $parent-element-type: '', $incl-no-selector: true, $display-value: '', $incl-table-display: true )
         @include show-and-hide-for-modernizr-test( modal-extended , '&', false, '', false );
+        @include show-and-hide-for-modernizr-test( modal-pinned , '&', false, '', false );
 
         .modal-header {
             flex-shrink: 0; //Only .modal-body is shrink

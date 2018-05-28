@@ -276,7 +276,9 @@ return;
                 $.bsButton({text: 'Normal', icon: 'fa-home'}), $('<br>'),
                 $.bsButton({text: 'Small', icon: 'fa-home', small:true}),
                 $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'fa-check-square-o'})
-            ]
+            ],
+            onPin: function(pinned){ console.log('onPin', pinned); }
+
         });
 
 /*

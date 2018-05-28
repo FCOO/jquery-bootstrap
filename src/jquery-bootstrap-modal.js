@@ -45,8 +45,6 @@
         openModals = 0,
         modalVerticalMargin = 10; //Top and bottom margin for modal windows
 
-    window._currentBsModal = null;
-
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
     Due to an intended design in Safari it is not possible to
@@ -118,6 +116,10 @@
     //******************************************************
     //hide_bs_modal - called when a modal is closing
     function hide_bs_modal( /*event*/ ) {
+        //Never close pinned modals
+        if (this.bsModal.isPinned)
+            return false;
+
         //Remove all noty added on the modal and move down global backdrop
         $._bsNotyRemoveLayer();
     }
@@ -148,6 +150,13 @@
 
         show: function(){
             this.modal('show');
+        },
+
+        close: function(){
+            //If pinable and pinned => unpin
+            if (this.bsModal.isPinned)
+                this._bsModalUnpin();
+            this.modal('hide');
         },
 
         assignTo: function( $element ){
@@ -228,25 +237,23 @@
     };
 
     /******************************************************
-    _bsModalExtend, _bsModalDiminish, _bsModalToggle
+    _bsModalExtend, _bsModalDiminish, _bsModalToggleHeight
     Methods to change extended-mode
     ******************************************************/
     $.fn._bsModalExtend = function( event ){
-        if (this.hasClass('no-modal-extended'))
-            this._bsModalToggle( event );
+        if (this.bsModal.$container.hasClass('no-modal-extended'))
+            this._bsModalToggleHeight( event );
     };
     $.fn._bsModalDiminish = function( event ){
-        if (this.hasClass('modal-extended'))
-            this._bsModalToggle( event );
+        if (this.bsModal.$container.hasClass('modal-extended'))
+            this._bsModalToggleHeight( event );
     };
-
-
-    $.fn._bsModalToggle = function( event ){
-        var $this = $(this),
+    $.fn._bsModalToggleHeight = function( event ){
+        var $this = this.bsModal.$container,
             oldHeight = $this.outerHeight(),
             newHeight;
 
-        this.modernizrToggle('modal-extended');
+        $this.modernizrToggle('modal-extended');
 
         newHeight = $this.outerHeight();
         $this.height( oldHeight);
@@ -259,13 +266,37 @@
     };
 
     /******************************************************
+    _bsModalPin, _bsModalUnpin, _bsModalTogglePin
+    Methods to change pinned-status
+    ******************************************************/
+    $.fn._bsModalPin = function( event ){
+        if (!this.bsModal.isPinned)
+            this._bsModalTogglePin( event );
+    };
+    $.fn._bsModalUnpin = function( event ){
+        if (this.bsModal.isPinned)
+            this._bsModalTogglePin( event );
+    };
+    $.fn._bsModalTogglePin = function( event ){
+        var $container = this.bsModal.$container;
+        this.bsModal.isPinned = !this.bsModal.isPinned;
+        $container.modernizrToggle('modal-pinned', !!this.bsModal.isPinned);
+        this.bsModal.onPin( this.bsModal.isPinned );
+
+        if (event && event.stopPropagation)
+            event.stopPropagation();
+        return false;
+    };
+
+
+
+    /******************************************************
     _bsModalContent
     Create the content of a modal inside this
     Sets object with all parts of the result in this.modalParts
     ******************************************************/
     $.fn._bsModalContent = function( options ){
         options = options || {};
-
 
         //this.bsModal contains all created elements
         this.bsModal = {};
@@ -274,12 +305,20 @@
                 $('<div/>')
                     .addClass('modal-content')
                     .modernizrToggle('modal-extended', !!options.isExtended )
+                    .modernizrOff('modal-pinned')
                     .appendTo( this );
 
 
-        var modalExtend   = $.proxy( $modalContainer._bsModalExtend,   $modalContainer ),
-            modalDiminish = $.proxy( $modalContainer._bsModalDiminish, $modalContainer ),
-            modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer );
+        var modalExtend       = $.proxy( this._bsModalExtend,       this),
+            modalDiminish     = $.proxy( this._bsModalDiminish,     this),
+            modalToggleHeight = $.proxy( this._bsModalToggleHeight, this),
+
+            modalPin          = $.proxy( this._bsModalPin,          this),
+            modalUnpin        = $.proxy( this._bsModalUnpin,        this);
+
+
+        this.bsModal.onPin = options.onPin;
+        this.bsModal.isPinned = false;
 
         options = $.extend( true, {
             headerClassName: 'modal-header',
@@ -291,8 +330,10 @@
 
             //Icons
             icons    : {
-                extend  : { className: 'hide-for-modal-extended', altEvents:'swipeup',   onClick: options.extended ? modalExtend   : null },
-                diminish: { className: 'show-for-modal-extended', altEvents:'swipedown', onClick: options.extended ? modalDiminish : null }
+                pin     : { className: 'hide-for-modal-pinned',   onClick: options.onPin    ? modalPin      : null },
+                unpin   : { className: 'show-for-modal-pinned',   onClick: options.onPin    ? modalUnpin    : null },
+                extend  : { className: 'hide-for-modal-extended', onClick: options.extended ? modalExtend   : null, altEvents:'swipeup'   },
+                diminish: { className: 'show-for-modal-extended', onClick: options.extended ? modalDiminish : null, altEvents:'swipedown' }
             }
         }, options );
 
@@ -326,7 +367,7 @@
             if (options.extended)
                 $modalHeader
                     .addClass('clickable')
-                    .on('doubletap', modalToggle );
+                    .on('doubletap', modalToggleHeight );
         }
 
         //Create normal content
@@ -389,10 +430,8 @@
     $.bsModal = function( options ){
         var $result, $modalDialog,
             id = options.id || '_bsModal'+ modalId++,
-            classNames = (options.noVerticalPadding ? 'no-vertical-padding' : '') +
-                         (options.noHorizontalPadding ? ' no-horizontal-padding' : '')   ,
-            //Create a close-function
-            closeModalFunction = function(){ $result.modal('hide'); };
+            classNames = (options.noVerticalPadding   ? 'no-vertical-padding'    : '') +
+                         (options.noHorizontalPadding ? ' no-horizontal-padding' : ''),
 
         //Adjust options
         options =
@@ -402,11 +441,6 @@
 
                 //Header
                 noHeader : false,
-
-                //Icons
-                icons    : {
-                    close   : { onClick: closeModalFunction }
-                },
 
                 //Size
                 useTouchSize: true,
@@ -443,7 +477,12 @@
         //Extend with prototype
         $result.extend( bsModal_prototype );
 
-        //Create modal content
+        //Add close-icon and create modal content
+        options.icons = {
+            close: {
+                onClick: $.proxy( bsModal_prototype.close, $result)
+            }
+        };
         $modalDialog._bsModalContent( options );
         $result.data('bsModalDialog', $modalDialog);
 
@@ -455,14 +494,13 @@
            focus	:   true,                               //  boolean	            true    Puts the focus on the modal when initialized.
            show	    :   false                               //  boolean	            true	Shows the modal when initialized.
         });
-
+        $result.bsModal = $modalDialog.bsModal;
         $result.on({
             'show.bs.modal'  : show_bs_modal,
             'shown.bs.modal' : shown_bs_modal,
-            'hide.bs.modal'  : hide_bs_modal,
+            'hide.bs.modal'  : $.proxy(hide_bs_modal, $result),
             'hidden.bs.modal': hidden_bs_modal,
         });
-
 
         $result.appendTo( $('body') );
 

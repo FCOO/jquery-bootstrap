@@ -18,7 +18,7 @@
     extend (^)
     diminish
     pin
-    pinned
+    unpin
 
     close (x)
 
@@ -31,7 +31,7 @@
         extend  : 'fa-chevron-up',
         diminish: 'fa-chevron-down',
         pin     : 'fa-thumbtack',
-        pinned  : 'fa-thumbtack',
+        unpin   : 'fa-thumbtack text-danger',
         close   : 'fas fa-times',
     };
 
@@ -80,7 +80,7 @@
                         .appendTo( this );
 
             //Add icons
-            $.each( ['back', 'forward', 'pin', 'pinned', 'extend', 'diminish', 'close'], function( index, id ){
+            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'close'], function( index, id ){
                 var iconOptions = options.icons[id],
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
                 if (iconOptions && iconOptions.onClick){
