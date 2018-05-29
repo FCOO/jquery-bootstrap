@@ -490,7 +490,7 @@ TODO:
     extend (^)
     diminish
     pin
-    pinned
+    unpin
 
     close (x)
 
@@ -502,9 +502,9 @@ TODO:
         forward : 'fa-chevron-right',
         extend  : 'fa-chevron-up',
         diminish: 'fa-chevron-down',
-        pin     : 'fa-thumbtack',
-        pinned  : 'fa-thumbtack',
-        close   : 'fas fa-times',
+        pin     : ['fas fa-thumbtack fa-stack-1x fa-inside-circle', 'far fa-circle fa-stack-1x'],
+        unpin   : 'fa-thumbtack text-danger',
+        close   : ['far fa-times-circle fa-stack-1x hide-for-hover', 'fas fa-times-circle text-danger fa-stack-1x show-for-hover']
     };
 
     //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
@@ -533,11 +533,11 @@ TODO:
     $.fn._bsHeaderAndIcons = function(options){
         var $this = this;
 
-        options = $.extend( true, {headerClassName: '', icons: {} }, options );
+        options = $.extend( true, {headerClassName: '', inclHeader: true, icons: {} }, options );
+        this.addClass( options.headerClassName );
 
-        this
-            .addClass( options.headerClassName )
-            ._bsAddHtml( options.header || $.EMPTY_TEXT );
+        if (options.inclHeader)
+            this._bsAddHtml( options.header || $.EMPTY_TEXT );
 
         //Add icons (if any)
         if ( !$.isEmptyObject(options.icons) ) {
@@ -551,16 +551,16 @@ TODO:
                         .appendTo( this );
 
             //Add icons
-            $.each( ['back', 'forward', 'pin', 'extend', 'diminish', 'close'], function( index, id ){
+            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'close'], function( index, id ){
                 var iconOptions = options.icons[id],
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
                 if (iconOptions && iconOptions.onClick){
 
                     $._bsCreateIcon(
-                        $.bsHeaderIcons[id] + ' header-icon ' + (classAndTitle.class || ''),
+                        $.bsHeaderIcons[id],
                         $iconContainer,
                         iconOptions.title || classAndTitle.title || '',
-                        iconOptions.className
+                        (iconOptions.className || '') + ' header-icon ' + (classAndTitle.class || '')
                     )
                     .toggleClass('disabled', !!iconOptions.disabled)
                     .attr('data-header-icon-id', id)
@@ -763,8 +763,6 @@ TODO:
         openModals = 0,
         modalVerticalMargin = 10; //Top and bottom margin for modal windows
 
-    window._currentBsModal = null;
-
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
     Due to an intended design in Safari it is not possible to
@@ -836,6 +834,10 @@ TODO:
     //******************************************************
     //hide_bs_modal - called when a modal is closing
     function hide_bs_modal( /*event*/ ) {
+        //Never close pinned modals
+        if (this.bsModal.isPinned)
+            return false;
+
         //Remove all noty added on the modal and move down global backdrop
         $._bsNotyRemoveLayer();
     }
@@ -866,6 +868,13 @@ TODO:
 
         show: function(){
             this.modal('show');
+        },
+
+        close: function(){
+            //If pinable and pinned => unpin
+            if (this.bsModal.isPinned)
+                this._bsModalUnpin();
+            this.modal('hide');
         },
 
         assignTo: function( $element ){
@@ -946,25 +955,23 @@ TODO:
     };
 
     /******************************************************
-    _bsModalExtend, _bsModalDiminish, _bsModalToggle
+    _bsModalExtend, _bsModalDiminish, _bsModalToggleHeight
     Methods to change extended-mode
     ******************************************************/
     $.fn._bsModalExtend = function( event ){
-        if (this.hasClass('no-modal-extended'))
-            this._bsModalToggle( event );
+        if (this.bsModal.$container.hasClass('no-modal-extended'))
+            this._bsModalToggleHeight( event );
     };
     $.fn._bsModalDiminish = function( event ){
-        if (this.hasClass('modal-extended'))
-            this._bsModalToggle( event );
+        if (this.bsModal.$container.hasClass('modal-extended'))
+            this._bsModalToggleHeight( event );
     };
-
-
-    $.fn._bsModalToggle = function( event ){
-        var $this = $(this),
+    $.fn._bsModalToggleHeight = function( event ){
+        var $this = this.bsModal.$container,
             oldHeight = $this.outerHeight(),
             newHeight;
 
-        this.modernizrToggle('modal-extended');
+        $this.modernizrToggle('modal-extended');
 
         newHeight = $this.outerHeight();
         $this.height( oldHeight);
@@ -977,13 +984,37 @@ TODO:
     };
 
     /******************************************************
+    _bsModalPin, _bsModalUnpin, _bsModalTogglePin
+    Methods to change pinned-status
+    ******************************************************/
+    $.fn._bsModalPin = function( event ){
+        if (!this.bsModal.isPinned)
+            this._bsModalTogglePin( event );
+    };
+    $.fn._bsModalUnpin = function( event ){
+        if (this.bsModal.isPinned)
+            this._bsModalTogglePin( event );
+    };
+    $.fn._bsModalTogglePin = function( event ){
+        var $container = this.bsModal.$container;
+        this.bsModal.isPinned = !this.bsModal.isPinned;
+        $container.modernizrToggle('modal-pinned', !!this.bsModal.isPinned);
+        this.bsModal.onPin( this.bsModal.isPinned );
+
+        if (event && event.stopPropagation)
+            event.stopPropagation();
+        return false;
+    };
+
+
+
+    /******************************************************
     _bsModalContent
     Create the content of a modal inside this
     Sets object with all parts of the result in this.modalParts
     ******************************************************/
     $.fn._bsModalContent = function( options ){
         options = options || {};
-
 
         //this.bsModal contains all created elements
         this.bsModal = {};
@@ -992,12 +1023,20 @@ TODO:
                 $('<div/>')
                     .addClass('modal-content')
                     .modernizrToggle('modal-extended', !!options.isExtended )
+                    .modernizrOff('modal-pinned')
                     .appendTo( this );
 
 
-        var modalExtend   = $.proxy( $modalContainer._bsModalExtend,   $modalContainer ),
-            modalDiminish = $.proxy( $modalContainer._bsModalDiminish, $modalContainer ),
-            modalToggle   = $.proxy( $modalContainer._bsModalToggle,   $modalContainer );
+        var modalExtend       = $.proxy( this._bsModalExtend,       this),
+            modalDiminish     = $.proxy( this._bsModalDiminish,     this),
+            modalToggleHeight = $.proxy( this._bsModalToggleHeight, this),
+
+            modalPin          = $.proxy( this._bsModalPin,          this),
+            modalUnpin        = $.proxy( this._bsModalUnpin,        this);
+
+
+        this.bsModal.onPin = options.onPin;
+        this.bsModal.isPinned = false;
 
         options = $.extend( true, {
             headerClassName: 'modal-header',
@@ -1009,8 +1048,10 @@ TODO:
 
             //Icons
             icons    : {
-                extend  : { className: 'hide-for-modal-extended', altEvents:'swipeup',   onClick: options.extended ? modalExtend   : null },
-                diminish: { className: 'show-for-modal-extended', altEvents:'swipedown', onClick: options.extended ? modalDiminish : null }
+                pin     : { className: 'hide-for-modal-pinned',   onClick: options.onPin    ? modalPin      : null },
+                unpin   : { className: 'show-for-modal-pinned',   onClick: options.onPin    ? modalUnpin    : null },
+                extend  : { className: 'hide-for-modal-extended', onClick: options.extended ? modalExtend   : null, altEvents:'swipeup'   },
+                diminish: { className: 'show-for-modal-extended', onClick: options.extended ? modalDiminish : null, altEvents:'swipedown' }
             }
         }, options );
 
@@ -1044,7 +1085,7 @@ TODO:
             if (options.extended)
                 $modalHeader
                     .addClass('clickable')
-                    .on('doubletap', modalToggle );
+                    .on('doubletap', modalToggleHeight );
         }
 
         //Create normal content
@@ -1107,10 +1148,8 @@ TODO:
     $.bsModal = function( options ){
         var $result, $modalDialog,
             id = options.id || '_bsModal'+ modalId++,
-            classNames = (options.noVerticalPadding ? 'no-vertical-padding' : '') +
-                         (options.noHorizontalPadding ? ' no-horizontal-padding' : '')   ,
-            //Create a close-function
-            closeModalFunction = function(){ $result.modal('hide'); };
+            classNames = (options.noVerticalPadding   ? 'no-vertical-padding'    : '') +
+                         (options.noHorizontalPadding ? ' no-horizontal-padding' : '');
 
         //Adjust options
         options =
@@ -1120,11 +1159,6 @@ TODO:
 
                 //Header
                 noHeader : false,
-
-                //Icons
-                icons    : {
-                    close   : { onClick: closeModalFunction }
-                },
 
                 //Size
                 useTouchSize: true,
@@ -1161,7 +1195,8 @@ TODO:
         //Extend with prototype
         $result.extend( bsModal_prototype );
 
-        //Create modal content
+        //Add close-icon and create modal content
+        options.icons = { close: { onClick: $.proxy( bsModal_prototype.close, $result) } };
         $modalDialog._bsModalContent( options );
         $result.data('bsModalDialog', $modalDialog);
 
@@ -1173,14 +1208,13 @@ TODO:
            focus	:   true,                               //  boolean	            true    Puts the focus on the modal when initialized.
            show	    :   false                               //  boolean	            true	Shows the modal when initialized.
         });
-
+        $result.bsModal = $modalDialog.bsModal;
         $result.on({
             'show.bs.modal'  : show_bs_modal,
             'shown.bs.modal' : shown_bs_modal,
-            'hide.bs.modal'  : hide_bs_modal,
+            'hide.bs.modal'  : $.proxy(hide_bs_modal, $result),
             'hidden.bs.modal': hidden_bs_modal,
         });
-
 
         $result.appendTo( $('body') );
 
@@ -1359,7 +1393,8 @@ TODO:
         //Save closeWith and remove 'button' to prevent default close-button
         var closeWith = options.closeWith,
             closeWithButton = closeWith.indexOf('button') >= 0,
-            closeWithClick = closeWith.indexOf('click') >= 0;
+            closeWithClick = closeWith.indexOf('click') >= 0,
+            headerOptions = null;
 
         //Adjust closeWith
         if (options.buttons)
@@ -1384,7 +1419,7 @@ TODO:
 
             options.header = $._bsAdjustIconAndText(options.header) || {};
 
-            var headerOptions =
+            headerOptions =
                 options.defaultHeader ?
                 $.extend({},
                     {
@@ -1403,30 +1438,31 @@ TODO:
         //Add callbacks.onTemplate to add content (and close-icon)
         options.callbacks = options.callbacks || {};
         options.callbacks.onTemplate = function() {
-            var _this = this,
-                $barDom = $(this.barDom),
-                $body = $barDom.find('.noty_body');
+            var _this           = this,
+                $barDom         = $(this.barDom),
+                $body           = $barDom.find('.noty_body'),
+                closeFunc       = function( event ){
+                                      event.stopPropagation();
+                                      _this.close();
+                                   },
+                headerClassName = 'noty-header ' + $._bsGetSizeClass({ useTouchSize: true, baseClass: 'noty-header'} ),
+                icons           = {close: { onClick: closeFunc } };
 
             //Insert header before $body (if any)
-            //Use small header unless it is touch-mode and close with button (round x)
             if (headerOptions)
                 $('<div/>')
-                    ._bsAddBaseClassAndSize( {
-                        baseClass   :'noty-header',
-                        useTouchSize: closeWithButton,
-                        small       : !closeWithButton
+                    ._bsHeaderAndIcons({
+                        headerClassName: headerClassName,
+                        header         : headerOptions,
+                        icons          : closeWithButton ? icons : null
                     })
-                    ._bsAddHtml( headerOptions )
                     .insertBefore( $body );
+            else
+                $barDom.addClass('no-header');
 
             //Replace content with text as object {icon, txt,etc}
             $body._bsAddHtml( options.content );
             $body.addClass('text-'+options.textAlign);
-
-            var closeFunc = function( event ){
-                                event.stopPropagation();
-                                _this.close();
-                            };
 
             //Add buttons (if any)
             if (buttons){
@@ -1455,11 +1491,16 @@ TODO:
                     .insertAfter($body);
             }
 
-            if (closeWithButton)
+            if (!headerOptions && closeWithButton)
                 //Add same close-icon as for modal-windows
-                $barDom._bsHeaderAndIcons({
-                    icons: { close: { onClick: closeFunc }}
-                });
+                $('<div/>')
+                    .css('display', 'contents')
+                    .appendTo( $barDom )
+                    ._bsHeaderAndIcons({
+                        inclHeader     : false,
+                        headerClassName: headerClassName,
+                        icons          : icons
+                    });
         };
 
 
@@ -1632,6 +1673,14 @@ TODO:
     window.notyInfo = $.bsNotyInfo = function( text, options ){
         return  notyDefault( 'info', text, options );
     };
+
+    /***************************************************************
+    window.notyHelp / $.bsNotyHelp: Simple help noty with header
+    ****************************************************************/
+    window.notyHelp = $.bsNotyHelp = function( text, options ){
+        return  notyDefault( 'help', text, options );
+    };
+
 
 
     /******************************************************************************
@@ -2749,39 +2798,30 @@ Add sort-functions + save col-index for sorted column
     $._bsCreateIcon = internal method to create $-icon
     ****************************************************************************************/
     $._bsCreateIcon = function( options, $appendTo, title, className ){
+        var $icon;
+
         if ($.type(options) == 'string')
             options = {class: options};
 
         if ($.isArray( options)){
+            //Create a stacked icon
+            $icon = $._bsCreateElement( 'span', null, title, null, 'fa-stack ' + (className || '')  );
+
             $.each( options, function( index, opt ){
-                $._bsCreateIcon( opt, $appendTo, title, className );
-            });
-            return;
-        }
-
-        options.tagName = options.tagName || 'i';
-        var allClassNames = options.icon || options.class || '';
-
-        //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
-        if (allClassNames.search(/(fa.?\s)|(\sfa.?(\s|$))/g) == -1)
-            allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
-
-        allClassNames = allClassNames + (className ? ' '+className : '');
-
-        var $icon = $._bsCreateElement( options.tagName, null, title, null, allClassNames ),
-            attr = options.attr || {};
-        if (options.data){
-            $icon.data(options.data);
-            $.each(options.data, function(id, value){
-                attr['data-'+id] = value;
+                $._bsCreateIcon( opt, $icon );
             });
         }
+        else {
+            var allClassNames = options.icon || options.class || '';
 
-        $icon.attr(attr);
+            //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
+            if (allClassNames.search(/(fa.?\s)|(\sfa.?(\s|$))/g) == -1)
+                allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
 
-        var list  = options.list || options.children;
-        if (list)
-            $._bsCreateIcon(list, $icon);
+            allClassNames = allClassNames + ' ' + (className || '');
+
+            $icon = $._bsCreateElement( 'i', null, title, null, allClassNames );
+        }
         $icon.appendTo( $appendTo );
         return $icon;
     };
@@ -2789,7 +2829,6 @@ Add sort-functions + save col-index for sorted column
 
 
     $.fn.extend({
-
         //_bsAddIdAndName
         _bsAddIdAndName: function( options ){
             this.attr('id', options.id || '');
