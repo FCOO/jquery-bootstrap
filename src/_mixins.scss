@@ -7,7 +7,7 @@ RIGHT-SIDE-ICON
 Add style to <i> to place it to the right and vertical center
 NOTE: Parent element MUST have @include vertical-align-center();
 ************************************************************/
-@mixin right-side-icon( $content: '\f054', $font-size: 0.8em, $hover: false, $opacity: .3 ){
+@mixin right-side-icon( $fa-icon: $fa-var-chevron-right, $font-size: 0.8em, $hover: false, $opacity: .3 ){
     font-size  : $font-size;
     color      : $close-color;
     text-shadow: $close-text-shadow;
@@ -20,7 +20,7 @@ NOTE: Parent element MUST have @include vertical-align-center();
 
     &:before {
         font-size: $font-size;
-        content  : "#{$content}";
+        content: fa-content($fa-icon);
     }
 
     @if ($hover) {

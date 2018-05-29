@@ -21,6 +21,12 @@
 //MODERNIZR-SCSS - https://github.com/fcoo/modernizr-scss
 @import "../bower_components/modernizr-scss/dist/modernizr-scss";
 
+//FONT-AWESOME - Import varaibles and mixins to include correct content
+@import "../bower_components/font-awesome/web-fonts-with-css/scss/variables";
+@import "../bower_components/font-awesome/web-fonts-with-css/scss/mixins";
+
+
+
 /***********************************************
 SET AND ADJUST BOOTSTRAP DEFAULT VALUES
 ************************************************/

@@ -16,10 +16,10 @@ Using Bootstrap Collapse to create accordion
         @include vertical-align-center();
         @include border-radius($card-border-radius);
         .chevrolet {
-            @include right-side-icon( '\f078' ); //Default open => fa-chevron-down
+            @include right-side-icon( $fa-var-chevron-down ); //Default open => fa-chevron-down
         }
         &.collapsed .chevrolet:before {
-            content: '\f054'; //fa-chevron-right
+            content: fa-content($fa-var-chevron-right); //fa-chevron-right
         }
     }
 

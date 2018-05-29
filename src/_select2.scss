@@ -124,7 +124,7 @@ $select2-theme-name: 'standard';
         cursor: default;
         @include vertical-align-center();
         i.select2-selection__arrow {
-            @include right-side-icon('\f078', 0.8em, false, 1 );
+            @include right-side-icon($fa-var-chevron-down, 0.8em, false, 1 );
         }
 
         .select2-selection__placeholder {
@@ -135,16 +135,10 @@ $select2-theme-name: 'standard';
 
     //Special span to hold label inside placeholder. Only displayed when no item is selected
     //Display special span and hide normal content of placeholder by setting .select2-hide-placeholder
-//REMOVED    .select2-selection__placeholder_label {
-//REMOVED        display: none;
-//REMOVED        color  : $input-placeholder-color;
-//REMOVED    }
-
     &.select2-hide-placeholder .select2-selection--single .select2-selection__placeholder {
         > .container-icon-and-text:first-child  {
             opacity: 0;
         }
-//REMOVED        .select2-selection__placeholder_label   { display: inline-block; }
     }
 
 
