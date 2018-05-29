@@ -166,13 +166,14 @@ Used in Noty and Modal
 ************************************************************/
 
 //$type-theme = convert between type and Bootstrap theme
-$type-list: alert, success, warning, error, info;
+$type-list: alert, success, warning, error, info, help;
 $type-theme: (
-    alert       : light,
+    alert       : primary,
     success     : success,
     warning     : warning,
     error       : danger,
-    info        : info
+    info        : info,
+    help        : light
 );
 
 @mixin type-colors( $type, $hover-class: false, $darken: 0  ){

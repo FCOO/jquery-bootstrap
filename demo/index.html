@@ -225,7 +225,7 @@ return;
         $.bsButton({text: 'ALL Noty', onClick:function(){
 
             var layout = ['topLeft', 'topCenter', 'topRight', 'centerRight', 'center','centerLeft', 'bottomLeft', 'bottomCenter', 'bottomRight', 'bottom', 'top'];
-            $.each(['alert', 'success', 'warning', 'error', 'info', 'alert', 'success', 'warning', 'error', 'info', 'info'], function(index, type){
+            $.each(['alert', 'help', 'warning', 'error', 'info', 'alert', 'success', 'warning', 'error', 'info', 'info'], function(index, type){
                 $.bsNoty({
                     type: type,
                     queue: type,
@@ -234,6 +234,7 @@ return;
                     //force: (type=='info'),
                     defaultHeader: index % 5,
                     header       : (index+1) % 5 ? null : {da:'DANSK', en:'ENGLISH'},//{icon: 'fa-home', text:{da:'Hjem', en:'Home'}},
+
                     buttons      : (index+2) % 5 ? null : [
                                                             {icon:'fa-bicycle', text:{da:'En cykel', en:'A bicycle'}, onClick: function(){ console.log('En cykel klikket');}},
                                                             {icon:'fa-car', text:{da:'En bil', en:'A Car'}, onClick: function(){ console.log('En bil klikket');}}
@@ -695,6 +696,7 @@ small: true,
                                         layout: layout[index],
                                         modal: (type=='info'),
                                         force: (type=='info'),
+                                        closeWith: ['button'],
                                         defaultHeader: true,
                                         text: 'Some notification text '+ Math.random(),
                                         //show: true

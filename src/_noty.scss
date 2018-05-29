@@ -156,8 +156,8 @@ $corner-space: 20px;
             }
         }
 
-        //Container for close-icon moves to top right corner
-        .header-icon-container {
+        //Container for close-icon moves to top right corner when no header
+        &.no-header .header-icon-container {
             position: fixed;
             top: 0;
             right: 0;
@@ -207,7 +207,7 @@ $corner-space: 20px;
 
 
 
-//The five different bg-colors for the different type
+/*The five different bg-colors for the different type*/
 @each $type in $type-list {
     $keyframes-name: noty_keyframes__#{$type};
     @keyframes #{$keyframes-name} {

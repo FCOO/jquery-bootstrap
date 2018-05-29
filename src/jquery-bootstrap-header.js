@@ -62,11 +62,10 @@
         var $this = this;
 
         options = $.extend( true, {headerClassName: '', inclHeader: true, icons: {} }, options );
+        this.addClass( options.headerClassName );
 
         if (options.inclHeader)
-            this
-                .addClass( options.headerClassName )
-                ._bsAddHtml( options.header || $.EMPTY_TEXT );
+            this._bsAddHtml( options.header || $.EMPTY_TEXT );
 
         //Add icons (if any)
         if ( !$.isEmptyObject(options.icons) ) {

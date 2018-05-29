@@ -165,7 +165,8 @@
         //Save closeWith and remove 'button' to prevent default close-button
         var closeWith = options.closeWith,
             closeWithButton = closeWith.indexOf('button') >= 0,
-            closeWithClick = closeWith.indexOf('click') >= 0;
+            closeWithClick = closeWith.indexOf('click') >= 0,
+            headerOptions = null;
 
         //Adjust closeWith
         if (options.buttons)
@@ -190,7 +191,7 @@
 
             options.header = $._bsAdjustIconAndText(options.header) || {};
 
-            var headerOptions =
+            headerOptions =
                 options.defaultHeader ?
                 $.extend({},
                     {
@@ -209,25 +210,27 @@
         //Add callbacks.onTemplate to add content (and close-icon)
         options.callbacks = options.callbacks || {};
         options.callbacks.onTemplate = function() {
-            var _this = this,
-                $barDom = $(this.barDom),
-                $body = $barDom.find('.noty_body'),
-                closeFunc = function( event ){
-                                event.stopPropagation();
-                                _this.close();
-                            };
+            var _this           = this,
+                $barDom         = $(this.barDom),
+                $body           = $barDom.find('.noty_body'),
+                closeFunc       = function( event ){
+                                      event.stopPropagation();
+                                      _this.close();
+                                   },
+                headerClassName = 'noty-header ' + $._bsGetSizeClass({ useTouchSize: true, baseClass: 'noty-header'} ),
+                icons           = {close: { onClick: closeFunc } };
 
             //Insert header before $body (if any)
-            //Use small header unless it is touch-mode and close with button (round x)
             if (headerOptions)
                 $('<div/>')
-                    ._bsAddBaseClassAndSize( {
-                        baseClass   :'noty-header',
-                        useTouchSize: closeWithButton,
-                        small       : !closeWithButton
+                    ._bsHeaderAndIcons({
+                        headerClassName: headerClassName,
+                        header         : headerOptions,
+                        icons          : closeWithButton ? icons : null
                     })
-                    ._bsAddHtml( headerOptions )
                     .insertBefore( $body );
+            else
+                $barDom.addClass('no-header');
 
             //Replace content with text as object {icon, txt,etc}
             $body._bsAddHtml( options.content );
@@ -260,12 +263,16 @@
                     .insertAfter($body);
             }
 
-            if (closeWithButton)
+            if (!headerOptions && closeWithButton)
                 //Add same close-icon as for modal-windows
-                $barDom._bsHeaderAndIcons({
-                    inclHeader: false,
-                    icons     : { close: { onClick: closeFunc }}
-                });
+                $('<div/>')
+                    .css('display', 'contents')
+                    .appendTo( $barDom )
+                    ._bsHeaderAndIcons({
+                        inclHeader     : false,
+                        headerClassName: headerClassName,
+                        icons          : icons
+                    });
         };
 
 
@@ -438,6 +445,14 @@
     window.notyInfo = $.bsNotyInfo = function( text, options ){
         return  notyDefault( 'info', text, options );
     };
+
+    /***************************************************************
+    window.notyHelp / $.bsNotyHelp: Simple help noty with header
+    ****************************************************************/
+    window.notyHelp = $.bsNotyHelp = function( text, options ){
+        return  notyDefault( 'help', text, options );
+    };
+
 
 
     /******************************************************************************

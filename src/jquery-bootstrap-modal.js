@@ -431,7 +431,7 @@
         var $result, $modalDialog,
             id = options.id || '_bsModal'+ modalId++,
             classNames = (options.noVerticalPadding   ? 'no-vertical-padding'    : '') +
-                         (options.noHorizontalPadding ? ' no-horizontal-padding' : ''),
+                         (options.noHorizontalPadding ? ' no-horizontal-padding' : '');
 
         //Adjust options
         options =
@@ -478,11 +478,7 @@
         $result.extend( bsModal_prototype );
 
         //Add close-icon and create modal content
-        options.icons = {
-            close: {
-                onClick: $.proxy( bsModal_prototype.close, $result)
-            }
-        };
+        options.icons = { close: { onClick: $.proxy( bsModal_prototype.close, $result) } };
         $modalDialog._bsModalContent( options );
         $result.data('bsModalDialog', $modalDialog);
 

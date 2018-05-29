@@ -9,50 +9,20 @@ Icons for modal header inside a container
 <i class="header-icon fa-XX [hidden][disabled]"/>
 ****************************************************/
 .header-icon-container {
-
     @include vertical-align-center();
     justify-content: center;
     margin-left : auto;
+    margin-right: 0;
 
+    font-size : 1.5em;
 
-    //Normal size
-    $padding   : $btn-padding-x / 2;
-    $font-size : 1.35em;
+    > * { margin-left: .2em; }
 
-    font-size  : $font-size;
-    margin-right: - $padding;
-
-    > .header-icon {
-        margin : 0;
-        padding: 0 $padding;
-    }
     .fa-stack {
         //Make stacked icon same size as single icons
-        font-size  : $font-size;
-        height     : $font-size;
-        width      : $font-size;
-        line-height: $font-size;
-    }
-
-    //Small size
-    &.header-icon-container-sm {
-        $padding   : $btn-padding-x-sm / 2;
-        $font-size: 1.2em;
-
-        font-size   : $font-size;
-        margin-right: - $padding;
-
-        > .header-icon {
-            margin : 0;
-            padding: 0 $padding;
-        }
-        .fa-stack {
-            //Make stacked icon same size as single icons
-            font-size  : $font-size;
-            height     : $font-size;
-            width      : $font-size;
-            line-height: $font-size;
-        }
+        height     : 1em;
+        width      : 1em;
+        line-height: 1em;
     }
 
     .header-icon {

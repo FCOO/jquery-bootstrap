@@ -24,20 +24,42 @@ $enable-print-styles:       true ; //true !default;
 //TODO $border-width: 1rem/16; //= 1px as rem
 
 //Setting padding around buttons etc. equal in both directions
-
-$padding-factor: 1.5;
-
+/*Not used. No lg-buttons
 $input-btn-padding-y-lg: .75rem;
-$input-btn-padding-x-lg: $padding-factor * $input-btn-padding-y-lg;
+$input-btn-padding-x-lg: $input-btn-padding-y-lg;
+*/
 
-$input-btn-padding-y: .5rem;
-$input-btn-padding-x: $padding-factor * $input-btn-padding-y;
+//NORMAL
+//$font-size-base = 1rem;
+$input-btn-padding-y: .3125rem;
+$input-btn-padding-x: $input-btn-padding-y;
+$border-radius      : .25rem;
 
-$custom-select-padding-y: $input-btn-padding-y; //.375rem !default;
-$custom-select-padding-x: $padding-factor * $input-btn-padding-y; //.75rem !default;
+$custom-select-padding-y: $input-btn-padding-y;
+$custom-select-padding-x: $input-btn-padding-y;
 
+//SMALL
+//$font-size-sm = .875rem
 $input-btn-padding-y-sm: .25rem;
 $input-btn-padding-x-sm: $input-btn-padding-y-sm;
+$border-radius-sm      : .1875rem;
+
+/************************************************************
+Including "size" xs as in Bootstrap 3
+************************************************************/
+$font-size-xs      : .75rem;
+
+$btn-padding-y-xs  : .125rem;
+$btn-padding-x-xs  : $btn-padding-y-xs;
+
+$input-padding-x-xs: $btn-padding-x-xs;
+$input-padding-y-xs: $btn-padding-y-xs;
+
+$border-radius-xs      : .125rem;
+$btn-border-radius-xs  : $border-radius-xs;
+$input-border-radius-xs: $border-radius-xs;
+
+
 
 //Set lighter color for placeholder
 //$input-placeholder-color: #adb5bd; //=$gray-500. Original = $gray-600;
@@ -56,21 +78,6 @@ $dropdown-header-color: #495057; // = $gray-700 Original = $gray-600
 $popover-inner-padding: 0;
 
 //TODO set $popover-max-width as rem instead of px
-
-/************************************************************
-Including "size" xs as in Bootstrap 3
-************************************************************/
-$font-size-xs      : .75rem;
-
-$btn-padding-y-xs  : .1rem;
-$btn-padding-x-xs  : $padding-factor * $btn-padding-y-xs;
-
-$input-padding-x-xs: $btn-padding-x-xs;
-$input-padding-y-xs: $btn-padding-y-xs;
-
-$border-radius-xs      : .1rem;
-$btn-border-radius-xs  : $border-radius-xs;
-$input-border-radius-xs: $border-radius-xs;
 
 /************************************************************
 Border-colors
