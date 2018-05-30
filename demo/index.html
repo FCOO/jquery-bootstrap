@@ -194,7 +194,7 @@ $('body').on('wheel', function(e){
         $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'far fa-check-square'}).appendTo( $body );
         $.bsButton({icon: 'fa-home', square: true}).appendTo( $body );
         $.bsButton({
-            icon: 'fa-envelope',
+            icon: 'fa-adjust',
             bigIcon: true,
             onClick:function(){
                 notyOk({da:'Skide godt', en:'Very good'});
@@ -202,6 +202,12 @@ $('body').on('wheel', function(e){
                 notyError('Ikke så godt');
             }
         }).appendTo( $body );
+
+
+        $.each(['fa-bars', 'fa-search', 'fa-square', 'fa-envelope', 'fa-question-circle', 'fa-list'], function(index, icon){
+            $.bsButton({ icon: icon, bigIcon: true, _square: true }).appendTo( $body );
+        });
+
 
         $.bsButton({
             text: 'Test af Noty',
