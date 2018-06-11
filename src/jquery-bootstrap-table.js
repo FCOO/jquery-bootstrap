@@ -277,17 +277,4 @@ Add sort-functions + save col-index for sorted column
         return $table;
     };
 
-
-
-	/******************************************
-	Initialize/ready
-	*******************************************/
-	$(function() {
-
-
-	});
-	//******************************************
-
-
-
 }(jQuery, this, document));
