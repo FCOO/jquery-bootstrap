@@ -369,6 +369,8 @@
                     .addClass('clickable')
                     .on('doubletap', modalToggleHeight );
         }
+        else
+            $modalContainer.addClass('no-modal-header');
 
         //Create normal content
         $modalContainer._bsModalBodyAndFooter( options, this.bsModal, 'hide-for-modal-extended' );

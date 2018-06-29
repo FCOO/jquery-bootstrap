@@ -112,6 +112,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 
 //HEADER, FIXED-BODY, BODY AND FOOTER
 .modal, .modal-inline {
+    $border-radius: calc( #{$border-radius-lg} - #{$modal-content-border-width} );
 
     font-size: 1rem; //To avoid overwrite from other container
     .modal-content {
@@ -121,6 +122,19 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
         //@include show-and-hide-for-modernizr-test( $modernizr-test , $parent-element-type: '', $incl-no-selector: true, $display-value: '', $incl-table-display: true )
         @include show-and-hide-for-modernizr-test( modal-extended , '&', false, '', false );
         @include show-and-hide-for-modernizr-test( modal-pinned , '&', false, '', false );
+
+
+        &.no-modal-header {
+            padding-top: $border-radius;
+        }
+
+        //no footer header or footer => use modal-footer to make padding-bottom
+        & .modal-footer-header:empty + .modal-footer:empty {
+            display: block;
+            height : $border-radius;
+            padding: 0;
+            border : none;
+        }
 
         .modal-header {
             flex-shrink: 0; //Only .modal-body is shrink
@@ -148,7 +162,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
             flex-shrink: 1; //Only .modal-body is shrink
             flex-grow  : 1; //Only .modal-body is growing
             @include content-padding();
-            @include border-radius( calc( #{$border-radius-lg} - #{$modal-content-border-width} ) );
+            @include border-radius( $border-radius );
 
             //Background-color and color for modal-type-NAME, NAME=alert, success, warning, error, info
             @each $type in $type-list {

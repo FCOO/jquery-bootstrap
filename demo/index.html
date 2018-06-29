@@ -812,6 +812,22 @@ closeButton: true,
             .appendTo( $body)
             .on('click', function(){ tab_modal.show(); });
 
+
+        var no_header_or_footer = $accordion3.asModal({
+            flex: false,
+            scroll: true,
+            noHeader: true,
+            closeButton: false,
+            _header:{icon: 'fa-home', text:{da:'Small Overskrift',en:'Small Header'}},
+            _footer: footer,
+            show: false,
+        });
+
+        $('<button>No header/footer</button>')
+            .appendTo( $body)
+            .on('click', function(){ no_header_or_footer.show(); });
+
+
 var $test =
     $.bsTabs({
         height:'100px',scroll: true,
