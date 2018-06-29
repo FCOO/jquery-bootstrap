@@ -60,6 +60,9 @@ $btn-border-radius-xs  : $border-radius-xs;
 $input-border-radius-xs: $border-radius-xs;
 
 
+//Adjust font-sixe for tool-tips to match Google Maps etc.
+$tooltip-font-size: 0.7rem;
+
 
 //Set lighter color for placeholder
 //$input-placeholder-color: #adb5bd; //=$gray-500. Original = $gray-600;
