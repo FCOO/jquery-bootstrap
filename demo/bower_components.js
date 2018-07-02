@@ -21863,8 +21863,18 @@ return i18next;
             return this;
         },
 
-        //
-        onChange: function(id, selected){
+        //setSelected: function(id, dontCallOnChange )
+        setSelected: function(id, dontCallOnChange ){
+            this.onChange(id, true, null, dontCallOnChange );
+        },
+
+        //setUnselected: function(id, dontCallOnChange )
+        setUnselected: function(id, dontCallOnChange ){
+            this.onChange(id, false, null, dontCallOnChange );
+        },
+
+        //onChange: function(id, selected, dontCallOnChange )
+        onChange: function(id, selected, dummy, dontCallOnChange ){
             //Find clicked child and other selected child
             var $child               = $.grep(this._cbxChildList, function($elem){ return $elem.data('cbx_options').id == id; })[0],
                 childOptions         = $child.data('cbx_options'),
@@ -21881,11 +21891,17 @@ return i18next;
             }
 
             //Only allow click on selected element if options.allowZeroSelected: true
-            if (selected || this.options.allowZeroSelected)
-                childOptions.ownOnChange( childOptions.id, selected, $child, this.options.radioGroupId );
+            if (selected || this.options.allowZeroSelected){
+                $child._cbxSet( selected, true); //Update element
+                if (!dontCallOnChange){
+                    childOptions.ownOnChange( childOptions.id, selected, $child, this.options.radioGroupId );
+                    if (this.options.postOnChange)
+                        this.options.postOnChange( $child );
+                }
+            }
             else
                 //Select again
-                $child._cbxSet( true, !this.options.allowReselect );
+                $child._cbxSet( true, !this.options.allowReselect || dontCallOnChange);
         }
 
     };

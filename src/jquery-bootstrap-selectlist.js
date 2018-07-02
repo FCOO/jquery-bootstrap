@@ -47,7 +47,7 @@
                 $.radioGroup(
                     $.extend({}, options, {
                         radioGroupId     : options.id,
-                        className        : 'active',
+                        className        : 'active highlighted',
                         allowZeroSelected: false
                     })
                 );
@@ -69,6 +69,7 @@
 
         $result
             .on('mouseleave', $.proxy($result._selectlist_onMouseleaveList, $result) )
+            .data('selectlist_radiogroup', radioGroup)
             .find('.active').addClass('highlighted');
         return $result;
     };

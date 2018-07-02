@@ -80,7 +80,6 @@ All control elements get same border-color when normal, hover, active and error
 
 @mixin control-border-color( $border-color: $control-border-color, $border-color-hover: $control-border-color-hover, $incl-error: true ){
     //Normal
-//HER       border-color: $border-color;
     border : $border-width solid $border-color;
     outline: none !important;
 
@@ -89,9 +88,7 @@ All control elements get same border-color when normal, hover, active and error
     &:active,  &.active     {   border-color: darken($border-color, $darken-active-percent);    }
     //:focus
     &:focus, &.focus        {   border-color: $input-focus-border-color;                        }
-
-    // Disabled comes last to overwrite active and focus
-    //:disabled
+    //:disabled - Disabled comes last to overwrite active and focus
     &.disabled,  &:disabled {   border-color: $border-color;                                    }
 
 
@@ -115,7 +112,29 @@ All control elements get same border-color when normal, hover, active and error
 }
 
 @mixin control-color-and-border-color( $color: $control-color, $border-color: $control-border-color, $border-color-hover: $control-border-color-hover, $incl-error: true ){
+
+    $color-hover : darken($color, 20%);
+    $color-active: darken($color, 30%);
+    $color-focus : darken($color, 40%);
+
+    //normal
     color: $color;
+    //:active
+    &:active,  &.active     { color: $color-active; }
+    //:focus
+    &:focus, &.focus        { color: $color-focus;  }
+    //:disabled - Disabled comes last to overwrite active and focus
+    &.disabled,  &:disabled { color: $color;        }
+
+
+    //hover, not focus, not disabled
+    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
+        color: $color-hover;
+    }
+
+    //border-color
     @include control-border-color ( $border-color, $border-color-hover, $incl-error );
 }
 

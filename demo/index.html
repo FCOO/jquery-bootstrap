@@ -478,11 +478,25 @@ return;
                 ]
             })
 
-        $.bsButton()
+
+        var $testButton = $.bsButton()
             .width('3.5rem')
-            .appendTo( $body )
+            .appendTo( $body );
+        $testButton
             .bsSelectListPopover({
-                onChange: function(id, selected, $buttonGroup){console.log('8: bsSelectListPopover', id, selected)},
+                onChange: function(id, selected){
+                    var syncHtml = true;
+                    console.log('8: bsSelectListPopover', id, selected );
+                    if (id == 'nm2km'){
+                        $testButton.data('popover_radiogroup').setSelected('km');
+                        syncHtml = false;
+                    }
+                    if ($testButton.data('popover_options')){
+                        var options = $testButton.data('popover_options');
+                        options.syncHtml = syncHtml;
+                        $testButton.data('popover_options', options);
+                    }
+                },
                 center: true,
                 vertical: true,
                 syncHtml: true,
@@ -492,14 +506,17 @@ return;
 //delay    : { show: 1000, hide: 1000 },
                 placement: 'left',
                 selectedId: 'm',
-                buttons: [
+//                buttons: [
+                list: [
                     {id: 'm',   text: 'm'  },
                     {id: 'km',  text: 'km' },
                     {id: 'nm',  text: 'nm' },
-                    {id:'nm2km', content: [{text: 'nm', title:{da:"Konverter fra nm til km", en:"Convert from nm to km"}},{icon:'fa-caret-right'},{text:'km'}] }
+                    {id:'nm2km', content: {text: 'nm > km', title:{da:"Konverter fra nm til km", en:"Convert from nm to km"}} }
                 ]
             })
 
+
+$testButton.data('popover_radiogroup').setSelected('nm');
 
         header('Modal windows');
 

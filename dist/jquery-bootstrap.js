@@ -1076,6 +1076,8 @@ TODO:
                     .addClass('clickable')
                     .on('doubletap', modalToggleHeight );
         }
+        else
+            $modalContainer.addClass('no-modal-header');
 
         //Create normal content
         $modalContainer._bsModalBodyAndFooter( options, this.bsModal, 'hide-for-modal-extended' );
@@ -1853,10 +1855,12 @@ TODO:
     bsButtonGroupPopover( options ) - create a Bootstrap-popover with buttons
     **********************************************************/
     $.fn.bsButtonGroupPopover = function( options, isSelectList ){
-        return this.bsPopover(  $.extend( options, {
-                        content:  isSelectList ? $.bsSelectList( options ) : $.bsButtonGroup( options )
-                    })
-        );
+        var $content = isSelectList ? $.bsSelectList( options ) : $.bsButtonGroup( options );
+
+        if (isSelectList)
+            this.data('popover_radiogroup', $content.data('selectlist_radiogroup') );
+
+        return this.bsPopover(  $.extend( options, { content:  $content }) );
     };
 
 
@@ -1867,9 +1871,7 @@ TODO:
         return this.bsButtonGroupPopover( $.extend({}, options, {
                         postOnChange : $.proxy( selectListPopover_postOnChange, this ),
                         postCreate   : $.proxy( selectListPopover_postCreate, this ),
-                    }),
-                    true
-        );
+                    }), true );
     };
 
     function selectListPopover_postCreate( content ){
@@ -2114,7 +2116,7 @@ TODO:
                 $.radioGroup(
                     $.extend({}, options, {
                         radioGroupId     : options.id,
-                        className        : 'active',
+                        className        : 'active highlighted',
                         allowZeroSelected: false
                     })
                 );
@@ -2136,6 +2138,7 @@ TODO:
 
         $result
             .on('mouseleave', $.proxy($result._selectlist_onMouseleaveList, $result) )
+            .data('selectlist_radiogroup', radioGroup)
             .find('.active').addClass('highlighted');
         return $result;
     };

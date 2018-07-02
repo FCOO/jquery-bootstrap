@@ -15,7 +15,9 @@ $darken-hover-percent : 5%;
 
 //Bg-color and color for normal controls
 $control-bg-color: $gray-100;
-$control-color   : #111;
+
+$control-color   : #515961; //Between $gray-600 asnd $gray-700;
+
 
 //Global border-color for buttons, lists, inputs etc.
 $control-border-color      : $input-border-color; // = $gray-400
