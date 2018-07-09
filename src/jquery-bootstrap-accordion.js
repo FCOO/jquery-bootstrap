@@ -77,7 +77,6 @@ TODO:
     }
 
     $.bsAccordion = function( options, insideFormGroup ){
-
         var id = 'bsAccordion'+ accordionId++;
         options =
             $._bsAdjustOptions( options, {}, {
@@ -127,7 +126,7 @@ TODO:
                         'aria-controls': collapseId,
                         'aria-target': '#'+collapseId
                     })
-                    ._bsAddHtml( opt.header )
+                    ._bsAddHtml( opt.header || opt )
                     //Add chevrolet-icon
                     .append( $('<i/>').addClass('fa chevrolet') )
 
@@ -185,20 +184,6 @@ TODO:
         if ($card && $card.length)
             $card.children('.collapse').collapse('show');
         this.removeClass('no-transition');
-    };
-
-
-    /**********************************************************
-    bsModalAccordion
-    Create a modal box with accordion content
-    options
-        titleIcon
-        header
-        children
-    **********************************************************/
-    $.bsModalAccordion = function( options ){
-        var $accordion = $.bsAccordion({ children: options.children });
-        return $accordion.asModal( options );
     };
 
 }(jQuery, this, document));

@@ -57,17 +57,17 @@
     $._removeModalBackdropLevel
     Move the backdrop up in z-index
     ******************************************************/
-    $._removeModalBackdropLevel = function(){
+    $._removeModalBackdropLevel = function( noDelay ){
         modalBackdropLevels--;
 
         $modalBackdrop._setModalBackdropZIndex( -1 );
         if (!modalBackdropLevels){
             $modalBackdrop
                 .removeClass('show');
-            window.setTimeout( function(){
+            if (noDelay)
                 $modalBackdrop.addClass('hidden');
-            }, 200 );
-
+            else
+                window.setTimeout( function(){ $modalBackdrop.addClass('hidden'); }, 2000 );
         }
     };
 }(jQuery, this, document));

@@ -47,12 +47,10 @@
                    }));
     }
 
-
-
     //$._bsAdjustIconAndText: Adjust options to fit with {icon"...", text:{da:"", en:".."}
     // options == {da:"..", en:".."} => return {text: options}
-    // options == array of ?? => array of $._bsAdjustIconAndText( ??? )
-    // options == STRING           => return {text: options}
+    // options == array of ??        => array of $._bsAdjustIconAndText( ??? )
+    // options == STRING             => return {text: options}
 
     $._bsAdjustIconAndText = function( options ){
         if (!options)
@@ -447,6 +445,22 @@
         ****************************************************************************************/
         _bsAppendContent: function( options, insideFormGroup ){
 
+            //Internal functions to create baseSlider and timeSlider
+            function buildSlider(options, constructorName){
+                var $sliderInput = $('<input/>'),
+                    slider = $sliderInput[constructorName]( options ).data('baseSlider'),
+                    $result = slider.cache.$container;
+
+                $result
+                    .attr('id', options.id)
+                    .append( $sliderInput );
+
+                return $result;
+            }
+            function buildBaseSlider(options, insideFormGroup){ return buildSlider(options, 'baseSlider', insideFormGroup); }
+            function buildTimeSlider(options, insideFormGroup){ return buildSlider(options, 'timeSlider', insideFormGroup); }
+
+
             if (!options)
                 return this;
 
@@ -468,7 +482,9 @@
             //json-object with options to create bs-elements
             if ($.isPlainObject(options)){
                 var buildFunc = $.fn._bsAddHtml,
-                    neverInsideFormGroup = false;
+                    neverInsideFormGroup = false,
+                    addBorder = false;
+
                 if (options.type)
                     switch (options.type.toLowerCase()){
                         case 'input'        :   buildFunc = $.bsInput;          break;
@@ -479,9 +495,12 @@
                         case 'tabs'         :   buildFunc = $.bsTabs;           neverInsideFormGroup = true; break;
                         case 'table'        :   buildFunc = $.bsTable;          neverInsideFormGroup = true; break;
                         case 'accordion'    :   buildFunc = $.bsAccordion;      neverInsideFormGroup = true; break;
+                        case 'slider'       :   buildFunc = buildBaseSlider;    addBorder = true; break;
+                        case 'timeslider'   :   buildFunc = buildTimeSlider;    addBorder = true; break;
+
+
 //                        case 'xx'           :   buildFunc = $.bsXx;               break;
                     }
-
 
                 //Set the parent-element where to append to created element(s)
                 var $parent = this,
@@ -494,8 +513,18 @@
 
                 if (insideInputGroup || options.prepend || options.before || options.append || options.after){
                     //Create element inside input-group
-                    $parent = $divXXGroup('input-group', options).appendTo( $parent );
-
+                    var $inputGroup = $divXXGroup('input-group', options);
+                    if (addBorder){
+                        //Add border and label (if any)
+                        $inputGroup.addClass('input-group-border', addBorder);
+                        if (options.label){
+                            $('<div/>')
+                                .addClass('has-fixed-label')
+                                ._bsAddHtml( options.label )
+                                .appendTo( $inputGroup );
+                        }
+                    }
+                    $parent = $inputGroup.appendTo( $parent );
                 }
 
                 //Build the element inside $parent

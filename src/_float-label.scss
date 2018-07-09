@@ -29,14 +29,13 @@ Only supports the html-structure
         //Common for all size
         position   : absolute;
         left       : 0;
-        top        : 0;
+        top        : -.5em;
         cursor     : default;
         opacity    : 1;
         transition : all .2s, visibility 0s;
         z-index    : 4;
         line-height: 1;
         color      : $title-color;
-        top        : -.5em;
         padding    : 0;
         margin-left: $input-border-width; //Compensates for border
 
@@ -146,4 +145,40 @@ Only supports the html-structure
     }
 }
 
+/***********************************************
+.input-group.input-group-with-fixed-label
+Style for
+<div class="input-group input-group-border">
+    <div class="has-fixed-label">...</div>
+</div>
+***********************************************/
+.input-group.input-group-border .has-fixed-label {
+//    display: inline;
+    position   : absolute;
+    left       : 0;
+    top        : -.5em;
+    cursor     : default;
+    z-index    : 4;
+    line-height: 1;
+    color      : $title-color;
+    background: white;
+    padding    : 0;
+    margin-left: $input-border-width; //Compensates for border
 
+    //Specicial for size
+    font-size: $font-size-label;
+    left     : $input-padding-x;
+}
+
+    //Different size
+    //Small
+.input-group-sm.input-group.input-group-border .has-fixed-label {
+    font-size: $font-size-label-sm;
+    left     : $input-padding-x-sm;
+}
+
+//Extra small
+.input-group-xs.input-group.input-group-border .has-fixed-label {
+    font-size: $font-size-label-xs;
+    left     : $input-padding-x-xs;
+}

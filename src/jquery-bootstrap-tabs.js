@@ -76,7 +76,7 @@
                             'href'         : '#'+contentId,
                             'aria-controls': contentId
                         })
-                        ._bsAddHtml( opt )
+                        ._bsAddHtml( opt.header || opt )
                         .appendTo( $tabs ),
                 //Create the content-container = content + footer
                 $container =

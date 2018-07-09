@@ -25,6 +25,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Accordion](#accordion)
 - [Tabs](#tabs)
 - [Modal](#modal)
+- [ModalForm](#modalform)
 - [Noty](#noty)
 - [input](#input)
 
@@ -379,12 +380,14 @@ Eq.
 | `noHeader` | `boolean` | `false` | Prevent header even if `options.header` is set |
 | `flex` | `boolean` | `false` | The default width of a modal is 300px. If `true` the width of the modal will adjust to the width of the browser up to 500px |
 | `extraWidth` | `boolean` | `false` | Only when `flex` is set: If `true` the width of the modal will adjust to the width of the browser up to 800px |
+| `isForm` | `boolean` | `false` | If `true` a the content is created inside `<div class="form-group"></div>` |
 | `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
 | `type` | `string` | `""` | Sets `background-color` and `color` to match the [Noty](#noty) types<br> Possible value=`"alert"`, `"success"`, `"warning"`, `"error"`, `"info"`  |
 | `noVerticalPadding` | `boolean` | `false` | If `true` the vertical padding around the contents is zero |
 | `show` | `boolean` |  `true` | The modal is shown after creation |
 | `static` | `boolean` |  `false` | If `true` the modal can only be closed on top-right (x) or a button|
 | `fixedContent` |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
+| `container` |  | `null` | Optional container where the content is build inside |
 | `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `contentContext` |  | `null` | The context for `content` (only `function`) |
 | `footer` | `content` or `[] of content` | `""` | See above |
@@ -399,6 +402,19 @@ Eq.
 
     .show(); //Show the modal
 
+<a name="modalform"></a>
+## ModalForm
+
+	$myModalForm = $.bsModalForm( options ); 
+	$myModalForm.edit( {
+		"id1": "value1",
+		"id2": 123
+	});
+
+Extends `options.content` with `id` and `onSubmit: function( data )`
+method `edit( data )` where `data = { id:value*N}` and `id` match a `options.content[].id`
+
+Description NOT complete. See `src/jquery-bootstrap-form.js` for more
 
 <a name="noty"></a>
 ## Noty
@@ -458,7 +474,8 @@ Five different methods are defined with default options depending of the type of
    
     	//window.noty: method to support noty^2 methods
     	window.noty( options );     
-    
+
+<!--    
 ### **** NEW **** 
 #### options
 | Id | Type | Default | Description |
@@ -470,6 +487,7 @@ Five different methods are defined with default options depending of the type of
 
     .methods1( arg1, arg2,...): Do something
     .methods2( arg1, arg2,...): Do something else
+-->
 
 <!-- 
 <a name="input"></a>
@@ -485,7 +503,7 @@ Five different methods are defined with default options depending of the type of
 
     .methods1( arg1, arg2,...): Do something
     .methods2( arg1, arg2,...): Do something else
- -->
+-->
 
 
 ## Copyright and License

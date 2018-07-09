@@ -8175,6 +8175,17 @@ body.modal-open .modal {
   padding-left: 0;
   padding-right: 0; }
 
+/*
+//Style for outer container for base-slider and time-slider
+.modal, .modal-inline {
+    .modal-body-fixed, .modal-body {
+        //
+
+
+
+    }
+}
+*/
 /************************************************************
 MODAL-BACKDROP
 
@@ -8261,6 +8272,14 @@ FORM
   padding: 0.125rem 0.125rem;
   font-size: 0.75rem; }
 
+.input-group-border {
+  padding: 0.3125rem 0.3125rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem; }
+  .input-group-border.input-group-sm, .input-group-border.input-group-xs {
+    padding: 0.25rem 0.25rem;
+    border-radius: 0.1875rem; }
+
 /************************************************************
 FLOAT-LABEL
 
@@ -8288,14 +8307,13 @@ Only supports the html-structure
   .input-group .has-float-label > span {
     position: absolute;
     left: 0;
-    top: 0;
+    top: -.5em;
     cursor: default;
     opacity: 1;
     transition: all .2s, visibility 0s;
     z-index: 4;
     line-height: 1;
     color: #495057;
-    top: -.5em;
     padding: 0;
     margin-left: 1px;
     font-size: 0.875rem;
@@ -8361,6 +8379,35 @@ Only supports the html-structure
 .input-group-xs.input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus) + * {
   font-size: 0.75rem;
   top: calc(0.125rem + 1px); }
+
+/***********************************************
+.input-group.input-group-with-fixed-label
+Style for
+<div class="input-group input-group-border">
+    <div class="has-fixed-label">...</div>
+</div>
+***********************************************/
+.input-group.input-group-border .has-fixed-label {
+  position: absolute;
+  left: 0;
+  top: -.5em;
+  cursor: default;
+  z-index: 4;
+  line-height: 1;
+  color: #495057;
+  background: white;
+  padding: 0;
+  margin-left: 1px;
+  font-size: 0.875rem;
+  left: 0.3125rem; }
+
+.input-group-sm.input-group.input-group-border .has-fixed-label {
+  font-size: 0.75rem;
+  left: 0.25rem; }
+
+.input-group-xs.input-group.input-group-border .has-fixed-label {
+  font-size: 0.65625rem;
+  left: 0.125rem; }
 
 /************************************************************
 TABLE

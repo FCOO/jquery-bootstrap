@@ -153,6 +153,11 @@
         },
 
         close: function(){
+
+            //If onClose exists => call and check
+            if (this.onClose && !this.onClose())
+                return false;
+
             //If pinable and pinned => unpin
             if (this.bsModal.isPinned)
                 this._bsModalUnpin();
@@ -177,9 +182,6 @@
         setHeaderIconDisabled: function(id){
             this.setHeaderIconEnabled(id, true);
         }
-
-
-
     };
 
     /******************************************************
@@ -217,15 +219,7 @@
                     $modalBody;
 
         //Add content
-        if ($.isFunction( options.content )){
-            var contentFunc = $.proxy( options.content, options.contentContext ),
-                content = contentFunc( $modalContent );
-            if (content)
-                $modalContent.append( content );
-        }
-        else
-            $modalContent.append( options.content );
-
+        $modalContent._bsAppendContent( options.content, options.isForm );
 
         //Add footer
         parts.$footer =
@@ -483,6 +477,8 @@
         options.icons = { close: { onClick: $.proxy( bsModal_prototype.close, $result) } };
         $modalDialog._bsModalContent( options );
         $result.data('bsModalDialog', $modalDialog);
+
+        $result.onClose = options.onClose;
 
         //Create as modal and adds methods
         $result.modal({

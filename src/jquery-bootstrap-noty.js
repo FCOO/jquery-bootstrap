@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function ($, Noty, window, document/*, undefined*/) {
+(function ($, Noty, window, document, undefined) {
 	"use strict";
 
 
@@ -74,7 +74,7 @@
         $bsNotyLayer = bsNotyLayerList[ bsNotyLayerList.length - 1];
 
         //Move down or hide the backdrop
-        $._removeModalBackdropLevel();
+        $._removeModalBackdropLevel( true );
     };
 
 
@@ -153,10 +153,11 @@
             animateClose = 'fadeOut';
         }
 
-        options.animation = {
-            open : 'animated ' + animateOpen,
-            close: 'animated ' + animateClose
-        };
+        if (options.animation == undefined)
+            options.animation = {
+                open : 'animated ' + animateOpen,
+                close: 'animated ' + animateClose
+            };
 
         //Save buttons and remove if from options to prevent default buttons
         var buttons = options.buttons;

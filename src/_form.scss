@@ -15,8 +15,8 @@ FORM
 
 //Including .form-control-xs and .input-group-xs as in Bootstrap 3
 .form-control-xs {
-  padding: $input-padding-y-xs $input-padding-x-xs;
-  font-size: $font-size-xs;
+    padding: $input-padding-y-xs $input-padding-x-xs;
+    font-size: $font-size-xs;
 }
 
 .input-group-xs {
@@ -28,6 +28,23 @@ FORM
         @extend .form-control-xs;
     }
 }
+
+
+.input-group-border {
+    padding: $input-padding-y $input-padding-x;
+
+    border: $input-border-width solid $input-border-color;
+    @include border-radius($input-border-radius);
+
+
+    &.input-group-sm, &.input-group-xs  {
+        padding: $input-padding-y-sm $input-padding-x-sm;
+        @include border-radius($input-border-radius-sm);
+    }
+}
+
+
+
 
 //Make form-control inherited size when they are inside a label with class=has-float-label
 .input-group-lg > label.has-float-label > .form-control { @extend .form-control-lg; }
