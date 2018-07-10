@@ -673,6 +673,7 @@ TODO:
 
 
         //Special version for forms with tabs
+/* TEST HER
         if (this.options.content.type == 'tabs'){
             var $bsTabs =   $.bsTabs(this.options.content, true);
 
@@ -688,7 +689,7 @@ TODO:
 
         }
         else {
-
+*/
             //Create the form
             this.$form =
                 $('<form/>')
@@ -697,7 +698,7 @@ TODO:
             //Create the modal
             this.options.content = this.$form;
             this.$bsModal = $.bsModal( this.options );
-        }
+//HER        }
 
         //Append the hidden submit-button the the form
         this.$form.append( $hiddenSubmitButton );
@@ -1372,7 +1373,12 @@ TODO:
     $.fn._bsModalBodyAndFooter = function(options, parts, className){
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
+            isTabs          = !!(options && options.content && (options.content.type == 'tabs')),
             scrollDirection = options.scroll === true ? 'vertical' : options.scroll;
+
+        //Remove padding if the content is tabs and content isn't created from bsModal - not pretty :-)
+        if (isTabs)
+            className = className + ' no-vertical-padding no-horizontal-padding';
 
         //Append fixed content (if any)
         var $modalFixedContent = parts.$fixedContent =
@@ -1391,15 +1397,19 @@ TODO:
                 $('<div/>')
                     .addClass('modal-body ' + className)
                     .toggleClass('modal-type-' + options.type, !!options.type)
-                    .appendTo( this ),
+                    .appendTo( this );
 
-            $modalContent = parts.$content =
+        if (!isTabs && options.height)
+            $modalBody.height(options.height);
+
+
+        var $modalContent = parts.$content =
                 hasScroll ?
                     $modalBody.addScrollbar({ direction: scrollDirection }) :
                     $modalBody;
 
         //Add content
-        $modalContent._bsAppendContent( options.content, options.isForm );
+        $modalContent._bsAppendContent( options.content, false );
 
         //Add footer
         parts.$footer =
@@ -1430,7 +1440,7 @@ TODO:
         $this.modernizrToggle('modal-extended');
 
         newHeight = $this.outerHeight();
-        $this.height( oldHeight);
+        $this.height(oldHeight);
 
         $this.animate({height: newHeight}, 'fast', function() { $this.height('auto'); });
 
@@ -1467,7 +1477,7 @@ TODO:
     /******************************************************
     _bsModalContent
     Create the content of a modal inside this
-    Sets object with all parts of the result in this.modalParts
+    Sets object with all parts of the result in this.bsModal
     ******************************************************/
     $.fn._bsModalContent = function( options ){
         options = options || {};
@@ -1608,7 +1618,6 @@ TODO:
             id = options.id || '_bsModal'+ modalId++,
             classNames = (options.noVerticalPadding   ? 'no-vertical-padding'    : '') +
                          (options.noHorizontalPadding ? ' no-horizontal-padding' : '');
-
         //Adjust options
         options =
             $._bsAdjustOptions( options, {
@@ -2577,7 +2586,6 @@ TODO:
                 useTouchSize: true
             });
 
-
         var $result =
                 $('<div tabindex="0"/>')
                     ._bsAddIdAndName( options )
@@ -2954,8 +2962,9 @@ Add sort-functions + save col-index for sorted column
                     )
                     .attr({'id': id+'content'})
                     .appendTo( $result );
-            if (options.height)
-                $contents.height( options.height );
+
+        if (options.height)
+            $contents.height( options.height );
 
 
         $.each( options.list, function( index, opt ){
@@ -3004,7 +3013,7 @@ Add sort-functions + save col-index for sorted column
                     .addClass('show active');
                 $container.addClass('show active');
             }
-
+options.scroll = true; //HER
             $content = options.scroll ? $content.addScrollbar() : $content;
 
 
@@ -3506,17 +3515,14 @@ Add sort-functions + save col-index for sorted column
             //Internal functions to create baseSlider and timeSlider
             function buildSlider(options, constructorName){
                 var $sliderInput = $('<input/>'),
-                    slider = $sliderInput[constructorName]( options ).data('baseSlider'),
-                    $result = slider.cache.$container;
+                    slider = $sliderInput[constructorName]( options ).data('baseSlider');
 
-                $result
-                    .attr('id', options.id)
-                    .append( $sliderInput );
-
-                return $result;
+                return slider.cache.$container
+                           .attr('id', options.id)
+                           .append( $sliderInput );
             }
-            function buildBaseSlider(options, insideFormGroup){ return buildSlider(options, 'baseSlider', insideFormGroup); }
-            function buildTimeSlider(options, insideFormGroup){ return buildSlider(options, 'timeSlider', insideFormGroup); }
+            function buildBaseSlider(options/*, insideFormGroup*/){ return buildSlider(options, 'baseSlider'/*, insideFormGroup*/); }
+            function buildTimeSlider(options/*, insideFormGroup*/){ return buildSlider(options, 'timeSlider'/*, insideFormGroup*/); }
 
 
             if (!options)
@@ -3543,8 +3549,9 @@ Add sort-functions + save col-index for sorted column
                     neverInsideFormGroup = false,
                     addBorder = false;
 
-                if (options.type)
-                    switch (options.type.toLowerCase()){
+                if (options.type){
+                    var type = options.type.toLowerCase();
+                    switch (type){
                         case 'input'        :   buildFunc = $.bsInput;          break;
                         case 'button'       :   buildFunc = $.bsButton;         break;
                         case 'select'       :   buildFunc = $.bsSelectBox;      break;
@@ -3555,14 +3562,14 @@ Add sort-functions + save col-index for sorted column
                         case 'accordion'    :   buildFunc = $.bsAccordion;      neverInsideFormGroup = true; break;
                         case 'slider'       :   buildFunc = buildBaseSlider;    addBorder = true; break;
                         case 'timeslider'   :   buildFunc = buildTimeSlider;    addBorder = true; break;
-
-
 //                        case 'xx'           :   buildFunc = $.bsXx;               break;
                     }
+                }
 
                 //Set the parent-element where to append to created element(s)
                 var $parent = this,
                     insideInputGroup = false;
+
                 if (insideFormGroup && !neverInsideFormGroup){
                     //Create outer form-group
                     insideInputGroup = true;

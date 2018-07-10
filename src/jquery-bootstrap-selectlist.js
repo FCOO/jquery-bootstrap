@@ -38,7 +38,6 @@
                 useTouchSize: true
             });
 
-
         var $result =
                 $('<div tabindex="0"/>')
                     ._bsAddIdAndName( options )

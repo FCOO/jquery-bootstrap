@@ -68,27 +68,22 @@ div.btn, div.list-group-item {
     ************************************************************/
     &.transparent {
         $transparent-bg-color: rgba(0,0,0,0);
-        $transparent-color   : #fff;
+        $transparent-color   : #D4D4D4;
 
         background-color: $transparent-bg-color;
 
-        @include color-hover(
-            $transparent-color,     //$color
-            $transparent-bg-color,  //$bg-color
-            true,                   //$hover
-            true,                   //$bg
-            darken($transparent-color, $darken-hover-percent), //$color-hover
-            rgba(0,0,0,.1)          //$bg-color-hover
+        @include control-color(
+            $transparent-color,                 //$color
+            lighten($transparent-color, 10%),   //$color-hover
+            darken(white, 10%),                 //$color-active
+            white                               //$color-focus
         );
-        border-color: rgba(0,0,0, .1);
-        @include control-border-color-hover(rgba(0,0,0,.15));
-        &.focus, &:focus {
-            border-color: rgba(255, 255, 255, .5);
-        }
-        &:active {
-            border-color    : rgba(0,0,0, .2);
-            background-color: rgba(0,0,0, .15);
-        }
+
+        @include control-border-color (
+            rgba(0,0,0, .1),    //$border-color
+            rgba(0,0,0,.15),    //$border-color-hover
+            false               //$incl-error
+        );
     }
 
     /************************************************************

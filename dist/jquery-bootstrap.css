@@ -7065,6 +7065,24 @@ div.btn, div.list-group-item {
 .btn.btn-standard {
   background-color: #f8f9fa;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+  /*
+    //normal
+    color: $color;
+    //:active
+    &:active,  &.active     { color: $color-active; }
+    //:focus
+    &:focus, &.focus        { color: $color-focus;  }
+    //:disabled - Disabled comes last to overwrite active and focus
+    &.disabled,  &:disabled { color: $color;        }
+
+
+    //hover, not focus, not disabled
+    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
+        color: $color-hover;
+    }
+*/
   color: #515961;
   border: 1px solid #ced4da;
   outline: none !important;
@@ -7119,6 +7137,24 @@ div.btn, div.list-group-item {
   .mouse-hover .has-warning .btn.btn-standard:hover:not(:focus):not(:disabled):not(.disabled) {
     border-color: #921925; }
   .btn.btn-standard.primary {
+    /*
+    //normal
+    color: $color;
+    //:active
+    &:active,  &.active     { color: $color-active; }
+    //:focus
+    &:focus, &.focus        { color: $color-focus;  }
+    //:disabled - Disabled comes last to overwrite active and focus
+    &.disabled,  &:disabled { color: $color;        }
+
+
+    //hover, not focus, not disabled
+    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
+        color: $color-hover;
+    }
+*/
     color: #007bff;
     border: 1px solid #007bff;
     outline: none !important; }
@@ -7176,12 +7212,25 @@ div.btn, div.list-group-item {
       text-align: center; }
   .btn.btn-standard.transparent {
     background-color: transparent;
-    color: #fff;
-    background: transparent;
-    border-color: rgba(0, 0, 0, 0.1); }
-    .mouse-hover .btn.btn-standard.transparent:hover {
-      color: #f2f2f2;
-      background: rgba(0, 0, 0, 0.1); }
+    color: #D4D4D4;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    outline: none !important; }
+    .btn.btn-standard.transparent:active, .btn.btn-standard.transparent.active {
+      color: #e6e5e5; }
+    .btn.btn-standard.transparent:focus, .btn.btn-standard.transparent.focus {
+      color: white; }
+    .btn.btn-standard.transparent.disabled, .btn.btn-standard.transparent:disabled {
+      color: #D4D4D4; }
+    .mouse-hover .hover .btn.btn-standard.transparent:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.transparent.hover:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.transparent:hover:not(:focus):not(:disabled):not(.disabled) {
+      color: #eeeded; }
+    .btn.btn-standard.transparent:active, .btn.btn-standard.transparent.active {
+      border-color: rgba(0, 0, 0, 0.1); }
+    .btn.btn-standard.transparent:focus, .btn.btn-standard.transparent.focus {
+      border-color: #80bdff; }
+    .btn.btn-standard.transparent.disabled, .btn.btn-standard.transparent:disabled {
+      border-color: rgba(0, 0, 0, 0.1); }
     .btn.btn-standard.transparent.focus:not(:disabled):not(.disabled), .btn.btn-standard.transparent:focus:not(:disabled):not(.disabled),
     .mouse-hover .hover .btn.btn-standard.transparent:not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.transparent.hover:not(:disabled):not(.disabled),
@@ -7192,11 +7241,6 @@ div.btn, div.list-group-item {
     .mouse-hover .btn.btn-standard.transparent.hover:not(:focus):not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.transparent:hover:not(:focus):not(:disabled):not(.disabled) {
       border-color: rgba(0, 0, 0, 0.15); }
-    .btn.btn-standard.transparent.focus, .btn.btn-standard.transparent:focus {
-      border-color: rgba(255, 255, 255, 0.5); }
-    .btn.btn-standard.transparent:active {
-      border-color: rgba(0, 0, 0, 0.2);
-      background-color: rgba(0, 0, 0, 0.15); }
   .btn.btn-standard.square {
     overflow: hidden;
     height: calc(2 * 0.3125rem + 1.5rem + 2 * 1px);
@@ -8155,37 +8199,24 @@ body.modal-open .modal {
 .modal-inline.modal-sm .modal-body.scrollbar-horizontal {
   padding-bottom: 0.0625rem; }
 
-.modal.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed, .modal.no-vertical-padding .modal-dialog .modal-content .modal-body,
-.modal-inline.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed,
-.modal-inline.no-vertical-padding .modal-dialog .modal-content .modal-body,
-.modal.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed,
-.modal.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body,
-.modal-inline.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed,
-.modal-inline.modal-sm.no-vertical-padding .modal-dialog .modal-content .modal-body {
-  padding-top: 0;
-  padding-bottom: 0; }
+.modal-content .modal-body-fixed.no-vertical-padding,
+.modal-content .modal-body.no-vertical-padding {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important; }
 
-.modal.no-horizontal-padding .modal-dialog .modal-content .modal-body-fixed, .modal.no-horizontal-padding .modal-dialog .modal-content .modal-body,
-.modal-inline.no-horizontal-padding .modal-dialog .modal-content .modal-body-fixed,
-.modal-inline.no-horizontal-padding .modal-dialog .modal-content .modal-body,
-.modal.modal-sm.no-horizontal-padding .modal-dialog .modal-content .modal-body-fixed,
-.modal.modal-sm.no-horizontal-padding .modal-dialog .modal-content .modal-body,
-.modal-inline.modal-sm.no-horizontal-padding .modal-dialog .modal-content .modal-body-fixed,
-.modal-inline.modal-sm.no-horizontal-padding .modal-dialog .modal-content .modal-body {
-  padding-left: 0;
-  padding-right: 0; }
+.no-vertical-padding .modal-dialog .modal-content .modal-body-fixed, .no-vertical-padding .modal-dialog .modal-content .modal-body {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important; }
 
-/*
-//Style for outer container for base-slider and time-slider
-.modal, .modal-inline {
-    .modal-body-fixed, .modal-body {
-        //
+.modal-content .modal-body-fixed.no-horizontal-padding,
+.modal-content .modal-body.no-horizontal-padding {
+  padding-left: 0 !important;
+  padding-right: 0 !important; }
 
+.no-horizontal-padding .modal-dialog .modal-content .modal-body-fixed, .no-horizontal-padding .modal-dialog .modal-content .modal-body {
+  padding-left: 0 !important;
+  padding-right: 0 !important; }
 
-
-    }
-}
-*/
 /************************************************************
 MODAL-BACKDROP
 
@@ -8994,6 +9025,24 @@ Adjustment to Bootstrap tabs
     outline: none !important;
     background-color: #f8f9fa;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    /*
+    //normal
+    color: $color;
+    //:active
+    &:active,  &.active     { color: $color-active; }
+    //:focus
+    &:focus, &.focus        { color: $color-focus;  }
+    //:disabled - Disabled comes last to overwrite active and focus
+    &.disabled,  &:disabled { color: $color;        }
+
+
+    //hover, not focus, not disabled
+    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
+        color: $color-hover;
+    }
+*/
     color: #515961;
     border: 1px solid #ced4da;
     outline: none !important;
@@ -9177,6 +9226,24 @@ https://github.com/berkan52/select2-bootstrap4-theme
     font-size: 1rem;
     line-height: 1.5;
     border-radius: 0.25rem;
+    /*
+    //normal
+    color: $color;
+    //:active
+    &:active,  &.active     { color: $color-active; }
+    //:focus
+    &:focus, &.focus        { color: $color-focus;  }
+    //:disabled - Disabled comes last to overwrite active and focus
+    &.disabled,  &:disabled { color: $color;        }
+
+
+    //hover, not focus, not disabled
+    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
+        color: $color-hover;
+    }
+*/
     color: #515961;
     border: 1px solid #ced4da;
     outline: none !important; }

@@ -34,7 +34,7 @@ position: fixed;
     </style>
 </head>
 
-<body style="padding: 20px">
+<body style="padding: 20px; background-color: #214b87">
 
     <div id="lang"></div>
 
@@ -58,42 +58,6 @@ position: fixed;
 	<script>
 
     $.FONTAWESOME_PREFIX = 'fas';
-    var tabsOptions = {
-            type: 'tabs',
-            hideNotSelectedText: true,
-            list: [
-                {_selected: true, icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'},
-                {
-                    icon: 'fa-globe',
-                    title:{da:'Tidszone', en:'Time zone'},
-                    content: {
-                        type: 'tabs',
-                        small: true,
-//                        scroll: true,
-//                        height: '334px',
-                        list: [
-                            {icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST  Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore.'},
-                            {icon: 'fa-globe', title:{da:'Tidszone', en:'Time zone'},content: 'SECOND'},
-                            {icon: 'fa-calendar',title:{da:'Dato og tid', en:'Date and time'},selected: true,content: '3.'}
-                        ],
-                    },
-                    footer: [{text: {da:'Format', en:'Format'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }]
-                },
-                {
-                    icon: 'fa-calendar',
-                    title:{da:'Dato og tid', en:'Date and time'},
-                    selected: true,
-                    content: {
-                        type: 'selectlist',
-                        selectedId: 'medium',
-                        items     : selectItems3,
-                        onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox2', id, selected)},
-                    }
-                }
-            ],
-            height: 250/16 + 'rem',
-            scroll: true
-        }
 
 /*
 keyboardJS.bind('ctrl',
@@ -354,6 +318,7 @@ return;
                 {id: 'item7', text:{da:'Emne#7', en: 'Item#7'} },
                 {id: 'item8', text:{da:'Emne#8', en: 'Item#8'} },
             ]
+
 /*
         demoBtn({
             text: 'SelectList',
@@ -821,10 +786,68 @@ closeButton: true,
                 });
  */
 
-        var $tabs = $.bsTabs( tabsOptions ),
-        tab_modal = $tabs.asModal({
+        tab_modal = $.bsModal({
+            flex: true,
+            scroll: false,
             header: 'Header',
-            show:false
+            extended: {
+                content: {
+                    type: 'tabs',
+                    hideNotSelectedText: true,
+                    list: [
+                        {
+                            icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'
+                        },
+                        {
+                            icon: 'fa-map',  text:{da:'Kort', en:'Map'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'
+                        },
+                        {
+                            icon: 'fa-globe',
+                            title:{da:'Tidszone', en:'Time zone'},
+                            content: {
+                                type: 'tabs',
+                                small: true,
+                                list: [
+                                    {icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, scroll: true, content: 'FIRST  Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor.'},
+                                    {icon: 'fa-globe', title:{da:'Tidszone', en:'Time zone'},content: 'SECOND'},
+                                    {icon: 'fa-calendar',title:{da:'Dato og tid', en:'Date and time'},selected: true,content: '3.'}
+                                ],
+                            },
+                            footer: [{text: {da:'Format', en:'Format'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }]
+                        },
+                        {
+                            icon: 'fa-calendar',
+                            title:{da:'Dato og tid2', en:'Date and time'},
+                            selected: true,
+                            content: {
+                                type: 'selectlist',
+                                selectedId: 'item2',
+                                items     : [
+                                    {id: 'item1', text:{da:'Emne#1', en: 'Item#1'} },
+                                    {id: 'item2', text:{da:'Emne#2', en: 'Item#2'} },
+                                    {id: 'item3', text:{da:'Emne#3', en: 'Item#3'} },
+                                    {id: 'item4', text:{da:'Emne#4', en: 'Item#4'} },
+                                    {id: 'item5', text:{da:'Emne#5', en: 'Item#5'} },
+                                    {id: 'item6', text:{da:'Emne#6', en: 'Item#6'} },
+                                    {id: 'item7', text:{da:'Emne#7', en: 'Item#7'} },
+                                    {id: 'item8', text:{da:'Emne#8', en: 'Item#8'} },
+                                ],
+                                onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox2', id, selected)},
+                            }
+                        }
+                    ],
+                    height: 150/16 + 'rem',
+                    scroll: true
+                },
+            },
+
+//HER            content: {
+                content: 'dette er en test<br>Linie2<br>Linie3<br>Linie4<br>Linie5',
+                height: '100px',
+                scroll: true,
+//HER            },
+            isExtended: true,
+            show:false,
         });
 
         $('<button>Tabs modal</button>')

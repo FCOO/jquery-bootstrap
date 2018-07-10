@@ -288,36 +288,31 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 
 //no-vertical-padding: No top- or bottom-padding in modal-body and modal-body-fixed
 //no-horizontal-padding: No left- or rightpadding in modal-body and modal-body-fixed
-.modal,
-.modal-inline,
-.modal.modal-sm,
-.modal-inline.modal-sm {
-    &.no-vertical-padding {
-        .modal-dialog .modal-content {
-            .modal-body-fixed, .modal-body {
-                padding-top   : 0;
-                padding-bottom: 0;
-            }
-        }
-    }
-    &.no-horizontal-padding {
-        .modal-dialog .modal-content {
-            .modal-body-fixed, .modal-body {
-                padding-left : 0;
-                padding-right: 0;
-            }
-        }
+.modal-content {
+    .modal-body-fixed.no-vertical-padding,
+    .modal-body.no-vertical-padding {
+        padding-top   : 0 !important;
+        padding-bottom: 0 !important;
     }
 }
-
-/*
-//Style for outer container for base-slider and time-slider
-.modal, .modal-inline {
+.no-vertical-padding .modal-dialog .modal-content {
     .modal-body-fixed, .modal-body {
-        //
-
-
-
+        padding-top   : 0 !important;
+        padding-bottom: 0 !important;
     }
 }
-*/
+
+.modal-content {
+    .modal-body-fixed.no-horizontal-padding,
+    .modal-body.no-horizontal-padding {
+        padding-left : 0 !important;
+        padding-right: 0 !important;
+    }
+}
+.no-horizontal-padding .modal-dialog .modal-content {
+    .modal-body-fixed, .modal-body {
+        padding-left : 0 !important;
+        padding-right: 0 !important;
+    }
+}
+

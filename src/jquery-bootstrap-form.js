@@ -227,6 +227,7 @@
 
 
         //Special version for forms with tabs
+/* TEST HER
         if (this.options.content.type == 'tabs'){
             var $bsTabs =   $.bsTabs(this.options.content, true);
 
@@ -242,7 +243,7 @@
 
         }
         else {
-
+*/
             //Create the form
             this.$form =
                 $('<form/>')
@@ -251,7 +252,7 @@
             //Create the modal
             this.options.content = this.$form;
             this.$bsModal = $.bsModal( this.options );
-        }
+//HER        }
 
         //Append the hidden submit-button the the form
         this.$form.append( $hiddenSubmitButton );

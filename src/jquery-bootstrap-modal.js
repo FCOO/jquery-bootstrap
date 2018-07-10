@@ -192,7 +192,12 @@
     $.fn._bsModalBodyAndFooter = function(options, parts, className){
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
+            isTabs          = !!(options && options.content && (options.content.type == 'tabs')),
             scrollDirection = options.scroll === true ? 'vertical' : options.scroll;
+
+        //Remove padding if the content is tabs and content isn't created from bsModal - not pretty :-)
+        if (isTabs)
+            className = className + ' no-vertical-padding no-horizontal-padding';
 
         //Append fixed content (if any)
         var $modalFixedContent = parts.$fixedContent =
@@ -211,15 +216,19 @@
                 $('<div/>')
                     .addClass('modal-body ' + className)
                     .toggleClass('modal-type-' + options.type, !!options.type)
-                    .appendTo( this ),
+                    .appendTo( this );
 
-            $modalContent = parts.$content =
+        if (!isTabs && options.height)
+            $modalBody.height(options.height);
+
+
+        var $modalContent = parts.$content =
                 hasScroll ?
                     $modalBody.addScrollbar({ direction: scrollDirection }) :
                     $modalBody;
 
         //Add content
-        $modalContent._bsAppendContent( options.content, options.isForm );
+        $modalContent._bsAppendContent( options.content, false );
 
         //Add footer
         parts.$footer =
@@ -250,7 +259,7 @@
         $this.modernizrToggle('modal-extended');
 
         newHeight = $this.outerHeight();
-        $this.height( oldHeight);
+        $this.height(oldHeight);
 
         $this.animate({height: newHeight}, 'fast', function() { $this.height('auto'); });
 
@@ -287,7 +296,7 @@
     /******************************************************
     _bsModalContent
     Create the content of a modal inside this
-    Sets object with all parts of the result in this.modalParts
+    Sets object with all parts of the result in this.bsModal
     ******************************************************/
     $.fn._bsModalContent = function( options ){
         options = options || {};
@@ -428,7 +437,6 @@
             id = options.id || '_bsModal'+ modalId++,
             classNames = (options.noVerticalPadding   ? 'no-vertical-padding'    : '') +
                          (options.noHorizontalPadding ? ' no-horizontal-padding' : '');
-
         //Adjust options
         options =
             $._bsAdjustOptions( options, {

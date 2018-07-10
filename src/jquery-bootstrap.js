@@ -448,17 +448,14 @@
             //Internal functions to create baseSlider and timeSlider
             function buildSlider(options, constructorName){
                 var $sliderInput = $('<input/>'),
-                    slider = $sliderInput[constructorName]( options ).data('baseSlider'),
-                    $result = slider.cache.$container;
+                    slider = $sliderInput[constructorName]( options ).data('baseSlider');
 
-                $result
-                    .attr('id', options.id)
-                    .append( $sliderInput );
-
-                return $result;
+                return slider.cache.$container
+                           .attr('id', options.id)
+                           .append( $sliderInput );
             }
-            function buildBaseSlider(options, insideFormGroup){ return buildSlider(options, 'baseSlider', insideFormGroup); }
-            function buildTimeSlider(options, insideFormGroup){ return buildSlider(options, 'timeSlider', insideFormGroup); }
+            function buildBaseSlider(options/*, insideFormGroup*/){ return buildSlider(options, 'baseSlider'/*, insideFormGroup*/); }
+            function buildTimeSlider(options/*, insideFormGroup*/){ return buildSlider(options, 'timeSlider'/*, insideFormGroup*/); }
 
 
             if (!options)
@@ -485,8 +482,9 @@
                     neverInsideFormGroup = false,
                     addBorder = false;
 
-                if (options.type)
-                    switch (options.type.toLowerCase()){
+                if (options.type){
+                    var type = options.type.toLowerCase();
+                    switch (type){
                         case 'input'        :   buildFunc = $.bsInput;          break;
                         case 'button'       :   buildFunc = $.bsButton;         break;
                         case 'select'       :   buildFunc = $.bsSelectBox;      break;
@@ -497,14 +495,14 @@
                         case 'accordion'    :   buildFunc = $.bsAccordion;      neverInsideFormGroup = true; break;
                         case 'slider'       :   buildFunc = buildBaseSlider;    addBorder = true; break;
                         case 'timeslider'   :   buildFunc = buildTimeSlider;    addBorder = true; break;
-
-
 //                        case 'xx'           :   buildFunc = $.bsXx;               break;
                     }
+                }
 
                 //Set the parent-element where to append to created element(s)
                 var $parent = this,
                     insideInputGroup = false;
+
                 if (insideFormGroup && !neverInsideFormGroup){
                     //Create outer form-group
                     insideInputGroup = true;

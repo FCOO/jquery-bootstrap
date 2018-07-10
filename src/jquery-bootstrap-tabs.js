@@ -56,8 +56,9 @@
                     )
                     .attr({'id': id+'content'})
                     .appendTo( $result );
-            if (options.height)
-                $contents.height( options.height );
+
+        if (options.height)
+            $contents.height( options.height );
 
 
         $.each( options.list, function( index, opt ){
@@ -106,7 +107,7 @@
                     .addClass('show active');
                 $container.addClass('show active');
             }
-
+options.scroll = true; //HER
             $content = options.scroll ? $content.addScrollbar() : $content;
 
 
