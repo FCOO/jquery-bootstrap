@@ -227,34 +227,14 @@
 
         this.options.show = false; //Only show using method edit(...)
 
+        //Create the form
+        this.$form =
+            $('<form/>')
+                ._bsAppendContent( this.options.content, this.options.contentContext, true );
 
-        //Special version for forms with tabs
-/* TEST HER
-        if (this.options.content.type == 'tabs'){
-            var $bsTabs =   $.bsTabs(this.options.content, true);
-
-            //Create the form and move content inside the form
-            $bsTabs._$contents.detach();
-            this.$form =
-                $('<form/>')
-                    .append( $bsTabs._$contents );
-
-            //Create the tabs-modal
-            this.options.content = this.$form;
-            this.$bsModal = $bsTabs.asModal( this.options );
-
-        }
-        else {
-*/
-            //Create the form
-            this.$form =
-                $('<form/>')
-                    ._bsAppendContent( this.options.content, true );
-
-            //Create the modal
-            this.options.content = this.$form;
-            this.$bsModal = $.bsModal( this.options );
-//HER        }
+        //Create the modal
+        this.options.content = this.$form;
+        this.$bsModal = $.bsModal( this.options );
 
         //Append the hidden submit-button the the form
         this.$form.append( $hiddenSubmitButton );

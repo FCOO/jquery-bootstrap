@@ -420,7 +420,7 @@
         },
 
         /****************************************************************************************
-        _bsAppendContent( options, insideFormGroup )
+        _bsAppendContent( options, context, insideFormGroup )
         Create and append any content to this.
         options can be $-element, function, json-object or array of same
 
@@ -443,7 +443,7 @@
         </div>
         if insideFormGroup == true OR options.
         ****************************************************************************************/
-        _bsAppendContent: function( options, insideFormGroup ){
+        _bsAppendContent: function( options, context, insideFormGroup ){
 
             //Internal functions to create baseSlider and timeSlider
             function buildSlider(options, constructorName){
@@ -464,15 +464,15 @@
             //Array of $-element, function etc
             if ($.isArray( options )){
                 var _this = this;
-                $.each(options, function( index, options){
-                    _this._bsAppendContent(options, insideFormGroup);
+                $.each(options, function( index, opt){
+                    _this._bsAppendContent(opt, context, insideFormGroup);
                 });
                 return this;
             }
 
             //Function
             if ($.isFunction( options )){
-                options( this, insideFormGroup );
+                options.call( context, this, insideFormGroup );
                 return this;
             }
 
@@ -526,20 +526,20 @@
                 }
 
                 //Build the element inside $parent
-                buildFunc.apply( this, arguments ).appendTo( $parent );
+                buildFunc.call( this, options, insideFormGroup ).appendTo( $parent );
 
                 var prepend = options.prepend || options.before;
                 if (prepend)
                     $('<div/>')
                         .addClass('input-group-prepend')
-                        ._bsAppendContent( prepend )
-                        .prependTo( $parent /*this*/);
+                        ._bsAppendContent( prepend, options.contentContext  )
+                        .prependTo( $parent );
                 var append = options.append || options.after;
                 if (append)
                     $('<div/>')
                         .addClass('input-group-append')
-                        ._bsAppendContent( append )
-                        .appendTo( $parent /*this*/);
+                        ._bsAppendContent( append, options.contentContext  )
+                        .appendTo( $parent );
 
 
                 return this;

@@ -107,13 +107,13 @@
                     .addClass('show active');
                 $container.addClass('show active');
             }
-options.scroll = true; //HER
+
             $content = options.scroll ? $content.addScrollbar() : $content;
 
 
             //Add content: string, element, function, setup-json-object, or children (=accordion)
             if (opt.content)
-                $content._bsAppendContent( opt.content, insideFormGroup );
+                $content._bsAppendContent( opt.content, opt.contentContext, insideFormGroup );
 
         });
         $result.asModal = bsTabs_asModal;

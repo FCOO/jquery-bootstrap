@@ -157,7 +157,7 @@ TODO:
 
             //Add content: string, element, function or children (=accordion)
                 if (opt.content)
-                    $contentContainer._bsAppendContent( opt.content, insideFormGroup );
+                    $contentContainer._bsAppendContent( opt.content, opt.contentContext, insideFormGroup );
 
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))
@@ -673,34 +673,14 @@ TODO:
 
         this.options.show = false; //Only show using method edit(...)
 
+        //Create the form
+        this.$form =
+            $('<form/>')
+                ._bsAppendContent( this.options.content, this.options.contentContext, true );
 
-        //Special version for forms with tabs
-/* TEST HER
-        if (this.options.content.type == 'tabs'){
-            var $bsTabs =   $.bsTabs(this.options.content, true);
-
-            //Create the form and move content inside the form
-            $bsTabs._$contents.detach();
-            this.$form =
-                $('<form/>')
-                    .append( $bsTabs._$contents );
-
-            //Create the tabs-modal
-            this.options.content = this.$form;
-            this.$bsModal = $bsTabs.asModal( this.options );
-
-        }
-        else {
-*/
-            //Create the form
-            this.$form =
-                $('<form/>')
-                    ._bsAppendContent( this.options.content, true );
-
-            //Create the modal
-            this.options.content = this.$form;
-            this.$bsModal = $.bsModal( this.options );
-//HER        }
+        //Create the modal
+        this.options.content = this.$form;
+        this.$bsModal = $.bsModal( this.options );
 
         //Append the hidden submit-button the the form
         this.$form.append( $hiddenSubmitButton );
@@ -1411,7 +1391,7 @@ TODO:
                     $modalBody;
 
         //Add content
-        $modalContent._bsAppendContent( options.content, false );
+        $modalContent._bsAppendContent( options.content, options.contentContext, false );
 
         //Add footer
         parts.$footer =
@@ -3018,13 +2998,13 @@ Add sort-functions + save col-index for sorted column
                     .addClass('show active');
                 $container.addClass('show active');
             }
-options.scroll = true; //HER
+
             $content = options.scroll ? $content.addScrollbar() : $content;
 
 
             //Add content: string, element, function, setup-json-object, or children (=accordion)
             if (opt.content)
-                $content._bsAppendContent( opt.content, insideFormGroup );
+                $content._bsAppendContent( opt.content, opt.contentContext, insideFormGroup );
 
         });
         $result.asModal = bsTabs_asModal;
@@ -3492,7 +3472,7 @@ options.scroll = true; //HER
         },
 
         /****************************************************************************************
-        _bsAppendContent( options, insideFormGroup )
+        _bsAppendContent( options, context, insideFormGroup )
         Create and append any content to this.
         options can be $-element, function, json-object or array of same
 
@@ -3515,7 +3495,7 @@ options.scroll = true; //HER
         </div>
         if insideFormGroup == true OR options.
         ****************************************************************************************/
-        _bsAppendContent: function( options, insideFormGroup ){
+        _bsAppendContent: function( options, context, insideFormGroup ){
 
             //Internal functions to create baseSlider and timeSlider
             function buildSlider(options, constructorName){
@@ -3536,15 +3516,15 @@ options.scroll = true; //HER
             //Array of $-element, function etc
             if ($.isArray( options )){
                 var _this = this;
-                $.each(options, function( index, options){
-                    _this._bsAppendContent(options, insideFormGroup);
+                $.each(options, function( index, opt){
+                    _this._bsAppendContent(opt, context, insideFormGroup);
                 });
                 return this;
             }
 
             //Function
             if ($.isFunction( options )){
-                options( this, insideFormGroup );
+                options.call( context, this, insideFormGroup );
                 return this;
             }
 
@@ -3598,20 +3578,20 @@ options.scroll = true; //HER
                 }
 
                 //Build the element inside $parent
-                buildFunc.apply( this, arguments ).appendTo( $parent );
+                buildFunc.call( this, options, insideFormGroup ).appendTo( $parent );
 
                 var prepend = options.prepend || options.before;
                 if (prepend)
                     $('<div/>')
                         .addClass('input-group-prepend')
-                        ._bsAppendContent( prepend )
-                        .prependTo( $parent /*this*/);
+                        ._bsAppendContent( prepend, options.contentContext  )
+                        .prependTo( $parent );
                 var append = options.append || options.after;
                 if (append)
                     $('<div/>')
                         .addClass('input-group-append')
-                        ._bsAppendContent( append )
-                        .appendTo( $parent /*this*/);
+                        ._bsAppendContent( append, options.contentContext  )
+                        .appendTo( $parent );
 
 
                 return this;
