@@ -153,25 +153,36 @@ Style for
 </div>
 ***********************************************/
 .input-group.input-group-border .has-fixed-label {
-//    display: inline;
     position   : absolute;
     left       : 0;
-    top        : -.5em;
+    top        : calc(-1 * (#{$input-border-width} + .5em));
     cursor     : default;
     z-index    : 4;
     line-height: 1;
     color      : $title-color;
-    background: white;
     padding    : 0;
     margin-left: $input-border-width; //Compensates for border
 
     //Specicial for size
     font-size: $font-size-label;
     left     : $input-padding-x;
+
+    &::after {
+        //The background for the label
+        display   : block;
+        position  : absolute;
+        height    : 1em;
+        top       : 0;
+        left      : -.1em;
+        right     : -.1em;
+        z-index   : -1;
+        background: white;
+        content   : " ";
+    }
 }
 
-    //Different size
-    //Small
+//Different size
+//Small
 .input-group-sm.input-group.input-group-border .has-fixed-label {
     font-size: $font-size-label-sm;
     left     : $input-padding-x-sm;

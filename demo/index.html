@@ -34,7 +34,7 @@ position: fixed;
     </style>
 </head>
 
-<body style="padding: 20px; background-color: #214b87">
+<body style="padding: 20px; _background-color: #214b87;">
 
     <div id="lang"></div>
 
@@ -839,6 +839,7 @@ closeButton: true,
                     height: 150/16 + 'rem',
                     scroll: true
                 },
+                scroll: false
             },
 
 //HER            content: {
@@ -857,6 +858,7 @@ closeButton: true,
         var testModalForm = null;
         var myData = {
             'mySlider': 71,
+            'formId2': 'Skide godt do',
             'mySelection': false,
 
 //            'formId1': 'formSelect3',
@@ -876,14 +878,14 @@ closeButton: true,
                     ],
                     onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
                     content: {
-                        type:'accordion',
+                        type: 'accordion',
                         list: [
                             {
                                 icon: 'fa-globe',
                                 title:{da:'En test', en:'A test'},
                                 content: [
                         {
-                            id: 'mySlider', type:'slider', label:'Niels for fanden',
+                            id: 'mySlider', type:'slider', label:'Label (NIELS)',
                             _handle: 'round',
                             _showFromTo: false,
                             grid: true,

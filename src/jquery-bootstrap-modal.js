@@ -353,8 +353,11 @@
                 addOnClick  : false
             });
 
-        //If the modal has extended content: Normal and extended content get same scroll-options to have same horizontal padding in normal and extended mode
-        if (options.extended){
+        /*
+        If the modal has extended content and neither normal or extended content is tabs =>
+            Normal and extended content get same scroll-options to have same horizontal padding in normal and extended mode
+        */
+        if (options.content && (options.content.type != "tabs") && options.extended && (options.extended.content.type != "tabs")){
             options.scroll = options.scroll || options.extended.scroll;
             options.extended.scroll = options.scroll;
         }

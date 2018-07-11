@@ -516,7 +516,7 @@
                         //Add border and label (if any)
                         $inputGroup.addClass('input-group-border', addBorder);
                         if (options.label){
-                            $('<div/>')
+                            $('<span/>')
                                 .addClass('has-fixed-label')
                                 ._bsAddHtml( options.label )
                                 .appendTo( $inputGroup );

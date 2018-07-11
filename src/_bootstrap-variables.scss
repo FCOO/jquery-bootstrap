@@ -98,3 +98,22 @@ $card-border-color: lighten( $modal-header-border-color, 7.5% );
 $popover-border-color      : $modal-content-border-color;
 $popover-arrow-outer-color : $popover-border-color;
 
+
+
+/************************************************************
+Make all font-size and margin for header (<h1>, <h2>,...<h6>)
+releative to container (rem -> em)
+************************************************************/
+/* Defalut not changed:
+$font-size-base         : 1rem !default;
+$spacer                 : 1rem !default;
+*/
+$header-font-size       : 1em;
+$headings-margin-bottom : ($header-font-size / 2);  //Original = ($spacer / 2) !default;
+$h1-font-size           : $header-font-size * 2.5;  //Original = $font-size-base * 2.5 !default;
+$h2-font-size           : $header-font-size * 2;    //Original = $font-size-base * 2 !default;
+$h3-font-size           : $header-font-size * 1.75; //Original = $font-size-base * 1.75 !default;
+$h4-font-size           : $header-font-size * 1.5;  //Original = $font-size-base * 1.5 !default;
+$h5-font-size           : $header-font-size * 1.25; //Original = $font-size-base * 1.25 !default;
+$h6-font-size           : $header-font-size;        //Original = $font-size-base !default;
+

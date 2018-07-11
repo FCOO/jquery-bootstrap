@@ -620,8 +620,10 @@ TODO:
                     this.resetValue( true );
                 }
 
-                this.modalForm._enableInputValidation( this, show );
+                this.getFormGroup().css('visibility', show ? 'visible' : 'hidden');
                 this.getElement().prop('disabled', !show);
+
+                this.modalForm._enableInputValidation( this, show );
             }
             return this;
         },
@@ -1534,8 +1536,11 @@ TODO:
                 addOnClick  : false
             });
 
-        //If the modal has extended content: Normal and extended content get same scroll-options to have same horizontal padding in normal and extended mode
-        if (options.extended){
+        /*
+        If the modal has extended content and neither normal or extended content is tabs =>
+            Normal and extended content get same scroll-options to have same horizontal padding in normal and extended mode
+        */
+        if (options.content && (options.content.type != "tabs") && options.extended && (options.extended.content.type != "tabs")){
             options.scroll = options.scroll || options.extended.scroll;
             options.extended.scroll = options.scroll;
         }
@@ -3583,7 +3588,7 @@ options.scroll = true; //HER
                         //Add border and label (if any)
                         $inputGroup.addClass('input-group-border', addBorder);
                         if (options.label){
-                            $('<div/>')
+                            $('<span/>')
                                 .addClass('has-fixed-label')
                                 ._bsAddHtml( options.label )
                                 .appendTo( $inputGroup );

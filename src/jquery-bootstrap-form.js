@@ -174,8 +174,10 @@
                     this.resetValue( true );
                 }
 
-                this.modalForm._enableInputValidation( this, show );
+                this.getFormGroup().css('visibility', show ? 'visible' : 'hidden');
                 this.getElement().prop('disabled', !show);
+
+                this.modalForm._enableInputValidation( this, show );
             }
             return this;
         },
