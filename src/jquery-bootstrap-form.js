@@ -334,6 +334,8 @@
                         {
                             text:{da:'Gem ikke', en:'Don\'t Save'},
                             onClick: function(){
+                                if (_this.options.onCancel)
+                                    _this.options.onCancel(_this.originalValues);
                                 _this.originalValues = newValues;
                                 noty.on('afterClose', function(){ _this.$bsModal.close(); });
                                 noty.close();

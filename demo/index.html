@@ -875,6 +875,7 @@ closeButton: true,
                         {text:'Set=2', onClick: function(){ testModalForm.setValue('formId1', 'formSelect1');} }
                     ],
                     onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
+                    onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
                     content: {
                         type: 'accordion',
                         list: [

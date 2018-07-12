@@ -780,6 +780,8 @@ TODO:
                         {
                             text:{da:'Gem ikke', en:'Don\'t Save'},
                             onClick: function(){
+                                if (_this.options.onCancel)
+                                    _this.options.onCancel(_this.originalValues);
                                 _this.originalValues = newValues;
                                 noty.on('afterClose', function(){ _this.$bsModal.close(); });
                                 noty.close();
@@ -904,7 +906,7 @@ TODO:
         *******************************************************/
         onSubmit: function( event/*, data*/ ){
             this.options.onSubmit ? this.options.onSubmit( this.getValues() ) : null;
-            this.$bsModal.modal('hide');
+            this.$bsModal._close();
 
             event.preventDefault();
             return false;
@@ -1315,6 +1317,11 @@ TODO:
             this.modal('show');
         },
 
+        _close: function(){
+            this.modal('hide');
+        },
+
+
         close: function(){
 
             //If onClose exists => call and check
@@ -1324,7 +1331,7 @@ TODO:
             //If pinable and pinned => unpin
             if (this.bsModal.isPinned)
                 this._bsModalUnpin();
-            this.modal('hide');
+            this._close();
         },
 
         assignTo: function( $element ){
