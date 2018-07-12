@@ -8475,8 +8475,23 @@ Adjustmernt to Bootstrap table
     Cells
     *************************************/
   /*************************************
-    Truncation
-    *************************************/ }
+    Truncation - TODO
+    *************************************/
+  /*
+    thead tr th,
+    tbody tr td {
+        &.text-truncate {
+            span {
+                display         : inline-block;
+                width           : 100%;
+                background-color: red;
+                overflow        : hidden;
+                text-overflow   : ellipsis;
+                white-space     : nowrap;
+            }
+        }
+    }
+*/ }
   .table:not(:last-child) {
     margin-bottom: 0.5rem; }
   .table.table-with-header,
@@ -8548,19 +8563,11 @@ Adjustmernt to Bootstrap table
       color: #fff;
       background: #007bff; }
   .table tbody tr td {
-    padding: 0.3125rem 0.3125rem;
-    font-size: 1rem; }
+    padding: 0.25rem 0.25rem;
+    font-size: 0.875rem; }
     .table tbody tr td.no-horizontal-padding {
       padding-left: 0;
       padding-right: 0; }
-  .table thead tr th.text-truncate span,
-  .table tbody tr td.text-truncate span {
-    display: inline-block;
-    width: 100%;
-    background-color: red;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; }
 
 .modal-sm .table thead tr th,
 .table.table-sm thead tr th {
@@ -8585,12 +8592,12 @@ Adjustmernt to Bootstrap table
     padding-left: 0;
     padding-right: 0; }
 
-.modal-sm .table tbody tr td,
-.table.table-sm tbody tr td {
-  padding: 0.25rem 0.25rem;
-  font-size: 0.875rem; }
-  .modal-sm .table tbody tr td.no-horizontal-padding,
-  .table.table-sm tbody tr td.no-horizontal-padding {
+.modal:not(.modal-sm) .table.table-selectable tbody tr td,
+.table.table-selectable:not(.table-sm) tbody tr td {
+  padding: 0.3125rem 0.3125rem;
+  font-size: 1rem; }
+  .modal:not(.modal-sm) .table.table-selectable tbody tr td.no-horizontal-padding,
+  .table.table-selectable:not(.table-sm) tbody tr td.no-horizontal-padding {
     padding-left: 0;
     padding-right: 0; }
 
@@ -8645,8 +8652,8 @@ Using Bootstrap Collapse to create accordion
     content: "\f054"; }
 
 .accordion .collapse .card-block {
-  padding: 0.3125rem 0.3125rem;
-  font-size: 1rem;
+  padding: 0.25rem 0.25rem;
+  font-size: 0.875rem;
   border-radius: 0.25rem; }
 
 .accordion .collapse .card-footer {
@@ -8692,12 +8699,6 @@ Using Bootstrap Collapse to create accordion
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
-
-.modal-sm .accordion .card-block,
-.modal-xs .accordion .card-block,
-.accordion-sm .card-block {
-  padding: 0.25rem 0.25rem;
-  font-size: 0.875rem; }
 
 .modal-sm .accordion .card-footer,
 .modal-xs .accordion .card-footer,
@@ -9168,6 +9169,7 @@ Adjustment to Bootstrap tabs
     background-color: #fff;
     padding: 0.3125rem 0.3125rem;
     font-size: 1rem;
+    font-size: 0.875rem;
     padding-left: 0.5625rem;
     padding-right: 0.5625rem; }
     .tab-content .tab-pane.active .tab-inner-content.scrollbar-vertical, .tab-content .tab-content .tab-pane.active .tab-inner-content {

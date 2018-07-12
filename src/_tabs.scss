@@ -141,7 +141,10 @@ $selected-margin: 2*$nav-tabs-border-width;
         flex-shrink: 1;
         flex-grow  : 1;
         background-color: $white;
+
         @include content-padding();
+        font-size: $font-size-sm;
+
         padding-left : $scroll-size;
         padding-right: $scroll-size;
 

@@ -2655,7 +2655,9 @@ Add sort-functions + save col-index for sorted column
             baseClass     : 'table',
             styleClass    : 'fixed',
             showHeader    : true,
-            verticalBorder: true
+            verticalBorder: true,
+            useTouchSize  : true
+
         },
 
         defaultColunmOptions = {
@@ -2818,9 +2820,10 @@ Add sort-functions + save col-index for sorted column
         rowId    = 0;
 
     $.bsTable = function( options ){
+
         options = $._bsAdjustOptions( options, defaultOptions );
         options.class =
-            (options.small ? 'table-sm ' : '' ) +
+//Removed because useTouchSize added to options            (options.small ? 'table-sm ' : '' ) +
             (options.verticalBorder ? 'table-bordered ' : '' ) +
             (options.selectable ? 'table-selectable ' : '' ) +
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' ),

@@ -84,7 +84,7 @@ Adjustmernt to Bootstrap table
     Cells
     *************************************/
     tbody tr td {
-        @include content-padding();
+        @include content-padding-sm(); //Default = small
         &.no-horizontal-padding {
             padding-left : 0;
             padding-right: 0;
@@ -92,26 +92,27 @@ Adjustmernt to Bootstrap table
     }
 
     /*************************************
-    Truncation
+    Truncation - TODO
     *************************************/
+/*
     thead tr th,
     tbody tr td {
         &.text-truncate {
             span {
-                display: inline-block;
-                width: 100%;
+                display         : inline-block;
+                width           : 100%;
                 background-color: red;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
+                overflow        : hidden;
+                text-overflow   : ellipsis;
+                white-space     : nowrap;
             }
         }
     }
-
+*/
 } //end of .table
 
 
-//Small size or inside a small modal
+//Small header-size or inside a small modal
 .modal-sm .table,
 .table.table-sm {
     //Header
@@ -125,14 +126,28 @@ Adjustmernt to Bootstrap table
             padding-right: 0;
         }
     }
+}
 
-    //Cell
+//Normal cell-size when not-small and selectable
+.modal:not(.modal-sm) .table.table-selectable,
+.table.table-selectable:not(.table-sm){
     tbody tr td {
-        @include content-padding-sm();
+        @include content-padding();
         &.no-horizontal-padding {
             padding-left : 0;
             padding-right: 0;
         }
     }
 }
+
+
+//Cell
+//HER    tbody tr td {
+//HER        @include content-padding-sm();
+//HER        &.no-horizontal-padding {
+//HER            padding-left : 0;
+//HER            padding-right: 0;
+//HER        }
+//HER    }
+
 
