@@ -23,16 +23,14 @@ Using Bootstrap Collapse to create accordion
         }
     }
 
-    .collapse {
-        .card-block {
-            @include content-padding-sm(); //Allways small content - no need for interaction
-            @include border-radius($card-border-radius);
-        }
+    .card-block {
+        @include content-padding-sm(); //Allways small content - no need for interaction
+        @include border-radius($card-border-radius);
+    }
 
-        .card-footer {
-            @include footer-variant( false );
-            @include border-radius($card-border-radius);
-        }
+    .card-footer {
+        @include footer-variant( false );
+        @include border-radius($card-border-radius);
     }
 
     &.no-transition .collapsing,
@@ -51,9 +49,9 @@ Using Bootstrap Collapse to create accordion
     .card-header {
         @include title-variant-sm();
     }
-//    .card-block {
-//        @include content-padding-sm();
-//    }
+    .card-block {
+        @include content-padding-sm();
+    }
     .card-footer {
         @include footer-variant-sm( false );
         @include border-radius($card-border-radius);

@@ -8679,12 +8679,12 @@ Using Bootstrap Collapse to create accordion
   .accordion .card-header.collapsed .chevrolet:before {
     content: "\f054"; }
 
-.accordion .collapse .card-block {
+.accordion .card-block {
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem;
   border-radius: 0.25rem; }
 
-.accordion .collapse .card-footer {
+.accordion .card-footer {
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -8699,11 +8699,11 @@ Using Bootstrap Collapse to create accordion
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
   border-radius: 0.25rem; }
-  .accordion .collapse .card-footer span {
+  .accordion .card-footer span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
-  .accordion .collapse .card-footer:empty {
+  .accordion .card-footer:empty {
     display: none; }
 
 .accordion.no-transition .collapsing,
@@ -8727,6 +8727,12 @@ Using Bootstrap Collapse to create accordion
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+
+.modal-sm .accordion .card-block,
+.modal-xs .accordion .card-block,
+.accordion-sm .card-block {
+  padding: 0.25rem 0.25rem;
+  font-size: 0.875rem; }
 
 .modal-sm .accordion .card-footer,
 .modal-xs .accordion .card-footer,
