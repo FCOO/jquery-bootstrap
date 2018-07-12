@@ -152,6 +152,11 @@
             this.modal('show');
         },
 
+        _close: function(){
+            this.modal('hide');
+        },
+
+
         close: function(){
 
             //If onClose exists => call and check
@@ -161,7 +166,7 @@
             //If pinable and pinned => unpin
             if (this.bsModal.isPinned)
                 this._bsModalUnpin();
-            this.modal('hide');
+            this._close();
         },
 
         assignTo: function( $element ){

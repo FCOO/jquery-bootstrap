@@ -458,7 +458,7 @@
         *******************************************************/
         onSubmit: function( event/*, data*/ ){
             this.options.onSubmit ? this.options.onSubmit( this.getValues() ) : null;
-            this.$bsModal.modal('hide');
+            this.$bsModal._close();
 
             event.preventDefault();
             return false;
