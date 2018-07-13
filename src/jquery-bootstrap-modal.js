@@ -38,7 +38,9 @@
         isExtended: boolean
         footer
         buttons = [];
+        colseIcon
         closeText
+        noCloseIconOnHeader
 
     **********************************************************/
     var modalId = 0,
@@ -329,12 +331,13 @@
         this.bsModal.isPinned = false;
 
         options = $.extend( true, {
-            headerClassName: 'modal-header',
+            headerClassName     : 'modal-header',
             //Buttons
-            buttons    : [],
-            closeButton: true,
-            closeText  : {da:'Luk', en:'Close'},
-            closeIcon  : 'fa-times',
+            buttons             : [],
+            closeButton         : true,
+            closeText           : {da:'Luk', en:'Close'},
+            closeIcon           : 'fa-times',
+            noCloseIconOnHeader : false,
 
             //Icons
             icons    : {
@@ -347,6 +350,10 @@
 
         //Adjust for options.buttons: null
         options.buttons = options.buttons || [];
+
+        //Hide the close icon on the header
+        if (options.noCloseIconOnHeader && options.icons && options.icons.close)
+            options.icons.close.hidden = true;
 
         //Add close-botton at beginning. Avoid by setting options.closeButton = false
         if (options.closeButton)

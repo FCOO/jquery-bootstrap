@@ -397,6 +397,7 @@ Eq.
 | `closeIcon` | `string`| `"fa-times"` | The icon for the close-button |
 | `extended` | `object`| `null` | The extended content. `{type, fixedContent, flex, noVerticalPadding, content, scroll, footer}`  |
 | `onPin` | `function( pinned [boolean] )`| `null` | When given the icons for pin and unpin as shown. Also when pinned the modal can only be closed using the close icon or close-button |
+| `noCloseIconOnHeader` | `boolean` | `false` | If `true` no close icon is added on the header |
 
 ### Methods
 

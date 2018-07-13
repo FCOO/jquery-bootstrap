@@ -31,7 +31,7 @@
         extend  : 'fa-chevron-up',
         diminish: 'fa-chevron-down',
         pin     : ['fas fa-thumbtack fa-stack-1x fa-inside-circle', 'far fa-circle fa-stack-1x'],
-        unpin   : 'fa-thumbtack text-danger',
+        unpin   : 'fa-thumbtack',
         close   : ['far fa-times-circle fa-stack-1x hide-for-hover', 'fas fa-times-circle text-danger fa-stack-1x show-for-hover']
     };
 
@@ -90,6 +90,7 @@
                         iconOptions.title || classAndTitle.title || '',
                         (iconOptions.className || '') + ' header-icon ' + (classAndTitle.class || '')
                     )
+                    .toggleClass('hidden', !!iconOptions.hidden)
                     .toggleClass('disabled', !!iconOptions.disabled)
                     .attr('data-header-icon-id', id)
                     .on('click', checkDisabled)

@@ -32,9 +32,8 @@ Icons for modal header inside a container
         opacity    : .5;
         cursor     : default;
 
-        &.disabled {
-            opacity: .25;
-        }
+        &.disabled { opacity: .25;  }
+        &.hidden   { display: none; }
 
         & .show-for-hover { display: none; }
 

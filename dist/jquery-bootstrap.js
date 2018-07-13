@@ -950,7 +950,7 @@ TODO:
         extend  : 'fa-chevron-up',
         diminish: 'fa-chevron-down',
         pin     : ['fas fa-thumbtack fa-stack-1x fa-inside-circle', 'far fa-circle fa-stack-1x'],
-        unpin   : 'fa-thumbtack text-danger',
+        unpin   : 'fa-thumbtack',
         close   : ['far fa-times-circle fa-stack-1x hide-for-hover', 'fas fa-times-circle text-danger fa-stack-1x show-for-hover']
     };
 
@@ -1009,6 +1009,7 @@ TODO:
                         iconOptions.title || classAndTitle.title || '',
                         (iconOptions.className || '') + ' header-icon ' + (classAndTitle.class || '')
                     )
+                    .toggleClass('hidden', !!iconOptions.hidden)
                     .toggleClass('disabled', !!iconOptions.disabled)
                     .attr('data-header-icon-id', id)
                     .on('click', checkDisabled)
@@ -1203,7 +1204,9 @@ TODO:
         isExtended: boolean
         footer
         buttons = [];
+        colseIcon
         closeText
+        noCloseIconOnHeader
 
     **********************************************************/
     var modalId = 0,
@@ -1494,12 +1497,13 @@ TODO:
         this.bsModal.isPinned = false;
 
         options = $.extend( true, {
-            headerClassName: 'modal-header',
+            headerClassName     : 'modal-header',
             //Buttons
-            buttons    : [],
-            closeButton: true,
-            closeText  : {da:'Luk', en:'Close'},
-            closeIcon  : 'fa-times',
+            buttons             : [],
+            closeButton         : true,
+            closeText           : {da:'Luk', en:'Close'},
+            closeIcon           : 'fa-times',
+            noCloseIconOnHeader : false,
 
             //Icons
             icons    : {
@@ -1512,6 +1516,10 @@ TODO:
 
         //Adjust for options.buttons: null
         options.buttons = options.buttons || [];
+
+        //Hide the close icon on the header
+        if (options.noCloseIconOnHeader && options.icons && options.icons.close)
+            options.icons.close.hidden = true;
 
         //Add close-botton at beginning. Avoid by setting options.closeButton = false
         if (options.closeButton)

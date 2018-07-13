@@ -7532,6 +7532,8 @@ Icons for modal header inside a container
     cursor: default; }
     .header-icon-container .header-icon.disabled {
       opacity: .25; }
+    .header-icon-container .header-icon.hidden {
+      display: none; }
     .header-icon-container .header-icon .show-for-hover {
       display: none; }
     .header-icon-container .header-icon:not(.disabled):hover {
