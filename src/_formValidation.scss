@@ -1,23 +1,6 @@
 /***********************************************
-	fcoo-modal-form.scss,
-
-	(c) 2018, FCOO
-
-	https://github.com/FCOO/fcoo-modal-form
-	https://github.com/FCOO
-
-
+FORMVALIDATION
 ************************************************/
-//BOURBON - http://bourbon.io/
-@import "../bower_components/bourbon/core/bourbon";
-
-//MODERNIZR-MIXIN - https://github.com/danielguillan/modernizr-mixin
-@import "../bower_components/modernizr-mixin/stylesheets/modernizr";
-
-//MATHSASS - https://github.com/terkel/mathsass
-@import "../bower_components/mathsass/dist/math";
-
-
 
 /************************************************************
 Style for formValidation (via fcoo-form-validation)
@@ -27,8 +10,13 @@ Style for formValidation (via fcoo-form-validation)
     $height: $font-size + $padding-factor * $padding-bottom;
     padding-top   : $padding-bottom;
     padding-bottom: $height;
+
     &.has-warning {
         padding-bottom: 0px;
+    }
+
+    &.no-validation {
+        padding-bottom: $padding-bottom;
     }
 
     .form-control-feedback {

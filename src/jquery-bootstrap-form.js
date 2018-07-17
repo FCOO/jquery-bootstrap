@@ -44,13 +44,18 @@
         },
 
         /*******************************************************
-        getSlider
+        getAnySlider
         *******************************************************/
-        getSlider: function(){
-            this.slider = this.slider || this.getElement().find('input').data('baseSlider');
+        getAnySlider: function(type){
+            this.slider = this.slider || this.getElement().find('input').data(type);
             return this.slider;
         },
 
+        /*******************************************************
+        getSlider, getTimeSlider
+        *******************************************************/
+        getSlider    : function(){ return this.getAnySlider('baseSlider'); },
+        getTimeSlider: function(){ return this.getAnySlider('timeSlider'); },
         /*******************************************************
         getFormGroup
         *******************************************************/
@@ -71,8 +76,9 @@
                 case 'checkbox' : $elem.prop('checked', !!value );      break;
 //TODO case 'selectlist': ... break;
 //TODO case 'radio': ... break;
-                case 'slider'    :
-                case 'timeslider': this.getSlider().setValue( value ); break;
+                case 'slider'    : this.getSlider().setValue( value ); break;
+                case 'timeslider': this.getTimeSlider().setValue( value ); break;
+                case 'text'      : break;
             }
             this.onChange();
             return validate ? this.validate() : this;
@@ -89,8 +95,9 @@
                 case 'checkbox'  : result = false;    break;
 //TODO case 'selectlist': result = ... break;
 //TODO case 'radio': result = ... break;
-                case 'slider'    :
-                case 'timeslider': result = this.getSlider().result.min; break;
+                case 'slider'    : result = this.getSlider().result.min; break;
+                case 'timeslider': result = this.getTimeSlider().result.min; break;
+                case 'text'      : result = '';
             }
             return result;
         },
@@ -125,6 +132,7 @@
 //TODO case 'radio': ... break;
                 case 'slider'    :
                 case 'timeslider': result = this._getSliderValue(); break;
+                case 'text'      : result = ' '; break;
             }
             return result || this.getResetValue();
         },

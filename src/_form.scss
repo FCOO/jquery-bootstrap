@@ -31,8 +31,6 @@ FORM
 
 
 .input-group-border {
-    margin-top: 0.75em;
-
     padding: $input-padding-y $input-padding-x;
 
     border: $input-border-width solid $input-border-color;
@@ -42,6 +40,10 @@ FORM
     &.input-group-sm, &.input-group-xs  {
         padding: $input-padding-y-sm $input-padding-x-sm;
         @include border-radius($input-border-radius-sm);
+    }
+
+    &.input-group-border-with-label {
+        margin-top: 0.75em;
     }
 }
 

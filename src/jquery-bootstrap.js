@@ -448,14 +448,19 @@
             //Internal functions to create baseSlider and timeSlider
             function buildSlider(options, constructorName){
                 var $sliderInput = $('<input/>'),
-                    slider = $sliderInput[constructorName]( options ).data('baseSlider');
+                    slider = $sliderInput[constructorName]( options ).data(constructorName);
 
+console.log($sliderInput);
                 return slider.cache.$container
                            .attr('id', options.id)
                            .append( $sliderInput );
             }
             function buildBaseSlider(options/*, insideFormGroup*/){ return buildSlider(options, 'baseSlider'/*, insideFormGroup*/); }
             function buildTimeSlider(options/*, insideFormGroup*/){ return buildSlider(options, 'timeSlider'/*, insideFormGroup*/); }
+
+            function buildText( options ){
+                return $('<div/>')._bsAddHtml( options );
+            }
 
 
             if (!options)
@@ -480,7 +485,8 @@
             if ($.isPlainObject(options)){
                 var buildFunc = $.fn._bsAddHtml,
                     neverInsideFormGroup = false,
-                    addBorder = false;
+                    addBorder = false,
+                    noValidation = false;
 
                 if (options.type){
                     var type = options.type.toLowerCase();
@@ -495,6 +501,7 @@
                         case 'accordion'    :   buildFunc = $.bsAccordion;      neverInsideFormGroup = true; break;
                         case 'slider'       :   buildFunc = buildBaseSlider;    addBorder = true; break;
                         case 'timeslider'   :   buildFunc = buildTimeSlider;    addBorder = true; break;
+                        case 'text'         :   buildFunc = buildText;          addBorder = true; noValidation = true; break;
 //                        case 'xx'           :   buildFunc = $.bsXx;               break;
                     }
                 }
@@ -507,15 +514,18 @@
                     //Create outer form-group
                     insideInputGroup = true;
                     $parent = $divXXGroup('form-group', options).appendTo( $parent );
+                    if (noValidation || options.noValidation)
+                        $parent.addClass('no-validation');
                 }
 
                 if (insideInputGroup || options.prepend || options.before || options.append || options.after){
                     //Create element inside input-group
                     var $inputGroup = $divXXGroup('input-group', options);
-                    if (addBorder){
+                    if (addBorder && !options.noBorder){
                         //Add border and label (if any)
-                        $inputGroup.addClass('input-group-border', addBorder);
+                        $inputGroup.addClass('input-group-border');
                         if (options.label){
+                            $inputGroup.addClass('input-group-border-with-label');
                             $('<span/>')
                                 .addClass('has-fixed-label')
                                 ._bsAddHtml( options.label )
