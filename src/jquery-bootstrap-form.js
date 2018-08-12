@@ -44,18 +44,20 @@
         },
 
         /*******************************************************
-        getAnySlider
+        getSlider
         *******************************************************/
-        getAnySlider: function(type){
-            this.slider = this.slider || this.getElement().find('input').data(type);
+        getSlider: function(){
+            this.slider = this.slider || this.getElement().data('slider');
             return this.slider;
         },
 
         /*******************************************************
-        getSlider, getTimeSlider
+        getRadioGroup
         *******************************************************/
-        getSlider    : function(){ return this.getAnySlider('baseSlider'); },
-        getTimeSlider: function(){ return this.getAnySlider('timeSlider'); },
+        getRadioGroup: function(){
+            this.radioGroup = this.radioGroup || this.getElement().data('radioGroup');
+            return this.radioGroup;
+        },
         /*******************************************************
         getFormGroup
         *******************************************************/
@@ -71,13 +73,13 @@
         setValue: function(value, validate){
             var $elem = this.getElement();
             switch (this.options.type || 'input'){
-                case 'input'    : $elem.val( value );                   break;
-                case 'select'   : $elem.val( value ).trigger('change'); break;
-                case 'checkbox' : $elem.prop('checked', !!value );      break;
-//TODO case 'selectlist': ... break;
+                case 'input'     : $elem.val( value );                   break;
+                case 'select'    : $elem.val( value ).trigger('change'); break;
+                case 'checkbox'  : $elem.prop('checked', !!value );      break;
+                case 'selectlist': this.getRadioGroup().setSelected(value); break;
 //TODO case 'radio': ... break;
-                case 'slider'    : this.getSlider().setValue( value ); break;
-                case 'timeslider': this.getTimeSlider().setValue( value ); break;
+                case 'slider'    :
+                case 'timeslider': this.getSlider().setValue( value ); break;
                 case 'text'      : break;
             }
             this.onChange();
@@ -93,10 +95,10 @@
                 case 'input'     : result = '';       break;
                 case 'select'    : result = -1;       break;
                 case 'checkbox'  : result = false;    break;
-//TODO case 'selectlist': result = ... break;
+                case 'selectlist': result = this.getRadioGroup().options.list[0].id; break;
 //TODO case 'radio': result = ... break;
-                case 'slider'    : result = this.getSlider().result.min; break;
-                case 'timeslider': result = this.getTimeSlider().result.min; break;
+                case 'slider'    :
+                case 'timeslider': result = this.getSlider().result.min; break;
                 case 'text'      : result = '';
             }
             return result;
@@ -128,7 +130,7 @@
                 case 'input'     : result = $elem.val();               break;
                 case 'select'    : result = $elem.val();               break;
                 case 'checkbox'  : result = !!$elem.prop('checked');   break;
-//TODO case 'selectlist': ... break;
+                case 'selectlist': result = this.getRadioGroup().getSelected(); break;
 //TODO case 'radio': ... break;
                 case 'slider'    :
                 case 'timeslider': result = this._getSliderValue(); break;
@@ -257,7 +259,9 @@
         this._addValidation();
 
         //Add the validations
-        this._eachInput( function( input ){ input.addValidation(); });
+        this._eachInput( function( input ){
+            input.addValidation();
+        });
 
         //Add onSubmit
         this._addOnSubmit( $.proxy(this.onSubmit, this) );
@@ -285,7 +289,6 @@
         edit
         *******************************************************/
         edit: function( values, tabIndexOrId ){
-
             this.$bsModal.show();
 
             if (tabIndexOrId !== undefined)

@@ -855,9 +855,11 @@ closeButton: true,
 
         var testModalForm = null;
         var myData = {
-            'mySlider': 71,
+            'mySlider': 20,
+            'mySlider2': 10,
             'formId2': 'Skide godt do',
             'mySelection': false,
+            'theSelectList': 'item3'
 
 //            'formId1': 'formSelect3',
 //            'formId2-1': 'formSelect3',
@@ -873,7 +875,6 @@ closeButton: true,
 //noCloseIconOnHeader: true,
 
                     buttons: [
-                        {text:'Reset', onClick: function(){ testModalForm.setValue('formId1', -1);}      },
                         {text:'Set=2', onClick: function(){ testModalForm.setValue('formId1', 'formSelect1');} }
                     ],
                     onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
@@ -881,6 +882,24 @@ closeButton: true,
                     content: {
                         type: 'accordion',
                         list: [
+                            {
+                                icon: 'fa-home',
+                                title:{da:'Selectlist'},
+                                content: {
+                                    type: 'selectlist', label: 'En select-list',
+                                    id: 'theSelectList',
+                                    items     : [
+                                        {id: 'item1', text:{da:'Emne#1', en: 'Item#1'} },
+                                        {id: 'item2', text:{da:'Emne#2', en: 'Item#2'} },
+                                        {id: 'item3', text:{da:'Emne#3', en: 'Item#3'} },
+                                        {id: 'item4', text:{da:'Emne#4', en: 'Item#4'} },
+                                        {id: 'item5', text:{da:'Emne#5', en: 'Item#5'} },
+                                        {id: 'item6', text:{da:'Emne#6', en: 'Item#6'} },
+                                        {id: 'item7', text:{da:'Emne#7', en: 'Item#7'} },
+                                        {id: 'item8', text:{da:'Emne#8', en: 'Item#8'} },
+                                    ]
+                                },
+                            },
                             {
                                 icon: 'fa-globe',
                                 title:{da:'En test', en:'A test'},
@@ -896,7 +915,31 @@ closeButton: true,
                                         _handle: 'round',
                                         _showFromTo: false,
                                         grid: true,
-                                        min:-24, max:48, majorTicksOffset:0, stepOffset:0, onChanging: function( obj ){ console.log( obj.value ); }
+                                        min:-24, max:48, majorTicksOffset:0, stepOffset:0,
+                                        handleFixed: true,
+                                        slider:"fixed",
+                                        mousewheel: true,
+                                        width: 3*400,
+                                        showLineColor: false,
+                                        resizable: false,
+
+                                        onChanging: function( obj ){ console.log( obj.value ); }
+                                    },
+                                    {
+                                        id: 'mySlider2', type:'timeslider', label:'My slider 2',
+                                        _noBorder: true,
+                                        handle: 'round',
+                                        _showFromTo: false,
+                                        grid: true,
+                                        min:-24, max:48, majorTicksOffset:0, stepOffset:0,
+
+
+                                        mousewheel: true,
+
+                                        showLineColor: false,
+
+
+                                        onChanging: function( obj ){ console.log( obj.value ); }
                                     },
                                     {
                                         id:'mySelection', type:'checkbox', text: 'Vælg mig'

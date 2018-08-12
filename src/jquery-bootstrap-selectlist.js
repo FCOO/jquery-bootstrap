@@ -51,9 +51,11 @@
                     })
                 );
 
+        $result.data('radioGroup', radioGroup);
+
         $.each( options.list, function( index, itemOptions ){
             var isItem = (itemOptions.id != undefined ),
-                $item = $(isItem ? '<button/>' : '<div/>');
+                $item = $(isItem ? '<a/>' : '<div/>');
             $item
                 .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
                 .addClass( options.center ? 'text-center' : '')
