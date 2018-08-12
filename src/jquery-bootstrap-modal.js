@@ -196,7 +196,7 @@
     Create the body and footer content (exc header and bottoms)
     of a modal inside this. Created elements are saved in parts
     ******************************************************/
-    $.fn._bsModalBodyAndFooter = function(options, parts, className){
+    $.fn._bsModalBodyAndFooter = function(options, parts, className, noClassNameForFixed, noClassNameForFooter){
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
             isTabs          = !!(options && options.content && (options.content.type == 'tabs')),
@@ -209,7 +209,7 @@
         //Append fixed content (if any)
         var $modalFixedContent = parts.$fixedContent =
                 $('<div/>')
-                    .addClass('modal-body-fixed ' + className + (hasScroll ? ' scrollbar-'+scrollDirection : ''))
+                    .addClass('modal-body-fixed ' + (noClassNameForFixed ? '' : className) + (hasScroll ? ' scrollbar-'+scrollDirection : ''))
                     .appendTo( this );
         if (options.fixedContent){
             if ($.isFunction( options.fixedContent ))
@@ -240,9 +240,9 @@
         //Add footer
         parts.$footer =
                 $('<div/>')
-                    .addClass('modal-footer-header ' + className)
+                    .addClass('modal-footer-header ' + (noClassNameForFooter ? '' : className))
                     .appendTo( this )
-                    ._bsAddHtml( options.footer );
+                    ._bsAddHtml( options.footer === true ? '' : options.footer );
         return this;
     };
 
@@ -390,13 +390,32 @@
         else
             $modalContainer.addClass('no-modal-header');
 
+        //If options.extended.fixedContent == true and/or options.extended.footer == true => normal and extended uses same fixed and/or footer content
+        var noClassNameForFixed = false,
+            noClassNameForFooter = false;
+        if (options.extended) {
+            //If common fixed content => add it as normal fixed content
+            if ((options.fixedContent === true) || (options.extended.fixedContent === true)) {
+                noClassNameForFixed = true;
+                options.fixedContent = options.extended.fixedContent === true ? options.fixedContent : options.extended.fixedContent;
+                options.extended.fixedContent = '';
+            }
+
+            //If common footer content => add it as extended footer content
+            if ((options.footer === true) || (options.extended.footer === true)) {
+                noClassNameForFooter = true;
+                options.extended.footer = options.extended.footer === true ? options.footer : options.extended.footer;
+                options.footer = '';
+            }
+        }
+
         //Create normal content
-        $modalContainer._bsModalBodyAndFooter( options, this.bsModal, 'hide-for-modal-extended' );
+        $modalContainer._bsModalBodyAndFooter(options, this.bsModal, 'hide-for-modal-extended', noClassNameForFixed, false );
 
         //Create extended content (if any)
         if (options.extended){
             this.bsModal.extended = {};
-            $modalContainer._bsModalBodyAndFooter( options.extended, this.bsModal.extended, 'show-for-modal-extended' );
+            $modalContainer._bsModalBodyAndFooter( options.extended, this.bsModal.extended, 'show-for-modal-extended', false, noClassNameForFooter );
         }
 
         //Add buttons (if any)

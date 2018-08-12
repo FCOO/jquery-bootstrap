@@ -395,7 +395,7 @@ Eq.
 | `buttons` | `[] of button-options` | `[]` | Array of options for buttons in the footer. See Button above. `closeOnClick: true/false` is added to set if the button closes the modal |
 | `closeText` | `string or i18n-record`| `{da:'Luk', en:'Close'}` | The text for the close-button. |
 | `closeIcon` | `string`| `"fa-times"` | The icon for the close-button |
-| `extended` | `object`| `null` | The extended content. `{type, fixedContent, flex, noVerticalPadding, content, scroll, footer}`  |
+| `extended` | `object`| `null` | The extended content. `{type, fixedContent, flex, noVerticalPadding, content, scroll, footer}` If `fixedContent===true` or `footer===true` the content form normal state is also shown in extended mode   |
 | `onPin` | `function( pinned [boolean] )`| `null` | When given the icons for pin and unpin as shown. Also when pinned the modal can only be closed using the close icon or close-button |
 | `noCloseIconOnHeader` | `boolean` | `false` | If `true` no close icon is added on the header |
 
