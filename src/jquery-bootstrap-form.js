@@ -82,7 +82,7 @@
                 case 'timeslider': this.getSlider().setValue( value ); break;
                 case 'text'      : break;
             }
-            this.onChange();
+            this.onChanging();
             return validate ? this.validate() : this;
         },
 
@@ -143,7 +143,6 @@
         addValidation - Add the validations
         *******************************************************/
         addValidation: function(){
-            this.getElement().on('change', $.proxy( this.onChange, this ));
             this.modalForm._addInputValidation( this );
         },
 
@@ -155,11 +154,15 @@
             return this;
         },
 
+
         /*******************************************************
-        onChange
+        onChanging
         *******************************************************/
-        onChange: function(){
-            this.modalForm.showOrHide( this );
+        onChanging: function(){
+            if (this.modalForm.isCreated){
+                this.modalForm.showOrHide( this );
+                this.modalForm.onChanging();
+            }
         },
 
         /*******************************************************
@@ -198,8 +201,11 @@
     *************************************************************************
     BsModalForm( options )
     options:
-        content: json-object with full content
-        onSubmit : function( values )
+        content: json-object with full content Samer as content for bsModal with extention of
+            id, and
+            showWhen and hideWhen = [id] of value: hide or show element when another element with id has value
+        onChanging: function( values ) - called when the value of any of the elements are changed
+        onSubmit  : function( values ) - called when the form is submitted
     *************************************************************************
     ************************************************************************/
     function BsModalForm( options ){
@@ -214,14 +220,27 @@
         this.inputs = {};
 
         var types = ['input', 'select', 'selectlist', 'checkbox', 'radio', 'table', 'slider', 'timeslider'];
+
         function setId( dummy, obj ){
-            if ($.isPlainObject(obj) && (obj.type !== undefined) && (types.indexOf(obj.type) >= 0) && obj.id)
-                _this.inputs[obj.id] = new BsModalInput( obj, _this );
+            if ($.isPlainObject(obj) && (obj.type !== undefined) && (types.indexOf(obj.type) >= 0) && obj.id){
+                var bsModalInput = new BsModalInput( obj, _this ),
+                    onChangingFunc = $.proxy( bsModalInput.onChanging, bsModalInput );
+
+                //Set options to call onChanging
+                switch (obj.type){
+                    case 'slider'    :
+                    case 'timeslider': obj.onChanging = onChangingFunc; break;
+                    default          : obj.onChange = onChangingFunc;
+                }
+                //Add element to inputs
+                _this.inputs[obj.id] = bsModalInput;
+            }
             else
                 if ($.isPlainObject(obj) || ($.type(obj) == 'array'))
                     $.each( obj, setId );
         }
         setId( 'dummy', this.options.content);
+
 
         //Create a hidden submit-button to be placed inside the form
         var $hiddenSubmitButton = this.$hiddenSubmitButton = $('<button type="submit" style="display:none"/>');
@@ -263,6 +282,7 @@
             input.addValidation();
         });
 
+
         //Add onSubmit
         this._addOnSubmit( $.proxy(this.onSubmit, this) );
 
@@ -303,7 +323,25 @@
             this._resetValidation();
 
             this.showOrHide( null );
+            this.isCreated = true;
+        },
 
+        /*******************************************************
+        isDifferent( values ) - retur true if values is differnet from this.getValues()
+        *******************************************************/
+        isDifferent: function( values ){
+            //Check if any of the new values are different from the original ones
+            var newValues = this.getValues(),
+                result = false;
+
+            $.each( newValues, function(id, value){
+                if (!values.hasOwnProperty(id) || (values[id] != value)){
+                    result = true;
+                    return false;
+                }
+            });
+
+            return result;
         },
 
         /*******************************************************
@@ -311,22 +349,11 @@
         *******************************************************/
         onClose: function(){
             //Check if any of the new values are different from the original ones
-            var _this = this,
-                originalValues = this.originalValues,
-                newValues = this.getValues(),
-                different = false;
-
-            $.each( newValues, function(id, value){
-                if (originalValues.hasOwnProperty(id) && (originalValues[id] != value)){
-                    different = true;
-                    return false;
-                }
-            });
-
-            if (!different)
+            if (!this.isDifferent(this.originalValues))
                 return true;
 
-            var noty =
+            var _this = this,
+                noty =
                 $.bsNoty({
                     type     : 'info',
                     modal    : true,
@@ -347,7 +374,7 @@
                             onClick: function(){
                                 if (_this.options.onCancel)
                                     _this.options.onCancel(_this.originalValues);
-                                _this.originalValues = newValues;
+                                _this.originalValues = _this.getValues();
                                 noty.on('afterClose', function(){ _this.$bsModal.close(); });
                                 noty.close();
                             }
@@ -464,6 +491,17 @@
                 if (input !== excludeInput)
                     input.showOrHide( values );
             });
+        },
+
+        /*******************************************************
+        onChanging = called every any of the element is changed
+        *******************************************************/
+        onChanging: function(){
+            //Test if values used in last event-fire is different from current values
+            if (this.isCreated && this.options.onChanging && this.isDifferent(this.onChangingValues || {})) {
+                this.onChangingValues = this.getValues();
+                this.options.onChanging( this.onChangingValues );
+            }
         },
 
         /*******************************************************

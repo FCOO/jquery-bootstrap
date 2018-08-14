@@ -493,10 +493,17 @@ TODO:
         getSlider
         *******************************************************/
         getSlider: function(){
-            this.slider = this.slider || this.getElement().find('input').data('baseSlider');
+            this.slider = this.slider || this.getElement().data('slider');
             return this.slider;
         },
 
+        /*******************************************************
+        getRadioGroup
+        *******************************************************/
+        getRadioGroup: function(){
+            this.radioGroup = this.radioGroup || this.getElement().data('radioGroup');
+            return this.radioGroup;
+        },
         /*******************************************************
         getFormGroup
         *******************************************************/
@@ -512,15 +519,16 @@ TODO:
         setValue: function(value, validate){
             var $elem = this.getElement();
             switch (this.options.type || 'input'){
-                case 'input'    : $elem.val( value );                   break;
-                case 'select'   : $elem.val( value ).trigger('change'); break;
-                case 'checkbox' : $elem.prop('checked', !!value );      break;
-//TODO case 'selectlist': ... break;
+                case 'input'     : $elem.val( value );                   break;
+                case 'select'    : $elem.val( value ).trigger('change'); break;
+                case 'checkbox'  : $elem.prop('checked', !!value );      break;
+                case 'selectlist': this.getRadioGroup().setSelected(value); break;
 //TODO case 'radio': ... break;
                 case 'slider'    :
                 case 'timeslider': this.getSlider().setValue( value ); break;
+                case 'text'      : break;
             }
-            this.onChange();
+            this.onChanging();
             return validate ? this.validate() : this;
         },
 
@@ -533,10 +541,11 @@ TODO:
                 case 'input'     : result = '';       break;
                 case 'select'    : result = -1;       break;
                 case 'checkbox'  : result = false;    break;
-//TODO case 'selectlist': result = ... break;
+                case 'selectlist': result = this.getRadioGroup().options.list[0].id; break;
 //TODO case 'radio': result = ... break;
                 case 'slider'    :
                 case 'timeslider': result = this.getSlider().result.min; break;
+                case 'text'      : result = '';
             }
             return result;
         },
@@ -567,10 +576,11 @@ TODO:
                 case 'input'     : result = $elem.val();               break;
                 case 'select'    : result = $elem.val();               break;
                 case 'checkbox'  : result = !!$elem.prop('checked');   break;
-//TODO case 'selectlist': ... break;
+                case 'selectlist': result = this.getRadioGroup().getSelected(); break;
 //TODO case 'radio': ... break;
                 case 'slider'    :
                 case 'timeslider': result = this._getSliderValue(); break;
+                case 'text'      : result = ' '; break;
             }
             return result || this.getResetValue();
         },
@@ -579,7 +589,6 @@ TODO:
         addValidation - Add the validations
         *******************************************************/
         addValidation: function(){
-            this.getElement().on('change', $.proxy( this.onChange, this ));
             this.modalForm._addInputValidation( this );
         },
 
@@ -591,11 +600,15 @@ TODO:
             return this;
         },
 
+
         /*******************************************************
-        onChange
+        onChanging
         *******************************************************/
-        onChange: function(){
-            this.modalForm.showOrHide( this );
+        onChanging: function(){
+            if (this.modalForm.isCreated){
+                this.modalForm.showOrHide( this );
+                this.modalForm.onChanging();
+            }
         },
 
         /*******************************************************
@@ -634,8 +647,11 @@ TODO:
     *************************************************************************
     BsModalForm( options )
     options:
-        content: json-object with full content
-        onSubmit : function( values )
+        content: json-object with full content Samer as content for bsModal with extention of
+            id, and
+            showWhen and hideWhen = [id] of value: hide or show element when another element with id has value
+        onChanging: function( values ) - called when the value of any of the elements are changed
+        onSubmit  : function( values ) - called when the form is submitted
     *************************************************************************
     ************************************************************************/
     function BsModalForm( options ){
@@ -650,14 +666,27 @@ TODO:
         this.inputs = {};
 
         var types = ['input', 'select', 'selectlist', 'checkbox', 'radio', 'table', 'slider', 'timeslider'];
+
         function setId( dummy, obj ){
-            if ($.isPlainObject(obj) && (obj.type !== undefined) && (types.indexOf(obj.type) >= 0) && obj.id)
-                _this.inputs[obj.id] = new BsModalInput( obj, _this );
+            if ($.isPlainObject(obj) && (obj.type !== undefined) && (types.indexOf(obj.type) >= 0) && obj.id){
+                var bsModalInput = new BsModalInput( obj, _this ),
+                    onChangingFunc = $.proxy( bsModalInput.onChanging, bsModalInput );
+
+                //Set options to call onChanging
+                switch (obj.type){
+                    case 'slider'    :
+                    case 'timeslider': obj.onChanging = onChangingFunc; break;
+                    default          : obj.onChange = onChangingFunc;
+                }
+                //Add element to inputs
+                _this.inputs[obj.id] = bsModalInput;
+            }
             else
                 if ($.isPlainObject(obj) || ($.type(obj) == 'array'))
                     $.each( obj, setId );
         }
         setId( 'dummy', this.options.content);
+
 
         //Create a hidden submit-button to be placed inside the form
         var $hiddenSubmitButton = this.$hiddenSubmitButton = $('<button type="submit" style="display:none"/>');
@@ -695,7 +724,10 @@ TODO:
         this._addValidation();
 
         //Add the validations
-        this._eachInput( function( input ){ input.addValidation(); });
+        this._eachInput( function( input ){
+            input.addValidation();
+        });
+
 
         //Add onSubmit
         this._addOnSubmit( $.proxy(this.onSubmit, this) );
@@ -723,7 +755,6 @@ TODO:
         edit
         *******************************************************/
         edit: function( values, tabIndexOrId ){
-
             this.$bsModal.show();
 
             if (tabIndexOrId !== undefined)
@@ -738,7 +769,25 @@ TODO:
             this._resetValidation();
 
             this.showOrHide( null );
+            this.isCreated = true;
+        },
 
+        /*******************************************************
+        isDifferent( values ) - retur true if values is differnet from this.getValues()
+        *******************************************************/
+        isDifferent: function( values ){
+            //Check if any of the new values are different from the original ones
+            var newValues = this.getValues(),
+                result = false;
+
+            $.each( newValues, function(id, value){
+                if (!values.hasOwnProperty(id) || (values[id] != value)){
+                    result = true;
+                    return false;
+                }
+            });
+
+            return result;
         },
 
         /*******************************************************
@@ -746,22 +795,11 @@ TODO:
         *******************************************************/
         onClose: function(){
             //Check if any of the new values are different from the original ones
-            var _this = this,
-                originalValues = this.originalValues,
-                newValues = this.getValues(),
-                different = false;
-
-            $.each( newValues, function(id, value){
-                if (originalValues.hasOwnProperty(id) && (originalValues[id] != value)){
-                    different = true;
-                    return false;
-                }
-            });
-
-            if (!different)
+            if (!this.isDifferent(this.originalValues))
                 return true;
 
-            var noty =
+            var _this = this,
+                noty =
                 $.bsNoty({
                     type     : 'info',
                     modal    : true,
@@ -782,7 +820,7 @@ TODO:
                             onClick: function(){
                                 if (_this.options.onCancel)
                                     _this.options.onCancel(_this.originalValues);
-                                _this.originalValues = newValues;
+                                _this.originalValues = _this.getValues();
                                 noty.on('afterClose', function(){ _this.$bsModal.close(); });
                                 noty.close();
                             }
@@ -899,6 +937,17 @@ TODO:
                 if (input !== excludeInput)
                     input.showOrHide( values );
             });
+        },
+
+        /*******************************************************
+        onChanging = called every any of the element is changed
+        *******************************************************/
+        onChanging: function(){
+            //Test if values used in last event-fire is different from current values
+            if (this.isCreated && this.options.onChanging && this.isDifferent(this.onChangingValues || {})) {
+                this.onChangingValues = this.getValues();
+                this.options.onChanging( this.onChangingValues );
+            }
         },
 
         /*******************************************************
@@ -1362,7 +1411,7 @@ TODO:
     Create the body and footer content (exc header and bottoms)
     of a modal inside this. Created elements are saved in parts
     ******************************************************/
-    $.fn._bsModalBodyAndFooter = function(options, parts, className){
+    $.fn._bsModalBodyAndFooter = function(options, parts, className, noClassNameForFixed, noClassNameForFooter){
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
             isTabs          = !!(options && options.content && (options.content.type == 'tabs')),
@@ -1375,7 +1424,7 @@ TODO:
         //Append fixed content (if any)
         var $modalFixedContent = parts.$fixedContent =
                 $('<div/>')
-                    .addClass('modal-body-fixed ' + className + (hasScroll ? ' scrollbar-'+scrollDirection : ''))
+                    .addClass('modal-body-fixed ' + (noClassNameForFixed ? '' : className) + (hasScroll ? ' scrollbar-'+scrollDirection : ''))
                     .appendTo( this );
         if (options.fixedContent){
             if ($.isFunction( options.fixedContent ))
@@ -1406,9 +1455,9 @@ TODO:
         //Add footer
         parts.$footer =
                 $('<div/>')
-                    .addClass('modal-footer-header ' + className)
+                    .addClass('modal-footer-header ' + (noClassNameForFooter ? '' : className))
                     .appendTo( this )
-                    ._bsAddHtml( options.footer );
+                    ._bsAddHtml( options.footer === true ? '' : options.footer );
         return this;
     };
 
@@ -1556,13 +1605,32 @@ TODO:
         else
             $modalContainer.addClass('no-modal-header');
 
+        //If options.extended.fixedContent == true and/or options.extended.footer == true => normal and extended uses same fixed and/or footer content
+        var noClassNameForFixed = false,
+            noClassNameForFooter = false;
+        if (options.extended) {
+            //If common fixed content => add it as normal fixed content
+            if ((options.fixedContent === true) || (options.extended.fixedContent === true)) {
+                noClassNameForFixed = true;
+                options.fixedContent = options.extended.fixedContent === true ? options.fixedContent : options.extended.fixedContent;
+                options.extended.fixedContent = '';
+            }
+
+            //If common footer content => add it as extended footer content
+            if ((options.footer === true) || (options.extended.footer === true)) {
+                noClassNameForFooter = true;
+                options.extended.footer = options.extended.footer === true ? options.footer : options.extended.footer;
+                options.footer = '';
+            }
+        }
+
         //Create normal content
-        $modalContainer._bsModalBodyAndFooter( options, this.bsModal, 'hide-for-modal-extended' );
+        $modalContainer._bsModalBodyAndFooter(options, this.bsModal, 'hide-for-modal-extended', noClassNameForFixed, false );
 
         //Create extended content (if any)
         if (options.extended){
             this.bsModal.extended = {};
-            $modalContainer._bsModalBodyAndFooter( options.extended, this.bsModal.extended, 'show-for-modal-extended' );
+            $modalContainer._bsModalBodyAndFooter( options.extended, this.bsModal.extended, 'show-for-modal-extended', false, noClassNameForFooter );
         }
 
         //Add buttons (if any)
@@ -2599,9 +2667,11 @@ TODO:
                     })
                 );
 
+        $result.data('radioGroup', radioGroup);
+
         $.each( options.list, function( index, itemOptions ){
             var isItem = (itemOptions.id != undefined ),
-                $item = $(isItem ? '<button/>' : '<div/>');
+                $item = $(isItem ? '<a/>' : '<div/>');
             $item
                 .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
                 .addClass( options.center ? 'text-center' : '')
@@ -3516,16 +3586,21 @@ Add sort-functions + save col-index for sorted column
         _bsAppendContent: function( options, context, insideFormGroup ){
 
             //Internal functions to create baseSlider and timeSlider
-            function buildSlider(options, constructorName){
-                var $sliderInput = $('<input/>'),
-                    slider = $sliderInput[constructorName]( options ).data('baseSlider');
+            function buildSlider(options, constructorName, insideFormGroup, $parent){
+                var $sliderInput = $('<input/>').appendTo( $parent ),
+                    slider = $sliderInput[constructorName]( options ).data(constructorName),
+                    $element = slider.cache.$outerContainer || slider.cache.$container;
 
-                return slider.cache.$container
-                           .attr('id', options.id)
-                           .append( $sliderInput );
+                $element
+                    .attr('id', options.id)
+                    .data('slider', slider );
             }
-            function buildBaseSlider(options/*, insideFormGroup*/){ return buildSlider(options, 'baseSlider'/*, insideFormGroup*/); }
-            function buildTimeSlider(options/*, insideFormGroup*/){ return buildSlider(options, 'timeSlider'/*, insideFormGroup*/); }
+            function buildBaseSlider(options, insideFormGroup, $parent){ buildSlider(options, 'baseSlider', insideFormGroup, $parent); }
+            function buildTimeSlider(options, insideFormGroup, $parent){ buildSlider(options, 'timeSlider', insideFormGroup, $parent); }
+
+            function buildText( options ){
+                return $('<div/>')._bsAddHtml( options );
+            }
 
 
             if (!options)
@@ -3550,7 +3625,9 @@ Add sort-functions + save col-index for sorted column
             if ($.isPlainObject(options)){
                 var buildFunc = $.fn._bsAddHtml,
                     neverInsideFormGroup = false,
-                    addBorder = false;
+                    addBorder = false,
+                    buildInsideParent = false,
+                    noValidation = false;
 
                 if (options.type){
                     var type = options.type.toLowerCase();
@@ -3558,13 +3635,14 @@ Add sort-functions + save col-index for sorted column
                         case 'input'        :   buildFunc = $.bsInput;          break;
                         case 'button'       :   buildFunc = $.bsButton;         break;
                         case 'select'       :   buildFunc = $.bsSelectBox;      break;
-                        case 'selectlist'   :   buildFunc = $.bsSelectList;     break;
+                        case 'selectlist'   :   buildFunc = $.bsSelectList;     neverInsideFormGroup = true; break;
                         case 'checkbox'     :   buildFunc = $.bsCheckbox;       break;
                         case 'tabs'         :   buildFunc = $.bsTabs;           neverInsideFormGroup = true; break;
                         case 'table'        :   buildFunc = $.bsTable;          neverInsideFormGroup = true; break;
                         case 'accordion'    :   buildFunc = $.bsAccordion;      neverInsideFormGroup = true; break;
-                        case 'slider'       :   buildFunc = buildBaseSlider;    addBorder = true; break;
-                        case 'timeslider'   :   buildFunc = buildTimeSlider;    addBorder = true; break;
+                        case 'slider'       :   buildFunc = buildBaseSlider;    addBorder = true; buildInsideParent = true; break;
+                        case 'timeslider'   :   buildFunc = buildTimeSlider;    addBorder = true; buildInsideParent = true; break;
+                        case 'text'         :   buildFunc = buildText;          addBorder = true; noValidation = true; break;
 //                        case 'xx'           :   buildFunc = $.bsXx;               break;
                     }
                 }
@@ -3577,15 +3655,18 @@ Add sort-functions + save col-index for sorted column
                     //Create outer form-group
                     insideInputGroup = true;
                     $parent = $divXXGroup('form-group', options).appendTo( $parent );
+                    if (noValidation || options.noValidation)
+                        $parent.addClass('no-validation');
                 }
 
                 if (insideInputGroup || options.prepend || options.before || options.append || options.after){
                     //Create element inside input-group
                     var $inputGroup = $divXXGroup('input-group', options);
-                    if (addBorder){
+                    if (addBorder && !options.noBorder){
                         //Add border and label (if any)
-                        $inputGroup.addClass('input-group-border', addBorder);
+                        $inputGroup.addClass('input-group-border');
                         if (options.label){
+                            $inputGroup.addClass('input-group-border-with-label');
                             $('<span/>')
                                 .addClass('has-fixed-label')
                                 ._bsAddHtml( options.label )
@@ -3595,8 +3676,11 @@ Add sort-functions + save col-index for sorted column
                     $parent = $inputGroup.appendTo( $parent );
                 }
 
-                //Build the element inside $parent
-                buildFunc.call( this, options, insideFormGroup ).appendTo( $parent );
+                //Build the element. Build inside $parent or add to $parent after
+                if (buildInsideParent)
+                    buildFunc.call( this, options, insideFormGroup, $parent );
+                else
+                    buildFunc.call( this, options, insideFormGroup ).appendTo( $parent );
 
                 var prepend = options.prepend || options.before;
                 if (prepend)

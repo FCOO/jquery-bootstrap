@@ -878,6 +878,7 @@ closeButton: true,
                     header: 'Davs',
 //noCloseIconOnHeader: true,
 
+                    onChanging: function( values ) { console.log('onChanging', values ); },
                     buttons: [
                         {text:'Set=2', onClick: function(){ testModalForm.setValue('formId1', 'formSelect1');} }
                     ],
@@ -923,11 +924,11 @@ closeButton: true,
                                         handleFixed: true,
                                         slider:"fixed",
                                         mousewheel: true,
-                                        width: 3*400,
+                                        width: 3*300,
                                         showLineColor: false,
                                         resizable: false,
 
-                                        onChanging: function( obj ){ console.log( obj.value ); }
+                                        _onChanging: function( obj ){ console.log( obj.value ); }
                                     },
                                     {
                                         id: 'mySlider2', type:'timeslider', label:'My slider 2',
@@ -943,7 +944,7 @@ closeButton: true,
                                         showLineColor: false,
 
 
-                                        onChanging: function( obj ){ console.log( obj.value ); }
+                                        _onChanging: function( obj ){ console.log( obj.value ); }
                                     },
                                     {
                                         id:'mySelection', type:'checkbox', text: 'Vælg mig'
