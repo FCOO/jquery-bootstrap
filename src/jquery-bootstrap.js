@@ -420,7 +420,7 @@
         },
 
         /****************************************************************************************
-        _bsAppendContent( options, context, insideFormGroup )
+        _bsAppendContent( options, context )
         Create and append any content to this.
         options can be $-element, function, json-object or array of same
 
@@ -441,12 +441,11 @@
                 </div>                                          //optional
             </div>
         </div>
-        if insideFormGroup == true OR options.
         ****************************************************************************************/
-        _bsAppendContent: function( options, context, insideFormGroup ){
+        _bsAppendContent: function( options, context ){
 
             //Internal functions to create baseSlider and timeSlider
-            function buildSlider(options, constructorName, insideFormGroup, $parent){
+            function buildSlider(options, constructorName, $parent){
                 var $sliderInput = $('<input/>').appendTo( $parent ),
                     slider = $sliderInput[constructorName]( options ).data(constructorName),
                     $element = slider.cache.$outerContainer || slider.cache.$container;
@@ -455,8 +454,8 @@
                     .attr('id', options.id)
                     .data('slider', slider );
             }
-            function buildBaseSlider(options, insideFormGroup, $parent){ buildSlider(options, 'baseSlider', insideFormGroup, $parent); }
-            function buildTimeSlider(options, insideFormGroup, $parent){ buildSlider(options, 'timeSlider', insideFormGroup, $parent); }
+            function buildBaseSlider(options, $parent){ buildSlider(options, 'baseSlider', $parent); }
+            function buildTimeSlider(options, $parent){ buildSlider(options, 'timeSlider', $parent); }
 
             function buildText( options ){
                 return $('<div/>')._bsAddHtml( options );
@@ -470,39 +469,39 @@
             if ($.isArray( options )){
                 var _this = this;
                 $.each(options, function( index, opt){
-                    _this._bsAppendContent(opt, context, insideFormGroup);
+                    _this._bsAppendContent(opt, context );
                 });
                 return this;
             }
 
             //Function
             if ($.isFunction( options )){
-                options.call( context, this, insideFormGroup );
+                options.call( context, this );
                 return this;
             }
 
             //json-object with options to create bs-elements
             if ($.isPlainObject(options)){
                 var buildFunc = $.fn._bsAddHtml,
-                    neverInsideFormGroup = false,
-                    addBorder = false,
+                    insideFormGroup   = false,
+                    addBorder         = false,
                     buildInsideParent = false,
-                    noValidation = false;
+                    noValidation      = false;
 
                 if (options.type){
                     var type = options.type.toLowerCase();
                     switch (type){
-                        case 'input'        :   buildFunc = $.bsInput;          break;
+                        case 'input'        :   buildFunc = $.bsInput;          insideFormGroup = true; break;
                         case 'button'       :   buildFunc = $.bsButton;         break;
-                        case 'select'       :   buildFunc = $.bsSelectBox;      break;
-                        case 'selectlist'   :   buildFunc = $.bsSelectList;     neverInsideFormGroup = true; break;
-                        case 'checkbox'     :   buildFunc = $.bsCheckbox;       break;
-                        case 'tabs'         :   buildFunc = $.bsTabs;           neverInsideFormGroup = true; break;
-                        case 'table'        :   buildFunc = $.bsTable;          neverInsideFormGroup = true; break;
-                        case 'accordion'    :   buildFunc = $.bsAccordion;      neverInsideFormGroup = true; break;
-                        case 'slider'       :   buildFunc = buildBaseSlider;    addBorder = true; buildInsideParent = true; break;
-                        case 'timeslider'   :   buildFunc = buildTimeSlider;    addBorder = true; buildInsideParent = true; break;
-                        case 'text'         :   buildFunc = buildText;          addBorder = true; noValidation = true; break;
+                        case 'select'       :   buildFunc = $.bsSelectBox;      insideFormGroup = true; break;
+                        case 'selectlist'   :   buildFunc = $.bsSelectList;     break;
+                        case 'checkbox'     :   buildFunc = $.bsCheckbox;       insideFormGroup = true; break;
+                        case 'tabs'         :   buildFunc = $.bsTabs;           break;
+                        case 'table'        :   buildFunc = $.bsTable;          break;
+                        case 'accordion'    :   buildFunc = $.bsAccordion;      break;
+                        case 'slider'       :   buildFunc = buildBaseSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
+                        case 'timeslider'   :   buildFunc = buildTimeSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
+                        case 'text'         :   buildFunc = buildText;          insideFormGroup = true; addBorder = true; noValidation = true; break;
 //                        case 'xx'           :   buildFunc = $.bsXx;               break;
                     }
                 }
@@ -511,7 +510,7 @@
                 var $parent = this,
                     insideInputGroup = false;
 
-                if (insideFormGroup && !neverInsideFormGroup){
+                if (insideFormGroup){
                     //Create outer form-group
                     insideInputGroup = true;
                     $parent = $divXXGroup('form-group', options).appendTo( $parent );
@@ -538,9 +537,9 @@
 
                 //Build the element. Build inside $parent or add to $parent after
                 if (buildInsideParent)
-                    buildFunc.call( this, options, insideFormGroup, $parent );
+                    buildFunc.call( this, options, $parent );
                 else
-                    buildFunc.call( this, options, insideFormGroup ).appendTo( $parent );
+                    buildFunc.call( this, options ).appendTo( $parent );
 
                 var prepend = options.prepend || options.before;
                 if (prepend)

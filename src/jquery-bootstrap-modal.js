@@ -235,7 +235,7 @@
                     $modalBody;
 
         //Add content
-        $modalContent._bsAppendContent( options.content, options.contentContext, false );
+        $modalContent._bsAppendContent( options.content, options.contentContext );
 
         //Add footer
         parts.$footer =

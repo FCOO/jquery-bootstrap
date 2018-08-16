@@ -76,7 +76,7 @@ TODO:
                );
     }
 
-    $.bsAccordion = function( options, insideFormGroup ){
+    $.bsAccordion = function( options ){
         var id = 'bsAccordion'+ accordionId++;
         options =
             $._bsAdjustOptions( options, {}, {
@@ -157,7 +157,7 @@ TODO:
 
             //Add content: string, element, function or children (=accordion)
                 if (opt.content)
-                    $contentContainer._bsAppendContent( opt.content, opt.contentContext, insideFormGroup );
+                    $contentContainer._bsAppendContent( opt.content, opt.contentContext );
 
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))

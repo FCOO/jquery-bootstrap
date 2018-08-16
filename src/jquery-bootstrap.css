@@ -8307,7 +8307,91 @@ MODAL-BACKDROP
 
 /************************************************************
 FORM
+
+The default bootstrap structure used for elements in a form is
+<div class="form-group">
+    <div class="input-group">
+        <div class="input-group-prepend">               //optional
+            <button class="btn btn-standard">..</buton> //optional 1-N times
+        </div>                                          //optional
+
+        <label class="has-float-label">
+            <input class="form-control form-control-with-label" type="text" placeholder="The placeholder...">
+            <span>The label</span>
+        </label>
+
+        <div class="input-group-append">                //optional
+            <button class="btn btn-standard">..</buton> //optional 1-N times
+        </div>                                          //optional
+    </div>
+</div>
 ************************************************************/
+.form-group {
+  line-height: 1;
+  margin-bottom: 0;
+  padding-top: 0.3125rem;
+  padding-bottom: 0.625rem; }
+
+.form-group.form-group-sm {
+  padding-top: 0.25rem;
+  padding-bottom: 0.5rem; }
+
+.form-group.form-group-xs {
+  padding-top: 0.125rem;
+  padding-bottom: 0.25rem; }
+
+/************************************************************
+Style for formValidation (via fcoo-form-validation)
+form-group inside a <form class="form-validation"> gets special style for validation-state and messages
+************************************************************/
+form.form-validation .form-group {
+  padding-top: 0.3125rem;
+  padding-bottom: 1.5rem; }
+  form.form-validation .form-group .form-control-feedback {
+    line-height: 1;
+    padding-top: 0;
+    padding-bottom: 0; }
+  form.form-validation .form-group.has-warning {
+    padding-bottom: 0px; }
+  form.form-validation .form-group.no-validation {
+    padding-bottom: 0.3125rem; }
+  form.form-validation .form-group .form-control-feedback {
+    height: 1.5rem;
+    font-size: 0.875rem;
+    color: #dc3545;
+    padding-left: 0.3125rem;
+    vertical-align: top; }
+  form.form-validation .form-group.has-warning .form-control-feedback[data-fv-result="INVALID"] {
+    display: inline-block !important; }
+  form.form-validation .form-group.form-group-sm {
+    padding-top: 0.25rem;
+    padding-bottom: 1.25rem; }
+    form.form-validation .form-group.form-group-sm.has-warning {
+      padding-bottom: 0px; }
+    form.form-validation .form-group.form-group-sm.no-validation {
+      padding-bottom: 0.25rem; }
+    form.form-validation .form-group.form-group-sm .form-control-feedback {
+      height: 1.25rem;
+      font-size: 0.75rem;
+      color: #dc3545;
+      padding-left: 0.25rem;
+      vertical-align: top; }
+  form.form-validation .form-group.form-group-xs {
+    padding-top: 0.125rem;
+    padding-bottom: 1rem; }
+    form.form-validation .form-group.form-group-xs.has-warning {
+      padding-bottom: 0px; }
+    form.form-validation .form-group.form-group-xs.no-validation {
+      padding-bottom: 0.125rem; }
+    form.form-validation .form-group.form-group-xs .form-control-feedback {
+      height: 1rem;
+      font-size: 0.75rem;
+      color: #dc3545;
+      padding-left: 0.125rem;
+      vertical-align: top; }
+  form.form-validation .form-group.fv-do-not-validate {
+    visibility: hidden; }
+
 .form-group .input-group {
   flex-wrap: nowrap; }
 
@@ -9496,62 +9580,3 @@ https://github.com/berkan52/select2-bootstrap4-theme
 .form-control.select2-hidden-accessible {
   position: absolute !important;
   width: 1px !important; }
-
-/***********************************************
-FORMVALIDATION
-************************************************/
-/************************************************************
-Style for formValidation (via fcoo-form-validation)
-************************************************************/
-.form-group {
-  line-height: 1;
-  margin-bottom: 0;
-  padding-top: 0.3125rem;
-  padding-bottom: 1.5rem; }
-  .form-group .form-control-feedback {
-    line-height: 1;
-    padding-top: 0;
-    padding-bottom: 0; }
-  .form-group.has-warning {
-    padding-bottom: 0px; }
-  .form-group.no-validation {
-    padding-bottom: 0.3125rem; }
-  .form-group .form-control-feedback {
-    height: 1.5rem;
-    font-size: 0.875rem;
-    color: #dc3545;
-    padding-left: 0.3125rem;
-    vertical-align: top; }
-  .form-group.has-warning .form-control-feedback[data-fv-result="INVALID"] {
-    display: inline-block !important; }
-
-.form-group.form-group-sm {
-  padding-top: 0.25rem;
-  padding-bottom: 1.25rem; }
-  .form-group.form-group-sm.has-warning {
-    padding-bottom: 0px; }
-  .form-group.form-group-sm.no-validation {
-    padding-bottom: 0.25rem; }
-  .form-group.form-group-sm .form-control-feedback {
-    height: 1.25rem;
-    font-size: 0.75rem;
-    color: #dc3545;
-    padding-left: 0.25rem;
-    vertical-align: top; }
-
-.form-group.form-group-xs {
-  padding-top: 0.125rem;
-  padding-bottom: 1rem; }
-  .form-group.form-group-xs.has-warning {
-    padding-bottom: 0px; }
-  .form-group.form-group-xs.no-validation {
-    padding-bottom: 0.125rem; }
-  .form-group.form-group-xs .form-control-feedback {
-    height: 1rem;
-    font-size: 0.75rem;
-    color: #dc3545;
-    padding-left: 0.125rem;
-    vertical-align: top; }
-
-.form-group.fv-do-not-validate {
-  visibility: hidden; }

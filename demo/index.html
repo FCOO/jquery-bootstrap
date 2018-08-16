@@ -798,7 +798,49 @@ closeButton: true,
                     hideNotSelectedText: true,
                     list: [
                         {
-                            icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'
+                            icon: 'fa-home',  text:{da:'Hjem', en:'Home'},
+                            selected: true,
+                            content: [
+                                {
+                                    type:'timeslider', label:'My slider 2',
+                                    _noBorder: true,
+                                    handle: 'round',
+                                    _showFromTo: false,
+                                    grid: true,
+                                    min:-24, max:48, majorTicksOffset:0, stepOffset:0,
+                                    mousewheel: true,
+                                    showLineColor: false,
+                                },
+                                {
+                                    type:'checkbox', text: 'Vælg mig'
+                                },
+                                {
+                                    type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'}
+                                },
+                                {
+                                    type: 'select', placeholder:"Placeholder", label:'Label',
+                                    items:[
+                                        {id:'formSelect1', icon:'fa-home', text: 'Davs'},
+                                        {id:'formSelect2', text:'Item 2'},
+                                        {id:'formSelect3', text:'Item 3 SKIDE GODT'},
+                                        {id:'formSelect4', text:'Item 4'},
+                                        {id:'formSelect5', text:'Item 5'}
+                                    ]
+                                },
+                                {
+                                    type: 'select', placeholder:"Placeholder", label:'Label',
+                                    items:[
+                                        {id:'formSelect1', icon:'fa-home', text: 'Davs'},
+                                        {id:'formSelect2', text:'Item 2'},
+                                        {id:'formSelect3', text:'Item 3 SKIDE GODT'},
+                                        {id:'formSelect4', text:'Item 4'},
+                                        {id:'formSelect5', text:'Item 5'}
+                                    ]
+                                },
+                                {
+                                    type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {           type:'button', icon:'fa-calculator'}
+                                },
+                            ]
                         },
                         {
                             icon: 'fa-map',  text:{da:'Kort', en:'Map'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'
@@ -820,7 +862,6 @@ closeButton: true,
                         {
                             icon: 'fa-calendar',
                             title:{da:'Dato og tid2', en:'Date and time'},
-                            selected: true,
                             content: {
                                 type: 'selectlist',
                                 selectedId: 'item2',
@@ -841,14 +882,12 @@ closeButton: true,
                     height: 150/16 + 'rem',
                     scroll: true
                 },
-                scroll: false
+                scroll: false,
             },
 
-//HER            content: {
-                content: 'dette er en test<br>Linie2<br>Linie3<br>Linie4<br>Linie5',
-                height: '100px',
-                scroll: true,
-//HER            },
+            content: 'dette er en test<br>Linie2<br>Linie3<br>Linie4<br>Linie5',
+            height: '100px',
+            scroll: true,
             isExtended: true,
             show:false,
         });
@@ -876,6 +915,7 @@ closeButton: true,
                     id: 'formId',
                     show: false,
                     header: 'Davs',
+
 //noCloseIconOnHeader: true,
 
                     onChanging: function( values ) { console.log('onChanging', values ); },

@@ -16,13 +16,14 @@
 
 
     var defaultOptions = {
-            content   : '',
-            show      : false,
-            closeText : {da:'Annullér', en:'Cancel'},
-            submitIcon: 'fa-check',
-            submitText: {da:'Ok', en:'Ok'},
-            buttons   : [], //Extra button between
-            static    : true, //Only close modal-form on (X)
+            content       : '',
+            show          : false,
+            closeText     : {da:'Annullér', en:'Cancel'},
+            submitIcon    : 'fa-check',
+            submitText    : {da:'Ok', en:'Ok'},
+            buttons       : [],     //Extra button between
+            static        : true,   //Only close modal-form on (X)
+            formValidation: false,  //When true: make room for formValidation messages
         };
 
 
@@ -259,7 +260,11 @@
         //Create the form
         this.$form =
             $('<form/>')
-                ._bsAppendContent( this.options.content, this.options.contentContext, true );
+                ._bsAppendContent( this.options.content, this.options.contentContext );
+
+        if (this.options.formValidation)
+            this.$form.addClass('form-validation');
+
 
         //Create the modal
         this.options.content = this.$form;

@@ -1,6 +1,98 @@
 /************************************************************
 FORM
+
+The default bootstrap structure used for elements in a form is
+<div class="form-group">
+    <div class="input-group">
+        <div class="input-group-prepend">               //optional
+            <button class="btn btn-standard">..</buton> //optional 1-N times
+        </div>                                          //optional
+
+        <label class="has-float-label">
+            <input class="form-control form-control-with-label" type="text" placeholder="The placeholder...">
+            <span>The label</span>
+        </label>
+
+        <div class="input-group-append">                //optional
+            <button class="btn btn-standard">..</buton> //optional 1-N times
+        </div>                                          //optional
+    </div>
+</div>
 ************************************************************/
+
+//General form-group without space for validation message
+.form-group {
+    line-height   : 1;
+    margin-bottom : 0;
+
+    padding-top   :     $input-padding-y;
+    padding-bottom: 2 * $input-padding-y;
+}
+
+//Different size
+.form-group.form-group-sm {
+    padding-top   :     $input-padding-y-sm;
+    padding-bottom: 2 * $input-padding-y-sm;
+}
+.form-group.form-group-xs {
+    padding-top   :     $input-padding-y-xs;
+    padding-bottom: 2 * $input-padding-y-xs;
+}
+
+/************************************************************
+Style for formValidation (via fcoo-form-validation)
+form-group inside a <form class="form-validation"> gets special style for validation-state and messages
+************************************************************/
+@mixin form-control-feedback( $font-size, $padding-bottom, $padding-left ){
+    $padding-factor: 2; //1.6;
+    $height: $font-size + $padding-factor * $padding-bottom;
+    padding-top   : $padding-bottom;
+    padding-bottom: $height;
+
+    &.has-warning {
+        padding-bottom: 0px;
+    }
+
+    &.no-validation {
+        padding-bottom: $padding-bottom;
+    }
+
+    .form-control-feedback {
+        height        : $height;
+        font-size     : $font-size;
+        color         : $red;
+        padding-left  : $padding-left;
+        vertical-align: top;
+    }
+}
+
+
+form.form-validation {
+    .form-group {
+        .form-control-feedback {
+            line-height   : 1;
+            padding-top   : 0;
+            padding-bottom: 0;
+        }
+        @include form-control-feedback( $font-size-header, $input-padding-y, $input-padding-x);
+
+        //Bug fix ? to prevent previous error to disappear when reused
+        &.has-warning .form-control-feedback[data-fv-result="INVALID"]{
+            display: inline-block !important;
+        }
+
+
+        //Different size
+        &.form-group-sm {   @include form-control-feedback( $font-size-header-sm, $input-padding-y-sm, $input-padding-x-sm);    }
+        &.form-group-xs {   @include form-control-feedback( $font-size-header-xs, $input-padding-y-xs, $input-padding-x-xs);    }
+
+        &.fv-do-not-validate {
+            visibility: hidden;
+        }
+    }
+
+}
+
 
 //Making input-group single line inside form-group
 .form-group .input-group {
@@ -46,9 +138,6 @@ FORM
         margin-top: 0.75em;
     }
 }
-
-
-
 
 //Make form-control inherited size when they are inside a label with class=has-float-label
 .input-group-lg > label.has-float-label > .form-control { @extend .form-control-lg; }
