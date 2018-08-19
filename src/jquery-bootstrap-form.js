@@ -215,6 +215,7 @@
 
         this.options.id = this.options.id || 'bsModalFormId' + formId++;
 
+        this.options.onClose_user = this.options.onClose || function(){};
         this.options.onClose = $.proxy( this.onClose, this );
 
         //this.input = simple object with all input-elements. Also convert element-id to unique id for input-element
@@ -354,8 +355,10 @@
         *******************************************************/
         onClose: function(){
             //Check if any of the new values are different from the original ones
-            if (!this.isDifferent(this.originalValues))
+            if (!this.isDifferent(this.originalValues)){
+                this.options.onClose_user();
                 return true;
+            }
 
             var _this = this,
                 noty =
@@ -514,7 +517,9 @@
         *******************************************************/
         onSubmit: function( event/*, data*/ ){
             this.options.onSubmit ? this.options.onSubmit( this.getValues() ) : null;
+
             this.$bsModal._close();
+            this.options.onClose_user();
 
             event.preventDefault();
             return false;
