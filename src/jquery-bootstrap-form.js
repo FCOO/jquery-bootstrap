@@ -126,7 +126,7 @@
         *******************************************************/
         getValue: function(){
             var $elem = this.getElement(),
-                result;
+                result = null;
             switch (this.options.type || 'input'){
                 case 'input'     : result = $elem.val();               break;
                 case 'select'    : result = $elem.val();               break;
@@ -137,7 +137,7 @@
                 case 'timeslider': result = this._getSliderValue(); break;
                 case 'text'      : result = ' '; break;
             }
-            return result || this.getResetValue();
+            return result ===null ? this.getResetValue() : result;
         },
 
         /*******************************************************
