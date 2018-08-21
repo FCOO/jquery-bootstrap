@@ -520,14 +520,15 @@ TODO:
         setValue: function(value, validate){
             var $elem = this.getElement();
             switch (this.options.type || 'input'){
-                case 'input'     : $elem.val( value );                   break;
-                case 'select'    : $elem.val( value ).trigger('change'); break;
-                case 'checkbox'  : $elem.prop('checked', !!value );      break;
+                case 'input'     : $elem.val( value );                      break;
+                case 'select'    : $elem.val( value ).trigger('change');    break;
+                case 'checkbox'  : $elem.prop('checked', !!value );         break;
                 case 'selectlist': this.getRadioGroup().setSelected(value); break;
 //TODO case 'radio': ... break;
                 case 'slider'    :
-                case 'timeslider': this.getSlider().setValue( value ); break;
-                case 'text'      : break;
+                case 'timeslider': this.getSlider().setValue( value );      break;
+                case 'text'      :                                          break;
+                case 'hidden'    : $elem.val( value );                      break;
             }
             this.onChanging();
             return validate ? this.validate() : this;
@@ -539,14 +540,15 @@ TODO:
         getResetValue: function(){
             var result = null;
             switch (this.options.type || 'input'){
-                case 'input'     : result = '';       break;
-                case 'select'    : result = -1;       break;
-                case 'checkbox'  : result = false;    break;
+                case 'input'     : result = '';    break;
+                case 'select'    : result = -1;    break;
+                case 'checkbox'  : result = false; break;
                 case 'selectlist': result = this.getRadioGroup().options.list[0].id; break;
 //TODO case 'radio': result = ... break;
                 case 'slider'    :
                 case 'timeslider': result = this.getSlider().result.min; break;
-                case 'text'      : result = '';
+                case 'text'      : result = '';                          break;
+                case 'hidden'    : result = '';                          break;
             }
             return result;
         },
@@ -581,7 +583,8 @@ TODO:
 //TODO case 'radio': ... break;
                 case 'slider'    :
                 case 'timeslider': result = this._getSliderValue(); break;
-                case 'text'      : result = ' '; break;
+                case 'text'      : result = ' ';                    break;
+                case 'hidden'    : result = $elem.val();            break;
             }
             return result ===null ? this.getResetValue() : result;
         },
@@ -667,7 +670,7 @@ TODO:
         //this.input = simple object with all input-elements. Also convert element-id to unique id for input-element
         this.inputs = {};
 
-        var types = ['input', 'select', 'selectlist', 'checkbox', 'radio', 'table', 'slider', 'timeslider'];
+        var types = ['input', 'select', 'selectlist', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden'];
 
         function setId( dummy, obj ){
             if ($.isPlainObject(obj) && (obj.type !== undefined) && (types.indexOf(obj.type) >= 0) && obj.id){
@@ -688,7 +691,6 @@ TODO:
                     $.each( obj, setId );
         }
         setId( 'dummy', this.options.content);
-
 
         //Create a hidden submit-button to be placed inside the form
         var $hiddenSubmitButton = this.$hiddenSubmitButton = $('<button type="submit" style="display:none"/>');
@@ -3611,6 +3613,10 @@ Add sort-functions + save col-index for sorted column
                 return $('<div/>')._bsAddHtml( options );
             }
 
+            function buildHidden( options ){
+                return $.bsInput( options ).css('display', 'none');
+            }
+
 
             if (!options)
                 return this;
@@ -3652,6 +3658,7 @@ Add sort-functions + save col-index for sorted column
                         case 'slider'       :   buildFunc = buildBaseSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'timeslider'   :   buildFunc = buildTimeSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'text'         :   buildFunc = buildText;          insideFormGroup = true; addBorder = true; noValidation = true; break;
+                        case 'hidden'       :   buildFunc = buildHidden;        noValidation = true; break;
 //                        case 'xx'           :   buildFunc = $.bsXx;               break;
                     }
                 }

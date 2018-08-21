@@ -902,7 +902,8 @@ closeButton: true,
             'mySlider2': 10,
             'formId2': 'Skide godt do',
             'mySelection': false,
-            'theSelectList': 'item3'
+            'theSelectList': 'item3',
+            'hemmeligt': 'Dette er super hemmeligt'
 
 //            'formId1': 'formSelect3',
 //            'formId2-1': 'formSelect3',
@@ -949,6 +950,10 @@ closeButton: true,
                                 icon: 'fa-globe',
                                 title:{da:'En test', en:'A test'},
                                 content: [
+                                    {
+                                        id: 'hemmeligt',
+                                        type: 'hidden'
+                                    },
                                     {
                                         type: 'text', label: 'En label',
                                         text: 'Davs med dig<br>Ny linie'

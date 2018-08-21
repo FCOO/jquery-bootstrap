@@ -461,6 +461,10 @@
                 return $('<div/>')._bsAddHtml( options );
             }
 
+            function buildHidden( options ){
+                return $.bsInput( options ).css('display', 'none');
+            }
+
 
             if (!options)
                 return this;
@@ -502,6 +506,7 @@
                         case 'slider'       :   buildFunc = buildBaseSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'timeslider'   :   buildFunc = buildTimeSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'text'         :   buildFunc = buildText;          insideFormGroup = true; addBorder = true; noValidation = true; break;
+                        case 'hidden'       :   buildFunc = buildHidden;        noValidation = true; break;
 //                        case 'xx'           :   buildFunc = $.bsXx;               break;
                     }
                 }
