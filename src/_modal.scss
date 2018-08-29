@@ -68,10 +68,6 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 
         .modal-content {
             min-height: 100%; //Bug fix for IE11
-
-            .modal-body {
-                &.modal-body-no-content { display: none }
-            }
         }
 
         //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
@@ -99,14 +95,6 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     &.modal-sm {
         max-width: none !important;
     }
-
-
-    //Hide top-border for footer when modal-body is empty
-    .modal-content:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
-    .modal-content.modal-extended       .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
-        border-top: none;
-    }
-
 
 } //end of .modal
 
@@ -217,6 +205,28 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     }
 }
 
+
+//When modal-body is empty: Hide modal-body and remove top-border from footer
+.modal-dialog {
+    .modal-content {
+        .modal-body.modal-body-no-content {
+            display: none
+        }
+
+        &:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
+        &.modal-extended       .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
+            border-top: none;
+        }
+    }
+}
+
+/*
+    //Hide top-border for footer when modal-body is empty
+    .modal-content:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
+    .modal-content.modal-extended       .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
+        border-top: none;
+    }
+*/
 
 //size='small'
 .modal.modal-sm,

@@ -923,6 +923,9 @@ closeButton: true,
                     ],
                     onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
                     onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
+                    extended: {
+                        content: ''
+                    },
                     content: {
                         type: 'accordion',
                         list: [

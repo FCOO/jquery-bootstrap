@@ -7977,8 +7977,6 @@ body.modal-open .modal {
       width: 50rem; }
   .modal .modal-dialog .modal-content {
     min-height: 100%; }
-    .modal .modal-dialog .modal-content .modal-body.modal-body-no-content {
-      display: none; }
   .modal .modal-dialog:not(.modal-flex) .modal-content .modal-body > .jquery-scroll-container {
     width: calc( 18.75rem - 2*1px - 2*0.625rem);
     margin-left: auto;
@@ -7991,10 +7989,6 @@ body.modal-open .modal {
 
 .modal.modal-sm {
   max-width: none !important; }
-
-.modal .modal-content:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
-.modal .modal-content.modal-extended .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
-  border-top: none; }
 
 .modal-inline .modal-content {
   min-height: 100%;
@@ -8115,6 +8109,20 @@ body.modal-open .modal {
       .modal .modal-content .modal-footer.modal-footer-vertical > *:not(:first-child), .modal-inline .modal-content .modal-footer.modal-footer-vertical > *:not(:first-child) {
         margin-top: .25rem; }
 
+.modal-dialog .modal-content .modal-body.modal-body-no-content {
+  display: none; }
+
+.modal-dialog .modal-content:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
+.modal-dialog .modal-content.modal-extended .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
+  border-top: none; }
+
+/*
+    //Hide top-border for footer when modal-body is empty
+    .modal-content:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
+    .modal-content.modal-extended       .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
+        border-top: none;
+    }
+*/
 .modal.modal-sm .modal-content .modal-header,
 .modal-inline.modal-sm .modal-content .modal-header {
   font-weight: 400;
