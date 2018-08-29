@@ -225,6 +225,9 @@
                     .toggleClass('modal-type-' + options.type, !!options.type)
                     .appendTo( this );
 
+        if (!options.content || (options.content === {}))
+            $modalBody.addClass('modal-body-no-content');
+
         if (!isTabs && options.height)
             $modalBody.height(options.height);
 
@@ -236,6 +239,8 @@
 
         //Add content
         $modalContent._bsAppendContent( options.content, options.contentContext );
+
+
 
         //Add footer
         parts.$footer =

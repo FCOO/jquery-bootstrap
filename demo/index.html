@@ -1048,6 +1048,24 @@ closeButton: true,
             .appendTo( $body)
             .on('click', function(){ no_header_or_footer.show(); });
 
+        var no_content = $.bsModal({
+            closeButton: true,
+            header:{icon: 'fa-home', text:{da:'Intet indhold',en:'No content'}},
+            _footer: 'footer',
+            buttons: [
+            {icon: 'fa-home', text: 'Davs'}
+            ],
+            show: false,
+            content: '',
+            extended: {
+                content: 'Extended'
+            }
+
+        });
+
+        $('<button>No content</button>')
+            .appendTo( $body)
+            .on('click', function(){ no_content.show(); });
 
 var $test =
     $.bsTabs({
