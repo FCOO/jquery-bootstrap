@@ -923,116 +923,110 @@ closeButton: true,
                     ],
                     onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
                     onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
+                    useExtended: true,
+                    content: '',
                     extended: {
-                        content: ''
-                    },
-                    content: {
-                        type: 'accordion',
-                        list: [
-                            {
-                                icon: 'fa-home',
-                                title:{da:'Selectlist'},
-                                content: {
-                                    type: 'selectlist', label: 'En select-list',
-                                    id: 'theSelectList',
-                                    items     : [
-                                        {id: 'item1', text:{da:'Emne#1', en: 'Item#1'} },
-                                        {id: 'item2', text:{da:'Emne#2', en: 'Item#2'} },
-                                        {id: 'item3', text:{da:'Emne#3', en: 'Item#3'} },
-                                        {id: 'item4', text:{da:'Emne#4', en: 'Item#4'} },
-                                        {id: 'item5', text:{da:'Emne#5', en: 'Item#5'} },
-                                        {id: 'item6', text:{da:'Emne#6', en: 'Item#6'} },
-                                        {id: 'item7', text:{da:'Emne#7', en: 'Item#7'} },
-                                        {id: 'item8', text:{da:'Emne#8', en: 'Item#8'} },
-                                    ]
-                                },
-                            },
-                            {
-                                icon: 'fa-globe',
-                                title:{da:'En test', en:'A test'},
-                                content: [
-                                    {
-                                        id: 'hemmeligt',
-                                        type: 'hidden'
-                                    },
-                                    {
-                                        type: 'text', label: 'En label',
-                                        text: 'Davs med dig<br>Ny linie'
-
-                                    },
-                                    {
-                                        id: 'mySlider', type:'timeslider', label:'Label (NIELS)',
-                                        _noBorder: true,
-                                        _handle: 'round',
-                                        _showFromTo: false,
-                                        grid: true,
-                                        min:-24, max:48, majorTicksOffset:0, stepOffset:0,
-                                        handleFixed: true,
-                                        slider:"fixed",
-                                        mousewheel: true,
-                                        width: 3*300,
-                                        showLineColor: false,
-                                        resizable: false,
-
-                                        _onChanging: function( obj ){ console.log( obj.value ); }
-                                    },
-                                    {
-                                        id: 'mySlider2', type:'timeslider', label:'My slider 2',
-                                        _noBorder: true,
-                                        handle: 'round',
-                                        _showFromTo: false,
-                                        grid: true,
-                                        min:-24, max:48, majorTicksOffset:0, stepOffset:0,
-
-
-                                        mousewheel: true,
-
-                                        showLineColor: false,
-
-
-                                        _onChanging: function( obj ){ console.log( obj.value ); }
-                                    },
-                                    {
-                                        id:'mySelection', type:'checkbox', text: 'Vælg mig'
-                                    },
-                                    {
-                                        id:'formId2', validators: 'notEmpty _MYvalidatorName', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'}
-                                    },
-                                    {
-                                        id:'formId1', type: 'select', validators: 'notEmpty', _selectedId: 'formSelect4', placeholder:"Placeholder", label:'Label',
-                                        items:[
-                                            {id:'formSelect1', icon:'fa-home', text: 'Davs'},
-                                            {id:'formSelect2', text:'Item 2'},
-                                            {id:'formSelect3', text:'Item 3 SKIDE GODT'},
-                                            {id:'formSelect4', text:'Item 4'},
-                                            {id:'formSelect5', text:'Item 5'}
-                                        ],
-                                        showWhen: {'mySelection': false }
-                                    },
-                                    {
-                                        id:'formId2-1', type: 'select', _selectedId: 'formSelect4', placeholder:"Placeholder", label:'Label',
-                                        items:[
-                                            {id:'formSelect1', icon:'fa-home', text: 'Davs'},
-                                            {id:'formSelect2', text:'Item 2'},
-                                            {id:'formSelect3', text:'Item 3 SKIDE GODT'},
-                                            {id:'formSelect4', text:'Item 4'},
-                                            {id:'formSelect5', text:'Item 5'}
+                        content: {
+                            type: 'accordion',
+                            list: [
+                                {
+                                    icon: 'fa-home',
+                                    title:{da:'Selectlist'},
+                                    content: {
+                                        type: 'selectlist', label: 'En select-list',
+                                        id: 'theSelectList',
+                                        items     : [
+                                            {id: 'item1', text:{da:'Emne#1', en: 'Item#1'} },
+                                                {id: 'item2', text:{da:'Emne#2', en: 'Item#2'} },
+                                            {id: 'item3', text:{da:'Emne#3', en: 'Item#3'} },
+                                            {id: 'item4', text:{da:'Emne#4', en: 'Item#4'} },
+                                            {id: 'item5', text:{da:'Emne#5', en: 'Item#5'} },
+                                            {id: 'item6', text:{da:'Emne#6', en: 'Item#6'} },
+                                            {id: 'item7', text:{da:'Emne#7', en: 'Item#7'} },
+                                            {id: 'item8', text:{da:'Emne#8', en: 'Item#8'} },
                                         ]
                                     },
-                                    {
-                                        id:'formId3', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {           type:'button', icon:'fa-calculator'}
+                                },
+                                {
+                                    icon: 'fa-globe',
+                                    title:{da:'En test', en:'A test'},
+                                    content: [
+                                        {
+                                            id: 'hemmeligt',
+                                            type: 'hidden'
+                                        },
+                                        {
+                                            type: 'text', label: 'En label',
+                                            text: 'Davs med dig<br>Ny linie'
+                                        },
+                                        {
+                                            id: 'mySlider', type:'timeslider', label:'Label (NIELS)',
+                                            _noBorder: true,
+                                            _handle: 'round',
+                                            _showFromTo: false,
+                                            grid: true,
+                                            min:-24, max:48, majorTicksOffset:0, stepOffset:0,
+                                            handleFixed: true,
+                                            slider:"fixed",
+                                            mousewheel: true,
+                                            width: 3*300,
+                                            showLineColor: false,
+                                            resizable: false,
+                                            _onChanging: function( obj ){ console.log( obj.value ); }
+                                        },
+                                        {
+                                            id: 'mySlider2', type:'timeslider', label:'My slider 2',
+                                            _noBorder: true,
+                                            handle: 'round',
+                                            _showFromTo: false,
+                                            grid: true,
+                                            min:-24, max:48, majorTicksOffset:0, stepOffset:0,
+                                            mousewheel: true,
+                                            showLineColor: false,
+                                            _onChanging: function( obj ){ console.log( obj.value ); }
+                                        },
+                                        {
+                                            id:'mySelection', type:'checkbox', text: 'Vælg mig'
+                                        },
+                                        {
+                                            id:'formId2', validators: 'notEmpty _MYvalidatorName', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before:    {type:'button', icon:'fa-calculator'}
                                     },
-                                    {
-                                        id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {           type:'button', icon:'fa-calculator'}
-                                    },
-                                ]
-                            },
-                            {
-                                icon: 'fa-globe',
-                                title:{da:'En anden test', en:'Another test'},
-                            }
-                        ]
-                    }
+                                        {
+                                            id:'formId1', type: 'select', validators: 'notEmpty', _selectedId: 'formSelect4', placeholder:"Placeholder", label:'Label',
+                                            items:[
+                                                {id:'formSelect1', icon:'fa-home', text: 'Davs'},
+                                                {id:'formSelect2', text:'Item 2'},
+                                                {id:'formSelect3', text:'Item 3 SKIDE GODT'},
+                                                {id:'formSelect4', text:'Item 4'},
+                                                {id:'formSelect5', text:'Item 5'}
+                                            ],
+                                            showWhen: {'mySelection': false }
+                                        },
+                                        {
+                                            id:'formId2-1', type: 'select', _selectedId: 'formSelect4', placeholder:"Placeholder", label:'Label',
+                                            items:[
+                                                {id:'formSelect1', icon:'fa-home', text: 'Davs'},
+                                                {id:'formSelect2', text:'Item 2'},
+                                                {id:'formSelect3', text:'Item 3 SKIDE GODT'},
+                                                {id:'formSelect4', text:'Item 4'},
+                                                {id:'formSelect5', text:'Item 5'}
+                                            ]
+                                        },
+                                        {
+                                            id:'formId3', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {           type:'button',  icon:'fa-calculator'}
+                                        },
+                                        {
+                                            id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {           type:'button',  icon:'fa-calculator'}
+                                        },
+                                    ]
+                                },
+                                {
+                                    icon: 'fa-globe',
+                                    title:{da:'En anden test', en:'Another test'},
+                                }
+                            ]
+                        } //end of content
+                    } //end of extended
                 });
                 testModalForm.edit(myData);
             });
