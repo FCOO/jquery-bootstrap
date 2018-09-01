@@ -231,6 +231,10 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 //size='small'
 .modal.modal-sm,
 .modal-inline.modal-sm {
+
+    //Overwrite Bootstrap media-query setting max-width = 300px for modal-sm
+    max-width: none !important;
+
     .modal-content {
         .modal-header {
             @include header-variant-sm();
