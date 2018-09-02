@@ -1064,6 +1064,24 @@ closeButton: true,
             .appendTo( $body)
             .on('click', function(){ no_content.show(); });
 
+        var long_content = $.bsModal({
+            closeButton: true,
+            header:{icon: 'fa-home', text:{da:'"Langt" indhold',en:'"Long" content'}},
+            buttons: [
+            {icon: 'fa-home', text: 'Davs'}
+            ],
+            show: false,
+            content: 'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord',
+            extended: {
+                content: 'Extended'
+            }
+
+        });
+
+        $('<button>"Long" content</button>')
+            .appendTo( $body)
+            .on('click', function(){ long_content.show(); });
+
 var $test =
     $.bsTabs({
         height:'100px',scroll: true,

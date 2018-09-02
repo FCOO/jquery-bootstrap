@@ -7976,7 +7976,8 @@ body.modal-open .modal {
     .modal .modal-dialog.modal-flex.extra-width {
       width: 50rem; }
   .modal .modal-dialog .modal-content {
-    min-height: 100%; }
+    min-height: 100%;
+    word-break: break-all; }
   .modal .modal-dialog:not(.modal-flex) .modal-content .modal-body > .jquery-scroll-container {
     width: calc( 18.75rem - 2*1px - 2*0.625rem);
     margin-left: auto;
@@ -7993,6 +7994,7 @@ body.modal-open .modal {
 .modal-inline .modal-content {
   min-height: 100%;
   max-height: inherit;
+  word-break: break-all;
   box-shadow: none; }
 
 .modal, .modal-inline {
