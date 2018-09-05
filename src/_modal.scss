@@ -68,7 +68,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 
         .modal-content {
             min-height: 100%; //Bug fix for IE11
-            word-break: break-all;
+            word-break: break-word;
         }
 
         //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
@@ -106,7 +106,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     .modal-content {
         min-height: 100%; //Bug fix for IE11
         max-height: inherit;
-        word-break: break-all;
+        word-break: break-word;
         box-shadow: none; //No box-shadow on modal-content when inside a modal-inline
     }
 }
