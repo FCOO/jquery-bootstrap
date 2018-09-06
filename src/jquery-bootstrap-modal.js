@@ -63,11 +63,9 @@
 
         $modalDialog.css('max-height', windowInnerHeight+'px');
         $modalContent.css('max-height', (windowInnerHeight - 2*modalVerticalMargin)+'px');
-
     }
     window.addEventListener('resize',            function(){ adjustModalMaxHeight(); }, false );
     window.addEventListener('orientationchange', function(){ adjustModalMaxHeight(); }, false );
-
 
     //******************************************************
     //show_bs_modal - called when a modal is opening
@@ -230,7 +228,6 @@
 
         if (!isTabs && options.height)
             $modalBody.height(options.height);
-
 
         var $modalContent = parts.$content =
                 hasScroll ?

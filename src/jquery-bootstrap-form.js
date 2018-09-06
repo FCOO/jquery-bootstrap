@@ -274,13 +274,11 @@
         if (this.options.extended && this.options.useExtended){
             this.$form._bsAppendContent( this.options.extended.content, this.options.contentContext );
             this.options.extended.content = this.$form;
-
         }
         else {
             this.$form._bsAppendContent( this.options.content, this.options.contentContext );
             this.options.content = this.$form;
         }
-
 
         if (this.options.formValidation)
             this.$form.addClass('form-validation');
@@ -304,7 +302,6 @@
         this._eachInput( function( input ){
             input.addValidation();
         });
-
 
         //Add onSubmit
         this._addOnSubmit( $.proxy(this.onSubmit, this) );

@@ -3694,6 +3694,8 @@ The scss is divided in two parts: First the common part equal for all types and 
 COMMON STYLE
 ***************************************************************/
 .base-slider-container {
+min-width: 1px;
+min-height: 1px;
   position: relative;
   display: block;
   user-select: none;
@@ -4231,31 +4233,32 @@ STYLE FOR SPECIFIC TYPE
 
 .base-slider-container {
   width: calc(100% - 1.5rem);
+
   margin-left: 0.75rem;
   margin-right: 0.75rem; }
 
 /***********************************************
-    jquery-scroll-container.scss, 
+    jquery-scroll-container.scss,
 
     (c) 2017, FCOO
 
     https://github.com/FCOO/jquery-scroll-container
     https://github.com/FCOO
 
-    USING MODIFIED VERSIONS OF THE STYLE 
+    USING MODIFIED VERSIONS OF THE STYLE
     FROM PERFECT-SCROLLBAR
     https://github.com/noraesae/perfect-scrollbar
 
 ************************************************/
 /***********************************************
-    _jquery-scroll-container-variables.scss, 
+    _jquery-scroll-container-variables.scss,
 
     (c) 2017, FCOO
 
     https://github.com/FCOO/jquery-scroll-container
     https://github.com/FCOO
 
-    USING MODIFIED VERSIONS OF THE STYLE 
+    USING MODIFIED VERSIONS OF THE STYLE
     FROM PERFECT-SCROLLBAR
     https://github.com/noraesae/perfect-scrollbar
 

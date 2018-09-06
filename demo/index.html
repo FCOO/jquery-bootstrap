@@ -841,7 +841,8 @@ closeButton: true,
                             ]
                         },
                         {
-                            icon: 'fa-map',  text:{da:'Kort', en:'Map'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'
+                            icon: 'fa-map',  text:{da:'Kort', en:'Map'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.',
+                            _selected: true
                         },
                         {
                             icon: 'fa-globe',
@@ -878,9 +879,8 @@ closeButton: true,
                         }
                     ],
                     height: 150/16 + 'rem',
-                    scroll: true
                 },
-                scroll: false,
+                scroll: true,
             },
 
             content: 'dette er en test<br>Linie2<br>Linie3<br>Linie4<br>Linie5',
@@ -924,8 +924,10 @@ closeButton: true,
                     onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
                     onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
                     useExtended: true,
+                    scroll: true,
                     content: '',
                     extended: {
+                        scroll: true,
                         content: {
                             type: 'accordion',
                             list: [
@@ -959,6 +961,7 @@ closeButton: true,
                                             type: 'text', label: 'En label',
                                             text: 'Davs med dig<br>Ny linie'
                                         },
+
                                         {
                                             id: 'mySlider', type:'timeslider', label:'Label (NIELS)',
                                             _noBorder: true,
@@ -974,6 +977,7 @@ closeButton: true,
                                             resizable: false,
                                             _onChanging: function( obj ){ console.log( obj.value ); }
                                         },
+
                                         {
                                             id: 'mySlider2', type:'timeslider', label:'My slider 2',
                                             _noBorder: true,
