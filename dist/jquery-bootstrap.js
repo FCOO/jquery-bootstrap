@@ -720,13 +720,11 @@ TODO:
         if (this.options.extended && this.options.useExtended){
             this.$form._bsAppendContent( this.options.extended.content, this.options.contentContext );
             this.options.extended.content = this.$form;
-
         }
         else {
             this.$form._bsAppendContent( this.options.content, this.options.contentContext );
             this.options.content = this.$form;
         }
-
 
         if (this.options.formValidation)
             this.$form.addClass('form-validation');
@@ -750,7 +748,6 @@ TODO:
         this._eachInput( function( input ){
             input.addValidation();
         });
-
 
         //Add onSubmit
         this._addOnSubmit( $.proxy(this.onSubmit, this) );
@@ -1305,11 +1302,9 @@ TODO:
 
         $modalDialog.css('max-height', windowInnerHeight+'px');
         $modalContent.css('max-height', (windowInnerHeight - 2*modalVerticalMargin)+'px');
-
     }
     window.addEventListener('resize',            function(){ adjustModalMaxHeight(); }, false );
     window.addEventListener('orientationchange', function(){ adjustModalMaxHeight(); }, false );
-
 
     //******************************************************
     //show_bs_modal - called when a modal is opening
@@ -1472,7 +1467,6 @@ TODO:
 
         if (!isTabs && options.height)
             $modalBody.height(options.height);
-
 
         var $modalContent = parts.$content =
                 hasScroll ?

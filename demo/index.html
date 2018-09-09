@@ -370,9 +370,7 @@ return;
             text: {da:'Vælg mig', en:'Select me'},
             icon: ['far fa-square', 'far fa-check-square'],
             selected: true,
-            onChange: function(id, selected){
-                console.log('3: bsCheckboxButton',id,selected);
-            }
+            onChange: function(id, selected){ console.log('3: bsCheckboxButton',id,selected);}
         }).appendTo($body);
 
 
@@ -598,9 +596,7 @@ $testButton.data('popover_radiogroup').setSelected('nm');
             //verticalBorder: false,
 selectable: true,
             selectedId: 'no4_0',
-            onChange: function( id, selected, tr ){
-                console.log( 'Table id =' , id,' selected=',selected);
-            },
+            onChange: function( id, selected, tr ){console.log( 'Table id =' , id,' selected=',selected);},
 
             allowZeroSelected: true,
             //allowReselect: true,
@@ -799,16 +795,20 @@ closeButton: true,
                             icon: 'fa-home',  text:{da:'Hjem', en:'Home'},
                             selected: true,
                             content: [
+
                                 {
                                     type:'timeslider', label:'My slider 2',
                                     _noBorder: true,
                                     handle: 'round',
+                                    handleFixed: true,
+                                    width: 48- (-24)*30,
                                     _showFromTo: false,
                                     grid: true,
                                     min:-24, max:48, majorTicksOffset:0, stepOffset:0,
                                     mousewheel: true,
                                     showLineColor: false,
                                 },
+
                                 {
                                     type:'checkbox', text: 'Vælg mig'
                                 },
@@ -878,13 +878,13 @@ closeButton: true,
                             }
                         }
                     ],
-                    height: 150/16 + 'rem',
+                    _height: 150/16 + 'rem',
                 },
                 scroll: true,
             },
 
             content: 'dette er en test<br>Linie2<br>Linie3<br>Linie4<br>Linie5',
-            height: '100px',
+            _height: '100px',
             scroll: true,
             isExtended: true,
             show:false,
@@ -924,6 +924,7 @@ closeButton: true,
                     onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
                     onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
                     useExtended: true,
+                    isExtended: true,
                     scroll: true,
                     content: '',
                     extended: {
@@ -964,31 +965,38 @@ closeButton: true,
 
                                         {
                                             id: 'mySlider', type:'timeslider', label:'Label (NIELS)',
+                                            resizable: true,
+                                            handleFixed: true,
+
                                             _noBorder: true,
                                             _handle: 'round',
                                             _showFromTo: false,
                                             grid: true,
                                             min:-24, max:48, majorTicksOffset:0, stepOffset:0,
-                                            handleFixed: true,
+
                                             slider:"fixed",
                                             mousewheel: true,
                                             width: 3*300,
                                             showLineColor: false,
-                                            resizable: false,
-                                            _onChanging: function( obj ){ console.log( obj.value ); }
+                                            XXonChanging: function( obj ){ console.log( obj.value ); }
                                         },
 
-                                        {
-                                            id: 'mySlider2', type:'timeslider', label:'My slider 2',
+/*                                        {
+                                            id: 'mySlider2', type:'slider', label:'My slider 2',
                                             _noBorder: true,
                                             handle: 'round',
                                             _showFromTo: false,
                                             grid: true,
+                                            slider: '
                                             min:-24, max:48, majorTicksOffset:0, stepOffset:0,
                                             mousewheel: true,
                                             showLineColor: false,
+handleFixed: true,
+width: 3*300,
+
                                             _onChanging: function( obj ){ console.log( obj.value ); }
                                         },
+*/
                                         {
                                             id:'mySelection', type:'checkbox', text: 'Vælg mig'
                                         },
@@ -1134,7 +1142,7 @@ $test.bsSelectTab('NIELS');
         </div>
     </div>
     <button class="btn btn-standard primary" type="submit">Submit form</button>
-    <a class="disabled">
+    <a class="disabled"></a>
 </form>
 
 
