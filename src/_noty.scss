@@ -19,12 +19,18 @@ $noty-theme-name: jquery-bootstrap;
 
 
 $deltaToCenter      : calc(-50% - #{$modal-content-border-width}/2);
+$deltaToCenterIE11  : -50%;
 $translateZ         : translateZ(0);
 $scale              : scale(1.0, 1.0);
 
 $translateToCenter      : translate($deltaToCenter) $translateZ $scale;
+$translateToCenterIE11  : translate($deltaToCenterIE11) $translateZ $scale;
+
 $translateToMiddle      : translate(0, $deltaToCenter) $translateZ $scale;
-$translateToCenterMiddle: translate($deltaToCenter, $deltaToCenter) $translateZ $scale;
+$translateToMiddleIE11  : translate(0, $deltaToCenterIE11) $translateZ $scale;
+
+$translateToCenterMiddle    : translate($deltaToCenter, $deltaToCenter) $translateZ $scale;
+$translateToCenterMiddleIE11: translate($deltaToCenterIE11, $deltaToCenterIE11) $translateZ $scale;
 
 $corner-space: 20px;
 
@@ -108,9 +114,11 @@ $corner-space: 20px;
 
     //Transform
     &.noty-container-topCenter, &.noty-container-bottomCenter {
+        transform: $translateToCenterIE11;
         transform: $translateToCenter;
     }
     &.noty-container-center {
+        transform: $translateToCenterMiddleIE11;
         transform: $translateToCenterMiddle;
     }
     &.noty-container-centerLeft, &.noty-container-centerRight {
@@ -158,7 +166,7 @@ $corner-space: 20px;
 
         //Container for close-icon moves to top right corner when no header
         &.no-header .header-icon-container {
-            position: fixed;
+            position: absolute;
             top: 0;
             right: 0;
             margin-top  : $btn-padding-y;

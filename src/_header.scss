@@ -10,9 +10,11 @@ Icons for modal header inside a container
 ****************************************************/
 .header-icon-container {
     @include vertical-align-center();
+
+    flex-shrink    : 0;
     justify-content: center;
-    margin-left : auto;
-    margin-right: 0;
+    margin-left    : auto;
+    margin-right   : 0;
 
     font-size : 1.5em;
 

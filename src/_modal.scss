@@ -68,6 +68,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 
         .modal-content {
             min-height: 100%; //Bug fix for IE11
+            word-break: break-all; //IE11
             word-break: break-word;
         }
 
@@ -106,6 +107,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     .modal-content {
         min-height: 100%; //Bug fix for IE11
         max-height: inherit;
+        word-break: break-all; //IE11
         word-break: break-word;
         box-shadow: none; //No box-shadow on modal-content when inside a modal-inline
     }
