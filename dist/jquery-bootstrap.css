@@ -7519,6 +7519,7 @@ Icons for modal header inside a container
 .header-icon-container {
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   justify-content: center;
   margin-left: auto;
   margin-right: 0;
@@ -7950,11 +7951,6 @@ MODAL
 Adjusting size etc. to have modal in normal and small size
 and jusing standard header, buttons and sizes
 
-If the height (and width) of the content is variable (eq. accordion) the class
-.modal-flex is added to .modal given
-    width : max-width = $modal-md-rem (or $modal-lg-rem)
-    height: As default but with fixed height for small devices to prevent rapidly change of height
-
 ************************************************************/
 body.modal-open .modal {
   overflow-x: hidden;
@@ -7971,18 +7967,19 @@ body.modal-open .modal {
   width: 18.75rem;
   opacity: 0;
   transition: opacity 0.3s linear; }
-  .modal .modal-dialog.modal-flex {
+  .modal .modal-dialog.modal-flex-width {
     width: 31.25rem; }
-    .modal .modal-dialog.modal-flex.extra-width {
+    .modal .modal-dialog.modal-flex-width.modal-extra-width {
       width: 50rem; }
   .modal .modal-dialog .modal-content {
     min-height: 100%;
+    word-break: break-all;
     word-break: break-word; }
-  .modal .modal-dialog:not(.modal-flex) .modal-content .modal-body > .jquery-scroll-container {
+  .modal .modal-dialog:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
     width: calc( 18.75rem - 2*1px - 2*0.625rem);
     margin-left: auto;
     margin-right: auto; }
-  .modal .modal-dialog.modal-flex .modal-content .modal-body > .jquery-scroll-container {
+  .modal .modal-dialog.modal-flex-width .modal-content .modal-body > .jquery-scroll-container {
     width: auto; }
 
 .modal.show .modal-dialog {
@@ -7994,6 +7991,7 @@ body.modal-open .modal {
 .modal-inline .modal-content {
   min-height: 100%;
   max-height: inherit;
+  word-break: break-all;
   word-break: break-word;
   box-shadow: none; }
 
@@ -8936,8 +8934,10 @@ for noty is copyed and modified
   .noty-container.noty-container-topRight, .noty-container.noty-container-centerRight, .noty-container.noty-container-bottomRight {
     right: 20px; }
   .noty-container.noty-container-topCenter, .noty-container.noty-container-bottomCenter {
+    transform: translate(-50%) translateZ(0) scale(1, 1);
     transform: translate(calc(-50% - 1px/2)) translateZ(0) scale(1, 1); }
   .noty-container.noty-container-center {
+    transform: translate(-50%, -50%) translateZ(0) scale(1, 1);
     transform: translate(calc(-50% - 1px/2), calc(-50% - 1px/2)) translateZ(0) scale(1, 1); }
   .noty-container.noty-container-centerLeft, .noty-container.noty-container-centerRight {
     transform: translate(0, calc(-50% - 1px/2)) translateZ(0) scale(1, 1); }
@@ -8972,7 +8972,7 @@ for noty is copyed and modified
       .noty_bar.noty_theme__jquery-bootstrap .noty_body * {
         word-wrap: break-word; }
     .noty_bar.noty_theme__jquery-bootstrap.no-header .header-icon-container {
-      position: fixed;
+      position: absolute;
       top: 0;
       right: 0;
       margin-top: 0.3125rem;

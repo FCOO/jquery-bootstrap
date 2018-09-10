@@ -628,7 +628,8 @@ selectable: true,
 
         m = $accordion.asModal({
             header:{icon: 'fa-home', text:{da:'FLEX AND MULTIOPEN Overskrift',en:'Header'}},
-            show: false
+            show: false,
+            height: 300
         }),
         m_fixed = $accordion2.asModal({
             flex: false,
@@ -1080,12 +1081,16 @@ width: 3*300,
             closeButton: true,
             header:{icon: 'fa-home', text:{da:'"Langt" indhold med en meget meget meget meget lang overskrift',en:'"Long" content'}},
             buttons: [
-            {icon: 'fa-home', text: 'Davs'}
+                {icon: 'fa-home', text: 'Davs'}
             ],
             show: false,
-            content: 'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord',
+            isExtended: true,
+            content: 'Height=200<br>Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord'+
+                     'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +
+                     'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord',
             extended: {
-                content: 'Extended'
+                height: 300,
+                content: 'height=null<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>SLUT'
             }
 
         });

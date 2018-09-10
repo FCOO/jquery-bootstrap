@@ -378,7 +378,7 @@ Eq.
 | :--: | :--: | :-----: | --- |
 | `header` | `content` or `[] of content` | `""` | See above |
 | `noHeader` | `boolean` | `false` | Prevent header even if `options.header` is set |
-| `flex` | `boolean` | `false` | The default width of a modal is 300px. If `true` the width of the modal will adjust to the width of the browser up to 500px |
+| `flexWidth` | `boolean` | `false` | The default width of a modal is 300px. If `true` the width of the modal will adjust to the width of the browser up to 500px |
 | `extraWidth` | `boolean` | `false` | Only when `flex` is set: If `true` the width of the modal will adjust to the width of the browser up to 800px |
 | `isForm` | `boolean` | `false` | If `true` a the content is created inside `<div class="form-group"></div>` |
 | `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
@@ -387,7 +387,6 @@ Eq.
 | `show` | `boolean` |  `true` | The modal is shown after creation |
 | `static` | `boolean` |  `false` | If `true` the modal can only be closed on top-right (x) or a button|
 | `fixedContent` |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
-| `container` |  | `null` | Optional container where the content is build inside |
 | `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `contentContext` |  | `null` | The context for `content` (only `function`) |
 | `footer` | `content` or `[] of content` | `""` | See above |
