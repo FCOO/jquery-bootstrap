@@ -1491,10 +1491,11 @@ TODO:
     ******************************************************/
     $.fn._bsModalSetHeight = function(){
         var bsModal = this.bsModal,
-            isExtended = bsModal.$modalContent.hasClass('modal-extended'),
+            $modalContent = bsModal.$modalContent,
+            isExtended = $modalContent.hasClass('modal-extended'),
             cssForContent = isExtended ? bsModal.cssExtendedHeight : bsModal.cssHeight;
 
-        bsModal.$modalContent
+        $modalContent
             .toggleClass('modal-flex-height', !cssForContent)
             .css( cssForContent ? cssForContent : {height: 'auto', maxHeight: null});
 
@@ -1524,6 +1525,19 @@ TODO:
             event.stopPropagation();
         return false;
     };
+
+/* TODO: animate changes in height and width
+       var $this = this.bsModal.$container,
+            oldHeight = $this.outerHeight(),
+            newHeight;
+
+        $this.modernizrToggle('modal-extended');
+
+        newHeight = $this.outerHeight();
+        $this.height(oldHeight);
+
+        $this.animate({height: newHeight}, 'fast', function() { $this.height('auto'); });
+*/
 
     /******************************************************
     _bsModalPin, _bsModalUnpin, _bsModalTogglePin
