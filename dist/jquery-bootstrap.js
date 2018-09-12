@@ -1514,7 +1514,7 @@ TODO:
         $modalDialog
             .toggleClass('modal-flex-width', cssWidth.flexWidth )
             .toggleClass('modal-extra-width', cssWidth.extraWidth )
-            .css('height', cssWidth.height );
+            .css('width', cssWidth.width );
     };
 
     /******************************************************
