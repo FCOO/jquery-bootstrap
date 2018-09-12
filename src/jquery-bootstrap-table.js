@@ -146,7 +146,7 @@ Add sort-functions + save col-index for sorted column
 
             $result = $.bsModal(
                             $.extend( modalOptions || {}, {
-                                flex             : true,
+                                flexWidth        : true,
                                 noVerticalPadding: true,
                                 content          : this,
                                 fixedContent     : $tableWithHeader

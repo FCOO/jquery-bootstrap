@@ -127,7 +127,7 @@
         var $result =
                 $.bsModal(
                     $.extend( {
-                        flex               : true,
+                        flexWidth          : true,
                         noVerticalPadding  : true,
                         noHorizontalPadding: true,
                         scroll             : false,

@@ -7976,7 +7976,7 @@ body.modal-open .modal {
     word-break: break-all;
     word-break: break-word; }
   .modal .modal-dialog:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
-    width: calc( 18.75rem - 2*1px - 2*0.625rem);
+    width: calc( 100% - 2*1px - 2*0.625rem);
     margin-left: auto;
     margin-right: auto; }
   .modal .modal-dialog.modal-flex-width .modal-content .modal-body > .jquery-scroll-container {

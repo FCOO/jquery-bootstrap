@@ -69,7 +69,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
 
         //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
         &:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
-            width: calc( #{$modal-sm-rem} - 2*#{$modal-content-border-width} - 2*#{$modal-body-fixed-scroll-padding-x} );
+            width: calc( 100% - 2*#{$modal-content-border-width} - 2*#{$modal-body-fixed-scroll-padding-x} );
             margin-left : auto;
             margin-right: auto;
         }

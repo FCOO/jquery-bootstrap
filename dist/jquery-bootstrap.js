@@ -70,8 +70,8 @@ TODO:
 
     function bsAccordion_asModal( options ){
         return $.bsModal( $.extend( {
-                              flex   : true,
-                              content: this,
+                              flexWidth: true,
+                              content  : this,
                           }, options)
                );
     }
@@ -1247,7 +1247,7 @@ TODO:
 
 ****************************************************************************/
 
-(function ($, window, document/*, undefined*/) {
+(function ($, window, document, undefined) {
 	"use strict";
 
     /**********************************************************
@@ -1262,6 +1262,7 @@ TODO:
 }       type //"", "alert", "success", "warning", "error", "info"
         fixedContent
         flexWidth
+        extraWidth
         noVerticalPadding
         content
         scroll: boolean | 'vertical' | 'horizontal'
@@ -1303,9 +1304,14 @@ TODO:
 
     /******************************************************
     The height of a modal can be tre different modes
-    1: max-height is adjiusted to window-height. Default
+    1: max-height is adjusted to window-height. Default
     2: max-height. options.maxHeight
     3: fixed height. options.height
+
+    The width of a modal is by default 300px.
+    options.flexWidth :  If true the width of the modal will adjust to the width of the browser up to 500px
+    options.extraWidth:  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
+    options.width     : Set if different from 300
 
     ******************************************************/
     function getHeightFromOptions( options ){
@@ -1314,6 +1320,13 @@ TODO:
         return null;
     }
 
+    function getWidthFromOptions( options ){
+        return {
+            flexWidth : !!options.flexWidth,
+            extraWidth: !!options.extraWidth,
+            width     : options.width ? options.width+'px' : 'auto'
+        };
+    }
 
     //******************************************************
     //show_bs_modal - called when a modal is opening
@@ -1342,7 +1355,6 @@ TODO:
                 return false;
             }
         });
-
     }
 
     //******************************************************
@@ -1391,14 +1403,8 @@ TODO:
     ******************************************************/
     var bsModal_prototype = {
 
-        show: function(){
-            this.modal('show');
-        },
-
-        _close: function(){
-            this.modal('hide');
-        },
-
+        show  : function(){ this.modal('show'); },
+        _close: function(){ this.modal('hide'); },
 
         close: function(){
 
@@ -1487,21 +1493,28 @@ TODO:
     };
 
     /******************************************************
-    _bsModalSetHeight - Set the height according to current cssHeight
+    _bsModalSetHeightAndWidth - Set the height and width according to current cssHeight and cssWidth
     ******************************************************/
-    $.fn._bsModalSetHeight = function(){
+    $.fn._bsModalSetHeightAndWidth = function(){
         var bsModal = this.bsModal,
             $modalContent = bsModal.$modalContent,
+            $modalDialog = $modalContent.parent(),
             isExtended = $modalContent.hasClass('modal-extended'),
-            cssForContent = isExtended ? bsModal.cssExtendedHeight : bsModal.cssHeight;
+            cssHeight = isExtended ? bsModal.cssExtendedHeight : bsModal.cssHeight,
+            cssWidth = isExtended ? bsModal.cssExtendedWidth : bsModal.cssWidth;
 
+        //Set height
         $modalContent
-            .toggleClass('modal-flex-height', !cssForContent)
-            .css( cssForContent ? cssForContent : {height: 'auto', maxHeight: null});
-
-        if (!cssForContent)
+            .toggleClass('modal-flex-height', !cssHeight)
+            .css( cssHeight ? cssHeight : {height: 'auto', maxHeight: null});
+        if (!cssHeight)
             adjustModalMaxHeight( bsModal.$modalContent );
 
+        //Set width
+        $modalDialog
+            .toggleClass('modal-flex-width', cssWidth.flexWidth )
+            .toggleClass('modal-extra-width', cssWidth.extraWidth )
+            .css('height', cssWidth.height );
     };
 
     /******************************************************
@@ -1519,7 +1532,7 @@ TODO:
     $.fn._bsModalToggleHeight = function( event ){
         this.bsModal.$modalContent.modernizrToggle('modal-extended');
 
-        this._bsModalSetHeight();
+        this._bsModalSetHeightAndWidth();
 
         if (event && event.stopPropagation)
             event.stopPropagation();
@@ -1584,6 +1597,16 @@ TODO:
                 this.bsModal.cssExtendedHeight = getHeightFromOptions( options.extended );
         }
 
+        //Set bsModal.cssWidth and (optional) bsModal.cssExtendedWidth
+        this.bsModal.cssWidth = getWidthFromOptions( options );
+        if (options.extended){
+            //If options.extended.width == true or none width-options is set in extended => use same width as normal-mode
+            if ((options.extended.width == true) || ((options.extended.flexWidth == undefined) && (options.extended.extraWidth == undefined) && (options.extended.width == undefined)))
+                this.bsModal.cssExtendedWidth = this.bsModal.cssWidth;
+            else
+                this.bsModal.cssExtendedWidth = getWidthFromOptions( options.extended );
+        }
+
 
         var $modalContent = this.bsModal.$modalContent =
                 $('<div/>')
@@ -1592,7 +1615,7 @@ TODO:
                     .modernizrOff('modal-pinned')
                     .appendTo( this );
 
-        this._bsModalSetHeight();
+        this._bsModalSetHeightAndWidth();
 
         var modalExtend       = $.proxy( this._bsModalExtend,       this),
             modalDiminish     = $.proxy( this._bsModalDiminish,     this),
@@ -1767,10 +1790,6 @@ TODO:
                 show       : true
             });
 
-        //Backward compatible
-        if (options.flexWidth == undefined)
-            options.flexWidth = !!options.flex;
-
         //Create the modal
         $result =
             $('<div/>')
@@ -1785,8 +1804,8 @@ TODO:
         $modalDialog =
             $('<div/>')
                 .addClass('modal-dialog')
-                .addClass(options.flexWidth ? 'modal-flex-width' : '')
-                .addClass(options.flex && options.extraWidth ? 'modal-extra-width' : '')
+//HER                .addClass(options.flexWidth ? 'modal-flex-width' : '')
+//HER                .addClass(options.extraWidth ? 'modal-extra-width' : '')
                 .attr( 'role', 'document')
                 .appendTo( $result );
 
@@ -2904,7 +2923,7 @@ Add sort-functions + save col-index for sorted column
 
             $result = $.bsModal(
                             $.extend( modalOptions || {}, {
-                                flex             : true,
+                                flexWidth        : true,
                                 noVerticalPadding: true,
                                 content          : this,
                                 fixedContent     : $tableWithHeader
@@ -3169,7 +3188,7 @@ Add sort-functions + save col-index for sorted column
         var $result =
                 $.bsModal(
                     $.extend( {
-                        flex               : true,
+                        flexWidth          : true,
                         noVerticalPadding  : true,
                         noHorizontalPadding: true,
                         scroll             : false,

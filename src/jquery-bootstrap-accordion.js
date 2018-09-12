@@ -70,8 +70,8 @@ TODO:
 
     function bsAccordion_asModal( options ){
         return $.bsModal( $.extend( {
-                              flex   : true,
-                              content: this,
+                              flexWidth: true,
+                              content  : this,
                           }, options)
                );
     }

@@ -614,7 +614,7 @@ selectable: true,
             header:'En stor tabel',
             closeIcon: 'fa-globe',
             closeText: {da:"Luk og rejs", en:"Close and go"},
-            flex:true,
+            flexWidth:true,
             extraWidth: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             show: false
@@ -632,13 +632,13 @@ selectable: true,
             height: 300
         }),
         m_fixed = $accordion2.asModal({
-            flex: false,
+            flexWidth: false,
             header:[{icon: 'fa-home', text:{da:'FIXED Overskrift',en:'Header'}}, {icon: 'fa-globe', text:{da:'Overskrift#2',en:'Header#2'}}],
             show: false
         }),
 
         m_small = $accordion3.asModal({
-            flex: false,
+            flexWidth: false,
             header:{icon: 'fa-home', text:{da:'Small Overskrift',en:'Small Header'}},
             footer: footer,
             show: false,
@@ -785,9 +785,9 @@ closeButton: true,
  */
 
         tab_modal = $.bsModal({
-            flex: true,
             header: 'Header',
             extended: {
+                flexWidth: true,
                 content: {
                     type: 'tabs',
                     hideNotSelectedText: true,
@@ -1045,7 +1045,7 @@ width: 3*300,
             });
 
         var no_header_or_footer = $accordion4.asModal({
-            flex: false,
+            flexWidth: false,
             scroll: true,
             noHeader: true,
             closeButton: false,
@@ -1085,13 +1085,14 @@ width: 3*300,
             ],
             show: false,
             //isExtended: true,
-            height: 150,
-            content: 'Height=150<br>Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord'+
-                     'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +
-                     'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord',
+            maxHeight: 300,
+            content: 'max-height=300<br>SLUT',
             extended: {
-                maxHeight: 300,
-                content: 'max-height=300<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>SLUT'
+                height: true,
+                flexWidth: true,
+                content: 'max-height=300 flex-width <br>Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord'+
+                            'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +
+                            'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord',
             }
 
         });

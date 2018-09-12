@@ -360,7 +360,8 @@ Eq.
 | :--: | :--: | :-----: | :--- |
 | `id` | `string` | `""` |` `|
 | `icon, text etc` | `content` or `[] of content` | `""` | See above |
-| `content` | | | The contents for the tab.<br>Can be `DOM-element`, `jQuery-element`, `function( $container )` | | |  | 
+| `content` | | | The contents for the tab.<br>Can be `DOM-element`, `jQuery-element`, `function( $container )` |
+
 | `footer` | `content` or `[] of content` | `""` | See above |
 
 
@@ -379,8 +380,9 @@ Eq.
 | `header` | `content` or `[] of content` | `""` | See above |
 | `noHeader` | `boolean` | `false` | Prevent header even if `options.header` is set |
 | `flexWidth` | `boolean` | `false` | The default width of a modal is 300px. If `true` the width of the modal will adjust to the width of the browser up to 500px |
-| `extraWidth` | `boolean` | `false` | Only when `flex` is set: If `true` the width of the modal will adjust to the width of the browser up to 800px |
-| `isForm` | `boolean` | `false` | If `true` a the content is created inside `<div class="form-group"></div>` |
+| `extraWidth` | `boolean` | `false` | Only when `flexWidth` is set: If `true` the width of the modal will adjust to the width of the browser up to 800px |
+| `maxHeight` | `number`| `null` | The max-height of the modal |
+| `height` | `number`| `null` | The fixed height of the modal. If neither `maxHeight` or `height` is set the max-height is adjusted to window-height  |
 | `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
 | `type` | `string` | `""` | Sets `background-color` and `color` to match the [Noty](#noty) types<br> Possible value=`"alert"`, `"success"`, `"warning"`, `"error"`, `"info"`  |
 | `noVerticalPadding` | `boolean` | `false` | If `true` the vertical padding around the contents is zero |
@@ -394,7 +396,7 @@ Eq.
 | `buttons` | `[] of button-options` | `[]` | Array of options for buttons in the footer. See Button above. `closeOnClick: true/false` is added to set if the button closes the modal |
 | `closeText` | `string or i18n-record`| `{da:'Luk', en:'Close'}` | The text for the close-button. |
 | `closeIcon` | `string`| `"fa-times"` | The icon for the close-button |
-| `extended` | `object`| `null` | The extended content. `{type, fixedContent, flex, noVerticalPadding, content, scroll, footer}` If `fixedContent===true` or `footer===true` the content form normal state is also shown in extended mode   |
+| `extended` | `object`| `null` | The extended content. `{type, fixedContent, flexWidth, noVerticalPadding, content, scroll, footer, width-options, height-options}` If any of the `extended`-values are === `true`the content values are used in extended mode   |
 | `onPin` | `function( pinned [boolean] )`| `null` | When given the icons for pin and unpin as shown. Also when pinned the modal can only be closed using the close icon or close-button |
 | `noCloseIconOnHeader` | `boolean` | `false` | If `true` no close icon is added on the header |
 
