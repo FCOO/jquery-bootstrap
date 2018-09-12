@@ -183,7 +183,7 @@ Style for div with controls inside modal.
 Must have tabindex:"-1" to work with focus
 ************************************************************/
 @mixin control-container(){
-    .modal & {
+    .modal-dialog & {
         border: $input-btn-border-width solid $input-border-color;
         border-radius: $input-border-radius;
         &-sm {

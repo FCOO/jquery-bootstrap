@@ -113,7 +113,7 @@ Adjustmernt to Bootstrap table
 
 
 //Small header-size or inside a small modal
-.modal-sm .table,
+.modal-dialog-sm .table,
 .table.table-sm {
     //Header
     thead tr th {
@@ -129,7 +129,7 @@ Adjustmernt to Bootstrap table
 }
 
 //Normal cell-size when not-small and selectable
-.modal:not(.modal-sm) .table.table-selectable,
+.modal-dialog:not(.modal-dialog-sm) .table.table-selectable,
 .table.table-selectable:not(.table-sm){
     tbody tr td {
         @include content-padding();

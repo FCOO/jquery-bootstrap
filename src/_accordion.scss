@@ -43,8 +43,8 @@ Using Bootstrap Collapse to create accordion
 
 
 //Size and padding for small-version
-.modal-sm .accordion,
-.modal-xs .accordion,
+.modal-dialog-sm .accordion,
+.modal-dialog-xs .accordion,
 .accordion-sm {
     .card-header {
         @include title-variant-sm();

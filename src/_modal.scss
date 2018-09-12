@@ -23,97 +23,78 @@ $modal-body-scroll-padding-x: max( 0, $modal-body-fixed-scroll-padding-x - $scro
 $modal-body-scroll-padding-y-sm: max( 0, max( $content-padding-y-sm, $min-padding) - $scroll-size );
 $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm - $scroll-size );
 
-// SIZING IN MODAL
-.modal {
 
-    //Overwrite default overflow
-    body.modal-open & {
-        overflow-x: hidden;
-        overflow-y: hidden;
-        padding: 0 !important;
-    }
-
-
-    .modal-dialog {
-        display        : flex;
-        flex-direction : column;
-
-        justify-content: center;
-
-        //On small screens the modal is placed at the top - REMOVED
-//        @media (max-height: 575px) {
-//            justify-content: flex-start;
-//        }
-
-        margin   : 0 auto;
-
-        min-height: 100%;
-
-        max-width: calc(100vw - #{2*$modal-dialog-margin});
-        width    : $modal-sm-rem;
-
-        &.modal-flex-width {
-            width: $modal-md-rem;
-
-            &.modal-extra-width {
-                width: $modal-lg-rem;
-            }
-        }
-
-
-        .modal-content {
-            min-height: 100%; //Bug fix for IE11
-            word-break: break-all; //IE11
-            word-break: break-word;
-        }
-
-        //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
-        &:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
-            width: calc( 100% - 2*#{$modal-content-border-width} - 2*#{$modal-body-fixed-scroll-padding-x} );
-            margin-left : auto;
-            margin-right: auto;
-        }
-
-        &.modal-flex-width .modal-content .modal-body > .jquery-scroll-container {
-            width: auto;
-        }
-
-        //Force fading opacity
-        opacity: 0;
-        transition: opacity 0.3s linear;
-    }
-
-    &.show {
-        .modal-dialog { opacity: 1; }
-    }
-
-
-    //Overwrite Bootstrap media-query setting max-width = 300px for modal-sm
-    &.modal-sm {
-        max-width: none !important;
-    }
-
-} //end of .modal
-
-
-// SIZING IN MODAL-INLINE
-.modal-inline {
-
-    .modal-content {
-        min-height: 100%; //Bug fix for IE11
-        max-height: inherit;
-        word-break: break-all; //IE11
-        word-break: break-word;
-        box-shadow: none; //No box-shadow on modal-content when inside a modal-inline
-    }
+//Overwrite default overflow
+body.modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    padding: 0 !important;
 }
 
-//HEADER, FIXED-BODY, BODY AND FOOTER
-.modal, .modal-inline {
-    $border-radius: calc( #{$border-radius-lg} - #{$modal-content-border-width} );
+//Fading opacity
+.modal {
+    .modal-dialog {
+        opacity   : 0;
+        transition: opacity .3s linear;
+    }
+    &.show .modal-dialog { opacity: 1; }
+}
+
+/****************************************************
+.MODEL-DIALOG
+****************************************************/
+.modal-dialog {
+    display        : flex;
+    flex-direction : column;
+    justify-content: center;
 
     font-size: 1rem; //To avoid overwrite from other container
+
+    margin    : 0 auto;
+
+    min-height: 100%;
+    max-width : calc(100vw - #{2*$modal-dialog-margin});
+    width     : $modal-sm-rem;
+
+    //Estra width for flexWidth and extraWidth
+    &.modal-flex-width {
+        width: $modal-md-rem;
+
+        &.modal-extra-width {
+            width: $modal-lg-rem;
+        }
+    }
+
+    //No box-shadow on modal-content when inside a modal-dialog-inline
+    &.modal-dialog-inline .modal-content {
+        box-shadow: none;
+        max-height: inherit; //CHECK
+    }
+
     .modal-content {
+        min-height: 100%;      //Bug fix for IE11
+        word-break: break-all; //Fallback for IE11
+        word-break: break-word;
+    }
+
+    //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
+    &:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
+        width: calc( 100% - 2*#{$modal-content-border-width} - 2*#{$modal-body-fixed-scroll-padding-x} );
+        margin-left : auto;
+        margin-right: auto;
+    }
+
+    &.modal-flex-width .modal-content .modal-body > .jquery-scroll-container {
+        width: auto;
+    }
+
+
+    /****************************************************
+    .MODAL-CONTENT
+    AND ITS COMPONENTS (HEADER, FIXED-BODY, BODY AND FOOTER)
+    ****************************************************/
+    .modal-content {
+        $border-radius: calc( #{$border-radius-lg} - #{$modal-content-border-width} );
 
         //Create class show-for-modal-extended and hide-for-modal-extended
         //         and show-for-modal-pinned and hide-for-modal-pined
@@ -122,18 +103,21 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
         @include show-and-hide-for-modernizr-test( modal-pinned , '&', false, '', false );
 
 
+        //When modal-body is empty: Hide modal-body and remove top-border from footer
+        .modal-body.modal-body-no-content {
+            display: none
+        }
+
+        &:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
+        &.modal-extended       .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
+            border-top: none;
+        }
+
+
+        //HEADER
         &.no-modal-header {
             padding-top: $border-radius;
         }
-
-        //no footer header or footer => use modal-footer to make padding-bottom
-        & .modal-footer-header:empty + .modal-footer:empty {
-            display: block;
-            height : $border-radius;
-            padding: 0;
-            border: none;
-        }
-
         .modal-header {
             flex-shrink: 0; //Only .modal-body is shrink
             flex-grow  : 0; //Only .modal-body is growing
@@ -148,6 +132,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
             }
         }
 
+        //BODY
         .modal-body-fixed {
             flex-shrink: 0; //Only .modal-body is shrink
             flex-grow  : 0; //Only .modal-body is growing
@@ -170,6 +155,14 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
             }
         }
 
+        //FOOTER-HEADER AND FOOTER
+        //no footer header or footer => use modal-footer to make padding-bottom
+        & .modal-footer-header:empty + .modal-footer:empty {
+            display: block;
+            height : $border-radius;
+            padding: 0;
+            border: none;
+        }
         .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
             flex-shrink: 0; //Only .modal-body is shrink
             flex-grow  : 0; //Only .modal-body is growing
@@ -180,7 +173,6 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
                 border-top: none;
             }
         }
-
         .modal-footer {
             flex-shrink: 0; //Only .modal-body is shrink
             flex-grow  : 0; //Only .modal-body is growing
@@ -200,85 +192,57 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
                 > *:not(:first-child) { margin-top: .25rem; }
             }
         }
-    }
-}
+    } //end of .modal-content
 
 
-//When modal-body is empty: Hide modal-body and remove top-border from footer
-.modal-dialog {
-    .modal-content {
-        .modal-body.modal-body-no-content {
-            display: none
-        }
-
-        &:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
-        &.modal-extended       .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
-            border-top: none;
-        }
-    }
-}
-
-/*
-    //Hide top-border for footer when modal-body is empty
-    .modal-content:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
-    .modal-content.modal-extended       .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
-        border-top: none;
-    }
-*/
-
-//size='small'
-.modal.modal-sm,
-.modal-inline.modal-sm {
-
-    //Overwrite Bootstrap media-query setting max-width = 300px for modal-sm
-    max-width: none !important;
-
-    .modal-content {
-        .modal-header {
-            @include header-variant-sm();
-        }
-        .modal-body,
-        .modal-body-fixed {
-            @include content-padding-sm();
-        }
-        .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
-            @include footer-variant-sm();
-        }
-
-        .modal-footer {
-            //padding: $btn-padding-x-sm;
+    /****************************************************
+    DIFFERENT SIZES
+    .MODAL-DIALOG-SM AND .MODAL-DIALOG-XS
+    ****************************************************/
+    //size='small'
+    &.modal-dialog-sm {
+        .modal-content {
+            .modal-header {
+                @include header-variant-sm();
+            }
+            .modal-body,
+            .modal-body-fixed {
+                @include content-padding-sm();
+            }
+            .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
+                @include footer-variant-sm();
+            }
+            .modal-footer {
+                //padding: $btn-padding-x-sm;
+            }
         }
     }
-}
 
-//size='extra small'
-.modal.modal-xs,
-.modal-inline.modal-xs {
-    .modal-content {
-        .modal-header {
-            @include header-variant-sm(true, true);
-        }
-        .modal-body,
-        .modal-body-fixed {
-            @include content-padding-sm();
-        }
-        .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
-            @include footer-variant-sm();
-        }
-
-        .modal-footer {
-            padding-top: $btn-padding-x-sm;
-            padding-bottom: $btn-padding-x-sm;
+    //size='extra small'
+    &.modal-dialog-xs {
+        .modal-content {
+            .modal-header {
+                @include header-variant-sm(true, true);
+            }
+            .modal-body,
+            .modal-body-fixed {
+                @include content-padding-sm();
+            }
+            .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
+                @include footer-variant-sm();
+            }
+            .modal-footer {
+                padding-top: $btn-padding-x-sm;
+                padding-bottom: $btn-padding-x-sm;
+            }
         }
     }
-}
 
-
-
+} //end of .modal-dialog
 
 
 //Adjust padding-left and padding-right if the body is a scroll
-.modal, .modal-inline {
+.modal-dialog {
     .modal-body-fixed.scrollbar-vertical{
         padding-left : $modal-body-fixed-scroll-padding-x;
         padding-right: $modal-body-fixed-scroll-padding-x;
@@ -292,8 +256,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     }
 }
 
-.modal.modal-sm,
-.modal-inline.modal-sm {
+.modal-dialog.modal-dialog-sm {
     .modal-body-fixed.scrollbar-vertical {
         padding-left : $modal-body-fixed-scroll-padding-x-sm;
         padding-right: $modal-body-fixed-scroll-padding-x-sm;
@@ -308,8 +271,6 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
     }
 }
 
-
-
 //no-vertical-padding: No top- or bottom-padding in modal-body and modal-body-fixed
 //no-horizontal-padding: No left- or rightpadding in modal-body and modal-body-fixed
 .modal-content {
@@ -319,7 +280,7 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
         padding-bottom: 0 !important;
     }
 }
-.no-vertical-padding .modal-dialog .modal-content {
+.no-vertical-padding .modal-content {
     .modal-body-fixed, .modal-body {
         padding-top   : 0 !important;
         padding-bottom: 0 !important;
@@ -333,10 +294,9 @@ $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm -
         padding-right: 0 !important;
     }
 }
-.no-horizontal-padding .modal-dialog .modal-content {
+.no-horizontal-padding .modal-content {
     .modal-body-fixed, .modal-body {
         padding-left : 0 !important;
         padding-right: 0 !important;
     }
 }
-

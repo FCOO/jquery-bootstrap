@@ -526,15 +526,14 @@
     bsModal
     ******************************************************/
     $.bsModal = function( options ){
-        var $result, $modalDialog,
-            id = options.id || '_bsModal'+ modalId++,
-            classNames = (options.noVerticalPadding   ? 'no-vertical-padding'    : '') +
-                         (options.noHorizontalPadding ? ' no-horizontal-padding' : '');
+        var $result, $modalDialog;
+
         //Adjust options
         options =
             $._bsAdjustOptions( options, {
-                baseClass: 'modal',
-                class    : classNames,
+                baseClass: 'modal-dialog',
+                class    : (options.noVerticalPadding   ? 'no-vertical-padding'    : '') +
+                           (options.noHorizontalPadding ? ' no-horizontal-padding' : ''),
 
                 //Header
                 noHeader : false,
@@ -554,9 +553,9 @@
         //Create the modal
         $result =
             $('<div/>')
-                ._bsAddBaseClassAndSize( options )
+                .addClass('modal')
                 .attr({
-                    'id'         : id,
+                    'id'         : options.id || '_bsModal'+ modalId++,
                     'tabindex'   : -1,
                     'role'       : "dialog",
                     'aria-hidden': true
@@ -564,9 +563,7 @@
 
         $modalDialog =
             $('<div/>')
-                .addClass('modal-dialog')
-//HER                .addClass(options.flexWidth ? 'modal-flex-width' : '')
-//HER                .addClass(options.extraWidth ? 'modal-extra-width' : '')
+                ._bsAddBaseClassAndSize( options )
                 .attr( 'role', 'document')
                 .appendTo( $result );
 
