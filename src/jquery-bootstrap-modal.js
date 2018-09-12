@@ -85,7 +85,7 @@
         return {
             flexWidth : !!options.flexWidth,
             extraWidth: !!options.extraWidth,
-            width     : options.width ? options.width+'px' : 'auto'
+            width     : options.width ? options.width+'px' : null
         };
     }
 
@@ -164,7 +164,11 @@
     ******************************************************/
     var bsModal_prototype = {
 
-        show  : function(){ this.modal('show'); },
+        show  : function(){
+                    this.modal('show');
+                    if (this.bsModal.onChange)
+                        this.bsModal.onChange( this.bsModal );
+                },
         _close: function(){ this.modal('hide'); },
 
         close: function(){
@@ -276,6 +280,10 @@
             .toggleClass('modal-flex-width', cssWidth.flexWidth )
             .toggleClass('modal-extra-width', cssWidth.extraWidth )
             .css('width', cssWidth.width );
+
+        //Call onChange (if any)
+        if (bsModal.onChange)
+            bsModal.onChange( bsModal );
     };
 
     /******************************************************
@@ -348,6 +356,8 @@
 
         //this.bsModal contains all created elements
         this.bsModal = {};
+
+        this.bsModal.onChange = options.onChange || null;
 
         //Set bsModal.cssHeight and (optional) bsModal.cssExtendedHeight
         this.bsModal.cssHeight = getHeightFromOptions( options );
