@@ -7293,7 +7293,7 @@ div.btn, div.list-group-item {
     .btn.btn-standard.square > i.fa {
       text-align: center; }
   .btn.btn-standard.big-icon {
-    line-height: .9;
+    line-height: 1;
     padding: 0.25rem !important;
     flex-direction: row;
     align-items: center;
