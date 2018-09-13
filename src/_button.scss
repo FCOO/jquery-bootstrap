@@ -119,9 +119,8 @@ div.btn, div.list-group-item {
     }
 
     &.big-icon {
-        line-height    : 1;
+        line-height    : .9;
         padding        : $big-icon-padding !important;
-        display        : inline-flex;
         flex-direction : row;
         align-items    : center;
         justify-content: center;
