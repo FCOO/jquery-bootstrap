@@ -7993,7 +7993,6 @@ body.modal-open .modal {
   .modal-dialog .modal-content {
     min-height: 100%;
     -ms-word-break: break-all;
-    white-space: pre-wrap;
     overflow-wrap: break-word; }
   .modal-dialog:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
     width: calc( 100% - 2*1px - 2*0.625rem);
