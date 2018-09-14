@@ -7992,8 +7992,9 @@ body.modal-open .modal {
     max-height: inherit; }
   .modal-dialog .modal-content {
     min-height: 100%;
-    word-break: break-all;
-    word-break: break-word; }
+    -ms-word-break: break-all;
+    white-space: pre-wrap;
+    overflow-wrap: break-word; }
   .modal-dialog:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
     width: calc( 100% - 2*1px - 2*0.625rem);
     margin-left: auto;
@@ -8938,7 +8939,9 @@ for noty is copyed and modified
       font-size: 1rem;
       font-size: 0.875rem; }
       .noty_bar.noty_theme__jquery-bootstrap .noty_body * {
-        word-wrap: break-word; }
+        -ms-word-break: break-all;
+        white-space: pre-wrap;
+        overflow-wrap: break-word; }
     .noty_bar.noty_theme__jquery-bootstrap.no-header .header-icon-container {
       position: absolute;
       top: 0;

@@ -72,9 +72,10 @@ body.modal-open .modal {
     }
 
     .modal-content {
-        min-height: 100%;      //Bug fix for IE11
-        word-break: break-all; //Fallback for IE11
-        word-break: break-word;
+        min-height: 100%;           //Bug fix for IE11
+        -ms-word-break: break-all;  //Fallback for IE11
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
     }
 
     //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content

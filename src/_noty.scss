@@ -160,7 +160,9 @@ $corner-space: 20px;
             @include content-padding();
             font-size: $font-size-sm;
             * {
-                word-wrap: break-word;
+                -ms-word-break: break-all;  //Fallback for IE11
+                white-space: pre-wrap;
+                overflow-wrap: break-word;
             }
         }
 
