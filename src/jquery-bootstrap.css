@@ -7082,7 +7082,7 @@ Bootstrap allready have the following classes
 .font-italic
 
 */
-.container-icon-and-text > *.after-icon {
+.container-icon-and-text > *:not(:first-child) {
   padding-left: 0.3em; }
 
 /************************************************************
