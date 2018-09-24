@@ -171,6 +171,11 @@ $('body').on('wheel', function(e){
             $.bsButton({ icon: icon, bigIcon: true, _square: true }).appendTo( $body );
         });
 
+//        $.each(['fa-bars', 'fa-search'], function(index, icon){
+        $.bsButton({ icon: ['fa-bars fa-stack-1x', 'fa-search fa-stack-1x'], _bigIcon: true, _square: true })
+            .addClass('fa-stack')
+            .appendTo( $body );
+
 
         $.bsButton({
             text: 'Test af Noty',
