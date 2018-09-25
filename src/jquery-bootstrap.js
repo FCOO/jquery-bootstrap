@@ -156,7 +156,7 @@
     /****************************************************************************************
     $._bsCreateElement = internal method to create $-element
     ****************************************************************************************/
-    $._bsCreateElement = function( tagName, link, title, textStyle, className ){
+    $._bsCreateElement = function( tagName, link, title, textStyle, className, data ){
         var $result;
         if (link){
             $result = $('<a/>');
@@ -179,6 +179,9 @@
 
         if (className)
             $result.addClass( className );
+
+        if (data)
+            $result.data( data );
 
         return $result;
     };
@@ -321,6 +324,7 @@
             title    : String or array of String
             iconClass: string or array of String
             textClass: string or array of String
+            textData : obj or array of obj
         }
         checkForContent: [Boolean] If true AND options.content exists => use options.content instead
         ****************************************************************************************/
@@ -369,7 +373,8 @@
                 linkArray       = getArray( ignoreLink ? [] : options.link || options.onClick ),
                 titleArray      = getArray( options.title ),
                 iconClassArray  = getArray( options.iconClass ),
-                textClassArray  = getArray( options.textClass );
+                textClassArray  = getArray( options.textClass ),
+                textDataArray   = getArray( options.textData );
 
             //Add icons (optional)
             $.each( iconArray, function( index, icon ){
@@ -382,7 +387,7 @@
 
             //Add text
             $.each( textArray, function( index, text ){
-                var $text = $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] );
+                var $text = $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index], textDataArray[index] );
                 if ($.isFunction( text ))
                     text( $text );
                 else
