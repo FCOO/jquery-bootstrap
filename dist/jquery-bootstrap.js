@@ -3598,7 +3598,8 @@ Add sort-functions + save col-index for sorted column
                 linkArray       = getArray( ignoreLink ? [] : options.link || options.onClick ),
                 titleArray      = getArray( options.title ),
                 iconClassArray  = getArray( options.iconClass ),
-                textClassArray  = getArray( options.textClass );
+                textClassArray  = getArray( options.textClass ),
+                dataArray       = getArray( options.data );
 
             //Add icons (optional)
             $.each( iconArray, function( index, icon ){
@@ -3631,6 +3632,11 @@ Add sort-functions + save col-index for sorted column
                 $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
                     .vfValueFormat( vfValue || '', vfFormatArray[index], vfOptionsArray[index] )
                     .appendTo( _this );
+            });
+
+            //Add data
+            $.each( dataArray, function( index, data ){
+                _this.data( data );
             });
 
             return this;
