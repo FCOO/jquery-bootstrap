@@ -28,13 +28,16 @@ TODO:         truncate     : false. If true the column will be truncated. Normal
 
         sortable :  [boolean] false
     }
-    showHeader: [boolean] true
-    verticalBorder [boolean] true
-    selectable [boolean] false
-    selectedId [string] "" id for selected row
-    onChange          [function(id, selected, trElement)] null Called when a row is selected or unselected (if options.allowZeroSelected == true)
-	allowZeroSelected [boolean] false. If true it is allowed to un-select a selected row
-    allowReselect     [Boolean] false. If true the onChange is called when a selected item is reselected/clicked
+    showHeader          [boolean] true
+    verticalBorder      [boolean] true. When true vertical borders are added together with default horizontal borders
+    noBorder            [boolean] false. When true no borders are visible
+    hoverRow            [boolean] true. When true the row get hightlightet when hovered
+    noPadding           [boolean] false. When true the the padding of all cells are 0px
+    selectable          [boolean] false
+    selectedId          [string] "" id for selected row
+    onChange            [function(id, selected, trElement)] null Called when a row is selected or unselected (if options.allowZeroSelected == true)
+	allowZeroSelected   [boolean] false. If true it is allowed to un-select a selected row
+    allowReselect       [Boolean] false. If true the onChange is called when a selected item is reselected/clicked
 
 TODO
 Add sort-functions + save col-index for sorted column
@@ -42,11 +45,14 @@ Add sort-functions + save col-index for sorted column
 
 *******************************************************************/
     var defaultOptions = {
-            baseClass     : 'table',
-            styleClass    : 'fixed',
-            showHeader    : true,
-            verticalBorder: true,
-            useTouchSize  : true
+            baseClass       : 'table',
+            styleClass      : 'fixed',
+            showHeader      : true,
+            verticalBorder  : true,
+            noBorder        : false,
+            hoverRow        : true,
+            noPadding       : false,
+            useTouchSize    : true
 
         },
 
@@ -214,9 +220,12 @@ Add sort-functions + save col-index for sorted column
         options = $._bsAdjustOptions( options, defaultOptions );
         options.class =
 //Removed because useTouchSize added to options            (options.small ? 'table-sm ' : '' ) +
-            (options.verticalBorder ? 'table-bordered ' : '' ) +
+            (options.verticalBorder && !options.noBorder ? 'table-bordered ' : '' ) +
+            (options.noBorder ? 'table-no-border ' : '' ) +
+            (options.hoverRow ? 'table-hover ' : '' ) +
+            (options.noPadding ? 'table-no-padding ' : '' ) +
             (options.selectable ? 'table-selectable ' : '' ) +
-            (options.allowZeroSelected ? 'allow-zero-selected ' : '' ),
+            (options.allowZeroSelected ? 'allow-zero-selected ' : '' );
 
         //Adjust text-style for each column
         $.each( options.columns, function( index, column ){

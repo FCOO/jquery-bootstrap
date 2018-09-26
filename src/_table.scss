@@ -70,7 +70,7 @@ Adjustmernt to Bootstrap table
     /*************************************
     Rows
     *************************************/
-    tbody tr:hover {
+    &.table-hover tbody tr:hover {
         background-color: $header-bg-color;
     }
 
@@ -88,6 +88,16 @@ Adjustmernt to Bootstrap table
         &.no-horizontal-padding {
             padding-left : 0;
             padding-right: 0;
+        }
+    }
+    &.table-no-border tbody tr td {
+        border: none;
+    }
+
+    &.table-no-padding {
+        tbody tr td,
+        thead tr th {
+            padding: 0;
         }
     }
 

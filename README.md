@@ -269,6 +269,8 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | :--: | :--: | :-----: | --- |
 | `showHeader` | `boolean` | `true` | Hide/Show the columns headers |
 | `verticalBorder` | `boolean` | `true` | Show/hide header row |
+| `noBorder` | `boolean` | `false` | When true no border |
+| `noPadding` | `boolean` | `false` | When true the the padding of all cells are 0px |
 | `selectable` | `boolean` | `false` | Allow row to be selected |
 | `selectedId` | `string` | `""` | id for selected row |
 | `onChange` | `function(id, selected, trElement)` | `null` | Called when a row is selected or deselected (if `options.allowZeroSelected == true`) |

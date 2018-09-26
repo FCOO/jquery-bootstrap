@@ -601,7 +601,9 @@ $testButton.data('popover_radiogroup').setSelected('nm');
         myBsTable = $.bsTable({
             //showHeader: false,
             //verticalBorder: false,
-selectable: true,
+//selectable: true,
+            noBorder: true,
+            noPadding: true,
             selectedId: 'no4_0',
             onChange: function( id, selected, tr ){console.log( 'Table id =' , id,' selected=',selected);},
 
