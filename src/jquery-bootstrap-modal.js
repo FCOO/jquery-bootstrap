@@ -223,12 +223,8 @@
                 $('<div/>')
                     .addClass('modal-body-fixed ' + (noClassNameForFixed ? '' : className) + (hasScroll ? ' scrollbar-'+scrollDirection : ''))
                     .appendTo( this );
-        if (options.fixedContent){
-            if ($.isFunction( options.fixedContent ))
-                options.fixedContent( $modalFixedContent );
-            else
-                $modalFixedContent.append( options.fixedContent );
-        }
+        if (options.fixedContent)
+            $modalFixedContent._bsAddHtml( options.fixedContent, true );
 
         //Append body and content
         var $modalBody = parts.$body =
