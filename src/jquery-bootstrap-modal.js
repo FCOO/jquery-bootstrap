@@ -16,6 +16,7 @@
 
     options
         header
+        modalContentClassName
         icons: {
             close   : {onClick, attr, className, attr, data }
             extend  : {onClick, attr, className, attr, data }
@@ -378,6 +379,7 @@
         var $modalContent = this.bsModal.$modalContent =
                 $('<div/>')
                     .addClass('modal-content')
+                    .addClass(options.modalContentClassName)
                     .modernizrToggle('modal-extended', !!options.isExtended )
                     .modernizrOff('modal-pinned')
                     .appendTo( this );

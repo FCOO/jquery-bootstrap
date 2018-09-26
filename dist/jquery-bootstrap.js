@@ -1255,6 +1255,7 @@ TODO:
 
     options
         header
+        modalContentClassName
         icons: {
             close   : {onClick, attr, className, attr, data }
             extend  : {onClick, attr, className, attr, data }
@@ -1462,12 +1463,8 @@ TODO:
                 $('<div/>')
                     .addClass('modal-body-fixed ' + (noClassNameForFixed ? '' : className) + (hasScroll ? ' scrollbar-'+scrollDirection : ''))
                     .appendTo( this );
-        if (options.fixedContent){
-            if ($.isFunction( options.fixedContent ))
-                options.fixedContent( $modalFixedContent );
-            else
-                $modalFixedContent.append( options.fixedContent );
-        }
+        if (options.fixedContent)
+            $modalFixedContent._bsAddHtml( options.fixedContent, true );
 
         //Append body and content
         var $modalBody = parts.$body =
@@ -1621,6 +1618,7 @@ TODO:
         var $modalContent = this.bsModal.$modalContent =
                 $('<div/>')
                     .addClass('modal-content')
+                    .addClass(options.modalContentClassName)
                     .modernizrToggle('modal-extended', !!options.isExtended )
                     .modernizrOff('modal-pinned')
                     .appendTo( this );
