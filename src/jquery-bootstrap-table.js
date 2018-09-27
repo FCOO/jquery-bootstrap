@@ -39,20 +39,23 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 	allowZeroSelected   [boolean] false. If true it is allowed to un-select a selected row
     allowReselect       [Boolean] false. If true the onChange is called when a selected item is reselected/clicked
 
+    defaultColunmOptions: {}. Any of the options for columns to be used as default values
+
 TODO
 Add sort-functions + save col-index for sorted column
 
 
 *******************************************************************/
     var defaultOptions = {
-            baseClass       : 'table',
-            styleClass      : 'fixed',
-            showHeader      : true,
-            verticalBorder  : true,
-            noBorder        : false,
-            hoverRow        : true,
-            noPadding       : false,
-            useTouchSize    : true
+            baseClass           : 'table',
+            styleClass          : 'fixed',
+            showHeader          : true,
+            verticalBorder      : true,
+            noBorder            : false,
+            hoverRow            : true,
+            noPadding           : false,
+            useTouchSize        : true,
+            defaultColunmOptions: {}
 
         },
 
@@ -61,6 +64,7 @@ Add sort-functions + save col-index for sorted column
             verticalAlign: 'middle',
             noWrap       : false,
             truncate     : false,
+            fixedWidth   : false,
             sortable     : false
         },
 
@@ -106,6 +110,9 @@ Add sort-functions + save col-index for sorted column
                     $td = $('<td/>')
                             .appendTo($tr);
                 adjustThOrTd( $td, columnOptions, !options.showHeader );
+
+                if ($.isPlainObject(content) && content.className)
+                    $td.addClass(content.className);
 
                 //Build the content using _bsAppendContent or jquery-value-format
                 if (columnOptions.vfFormat)
@@ -229,7 +236,7 @@ Add sort-functions + save col-index for sorted column
 
         //Adjust text-style for each column
         $.each( options.columns, function( index, column ){
-            column = $.extend( true, {}, defaultColunmOptions, column );
+            column = $.extend( true, {}, defaultColunmOptions, options.defaultColunmOptions, column );
 
             column.index = index;
 

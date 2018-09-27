@@ -260,8 +260,8 @@ Same as for [Popover](#popover) plus [SelectList](#selectlist) plus
 
 
 #### Format of content
-The content of individual cells are as described above.
-
+The content of individual cells are as described above. 
+To add a class-name to the individual cells - set the content-options `className`
 To set common format all data in a column set the column-options `vfFormat` and `vfOptions`.
 
 
