@@ -22,6 +22,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Button-group-popover](#buttongrouppopover)
 - [SelectList-popover](#selectlistpopover)
 - [Table](#table)
+- [List](#list)
 - [Accordion](#accordion)
 - [Tabs](#tabs)
 - [Modal](#modal)
@@ -270,7 +271,7 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | `showHeader` | `boolean` | `true` | Hide/Show the columns headers |
 | `verticalBorder` | `boolean` | `true` | Show/hide header row |
 | `noBorder` | `boolean` | `false` | When true no border |
-| `noPadding` | `boolean` | `false` | When true the the padding of all cells are 0px |
+| `noPadding` | `boolean` | `false` | When true the vertical padding of all cells are 0px |
 | `selectable` | `boolean` | `false` | Allow row to be selected |
 | `selectedId` | `string` | `""` | id for selected row |
 | `onChange` | `function(id, selected, trElement)` | `null` | Called when a row is selected or deselected (if `options.allowZeroSelected == true`) |
@@ -285,7 +286,8 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | `id` | `string` | Mandatory |  |
 | `header` | `content` or `[] of content` | `""` | See above |
 | `align` | `string` | `"left"` | `"left", "center", or "right"`. Text alignment for the column |
-| `noWrap` | `boolean` | `false` | If `true` the column will not be wrapped = fixed width |
+| `noWrap` | `boolean` | `false` | If `true` the column will not be wrapped |
+| `fixedWidth` | `boolean` | `false` | If `true` the column will not change width when the tables width is changed. Normally need `noWrap: true`  |
 | `truncate` | `boolean` | `false` | If `true` the column will be truncated. Normally only one column get `truncate: true` **NOT IMPLEMENTED** |
 | `sortable` | `boolean` | `false` | If `true` the column can be sorted. **NOT IMPLEMENTED** |
 | `vfFormat` | `string` | `""` | See above |
@@ -320,6 +322,20 @@ Eq.
 
     .addRow(  rowContent ); //Add a row dynamically
     .asModal(  modalOptions ); //Return a bsModal (see below) with the table as content
+
+<a name="list"></a>
+## List
+
+    var options.content = {
+            content: [
+                ["1-1", "1-2", "1-3"],
+                ["2-1", "2-2", "2-3"],
+                ["3-1", "3-2", "3-3"],
+            ]
+        },
+        myList = $.bsList( options );
+
+`bsList` is a light version of [bsTable](#table) without header and the need for column-id in the content
 
 
 <a name="accordion"></a>

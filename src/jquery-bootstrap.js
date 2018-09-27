@@ -502,6 +502,7 @@
                         case 'checkbox'     :   buildFunc = $.bsCheckbox;       insideFormGroup = true; break;
                         case 'tabs'         :   buildFunc = $.bsTabs;           break;
                         case 'table'        :   buildFunc = $.bsTable;          break;
+                        case 'list'         :   buildFunc = $.bsList;           break;
                         case 'accordion'    :   buildFunc = $.bsAccordion;      break;
                         case 'slider'       :   buildFunc = buildBaseSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'timeslider'   :   buildFunc = buildTimeSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;

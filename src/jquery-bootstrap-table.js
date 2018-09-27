@@ -21,18 +21,18 @@ options
         vfOptions:  The content of a element can be set and updated using [jquery-value-format].
                     The options vfFormat and (optional) vfOptions defines witch format used to display the content
 
-        align        :  'left','center','right'. Defalut = 'left'
+        align        : 'left','center','right'. Defalut = 'left'
         verticalAlign: 'top', 'middle','bottom'. Default = 'middle'
         noWrap       : false. If true the column will not be wrapped = fixed width
-TODO:         truncate     : false. If true the column will be truncated. Normally only one column get truncate: true
-
+TODO:   truncate     : false. If true the column will be truncated. Normally only one column get truncate: true
+        fixedWidth   : false. If true the column will not change width when the tables width is changed
         sortable :  [boolean] false
     }
     showHeader          [boolean] true
     verticalBorder      [boolean] true. When true vertical borders are added together with default horizontal borders
     noBorder            [boolean] false. When true no borders are visible
     hoverRow            [boolean] true. When true the row get hightlightet when hovered
-    noPadding           [boolean] false. When true the the padding of all cells are 0px
+    noPadding           [boolean] false. When true the vertical padding of all cells are 0px
     selectable          [boolean] false
     selectedId          [string] "" id for selected row
     onChange            [function(id, selected, trElement)] null Called when a row is selected or unselected (if options.allowZeroSelected == true)
@@ -250,6 +250,14 @@ Add sort-functions + save col-index for sorted column
 
         //Extend with prototype
         $table.init.prototype.extend( bsTable_prototype );
+
+        //Create colgroup
+        var $colgroup = $('<colgroup/>').appendTo($table);
+        $.each( options.columns, function( index, columnOptions ){
+            var $col = $('<col/>').appendTo( $colgroup );
+            if (columnOptions.fixedWidth)
+                $col.attr('width', '1');
+        });
 
         //Create headers
         if (options.showHeader)

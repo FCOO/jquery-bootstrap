@@ -505,6 +505,7 @@ TODO:
             this.radioGroup = this.radioGroup || this.getElement().data('radioGroup');
             return this.radioGroup;
         },
+
         /*******************************************************
         getFormGroup
         *******************************************************/
@@ -512,7 +513,6 @@ TODO:
             this.$formGroup = this.$formGroup || this.getElement().parents('.form-group').first();
             return this.$formGroup;
         },
-
 
         /*******************************************************
         setValue
@@ -604,7 +604,6 @@ TODO:
             return this;
         },
 
-
         /*******************************************************
         onChanging
         *******************************************************/
@@ -645,7 +644,6 @@ TODO:
             return this;
         },
     }; //End of BsModalInput.prototype
-
 
     /************************************************************************
     *************************************************************************
@@ -754,7 +752,6 @@ TODO:
 
         return this;
     }
-
 
     /*******************************************************
     Export to jQuery
@@ -1161,6 +1158,97 @@ TODO:
     }); //$.fn.extend({
 
 
+}(jQuery, this, document));
+;
+/****************************************************************************
+	jquery-bootstrap-list.js,
+
+	(c) 2017, FCOO
+
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+****************************************************************************/
+
+(function ($/*, window, document, undefined*/) {
+	"use strict";
+
+/******************************************************************
+bsList( options )
+options
+    columns = [] of {
+        vfFormat,
+        vfOptions:  The content of a element can be set and updated using [jquery-value-format].
+                    The options vfFormat and (optional) vfOptions defines witch format used to display the content
+
+        align        :  'left','center','right'. Defalut = 'left'
+        verticalAlign: 'top', 'middle','bottom'. Default = 'middle'
+        noWrap       : false. If true the column will not be wrapped = fixed width
+    }
+
+    verticalBorder: [boolean] true. When true vertical borders are added together with default horizontal borders
+    noBorder      : [boolean] true. When true no borders are visible
+
+    align        : 'left','center','right'. Defalut = 'left' = default align for all columns
+    verticalAlign: 'top', 'middle','bottom'. Default = 'middle' = default verticalAlign for all columns
+
+
+
+*******************************************************************/
+    var defaultColunmOptions = {
+            align        : 'left',
+            verticalAlign: 'middle',
+            noWrap       : false,
+            truncate     : false,
+            sortable     : false
+        },
+
+        defaultOptions = {
+            showHeader      : false,
+            verticalBorder  : false,
+            noBorder        : true,
+            hoverRow        : false,
+            noPadding       : true,
+
+            align           : defaultColunmOptions.align,
+            verticalAlign   : defaultColunmOptions.verticalAlign,
+
+            content         : []
+        };
+
+    $.bsList = function( options ){
+        //Adjust options but without content since it isn't standard
+        var content = options.content;
+        options.content = [];
+        options = $._bsAdjustOptions( options, defaultOptions );
+        options.content = content;
+
+        var nofColumns = 1;
+        //Adjust options.content and count number of columns
+        $.each(options.content, function( index, rowContent ){
+            rowContent = $.isArray( rowContent ) ? rowContent : [rowContent];
+            nofColumns = Math.max(nofColumns, rowContent.length);
+
+            var rowContentObj = {};
+            $.each(rowContent, function( index, cellContent ){
+                rowContentObj['_'+index] = cellContent;
+            });
+
+            options.content[index] = rowContentObj;
+        });
+
+        options.columns = options.columns || [];
+        var optionsAlign = {
+                align        : options.align,
+                verticalAlign: options.verticalAlign
+            };
+
+        //Create columns-options for bsTable
+        for (var i=0; i<nofColumns; i++ )
+            options.columns[i] = $.extend({id:'_'+i}, defaultColunmOptions, optionsAlign, options.columns[i]);
+
+        return $.bsTable( options );
+    };
 }(jQuery, this, document));
 ;
 /****************************************************************************
@@ -2803,20 +2891,23 @@ options
         vfOptions:  The content of a element can be set and updated using [jquery-value-format].
                     The options vfFormat and (optional) vfOptions defines witch format used to display the content
 
-        align        :  'left','center','right'. Defalut = 'left'
+        align        : 'left','center','right'. Defalut = 'left'
         verticalAlign: 'top', 'middle','bottom'. Default = 'middle'
         noWrap       : false. If true the column will not be wrapped = fixed width
-TODO:         truncate     : false. If true the column will be truncated. Normally only one column get truncate: true
-
+TODO:   truncate     : false. If true the column will be truncated. Normally only one column get truncate: true
+        fixedWidth   : false. If true the column will not change width when the tables width is changed
         sortable :  [boolean] false
     }
-    showHeader: [boolean] true
-    verticalBorder [boolean] true
-    selectable [boolean] false
-    selectedId [string] "" id for selected row
-    onChange          [function(id, selected, trElement)] null Called when a row is selected or unselected (if options.allowZeroSelected == true)
-	allowZeroSelected [boolean] false. If true it is allowed to un-select a selected row
-    allowReselect     [Boolean] false. If true the onChange is called when a selected item is reselected/clicked
+    showHeader          [boolean] true
+    verticalBorder      [boolean] true. When true vertical borders are added together with default horizontal borders
+    noBorder            [boolean] false. When true no borders are visible
+    hoverRow            [boolean] true. When true the row get hightlightet when hovered
+    noPadding           [boolean] false. When true the vertical padding of all cells are 0px
+    selectable          [boolean] false
+    selectedId          [string] "" id for selected row
+    onChange            [function(id, selected, trElement)] null Called when a row is selected or unselected (if options.allowZeroSelected == true)
+	allowZeroSelected   [boolean] false. If true it is allowed to un-select a selected row
+    allowReselect       [Boolean] false. If true the onChange is called when a selected item is reselected/clicked
 
 TODO
 Add sort-functions + save col-index for sorted column
@@ -2824,11 +2915,14 @@ Add sort-functions + save col-index for sorted column
 
 *******************************************************************/
     var defaultOptions = {
-            baseClass     : 'table',
-            styleClass    : 'fixed',
-            showHeader    : true,
-            verticalBorder: true,
-            useTouchSize  : true
+            baseClass       : 'table',
+            styleClass      : 'fixed',
+            showHeader      : true,
+            verticalBorder  : true,
+            noBorder        : false,
+            hoverRow        : true,
+            noPadding       : false,
+            useTouchSize    : true
 
         },
 
@@ -2996,9 +3090,12 @@ Add sort-functions + save col-index for sorted column
         options = $._bsAdjustOptions( options, defaultOptions );
         options.class =
 //Removed because useTouchSize added to options            (options.small ? 'table-sm ' : '' ) +
-            (options.verticalBorder ? 'table-bordered ' : '' ) +
+            (options.verticalBorder && !options.noBorder ? 'table-bordered ' : '' ) +
+            (options.noBorder ? 'table-no-border ' : '' ) +
+            (options.hoverRow ? 'table-hover ' : '' ) +
+            (options.noPadding ? 'table-no-padding ' : '' ) +
             (options.selectable ? 'table-selectable ' : '' ) +
-            (options.allowZeroSelected ? 'allow-zero-selected ' : '' ),
+            (options.allowZeroSelected ? 'allow-zero-selected ' : '' );
 
         //Adjust text-style for each column
         $.each( options.columns, function( index, column ){
@@ -3023,6 +3120,14 @@ Add sort-functions + save col-index for sorted column
 
         //Extend with prototype
         $table.init.prototype.extend( bsTable_prototype );
+
+        //Create colgroup
+        var $colgroup = $('<colgroup/>').appendTo($table);
+        $.each( options.columns, function( index, columnOptions ){
+            var $col = $('<col/>').appendTo( $colgroup );
+            if (columnOptions.fixedWidth)
+                $col.attr('width', '1');
+        });
 
         //Create headers
         if (options.showHeader)
@@ -3729,6 +3834,7 @@ Add sort-functions + save col-index for sorted column
                         case 'checkbox'     :   buildFunc = $.bsCheckbox;       insideFormGroup = true; break;
                         case 'tabs'         :   buildFunc = $.bsTabs;           break;
                         case 'table'        :   buildFunc = $.bsTable;          break;
+                        case 'list'         :   buildFunc = $.bsList;           break;
                         case 'accordion'    :   buildFunc = $.bsAccordion;      break;
                         case 'slider'       :   buildFunc = buildBaseSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'timeslider'   :   buildFunc = buildTimeSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;

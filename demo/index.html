@@ -39,6 +39,7 @@ position: fixed;
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
+    <script src="../src/jquery-bootstrap-list.js"></script>
     <script src="../src/jquery-bootstrap-form.js"></script>
     <script src="../src/jquery-bootstrap.js"></script>
 	<script src="../src/jquery-bootstrap-table.js"></script>
@@ -629,6 +630,29 @@ $testButton.data('popover_radiogroup').setSelected('nm');
             show: false
         }),
 
+
+        myBsList = $.bsList({
+            content: [
+                ['Første:', '#', 'Første meget lang med mange ord, der bare blive ved og ved i det uendelige'],
+                ['Anden:'],
+                '3.'
+            ],
+            verticalAlign: 'top',
+            align: 'left',
+            columns: [{align:'right'}]
+        }),
+
+        m_list = myBsList.asModal({
+            header:'En liste',
+            _closeIcon: 'fa-globe',
+            _flexWidth:true,
+            _extraWidth: true,
+            width: 300, _small: true,
+            show: false
+        }),
+
+
+
         $accordion = $.bsAccordion({ _multiOpen: true, children: accor_children, footer: 'footer' }),
         $accordion2 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
         $accordion3 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
@@ -721,6 +745,10 @@ $testButton.data('popover_radiogroup').setSelected('nm');
         }
 
 
+        m_list.assignTo(
+            $('<button>List</button>')
+                .appendTo( $body)
+        );
         m_table.assignTo(
             $('<button>Table</button>')
                 .appendTo( $body)
@@ -1047,6 +1075,13 @@ width: 3*300,
                                 {
                                     icon: 'fa-globe',
                                     title:{da:'En anden test', en:'Another test'},
+                                    content: {
+                                        type: 'list',
+                                        columns: [{fixedWidth: true, noWrap:true}],
+                                        content: [
+                                            ['1','2','3'], ['Første','Anden'], ['Næst-Sidste'], 'Sidste'
+                                        ]
+                                    }
                                 }
                             ]
                         } //end of content

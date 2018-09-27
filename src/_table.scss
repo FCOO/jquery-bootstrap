@@ -97,7 +97,8 @@ Adjustmernt to Bootstrap table
     &.table-no-padding {
         tbody tr td,
         thead tr th {
-            padding: 0;
+            padding-top: 0;
+            padding-bottom: 0;
         }
     }
 
