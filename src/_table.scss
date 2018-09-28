@@ -15,6 +15,17 @@ Adjustmernt to Bootstrap table
         margin : 0;
     }
 
+    //Center inside its container
+    &.table-center-in-container {
+        margin: 0 auto;
+    }
+
+    //Not full width (100%)
+    &.table-not-full-width {
+        width: inherit !important;
+    }
+
+
     /*************************************
     Header
     *************************************/

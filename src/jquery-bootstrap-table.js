@@ -33,6 +33,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     noBorder            [boolean] false. When true no borders are visible
     hoverRow            [boolean] true. When true the row get hightlightet when hovered
     noPadding           [boolean] false. When true the vertical padding of all cells are 0px
+
+    notFullWidth        [boolean] false. When true the table is not 100% width and will adjust to it content
+    centerInContainer   [boolean] false. When true the table is centered inside its container. Normaally it require notFullWidth: true
+
     selectable          [boolean] false
     selectedId          [string] "" id for selected row
     onChange            [function(id, selected, trElement)] null Called when a row is selected or unselected (if options.allowZeroSelected == true)
@@ -40,6 +44,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     allowReselect       [Boolean] false. If true the onChange is called when a selected item is reselected/clicked
 
     defaultColunmOptions: {}. Any of the options for columns to be used as default values
+
+    rowClassName      : [] of string. []. Class-names for each row
 
 TODO
 Add sort-functions + save col-index for sorted column
@@ -54,8 +60,11 @@ Add sort-functions + save col-index for sorted column
             noBorder            : false,
             hoverRow            : true,
             noPadding           : false,
+            notFullWidth        : false,
+            centerInContainer   : false,
             useTouchSize        : true,
-            defaultColunmOptions: {}
+            defaultColunmOptions: {},
+            rowClassName        : []
 
         },
 
@@ -102,13 +111,19 @@ Add sort-functions + save col-index for sorted column
                 $tbody  = this.find('tbody').first(),
                 $tr     = $('<tr/>').appendTo( $tbody );
 
+            if (options.rowClassName.length){
+                var rowIndex = $tbody.children('tr').length - 1;
+                if (options.rowClassName.length > rowIndex)
+                    $tr.addClass(options.rowClassName[rowIndex]);
+            }
+
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
             $.each( options.columns, function( index, columnOptions ){
                 var content = rowContent[columnOptions.id],
-                    $td = $('<td/>')
-                            .appendTo($tr);
+                    $td = $('<td/>').appendTo($tr);
+
                 adjustThOrTd( $td, columnOptions, !options.showHeader );
 
                 if ($.isPlainObject(content) && content.className)
@@ -231,6 +246,8 @@ Add sort-functions + save col-index for sorted column
             (options.noBorder ? 'table-no-border ' : '' ) +
             (options.hoverRow ? 'table-hover ' : '' ) +
             (options.noPadding ? 'table-no-padding ' : '' ) +
+            (options.notFullWidth ? 'table-not-full-width ' : '' ) +
+            (options.centerInContainer ? 'table-center-in-container ' : '' ) +
             (options.selectable ? 'table-selectable ' : '' ) +
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' );
 

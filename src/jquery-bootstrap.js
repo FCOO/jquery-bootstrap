@@ -394,6 +394,8 @@
                     if (text == $.EMPTY_TEXT)
                         $text.html( '&nbsp;');
                     else
+                        if (text !== "")
+
                         $text.i18n( text, 'html' );
 
                 if (index < textClassArray.length)

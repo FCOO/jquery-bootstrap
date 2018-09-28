@@ -272,13 +272,17 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | `verticalBorder` | `boolean` | `true` | Show/hide header row |
 | `noBorder` | `boolean` | `false` | When true no border |
 | `noPadding` | `boolean` | `false` | When true the vertical padding of all cells are 0px |
+| `notFullWidth` | `boolean` | `false` | When true the table is not 100% width and will adjust to it content |
+| `centerInContainer` | `boolean` | `false` | When true the table is centered inside its container. Normally it require `notFullWidth: true` |
 | `selectable` | `boolean` | `false` | Allow row to be selected |
 | `selectedId` | `string` | `""` | id for selected row |
 | `onChange` | `function(id, selected, trElement)` | `null` | Called when a row is selected or deselected (if `options.allowZeroSelected == true`) |
 | `allowZeroSelected` | `boolean` | `false` | See above. Not together with `allowReselect` |
 | `allowReselect` | `boolean` | `false` | Allow a row to be selected when it is already selected. Not together with `allowZeroSelected` |
-| `columns` | `[] of columnOptions` | `[]` | |
-| `content` | `[] of contentOptions` | `[]` | |
+| `columns` | `[] of columnOptions` | `[]` | &nbsp; |
+| `content` | `[] of contentOptions` | `[]` | &nbsp;  |
+| `rowClassName` | `[] of string` | `[]` |  Class-names for each row |
+
 
 #### columnOptions
 | Id | Type | Default | Description |
