@@ -45,9 +45,15 @@
 
         var result = $('<'+ options.tagName + ' tabindex="0"/>');
 
-        //Adding href that don't scroll to top to allow anchor to get focus
-        if (options.tagName == 'a')
-            result.prop('href', 'javascript:undefined');
+        if (options.tagName == 'a'){
+            if (options.link)
+                result
+                    .i18n($._bsAdjustText(options.link), 'href')
+                    .prop('target', '_blank');
+            else
+                //Adding href that don't scroll to top to allow anchor to get focus
+                result.prop('href', 'javascript:undefined');
+        }
 
         result
             ._bsAddIdAndName( options )

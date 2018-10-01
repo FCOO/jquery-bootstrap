@@ -177,6 +177,9 @@ $('body').on('wheel', function(e){
             .addClass('fa-stack')
             .appendTo( $body );
 
+        $.bsButton({ icon: 'fa-external-link-alt', text:'fcoo.dk', link:{da:'http://fcoo.dk', en:'http://fcoo.dk/?s=:002ENG'}})
+            .appendTo( $body );
+
 
         $.bsButton({
             text: 'Test af Noty',

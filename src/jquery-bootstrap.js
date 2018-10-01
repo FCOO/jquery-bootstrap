@@ -75,6 +75,17 @@
 
     };
 
+    //$._bsAdjustText: Adjust options to fit with {da:"...", en:"..."}
+    // options == {da:"..", en:".."} => return options
+    // options == STRING             => return {da: options}
+    $._bsAdjustText = function( options ){
+        if (!options)
+            return options;
+        if ($.type( options ) == "string")
+            return {da: options};
+        return options;
+    };
+
     //$._bsAdjustOptions: Adjust options to allow text/name/title/header etc.
     $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
         //*********************************************************************
