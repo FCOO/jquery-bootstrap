@@ -60,9 +60,8 @@ body.modal-open .modal {
     &.modal-flex-width {
         width: $modal-md-rem;
 
-        &.modal-extra-width {
-            width: $modal-lg-rem;
-        }
+        &.modal-extra-width  { width: $modal-lg-rem; }
+        &.modal-mega-width   { width: $modal-xl-rem; }
     }
 
     //No box-shadow on modal-content when inside a modal-dialog-inline
@@ -103,11 +102,26 @@ body.modal-open .modal {
         @include show-and-hide-for-modernizr-test( modal-pinned , '&', false, '', false );
 
 
-        //When modal-body is empty: Hide modal-body and remove top-border from footer
-        .modal-body.modal-body-no-content {
-            display: none
+        //When not normal and/or extended contents always max-height => height adjust to content
+        &.no-modal-extended:not(.modal-content-always-max-height),
+        &.modal-extended:not(.modal-extended-content-always-max-height){
+            height: auto !important;
         }
 
+
+
+        .modal-body {
+            //When modal-body is empty: Hide modal-body and remove top-border from footer
+            &.modal-body-no-content {
+                display: none
+            }
+
+            //When content always is max height => body.height = 100%
+            &.modal-body-always-max-height {
+                height: fit-content;
+            }
+
+        }
         &:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
         &.modal-extended       .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
             border-top: none;

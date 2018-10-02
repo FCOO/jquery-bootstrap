@@ -1352,6 +1352,7 @@ options
         fixedContent
         flexWidth
         extraWidth
+        megaWidth
         noVerticalPadding
         content
         scroll: boolean | 'vertical' | 'horizontal'

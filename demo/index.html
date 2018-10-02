@@ -39,6 +39,7 @@ position: fixed;
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
+    <script src="../src/jquery-bootstrap-modal-pdf.js"></script>
     <script src="../src/jquery-bootstrap-list.js"></script>
     <script src="../src/jquery-bootstrap-form.js"></script>
     <script src="../src/jquery-bootstrap.js"></script>
@@ -753,6 +754,18 @@ $testButton.data('popover_radiogroup').setSelected('nm');
             }
         }
 
+        $('<button>2xPdf-file</button>')
+            .appendTo( $body)
+            .on('click', function(e){
+                $.bsModalPdf('https://www.soefartsstyrelsen.dk/Documents/Publikationer/DANSKFYRLISTE2015.pdf', {header: 'Fyrliste 2015'});
+                $.bsModalPdf('http://nautiskinformation.soefartsstyrelsen.dk/index.html#/messages/details', {header: 'TEST'});
+            });
+
+
+        m_list.assignTo(
+            $('<button>List</button>')
+                .appendTo( $body)
+        );
 
         m_list.assignTo(
             $('<button>List</button>')

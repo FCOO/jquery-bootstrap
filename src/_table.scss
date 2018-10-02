@@ -46,13 +46,15 @@ Adjustmernt to Bootstrap table
                 @include title-color(true, '&.asc, &.desc'); // ($hover: false, $selected-class: '', $bg: true, $invers: false  );
 
                 cursor: default;
+
                 background-position: right center;
                 background-repeat: no-repeat;
                 background-size: 0.8em;
 
+
                 padding-right: 1em; //Make space for sort-direction icons
                 &.text-center {
-                    padding-left: 1em; //Center text
+                    padding-left: .5em; //Center text
                 }
 
                 // src/_images/table-thead-background-image-sort-arrows-no-sort.png

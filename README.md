@@ -27,6 +27,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Tabs](#tabs)
 - [Modal](#modal)
 - [ModalForm](#modalform)
+- [ModalPdf](#modalpdf)
 - [Noty](#noty)
 - [input](#input)
 
@@ -403,6 +404,7 @@ Eq.
 | `noHeader` | `boolean` | `false` | Prevent header even if `options.header` is set |
 | `flexWidth` | `boolean` | `false` | The default width of a modal is 300px. If `true` the width of the modal will adjust to the width of the browser up to 500px |
 | `extraWidth` | `boolean` | `false` | Only when `flexWidth` is set: If `true` the width of the modal will adjust to the width of the browser up to 800px |
+| `megaWidth` | `boolean` | `false` | Only when `flexWidth` is set: If `true` the width of the modal will adjust to the width of the browser up to 1200px |
 | `maxHeight` | `number`| `null` | The max-height of the modal |
 | `height` | `number`| `null` | The fixed height of the modal. If neither `maxHeight` or `height` is set the max-height is adjusted to window-height  |
 | `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
@@ -439,6 +441,15 @@ Extends `options.content` with `id` and `onSubmit: function( data )`
 method `edit( data )` where `data = { id:value*N}` and `id` match a `options.content[].id`
 
 Description NOT complete. See `src/jquery-bootstrap-form.js` for more
+
+<a name="modalpdf"></a>
+## ModalPdf
+
+	$myModalPdf = $.bsModalPdf( "a-file-name-ofr-a-pdf-file.pdf", options ); 
+
+Show a pdf-file in a mega-width modal-window
+
+
 
 <a name="noty"></a>
 ## Noty

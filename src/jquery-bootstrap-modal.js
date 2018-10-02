@@ -23,15 +23,21 @@
             diminish: {onClick, attr, className, attr, data }
 }       type //"", "alert", "success", "warning", "error", "info"
         fixedContent
+
+        alwaysMaxHeight
         flexWidth
         extraWidth
+        megaWidth
         noVerticalPadding
+        noHorizontalPadding
         content
         scroll: boolean | 'vertical' | 'horizontal'
         extended: {
             type
             fixedContent
             noVerticalPadding
+            noHorizontalPadding
+            alwaysMaxHeight
             content
             scroll: boolean | 'vertical' | 'horizontal'
             footer
@@ -55,10 +61,15 @@
     as expected/needed
     Instead a resize-event is added to update the max-height of
     elements with the current value of window.innerHeight
+    Sets both max-height and haight to allow always-max-heigth options
     **********************************************************/
     function adjustModalMaxHeight( $modalContent ){
         $modalContent = $modalContent || $('.modal-content.modal-flex-height');
-        $modalContent.css('max-height', (parseInt(window.innerHeight) - 2*modalVerticalMargin)+'px');
+        var maxHeight = parseInt(window.innerHeight) - 2*modalVerticalMargin;
+        $modalContent.css({
+            'max-height': maxHeight+'px',
+            'height'    : maxHeight+'px'
+        });
     }
 
     window.addEventListener('resize',            function(){ adjustModalMaxHeight(); }, false );
@@ -73,6 +84,7 @@
     The width of a modal is by default 300px.
     options.flexWidth :  If true the width of the modal will adjust to the width of the browser up to 500px
     options.extraWidth:  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
+    options.megaWidth :  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
     options.width     : Set if different from 300
 
     ******************************************************/
@@ -86,6 +98,7 @@
         return {
             flexWidth : !!options.flexWidth,
             extraWidth: !!options.extraWidth,
+            megaWidth: !!options.megaWidth,
             width     : options.width ? options.width+'px' : null
         };
     }
@@ -167,6 +180,10 @@
 
         show  : function(){
                     this.modal('show');
+
+//this.bsModal._bsModalSetHeightAndWidth();
+this.data('bsModalDialog')._bsModalSetHeightAndWidth();
+
                     if (this.bsModal.onChange)
                         this.bsModal.onChange( this.bsModal );
                 },
@@ -231,6 +248,7 @@
         var $modalBody = parts.$body =
                 $('<div/>')
                     .addClass('modal-body ' + className)
+                    .toggleClass('modal-body-always-max-height', !!options.alwaysMaxHeight)
                     .toggleClass('modal-type-' + options.type, !!options.type)
                     .appendTo( this );
 
@@ -276,6 +294,7 @@
         $modalDialog
             .toggleClass('modal-flex-width', cssWidth.flexWidth )
             .toggleClass('modal-extra-width', cssWidth.extraWidth )
+            .toggleClass('modal-mega-width', cssWidth.megaWidth )
             .css('width', cssWidth.width );
 
         //Call onChange (if any)
@@ -369,7 +388,13 @@
         this.bsModal.cssWidth = getWidthFromOptions( options );
         if (options.extended){
             //If options.extended.width == true or none width-options is set in extended => use same width as normal-mode
-            if ((options.extended.width == true) || ((options.extended.flexWidth == undefined) && (options.extended.extraWidth == undefined) && (options.extended.width == undefined)))
+            if ( (options.extended.width == true) ||
+                 ( (options.extended.flexWidth == undefined) &&
+                   (options.extended.extraWidth == undefined) &&
+                   (options.extended.megaWidth == undefined) &&
+                   (options.extended.width == undefined)
+                 )
+              )
                 this.bsModal.cssExtendedWidth = this.bsModal.cssWidth;
             else
                 this.bsModal.cssExtendedWidth = getWidthFromOptions( options.extended );
@@ -381,8 +406,14 @@
                     .addClass('modal-content')
                     .addClass(options.modalContentClassName)
                     .modernizrToggle('modal-extended', !!options.isExtended )
+
+                    .toggleClass('modal-content-always-max-height',          !!options.alwaysMaxHeight)
+                    .toggleClass('modal-extended-content-always-max-height', !!options.extended && !!options.extended.alwaysMaxHeight)
+
                     .modernizrOff('modal-pinned')
                     .appendTo( this );
+
+
 
         this._bsModalSetHeightAndWidth();
 

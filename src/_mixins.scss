@@ -240,14 +240,15 @@ Headers for modal, popover, popup etc.
 ************************************************************/
 /************************************************************
 color-hover - Background-color and text-color for 'normal' and hover
+SKAL DER BRUGES background ELLER background-color???????
 ************************************************************/
 @mixin color-hover($color, $bg-color, $hover, $bg, $color-hover: false, $bg-color-hover: false ){
     @if $color {
         color: $color;
     }
     @if $bg and $bg-color {
-//        background-color: $bg-color;
-        background: $bg-color;
+        background-color: $bg-color;
+//        background: $bg-color;
     }
     @if $hover {
         .mouse-hover &:hover {
@@ -255,7 +256,8 @@ color-hover - Background-color and text-color for 'normal' and hover
                 color: if( $color-hover, $color-hover, darken($color, $darken-hover-percent) );
             }
             @if $bg and $bg-color {
-                background: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) );
+//                background: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) );
+                background-color: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) );
             }
         }
     }

@@ -42161,6 +42161,207 @@ options:
 
 }(jQuery, this, document));
 ;
+(function() {
+    var url = (function() {
+
+        function _t() {
+            return new RegExp(/(.*?)\.?([^\.]*?)\.(gl|com|net|org|biz|ws|in|me|co\.uk|co|org\.uk|ltd\.uk|plc\.uk|me\.uk|edu|mil|br\.com|cn\.com|eu\.com|hu\.com|no\.com|qc\.com|sa\.com|se\.com|se\.net|us\.com|uy\.com|ac|co\.ac|gv\.ac|or\.ac|ac\.ac|af|am|as|at|ac\.at|co\.at|gv\.at|or\.at|asn\.au|com\.au|edu\.au|org\.au|net\.au|id\.au|be|ac\.be|adm\.br|adv\.br|am\.br|arq\.br|art\.br|bio\.br|cng\.br|cnt\.br|com\.br|ecn\.br|eng\.br|esp\.br|etc\.br|eti\.br|fm\.br|fot\.br|fst\.br|g12\.br|gov\.br|ind\.br|inf\.br|jor\.br|lel\.br|med\.br|mil\.br|net\.br|nom\.br|ntr\.br|odo\.br|org\.br|ppg\.br|pro\.br|psc\.br|psi\.br|rec\.br|slg\.br|tmp\.br|tur\.br|tv\.br|vet\.br|zlg\.br|br|ab\.ca|bc\.ca|mb\.ca|nb\.ca|nf\.ca|ns\.ca|nt\.ca|on\.ca|pe\.ca|qc\.ca|sk\.ca|yk\.ca|ca|cc|ac\.cn|com\.cn|edu\.cn|gov\.cn|org\.cn|bj\.cn|sh\.cn|tj\.cn|cq\.cn|he\.cn|nm\.cn|ln\.cn|jl\.cn|hl\.cn|js\.cn|zj\.cn|ah\.cn|gd\.cn|gx\.cn|hi\.cn|sc\.cn|gz\.cn|yn\.cn|xz\.cn|sn\.cn|gs\.cn|qh\.cn|nx\.cn|xj\.cn|tw\.cn|hk\.cn|mo\.cn|cn|cx|cz|de|dk|fo|com\.ec|tm\.fr|com\.fr|asso\.fr|presse\.fr|fr|gf|gs|co\.il|net\.il|ac\.il|k12\.il|gov\.il|muni\.il|ac\.in|co\.in|org\.in|ernet\.in|gov\.in|net\.in|res\.in|is|it|ac\.jp|co\.jp|go\.jp|or\.jp|ne\.jp|ac\.kr|co\.kr|go\.kr|ne\.kr|nm\.kr|or\.kr|li|lt|lu|asso\.mc|tm\.mc|com\.mm|org\.mm|net\.mm|edu\.mm|gov\.mm|ms|nl|no|nu|pl|ro|org\.ro|store\.ro|tm\.ro|firm\.ro|www\.ro|arts\.ro|rec\.ro|info\.ro|nom\.ro|nt\.ro|se|si|com\.sg|org\.sg|net\.sg|gov\.sg|sk|st|tf|ac\.th|co\.th|go\.th|mi\.th|net\.th|or\.th|tm|to|com\.tr|edu\.tr|gov\.tr|k12\.tr|net\.tr|org\.tr|com\.tw|org\.tw|net\.tw|ac\.uk|uk\.com|uk\.net|gb\.com|gb\.net|vg|sh|kz|ch|info|ua|gov|name|pro|ie|hk|com\.hk|org\.hk|net\.hk|edu\.hk|us|tk|cd|by|ad|lv|eu\.lv|bz|es|jp|cl|ag|mobi|eu|co\.nz|org\.nz|net\.nz|maori\.nz|iwi\.nz|io|la|md|sc|sg|vc|tw|travel|my|se|tv|pt|com\.pt|edu\.pt|asia|fi|com\.ve|net\.ve|fi|org\.ve|web\.ve|info\.ve|co\.ve|tel|im|gr|ru|net\.ru|org\.ru|hr|com\.hr|ly|xyz)$/);
+        }
+
+        function _d(s) {
+          return decodeURIComponent(s.replace(/\+/g, ' '));
+        }
+
+        function _i(arg, str) {
+            var sptr = arg.charAt(0),
+                split = str.split(sptr);
+
+            if (sptr === arg) { return split; }
+
+            arg = parseInt(arg.substring(1), 10);
+
+            return split[arg < 0 ? split.length + arg : arg - 1];
+        }
+
+        function _f(arg, str) {
+            var sptr = arg.charAt(0),
+                split = str.split('&'),
+                field = [],
+                params = {},
+                tmp = [],
+                arg2 = arg.substring(1);
+
+            for (var i = 0, ii = split.length; i < ii; i++) {
+                field = split[i].match(/(.*?)=(.*)/);
+
+                // TODO: regex should be able to handle this.
+                if ( ! field) {
+                    field = [split[i], split[i], ''];
+                }
+
+                if (field[1].replace(/\s/g, '') !== '') {
+                    field[2] = _d(field[2] || '');
+
+                    // If we have a match just return it right away.
+                    if (arg2 === field[1]) { return field[2]; }
+
+                    // Check for array pattern.
+                    tmp = field[1].match(/(.*)\[([0-9]+)\]/);
+
+                    if (tmp) {
+                        params[tmp[1]] = params[tmp[1]] || [];
+
+                        params[tmp[1]][tmp[2]] = field[2];
+                    }
+                    else {
+                        params[field[1]] = field[2];
+                    }
+                }
+            }
+
+            if (sptr === arg) { return params; }
+
+            return params[arg2];
+        }
+
+        return function(arg, url) {
+            var _l = {}, tmp, tmp2;
+
+            if (arg === 'tld?') { return _t(); }
+
+            url = url || window.location.toString();
+
+            if ( ! arg) { return url; }
+
+            arg = arg.toString();
+
+            if (tmp = url.match(/^mailto:([^\/].+)/)) {
+                _l.protocol = 'mailto';
+                _l.email = tmp[1];
+            }
+            else {
+
+                // Ignore Hashbangs.
+                if (tmp = url.match(/(.*?)\/#\!(.*)/)) {
+                    url = tmp[1] + tmp[2];
+                }
+
+                // Hash.
+                if (tmp = url.match(/(.*?)#(.*)/)) {
+                    _l.hash = tmp[2];
+                    url = tmp[1];
+                }
+
+                // Return hash parts.
+                if (_l.hash && arg.match(/^#/)) { return _f(arg, _l.hash); }
+
+                // Query
+                if (tmp = url.match(/(.*?)\?(.*)/)) {
+                    _l.query = tmp[2];
+                    url = tmp[1];
+                }
+
+                // Return query parts.
+                if (_l.query && arg.match(/^\?/)) { return _f(arg, _l.query); }
+
+                // Protocol.
+                if (tmp = url.match(/(.*?)\:?\/\/(.*)/)) {
+                    _l.protocol = tmp[1].toLowerCase();
+                    url = tmp[2];
+                }
+
+                // Path.
+                if (tmp = url.match(/(.*?)(\/.*)/)) {
+                    _l.path = tmp[2];
+                    url = tmp[1];
+                }
+
+                // Clean up path.
+                _l.path = (_l.path || '').replace(/^([^\/])/, '/$1');
+
+                // Return path parts.
+                if (arg.match(/^[\-0-9]+$/)) { arg = arg.replace(/^([^\/])/, '/$1'); }
+                if (arg.match(/^\//)) { return _i(arg, _l.path.substring(1)); }
+
+                // File.
+                tmp = _i('/-1', _l.path.substring(1));
+
+                if (tmp && (tmp = tmp.match(/(.*?)\.([^.]+)$/))) {
+                    _l.file = tmp[0];
+                    _l.filename = tmp[1];
+                    _l.fileext = tmp[2];
+                }
+
+                // Port.
+                if (tmp = url.match(/(.*)\:([0-9]+)$/)) {
+                    _l.port = tmp[2];
+                    url = tmp[1];
+                }
+
+                // Auth.
+                if (tmp = url.match(/(.*?)@(.*)/)) {
+                    _l.auth = tmp[1];
+                    url = tmp[2];
+                }
+
+                // User and pass.
+                if (_l.auth) {
+                    tmp = _l.auth.match(/(.*)\:(.*)/);
+
+                    _l.user = tmp ? tmp[1] : _l.auth;
+                    _l.pass = tmp ? tmp[2] : undefined;
+                }
+
+                // Hostname.
+                _l.hostname = url.toLowerCase();
+
+                // Return hostname parts.
+                if (arg.charAt(0) === '.') { return _i(arg, _l.hostname); }
+
+                // Domain, tld and sub domain.
+                if (_t()) {
+                    tmp = _l.hostname.match(_t());
+
+                    if (tmp) {
+                        _l.tld = tmp[3];
+                        _l.domain = tmp[2] ? tmp[2] + '.' + tmp[3] : undefined;
+                        _l.sub = tmp[1] || undefined;
+                    }
+                }
+
+                // Set port and protocol defaults if not set.
+                _l.port = _l.port || (_l.protocol === 'https' ? '443' : '80');
+                _l.protocol = _l.protocol || (_l.port === '443' ? 'https' : 'http');
+            }
+
+            // Return arg.
+            if (arg in _l) { return _l[arg]; }
+
+            // Return everything.
+            if (arg === '{}') { return _l; }
+
+            // Default to undefined for no match.
+            return undefined;
+        };
+    })();
+
+	if (typeof window.define === 'function' && window.define.amd) {
+		window.define('js-url', [], function () {
+		    return url;
+		});
+	} else {
+		if(typeof window.jQuery !== 'undefined') {
+			window.jQuery.extend({
+				url: function(arg, url) { return window.url(arg, url); }
+			});
+		}
+
+		window.url = url;
+	}
+
+})();
+
+;
 /* 
   @package NOTY - Dependency-free notification library 
   @version version: 3.1.4 
@@ -45238,6 +45439,261 @@ module.exports = g;
 /******/ ]);
 });
 //# sourceMappingURL=noty.js.map
+;
+/*global ActiveXObject, window, console, define, module, jQuery */
+//jshint unused:false, strict: false
+
+/*
+    PDFObject v2.0.201604172
+    https://github.com/pipwerks/PDFObject
+    Copyright (c) 2008-2016 Philip Hutchison
+    MIT-style license: http://pipwerks.mit-license.org/
+    UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
+*/
+
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define([], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory();
+    } else {
+        // Browser globals (root is window)
+        root.PDFObject = factory();
+  }
+}(this, function () {
+
+    "use strict";
+    //jshint unused:true
+
+    //PDFObject is designed for client-side (browsers), not server-side (node)
+    //Will choke on undefined navigator and window vars when run on server
+    //Return boolean false and exit function when running server-side
+
+    if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
+
+    var pdfobjectversion = "2.0.201604172",
+        supportsPDFs,
+
+        //declare functions
+        createAXO,
+        isIE,
+        supportsPdfMimeType = (typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
+        supportsPdfActiveX,
+        buildFragmentString,
+        log,
+        embedError,
+        embed,
+        getTargetElement,
+        generatePDFJSiframe,
+        isIOS = (function (){ return (/iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())); })(),
+        generateEmbedElement;
+
+
+    /* ----------------------------------------------------
+       Supporting functions
+       ---------------------------------------------------- */
+
+    createAXO = function (type){
+        var ax;
+        try {
+            ax = new ActiveXObject(type);
+        } catch (e) {
+            ax = null; //ensure ax remains null
+        }
+        return ax;
+    };
+
+    //IE11 still uses ActiveX for Adobe Reader, but IE 11 doesn't expose
+    //window.ActiveXObject the same way previous versions of IE did
+    //window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" in window evaluates to true
+    //so check the first one for older IE, and the second for IE11
+    //FWIW, MS Edge (replacing IE11) does not support ActiveX at all, both will evaluate false
+    //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
+    isIE = function (){ return !!(window.ActiveXObject || "ActiveXObject" in window); };
+
+    //If either ActiveX support for "AcroPDF.PDF" or "PDF.PdfCtrl" are found, return true
+    //Constructed as a method (not a prop) to avoid unneccesarry overhead -- will only be evaluated if needed
+    supportsPdfActiveX = function (){ return !!(createAXO("AcroPDF.PDF") || createAXO("PDF.PdfCtrl")); };
+
+    //Determines whether PDF support is available
+    supportsPDFs = (supportsPdfMimeType || (isIE() && supportsPdfActiveX()));
+
+    //Create a fragment identifier for using PDF Open parameters when embedding PDF
+    buildFragmentString = function(pdfParams){
+
+        var string = "",
+            prop;
+
+        if(pdfParams){
+
+            for (prop in pdfParams) {
+                if (pdfParams.hasOwnProperty(prop)) {
+                    string += encodeURIComponent(prop) + "=" + encodeURIComponent(pdfParams[prop]) + "&";
+                }
+            }
+
+            //The string will be empty if no PDF Params found
+            if(string){
+
+                string = "#" + string;
+
+                //Remove last ampersand
+                string = string.slice(0, string.length - 1);
+
+            }
+
+        }
+
+        return string;
+
+    };
+
+    log = function (msg){
+        if(typeof console !== "undefined" && console.log){
+            console.log("[PDFObject] " + msg);
+        }
+    };
+
+    embedError = function (msg){
+        log(msg);
+        return false;
+    };
+
+    getTargetElement = function (targetSelector){
+
+        //Default to body for full-browser PDF
+        var targetNode = document.body;
+
+        //If a targetSelector is specified, check to see whether
+        //it's passing a selector, jQuery object, or an HTML element
+
+        if(typeof targetSelector === "string"){
+
+            //Is CSS selector
+            targetNode = document.querySelector(targetSelector);
+
+        } else if (typeof jQuery !== "undefined" && targetSelector instanceof jQuery && targetSelector.length) {
+
+            //Is jQuery element. Extract HTML node
+            targetNode = targetSelector.get(0);
+
+        } else if (typeof targetSelector.nodeType !== "undefined" && targetSelector.nodeType === 1){
+
+            //Is HTML element
+            targetNode = targetSelector;
+
+        }
+
+        return targetNode;
+
+    };
+
+    generatePDFJSiframe = function (targetNode, url, pdfOpenFragment, PDFJS_URL, id){
+
+        var fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
+        var scrollfix = (isIOS) ? "-webkit-overflow-scrolling: touch; overflow-y: scroll; " : "overflow: hidden; ";
+        var iframe = "<div style='" + scrollfix + "position: absolute; top: 0; right: 0; bottom: 0; left: 0;'><iframe  " + id + " src='" + fullURL + "' style='border: none; width: 100%; height: 100%;' frameborder='0'></iframe></div>";
+        targetNode.className += " pdfobject-container";
+        targetNode.style.position = "relative";
+        targetNode.style.overflow = "auto";
+        targetNode.innerHTML = iframe;
+        return targetNode.getElementsByTagName("iframe")[0];
+
+    };
+
+    generateEmbedElement = function (targetNode, targetSelector, url, pdfOpenFragment, width, height, id){
+
+        var style = "";
+
+        if(targetSelector && targetSelector !== document.body){
+            style = "width: " + width + "; height: " + height + ";";
+        } else {
+            style = "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
+        }
+
+        targetNode.className += " pdfobject-container";
+        targetNode.innerHTML = "<embed " + id + " class='pdfobject' src='" + url + pdfOpenFragment + "' type='application/pdf' style='overflow: auto; " + style + "'/>";
+
+        return targetNode.getElementsByTagName("embed")[0];
+
+    };
+
+    embed = function(url, targetSelector, options){
+
+        //Ensure URL is available. If not, exit now.
+        if(typeof url !== "string"){ return embedError("URL is not valid"); }
+
+        //If targetSelector is not defined, convert to boolean
+        targetSelector = (typeof targetSelector !== "undefined") ? targetSelector : false;
+
+        //Ensure options object is not undefined -- enables easier error checking below
+        options = (typeof options !== "undefined") ? options : {};
+
+        //Get passed options, or set reasonable defaults
+        var id = (options.id && typeof options.id === "string") ? "id='" + options.id + "'" : "",
+            page = (options.page) ? options.page : false,
+            pdfOpenParams = (options.pdfOpenParams) ? options.pdfOpenParams : {},
+            fallbackLink = (typeof options.fallbackLink !== "undefined") ? options.fallbackLink : true,
+            width = (options.width) ? options.width : "100%",
+            height = (options.height) ? options.height : "100%",
+            forcePDFJS = (typeof options.forcePDFJS === "boolean") ? options.forcePDFJS : false,
+            PDFJS_URL = (options.PDFJS_URL) ? options.PDFJS_URL : false,
+            targetNode = getTargetElement(targetSelector),
+            fallbackHTML = "",
+            pdfOpenFragment = "",
+            fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: <a href='[url]'>Download PDF</a></p>";
+
+        //If target element is specified but is not valid, exit without doing anything
+        if(!targetNode){ return embedError("Target element cannot be determined"); }
+
+
+        //page option overrides pdfOpenParams, if found
+        if(page){
+            pdfOpenParams.page = page;
+        }
+
+        //Stringify optional Adobe params for opening document (as fragment identifier)
+        pdfOpenFragment = buildFragmentString(pdfOpenParams);
+
+        //Do the dance
+        if(forcePDFJS && PDFJS_URL){
+
+            return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
+
+        } else if(supportsPDFs){
+
+            return generateEmbedElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
+
+        } else {
+
+            if(PDFJS_URL){
+
+                return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
+
+            } else if(fallbackLink){
+
+                fallbackHTML = (typeof fallbackLink === "string") ? fallbackLink : fallbackHTML_default;
+                targetNode.innerHTML = fallbackHTML.replace(/\[url\]/g, url);
+
+            }
+
+            return embedError("This browser does not support embedded PDFs");
+
+        }
+
+    };
+
+    return {
+        embed: function (a,b,c){ return embed(a,b,c); },
+        pdfobjectversion: (function () { return pdfobjectversion; })(),
+        supportsPDFs: (function (){ return supportsPDFs; })()
+    };
+
+}));
 ;
 /*!
  * Select2 4.0.5
