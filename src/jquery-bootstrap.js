@@ -115,7 +115,7 @@
 
         options = $.extend( true, {}, defaultOptions || {}, options, forceOptions || {} );
 
-        options.selected = options.selected || options.checked || options.active;
+        options.selected = options.selected || options.checked || options.active || options.open || options.isOpen;
         options.list     = options.list     || options.buttons || options.items || options.children;
 
         options = adjustContentAndContextOptions( options, options.context );

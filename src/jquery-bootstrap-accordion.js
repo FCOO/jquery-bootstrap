@@ -103,6 +103,7 @@ TODO:
 
             var headerId   = id + 'header'+index,
                 collapseId = id + 'collapse'+index,
+                isOpen     = !!options.allOpen || !!opt.selected,
                 $card = $('<div/>')
                             .addClass('card')
                             .attr({'data-user-id': opt.id || null})
@@ -115,7 +116,8 @@ TODO:
             //Add header
             $card.append(
                 $('<div/>')
-                    .addClass('card-header collapsed')
+                    .addClass('card-header')
+                    .toggleClass('collapsed', !isOpen)
                     .attr({
                         'id'           : headerId,
                         'role'         : 'tab',
@@ -136,6 +138,7 @@ TODO:
             var $outer =
                 $('<div/>')
                     .addClass('collapse')
+                    .toggleClass('show', isOpen)
                     .attr({
                         'id'             : collapseId,
                         'role'           : 'tabpanel',
@@ -156,14 +159,18 @@ TODO:
                     .appendTo( $outer );
 
             //Add content: string, element, function or children (=accordion)
-                if (opt.content)
-                    $contentContainer._bsAppendContent( opt.content, opt.contentContext );
+            if (opt.content)
+                $contentContainer._bsAppendContent( opt.content, opt.contentContext );
 
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))
-                $.bsAccordion( { list: opt.list } )
+                $.bsAccordion( {
+                    allOpen  : options.allOpen,
+                    multiOpen: options.multiOpen,
+                    list: opt.list
+                } )
                     .appendTo( $contentContainer );
-        });
+        }); //End of $.each( options.list, function( index, opt ){
 
         $result.collapse(/*options*/);
         $result.asModal = bsAccordion_asModal;

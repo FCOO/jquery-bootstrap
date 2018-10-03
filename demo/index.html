@@ -584,7 +584,8 @@ $testButton.data('popover_radiogroup').setSelected('nm');
                 },
                 {
                     id: 'ACCOR2',
-                    header: {icon: 'fa-home', text: {da:'Overskrift#2', en:'Header#2'}},
+                    header: {icon: 'fa-home', text: {da:'Overskrift#2 (default Åben)', en:'Header#2 (default Open)'}},
+                    isOpen: true,
                     children:[
                         {header:{icon: 'fa-home', text: {da:'Overskrift#2-1', en:'Header#2-1'}}, content: 'Dette er en test 2-1<br>'+testContent },
                         {header:{icon: 'fa-home', text: {da:'Overskrift#2-2', en:'Header#2-2'}}, content: 'Dette er en test 2-2<br>'+testContent },
@@ -663,14 +664,14 @@ $testButton.data('popover_radiogroup').setSelected('nm');
 
 
 
-        $accordion = $.bsAccordion({ _multiOpen: true, children: accor_children, footer: 'footer' }),
+        $accordion = $.bsAccordion({ multiOpen: true, allOpen: true, children: accor_children, footer: 'footer' }),
         $accordion2 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
         $accordion3 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
         $accordion4 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
 
 
         m = $accordion.asModal({
-            header:{icon: 'fa-home', text:{da:'FLEX AND MULTIOPEN Overskrift h=300',en:'Header'}},
+            header:{icon: 'fa-home', text:{da:'FLEX AND MULTIOPEN AND ALLOPEN AND Overskrift h=300',en:'Header'}},
             show: false,
             height: 300
         }),
@@ -761,11 +762,6 @@ $testButton.data('popover_radiogroup').setSelected('nm');
                 $.bsModalPdf('http://nautiskinformation.soefartsstyrelsen.dk/index.html#/messages/details', {header: 'TEST'});
             });
 
-
-        m_list.assignTo(
-            $('<button>List</button>')
-                .appendTo( $body)
-        );
 
         m_list.assignTo(
             $('<button>List</button>')
