@@ -654,11 +654,19 @@ $testButton.data('popover_radiogroup').setSelected('nm');
         }),
 
         m_list = myBsList.asModal({
-            header:'En liste',
-            _closeIcon: 'fa-globe',
+
+            closeIcon: 'fa-globe',
             _flexWidth:true,
             _extraWidth: true,
             width: 300, _small: true,
+            header: {
+                text: 'En liste',
+            },
+            onNew: function(){ alert('NEW'); },
+            onPin: function(){ alert('PIN'); },
+            extended: {
+                content: 'Hej'
+            },
             show: false
         }),
 

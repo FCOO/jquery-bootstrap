@@ -28,10 +28,16 @@
     $.bsHeaderIcons = {
         back    : 'fa-chevron-left',
         forward : 'fa-chevron-right',
-        extend  : 'fa-chevron-up',
-        diminish: 'fa-chevron-down',
+
         pin     : ['fas fa-thumbtack fa-stack-1x fa-inside-circle', 'far fa-circle fa-stack-1x'],
         unpin   : 'fa-thumbtack',
+
+        extend  : 'fa-chevron-up',
+        diminish: 'fa-chevron-down',
+
+        new     : ['far fa-window-maximize fa-stack-1x fa-inside-circle2', 'far fa-circle fa-stack-1x'],
+//        new     : ['far fa-square fa-stack-1x fa-inside-circle', 'far fa-circle fa-stack-1x'],
+
         close   : ['far fa-times-circle fa-stack-1x hide-for-hover', 'fas fa-times-circle text-danger fa-stack-1x show-for-hover']
     };
 
@@ -79,7 +85,7 @@
                         .appendTo( this );
 
             //Add icons
-            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'close'], function( index, id ){
+            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'close'], function( index, id ){
                 var iconOptions = options.icons[id],
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
                 if (iconOptions && iconOptions.onClick){

@@ -181,8 +181,7 @@
         show  : function(){
                     this.modal('show');
 
-//this.bsModal._bsModalSetHeightAndWidth();
-this.data('bsModalDialog')._bsModalSetHeightAndWidth();
+                    this.data('bsModalDialog')._bsModalSetHeightAndWidth();
 
                     if (this.bsModal.onChange)
                         this.bsModal.onChange( this.bsModal );
@@ -442,7 +441,8 @@ this.data('bsModalDialog')._bsModalSetHeightAndWidth();
                 pin     : { className: 'hide-for-modal-pinned',   onClick: options.onPin    ? modalPin      : null },
                 unpin   : { className: 'show-for-modal-pinned',   onClick: options.onPin    ? modalUnpin    : null },
                 extend  : { className: 'hide-for-modal-extended', onClick: options.extended ? modalExtend   : null, altEvents:'swipeup'   },
-                diminish: { className: 'show-for-modal-extended', onClick: options.extended ? modalDiminish : null, altEvents:'swipedown' }
+                diminish: { className: 'show-for-modal-extended', onClick: options.extended ? modalDiminish : null, altEvents:'swipedown' },
+                new     : { className: '',                        onClick: options.onNew    ? $.proxy(options.onNew, this) : null },
             }
         }, options );
 
