@@ -284,6 +284,7 @@
 
         //Set height
         $modalContent
+            .toggleClass('modal-fixed-height', !!cssHeight)
             .toggleClass('modal-flex-height', !cssHeight)
             .css( cssHeight ? cssHeight : {height: 'auto', maxHeight: null});
         if (!cssHeight)

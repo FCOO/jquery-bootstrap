@@ -36,7 +36,6 @@
         diminish: 'fa-chevron-down',
 
         new     : ['far fa-window-maximize fa-stack-1x fa-inside-circle2', 'far fa-circle fa-stack-1x'],
-//        new     : ['far fa-square fa-stack-1x fa-inside-circle', 'far fa-circle fa-stack-1x'],
 
         close   : ['far fa-times-circle fa-stack-1x hide-for-hover', 'fas fa-times-circle text-danger fa-stack-1x show-for-hover']
     };

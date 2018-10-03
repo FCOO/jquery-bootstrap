@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function ($, window, document, undefined) {
+(function ($, window/*, document, undefined*/) {
 	"use strict";
 
 
@@ -35,8 +35,7 @@
         options = options || {};
         fileName = $._bsAdjustText(fileName);
         var theFileName = window.i18next.sentence(fileName),
-            onlyFileName = url('file', theFileName),
-            fileNameExt = url('fileext', theFileName).toLowerCase(),
+            fileNameExt = window.url('fileext', theFileName).toLowerCase(),
             $content,
             fullWidth = true;
 
@@ -51,8 +50,8 @@
                     });
 
                 //passes a jQuery object (HTML node) for target
-                PDFObject.embed(
-                    i18next.sentence(fileName),
+                window.PDFObject.embed(
+                    theFileName,
                     $content,
                     { pdfOpenParams: { view: 'FitH' } }
                 );
@@ -93,6 +92,6 @@
                    buttons   : [{text: {da: 'Åbne', en: 'Open'}, icon: $.bsExternalLinkIcon, link: fileName }],
                    content   : $content
                });
-    }
+    };
 
 }(jQuery, this, document));
