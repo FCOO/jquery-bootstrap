@@ -103,6 +103,7 @@ TODO:
 
             var headerId   = id + 'header'+index,
                 collapseId = id + 'collapse'+index,
+                isOpen     = !!options.allOpen || !!opt.selected,
                 $card = $('<div/>')
                             .addClass('card')
                             .attr({'data-user-id': opt.id || null})
@@ -115,7 +116,8 @@ TODO:
             //Add header
             $card.append(
                 $('<div/>')
-                    .addClass('card-header collapsed')
+                    .addClass('card-header')
+                    .toggleClass('collapsed', !isOpen)
                     .attr({
                         'id'           : headerId,
                         'role'         : 'tab',
@@ -136,6 +138,7 @@ TODO:
             var $outer =
                 $('<div/>')
                     .addClass('collapse')
+                    .toggleClass('show', isOpen)
                     .attr({
                         'id'             : collapseId,
                         'role'           : 'tabpanel',
@@ -156,14 +159,18 @@ TODO:
                     .appendTo( $outer );
 
             //Add content: string, element, function or children (=accordion)
-                if (opt.content)
-                    $contentContainer._bsAppendContent( opt.content, opt.contentContext );
+            if (opt.content)
+                $contentContainer._bsAppendContent( opt.content, opt.contentContext );
 
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))
-                $.bsAccordion( { list: opt.list } )
+                $.bsAccordion( {
+                    allOpen  : options.allOpen,
+                    multiOpen: options.multiOpen,
+                    list: opt.list
+                } )
                     .appendTo( $contentContainer );
-        });
+        }); //End of $.each( options.list, function( index, opt ){
 
         $result.collapse(/*options*/);
         $result.asModal = bsAccordion_asModal;
@@ -235,9 +242,15 @@ TODO:
 
         var result = $('<'+ options.tagName + ' tabindex="0"/>');
 
-        //Adding href that don't scroll to top to allow anchor to get focus
-        if (options.tagName == 'a')
-            result.prop('href', 'javascript:undefined');
+        if (options.tagName == 'a'){
+            if (options.link)
+                result
+                    .i18n($._bsAdjustText(options.link), 'href')
+                    .prop('target', '_blank');
+            else
+                //Adding href that don't scroll to top to allow anchor to get focus
+                result.prop('href', 'javascript:undefined');
+        }
 
         result
             ._bsAddIdAndName( options )
@@ -1017,10 +1030,15 @@ TODO:
     $.bsHeaderIcons = {
         back    : 'fa-chevron-left',
         forward : 'fa-chevron-right',
-        extend  : 'fa-chevron-up',
-        diminish: 'fa-chevron-down',
+
         pin     : ['fas fa-thumbtack fa-stack-1x fa-inside-circle', 'far fa-circle fa-stack-1x'],
         unpin   : 'fa-thumbtack',
+
+        extend  : 'fa-chevron-up',
+        diminish: 'fa-chevron-down',
+
+        new     : ['far fa-window-maximize fa-stack-1x fa-inside-circle2', 'far fa-circle fa-stack-1x'],
+
         close   : ['far fa-times-circle fa-stack-1x hide-for-hover', 'fas fa-times-circle text-danger fa-stack-1x show-for-hover']
     };
 
@@ -1068,7 +1086,7 @@ TODO:
                         .appendTo( this );
 
             //Add icons
-            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'close'], function( index, id ){
+            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'close'], function( index, id ){
                 var iconOptions = options.icons[id],
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
                 if (iconOptions && iconOptions.onClick){
@@ -1326,6 +1344,104 @@ options
 }(jQuery, this, document));
 ;
 /****************************************************************************
+	jquery-bootstrap-modal-pdf.js,
+
+	(c) 2017, FCOO
+
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+****************************************************************************/
+
+(function ($, window/*, document, undefined*/) {
+	"use strict";
+
+
+
+    //$.bsHeaderIcons = class-names for the different icons on the header
+    $.bsExternalLinkIcon = 'fa-external-link-alt';
+
+    /**********************************************************
+    pdfLink( fileName, bsModalPdfOptions )
+    Check if the browser supports pdf-object and return a link
+    to bsModalPdf or a link to the filename in a new tab
+    **********************************************************/
+    $.pdfLink = function( fileName, bsModalPdfOptions ){
+        return window.PDFObject.supportsPDFs ?
+            function(){ return $.bsModalPdf( fileName, bsModalPdfOptions ); } :
+            fileName;
+    };
+
+
+    /**********************************************************
+    bsModalPdf( fileName, options )
+    **********************************************************/
+    $.bsModalPdf = function( fileName, options ){
+        options = options || {};
+        fileName = $._bsAdjustText(fileName);
+        var theFileName = window.i18next.sentence(fileName),
+            fileNameExt = window.url('fileext', theFileName).toLowerCase(),
+            $content,
+            fullWidth = true;
+
+        //Check for ext == 'pdf' and support for pdf
+        if (fileNameExt == 'pdf'){
+            //Check for support of pdf
+            if (window.PDFObject.supportsPDFs){
+                $content = $('<div/>')
+                    .css({
+                        width : '100%',
+                        height: '100%'
+                    });
+
+                //passes a jQuery object (HTML node) for target
+                window.PDFObject.embed(
+                    theFileName,
+                    $content,
+                    { pdfOpenParams: { view: 'FitH' } }
+                );
+            }
+            else {
+                fullWidth = false;
+                $content =
+                    $('<div/>')
+                        .addClass('text-center')
+                        ._bsAddHtml({text: {
+                            da: 'Denne browser understøtter ikke visning<br>af pdf-filer i popup-vinduer<br>Klik på <i class="fas ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
+                            en: 'This browser does not support<br>pdf-files in popup windows<br>Click on <i class="fas ' + $.bsExternalLinkIcon + '"/> to see the document<br>in a new Tab page'
+                        }});
+            }
+        }
+        else {
+            //Try default <object> to display the file
+            $content =
+                $('<object data="' + theFileName + '"/>')
+                    .css({
+                        width : '100%',
+                        height: '99%'   //Strange bufix for Chrome ??
+                    });
+
+        }
+
+        //Create the bsModal
+        return $.bsModal({
+                   header    : options.header,
+                   scroll    : false,
+                   flexWidth : fullWidth,
+                   megaWidth : fullWidth,
+
+                   noVerticalPadding  : fullWidth,
+                   noHorizontalPadding: fullWidth,
+                   alwaysMaxHeight    : fullWidth,
+
+                   buttons   : [{text: {da: 'Åbne', en: 'Open'}, icon: $.bsExternalLinkIcon, link: fileName }],
+                   content   : $content
+               });
+    };
+
+}(jQuery, this, document));
+;
+/****************************************************************************
 	jquery-bootstrap-modal.js,
 
 	(c) 2017, FCOO
@@ -1350,16 +1466,21 @@ options
             diminish: {onClick, attr, className, attr, data }
 }       type //"", "alert", "success", "warning", "error", "info"
         fixedContent
+
+        alwaysMaxHeight
         flexWidth
         extraWidth
         megaWidth
         noVerticalPadding
+        noHorizontalPadding
         content
         scroll: boolean | 'vertical' | 'horizontal'
         extended: {
             type
             fixedContent
             noVerticalPadding
+            noHorizontalPadding
+            alwaysMaxHeight
             content
             scroll: boolean | 'vertical' | 'horizontal'
             footer
@@ -1383,10 +1504,15 @@ options
     as expected/needed
     Instead a resize-event is added to update the max-height of
     elements with the current value of window.innerHeight
+    Sets both max-height and haight to allow always-max-heigth options
     **********************************************************/
     function adjustModalMaxHeight( $modalContent ){
         $modalContent = $modalContent || $('.modal-content.modal-flex-height');
-        $modalContent.css('max-height', (parseInt(window.innerHeight) - 2*modalVerticalMargin)+'px');
+        var maxHeight = parseInt(window.innerHeight) - 2*modalVerticalMargin;
+        $modalContent.css({
+            'max-height': maxHeight+'px',
+            'height'    : maxHeight+'px'
+        });
     }
 
     window.addEventListener('resize',            function(){ adjustModalMaxHeight(); }, false );
@@ -1401,6 +1527,7 @@ options
     The width of a modal is by default 300px.
     options.flexWidth :  If true the width of the modal will adjust to the width of the browser up to 500px
     options.extraWidth:  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
+    options.megaWidth :  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
     options.width     : Set if different from 300
 
     ******************************************************/
@@ -1414,6 +1541,7 @@ options
         return {
             flexWidth : !!options.flexWidth,
             extraWidth: !!options.extraWidth,
+            megaWidth: !!options.megaWidth,
             width     : options.width ? options.width+'px' : null
         };
     }
@@ -1495,6 +1623,9 @@ options
 
         show  : function(){
                     this.modal('show');
+
+                    this.data('bsModalDialog')._bsModalSetHeightAndWidth();
+
                     if (this.bsModal.onChange)
                         this.bsModal.onChange( this.bsModal );
                 },
@@ -1559,6 +1690,7 @@ options
         var $modalBody = parts.$body =
                 $('<div/>')
                     .addClass('modal-body ' + className)
+                    .toggleClass('modal-body-always-max-height', !!options.alwaysMaxHeight)
                     .toggleClass('modal-type-' + options.type, !!options.type)
                     .appendTo( this );
 
@@ -1595,6 +1727,7 @@ options
 
         //Set height
         $modalContent
+            .toggleClass('modal-fixed-height', !!cssHeight)
             .toggleClass('modal-flex-height', !cssHeight)
             .css( cssHeight ? cssHeight : {height: 'auto', maxHeight: null});
         if (!cssHeight)
@@ -1604,6 +1737,7 @@ options
         $modalDialog
             .toggleClass('modal-flex-width', cssWidth.flexWidth )
             .toggleClass('modal-extra-width', cssWidth.extraWidth )
+            .toggleClass('modal-mega-width', cssWidth.megaWidth )
             .css('width', cssWidth.width );
 
         //Call onChange (if any)
@@ -1697,7 +1831,13 @@ options
         this.bsModal.cssWidth = getWidthFromOptions( options );
         if (options.extended){
             //If options.extended.width == true or none width-options is set in extended => use same width as normal-mode
-            if ((options.extended.width == true) || ((options.extended.flexWidth == undefined) && (options.extended.extraWidth == undefined) && (options.extended.width == undefined)))
+            if ( (options.extended.width == true) ||
+                 ( (options.extended.flexWidth == undefined) &&
+                   (options.extended.extraWidth == undefined) &&
+                   (options.extended.megaWidth == undefined) &&
+                   (options.extended.width == undefined)
+                 )
+              )
                 this.bsModal.cssExtendedWidth = this.bsModal.cssWidth;
             else
                 this.bsModal.cssExtendedWidth = getWidthFromOptions( options.extended );
@@ -1709,8 +1849,14 @@ options
                     .addClass('modal-content')
                     .addClass(options.modalContentClassName)
                     .modernizrToggle('modal-extended', !!options.isExtended )
+
+                    .toggleClass('modal-content-always-max-height',          !!options.alwaysMaxHeight)
+                    .toggleClass('modal-extended-content-always-max-height', !!options.extended && !!options.extended.alwaysMaxHeight)
+
                     .modernizrOff('modal-pinned')
                     .appendTo( this );
+
+
 
         this._bsModalSetHeightAndWidth();
 
@@ -1739,7 +1885,8 @@ options
                 pin     : { className: 'hide-for-modal-pinned',   onClick: options.onPin    ? modalPin      : null },
                 unpin   : { className: 'show-for-modal-pinned',   onClick: options.onPin    ? modalUnpin    : null },
                 extend  : { className: 'hide-for-modal-extended', onClick: options.extended ? modalExtend   : null, altEvents:'swipeup'   },
-                diminish: { className: 'show-for-modal-extended', onClick: options.extended ? modalDiminish : null, altEvents:'swipedown' }
+                diminish: { className: 'show-for-modal-extended', onClick: options.extended ? modalDiminish : null, altEvents:'swipedown' },
+                new     : { className: '',                        onClick: options.onNew    ? $.proxy(options.onNew, this) : null },
             }
         }, options );
 
@@ -2897,8 +3044,16 @@ options
         noWrap       : false. If true the column will not be wrapped = fixed width
 TODO:   truncate     : false. If true the column will be truncated. Normally only one column get truncate: true
         fixedWidth   : false. If true the column will not change width when the tables width is changed
-        sortable :  [boolean] false
+
+        sortable     :  [boolean] false
+        sortBy       : [string or function(e1, e2): int] "string". Possible values: "int" (sort as float), "moment", "moment_date", "moment_time" (sort as moment-obj) or function(e1, e2) return int
+        sortIndex    : [int] null. When sorting and to values are equal the values from an other column is used.
+                                   The default order of the other columns to test is given by the its index in options.columns. Default sortIndex is (column-index+1)*100 (first column = 100). sortIndex can be set to alter the order.
+        sortDefault  : [string or boolean]. false. Possible values = false, true, "asc" or "desc". true => "asc"
+        sortHeader   : [boolean] false. If true a header-row is added every time the sorted value changes
+
     }
+
     showHeader          [boolean] true
     verticalBorder      [boolean] true. When true vertical borders are added together with default horizontal borders
     noBorder            [boolean] false. When true no borders are visible
@@ -2918,8 +3073,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
     rowClassName      : [] of string. []. Class-names for each row
 
-TODO
-Add sort-functions + save col-index for sorted column
+    Sorting is done by https://github.com/joequery/Stupid-Table-Plugin
 
 
 *******************************************************************/
@@ -2945,6 +3099,7 @@ Add sort-functions + save col-index for sorted column
             noWrap       : false,
             truncate     : false,
             fixedWidth   : false,
+            sortBy       : 'string',
             sortable     : false
         },
 
@@ -2969,6 +3124,37 @@ Add sort-functions + save col-index for sorted column
 
         return $element;
     }
+
+    /********************************************************************
+    Different sort-functions for moment-objects: (a,b) return a-b
+    ********************************************************************/
+    function momentSort(m1, m2){
+        if (m1.isSame(m2)) return 0;
+        if (m1.isBefore(m2)) return -1;
+        return 1;
+    }
+
+    //momentDateSort - sort by date despide the time
+    function momentDateSort(m1, m2){
+        return momentSort(
+            moment(m1).startOf('day'),
+            moment(m2).startOf('day')
+        );
+    }
+
+    //momentTimeSort - sort by time despide ther date
+    function momentTimeSort(m1, m2){
+        return momentSort(
+            moment(m1).date(1).month(0).year(2000),
+            moment(m2).date(1).month(0).year(2000)
+        );
+    }
+
+    var stupidtableOptions = {
+            'moment'     : momentSort,
+            'moment_date': momentDateSort,
+            'moment_time': momentTimeSort
+        };
 
     /**********************************************************
     Prototype for bsTable
@@ -3014,9 +3200,96 @@ Add sort-functions + save col-index for sorted column
                 $tr
                     .on('mouseenter', $.proxy($tr._selectlist_onMouseenter, $tr) )
                     .on('mouseleave', $.proxy($tr._selectlist_onMouseleave, $tr) );
+            }
+        },
 
-//            .on('mouseleave', $.proxy($result._selectlist_onMouseleaveList, $result) )
 
+        /**********************************************************
+        _getColumn - Return the column with id or index
+        **********************************************************/
+        _getColumn: function( idOrIndex ){
+            return $.isNumeric(idOrIndex) ? this.columns[idOrIndex] : this.columnIds[idOrIndex];
+        },
+
+        /**********************************************************
+        sortBy - Sort the table
+        **********************************************************/
+        sortBy: function( idOrIndex, dir ){
+            var column = this._getColumn(idOrIndex);
+            if (column)
+                column.$th.stupidsort( dir );
+        },
+
+        /**********************************************************
+        beforeTableSort - Called before the table is being sorted by StupidTable
+        **********************************************************/
+        beforeTableSort: function(event, sortInfo){
+            var column          = this._getColumn(sortInfo.column),
+                sortMulticolumn = column.$th.data('sort-multicolumn') || '',
+                _this           = this;
+
+            //Remove all group-header-rows
+            this.find('.table-sort-group-header').remove();
+
+            //Convert sortMulticolumn to array
+            sortMulticolumn = sortMulticolumn.split(',');
+            sortMulticolumn.push(''+column.index);
+
+            $.each( sortMulticolumn, function( dummy, columnIndex ){
+                var column = _this._getColumn( parseInt( columnIndex ) );
+                //If cell-content is vfFormat-object => Set 'sort-value' from vfFormat
+                if (column.vfFormat){
+                    _this.find('td:nth-child('+(column.index+1)+')').each( function( dummy, td ){
+                        var $td = $(td);
+                        $td.data( 'sort-value', $td.data('vf-value') );
+                    });
+                }
+            });
+        },
+
+        /**********************************************************
+        afterTableSort - Called after the table is being sorted by StupidTable
+        **********************************************************/
+        afterTableSort: function(event, sortInfo){
+            //Update the class-names of the cloned <thead>
+            var cloneThList = this.$theadClone.find('th');
+            this.find('thead th').each( function( index, th ){
+                $(cloneThList[index])
+                    .removeClass()
+                    .addClass( $(th).attr('class') );
+            });
+
+            var column = this._getColumn( sortInfo.column );
+
+            //Marks first row of changed value
+            if (column.sortHeader) {
+
+                //$tdBase = a <td> as $-object acting as base for all tds in header-row
+                var $tdBase =
+                        $('<td/>')
+                            .addClass('container-icon-and-text')
+                            .attr('colspan', this.columns.length );
+                column.$th.contents().clone().appendTo( $tdBase );
+                $tdBase.append( $('<span>:</span>') );
+
+                var lastText = "Denne her text kommer sikkert ikke igen";
+                this.find('tbody tr td:nth-child(' + (sortInfo.column+1) +')').each( function( index, td ){
+                    var $td = $(td),
+                        nextText = $td.text();
+                    if (nextText != lastText){
+                        //Create a clone of $tdBase and 'copy' all children from $td to $newTd
+                        var $newTd = $tdBase.clone(true);
+                        $td.contents().clone().appendTo( $newTd );
+
+                        //Create new row and insert before current row
+                        $('<tr/>')
+                            .addClass('table-sort-group-header')
+                            .append( $newTd )
+                            .insertBefore( $td.parent() );
+
+                        lastText = nextText;
+                    }
+                });
             }
         },
 
@@ -3026,21 +3299,28 @@ Add sort-functions + save col-index for sorted column
         asModal: function( modalOptions ){
             var showHeader = this.find('.no-header').length == 0,
                 _this      = this,
-                $theadClone,
                 $tableWithHeader = null,
                 $result, $thead, count;
 
             if (showHeader){
                 //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
-                $theadClone = this.find('thead').clone( true );
+                //Add on-click on the clone to 'pass' the click to the original header
+                this.$theadClone = this.find('thead').clone( true, false );
+
+                this.$theadClone.find('th').on('click', function( event ){
+                    var columnIndex = $(event.delegateTarget).index();
+                    _this.sortBy( columnIndex );
+                });
+
                 $tableWithHeader =
                     $('<table/>')
                         ._bsAddBaseClassAndSize( this.data(dataTableId) )
                         .addClass('table-with-header')
-                        .append( $theadClone );
+                        .append( this.$theadClone );
                 $thead = this.find('thead');
                 count  = 20;
             }
+
 
 
             $result = $.bsModal(
@@ -3074,7 +3354,7 @@ Add sort-functions + save col-index for sorted column
 
                     setHeaderWidth = function(){
                         $thead.find('th').each(function( index, th ){
-                            $theadClone.find('th:nth-child(' + (index+1) + ')')
+                            _this.$theadClone.find('th:nth-child(' + (index+1) + ')')
                                 .width( $(th).width()+'px' );
                         });
                         $tableWithHeader.width( _this.width()+'px' );
@@ -3088,19 +3368,6 @@ Add sort-functions + save col-index for sorted column
         }
 
     }; //end of bsTable_prototype = {
-
-    //**********************************************************
-    function table_th_onClick( event ){
-        var $th = $( event.currentTarget ),
-            sortable = $th.hasClass('sortable'),
-            newClass = $th.hasClass('desc') ? 'asc' : 'desc'; //desc = default
-
-        if (sortable){
-            //Remove .asc and .desc from all th
-            $th.parent().find('th').removeClass('asc desc');
-            $th.addClass(newClass);
-        }
-    }
 
     /**********************************************************
     bsTable( options ) - create a Bootstrap-table
@@ -3122,13 +3389,22 @@ Add sort-functions + save col-index for sorted column
             (options.selectable ? 'table-selectable ' : '' ) +
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' );
 
-        //Adjust text-style for each column
-        $.each( options.columns, function( index, column ){
-            column = $.extend( true, {}, defaultColunmOptions, options.defaultColunmOptions, column );
+        //Adjust each column
+        var columnIds = {};
+        $.each( options.columns, function( index, columnOptions ){
+            columnOptions.sortable = columnOptions.sortable || columnOptions.sortBy;
+            columnOptions = $.extend( true,
+                {
+                    index    : index,
+                    sortIndex: (index+1)*100
+                },
+                defaultColunmOptions,
+                options.defaultColunmOptions,
+                columnOptions
+            );
 
-            column.index = index;
-
-            options.columns[index] = column;
+            columnIds[columnOptions.id] = columnOptions;
+            options.columns[index] = columnOptions;
         });
 
         var id = 'bsTable'+ tableId++,
@@ -3146,6 +3422,9 @@ Add sort-functions + save col-index for sorted column
         //Extend with prototype
         $table.init.prototype.extend( bsTable_prototype );
 
+        $table.columns = options.columns;
+        $table.columnIds = columnIds;
+
         //Create colgroup
         var $colgroup = $('<colgroup/>').appendTo($table);
         $.each( options.columns, function( index, columnOptions ){
@@ -3154,17 +3433,55 @@ Add sort-functions + save col-index for sorted column
                 $col.attr('width', '1');
         });
 
+        var sortableTable  = false,
+            sortDefaultId  = '',
+            sortDefaultDir = 'asc',
+            multiSortList  = [];
+
+        /* From https://github.com/joequery/Stupid-Table-Plugin:
+            "A multicolumn sort allows you to define secondary columns to sort by in the event of a tie with two elements in the sorted column.
+                Specify a comma-separated list of th identifiers in a data-sort-multicolumn attribute on a <th> element..."
+
+            multiSortList = []{columnIndex, sortIndex} sorted by sortIndex. Is used be each th to define alternative sort-order
+        */
+        $.each( options.columns, function( index, columnOptions ){
+            if (columnOptions.sortable)
+                multiSortList.push( {columnIndex: index, sortIndex: columnOptions.sortIndex });
+        });
+        multiSortList.sort(function( c1, c2){ return c1.sortIndex - c2.sortIndex; });
+
         //Create headers
         if (options.showHeader)
-            $.each( options.columns, function( index, columnOptions ){
-                var $th = $('<th/>')
-                            .toggleClass('sortable', !!columnOptions.sortable )
-                            .on('click', table_th_onClick )
-                            .appendTo( $tr );
+            $.each( $table.columns, function( index, columnOptions ){
+                columnOptions.$th = $('<th/>').appendTo( $tr );
 
-                adjustThOrTd( $th, columnOptions, true );
+                if (columnOptions.sortable){
+                    columnOptions.$th
+                        .addClass('sortable')
+                        .attr('data-sort', columnOptions.sortBy);
 
-                $th._bsAddHtml( columnOptions.header );
+                    if (columnOptions.sortDefault){
+                        sortDefaultId  = columnOptions.id;
+                        sortDefaultDir = columnOptions.sortDefault == 'desc' ? 'desc' : sortDefaultDir;
+                    }
+
+                    //Create alternative/secondary columns to sort by
+                    var sortMulticolumn = '';
+                    $.each( multiSortList, function( index, multiSort ){
+                        if (multiSort.columnIndex != columnOptions.index)
+                            sortMulticolumn = (sortMulticolumn ? sortMulticolumn + ',' : '') + multiSort.columnIndex;
+                    });
+
+                    if (sortMulticolumn)
+                        columnOptions.$th.attr('data-sort-multicolumn', sortMulticolumn);
+
+                    sortableTable = true;
+                }
+
+
+                adjustThOrTd( columnOptions.$th, columnOptions, true );
+
+                columnOptions.$th._bsAddHtml( columnOptions.header );
             });
 
         if (options.selectable){
@@ -3189,8 +3506,19 @@ Add sort-functions + save col-index for sorted column
                 .find('.active').addClass('highlighted');
 
 
+        if (sortableTable){
+            $table.stupidtable =
+                $table.stupidtable( stupidtableOptions )
+                    .bind('beforetablesort', $.proxy( $table.beforeTableSort, $table ) )
+                    .bind('aftertablesort',  $.proxy( $table.afterTableSort,  $table ) );
+
+            if (sortDefaultId)
+                $table.sortBy(sortDefaultId, sortDefaultDir);
+        }
         return $table;
     };
+
+
 
 }(jQuery, this, document));
 ;
@@ -3432,6 +3760,17 @@ Add sort-functions + save col-index for sorted column
 
     };
 
+    //$._bsAdjustText: Adjust options to fit with {da:"...", en:"..."}
+    // options == {da:"..", en:".."} => return options
+    // options == STRING             => return {da: options}
+    $._bsAdjustText = function( options ){
+        if (!options)
+            return options;
+        if ($.type( options ) == "string")
+            return {da: options};
+        return options;
+    };
+
     //$._bsAdjustOptions: Adjust options to allow text/name/title/header etc.
     $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
         //*********************************************************************
@@ -3461,7 +3800,7 @@ Add sort-functions + save col-index for sorted column
 
         options = $.extend( true, {}, defaultOptions || {}, options, forceOptions || {} );
 
-        options.selected = options.selected || options.checked || options.active;
+        options.selected = options.selected || options.checked || options.active || options.open || options.isOpen;
         options.list     = options.list     || options.buttons || options.items || options.children;
 
         options = adjustContentAndContextOptions( options, options.context );

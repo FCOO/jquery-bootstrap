@@ -26,8 +26,16 @@ options
         noWrap       : false. If true the column will not be wrapped = fixed width
 TODO:   truncate     : false. If true the column will be truncated. Normally only one column get truncate: true
         fixedWidth   : false. If true the column will not change width when the tables width is changed
-        sortable :  [boolean] false
+
+        sortable     :  [boolean] false
+        sortBy       : [string or function(e1, e2): int] "string". Possible values: "int" (sort as float), "moment", "moment_date", "moment_time" (sort as moment-obj) or function(e1, e2) return int
+        sortIndex    : [int] null. When sorting and to values are equal the values from an other column is used.
+                                   The default order of the other columns to test is given by the its index in options.columns. Default sortIndex is (column-index+1)*100 (first column = 100). sortIndex can be set to alter the order.
+        sortDefault  : [string or boolean]. false. Possible values = false, true, "asc" or "desc". true => "asc"
+        sortHeader   : [boolean] false. If true a header-row is added every time the sorted value changes
+
     }
+
     showHeader          [boolean] true
     verticalBorder      [boolean] true. When true vertical borders are added together with default horizontal borders
     noBorder            [boolean] false. When true no borders are visible
@@ -47,8 +55,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
     rowClassName      : [] of string. []. Class-names for each row
 
-TODO
-Add sort-functions + save col-index for sorted column
+    Sorting is done by https://github.com/joequery/Stupid-Table-Plugin
 
 
 *******************************************************************/
@@ -74,6 +81,7 @@ Add sort-functions + save col-index for sorted column
             noWrap       : false,
             truncate     : false,
             fixedWidth   : false,
+            sortBy       : 'string',
             sortable     : false
         },
 
@@ -98,6 +106,37 @@ Add sort-functions + save col-index for sorted column
 
         return $element;
     }
+
+    /********************************************************************
+    Different sort-functions for moment-objects: (a,b) return a-b
+    ********************************************************************/
+    function momentSort(m1, m2){
+        if (m1.isSame(m2)) return 0;
+        if (m1.isBefore(m2)) return -1;
+        return 1;
+    }
+
+    //momentDateSort - sort by date despide the time
+    function momentDateSort(m1, m2){
+        return momentSort(
+            moment(m1).startOf('day'),
+            moment(m2).startOf('day')
+        );
+    }
+
+    //momentTimeSort - sort by time despide ther date
+    function momentTimeSort(m1, m2){
+        return momentSort(
+            moment(m1).date(1).month(0).year(2000),
+            moment(m2).date(1).month(0).year(2000)
+        );
+    }
+
+    var stupidtableOptions = {
+            'moment'     : momentSort,
+            'moment_date': momentDateSort,
+            'moment_time': momentTimeSort
+        };
 
     /**********************************************************
     Prototype for bsTable
@@ -143,9 +182,96 @@ Add sort-functions + save col-index for sorted column
                 $tr
                     .on('mouseenter', $.proxy($tr._selectlist_onMouseenter, $tr) )
                     .on('mouseleave', $.proxy($tr._selectlist_onMouseleave, $tr) );
+            }
+        },
 
-//            .on('mouseleave', $.proxy($result._selectlist_onMouseleaveList, $result) )
 
+        /**********************************************************
+        _getColumn - Return the column with id or index
+        **********************************************************/
+        _getColumn: function( idOrIndex ){
+            return $.isNumeric(idOrIndex) ? this.columns[idOrIndex] : this.columnIds[idOrIndex];
+        },
+
+        /**********************************************************
+        sortBy - Sort the table
+        **********************************************************/
+        sortBy: function( idOrIndex, dir ){
+            var column = this._getColumn(idOrIndex);
+            if (column)
+                column.$th.stupidsort( dir );
+        },
+
+        /**********************************************************
+        beforeTableSort - Called before the table is being sorted by StupidTable
+        **********************************************************/
+        beforeTableSort: function(event, sortInfo){
+            var column          = this._getColumn(sortInfo.column),
+                sortMulticolumn = column.$th.data('sort-multicolumn') || '',
+                _this           = this;
+
+            //Remove all group-header-rows
+            this.find('.table-sort-group-header').remove();
+
+            //Convert sortMulticolumn to array
+            sortMulticolumn = sortMulticolumn.split(',');
+            sortMulticolumn.push(''+column.index);
+
+            $.each( sortMulticolumn, function( dummy, columnIndex ){
+                var column = _this._getColumn( parseInt( columnIndex ) );
+                //If cell-content is vfFormat-object => Set 'sort-value' from vfFormat
+                if (column.vfFormat){
+                    _this.find('td:nth-child('+(column.index+1)+')').each( function( dummy, td ){
+                        var $td = $(td);
+                        $td.data( 'sort-value', $td.data('vf-value') );
+                    });
+                }
+            });
+        },
+
+        /**********************************************************
+        afterTableSort - Called after the table is being sorted by StupidTable
+        **********************************************************/
+        afterTableSort: function(event, sortInfo){
+            //Update the class-names of the cloned <thead>
+            var cloneThList = this.$theadClone.find('th');
+            this.find('thead th').each( function( index, th ){
+                $(cloneThList[index])
+                    .removeClass()
+                    .addClass( $(th).attr('class') );
+            });
+
+            var column = this._getColumn( sortInfo.column );
+
+            //Marks first row of changed value
+            if (column.sortHeader) {
+
+                //$tdBase = a <td> as $-object acting as base for all tds in header-row
+                var $tdBase =
+                        $('<td/>')
+                            .addClass('container-icon-and-text')
+                            .attr('colspan', this.columns.length );
+                column.$th.contents().clone().appendTo( $tdBase );
+                $tdBase.append( $('<span>:</span>') );
+
+                var lastText = "Denne her text kommer sikkert ikke igen";
+                this.find('tbody tr td:nth-child(' + (sortInfo.column+1) +')').each( function( index, td ){
+                    var $td = $(td),
+                        nextText = $td.text();
+                    if (nextText != lastText){
+                        //Create a clone of $tdBase and 'copy' all children from $td to $newTd
+                        var $newTd = $tdBase.clone(true);
+                        $td.contents().clone().appendTo( $newTd );
+
+                        //Create new row and insert before current row
+                        $('<tr/>')
+                            .addClass('table-sort-group-header')
+                            .append( $newTd )
+                            .insertBefore( $td.parent() );
+
+                        lastText = nextText;
+                    }
+                });
             }
         },
 
@@ -155,21 +281,28 @@ Add sort-functions + save col-index for sorted column
         asModal: function( modalOptions ){
             var showHeader = this.find('.no-header').length == 0,
                 _this      = this,
-                $theadClone,
                 $tableWithHeader = null,
                 $result, $thead, count;
 
             if (showHeader){
                 //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
-                $theadClone = this.find('thead').clone( true );
+                //Add on-click on the clone to 'pass' the click to the original header
+                this.$theadClone = this.find('thead').clone( true, false );
+
+                this.$theadClone.find('th').on('click', function( event ){
+                    var columnIndex = $(event.delegateTarget).index();
+                    _this.sortBy( columnIndex );
+                });
+
                 $tableWithHeader =
                     $('<table/>')
                         ._bsAddBaseClassAndSize( this.data(dataTableId) )
                         .addClass('table-with-header')
-                        .append( $theadClone );
+                        .append( this.$theadClone );
                 $thead = this.find('thead');
                 count  = 20;
             }
+
 
 
             $result = $.bsModal(
@@ -203,7 +336,7 @@ Add sort-functions + save col-index for sorted column
 
                     setHeaderWidth = function(){
                         $thead.find('th').each(function( index, th ){
-                            $theadClone.find('th:nth-child(' + (index+1) + ')')
+                            _this.$theadClone.find('th:nth-child(' + (index+1) + ')')
                                 .width( $(th).width()+'px' );
                         });
                         $tableWithHeader.width( _this.width()+'px' );
@@ -217,19 +350,6 @@ Add sort-functions + save col-index for sorted column
         }
 
     }; //end of bsTable_prototype = {
-
-    //**********************************************************
-    function table_th_onClick( event ){
-        var $th = $( event.currentTarget ),
-            sortable = $th.hasClass('sortable'),
-            newClass = $th.hasClass('desc') ? 'asc' : 'desc'; //desc = default
-
-        if (sortable){
-            //Remove .asc and .desc from all th
-            $th.parent().find('th').removeClass('asc desc');
-            $th.addClass(newClass);
-        }
-    }
 
     /**********************************************************
     bsTable( options ) - create a Bootstrap-table
@@ -251,13 +371,22 @@ Add sort-functions + save col-index for sorted column
             (options.selectable ? 'table-selectable ' : '' ) +
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' );
 
-        //Adjust text-style for each column
-        $.each( options.columns, function( index, column ){
-            column = $.extend( true, {}, defaultColunmOptions, options.defaultColunmOptions, column );
+        //Adjust each column
+        var columnIds = {};
+        $.each( options.columns, function( index, columnOptions ){
+            columnOptions.sortable = columnOptions.sortable || columnOptions.sortBy;
+            columnOptions = $.extend( true,
+                {
+                    index    : index,
+                    sortIndex: (index+1)*100
+                },
+                defaultColunmOptions,
+                options.defaultColunmOptions,
+                columnOptions
+            );
 
-            column.index = index;
-
-            options.columns[index] = column;
+            columnIds[columnOptions.id] = columnOptions;
+            options.columns[index] = columnOptions;
         });
 
         var id = 'bsTable'+ tableId++,
@@ -275,6 +404,9 @@ Add sort-functions + save col-index for sorted column
         //Extend with prototype
         $table.init.prototype.extend( bsTable_prototype );
 
+        $table.columns = options.columns;
+        $table.columnIds = columnIds;
+
         //Create colgroup
         var $colgroup = $('<colgroup/>').appendTo($table);
         $.each( options.columns, function( index, columnOptions ){
@@ -283,17 +415,55 @@ Add sort-functions + save col-index for sorted column
                 $col.attr('width', '1');
         });
 
+        var sortableTable  = false,
+            sortDefaultId  = '',
+            sortDefaultDir = 'asc',
+            multiSortList  = [];
+
+        /* From https://github.com/joequery/Stupid-Table-Plugin:
+            "A multicolumn sort allows you to define secondary columns to sort by in the event of a tie with two elements in the sorted column.
+                Specify a comma-separated list of th identifiers in a data-sort-multicolumn attribute on a <th> element..."
+
+            multiSortList = []{columnIndex, sortIndex} sorted by sortIndex. Is used be each th to define alternative sort-order
+        */
+        $.each( options.columns, function( index, columnOptions ){
+            if (columnOptions.sortable)
+                multiSortList.push( {columnIndex: index, sortIndex: columnOptions.sortIndex });
+        });
+        multiSortList.sort(function( c1, c2){ return c1.sortIndex - c2.sortIndex; });
+
         //Create headers
         if (options.showHeader)
-            $.each( options.columns, function( index, columnOptions ){
-                var $th = $('<th/>')
-                            .toggleClass('sortable', !!columnOptions.sortable )
-                            .on('click', table_th_onClick )
-                            .appendTo( $tr );
+            $.each( $table.columns, function( index, columnOptions ){
+                columnOptions.$th = $('<th/>').appendTo( $tr );
 
-                adjustThOrTd( $th, columnOptions, true );
+                if (columnOptions.sortable){
+                    columnOptions.$th
+                        .addClass('sortable')
+                        .attr('data-sort', columnOptions.sortBy);
 
-                $th._bsAddHtml( columnOptions.header );
+                    if (columnOptions.sortDefault){
+                        sortDefaultId  = columnOptions.id;
+                        sortDefaultDir = columnOptions.sortDefault == 'desc' ? 'desc' : sortDefaultDir;
+                    }
+
+                    //Create alternative/secondary columns to sort by
+                    var sortMulticolumn = '';
+                    $.each( multiSortList, function( index, multiSort ){
+                        if (multiSort.columnIndex != columnOptions.index)
+                            sortMulticolumn = (sortMulticolumn ? sortMulticolumn + ',' : '') + multiSort.columnIndex;
+                    });
+
+                    if (sortMulticolumn)
+                        columnOptions.$th.attr('data-sort-multicolumn', sortMulticolumn);
+
+                    sortableTable = true;
+                }
+
+
+                adjustThOrTd( columnOptions.$th, columnOptions, true );
+
+                columnOptions.$th._bsAddHtml( columnOptions.header );
             });
 
         if (options.selectable){
@@ -318,7 +488,18 @@ Add sort-functions + save col-index for sorted column
                 .find('.active').addClass('highlighted');
 
 
+        if (sortableTable){
+            $table.stupidtable =
+                $table.stupidtable( stupidtableOptions )
+                    .bind('beforetablesort', $.proxy( $table.beforeTableSort, $table ) )
+                    .bind('aftertablesort',  $.proxy( $table.afterTableSort,  $table ) );
+
+            if (sortDefaultId)
+                $table.sortBy(sortDefaultId, sortDefaultDir);
+        }
         return $table;
     };
+
+
 
 }(jQuery, this, document));

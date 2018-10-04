@@ -292,9 +292,11 @@ select-list-color
 Mixin to set colors for active and selected elements in select-list
 ************************************************************/
 @mixin select-list-color( $selector: "&"){
+/*
     #{$selector}{
         font-size: 2rem;
     }
+*/
     #{$selector} {
         color     : $selectlist-color;
         background: $selectlist-bg-color;

@@ -7861,9 +7861,11 @@ bsSelectList
 .dropdown-menu.scrollbar-vertical.ps--active-y .dropdown-item, .dropdown-menu.scrollbar-vertical.ps--active-y .dropdown-header {
   width: calc(100% + 0.5625rem); }
 
-.selectList .dropdown-item {
-  font-size: 2rem; }
-
+/*
+    .selectList .dropdown-item{
+        font-size: 2rem;
+    }
+*/
 .selectList .dropdown-item {
   color: #515961;
   background: #fff; }
@@ -8582,6 +8584,7 @@ Adjustmernt to Bootstrap table
     *************************************/
   /*************************************
     Rows
+    table-sort-group-header is used for row that are the header of a group of rows with the same 'value' in the column that the table is sorted by
     *************************************/
   /*************************************
     Cells
@@ -8654,18 +8657,27 @@ Adjustmernt to Bootstrap table
           background-color: #cfd5db; }
       .table thead tr th.sortable.text-center {
         padding-left: .5em; }
-      .table thead tr th.sortable.asc, .table thead tr th.sortable.desc {
+      .table thead tr th.sortable.sorting-asc, .table thead tr th.sortable.sorting-desc {
         border-bottom-color: #dee2e6; }
-      .table thead tr th.sortable.asc {
+      .table thead tr th.sortable.sorting-asc {
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPOR4W7fbLAAACBklEQVRo3u2ZvU7CUBSAz7FldcEBiYuTJiQ+goZVXS1awCcwvoATgy+gDswCRSqrs+9gYqKLYTDRgRcgtLmOEuv9Oz23MZEzNbTc70vbe3vOuQjkqInv42ekjoIc+DwKyIOnKyAXnqqAfHiaAnLiKQrIi7dXQG68rQLy4+0U0AXeRgHd4M0V0BXeVAHd4c0U0CXeRGFFffrRh5yhGwHVfz6bQ+64KdUTkgAPXqeA7vFqBSwCr1LAYvByBSwKL1NA/plvtypk1oHaGziM7OjZhWjTpUB29L/3CIoOdPMJ4kral7GMZSzjP4Rkeexv4BovSExb74YC0Q5eigPgXrkFPoiL8Onnz7+VDddi18W9FoewCnvaO9Db8l7cPfF0u/2qyQfKE5g640/LE21Csj8TXVd80d2fGWRE1Q6MnfDH1Y5xYfIZiSPmd/C+EhoWJi4UZHhlccqnIMcrsuJ6UgkhZuHHcry2QfExgCAvfr1JbFCwKGjw2sKknvihGJHn/cgP1XijNl3szQfYoOBLzSAlfo7zK5jhjVu1tgqmeItmdewlfTg2vPjOb5nhrdr1xgoWeMsNCyMFK7xlfyBI/RYMlZcM7fCETavYS3pwIsW37fCkbTupAgFPatEEqd8WUWbiRRQ8ees29ua3GC7iS6cUfI7N60UFOh7ylB+xlzbEOQBeeSMqHuALEGzMJuIB3qEAAAAASUVORK5CYII="); }
-      .table thead tr th.sortable.desc {
+      .table thead tr th.sortable.sorting-desc {
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPNhKYw6YvAAAB9klEQVRo3u2ZP04CURCHZ2CJrQWFJBT0nsLWGkH+eQLxCtzBeAKFRdCS2G7CHaagoiFoAYmtYclaWCm7+2Zm3zOa7FQkkN/38R67y5tBUNe0uG9GNwB4W5w09toU1ON399j+eh35pSutAmbHZ1NAG/gsCqjBhw/Qinlj7PXkCmgNr1RAi3iVAgrxQ7g0fOjR60oU0DJerIDW8UIFZF94I2zyVyualDo8BXSBlyigGzxfAV3huQqF9LcDL/S1eABshn7gZViBwHsdQQOy1bTSOQtVAlbwRgVMxr/50QVYKXw6aScpoHt8ugL+Bj5NAWP3fgx1sF/PldahQsxluB44wQPU1wPGCrwcva+gDG5qc1w9/zCswLbmDA9Q3taMW9BbwNyZwLy34NyK+ziDyDo8whn02feBYRUtb0S06a4gr7zyyisv/l+yU/vPAiBkCriAJ0sU/twWuPz+cWtwuAJLp/zlf/gN3JVc4eOSEw4m1zsXeObBxI1CPD71cGpTIQlvOJ7bUkjGGxsUNhTS8MYeUXaFdDyjSZX1rkCoehraUiBjPqtRqVUgRjqzVatRIFY2u1ktVSBmsqBdL1Egdq5oYMFVIEGqcGTDUSBRpnhoZVIgYaJibJemQOI81eAySYEUacrRbZwCqbLUw+ufCqRMUgt8VyB1ziesOMqPm7tGQgAAAABJRU5ErkJggg=="); }
-  .table.table-hover tbody tr:hover {
+  .table.table-hover tbody tr:not(.table-sort-group-header):hover {
     background-color: #f2f2f2; }
+  .table tbody tr.table-sort-group-header td {
+    background-color: #e9ecef !important;
+    color: #495057 !important;
+    font-weight: bold; }
+    .table tbody tr.table-sort-group-header td *:last-child {
+      margin-right: .3em; }
   .table.table-selectable tbody tr {
+    /*
+    &{
+        font-size: 2rem;
+    }
+*/
     cursor: default; }
-    .table.table-selectable tbody tr {
-      font-size: 2rem; }
     .table.table-selectable tbody tr {
       color: #515961;
       background: #fff; }

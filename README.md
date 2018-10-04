@@ -294,7 +294,11 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | `noWrap` | `boolean` | `false` | If `true` the column will not be wrapped |
 | `fixedWidth` | `boolean` | `false` | If `true` the column will not change width when the tables width is changed. Normally need `noWrap: true`  |
 | `truncate` | `boolean` | `false` | If `true` the column will be truncated. Normally only one column get `truncate: true` **NOT IMPLEMENTED** |
-| `sortable` | `boolean` | `false` | If `true` the column can be sorted. **NOT IMPLEMENTED** |
+| `sortable` | `boolean` | `false` | If `true` the column can be sorted |
+| `sortBy` | `string` or `function(e1, e2): int` | `"string"` | Possible values: `"int"` (sort as float), `"moment"`, `"moment_date"`, `"moment_time"` (sort as moment-obj) or `function(e1, e2) return int` |
+| `sortIndex` | `int` | `null` | When sorting and to values are equal the values from an other column is used. The default order of the other columns to test is given by the its index in `options.columns`. Default `sortIndex` is `(column-index+1)*100` (first column = 100) `sortIndex` can be set to alter the order. |
+| `sortDefault` | `string` or `boolean` | `false` | Possible values = `false`, `true`, `"asc"` or `"desc"`. `true` => `"asc"` |
+| `sortHeader` | `boolean` | `false` | If `true` a header-row is added every time the sorted value changes |
 | `vfFormat` | `string` | `""` | See above |
 | `vfOptions` | `object` | null | See above |
 | `width` | `string` | null | The fixed width of the column |

@@ -7007,6 +7007,7 @@ Headers for modal, popover, popup etc.
 ************************************************************/
 /************************************************************
 color-hover - Background-color and text-color for 'normal' and hover
+SKAL DER BRUGES background ELLER background-color???????
 ************************************************************/
 /************************************************************
 header-color - Colors for headers
@@ -7048,7 +7049,10 @@ FONTAWESOME
 Additions and adjustments to Fontawesome 5 (when included)
 ************************************************************/
 .fa-inside-circle {
-  font-size: 0.65em; }
+  font-size: .65em; }
+
+.fa-inside-circle2 {
+  font-size: .55em; }
 
 /************************************************
 STYLE FOR DIFFERENT ELEMENTS
@@ -7234,17 +7238,17 @@ div.btn, div.list-group-item {
     background-color: #f8f9fa; }
   .btn.btn-standard.allow-zero-selected {
     color: #515961;
-    background: #f8f9fa; }
+    background-color: #f8f9fa; }
     .mouse-hover .btn.btn-standard.allow-zero-selected:hover {
       color: #454c53;
-      background: #e9ecef; }
+      background-color: #e9ecef; }
     .btn.btn-standard.allow-zero-selected.active {
       color: #fff;
-      background: #007bff; }
+      background-color: #007bff; }
   .allow-zero-selected .btn.btn-standard.allow-zero-selected.active {
-    background: #007bff; }
+    background-color: #007bff; }
     .mouse-hover .allow-zero-selected .btn.btn-standard.allow-zero-selected.active:hover {
-      background: #006fe6; }
+      background-color: #006fe6; }
   .btn.btn-standard > i.fa {
     min-width: 1em;
     text-align: left; }
@@ -7857,9 +7861,11 @@ bsSelectList
 .dropdown-menu.scrollbar-vertical.ps--active-y .dropdown-item, .dropdown-menu.scrollbar-vertical.ps--active-y .dropdown-header {
   width: calc(100% + 0.5625rem); }
 
-.selectList .dropdown-item {
-  font-size: 2rem; }
-
+/*
+    .selectList .dropdown-item{
+        font-size: 2rem;
+    }
+*/
 .selectList .dropdown-item {
   color: #515961;
   background: #fff; }
@@ -7987,6 +7993,8 @@ body.modal-open .modal {
     width: 31.25rem; }
     .modal-dialog.modal-flex-width.modal-extra-width {
       width: 50rem; }
+    .modal-dialog.modal-flex-width.modal-mega-width {
+      width: 75rem; }
   .modal-dialog.modal-dialog-inline .modal-content {
     box-shadow: none;
     max-height: inherit; }
@@ -8008,8 +8016,12 @@ body.modal-open .modal {
     display: none !important; }
   .modal-dialog .modal-content.no-modal-pinned .show-for-modal-pinned {
     display: none !important; }
+  .modal-dialog .modal-content:not(.modal-fixed-height).no-modal-extended:not(.modal-content-always-max-height), .modal-dialog .modal-content:not(.modal-fixed-height).modal-extended:not(.modal-extended-content-always-max-height) {
+    height: auto !important; }
   .modal-dialog .modal-content .modal-body.modal-body-no-content {
     display: none; }
+  .modal-dialog .modal-content .modal-body.modal-body-always-max-height {
+    height: fit-content; }
   .modal-dialog .modal-content:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
   .modal-dialog .modal-content.modal-extended .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
     border-top: none; }
@@ -8572,6 +8584,7 @@ Adjustmernt to Bootstrap table
     *************************************/
   /*************************************
     Rows
+    table-sort-group-header is used for row that are the header of a group of rows with the same 'value' in the column that the table is sorted by
     *************************************/
   /*************************************
     Cells
@@ -8616,7 +8629,7 @@ Adjustmernt to Bootstrap table
     line-height: 1.5;
     border-radius: inherit;
     color: #495057;
-    background: #e9ecef; }
+    background-color: #e9ecef; }
     .table thead tr th span {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -8626,7 +8639,7 @@ Adjustmernt to Bootstrap table
       padding-right: 0; }
     .table thead tr th.sortable {
       color: #495057;
-      background: #e9ecef;
+      background-color: #e9ecef;
       cursor: default;
       background-position: right center;
       background-repeat: no-repeat;
@@ -8635,27 +8648,36 @@ Adjustmernt to Bootstrap table
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwRJC7Z4CQBAAACPklEQVRo3u3Zu07DMBQG4N/EiA0hwQCIoRtMPAKoKzBCC2nLG8ALMCAGXgAWZi4pDR2BNRKPwAQbAwKGIrEiEh2GMqBc7VNbpahnqpyo/1dHjexjAXb5TlSlXUAcOa1KxP0WwY//OhVu9zN5o9tcAhPwO743AgsQj++FwAD4TniGrZQLTdnQJ2gDMuOZBE1AbjyLoAXwnfAcmwU3Xcq6DkEDoBSvTVAGKMdrEhQBvvN1IaqqWIBaozU1ghJAN16HoADgxKsTCgHceFXCSP7lQIYeNx4Q1dALZA8zEMjXC1S48T/lz9TKIQtgJL6QkAkI5JtHGwbiAYiraTeLkAEwGZ9PSAWYjs8jpAAC+drEutl4AEB7ZitJSPkbvuxbiQfWX/YVZuB27OMZU1YAQGdibuWzYAbeS9bigan3UnwoAWg84s4a4K7xWAgAsCOuQcbDSVxjJzmc8R44nxOGHwR16s/Gf9SwhjWsYf2L6vurOAXgLYpDWuW3r7IE4ob23Pv4cNq24ZiWDIcDgKA1jGO5cAbO5p0HC/E/FS3EVwSJ9cDkEzrW8juTT/GhBGDlk05s5dNJfEWYuiKaPUDbSn579iA5+Bc3JjYImlsz04S8zWlmg6IcTrvwjeT72fF/u0FhhFAQX9gjKofSpRY3nVrSzY8fhDYdl2CwUckhGG7Vdgl9bVZrEey065UJmgcWI+q3ApVI1tHMvaWpFz94h1a5BNaxndYj6FYlkg3y4qPkceIH9eg2TujD4XWXYOL4/htN/xm86wMQxwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wNy0xMlQxNzozNjo0NiswMjowMGyLBscAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDctMTJUMTc6MzY6NDYrMDI6MDAd1r57AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAABJRU5ErkJggg=="); }
       .mouse-hover .table thead tr th.sortable:hover {
         color: #3d4349;
-        background: #dadfe4; }
+        background-color: #dadfe4; }
       .table thead tr th.sortable.asc, .table thead tr th.sortable.desc {
         color: #343a40;
-        background: #dee2e6; }
+        background-color: #dee2e6; }
         .mouse-hover .table thead tr th.sortable.asc:hover, .mouse-hover .table thead tr th.sortable.desc:hover {
           color: #292d32;
-          background: #cfd5db; }
+          background-color: #cfd5db; }
       .table thead tr th.sortable.text-center {
-        padding-left: 1em; }
-      .table thead tr th.sortable.asc, .table thead tr th.sortable.desc {
+        padding-left: .5em; }
+      .table thead tr th.sortable.sorting-asc, .table thead tr th.sortable.sorting-desc {
         border-bottom-color: #dee2e6; }
-      .table thead tr th.sortable.asc {
+      .table thead tr th.sortable.sorting-asc {
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPOR4W7fbLAAACBklEQVRo3u2ZvU7CUBSAz7FldcEBiYuTJiQ+goZVXS1awCcwvoATgy+gDswCRSqrs+9gYqKLYTDRgRcgtLmOEuv9Oz23MZEzNbTc70vbe3vOuQjkqInv42ekjoIc+DwKyIOnKyAXnqqAfHiaAnLiKQrIi7dXQG68rQLy4+0U0AXeRgHd4M0V0BXeVAHd4c0U0CXeRGFFffrRh5yhGwHVfz6bQ+64KdUTkgAPXqeA7vFqBSwCr1LAYvByBSwKL1NA/plvtypk1oHaGziM7OjZhWjTpUB29L/3CIoOdPMJ4kral7GMZSzjP4Rkeexv4BovSExb74YC0Q5eigPgXrkFPoiL8Onnz7+VDddi18W9FoewCnvaO9Db8l7cPfF0u/2qyQfKE5g640/LE21Csj8TXVd80d2fGWRE1Q6MnfDH1Y5xYfIZiSPmd/C+EhoWJi4UZHhlccqnIMcrsuJ6UgkhZuHHcry2QfExgCAvfr1JbFCwKGjw2sKknvihGJHn/cgP1XijNl3szQfYoOBLzSAlfo7zK5jhjVu1tgqmeItmdewlfTg2vPjOb5nhrdr1xgoWeMsNCyMFK7xlfyBI/RYMlZcM7fCETavYS3pwIsW37fCkbTupAgFPatEEqd8WUWbiRRQ8ees29ua3GC7iS6cUfI7N60UFOh7ylB+xlzbEOQBeeSMqHuALEGzMJuIB3qEAAAAASUVORK5CYII="); }
-      .table thead tr th.sortable.desc {
+      .table thead tr th.sortable.sorting-desc {
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPNhKYw6YvAAAB9klEQVRo3u2ZP04CURCHZ2CJrQWFJBT0nsLWGkH+eQLxCtzBeAKFRdCS2G7CHaagoiFoAYmtYclaWCm7+2Zm3zOa7FQkkN/38R67y5tBUNe0uG9GNwB4W5w09toU1ON399j+eh35pSutAmbHZ1NAG/gsCqjBhw/Qinlj7PXkCmgNr1RAi3iVAgrxQ7g0fOjR60oU0DJerIDW8UIFZF94I2zyVyualDo8BXSBlyigGzxfAV3huQqF9LcDL/S1eABshn7gZViBwHsdQQOy1bTSOQtVAlbwRgVMxr/50QVYKXw6aScpoHt8ugL+Bj5NAWP3fgx1sF/PldahQsxluB44wQPU1wPGCrwcva+gDG5qc1w9/zCswLbmDA9Q3taMW9BbwNyZwLy34NyK+ziDyDo8whn02feBYRUtb0S06a4gr7zyyisv/l+yU/vPAiBkCriAJ0sU/twWuPz+cWtwuAJLp/zlf/gN3JVc4eOSEw4m1zsXeObBxI1CPD71cGpTIQlvOJ7bUkjGGxsUNhTS8MYeUXaFdDyjSZX1rkCoehraUiBjPqtRqVUgRjqzVatRIFY2u1ktVSBmsqBdL1Egdq5oYMFVIEGqcGTDUSBRpnhoZVIgYaJibJemQOI81eAySYEUacrRbZwCqbLUw+ufCqRMUgt8VyB1ziesOMqPm7tGQgAAAABJRU5ErkJggg=="); }
-  .table.table-hover tbody tr:hover {
+  .table.table-hover tbody tr:not(.table-sort-group-header):hover {
     background-color: #f2f2f2; }
+  .table tbody tr.table-sort-group-header td {
+    background-color: #e9ecef !important;
+    color: #495057 !important;
+    font-weight: bold; }
+    .table tbody tr.table-sort-group-header td *:last-child {
+      margin-right: .3em; }
   .table.table-selectable tbody tr {
+    /*
+    &{
+        font-size: 2rem;
+    }
+*/
     cursor: default; }
-    .table.table-selectable tbody tr {
-      font-size: 2rem; }
     .table.table-selectable tbody tr {
       color: #515961;
       background: #fff; }
@@ -8723,7 +8745,7 @@ Using Bootstrap Collapse to create accordion
 
 .accordion .card-header {
   color: #343a40;
-  background: #dee2e6;
+  background-color: #dee2e6;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -8737,13 +8759,13 @@ Using Bootstrap Collapse to create accordion
   border-radius: 0.25rem; }
   .mouse-hover .accordion .card-header:hover {
     color: #292d32;
-    background: #cfd5db; }
+    background-color: #cfd5db; }
   .accordion .card-header.collapsed {
     color: #495057;
-    background: #e9ecef; }
+    background-color: #e9ecef; }
     .mouse-hover .accordion .card-header.collapsed:hover {
       color: #3d4349;
-      background: #dadfe4; }
+      background-color: #dadfe4; }
   .accordion .card-header span {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -9233,11 +9255,11 @@ Adjustment to Bootstrap tabs
       border-bottom-color: #6c757d !important; }
       .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled) {
         color: #515961;
-        background: #f8f9fa;
+        background-color: #f8f9fa;
         margin-top: 2px; }
         .mouse-hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled):hover {
           color: #454c53;
-          background: #e9ecef; }
+          background-color: #e9ecef; }
         .mouse-hover .hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled):not(:focus):not(:disabled):not(.disabled),
         .mouse-hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled).hover:not(:focus):not(:disabled):not(.disabled),
         .mouse-hover .nav-tabs a.nav-item.nav-link:not(.active):not(:disabled):not(.disabled):hover:not(:focus):not(:disabled):not(.disabled) {
