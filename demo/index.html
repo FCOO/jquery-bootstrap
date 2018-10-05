@@ -653,6 +653,7 @@ var now = moment();
             closeText: {da:"Luk og rejs", en:"Close and go"},
             flexWidth:true,
             extraWidth: true,
+            static: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             show: false
         }),
@@ -1175,6 +1176,7 @@ width: 3*300,
             //isExtended: true,
             maxHeight: 300,
             content: 'max-height=300<br>Her kommer der nogle laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange ord<br>SLUT',
+            isExtended: true,
             extended: {
                 height: true,
                 flexWidth: true,
