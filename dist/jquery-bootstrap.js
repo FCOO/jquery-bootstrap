@@ -1344,7 +1344,7 @@ options
 }(jQuery, this, document));
 ;
 /****************************************************************************
-	jquery-bootstrap-modal-pdf.js,
+	jquery-bootstrap-modal-file.js,
 
 	(c) 2017, FCOO
 
@@ -1362,80 +1362,177 @@ options
     $.bsExternalLinkIcon = 'fa-external-link-alt';
 
     /**********************************************************
-    pdfLink( fileName, bsModalPdfOptions )
-    Check if the browser supports pdf-object and return a link
-    to bsModalPdf or a link to the filename in a new tab
+    modalFileLink( fileName, bsModalOptions )
+    Return a link to bsModalFile
     **********************************************************/
-    $.pdfLink = function( fileName, bsModalPdfOptions ){
+    $.modalFileLink = function( fileName, bsModalOptions ){
+        fileName = $._bsAdjustText(fileName);
         return window.PDFObject.supportsPDFs ?
-            function(){ return $.bsModalPdf( fileName, bsModalPdfOptions ); } :
+            function(){ return $.bsModalFile( fileName, bsModalOptions ); } :
             fileName;
     };
 
 
     /**********************************************************
-    bsModalPdf( fileName, options )
+    updateImgZoom( $im)
     **********************************************************/
-    $.bsModalPdf = function( fileName, options ){
+    var ZoomControl = function( $img ){
+        this.$img = $img;
+        this.zooms = [25, 33, 50, 67, 75, 80, 90, 100, 110, 125, 150, 175, 200, 250, 300, 400, 500];
+        this.zoomIndex = this.zooms.indexOf(100);
+    };
+
+    ZoomControl.prototype = {
+        getButtons: function(){
+            var _this = this;
+            this.$zoomOutButton = $.bsButton({type:'button', icon:'fa-search-minus',  text:{da:'Zoom ud',  en:'Zoom Out'}, onClick: _this.zoomOut, context: _this });
+            this.$zoomInButton  = $.bsButton({type:'button', icon:'fa-search-plus',   text:{da:'Zoom ind', en:'Zoom In'},  onClick: _this.zoomIn,  context: _this });
+
+            return [this.$zoomOutButton, this.$zoomInButton];
+        },
+
+        zoomIn : function(){ this.update(false); },
+        zoomOut: function(){ this.update(true);  },
+
+        mousewheel: function( event ){
+            var delta =
+                    event.deltaX ? event.deltaX :
+                    event.deltaY ? event.deltaY :
+                    0;
+            if (delta)
+                this.update( delta < 0 );
+            event.stopPropagation();
+            event.preventDefault();
+        },
+
+        update: function(zoomOut){
+            this.zoomIndex = this.zoomIndex + (zoomOut ? -1 : + 1);
+            this.zoomIndex = Math.max( 0, Math.min( this.zoomIndex, this.zooms.length-1) );
+
+            this.$img.css('width', this.zooms[this.zoomIndex]+'%');
+            var isMin = this.zoomIndex == 0;
+            var isMax = this.zoomIndex == this.zooms.length-1;
+
+            this.$zoomOutButton.attr('disabled', isMin).toggleClass('disabled', isMin);
+            this.$zoomInButton.attr('disabled', isMax).toggleClass('disabled', isMax);
+         }
+    };
+
+
+    /**********************************************************
+    bsModalFile( fileName, options )
+    **********************************************************/
+    $.bsModalFile = function( fileName, options ){
         options = options || {};
         fileName = $._bsAdjustText(fileName);
         var theFileName = window.i18next.sentence(fileName),
-            fileNameExt = window.url('fileext', theFileName).toLowerCase(),
+            fileNameExt = window.url('fileext', theFileName),
             $content,
-            fullWidth = true;
+            footer = {
+                da: 'Hvis filen ikke kan vises, klik på <i class="fas ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
+                en: 'If the file doesn\'t show correctly click on <i class="fas ' + $.bsExternalLinkIcon + '"/> to see the document in a new Tab Page'
+            },
+            fullWidth       = true,
+            noPadding       = true,
+            scroll          = false,
+            alwaysMaxHeight = true;
+
+        fileNameExt = fileNameExt ? fileNameExt.toLowerCase() : 'unknown';
 
         //Check for ext == 'pdf' and support for pdf
-        if (fileNameExt == 'pdf'){
-            //Check for support of pdf
-            if (window.PDFObject.supportsPDFs){
-                $content = $('<div/>')
-                    .css({
-                        width : '100%',
-                        height: '100%'
-                    });
+        if ((fileNameExt == 'pdf') && !window.PDFObject.supportsPDFs){
+            $content =
+                $('<div/>')
+                    .addClass('text-center')
+                    ._bsAddHtml({text: {
+                        da: 'Denne browser understøtter ikke visning<br>af pdf-filer i popup-vinduer<br>Klik på <i class="fas ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
+                        en: 'This browser does not support<br>pdf-files in popup windows<br>Click on <i class="fas ' + $.bsExternalLinkIcon + '"/> to see the document<br>in a new Tab page'
+                    }});
+            fullWidth       = false;
+            footer          = null;
+            noPadding       = false;
+            alwaysMaxHeight = false;
 
-                //passes a jQuery object (HTML node) for target
-                window.PDFObject.embed(
-                    theFileName,
-                    $content,
-                    { pdfOpenParams: { view: 'FitH' } }
-                );
-            }
-            else {
-                fullWidth = false;
-                $content =
-                    $('<div/>')
-                        .addClass('text-center')
-                        ._bsAddHtml({text: {
-                            da: 'Denne browser understøtter ikke visning<br>af pdf-filer i popup-vinduer<br>Klik på <i class="fas ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
-                            en: 'This browser does not support<br>pdf-files in popup windows<br>Click on <i class="fas ' + $.bsExternalLinkIcon + '"/> to see the document<br>in a new Tab page'
-                        }});
-            }
         }
         else {
-            //Try default <object> to display the file
-            $content =
-                $('<object data="' + theFileName + '"/>')
-                    .css({
-                        width : '100%',
-                        height: '99%'   //Strange bufix for Chrome ??
-                    });
+            switch (fileNameExt){
+                //*********************************************
+                case 'pdf':
+                    //passes a jQuery object (HTML node) for target
+                    $content = $('<div/>').addClass('object-with-file');
+                    window.PDFObject.embed(
+                        theFileName,
+                        $content,
+                        { pdfOpenParams: { view: 'FitH' } }
+                    );
+                    break;
 
+                //*********************************************
+                case 'jpg':
+                case 'jpeg':
+                case 'gif':
+                case 'png':
+                case 'tiff':
+                case 'bmp':
+                case 'ico':
+                    var $iframe =
+                            $('<iframe></iframe>')
+                                .addClass('object-with-file'),
+                        $img =
+                            $('<img src="' + theFileName + '"/>')
+                                .css('width', '100%');
+
+                    //Create a ZoomControl to zoom in and out
+                    var zoomControl = new ZoomControl( $img );
+
+                    //Add the images to the iframe when the iframe is loaded into the DOM
+                    setTimeout( function(){
+                        var $iFrameBody = $iframe.contents().find('body');
+                        $iFrameBody.on('mousewheel', $.proxy( zoomControl.mousewheel, zoomControl ) );
+                        $iFrameBody.append($img);
+                    }, 200);
+
+
+                    $content = [
+                        $iframe,
+                        $('<div></div>')
+                            .addClass('modal-footer')
+                            .css('justify-content',  'center')
+                            ._bsAppendContent( zoomControl.getButtons() )
+                    ];
+
+                    scroll = false;
+                    break;
+
+                //*********************************************
+                case 'html':
+                case 'unknown':
+                    $content = $('<iframe src="' + theFileName + '"/>').addClass('object-with-file');
+                    break;
+
+                //*********************************************
+                default:
+                    //Try default <object> to display the file
+                    $content = $('<object data="' + theFileName + '"/>').addClass('object-with-file');
+
+            } //end of switch (fileNameExt){...
         }
 
         //Create the bsModal
         return $.bsModal({
-                   header    : options.header,
-                   scroll    : false,
-                   flexWidth : fullWidth,
-                   megaWidth : fullWidth,
+                    header    : options.header,
+                    scroll    : scroll,
+                    flexWidth : fullWidth,
+                    megaWidth : fullWidth,
 
-                   noVerticalPadding  : fullWidth,
-                   noHorizontalPadding: fullWidth,
-                   alwaysMaxHeight    : fullWidth,
+                    noVerticalPadding  : noPadding,
+                    noHorizontalPadding: noPadding,
+                    alwaysMaxHeight    : alwaysMaxHeight,
 
-                   buttons   : [{text: {da: 'Åbne', en: 'Open'}, icon: $.bsExternalLinkIcon, link: fileName }],
-                   content   : $content
+                    buttons   : [{text: {da: 'Åbne', en: 'Open'}, icon: $.bsExternalLinkIcon, link: fileName }],
+                    content   : $content,
+                    footer    : footer
+
                });
     };
 
@@ -3767,7 +3864,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         if (!options)
             return options;
         if ($.type( options ) == "string")
-            return {da: options};
+            return {da: options, en:options};
         return options;
     };
 
@@ -4090,9 +4187,13 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     if (text == $.EMPTY_TEXT)
                         $text.html( '&nbsp;');
                     else
-                        if (text !== "")
-
-                        $text.i18n( text, 'html' );
+                        if (text != ""){
+                            //If text is a string and not a key to i18next => just add the text
+                            if ( ($.type( text ) == "string") && !i18next.exists(text) )
+                                $text.html( text );
+                            else
+                                $text.i18n( text, 'html' );
+                        }
 
                 if (index < textClassArray.length)
                     $text.addClass( textClassArray[index] );

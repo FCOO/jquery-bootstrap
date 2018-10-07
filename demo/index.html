@@ -39,7 +39,7 @@ position: fixed;
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
-    <script src="../src/jquery-bootstrap-modal-pdf.js"></script>
+    <script src="../src/jquery-bootstrap-modal-file.js"></script>
     <script src="../src/jquery-bootstrap-list.js"></script>
     <script src="../src/jquery-bootstrap-form.js"></script>
     <script src="../src/jquery-bootstrap.js"></script>
@@ -92,6 +92,7 @@ $('body').on('wheel', function(e){
 
         i18next.init();
         i18next.changeLanguage('da');
+        i18next.options.fallbackLng = i18next.language == 'da' ? 'en' : 'da';
 
         $.valueFormat.add({
             id: 'myNumberFormat',
@@ -780,11 +781,17 @@ var now = moment();
             }
         }
 
-        $('<button>2xPdf-file</button>')
+        i18next.addPhrases('test', {
+            'niels': {da:'Niels DK', en:'Niels ENG'   }
+        });
+
+        $('<button>4xModal-file</button>')
             .appendTo( $body)
             .on('click', function(e){
-                $.bsModalPdf('https://www.soefartsstyrelsen.dk/Documents/Publikationer/DANSKFYRLISTE2015.pdf', {header: 'Fyrliste 2015'});
-                $.bsModalPdf('http://nautiskinformation.soefartsstyrelsen.dk/index.html#/messages/details', {header: 'TEST'});
+                $.bsModalFile('https://www.soefartsstyrelsen.dk/Documents/Publikationer/DANSKFYRLISTE2015.pdf', {header: 'PDF'});
+                $.bsModalFile('http://nautiskinformation.soefartsstyrelsen.dk/index.html#/messages/details', {header: 'UNKNOWN'});
+                $.bsModalFile('https://www.danskehavnelods.dk/', {header: 'Hjemmeside'});
+                $.bsModalFile('https://niord.dma.dk/rest/repo/file/messages/5/55/555306e4-0b0d-4d62-9a55-36ec64539aa4/2/Inmarsat-C.jpg', {header: ['test:niels', '=', {text:{da:'Dansk', en:'Engelsk'}}]} );
             });
 
 

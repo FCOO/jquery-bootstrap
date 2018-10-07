@@ -82,7 +82,7 @@
         if (!options)
             return options;
         if ($.type( options ) == "string")
-            return {da: options};
+            return {da: options, en:options};
         return options;
     };
 
@@ -405,9 +405,13 @@
                     if (text == $.EMPTY_TEXT)
                         $text.html( '&nbsp;');
                     else
-                        if (text !== "")
-
-                        $text.i18n( text, 'html' );
+                        if (text != ""){
+                            //If text is a string and not a key to i18next => just add the text
+                            if ( ($.type( text ) == "string") && !i18next.exists(text) )
+                                $text.html( text );
+                            else
+                                $text.i18n( text, 'html' );
+                        }
 
                 if (index < textClassArray.length)
                     $text.addClass( textClassArray[index] );

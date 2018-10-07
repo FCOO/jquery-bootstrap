@@ -27,7 +27,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Tabs](#tabs)
 - [Modal](#modal)
 - [ModalForm](#modalform)
-- [ModalPdf](#modalpdf)
+- [ModalFile](#modalfile)
 - [Noty](#noty)
 - [input](#input)
 
@@ -447,12 +447,12 @@ method `edit( data )` where `data = { id:value*N}` and `id` match a `options.con
 
 Description NOT complete. See `src/jquery-bootstrap-form.js` for more
 
-<a name="modalpdf"></a>
-## ModalPdf
+<a name="modalfile"></a>
+## ModalFile
 
-	$myModalPdf = $.bsModalPdf( "a-file-name-ofr-a-pdf-file.pdf", options ); 
+	$myModalFile = $.bsModalFile( "a-file-name", options ); 
 
-Show a pdf-file in a mega-width modal-window
+Show a file in a mega-width modal-window
 
 
 

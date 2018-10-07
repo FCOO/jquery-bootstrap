@@ -120,6 +120,8 @@ body.modal-open .modal {
 
             //When content always is max height => body.height = 100%
             &.modal-body-always-max-height {
+display: flex;
+flex-direction: column;
                 height: fit-content;
             }
 
