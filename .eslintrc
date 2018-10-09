@@ -13,8 +13,7 @@
         "undefined" : false,
         "moment"    : false,
         "Raven"     : false,
-        "Hammer"    : false,
-        "i18next"   : false
+        "Hammer"    : false
     },
 
     "rules": {

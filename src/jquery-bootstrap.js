@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function ($, window/*, document, undefined*/) {
+(function ($, i18next, window /*, document, undefined*/) {
 	"use strict";
 
     /*
@@ -588,4 +588,4 @@
     }); //$.fn.extend
 
 
-}(jQuery, this, document));
+}(jQuery, this.i18next, this, document));

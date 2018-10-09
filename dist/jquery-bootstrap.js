@@ -1353,7 +1353,7 @@ options
 
 ****************************************************************************/
 
-(function ($, window/*, document, undefined*/) {
+(function ($, i18next,  window /*, document, undefined*/) {
 	"use strict";
 
 
@@ -1425,7 +1425,7 @@ options
     $.bsModalFile = function( fileName, options ){
         options = options || {};
         fileName = $._bsAdjustText(fileName);
-        var theFileName = window.i18next.sentence(fileName),
+        var theFileName = i18next.sentence(fileName),
             fileNameExt = window.url('fileext', theFileName),
             $content,
             footer = {
@@ -1536,7 +1536,7 @@ options
                });
     };
 
-}(jQuery, this, document));
+}(jQuery, this.i18next, this, document));
 ;
 /****************************************************************************
 	jquery-bootstrap-modal.js,
@@ -3790,7 +3790,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
 ****************************************************************************/
 
-(function ($, window/*, document, undefined*/) {
+(function ($, i18next, window /*, document, undefined*/) {
 	"use strict";
 
     /*
@@ -4370,4 +4370,4 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     }); //$.fn.extend
 
 
-}(jQuery, this, document));
+}(jQuery, this.i18next, this, document));

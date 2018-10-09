@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function ($, window/*, document, undefined*/) {
+(function ($, i18next,  window /*, document, undefined*/) {
 	"use strict";
 
 
@@ -80,7 +80,7 @@
     $.bsModalFile = function( fileName, options ){
         options = options || {};
         fileName = $._bsAdjustText(fileName);
-        var theFileName = window.i18next.sentence(fileName),
+        var theFileName = i18next.sentence(fileName),
             fileNameExt = window.url('fileext', theFileName),
             $content,
             footer = {
@@ -191,4 +191,4 @@
                });
     };
 
-}(jQuery, this, document));
+}(jQuery, this.i18next, this, document));
