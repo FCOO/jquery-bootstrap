@@ -11,7 +11,13 @@ Using Bootstrap Collapse to create accordion
     }
 
     .card-header {
-        @include title-color(true, '&.collapsed', true, true);// ($hover: false, $selected-class: '', $bg: true, $invers: false  );
+        &.collapsible {
+            @include title-color(true, '&.collapsed', true, true);// ($hover: false, $selected-class: '', $bg: true, $invers: false  );
+        }
+        &:not(.collapsible) {
+            @include title-color();
+        }
+
         @include title-variant();
         @include vertical-align-center();
         @include border-radius($card-border-radius);

@@ -690,16 +690,16 @@ var now = moment();
 
 
 
-        $accordion = $.bsAccordion({ multiOpen: true, allOpen: true, children: accor_children, footer: 'footer' }),
+        $accordion = $.bsAccordion({ neverClose: true, multiOpen: true, allOpen: true, children: accor_children, footer: 'footer' }),
         $accordion2 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
         $accordion3 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
         $accordion4 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
 
 
         m = $accordion.asModal({
-            header:{icon: 'fa-home', text:{da:'FLEX AND MULTIOPEN AND ALLOPEN AND Overskrift h=300',en:'Header'}},
+            header:{icon: 'fa-home', text:{da:'FLEX AND MULTIOPEN AND ALLOPEN AND NEVERCLOSE',en:'Header'}},
             show: false,
-            height: 300
+            _height: 300
         }),
         m_fixed = $accordion2.asModal({
             flexWidth: false,

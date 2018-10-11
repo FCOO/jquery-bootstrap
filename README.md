@@ -357,6 +357,8 @@ Eq.
 | :--: | :--: | :-----: | --- |
 | `header` | `content` or `[] of content` | `""` | See above |
 | `multiOpen` | `boolean` | `false` | If `true` the different "children" can be open at the same time |
+| `allOpen` | `boolean` | `false` | If `true` the different "children" are open |
+| `neverClose` | `boolean` | `false` | If `true` the different "children" are all open and can not be closed |
 | `content` | `jQuery-object` / `DOM-element` / `function( $container )` | `""` | The content of the accordion-card |
 | `children` (or `list`) | `[] of accordionChildOptions` | `null` | The children cards |
 | `footer` | `content` or `[] of content` | `""` | See above |

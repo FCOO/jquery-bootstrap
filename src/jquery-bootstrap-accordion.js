@@ -6,9 +6,6 @@
 	https://github.com/fcoo/jquery-bootstrap
 	https://github.com/fcoo
 
-TODO:
-- More than one card open at the same time (apply to one or all card(s) )
-
 ****************************************************************************/
 
 (function ($ /*, window, document, undefined*/) {
@@ -86,6 +83,10 @@ TODO:
                 content     : ''
             });
 
+        if (options.neverClose){
+            options.multiOpen = true;
+            options.allOpen   = true;
+        }
 
         var $result = $('<div/>')
                         ._bsAddBaseClassAndSize( options )
@@ -111,27 +112,33 @@ TODO:
                             .on( 'hidden.bs.collapse', card_onHidden )
                             .on( 'show.bs.collapse',   options.multiOpen ? null : card_onShow_close_siblings )
                             .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
-                            .appendTo( $result );
+                            .appendTo( $result ),
+                headerAttr = {
+                    'id'  : headerId,
+                    'role': 'tab',
+                };
+
 
             //Add header
+            if (!options.neverClose)
+                $.extend(headerAttr, {
+                    'data-toggle'  : "collapse",
+                    'data-parent'  : '#'+id,
+                    'href'         : '#'+collapseId,
+                    'aria-expanded': true,
+                    'aria-controls': collapseId,
+                    'aria-target': '#'+collapseId
+                });
+
             $card.append(
                 $('<div/>')
                     .addClass('card-header')
                     .toggleClass('collapsed', !isOpen)
-                    .attr({
-                        'id'           : headerId,
-                        'role'         : 'tab',
-                        'data-toggle'  : "collapse",
-                        'data-parent'  : '#'+id,
-                        'href'         : '#'+collapseId,
-                        'aria-expanded': true,
-                        'aria-controls': collapseId,
-                        'aria-target': '#'+collapseId
-                    })
+                    .toggleClass('collapsible', !options.neverClose)
+                    .attr(headerAttr)
                     ._bsAddHtml( opt.header || opt )
                     //Add chevrolet-icon
-                    .append( $('<i/>').addClass('fa chevrolet') )
-
+                    .append( options.neverClose ? null : $('<i/>').addClass('fa chevrolet') )
             );
 
             //Add content-container
@@ -165,8 +172,9 @@ TODO:
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))
                 $.bsAccordion( {
-                    allOpen  : options.allOpen,
-                    multiOpen: options.multiOpen,
+                    allOpen   : options.allOpen,
+                    multiOpen : options.multiOpen,
+                    neverClose: options.neverClose,
                     list: opt.list
                 } )
                     .appendTo( $contentContainer );

@@ -45,7 +45,7 @@
         isExtended: boolean
         footer
         buttons = [];
-        colseIcon
+        closeIcon
         closeText
         noCloseIconOnHeader
 

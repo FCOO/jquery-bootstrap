@@ -20479,7 +20479,7 @@ var Translator = function (_EventEmitter) {
       var needsPluralHandling = options.count !== undefined && typeof options.count !== 'string';
       var needsContextHandling = options.context !== undefined && typeof options.context === 'string' && options.context !== '';
 
-      var codes = options.lngs ? options.lngs : _this4.languageUtils.toResolveHierarchy(options.lng || _this4.language);
+      var codes = options.lngs ? options.lngs : _this4.languageUtils.toResolveHierarchy(options.lng || _this4.language, options.fallbackLng);
 
       namespaces.forEach(function (ns) {
         if (_this4.isValidLookup(found)) return;
@@ -31745,8 +31745,8 @@ module.exports = ret;
     A single translation of a sentence. No key used or added
     ***********************************************************************/
     i18next.sentence = function( langValues, options ){
-        var nsTemp = '__TEMP__',
-            keyTemp = '__KEY__',
+        var nsTemp = '__SENTENCE_TEMP__',
+            keyTemp = '__SENTENCE_KEY__',
             _this = this,
             nsSeparator = this.options.nsSeparator;
 
@@ -31902,7 +31902,7 @@ return index;
 })));
 ;
 /****************************************************************************
-	jquery-i18next-phrases.js, 
+	jquery-i18next-phrases.js,
 
 	(c) 2017, FCOO
 
@@ -31911,21 +31911,21 @@ return index;
 
 ****************************************************************************/
 
-(function ($, window/*, document, undefined*/) {
+(function ($, i18next, window/*, document, undefined*/) {
 	"use strict";
-	
+
     /***********************************************************
-    Initialize jquery-i18next - i18next plugin for jquery 
+    Initialize jquery-i18next - i18next plugin for jquery
     https://github.com/i18next/jquery-i18next
     ***********************************************************/
     var jQuery_i18n_selectorAttr = 'data-i18n',    // selector for translating elements
         jQuery_i18n_targetAttr   = 'i18n-target',  // data-() attribute to grab target element to translate (if diffrent then itself)
         jQuery_i18n_optionsAttr  = 'i18n-options'; // data-() attribute that contains options, will load/set if useOptionsAttr = true
 
-    
+
     window.jqueryI18next.init(
-        window.i18next/*i18nextInstance*/, 
-        $, 
+        i18next/*i18nextInstance*/,
+        $,
         {
             tName         : 't',                        // --> appends $.t = i18next.t
             i18nName      : 'i18n',                     // --> appends $.i18n = i18next
@@ -31940,27 +31940,27 @@ return index;
 
 
     /***********************************************************
-    Add new methods to jQuery prototype: 
+    Add new methods to jQuery prototype:
     $.fn.i18n( htmlOrKeyOrPhrase[, attribute][, options] )
     Add/updates the "data-i18n" attribute
 
-    htmlOrKeyOrPhrase = simple html-string ( "This will <u>always</u> be in English" ) OR 
-                        i18next-key ( "myNS:myKey" ) OR 
+    htmlOrKeyOrPhrase = simple html-string ( "This will <u>always</u> be in English" ) OR
+                        i18next-key ( "myNS:myKey" ) OR
                         a phrase-object - see langValue in i18next.addPhrase ( {da:"Dette er en test", en:"This is a test"} ) OR
                         a string representing a phrase-object ( '{"da":"Dette er en test", "en":"This is a test"}' )
     ***********************************************************/
     var tempKeyId = 0,
-        tempNS = '__TEMP__';
+        tempNS = '__JQ_TEMP__';
 
     $.fn.i18n = function( htmlOrKeyOrPhrase ) {
-        var options = null, 
-            attribute = '', 
+        var options = null,
+            attribute = '',
             argument,
-            keyFound = true, 
+            keyFound = true,
             key = htmlOrKeyOrPhrase;
 
         for (var i=1; i<arguments.length; i++ ){
-            argument = arguments[i];              
+            argument = arguments[i];
             switch ($.type(argument)){
               case 'object': options = argument; break;
               case 'string': attribute = argument; break;
@@ -31972,7 +31972,7 @@ return index;
             htmlOrKeyOrPhrase = JSON.parse(htmlOrKeyOrPhrase);
         }
         catch (e) {
-            htmlOrKeyOrPhrase = original; 
+            htmlOrKeyOrPhrase = original;
         }
 
         //Convert number back to string
@@ -31981,13 +31981,13 @@ return index;
 
         //Get the key or add a temp-phrase
         if (typeof htmlOrKeyOrPhrase == 'string')
-            keyFound = window.i18next.exists(htmlOrKeyOrPhrase);
+            keyFound = i18next.exists(htmlOrKeyOrPhrase);
         else {
             //It is a {da:'...', en:'...', de:'...'} object
             key = 'jqueryfni18n' + tempKeyId++;
-            window.i18next.addPhrase( tempNS, key, htmlOrKeyOrPhrase );
+            i18next.addPhrase( tempNS, key, htmlOrKeyOrPhrase );
             key = tempNS+':'+key;
-        }    
+        }
 
         return this.each(function() {
             var $this = $(this),
@@ -31997,20 +31997,20 @@ return index;
                 newStr = attribute ? '[' + attribute + ']' + key : key,
                 keep;
             oldData = oldData ? oldData.split(';') : [];
-            
+
             for (var i=0; i<oldData.length; i++ ){
                 oldStr = oldData[i];
                 keep = true;
                 //if the new key has an attribute => remove data with '[attribute]'
                 if (attribute && (oldStr.indexOf('[' + attribute + ']') == 0))
-                    keep = false;                      
+                    keep = false;
                 //if the new key don't has a attribute => only keep other attributes
-                if (!attribute && (oldStr.indexOf('[') == -1)) 
+                if (!attribute && (oldStr.indexOf('[') == -1))
                     keep = false;
                 if (keep)
                     newData.push( oldStr );
             }
-            newData.push( newStr);                                
+            newData.push( newStr);
 
             //Set data-i18n
             $this.attr( jQuery_i18n_selectorAttr, newData.join(';') );
@@ -32027,12 +32027,12 @@ return index;
                     $(this).html( htmlOrKeyOrPhrase );
             }
             //Update contents
-            $this.localize();        
+            $this.localize();
 
         });
     };
 
-}(jQuery, this, document));
+}(jQuery, this.i18next, this, document));
 ;
 /****************************************************************************
     jquery-scroll-container.js, 
@@ -45846,9 +45846,9 @@ module.exports = g;
 //jshint unused:false, strict: false
 
 /*
-    PDFObject v2.0.201604172
+    PDFObject v2.0.20181007
     https://github.com/pipwerks/PDFObject
-    Copyright (c) 2008-2016 Philip Hutchison
+    Copyright (c) 2008-2018 Philip Hutchison
     MIT-style license: http://pipwerks.mit-license.org/
     UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
 */
@@ -45877,21 +45877,34 @@ module.exports = g;
 
     if(typeof window === "undefined" || typeof navigator === "undefined"){ return false; }
 
-    var pdfobjectversion = "2.0.201604172",
-        supportsPDFs,
+    var pdfobjectversion = "2.0.20171219",
+        ua = window.navigator.userAgent,
 
-        //declare functions
-        createAXO,
+        //declare booleans
+        supportsPDFs,
         isIE,
         supportsPdfMimeType = (typeof navigator.mimeTypes['application/pdf'] !== "undefined"),
         supportsPdfActiveX,
+        isModernBrowser = (function (){ return (typeof window.Promise !== "undefined"); })(),
+        isFirefox = (function (){ return (ua.indexOf("irefox") !== -1); } )(),
+        isFirefoxWithPDFJS = (function (){
+            //Firefox started shipping PDF.js in Firefox 19.
+            //If this is Firefox 19 or greater, assume PDF.js is available
+            if(!isFirefox){ return false; }
+            //parse userAgent string to get release version ("rv")
+            //ex: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:57.0) Gecko/20100101 Firefox/57.0
+            return (parseInt(ua.split("rv:")[1].split(".")[0], 10) > 18);
+        })(),
+        isIOS = (function (){ return (/iphone|ipad|ipod/i.test(ua.toLowerCase())); })(),
+
+        //declare functions
+        createAXO,
         buildFragmentString,
         log,
         embedError,
         embed,
         getTargetElement,
         generatePDFJSiframe,
-        isIOS = (function (){ return (/iphone|ipad|ipod/i.test(navigator.userAgent.toLowerCase())); })(),
         generateEmbedElement;
 
 
@@ -45922,7 +45935,7 @@ module.exports = g;
     supportsPdfActiveX = function (){ return !!(createAXO("AcroPDF.PDF") || createAXO("PDF.PdfCtrl")); };
 
     //Determines whether PDF support is available
-    supportsPDFs = (supportsPdfMimeType || (isIE() && supportsPdfActiveX()));
+    supportsPDFs = (isFirefoxWithPDFJS || supportsPdfMimeType || (isIE() && supportsPdfActiveX()));
 
     //Create a fragment identifier for using PDF Open parameters when embedding PDF
     buildFragmentString = function(pdfParams){
@@ -46042,6 +46055,7 @@ module.exports = g;
             fallbackLink = (typeof options.fallbackLink !== "undefined") ? options.fallbackLink : true,
             width = (options.width) ? options.width : "100%",
             height = (options.height) ? options.height : "100%",
+            assumptionMode = (typeof options.assumptionMode === "boolean") ? options.assumptionMode : true,
             forcePDFJS = (typeof options.forcePDFJS === "boolean") ? options.forcePDFJS : false,
             PDFJS_URL = (options.PDFJS_URL) ? options.PDFJS_URL : false,
             targetNode = getTargetElement(targetSelector),
@@ -46066,7 +46080,7 @@ module.exports = g;
 
             return generatePDFJSiframe(targetNode, url, pdfOpenFragment, PDFJS_URL, id);
 
-        } else if(supportsPDFs){
+        } else if((assumptionMode && isModernBrowser) || supportsPDFs){
 
             return generateEmbedElement(targetNode, targetSelector, url, pdfOpenFragment, width, height, id);
 
