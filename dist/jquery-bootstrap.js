@@ -32,9 +32,11 @@
     //card_onShown_close_siblings: Close all open siblings when card is shown BUT without animation
     function card_onShown_close_siblings(){
         var $this = $(this);
-        $this.addClass('no-transition');
-        card_onShow_close_siblings.call(this);
-        $this.removeClass('no-transition');
+        if ($this.hasClass('show')){
+            $this.addClass('no-transition');
+            card_onShow_close_siblings.call(this);
+            $this.removeClass('no-transition');
+        }
     }
 
     /**********************************************************
@@ -99,6 +101,8 @@
 
         //Adding the children {icon, text, content}
         $.each( options.list, function( index, opt ){
+
+
             //Create the header
             opt = $._bsAdjustOptions( opt );
 
@@ -107,17 +111,17 @@
                 isOpen     = !!options.allOpen || !!opt.selected,
                 $card = $('<div/>')
                             .addClass('card')
+                            .toggleClass('show', isOpen)
                             .attr({'data-user-id': opt.id || null})
                             .on( 'shown.bs.collapse',  card_onShown )
                             .on( 'hidden.bs.collapse', card_onHidden )
                             .on( 'show.bs.collapse',   options.multiOpen ? null : card_onShow_close_siblings )
-                            .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
+/*HER*/                            .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
                             .appendTo( $result ),
                 headerAttr = {
                     'id'  : headerId,
                     'role': 'tab',
                 };
-
 
             //Add header
             if (!options.neverClose)
