@@ -12,4 +12,10 @@ Style for elements used to display any file in a modal-window
 
 
 
+.file-view-header {
+    @include header-variant-sm(true, true);
+}
 
+.file-view-content {
+    @include content-padding-sm();
+}

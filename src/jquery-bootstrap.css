@@ -8267,6 +8267,27 @@ Style for elements used to display any file in a modal-window
   height: 100%;
   border: 0; }
 
+.file-view-header {
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  padding: 0.125rem 0.125rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  border-radius: inherit;
+  border-bottom: 1px solid #9aa1a8;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0; }
+  .file-view-header span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+
+.file-view-content {
+  padding: 0.25rem 0.25rem;
+  font-size: 0.8125rem; }
+
 /************************************************************
 MODAL-BACKDROP
 

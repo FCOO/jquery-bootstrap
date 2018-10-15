@@ -524,6 +524,7 @@
                         case 'slider'       :   buildFunc = buildBaseSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'timeslider'   :   buildFunc = buildTimeSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'text'         :   buildFunc = buildText;          insideFormGroup = true; addBorder = true; noValidation = true; break;
+                        case 'fileview'     :   buildFunc = $.bsFileView;       break;
                         case 'hidden'       :   buildFunc = buildHidden;        noValidation = true; break;
 //                        case 'xx'           :   buildFunc = $.bsXx;               break;
                     }

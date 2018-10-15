@@ -39,6 +39,7 @@ position: fixed;
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
+    <script src="../src/jquery-bootstrap-file-view.js"></script>
     <script src="../src/jquery-bootstrap-modal-file.js"></script>
     <script src="../src/jquery-bootstrap-list.js"></script>
     <script src="../src/jquery-bootstrap-form.js"></script>
@@ -794,6 +795,24 @@ var now = moment();
                 $.bsModalFile('https://niord.dma.dk/rest/repo/file/messages/5/55/555306e4-0b0d-4d62-9a55-36ec64539aa4/2/Inmarsat-C.jpg', {header: ['test:niels', '=', {text:{da:'Dansk', en:'Engelsk'}}]} );
             });
 
+        var fileViewModal = null;
+        $('<button>4xFile-view</button>')
+            .appendTo( $body)
+            .on('click', function(e){
+                fileViewModal = fileViewModal ||
+                    $.bsModal({
+                        header: '4xfile-view',
+                        content: [
+                            { type: 'fileView', fileName:'https://www.soefartsstyrelsen.dk/Documents/Publikationer/DANSKFYRLISTE2015.pdf', header:{icon:'fa-home', text:'Header'}},
+                            { type: 'fileView', fileName:'http://nautiskinformation.soefartsstyrelsen.dk/index.html#/messages/details'},
+                            { type: 'fileView', fileName:'https://www.danskehavnelods.dk/'},
+                            { type: 'fileView', fileName:'https://niord.dma.dk/rest/repo/file/messages/5/55/555306e4-0b0d-4d62-9a55-36ec64539aa4/2/Inmarsat-C.jpg'}
+                        ],
+                        flexWidth: true,
+                        extraWidth: true,
+                    })
+                fileViewModal.show();
+            });
 
         m_list.assignTo(
             $('<button>List</button>')

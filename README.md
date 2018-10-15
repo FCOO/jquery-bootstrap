@@ -28,6 +28,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Modal](#modal)
 - [ModalForm](#modalform)
 - [ModalFile](#modalfile)
+- [FileView](#fileview)
 - [Noty](#noty)
 - [input](#input)
 
@@ -456,6 +457,12 @@ Description NOT complete. See `src/jquery-bootstrap-form.js` for more
 
 Show a file in a mega-width modal-window
 
+<a name="fileview"></a>
+## FileView
+
+	$myFileView = $.bsFileView( "a-file-name", options ); 
+
+Create a element with a view of the file and buttons to show and open the file/document
 
 
 <a name="noty"></a>
