@@ -340,15 +340,36 @@
         checkForContent: [Boolean] If true AND options.content exists => use options.content instead
         ****************************************************************************************/
 
-        _bsAddHtml:  function( options, checkForContent, ignoreLink ){
+        _bsAddHtml:  function( options, /*checkForContent*/htmlInDiv, ignoreLink ){
             //**************************************************
             function getArray( input ){
                 return input ? $.isArray( input ) ? input : [input] : [];
             }
             //**************************************************
+            function isHtmlString( str ){
+                if (!htmlInDiv || ($.type(str) != 'string')) return false;
 
-            if (checkForContent && (options.content != null))
-                return this._bsAddHtml( options.content );
+                var isHtml = false,
+                    $str = null;
+                try       { $str = $(str); }
+                catch (e) { $str = null;   }
+
+                if ($str && $str.length){
+                    isHtml = true;
+                    $str.each( function( index, elem ){
+                        if (!elem.nodeType || (elem.nodeType != 1)){
+                            isHtml = false;
+                            return false;
+                        }
+                    });
+                }
+                return isHtml;
+            }
+
+            //**************************************************
+//Removed since no content is given
+//            if (checkForContent && (options.content != null))
+//                return this._bsAddHtml( options.content );
 
             options = options || '';
 
@@ -357,14 +378,10 @@
             //options = array => add each
             if ($.isArray( options )){
                 $.each( options, function( index, textOptions ){
-                    _this._bsAddHtml( textOptions );
+                    _this._bsAddHtml( textOptions, htmlInDiv, ignoreLink );
                 });
                 return this;
             }
-
-            //Adjust icon and/or text if iot is not at format-options
-            if (!options.vfFormat)
-                options = $._bsAdjustIconAndText( options );
 
             this.addClass('container-icon-and-text');
 
@@ -373,6 +390,16 @@
                 this.append( options );
                 return this;
             }
+
+            //If the content is a string containing html-code => append it and return
+            if (isHtmlString(options)){
+                this.append( $(options) );
+                return this;
+            }
+
+            //Adjust icon and/or text if it is not at format-options
+            if (!options.vfFormat)
+                options = $._bsAdjustIconAndText( options );
 
             //options = simple textOptions
             var iconArray       = getArray( options.icon ),
@@ -397,8 +424,14 @@
                 _this.addClass('text-'+ options.color);
 
             //Add text
+
             $.each( textArray, function( index, text ){
-                var $text = $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index], textDataArray[index] );
+                //If text ={da,en} and both da and is html-stirng => build inside div
+                var tagName = 'span';
+                if ( (text.hasOwnProperty('da') && isHtmlString(text.da)) || (text.hasOwnProperty('en') && isHtmlString(text.en)) )
+                    tagName = 'div';
+
+                var $text = $._bsCreateElement( tagName, linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index], textDataArray[index] );
                 if ($.isFunction( text ))
                     text( $text );
                 else

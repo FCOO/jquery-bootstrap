@@ -23,7 +23,6 @@ $modal-body-scroll-padding-x: max( 0, $modal-body-fixed-scroll-padding-x - $scro
 $modal-body-scroll-padding-y-sm: max( 0, max( $content-padding-y-sm, $min-padding) - $scroll-size );
 $modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm - $scroll-size );
 
-
 //Overwrite default overflow
 body.modal-open .modal {
     overflow-x: hidden;
@@ -113,6 +112,12 @@ body.modal-open .modal {
 
 
         .modal-body {
+            //Adjust default style inside a modal-body
+            p { margin-bottom: 0; }
+            ol, ul, dl { margin-bottom: 0; padding-left: 2em;}
+
+
+
             //When modal-body is empty: Hide modal-body and remove top-border from footer
             &.modal-body-no-content {
                 display: none
@@ -120,8 +125,8 @@ body.modal-open .modal {
 
             //When content always is max height => body.height = 100%
             &.modal-body-always-max-height {
-display: flex;
-flex-direction: column;
+                display: flex;
+                flex-direction: column;
                 height: fit-content;
             }
 

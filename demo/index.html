@@ -232,8 +232,11 @@ return;
                     closeWith    : (index+3) % 5 ? ['button'] : ['click'],
                     footer       : (index+4) % 5 ? {icon: 'fa-home',textAlign: [null, 'right', 'center'][index % 3], text: 'footer text'} : null,
 
-                    text: [
+                    content: [
                         layout[index]+'<br>',
+                        "<p>Dette er en test</p>",
+                        "<ol><li>Første på dansk Og engelsk</li><li>Anden på dansk og engelsk</li></ol>",
+                        {da: "<ol><li>Første på dansk</li><li>Anden på dansk</li></ol>", en:"<ol><li>#1 in English</li><li>#2 in English</li></ol>"},
                         {text: {da: 'Noget tekst ', en: 'Some text '}},
                         {da: 'Noget mre tekst ', en: 'Some more text '},
                         Math.random()
@@ -638,7 +641,7 @@ var now = moment();
             allowZeroSelected: true,
             //allowReselect: true,
             columns: [
-                { id: 'no',                                 header: '#',     align: 'center', width: '1rem', noHorizontalPadding: true},
+                { id: 'no',                                 header: 'ER DET HER #',     align: 'center', width: '1rem', noHorizontalPadding: true},
                 { id: 'name',               noWrap: true,   header: {icon:'fa-home', text:{da:'Navn', en:'Name'}},  align: 'center', sortable: true, sortHeader: true, sortIndex:1000},
                 { id: 'stargazers_count',                   header: 'Stars', align: 'center', vfFormat:"myNumberFormat", sortBy:'int'},
                 { id: 'date',               header: 'Date', align: 'center', vfFormat:"myMomentFormat", sortBy:'moment', sortDefault: true/*'desc'*/},
@@ -663,8 +666,8 @@ var now = moment();
 
         myBsList = $.bsList({
             content: [
-                ['Første:', '#', 'Første meget lang med mange ord, der bare blive ved og ved i det uendelige'],
-                ['Anden:'],
+                ['Første:', '#', '<p>Første meget lang med mange ord, der bare blive ved og ved i det uendelige</p>Og så noget uden p'],
+                ['Anden:', '', '<ul><li>Første</li><li>ANden</li></ul>'],
                 '3.'
             ],
             verticalAlign: 'top',

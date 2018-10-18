@@ -79,7 +79,7 @@
         if (options.addOnClick && options.onClick)
             result.on('click', $.proxy( result._bsButtonOnClick, result ) );
 
-        result._bsAddHtml( options, true, true );
+        result._bsAddHtml( options, false, true );
 
         return result;
     };

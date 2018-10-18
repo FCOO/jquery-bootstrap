@@ -16,7 +16,7 @@
     //Setting defaults for select2
     function formatSelectOption( options ) {
         options.text = options._text;
-        var $result = $('<span/>')._bsAddHtml( options, true );
+        var $result = $('<span/>')._bsAddHtml( options/*, true */);
         options.text = '';
         return $result;
     }

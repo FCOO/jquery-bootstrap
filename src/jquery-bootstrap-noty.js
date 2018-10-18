@@ -234,7 +234,7 @@
                 $barDom.addClass('no-header');
 
             //Replace content with text as object {icon, txt,etc}
-            $body._bsAddHtml( options.content );
+            $body._bsAddHtml( options.content, true );
             $body.addClass('text-'+options.textAlign);
 
             //Add buttons (if any)
