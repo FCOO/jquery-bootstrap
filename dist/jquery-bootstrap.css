@@ -7086,8 +7086,15 @@ Bootstrap allready have the following classes
 .font-italic
 
 */
-.container-icon-and-text:not(.fa-stack) > *:not(:first-child) {
+.container-icon-and-text:not(.fa-stack) > i:not(:first-child),
+.container-icon-and-text:not(.fa-stack) > span:not(:first-child) {
   padding-left: 0.3em; }
+
+.container-icon-and-text:not(.fa-stack) * {
+  margin-bottom: 0; }
+
+.container-icon-and-text:not(.fa-stack) ol, .container-icon-and-text:not(.fa-stack) ul, .container-icon-and-text:not(.fa-stack) dl {
+  padding-left: 2em; }
 
 /************************************************************
 BUTTON

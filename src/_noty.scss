@@ -161,6 +161,7 @@ $corner-space: 20px;
             font-size: $font-size-sm;
             * {
                 -ms-word-break: break-all;  //Fallback for IE11
+                //Removed but can't remember why it was there in the first place
                 white-space: pre-wrap;
                 overflow-wrap: break-word;
             }

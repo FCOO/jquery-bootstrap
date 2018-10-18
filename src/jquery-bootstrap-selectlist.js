@@ -60,7 +60,7 @@
                 .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
                 .addClass( options.center ? 'text-center' : '')
                 .appendTo( $result )
-                ._bsAddHtml( itemOptions, true )
+                ._bsAddHtml( itemOptions/*, true */)
                 .on('mouseenter', $.proxy($item._selectlist_onMouseenter, $item) )
                 .on('mouseleave', $.proxy($item._selectlist_onMouseleave, $item) );
 

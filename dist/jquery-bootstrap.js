@@ -288,7 +288,7 @@
         if (options.addOnClick && options.onClick)
             result.on('click', $.proxy( result._bsButtonOnClick, result ) );
 
-        result._bsAddHtml( options, true, true );
+        result._bsAddHtml( options, false, true );
 
         return result;
     };
@@ -2530,7 +2530,7 @@ options
                 $barDom.addClass('no-header');
 
             //Replace content with text as object {icon, txt,etc}
-            $body._bsAddHtml( options.content );
+            $body._bsAddHtml( options.content, true );
             $body.addClass('text-'+options.textAlign);
 
             //Add buttons (if any)
@@ -2984,7 +2984,7 @@ options
     //Setting defaults for select2
     function formatSelectOption( options ) {
         options.text = options._text;
-        var $result = $('<span/>')._bsAddHtml( options, true );
+        var $result = $('<span/>')._bsAddHtml( options/*, true */);
         options.text = '';
         return $result;
     }
@@ -3207,7 +3207,7 @@ options
                 .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
                 .addClass( options.center ? 'text-center' : '')
                 .appendTo( $result )
-                ._bsAddHtml( itemOptions, true )
+                ._bsAddHtml( itemOptions/*, true */)
                 .on('mouseenter', $.proxy($item._selectlist_onMouseenter, $item) )
                 .on('mouseleave', $.proxy($item._selectlist_onMouseleave, $item) );
 
@@ -4233,15 +4233,36 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         checkForContent: [Boolean] If true AND options.content exists => use options.content instead
         ****************************************************************************************/
 
-        _bsAddHtml:  function( options, checkForContent, ignoreLink ){
+        _bsAddHtml:  function( options, /*checkForContent*/htmlInDiv, ignoreLink ){
             //**************************************************
             function getArray( input ){
                 return input ? $.isArray( input ) ? input : [input] : [];
             }
             //**************************************************
+            function isHtmlString( str ){
+                if (!htmlInDiv || ($.type(str) != 'string')) return false;
 
-            if (checkForContent && (options.content != null))
-                return this._bsAddHtml( options.content );
+                var isHtml = false,
+                    $str = null;
+                try       { $str = $(str); }
+                catch (e) { $str = null;   }
+
+                if ($str && $str.length){
+                    isHtml = true;
+                    $str.each( function( index, elem ){
+                        if (!elem.nodeType || (elem.nodeType != 1)){
+                            isHtml = false;
+                            return false;
+                        }
+                    });
+                }
+                return isHtml;
+            }
+
+            //**************************************************
+//Removed since no content is given
+//            if (checkForContent && (options.content != null))
+//                return this._bsAddHtml( options.content );
 
             options = options || '';
 
@@ -4250,14 +4271,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             //options = array => add each
             if ($.isArray( options )){
                 $.each( options, function( index, textOptions ){
-                    _this._bsAddHtml( textOptions );
+                    _this._bsAddHtml( textOptions, htmlInDiv, ignoreLink );
                 });
                 return this;
             }
-
-            //Adjust icon and/or text if iot is not at format-options
-            if (!options.vfFormat)
-                options = $._bsAdjustIconAndText( options );
 
             this.addClass('container-icon-and-text');
 
@@ -4266,6 +4283,16 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 this.append( options );
                 return this;
             }
+
+            //If the content is a string containing html-code => append it and return
+            if (isHtmlString(options)){
+                this.append( $(options) );
+                return this;
+            }
+
+            //Adjust icon and/or text if it is not at format-options
+            if (!options.vfFormat)
+                options = $._bsAdjustIconAndText( options );
 
             //options = simple textOptions
             var iconArray       = getArray( options.icon ),
@@ -4290,8 +4317,14 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 _this.addClass('text-'+ options.color);
 
             //Add text
+
             $.each( textArray, function( index, text ){
-                var $text = $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index], textDataArray[index] );
+                //If text ={da,en} and both da and is html-stirng => build inside div
+                var tagName = 'span';
+                if ( (text.hasOwnProperty('da') && isHtmlString(text.da)) || (text.hasOwnProperty('en') && isHtmlString(text.en)) )
+                    tagName = 'div';
+
+                var $text = $._bsCreateElement( tagName, linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index], textDataArray[index] );
                 if ($.isFunction( text ))
                     text( $text );
                 else

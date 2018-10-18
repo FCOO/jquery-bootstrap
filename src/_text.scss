@@ -25,6 +25,13 @@ Bootstrap allready have the following classes
 */
 
 //.container-icon-and-text: used when adding icon and/or text to button, header etc. But not if it contains stacked icons
-.container-icon-and-text:not(.fa-stack) > *:not(:first-child) {
-  padding-left: 0.3em;
+.container-icon-and-text:not(.fa-stack) {
+    & > i:not(:first-child),
+    & > span:not(:first-child) {
+        padding-left: 0.3em;
+    }
+
+    //Adjust default style inside a text-box
+    * { margin-bottom: 0; }
+    ol, ul, dl { padding-left: 2em;}
 }
