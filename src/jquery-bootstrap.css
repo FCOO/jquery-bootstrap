@@ -7091,7 +7091,8 @@ Bootstrap allready have the following classes
   padding-left: 0.3em; }
 
 .container-icon-and-text:not(.fa-stack) * {
-  margin: 0; }
+  margin-top: 0;
+  margin-bottom: 0; }
 
 .container-icon-and-text:not(.fa-stack) ol, .container-icon-and-text:not(.fa-stack) ul, .container-icon-and-text:not(.fa-stack) dl {
   padding-left: 2em; }
@@ -7452,6 +7453,9 @@ POPOVER
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .popover .popover-header-content span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
 
 .popover .popover-body {
   padding: 1px !important; }
@@ -7475,6 +7479,9 @@ POPOVER
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .popover .popover-footer span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
   .popover .popover-footer:empty {
     display: none; }
 
@@ -7494,6 +7501,9 @@ POPOVER
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .popover.popover-sm .popover-header-content span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
 
 .popover.popover-sm .popover-footer {
   font-weight: 400;
@@ -7514,6 +7524,9 @@ POPOVER
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .popover.popover-sm .popover-footer span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
   .popover.popover-sm .popover-footer:empty {
     display: none; }
 
@@ -7915,6 +7928,9 @@ html.no-mouse-hover .selectList .dropdown-item.active {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .selectList .dropdown-header span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
 
 .selectList.selectList-sm .dropdown-item {
   padding: 0.25rem 0.25rem;
@@ -7936,6 +7952,9 @@ html.no-mouse-hover .selectList .dropdown-item.active {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .selectList.selectList-sm .dropdown-header span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
 
 .selectList.selectList-xs .dropdown-item {
   padding: 0.125rem 0.125rem;
@@ -7956,6 +7975,9 @@ html.no-mouse-hover .selectList .dropdown-item.active {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .selectList.selectList-xs .dropdown-header span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
 
 /************************************************************
 MODAL
@@ -8007,8 +8029,9 @@ body.modal-open .modal {
     max-height: inherit; }
   .modal-dialog .modal-content {
     min-height: 100%;
-    -ms-word-break: break-all;
-    overflow-wrap: break-word; }
+    -ms-word-break: break-word;
+    word-break: break-word;
+    word-wrap: break-word; }
   .modal-dialog:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
     width: calc( 100% - 2*1px - 2*0.625rem);
     margin-left: auto;
@@ -8061,6 +8084,9 @@ body.modal-open .modal {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .modal-dialog .modal-content .modal-header span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
     .modal-dialog .modal-content .modal-header.clickable {
       cursor: default; }
       .modal-dialog .modal-content .modal-header.clickable:hover {
@@ -8123,6 +8149,9 @@ body.modal-open .modal {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .modal-dialog .modal-content .modal-footer-header span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
     .modal-dialog .modal-content .modal-footer-header:empty {
       display: none; }
     .modal-dialog .modal-content .modal-footer-header:not(:empty) + .modal-footer {
@@ -8158,6 +8187,9 @@ body.modal-open .modal {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .modal-dialog.modal-dialog-sm .modal-content .modal-header span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
   .modal-dialog.modal-dialog-sm .modal-content .modal-body,
   .modal-dialog.modal-dialog-sm .modal-content .modal-body-fixed {
     padding: 0.25rem 0.25rem;
@@ -8181,6 +8213,9 @@ body.modal-open .modal {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
     .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header:empty {
       display: none; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-header {
@@ -8199,6 +8234,9 @@ body.modal-open .modal {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .modal-dialog.modal-dialog-xs .modal-content .modal-header span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-body,
   .modal-dialog.modal-dialog-xs .modal-content .modal-body-fixed {
     padding: 0.25rem 0.25rem;
@@ -8222,6 +8260,9 @@ body.modal-open .modal {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
     .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header:empty {
       display: none; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-footer {
@@ -8295,6 +8336,9 @@ Style for elements used to display any file in a modal-window
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .file-view-header span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
 
 .file-view-content {
   padding: 0.25rem 0.25rem;
@@ -8625,6 +8669,7 @@ Adjustmernt to Bootstrap table
 ************************************************************/
 .table {
   margin-bottom: 0;
+  word-break: normal;
   /*************************************
     Header
     *************************************/
@@ -8680,6 +8725,9 @@ Adjustmernt to Bootstrap table
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .table thead tr th span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
     .table thead tr th.no-horizontal-padding {
       padding-left: 0;
       padding-right: 0; }
@@ -8764,6 +8812,10 @@ Adjustmernt to Bootstrap table
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .modal-dialog-sm .table thead tr th span.fixed-header,
+  .table.table-sm thead tr th span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
   .modal-dialog-sm .table thead tr th.sortable,
   .table.table-sm thead tr th.sortable {
     padding-right: 1em; }
@@ -8837,6 +8889,9 @@ Using Bootstrap Collapse to create accordion
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .accordion .card-header span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
     .accordion .card-header .chevrolet {
       font-size: 0.8em;
       color: #000;
@@ -8874,6 +8929,9 @@ Using Bootstrap Collapse to create accordion
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .accordion .card-footer span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
     .accordion .card-footer:empty {
       display: none; }
   .accordion.no-transition .collapsing,
@@ -8912,6 +8970,11 @@ Using Bootstrap Collapse to create accordion
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .modal-dialog-sm .accordion .card-header span.fixed-header,
+  .modal-dialog-xs .accordion .card-header span.fixed-header,
+  .accordion-sm .card-header span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
 
 .modal-dialog-sm .accordion .card-block,
 .modal-dialog-xs .accordion .card-block,
@@ -8942,6 +9005,11 @@ Using Bootstrap Collapse to create accordion
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .modal-dialog-sm .accordion .card-footer span.fixed-header,
+  .modal-dialog-xs .accordion .card-footer span.fixed-header,
+  .accordion-sm .card-footer span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
   .modal-dialog-sm .accordion .card-footer:empty,
   .modal-dialog-xs .accordion .card-footer:empty,
   .accordion-sm .card-footer:empty {
@@ -9049,9 +9117,10 @@ for noty is copyed and modified
       font-size: 1rem;
       font-size: 0.8125rem; }
       .noty_bar.noty_theme__jquery-bootstrap .noty_body * {
-        -ms-word-break: break-all;
         white-space: pre-wrap;
-        overflow-wrap: break-word; }
+        -ms-word-break: break-word;
+        word-break: break-word;
+        word-wrap: break-word; }
     .noty_bar.noty_theme__jquery-bootstrap.no-header .header-icon-container {
       position: absolute;
       top: 0;
@@ -9079,6 +9148,9 @@ for noty is copyed and modified
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .noty_bar .noty-header span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
     .noty_bar .noty-header.noty-header-sm {
       font-weight: 400;
       display: flex;
@@ -9095,6 +9167,9 @@ for noty is copyed and modified
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap; }
+      .noty_bar .noty-header.noty-header-sm span.fixed-header {
+        overflow: visible;
+        word-break: keep-all; }
   .noty_bar.noty_close_with_click:hover .noty-header {
     background-color: #e5e5e5; }
   .noty_bar hr {
@@ -9119,6 +9194,9 @@ for noty is copyed and modified
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .noty_bar .noty-footer span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
     .noty_bar .noty-footer:empty {
       display: none; }
   .noty_bar .noty-buttons {
@@ -9418,6 +9496,9 @@ Adjustment to Bootstrap tabs
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .tab-content .tab-pane.active .tab-footer span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
     .tab-content .tab-pane.active .tab-footer:empty {
       display: none; }
     .tab-content .tab-pane.active .tab-footer:empty {
@@ -9439,6 +9520,9 @@ Adjustment to Bootstrap tabs
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
+  .tab-content.tab-content-sm .tab-pane .tab-footer span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
 
 .modal-dialog .tab-content .tab-pane {
   min-height: 100%;
@@ -9560,6 +9644,9 @@ https://github.com/berkan52/select2-bootstrap4-theme
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .select2-container--standard .select2-results__group span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
   .select2-container--standard.select2-container--focus .select2-selection, .select2-container--standard.select2-container--open .select2-selection {
     border-color: #80bdff !important;
     outline: none !important; }
@@ -9624,6 +9711,9 @@ https://github.com/berkan52/select2-bootstrap4-theme
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .select2-container--standard.select2-container-sm .select2-results__group span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
   .select2-container--standard.select2-container-xs .select2-results {
     max-height: 5.5rem; }
   .select2-container--standard.select2-container-xs .select2-selection,
@@ -9648,6 +9738,9 @@ https://github.com/berkan52/select2-bootstrap4-theme
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap; }
+    .select2-container--standard.select2-container-xs .select2-results__group span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
 
 .input-group > .has-float-label:not(:first-child) .select2-container--standard .select2-selection {
   border-top-left-radius: 0;

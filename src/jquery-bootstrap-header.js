@@ -69,9 +69,14 @@
         options = $.extend( true, {headerClassName: '', inclHeader: true, icons: {} }, options );
         this.addClass( options.headerClassName );
 
-        if (options.inclHeader)
+        if (options.inclHeader){
+            options.header = $._bsAdjustIconAndText(options.header);
+            //If header contents more than one text => set the first to "fixed" so that only the following text are truncated
+            if ($.isArray(options.header) && (options.header.length > 1)){
+                options.header[0].textClass = 'fixed-header';
+            }
             this._bsAddHtml( options.header || $.EMPTY_TEXT );
-
+        }
         //Add icons (if any)
         if ( !$.isEmptyObject(options.icons) ) {
             //Container for icons

@@ -7,6 +7,8 @@ Adjustmernt to Bootstrap table
 .table {
     @include modal-element-margin-bottom();
 
+    word-break: normal;
+
     //Special version used to display headers and inside a scroll-container
     &.table-with-header,
     .scrollbar-vertical > & {

@@ -160,10 +160,11 @@ $corner-space: 20px;
             @include content-padding();
             font-size: $font-size-sm;
             * {
-                -ms-word-break: break-all;  //Fallback for IE11
-                //Removed but can't remember why it was there in the first place
                 white-space: pre-wrap;
-                overflow-wrap: break-word;
+
+                -ms-word-break: break-word;  //Fallback for IE11
+                word-break: break-word;
+                word-wrap : break-word;
             }
         }
 

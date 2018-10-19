@@ -1197,7 +1197,14 @@ width: 3*300,
 
         var long_content = $.bsModal({
             closeButton: true,
-            header:{icon: 'fa-home', text:{da:'"Langt" indhold med en meget meget meget meget lang overskrift',en:'"Long" content'}},
+            header:/*{
+                icon: 'fa-home',
+                textClass:['HER'],
+                text:*/[
+                    {da:'"Langt"',en:'"Long" content'},
+                    {da:', indhold med en meget meget meget meget lang overskrift, men det er kun denne her del, der skrumper',en:'"'}
+                ]/*
+            }*/,
             buttons: [
                 {icon: 'fa-home', text: 'Davs'}
             ],

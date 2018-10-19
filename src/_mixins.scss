@@ -382,6 +382,10 @@ header-variant
     font-weight: $font-weight-base;
 
     @include span-text-truncate();
+    span.fixed-header {
+        overflow  : visible;
+        word-break: keep-all;
+    }
 
     @include vertical-align-center();
 
