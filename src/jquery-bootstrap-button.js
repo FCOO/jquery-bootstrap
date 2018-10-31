@@ -107,8 +107,12 @@
         options.class = 'allow-zero-selected';
 
         //Use modernizr-mode and classes if icon and/or text containe two values
-        if ($.isArray(options.icon)){
-            options.iconClassName = ['hide-for-active', 'show-for-active'];
+        if ($.isArray(options.icon) && (options.icon.length == 2)){
+            options.icon = [[
+                options.icon[0]+ ' icon-hide-for-active',
+                options.icon[1]+ ' icon-show-for-active'
+            ]];
+//HER             options.iconClassName = ['hide-for-active', 'show-for-active'];
             options.modernizr = true;
         }
         if ($.isArray(options.text)){

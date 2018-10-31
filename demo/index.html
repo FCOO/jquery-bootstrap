@@ -39,6 +39,7 @@ position: fixed;
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
+    <script src="../src/jquery-bootstrap-fontawesome.js"></script>
     <script src="../src/jquery-bootstrap-file-view.js"></script>
     <script src="../src/jquery-bootstrap-modal-file.js"></script>
     <script src="../src/jquery-bootstrap-list.js"></script>
@@ -196,7 +197,6 @@ $('body').on('wheel', function(e){
         $.bsButton({
             text: 'Test af Noty',
             onClick:function(e){
-
 var $elem = $('<div/>').text('Dette er helt almindelig tekst');
 var $elem2 = $('<div/>').text('Dette er anden helt almindelig tekst').css('display','none');
 var flashingNoty = $.bsNoty({layout:'center', header: 'Davs', text: [$elem, $elem2], onTop: true, flash: true});
@@ -274,6 +274,17 @@ return;
             onPin: function(pinned){ console.log('onPin', pinned); }
 
         });
+
+
+
+        $.bsButton({
+            icon: $.bsMarkerIcon('text-danger', 'text-warning'),
+            bigIcon: true,
+            text: 'Text'
+        }).appendTo( $body );
+
+
+
 
 /*
         header('Button groups');
@@ -397,6 +408,15 @@ return;
             onChange: function(id, selected){ console.log('3: bsCheckboxButton',id,selected);}
         }).appendTo($body);
 
+        $.bsButton({
+            text: {da:'Flere iconer', en:'More icons'},
+            icon: [['fa-home', 'far fa-square'], 'fa-home', 'far fa-square'],
+        }).appendTo($body);
+        $.bsButton({
+//            text: [{da:'Uvalgt', en:'Unselected'}, {da:'Valgt', en:'Selected'}],
+            text: {da:'Flere iconer', en:'More icons'},
+            icon: ['fa-square', ['fa-home', 'fa-square']],
+        }).appendTo($body);
 
 
         header('Popover (click on buttons)');

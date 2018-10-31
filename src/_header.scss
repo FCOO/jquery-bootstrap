@@ -29,6 +29,8 @@ Icons for modal header inside a container
 
     .header-icon {
         //Common style
+        width      : 1em;
+        text-align : center;
         color      : $close-color;
         text-shadow: $close-text-shadow;
         opacity    : .5;
@@ -37,12 +39,8 @@ Icons for modal header inside a container
         &.disabled { opacity: .25;  }
         &.hidden   { display: none; }
 
-        & .show-for-hover { display: none; }
 
         &:not(.disabled):hover {
-            .show-for-hover { display: inherit; }
-            .hide-for-hover { display: none; }
-
             color: $close-color;
             text-decoration: none;
             opacity: .75;
@@ -52,9 +50,22 @@ Icons for modal header inside a container
 
         //Special version for close-icon
         &.header-icon-close {
+            .back {
+                opacity: 0;
+                color  : white;
+            }
+            .front {
+                opacity: 0;
+                color  : $red;
+            }
+
             &:not(.disabled):hover {
                 opacity: .9;
                 &:active { opacity: 1; }
+
+                .back   { opacity: inherit }
+                .middle { opacity: 0       }
+                .front  { opacity: inherit }
             }
         }
     } //end of .header-icon {

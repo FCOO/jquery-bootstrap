@@ -60,6 +60,17 @@ div.btn, div.list-group-item {
         }
     }
 
+    //Container for stacked icons get same size as single icon
+    & > span.fa-stack {
+        width         : 1em;
+        height        : 1em;
+        line-height   : 1.5 * $font-size-sm;
+        vertical-align: top;
+
+
+
+background-color: yellow;
+    }
 
     /************************************************************
     Special version to have transparent button
@@ -139,8 +150,8 @@ Modernizr-test for elements with class="active" when selected
 	'active', //$modernizr-test ,
 	'.btn',   //$parent-element-type: '',
 	true,     //$incl-no-selector: true,
-	true,     //$fail-as-default: false,
-	false     //$incl-table-display: true
+    '',       //$display-value
+    false     //$incl-table-display: true
 );
 
 /************************************************************

@@ -29,15 +29,15 @@
         back    : 'fa-chevron-left',
         forward : 'fa-chevron-right',
 
-        pin     : ['fas fa-thumbtack fa-stack-1x fa-inside-circle', 'far fa-circle fa-stack-1x'],
+        pin     : ['fas fa-thumbtack fa-inside-circle', 'far fa-circle'],
         unpin   : 'fa-thumbtack',
 
         extend  : 'fa-chevron-up',
         diminish: 'fa-chevron-down',
 
-        new     : ['far fa-window-maximize fa-stack-1x fa-inside-circle2', 'far fa-circle fa-stack-1x'],
+        new     : ['far fa-window-maximize fa-inside-circle2', 'far fa-circle'],
 
-        close   : ['far fa-times-circle fa-stack-1x hide-for-hover', 'fas fa-times-circle text-danger fa-stack-1x show-for-hover']
+        close   : ['fas fa-circle back', 'far fa-times-circle middle', 'fas fa-times-circle front']
     };
 
     //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
@@ -92,8 +92,8 @@
             $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'close'], function( index, id ){
                 var iconOptions = options.icons[id],
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
-                if (iconOptions && iconOptions.onClick){
 
+                if (iconOptions && iconOptions.onClick){
                     $._bsCreateIcon(
                         $.bsHeaderIcons[id],
                         $iconContainer,

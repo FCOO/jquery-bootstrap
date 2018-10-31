@@ -176,6 +176,10 @@ Unifies padding for modal, accordion, popup etc.
     font-size: $font-size-sm;
 }
 
+@mixin content-padding-xs(){
+    padding: $content-padding-y-sm $content-padding-x-sm;
+    font-size: $font-size-xs;
+}
 
 /************************************************************
 CONTROL-CONTAINER

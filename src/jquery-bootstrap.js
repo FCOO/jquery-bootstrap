@@ -200,7 +200,7 @@
     /****************************************************************************************
     $._bsCreateIcon = internal method to create $-icon
     ****************************************************************************************/
-    $._bsCreateIcon = function( options, $appendTo, title, className ){
+    $._bsCreateIcon = function( options, $appendTo, title, className/*, insideStack*/ ){
         var $icon;
 
         if ($.type(options) == 'string')
@@ -208,10 +208,10 @@
 
         if ($.isArray( options)){
             //Create a stacked icon
-            $icon = $._bsCreateElement( 'span', null, title, null, 'fa-stack ' + (className || '')  );
+             $icon = $._bsCreateElement( 'div', null, title, null, 'container-stacked-icons ' + (className || '')  );
 
             $.each( options, function( index, opt ){
-                $._bsCreateIcon( opt, $icon );
+                $._bsCreateIcon( opt, $icon, null, 'stacked-icon' );
             });
         }
         else {
@@ -224,11 +224,11 @@
             allClassNames = allClassNames + ' ' + (className || '');
 
             $icon = $._bsCreateElement( 'i', null, title, null, allClassNames );
+
         }
         $icon.appendTo( $appendTo );
         return $icon;
     };
-
 
 
     $.fn.extend({

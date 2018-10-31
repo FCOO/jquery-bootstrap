@@ -24,14 +24,45 @@ Bootstrap allready have the following classes
 
 */
 
-//.container-icon-and-text: used when adding icon and/or text to button, header etc. But not if it contains stacked icons
+//.container-icon-and-text: used when adding icon and/or text to button, header etc.
 .container-icon-and-text:not(.fa-stack) {
-    & > i:not(:first-child),
-    & > span:not(:first-child) {
-        padding-left: 0.3em;
+    & > .container-stacked-icons:not(:last-child),
+    & > i:not(:last-child) {
+        margin-right: .4em;
     }
 
     //Adjust default style inside a text-box
     * { margin-top: 0; margin-bottom: 0}
     ol, ul, dl { padding-left: 2em;}
+
+
+    line-height: 1;
+}
+
+//Stacked icons
+.container-stacked-icons {
+    $dim       : 1em;
+    text-align : center;
+    display    : inline-block;
+    line-height: 1;
+
+    .stacked-icon {
+        width : $dim;
+        //height: $dim;
+        &:not(:first-child) {
+            margin-left: -1 * $dim;
+        }
+    }
+}
+
+
+/************************************************************
+Modernizr-test for stacted icon with parent with class="active" when selected
+************************************************************/
+.active .container-stacked-icons i.icon-hide-for-active {
+    opacity: inherit;
+}
+
+.no-active .container-stacked-icons i.icon-show-for-active {
+    opacity: 0;
 }

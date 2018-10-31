@@ -316,8 +316,12 @@
         options.class = 'allow-zero-selected';
 
         //Use modernizr-mode and classes if icon and/or text containe two values
-        if ($.isArray(options.icon)){
-            options.iconClassName = ['hide-for-active', 'show-for-active'];
+        if ($.isArray(options.icon) && (options.icon.length == 2)){
+            options.icon = [[
+                options.icon[0]+ ' icon-hide-for-active',
+                options.icon[1]+ ' icon-show-for-active'
+            ]];
+//HER             options.iconClassName = ['hide-for-active', 'show-for-active'];
             options.modernizr = true;
         }
         if ($.isArray(options.text)){
@@ -567,6 +571,40 @@
     };
 
 }(jQuery, this.i18next, this, document));
+;
+/****************************************************************************
+	jquery-bootstrap-fontawesome.js,
+
+	(c) 2017, FCOO
+
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+****************************************************************************/
+
+(function ($/*, window, document, undefined*/) {
+	"use strict";
+
+    /*******************************************
+    $.bsMarkerIcon(colorClassName, borderColorClassName)
+    Return options to create a marker-icon = round icon with
+    inner color given as color in colorClassName and
+    border-color given as color in borderColorClassName
+    partOfList: true if the icon is part of a list
+    faClassName: alternative fa-class for symbol
+    ********************************************/
+    $.bsMarkerIcon = function(colorClassName, borderColorClassName, partOfList, faClassName){
+        colorClassName       = colorClassName || 'text-white';
+        borderColorClassName = borderColorClassName || 'text-black';
+        faClassName          = faClassName || 'fa-circle';
+        var result = [
+            'fas ' + faClassName + ' ' + colorClassName,
+            'far ' + faClassName + ' ' + borderColorClassName
+        ];
+        return partOfList ? result : [result];
+    };
+
+}(jQuery, this, document));
 ;
 /****************************************************************************
 	jquery-bootstrap-form.js
@@ -1142,15 +1180,15 @@
         back    : 'fa-chevron-left',
         forward : 'fa-chevron-right',
 
-        pin     : ['fas fa-thumbtack fa-stack-1x fa-inside-circle', 'far fa-circle fa-stack-1x'],
+        pin     : ['fas fa-thumbtack fa-inside-circle', 'far fa-circle'],
         unpin   : 'fa-thumbtack',
 
         extend  : 'fa-chevron-up',
         diminish: 'fa-chevron-down',
 
-        new     : ['far fa-window-maximize fa-stack-1x fa-inside-circle2', 'far fa-circle fa-stack-1x'],
+        new     : ['far fa-window-maximize fa-inside-circle2', 'far fa-circle'],
 
-        close   : ['far fa-times-circle fa-stack-1x hide-for-hover', 'fas fa-times-circle text-danger fa-stack-1x show-for-hover']
+        close   : ['fas fa-circle back', 'far fa-times-circle middle', 'fas fa-times-circle front']
     };
 
     //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
@@ -1205,8 +1243,8 @@
             $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'close'], function( index, id ){
                 var iconOptions = options.icons[id],
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
-                if (iconOptions && iconOptions.onClick){
 
+                if (iconOptions && iconOptions.onClick){
                     $._bsCreateIcon(
                         $.bsHeaderIcons[id],
                         $iconContainer,
@@ -4098,7 +4136,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     /****************************************************************************************
     $._bsCreateIcon = internal method to create $-icon
     ****************************************************************************************/
-    $._bsCreateIcon = function( options, $appendTo, title, className ){
+    $._bsCreateIcon = function( options, $appendTo, title, className/*, insideStack*/ ){
         var $icon;
 
         if ($.type(options) == 'string')
@@ -4106,10 +4144,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         if ($.isArray( options)){
             //Create a stacked icon
-            $icon = $._bsCreateElement( 'span', null, title, null, 'fa-stack ' + (className || '')  );
+             $icon = $._bsCreateElement( 'div', null, title, null, 'container-stacked-icons ' + (className || '')  );
 
             $.each( options, function( index, opt ){
-                $._bsCreateIcon( opt, $icon );
+                $._bsCreateIcon( opt, $icon, null, 'stacked-icon' );
             });
         }
         else {
@@ -4122,11 +4160,11 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             allClassNames = allClassNames + ' ' + (className || '');
 
             $icon = $._bsCreateElement( 'i', null, title, null, allClassNames );
+
         }
         $icon.appendTo( $appendTo );
         return $icon;
     };
-
 
 
     $.fn.extend({
