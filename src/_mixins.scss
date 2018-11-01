@@ -355,7 +355,7 @@ Mixin to set colors for selected elements and when hover
             }
         }
 
-       #{$allowZeroSelected-selector} #{$selector}{
+        #{$allowZeroSelected-selector} #{$selector}{
             //Active (selected) AND allowing unselection
             &.active {
                 @include color-hover(

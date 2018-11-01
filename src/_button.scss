@@ -48,7 +48,19 @@ div.btn, div.list-group-item {
 
     //Selected colors when button is checkbox-style
     &.allow-zero-selected {
-        @include control-active-color();
+         @include control-active-color();
+
+         html.mouse-hover &.active:hover {
+             background: darken($control-active-bg-color, $darken-hover-percent);
+         }
+        &.active {
+             @include control-color(
+                 $control-active-color,              //$color
+                 $control-active-color,              //$color-hover
+                 darken($control-active-color, 10%), //$color-active
+                 $control-active-color               //$color-focus
+             );
+        }
     }
 
     //Icons in buttons get equal size to allow shift of icon
@@ -66,10 +78,6 @@ div.btn, div.list-group-item {
         height        : 1em;
         line-height   : 1.5 * $font-size-sm;
         vertical-align: top;
-
-
-
-background-color: yellow;
     }
 
     /************************************************************

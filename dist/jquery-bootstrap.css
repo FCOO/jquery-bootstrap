@@ -7092,16 +7092,16 @@ Bootstrap allready have the following classes
 .font-italic
 
 */
-.container-icon-and-text:not(.fa-stack) {
-  line-height: 1; }
-  .container-icon-and-text:not(.fa-stack) > .container-stacked-icons:not(:last-child),
-  .container-icon-and-text:not(.fa-stack) > i:not(:last-child) {
-    margin-right: .4em; }
-  .container-icon-and-text:not(.fa-stack) * {
-    margin-top: 0;
-    margin-bottom: 0; }
-  .container-icon-and-text:not(.fa-stack) ol, .container-icon-and-text:not(.fa-stack) ul, .container-icon-and-text:not(.fa-stack) dl {
-    padding-left: 2em; }
+.container-icon-and-text:not(.fa-stack) > .container-stacked-icons:not(:last-child),
+.container-icon-and-text:not(.fa-stack) > i:not(:last-child) {
+  margin-right: .4em; }
+
+.container-icon-and-text:not(.fa-stack) * {
+  margin-top: 0;
+  margin-bottom: 0; }
+
+.container-icon-and-text:not(.fa-stack) ol, .container-icon-and-text:not(.fa-stack) ul, .container-icon-and-text:not(.fa-stack) dl {
+  padding-left: 2em; }
 
 .container-stacked-icons {
   text-align: center;
@@ -7281,6 +7281,20 @@ div.btn, div.list-group-item {
     background-color: #007bff; }
     .mouse-hover .allow-zero-selected .btn.btn-standard.allow-zero-selected.active:hover {
       background-color: #006fe6; }
+  html.mouse-hover .btn.btn-standard.allow-zero-selected.active:hover {
+    background: #006fe6; }
+  .btn.btn-standard.allow-zero-selected.active {
+    color: #fff; }
+    .btn.btn-standard.allow-zero-selected.active:active, .btn.btn-standard.allow-zero-selected.active.active {
+      color: #e6e5e5; }
+    .btn.btn-standard.allow-zero-selected.active:focus, .btn.btn-standard.allow-zero-selected.active.focus {
+      color: #fff; }
+    .btn.btn-standard.allow-zero-selected.active.disabled, .btn.btn-standard.allow-zero-selected.active:disabled {
+      color: #fff; }
+    .mouse-hover .hover .btn.btn-standard.allow-zero-selected.active:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.allow-zero-selected.active.hover:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.allow-zero-selected.active:hover:not(:focus):not(:disabled):not(.disabled) {
+      color: #fff; }
   .btn.btn-standard > i.fa {
     min-width: 1em;
     text-align: left; }
@@ -7290,8 +7304,7 @@ div.btn, div.list-group-item {
     width: 1em;
     height: 1em;
     line-height: 1.21875rem;
-    vertical-align: top;
-    background-color: yellow; }
+    vertical-align: top; }
   .btn.btn-standard.transparent {
     background-color: transparent;
     color: #D4D4D4;
