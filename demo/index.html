@@ -661,7 +661,7 @@ var now = moment();
             allowZeroSelected: true,
             //allowReselect: true,
             columns: [
-                { id: 'no',                                 header: 'ER DET HER #',     align: 'center', width: '1rem', noHorizontalPadding: true},
+                { id: 'no',                                 header: '#',     align: 'center', width: '1rem', noHorizontalPadding: true},
                 { id: 'name',               noWrap: true,   header: {icon:'fa-home', text:{da:'Navn', en:'Name'}},  align: 'center', sortable: true, sortHeader: true, sortIndex:1000},
                 { id: 'stargazers_count',                   header: 'Stars', align: 'center', vfFormat:"myNumberFormat", sortBy:'int'},
                 { id: 'date',               header: 'Date', align: 'center', vfFormat:"myMomentFormat", sortBy:'moment', sortDefault: true/*'desc'*/},
@@ -701,9 +701,7 @@ var now = moment();
             _flexWidth:true,
             _extraWidth: true,
             width: 300, _small: true,
-            header: {
-                text: 'En liste',
-            },
+            header: [{icon: 'fa-home', text: 'En liste'}, {icon: 'fa-home', text: 'En liste'}, {text: 'En liste'}],
             onNew: function(){ alert('NEW'); },
             onPin: function(){ alert('PIN'); },
             extended: {
