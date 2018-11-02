@@ -12,6 +12,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 ## Contents
 
 - [Common](#common)
+- [Utilities](#utilities)
 - [Button](#button)
 - [Button-group](#buttongroup)
 - [Radio-button-group](#radiobuttongroup)
@@ -122,6 +123,23 @@ Use any of the following options
 
 ### `context`
 If `options.context` is given, ALL functions in `options` (eg. `onClick`, `text`, etc.) is called with `this=context`
+
+<a name="utilities"></a>
+## Utilities
+
+### $.bsMarkerIcon
+
+    var myIcon = $.bsMarkerIcon(colorClassName, borderColorClassName, options);
+
+Return options to create a marker-icon = icon with inner color given as color in `colorClassName` and     border-color given as color in `borderColorClassName`
+
+#### options
+| Id | Type | Default | Description |
+| :--: | :--: | :-----: | --- |
+| `faClassName` | `string` | `"fa-circle"` | fa-class for symbol |
+| `extraClassName` | `string` or `string[]` | `""` | Extra class-name to be added |
+| `partOfList` | `boolean` | `false` | If `true` the icon is part of a list => return `[icon-name]` instead of `[[icon-name]]` |
+
 
 <a name="button"></a>
 ## Button
