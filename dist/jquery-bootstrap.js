@@ -4162,6 +4162,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             $.each( options, function( index, opt ){
                 $._bsCreateIcon( opt, $icon, null, 'stacked-icon' );
             });
+
+            //If any of the stacked icons have class fa-no-margin => set if on the container
+            if ($icon.find('.fa-no-margin').length)
+                $icon.addClass('fa-no-margin');
         }
         else {
             var allClassNames = options.icon || options.class || '';

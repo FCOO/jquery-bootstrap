@@ -26,8 +26,8 @@ Bootstrap allready have the following classes
 
 //.container-icon-and-text: used when adding icon and/or text to button, header etc.
 .container-icon-and-text:not(.fa-stack) {
-    & > .container-stacked-icons:not(:last-child),
     & > span:not(:last-child),
+    & > .container-stacked-icons:not(:last-child):not(.fa-no-margin),
     & > i:not(:last-child):not(.fa-no-margin) {
         margin-right: .4em;
     }
