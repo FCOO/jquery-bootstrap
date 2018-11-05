@@ -29,8 +29,8 @@ Bootstrap allready have the following classes
     & > span:not(:last-child),
     & > .container-stacked-icons:not(:last-child):not(.fa-no-margin),
     & > i:not(:last-child):not(.fa-no-margin),
-    & > :not(.inline-block),
-    & > :not(.d-block) {
+    & > span:not(.inline-block),
+    & > span:not(.d-block) {
         margin-right: .4em;
     }
 
