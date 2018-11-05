@@ -28,11 +28,15 @@ Bootstrap allready have the following classes
 .container-icon-and-text:not(.fa-stack) {
     & > span:not(:last-child),
     & > .container-stacked-icons:not(:last-child):not(.fa-no-margin),
-    & > i:not(:last-child):not(.fa-no-margin),
-    & > span:not(.inline-block),
-    & > span:not(.d-block) {
+    & > i:not(:last-child):not(.fa-no-margin) {
         margin-right: .4em;
     }
+
+    & > span.inline-block,
+    & > span.d-block {
+        margin-right: inherit;
+    }
+
 
     //Adjust default style inside a text-box
     * { margin-top: 0; margin-bottom: 0}
