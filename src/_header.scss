@@ -9,7 +9,9 @@ Icons for modal header inside a container
 <i class="header-icon fa-XX [hidden][disabled]"/>
 ****************************************************/
 .header-icon-container {
-    @include vertical-align-center();
+//    @include vertical-align-center();
+    display        : flex;
+    align-items    : baseline;
 
     flex-shrink    : 0;
     justify-content: center;
