@@ -611,7 +611,9 @@
         $result.extend( bsModal_prototype );
 
         //Add close-icon and create modal content
-        options.icons = { close: { onClick: $.proxy( bsModal_prototype.close, $result) } };
+        options.icons = options.icons || {};
+        options.icons.close = { onClick: $.proxy( bsModal_prototype.close, $result) };
+
         $modalDialog._bsModalContent( options );
         $result.data('bsModalDialog', $modalDialog);
 
