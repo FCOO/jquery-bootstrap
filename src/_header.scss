@@ -52,22 +52,16 @@ Icons for modal header inside a container
 
         //Special version for close-icon
         &.header-icon-close {
-            .back {
-                opacity: 0;
-                color  : white;
-            }
-            .front {
-                opacity: 0;
-                color  : $red;
-            }
+            * { text-shadow: none; }
+            .back { color: transparent; }
 
             &:not(.disabled):hover {
                 opacity: .9;
                 &:active { opacity: 1; }
 
-                .back   { opacity: inherit }
-                .middle { opacity: 0       }
-                .front  { opacity: inherit }
+                .back    { color: $red; }
+                .middle  { color: white; }
+                .front   { color: $red; }
             }
         }
     } //end of .header-icon {
