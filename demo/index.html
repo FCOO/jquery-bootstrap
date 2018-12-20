@@ -88,6 +88,7 @@ $('body').on('wheel', function(e){
         }
 });
 */
+
         window.bsIsTouch = false;
         window.bsIsTouch = (window.location.search =='?touch');
 
@@ -421,6 +422,15 @@ return;
             icon: ['fa-square', ['fa-home', 'fa-square']],
         }).appendTo($body);
 
+
+        header('Button-group');
+        $.bsRadioButtonGroup({
+            list: [
+                {id:'slow',   icon: 'fa-bicycle',       text:'Cykel'},
+                {id:'medium', icon: 'fa-car',           text:'Bil'},
+                {id:'fast',   icon: 'fa-fighter-jet',   text:'Jet'}
+            ]
+        }).appendTo($body);
 
         header('Popover (click on buttons)');
         var titles = ['Small', 'Normal'];
