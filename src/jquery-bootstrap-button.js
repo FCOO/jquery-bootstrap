@@ -158,6 +158,9 @@
         if (options.allowZeroSelected)
             result.addClass( 'allow-zero-selected' );
 
+        if (options.fullWidth && !options.vertical)
+            result.addClass('btn-group-full-width');
+
         if (options.attr)
             result.attr( options.attr );
 

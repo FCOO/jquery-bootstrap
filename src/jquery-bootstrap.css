@@ -9700,7 +9700,7 @@ html.mouse-hover .btn.btn-standard.active:hover {
   background: #007bff;
 }
 html.mouse-hover .btn.btn-standard.active.allow-zero-selected:hover {
-  background: red;
+  background: #006fe6;
 }
 .btn.btn-standard.active {
   color: #fff;
@@ -9820,6 +9820,13 @@ Including .btn-xs and btn-group-xs as in Bootstrap 3
 /************************************************************
 BUTTON-GROUP
 ************************************************************/
+.btn-group:not(.btn-group-vertical).btn-group-full-width {
+  display: flex;
+}
+.btn-group:not(.btn-group-vertical).btn-group-full-width .btn {
+  flex: 1 0 10px;
+}
+
 /************************************************************
 LIST-GROUP and LIST-GROUP-ITEM - REMOVED FOR NOW
 ************************************************************/

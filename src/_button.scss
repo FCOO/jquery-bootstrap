@@ -187,6 +187,16 @@ BUTTON-GROUP
     @extend .w-100;
 }
 
+
+//Horizontal button-group with full width and equal
+.btn-group:not(.btn-group-vertical).btn-group-full-width {
+    display: flex;
+    .btn {
+        flex: 1 0 10px;
+    }
+}
+
+
 /************************************************************
 LIST-GROUP and LIST-GROUP-ITEM - REMOVED FOR NOW
 ************************************************************/

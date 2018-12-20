@@ -178,6 +178,7 @@ Return options to create a marker-icon = icon with inner color given as color in
 | :--: | :--: | :-----: | --- |
 | `vertical` | `boolean` | `false` | `false`: Buttons side-by-side.  `true`: Buttons in list |
 | `center` | `boolean` | `options.vertical`| Center-align then content of the buttons |
+| `fullWidth` | `boolean` | `false`| If `true` the group get full width of parent and all buttons get equal width |
 | `buttons` or `list` | `[] of button-options` | `[]`| Array of options for the buttons (See above) |
 
 <a name="radiobuttongroup"></a>
