@@ -264,12 +264,9 @@
                 result.prop('href', 'javascript:undefined');
         }
 
-        result
-            ._bsAddIdAndName( options )
-            ._bsAddBaseClassAndSize( options );
-
-        if (options.id)
-            result.attr('id', options.id);
+        result._bsAddBaseClassAndSize( options );
+        if (!options.radioGroup)
+            result._bsAddIdAndName( options );
 
         if (options.selected)
             result.addClass('active');
@@ -289,6 +286,9 @@
             result.on('click', $.proxy( result._bsButtonOnClick, result ) );
 
         result._bsAddHtml( options, false, true );
+
+        if (options.radioGroup)
+            options.radioGroup.addElement( result, options );
 
         return result;
     };
@@ -321,7 +321,6 @@
                 options.icon[0]+ ' icon-hide-for-active',
                 options.icon[1]+ ' icon-show-for-active'
             ]];
-//HER             options.iconClassName = ['hide-for-active', 'show-for-active'];
             options.modernizr = true;
         }
         if ($.isArray(options.text)){
@@ -351,6 +350,7 @@
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
         var result = $('<'+ options.tagName + '/>')
+                        ._bsAddIdAndName( options )
                         ._bsAddBaseClassAndSize( options );
 
         if (options.center)
@@ -366,6 +366,9 @@
 
         if (options.allowZeroSelected)
             result.addClass( 'allow-zero-selected' );
+
+        if (options.fullWidth && !options.vertical)
+            result.addClass('btn-group-full-width');
 
         if (options.attr)
             result.attr( options.attr );
@@ -388,10 +391,6 @@
 
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){
-        options = $._bsAdjustOptions( options, {}, { useTouchSize: true, addOnClick: false } );
-
-        var result = $.bsButtonGroup( options );
-
         //Set options for RadioGroup
         $.each( options.list, function(index, buttonOptions ){
             buttonOptions = $._bsAdjustOptions( buttonOptions );
@@ -400,9 +399,27 @@
                 return false;
             }
         });
-        options.className = 'active';
-        var radioGroup = $.radioGroup( options );
-        radioGroup.addElement( result.children('[id]'), options );
+
+        var radioGroup =
+                $.radioGroup(
+                    $.extend({}, options, {
+                        radioGroupId     : options.id,
+                        className        : 'active',
+                        allowZeroSelected: false
+                    })
+                );
+
+        options =
+            $._bsAdjustOptions( options, {}, {
+                useTouchSize: true,
+                addOnClick: false,
+                buttonOptions: {
+                    radioGroup: radioGroup
+                }
+            } );
+
+        var result = $.bsButtonGroup( options );
+
         result.data('radioGroup', radioGroup );
 
         return result;
@@ -695,15 +712,16 @@
         setValue: function(value, validate){
             var $elem = this.getElement();
             switch (this.options.type || 'input'){
-                case 'input'     : $elem.val( value );                      break;
-                case 'select'    : $elem.val( value ).trigger('change');    break;
-                case 'checkbox'  : $elem.prop('checked', !!value );         break;
-                case 'selectlist': this.getRadioGroup().setSelected(value); break;
-//TODO case 'radio': ... break;
-                case 'slider'    :
-                case 'timeslider': this.getSlider().setValue( value );      break;
-                case 'text'      :                                          break;
-                case 'hidden'    : $elem.val( value );                      break;
+                case 'input'            : $elem.val( value );                      break;
+                case 'select'           : $elem.val( value ).trigger('change');    break;
+                case 'checkbox'         : $elem.prop('checked', !!value );         break;
+                case 'selectlist'       : this.getRadioGroup().setSelected(value); break;
+                case 'radiobuttongroup' : this.getRadioGroup().setSelected(value); break;
+
+                case 'slider'           :
+                case 'timeslider'       : this.getSlider().setValue( value );      break;
+                case 'text'             :                                          break;
+                case 'hidden'           : $elem.val( value );                      break;
             }
             this.onChanging();
             return validate ? this.validate() : this;
@@ -715,15 +733,16 @@
         getResetValue: function(){
             var result = null;
             switch (this.options.type || 'input'){
-                case 'input'     : result = '';    break;
-                case 'select'    : result = -1;    break;
-                case 'checkbox'  : result = false; break;
-                case 'selectlist': result = this.getRadioGroup().options.list[0].id; break;
-//TODO case 'radio': result = ... break;
-                case 'slider'    :
-                case 'timeslider': result = this.getSlider().result.min; break;
-                case 'text'      : result = '';                          break;
-                case 'hidden'    : result = '';                          break;
+                case 'input'            : result = '';    break;
+                case 'select'           : result = -1;    break;
+                case 'checkbox'         : result = false; break;
+                case 'selectlist'       : result = this.getRadioGroup().options.list[0].id; break;
+                case 'radiobuttongroup' : result = this.getRadioGroup().options.list[0].id; break;
+
+                case 'slider'           :
+                case 'timeslider'       : result = this.getSlider().result.min; break;
+                case 'text'             : result = '';                          break;
+                case 'hidden'           : result = '';                          break;
             }
             return result;
         },
@@ -751,15 +770,15 @@
             var $elem = this.getElement(),
                 result = null;
             switch (this.options.type || 'input'){
-                case 'input'     : result = $elem.val();               break;
-                case 'select'    : result = $elem.val();               break;
-                case 'checkbox'  : result = !!$elem.prop('checked');   break;
-                case 'selectlist': result = this.getRadioGroup().getSelected(); break;
-//TODO case 'radio': ... break;
-                case 'slider'    :
-                case 'timeslider': result = this._getSliderValue(); break;
-                case 'text'      : result = ' ';                    break;
-                case 'hidden'    : result = $elem.val();            break;
+                case 'input'            : result = $elem.val();               break;
+                case 'select'           : result = $elem.val();               break;
+                case 'checkbox'         : result = !!$elem.prop('checked');   break;
+                case 'selectlist'       : result = this.getRadioGroup().getSelected(); break;
+                case 'radiobuttongroup' : result = this.getRadioGroup().getSelected(); break;
+                case 'slider'           :
+                case 'timeslider'       : result = this._getSliderValue(); break;
+                case 'text'             : result = ' ';                    break;
+                case 'hidden'           : result = $elem.val();            break;
             }
             return result ===null ? this.getResetValue() : result;
         },
@@ -846,7 +865,7 @@
         //this.input = simple object with all input-elements. Also convert element-id to unique id for input-element
         this.inputs = {};
 
-        var types = ['input', 'select', 'selectlist', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden'];
+        var types = ['input', 'select', 'selectlist', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden'];
 
         function setId( dummy, obj ){
             if ($.isPlainObject(obj) && (obj.type !== undefined) && (types.indexOf(obj.type) >= 0) && obj.id){
@@ -4500,21 +4519,22 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 if (options.type){
                     var type = options.type.toLowerCase();
                     switch (type){
-                        case 'input'        :   buildFunc = $.bsInput;          insideFormGroup = true; break;
-                        case 'button'       :   buildFunc = $.bsButton;         break;
-                        case 'select'       :   buildFunc = $.bsSelectBox;      insideFormGroup = true; break;
-                        case 'selectlist'   :   buildFunc = $.bsSelectList;     break;
-                        case 'checkbox'     :   buildFunc = $.bsCheckbox;       insideFormGroup = true; break;
-                        case 'tabs'         :   buildFunc = $.bsTabs;           break;
-                        case 'table'        :   buildFunc = $.bsTable;          break;
-                        case 'list'         :   buildFunc = $.bsList;           break;
-                        case 'accordion'    :   buildFunc = $.bsAccordion;      break;
-                        case 'slider'       :   buildFunc = buildBaseSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
-                        case 'timeslider'   :   buildFunc = buildTimeSlider;    insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
-                        case 'text'         :   buildFunc = buildText;          insideFormGroup = true; addBorder = true; noValidation = true; break;
-                        case 'fileview'     :   buildFunc = $.bsFileView;       break;
-                        case 'hidden'       :   buildFunc = buildHidden;        noValidation = true; break;
-//                        case 'xx'           :   buildFunc = $.bsXx;               break;
+                        case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
+                        case 'button'           :   buildFunc = $.bsButton;             break;
+                        case 'select'           :   buildFunc = $.bsSelectBox;          insideFormGroup = true; break;
+                        case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
+                        case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
+                        case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; break;
+                        case 'tabs'             :   buildFunc = $.bsTabs;               break;
+                        case 'table'            :   buildFunc = $.bsTable;              break;
+                        case 'list'             :   buildFunc = $.bsList;               break;
+                        case 'accordion'        :   buildFunc = $.bsAccordion;          break;
+                        case 'slider'           :   buildFunc = buildBaseSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
+                        case 'timeslider'       :   buildFunc = buildTimeSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
+                        case 'text'             :   buildFunc = buildText;              insideFormGroup = true; addBorder = true; noValidation = true; break;
+                        case 'fileview'         :   buildFunc = $.bsFileView;           break;
+                        case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
+//                        case 'xx'               :   buildFunc = $.bsXx;               break;
                     }
                 }
 

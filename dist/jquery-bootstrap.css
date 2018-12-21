@@ -7273,32 +7273,34 @@ div.btn, div.list-group-item {
       border-color: #921925; }
   .btn.btn-standard.disabled, .btn.btn-standard:disabled {
     background-color: #f8f9fa; }
-  .btn.btn-standard.allow-zero-selected {
+  .btn.btn-standard {
     color: #515961;
     background-color: #f8f9fa; }
-    .mouse-hover .btn.btn-standard.allow-zero-selected:hover {
+    .mouse-hover .btn.btn-standard:hover {
       color: #454c53;
       background-color: #e9ecef; }
-    .btn.btn-standard.allow-zero-selected.active {
+    .btn.btn-standard.active {
       color: #fff;
       background-color: #007bff; }
-  .allow-zero-selected .btn.btn-standard.allow-zero-selected.active {
+  .allow-zero-selected .btn.btn-standard.active {
     background-color: #007bff; }
-    .mouse-hover .allow-zero-selected .btn.btn-standard.allow-zero-selected.active:hover {
+    .mouse-hover .allow-zero-selected .btn.btn-standard.active:hover {
       background-color: #006fe6; }
-  html.mouse-hover .btn.btn-standard.allow-zero-selected.active:hover {
+  html.mouse-hover .btn.btn-standard.active:hover {
+    background: #007bff; }
+  html.mouse-hover .btn.btn-standard.active.allow-zero-selected:hover {
     background: #006fe6; }
-  .btn.btn-standard.allow-zero-selected.active {
+  .btn.btn-standard.active {
     color: #fff; }
-    .btn.btn-standard.allow-zero-selected.active:active, .btn.btn-standard.allow-zero-selected.active.active {
+    .btn.btn-standard.active:active, .btn.btn-standard.active.active {
       color: #e6e5e5; }
-    .btn.btn-standard.allow-zero-selected.active:focus, .btn.btn-standard.allow-zero-selected.active.focus {
+    .btn.btn-standard.active:focus, .btn.btn-standard.active.focus {
       color: #fff; }
-    .btn.btn-standard.allow-zero-selected.active.disabled, .btn.btn-standard.allow-zero-selected.active:disabled {
+    .btn.btn-standard.active.disabled, .btn.btn-standard.active:disabled {
       color: #fff; }
-    .mouse-hover .hover .btn.btn-standard.allow-zero-selected.active:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover .btn.btn-standard.allow-zero-selected.active.hover:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover .btn.btn-standard.allow-zero-selected.active:hover:not(:focus):not(:disabled):not(.disabled) {
+    .mouse-hover .hover .btn.btn-standard.active:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.active.hover:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.active:hover:not(:focus):not(:disabled):not(.disabled) {
       color: #fff; }
   .btn.btn-standard > i.fa {
     min-width: 1em;
@@ -7389,6 +7391,17 @@ Including .btn-xs and btn-group-xs as in Bootstrap 3
 /************************************************************
 BUTTON-GROUP
 ************************************************************/
+.input-group .btn-group,
+.btn-group:not(.btn-group-vertical).btn-group-full-width {
+  display: flex;
+  width: 100%; }
+  .input-group .btn-group .btn,
+  .btn-group:not(.btn-group-vertical).btn-group-full-width .btn {
+    flex: 1 0 10px; }
+
+.has-fixed-label ~ .btn-group {
+  padding-top: 3px; }
+
 /************************************************************
 LIST-GROUP and LIST-GROUP-ITEM - REMOVED FOR NOW
 ************************************************************/

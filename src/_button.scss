@@ -188,12 +188,19 @@ BUTTON-GROUP
 }
 
 
-//Horizontal button-group with full width and equal
+//Horizontal button-group with full width and equal width or inside input-group
+.input-group .btn-group,
 .btn-group:not(.btn-group-vertical).btn-group-full-width {
     display: flex;
+    width  : 100%;
     .btn {
         flex: 1 0 10px;
     }
+}
+
+//Add padding-top when inside a input-group with label
+.has-fixed-label ~ .btn-group {
+    padding-top: 3px;
 }
 
 

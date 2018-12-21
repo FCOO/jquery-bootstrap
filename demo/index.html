@@ -1046,10 +1046,10 @@ width: 543,
             'formId2': 'Skide godt do',
             'mySelection': false,
             'theSelectList': 'item3',
-            'hemmeligt': 'Dette er super hemmeligt'
+            'hemmeligt': 'Dette er super hemmeligt',
 
 //            'formId1': 'formSelect3',
-//            'formId2-1': 'formSelect3',
+            'formId2-1': 'formSelect3',
         }
 
         $('<button>TEST</button>')
@@ -1160,13 +1160,11 @@ width: 3*300,
                                             showWhen: {'mySelection': false }
                                         },
                                         {
-                                            id:'formId2-1', type: 'select', _selectedId: 'formSelect4', placeholder:"Placeholder", label:'Label',
+                                            id:'formId2-1', type: 'radiobuttongroup', selectedId: 'formSelect3', label:'Label',
                                             items:[
                                                 {id:'formSelect1', icon:'fa-home', text: 'Davs'},
                                                 {id:'formSelect2', text:'Item 2'},
-                                                {id:'formSelect3', text:'Item 3 SKIDE GODT'},
-                                                {id:'formSelect4', text:'Item 4'},
-                                                {id:'formSelect5', text:'Item 5'}
+                                                {id:'formSelect3', text:'Item 3'}
                                             ]
                                         },
                                         {

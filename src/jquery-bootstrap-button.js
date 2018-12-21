@@ -55,12 +55,9 @@
                 result.prop('href', 'javascript:undefined');
         }
 
-        result
-            ._bsAddIdAndName( options )
-            ._bsAddBaseClassAndSize( options );
-
-        if (options.id)
-            result.attr('id', options.id);
+        result._bsAddBaseClassAndSize( options );
+        if (!options.radioGroup)
+            result._bsAddIdAndName( options );
 
         if (options.selected)
             result.addClass('active');
@@ -80,6 +77,9 @@
             result.on('click', $.proxy( result._bsButtonOnClick, result ) );
 
         result._bsAddHtml( options, false, true );
+
+        if (options.radioGroup)
+            options.radioGroup.addElement( result, options );
 
         return result;
     };
@@ -112,7 +112,6 @@
                 options.icon[0]+ ' icon-hide-for-active',
                 options.icon[1]+ ' icon-show-for-active'
             ]];
-//HER             options.iconClassName = ['hide-for-active', 'show-for-active'];
             options.modernizr = true;
         }
         if ($.isArray(options.text)){
@@ -142,6 +141,7 @@
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
         var result = $('<'+ options.tagName + '/>')
+                        ._bsAddIdAndName( options )
                         ._bsAddBaseClassAndSize( options );
 
         if (options.center)
@@ -182,10 +182,6 @@
 
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){
-        options = $._bsAdjustOptions( options, {}, { useTouchSize: true, addOnClick: false } );
-
-        var result = $.bsButtonGroup( options );
-
         //Set options for RadioGroup
         $.each( options.list, function(index, buttonOptions ){
             buttonOptions = $._bsAdjustOptions( buttonOptions );
@@ -194,9 +190,27 @@
                 return false;
             }
         });
-        options.className = 'active';
-        var radioGroup = $.radioGroup( options );
-        radioGroup.addElement( result.children('[id]'), options );
+
+        var radioGroup =
+                $.radioGroup(
+                    $.extend({}, options, {
+                        radioGroupId     : options.id,
+                        className        : 'active',
+                        allowZeroSelected: false
+                    })
+                );
+
+        options =
+            $._bsAdjustOptions( options, {}, {
+                useTouchSize: true,
+                addOnClick: false,
+                buttonOptions: {
+                    radioGroup: radioGroup
+                }
+            } );
+
+        var result = $.bsButtonGroup( options );
+
         result.data('radioGroup', radioGroup );
 
         return result;
