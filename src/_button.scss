@@ -106,6 +106,14 @@ div.btn, div.list-group-item {
             rgba(0,0,0,.15),    //$border-color-hover
             false               //$incl-error
         );
+
+        @include color-hover(
+            $transparent-color,     //$color
+            $transparent-bg-color,  //$bg-color
+            true,                   //$hover
+            true                    //$bg
+        );
+
     }
 
     /************************************************************
