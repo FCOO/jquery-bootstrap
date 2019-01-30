@@ -45,7 +45,7 @@ Adjustmernt to Bootstrap table
             }
 
             &.sortable {
-                @include title-color(true, '&.asc, &.desc'); // ($hover: false, $selected-class: '', $bg: true, $invers: false  );
+                @include title-color($hover: true, $selected-selector: '&.asc, &.desc');
 
                 cursor: default;
 
@@ -101,7 +101,7 @@ Adjustmernt to Bootstrap table
 
     //Selectable rows
     &.table-selectable tbody tr {
-        @include select-list-color("&");
+        @include control-colors($incl-border: false);
         cursor: default;
     }
 
@@ -175,15 +175,3 @@ Adjustmernt to Bootstrap table
         }
     }
 }
-
-
-//Cell
-//HER    tbody tr td {
-//HER        @include content-padding-sm();
-//HER        &.no-horizontal-padding {
-//HER            padding-left : 0;
-//HER            padding-right: 0;
-//HER        }
-//HER    }
-
-

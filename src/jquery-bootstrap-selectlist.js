@@ -16,19 +16,6 @@
 
     var selectlistId = 0;
 
-    $.fn._selectlist_onMouseenter = function(/*event*/){
-        this
-            .addClass('highlighted')
-            .siblings('.highlighted').removeClass('highlighted');
-    };
-    $.fn._selectlist_onMouseleave = function(/*event*/){
-        this.removeClass('highlighted');
-    };
-    $.fn._selectlist_onMouseleaveList = function(/*event*/){
-        this.find('.highlighted').removeClass('highlighted');
-        this.find('.active').addClass('highlighted');
-    };
-
     $.bsSelectList = $.bsSelectlist = function( options ){
         options =
             $._bsAdjustOptions( options, {
@@ -60,18 +47,14 @@
                 .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
                 .addClass( options.center ? 'text-center' : '')
                 .appendTo( $result )
-                ._bsAddHtml( itemOptions/*, true */)
-                .on('mouseenter', $.proxy($item._selectlist_onMouseenter, $item) )
-                .on('mouseleave', $.proxy($item._selectlist_onMouseleave, $item) );
+                ._bsAddHtml( itemOptions/*, true */);
 
             if (isItem)
                 radioGroup.addElement( $item, itemOptions );
         });
 
-        $result
-            .on('mouseleave', $.proxy($result._selectlist_onMouseleaveList, $result) )
-            .data('selectlist_radiogroup', radioGroup)
-            .find('.active').addClass('highlighted');
+        $result.data('selectlist_radiogroup', radioGroup);
+
         return $result;
     };
 

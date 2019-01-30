@@ -50,7 +50,7 @@ position: fixed;
 	<script src="../src/jquery-bootstrap-modal-backdrop.js"></script>
 	<script src="../src/jquery-bootstrap-checkbox.js"></script>
 	<script src="../src/jquery-bootstrap-selectlist.js"></script>
-	<script src="../src/jquery-bootstrap-select2.js"></script>
+	<script src="../src/jquery-bootstrap-select.js"></script>
 	<script src="../src/jquery-bootstrap-button.js"></script>
 	<script src="../src/jquery-bootstrap-accordion.js"></script>
     <script src="../src/jquery-bootstrap-popover.js"></script>
@@ -109,7 +109,7 @@ $('body').on('wheel', function(e){
         $.valueFormat.add({
             id: 'myMomentFormat',
             format: function( value, options ){
-                return value.format('YY-MM-DD ddd HH-MM');
+                return moment(value).format('YY-MM-DD ddd HH-MM');
             }
         });
 
@@ -346,6 +346,7 @@ return;
             ]
 
         var selectItems3 = [
+                {text:{da:'Overskrift', en: 'Header'} },
                 {id: 'item1', text:{da:'Emne#1', en: 'Item#1'} },
                 {id: 'item2', text:{da:'Emne#2', en: 'Item#2'} },
                 {id: 'item3', text:{da:'Emne#3', en: 'Item#3'} },
@@ -688,7 +689,7 @@ var now = moment();
         }),
 
         m_table = myBsTable.asModal({
-            header:'En stor tabel',
+            header:'En stor tabel med "allowZeroSelected: true"',
             closeIcon: 'fa-globe',
             closeText: {da:"Luk og rejs", en:"Close and go"},
             flexWidth:true,
@@ -825,7 +826,7 @@ var now = moment();
         $('<button>4xModal-file</button>')
             .appendTo( $body)
             .on('click', function(e){
-                $.bsModalFile('https://www.soefartsstyrelsen.dk/Documents/Publikationer/DANSKFYRLISTE2015.pdf', {header: 'PDF'});
+                $.bsModalFile('https://www.soefartsstyrelsen.dk/Documents/Publikationer/Dansk%20Fyrliste_2018.pdf', {header: 'PDF'});
                 $.bsModalFile('http://nautiskinformation.soefartsstyrelsen.dk/index.html#/messages/details', {header: 'UNKNOWN'});
                 $.bsModalFile('https://www.danskehavnelods.dk/', {header: 'Hjemmeside'});
                 $.bsModalFile('https://niord.dma.dk/rest/repo/file/messages/5/55/555306e4-0b0d-4d62-9a55-36ec64539aa4/2/Inmarsat-C.jpg', {header: ['test:niels', '=', {text:{da:'Dansk', en:'Engelsk'}}]} );
@@ -839,7 +840,7 @@ var now = moment();
                     $.bsModal({
                         header: '4xfile-view',
                         content: [
-                            { type: 'fileView', fileName:'https://www.soefartsstyrelsen.dk/Documents/Publikationer/DANSKFYRLISTE2015.pdf', header:{icon:'fa-home', text:'Header'}},
+                            { type: 'fileView', fileName:'https://www.soefartsstyrelsen.dk/Documents/Publikationer/DANSKFYRLISTE2018.pdf', header:{icon:'fa-home', text:'Header'}},
                             { type: 'fileView', fileName:'http://nautiskinformation.soefartsstyrelsen.dk/index.html#/messages/details'},
                             { type: 'fileView', fileName:'https://www.danskehavnelods.dk/'},
                             { type: 'fileView', fileName:'https://niord.dma.dk/rest/repo/file/messages/5/55/555306e4-0b0d-4d62-9a55-36ec64539aa4/2/Inmarsat-C.jpg'}
@@ -972,6 +973,7 @@ width: 543,
                                 },
                                 {
                                     type: 'select', placeholder:"Placeholder", label:'Label',
+                                    selectedId: 'formSelect3',
                                     items:[
                                         {id:'formSelect1', icon:'fa-home', text: 'Davs'},
                                         {id:'formSelect2', text:'Item 2'},
@@ -1048,7 +1050,7 @@ width: 543,
             'theSelectList': 'item3',
             'hemmeligt': 'Dette er super hemmeligt',
 
-//            'formId1': 'formSelect3',
+            //'theSelect': 'formSelect3',
             'formId2-1': 'formSelect3',
         }
 
@@ -1059,12 +1061,13 @@ width: 543,
                     id: 'formId',
                     show: false,
                     header: 'Davs',
+                    height: '200px',
 
 //noCloseIconOnHeader: true,
 
                     onChanging: function( values ) { console.log('onChanging', values ); },
                     buttons: [
-                        {text:'Set=2', onClick: function(){ testModalForm.setValue('formId1', 'formSelect1');} }
+                        {text:'Set=2', onClick: function(){ testModalForm.setValue('theSelect', 'formSelect1');} }
                     ],
                     onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
                     onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
@@ -1146,16 +1149,27 @@ width: 3*300,
                                             id:'mySelection', type:'checkbox', text: 'Vælg mig'
                                         },
                                         {
-                                            id:'formId2', validators: 'notEmpty _MYvalidatorName', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before:    {type:'button', icon:'fa-calculator'}
+                                            id:'formId2', validators: 'notEmpty _MYvalidatorName', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)',
+                                            after : {type:'button', text:{da:'kr.', en:'£'}}, before:    {type:'button', icon:'fa-calculator'}
                                     },
                                         {
-                                            id:'formId1', type: 'select', validators: 'notEmpty', _selectedId: 'formSelect4', placeholder:"Placeholder", label:'Label',
+                                            id:'theSelect', type: 'select', validators: 'notEmpty', placeholder:"Placeholder", label:'theSelect',
+                                            before:    {type:'button', icon:'fa-calculator'},
+                                            after : {type:'button', text:{da:'kr.', en:'£'}},
                                             items:[
-                                                {id:'formSelect1', icon:'fa-home', text: 'Davs'},
-                                                {id:'formSelect2', text:'Item 2'},
-                                                {id:'formSelect3', text:'Item 3 SKIDE GODT'},
-                                                {id:'formSelect4', text:'Item 4'},
-                                                {id:'formSelect5', text:'Item 5'}
+                                                {id:'formSelect1', icon:'fa-home', text: '1:Davs'},
+                                                {id:'formSelect2',  text:'2: Item 2'},
+                                                {                   text:'En overskrift'},
+                                                {id:'formSelect3',  text:'3: Item 3 DEFAULT'},
+                                                {id:'formSelect4',  text:'4: Item 4'},
+                                                {id:'formSelect5',  text:'5: Item 5'},
+                                                {id:'formSelect6',  text:'6: Item 6'},
+                                                {id:'formSelect7',  text:'7: Item 7'},
+                                                {id:'formSelect8',  text:'8: Item 8'},
+                                                {id:'formSelect9',  text:'9: Item 9'},
+                                                {id:'formSelect10', text:'10: Item 10'},
+                                                {id:'formSelect11', text:'11: Item 11'},
+                                                {id:'formSelect12', text:'12: Item 12'}
                                             ],
                                             showWhen: {'mySelection': false }
                                         },
@@ -1347,11 +1361,15 @@ small: true,
         label: {icon:'fa-home', text:{da:'Label (DK)',en:'Label (ENG)'}},
         after : {type:'button', text:{da:'kr.', en:'£'}},
         before: {type:'button', icon:'fa-calculator'},
+        selectedId: 'item6',
         type: 'select',
         items: [
             {id:'item1', icon:'fa-home', text:{da:'Hjem'}},
             {id:'item2', icon:'fa-map', text:{da:'Ud'}},
-            {id:'item3', icon:'', text:'NIELS_HOLT'}
+            {id:'item3', icon:'', text:'NIELS_HOLT'},
+            {id:'item4', icon:'', text:'NIELS_HOLT2'},
+            {id:'item5', icon:'', text:'NIELS_HOLT3'},
+            {id:'item6', icon:'', text:'NIELS_HOLT4'}
         ],
         onChange: function(){ console.log('GODT', arguments);},
     }, null, true)
@@ -1380,53 +1398,7 @@ type: 'checkbox',
 
 </script>
 
-<!--
-<h4>Small</h4>
-<div class="form-group input-group input-group-sm">
-    <label class="has-float-label">
-        <input class="form-control form-control-with-label" type="text" placeholder="First Name"/>
-        <span>First</span>
-    </label>
-</div>
-<div class="form-group input-group input-group-sm mb-3">
-    <div class="input-group-prepend">
-        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
-        <button class="btn btn-standard" type="button">Button</button>
-    </div>
-    <label class="has-float-label">
-        <input type="text" class="form-control form-control-with-label" placeholder="Dato dd-mm-yyyy"/>
-        <span>Dato</span>
-    </label>
-    <div class="input-group-append">
-        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
-        <button class="btn btn-standard" type="button">Button</button>
-    </div>
-</div>
-
-
-<h4>Extra small</h4>
-<div class="form-group input-group input-group-xs">
-    <label class="has-float-label">
-        <input class="form-control form-control-with-label" type="text" placeholder="First Name"/>
-        <span>First</span>
-    </label>
-</div>
-<div class="form-group input-group input-group-xs mb-3">
-    <div class="input-group-prepend">
-        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
-        <button class="btn btn-standard" type="button">Button</button>
-    </div>
-    <label class="has-float-label">
-        <input type="text" class="form-control form-control-with-label" placeholder="Dato dd-mm-yyyy"/>
-        <span>Dato</span>
-    </label>
-    <div class="input-group-append">
-        <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
-        <button class="btn btn-standard" type="button">Button</button>
-    </div>
-</div>
- -->
-<!-- <br><br><br><br><br><br><br><br><br> -->
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 </body>
 </html>

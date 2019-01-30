@@ -184,7 +184,7 @@ $corner-space: 20px;
 
     //<hr>, footer, and button-container
     .noty-header {
-        @include header-color();
+        @include header-colors();
         @include header-variant( );
         &.noty-header-sm {
             @include header-variant-sm();
@@ -200,7 +200,7 @@ $corner-space: 20px;
         margin : $content-padding-y 0;
     }
     .noty-footer {
-        @include footer-variant( true, true );
+        @include footer-variant( $small: true );
     }
     .noty-buttons {
         @include content-padding();
@@ -223,13 +223,12 @@ $corner-space: 20px;
 @each $type in $type-list {
     $keyframes-name: noty_keyframes__#{$type};
     @keyframes #{$keyframes-name} {
-        from, 50%, to { @include type-colors( $type, false     ); }
-        25%, 75%      { @include type-colors( $type, false, 20 ); }
+        from, 50%, to { @include type-colors( $type: $type  ) }
+        25%, 75%      { @include type-colors( $type: $type, $darken: 20 ) }
     }
 
     .noty_theme__#{$noty-theme-name}.noty_type__#{$type} {
-        @include type-colors( $type, noty_close_with_click );
-
+        @include type-colors( $type: $type, $hover-class: noty_close_with_click );
 
         //Create darker bg-color when flashing
         &.flash .noty_body {

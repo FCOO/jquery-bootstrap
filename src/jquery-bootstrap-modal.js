@@ -259,6 +259,14 @@
                     $modalBody.addScrollbar({ direction: scrollDirection }) :
                     $modalBody;
 
+
+        //Add sreoll-event to close any bootstrapopen -select
+        if (hasScroll)
+            $modalBody.on('scroll', function(){
+                $modalContent.find('.dropdown.bootstrap-select select')._bsSelectBoxClose();
+            });
+
+
         //Add content
         $modalContent._bsAppendContent( options.content, options.contentContext );
 

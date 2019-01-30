@@ -691,6 +691,14 @@
         },
 
         /*******************************************************
+        getSelectpicker
+        *******************************************************/
+        getSelectpicker: function(){
+            this.selectpicker = this.selectpicker || this.getElement().data('selectpicker').selectpicker;
+            return this.selectpicker;
+        },
+
+        /*******************************************************
         getRadioGroup
         *******************************************************/
         getRadioGroup: function(){
@@ -713,7 +721,7 @@
             var $elem = this.getElement();
             switch (this.options.type || 'input'){
                 case 'input'            : $elem.val( value );                      break;
-                case 'select'           : $elem.val( value ).trigger('change');    break;
+                case 'select'           : $elem.selectpicker('val', value );       break;
                 case 'checkbox'         : $elem.prop('checked', !!value );         break;
                 case 'selectlist'       : this.getRadioGroup().setSelected(value); break;
                 case 'radiobuttongroup' : this.getRadioGroup().setSelected(value); break;
@@ -734,7 +742,7 @@
             var result = null;
             switch (this.options.type || 'input'){
                 case 'input'            : result = '';    break;
-                case 'select'           : result = -1;    break;
+                case 'select'           : result = null;  break;
                 case 'checkbox'         : result = false; break;
                 case 'selectlist'       : result = this.getRadioGroup().options.list[0].id; break;
                 case 'radiobuttongroup' : result = this.getRadioGroup().options.list[0].id; break;
@@ -771,7 +779,7 @@
                 result = null;
             switch (this.options.type || 'input'){
                 case 'input'            : result = $elem.val();               break;
-                case 'select'           : result = $elem.val();               break;
+                case 'select'           : result = $elem.selectpicker('val'); break;
                 case 'checkbox'         : result = !!$elem.prop('checked');   break;
                 case 'selectlist'       : result = this.getRadioGroup().getSelected(); break;
                 case 'radiobuttongroup' : result = this.getRadioGroup().getSelected(); break;
@@ -1985,6 +1993,14 @@ options
                     $modalBody.addScrollbar({ direction: scrollDirection }) :
                     $modalBody;
 
+
+        //Add sreoll-event to close any bootstrapopen -select
+        if (hasScroll)
+            $modalBody.on('scroll', function(){
+                $modalContent.find('.dropdown.bootstrap-select select')._bsSelectBoxClose();
+            });
+
+
         //Add content
         $modalContent._bsAppendContent( options.content, options.contentContext );
 
@@ -3044,58 +3060,84 @@ options
 }(jQuery, this, document));
 ;
 /****************************************************************************
-	jquery-bootstrap-select2.js,
+	jquery-bootstrap-select.js,
 
 	(c) 2017, FCOO
 
 	https://github.com/fcoo/jquery-bootstrap
 	https://github.com/fcoo
 
-    $.bsSelectbox based on select2
+    $.bsSelectbox based on
+    bootstrap-select https://developer.snapappointments.com/bootstrap-select/
+
 
 ****************************************************************************/
 
-(function (/*$, window/*, document, undefined*/) {
+(function ($ /*, window, document, undefined*/) {
 	"use strict";
 
-    //Setting defaults for select2
-    function formatSelectOption( options ) {
-        options.text = options._text;
-        var $result = $('<span/>')._bsAddHtml( options/*, true */);
-        options.text = '';
-        return $result;
-    }
+    //Setting defaults for bootstrap-select
+    $.fn.selectpicker.Constructor.BootstrapVersion = '4';
 
-    $.fn.select2.defaults.set( 'theme',                   'standard'         );
-    $.fn.select2.defaults.set( 'templateResult',          formatSelectOption );
-    $.fn.select2.defaults.set( 'templateSelection',       formatSelectOption );
-    $.fn.select2.defaults.set( 'minimumResultsForSearch', Infinity           );
-    $.fn.select2.defaults.set( 'width',                   "100%"             );
-    $.fn.select2.defaults.set( 'closeOnSelect',           true               ); ////ONLY when testing: false
+    $.fn.selectpicker.Constructor.DEFAULTS = $.extend( $.fn.selectpicker.Constructor.DEFAULTS, {
 
-    //Override default Results.ensureHighlightVisible to use scrollbar
-    function ensureHighlightVisible(){
-        var $highlightedItem = this.getHighlightedResults();
-        if ($highlightedItem.length)
-            $highlightedItem.scrollIntoView();
-    }
+    styleBase         : 'btn',
+    style             : 'btn-standard',
+        size: 'auto',
+        selectedTextFormat: 'values',
 
+        title: null,
 
-    var maxItemsVisibleInSelectbox = 4, //NB Must be equal with $max-items-visible-in-selectbox in _select2.scss
-        selectboxId = 0;
+    noneSelectedText: '', //'Er det denne her?',
+
+    width             : '100%', //false,
+    container         : 'body', //false,
+        hideDisabled: false,
+        showSubtext: false,
+        showIcon   : true,
+        showContent: true,
+        dropupAuto: true,
+        header: false,
+        liveSearch: false,
+        liveSearchPlaceholder: null,
+        liveSearchNormalize: false,
+        liveSearchStyle: 'contains',
+        actionsBox: false,
+        showTick: true,
+    iconBase: $.FONTAWESOME_PREFIX, //'glyphicon',
+    tickIcon: 'fa-ok',              //'glyphicon-ok',
+    });
+
+    //Sets max visible items in list to four if the screen is 'small'
+    if ( Math.min(window.screen.width, window.screen.height) < 420 )
+        $.fn.selectpicker.Constructor.DEFAULTS.size = 4;
+
+    var selectboxId = 0;
 
     /**********************************************************
     bsSelectbox
     **********************************************************/
     $.bsSelectBox = $.bsSelectbox = function( options ){
+
+        //Add size-class to button-class
+        var buttonSizeClass = $._bsGetSizeClass({
+                baseClass   : 'btn',
+                small       : options.small,
+                useTouchSize: true
+            }),
+            dropdownMenuSizeClass = $._bsGetSizeClass({
+                baseClass   : 'dropdown-menu',
+                small       : options.small,
+                useTouchSize: true
+            });
+
         options =
             $._bsAdjustOptions( options, {
                 id          : '_bsSelectbox'+ selectboxId++,
-                baseClass   : 'select2-container',
+                baseClass   : 'btn',
                 class       : '',
+                style       : 'btn-standard ' + buttonSizeClass,
                 useTouchSize: true,
-
-                //Options for select2
                 data: [],
             });
 
@@ -3110,116 +3152,113 @@ options
         }
 
         //Append items
-        var currentData = options.data,
-            selectedIdExists = false;
-
-        //Convert options.items to select2-data
-        $.each( options.items, function( index, itemOptions ){
-            var dataOptions = $.extend(true, {}, itemOptions);
-
-            //Save text as _text to prevent select2 to convert text to string
-            dataOptions._text = itemOptions.text;
-            dataOptions.text = '';
-
-            if (itemOptions.id){
-                currentData.push( dataOptions );
-                if (itemOptions.id == options.selectedId)
-                    selectedIdExists = true;
-            }
-            else {
-                dataOptions.children = [];
-                options.data.push( dataOptions );
-                currentData = dataOptions.children;
-            }
-        });
+        var selectedIdFound = false,
 
         //Create result and select-element
-        var $select =
+            $select =
                 $('<select/>')
                     ._bsAddIdAndName( options ),
             $result =
                 $('<div class="form-control-with-label"></div>')
                     .append( $select );
 
-        //Seems to be working without: options.dropdownParent = $result;
-
-        //Create select2
-        $select.select2( options );
-        var select2 = $select.data('select2');
-
-        //Overwrite default ensureHighlightVisible
-        select2.results.ensureHighlightVisible = ensureHighlightVisible;
-
-        //Add size-class to both containers
-        var sizeClass = $._bsGetSizeClass({
-                baseClass   : 'select2-container',
-                small       : options.small,
-                useTouchSize: true
+        //Convert options.items to select-option
+        var $currentParent = $select;
+        $.each( options.items, function( index, itemOptions ){
+            if (itemOptions.id){
+                if (itemOptions.id == options.selectedId)
+                    selectedIdFound = true;
+                $('<option/>')
+                    .text(itemOptions.id)
+                    .prop('selected', itemOptions.id == options.selectedId)
+                    .appendTo($currentParent);
+            }
+            else
+                $currentParent = $('<optgroup/>').appendTo($select);
         });
-        select2.$container.addClass( sizeClass );
-        select2.$dropdown.addClass ( sizeClass );
+
+        //Create selectpicker
+        var selectpicker = $select.selectpicker(options).data('selectpicker').selectpicker;
+        selectpicker.bsOptions = options;
+
+        //Set size-class for dropdown-menu
+        $select.parent().find('.dropdown-menu').addClass(dropdownMenuSizeClass);
+
+        //Update the content of the items with bsOptions
+        var itemIndex = 0;
+        $.each( selectpicker.main.data, function(index, data ){
+            if ((data.type == 'option') || (data.type == 'optgroup-label')){
+                var $elem = $(selectpicker.main.elements[index]),
+                    $child = $elem.children().first();
+
+                $child.empty();
+                $child._bsAddHtml(options.items[itemIndex]);
+                $elem.data('bsOptions', options.items[itemIndex] );
+
+                options.items[itemIndex].elementIndex = index;
+                options.items[itemIndex].$element = $elem;
+
+                itemIndex++;
+            }
+        });
 
         //Replace default arrow with Chevrolet-style
-        var $arrow = $('<i/>').addClass('fa select2-selection__arrow');
-        select2.$selection.find('.select2-selection__arrow')
-            .after($arrow)
-            .remove();
+        $('<i/>')
+            .addClass('fa chevrolet')
+            .appendTo( $select.parent().find('.filter-option-inner') );
 
-        //If there are more than maxItemsVisibleInSelectbox items: Create scrollbar and move highlighted item into view
-        if (options.items.length > maxItemsVisibleInSelectbox){
-            //Wrap select2.$results inside a scrollbar
-            var $parent = select2.$results.parent();
-            select2.$results.detach();
-            $parent.addScrollbar().append(select2.$results);
-
-            //Scroll highlighted item into view when moving with keyboard
-            select2.$selection.on('keydown', $.proxy(ensureHighlightVisible, select2.results) );
-        }
-
-        //Create change/select-event-function
-        if (options.onChange)
-            $select.on('select2:select', function( event ){
-                var data = event.params.data;
-                options.onChange( data.id, data.selected );
-            });
-
-
+        //wrap inside a label
         var $label = $result._wrapLabel({ label: options.label });
-        function setLabelAsPlaceholder( hasFocus, TEST ){
-            var showLabelAsPlaceholder = TEST || (!hasFocus && !$select.find(':selected').length);
-            $label.toggleClass('hide-float-label', showLabelAsPlaceholder);
+
+        //** Add events **
+
+        //setLabelAsPlaceholder: Update label position
+        function setLabelAsPlaceholder( showLabelAsPlaceholder ){
+            if (typeof showLabelAsPlaceholder != 'boolean')
+                showLabelAsPlaceholder = !$select.selectpicker('val');
             $result.toggleClass('show-label-as-placeholder', showLabelAsPlaceholder);
-            select2.$container.toggleClass('select2-hide-placeholder', showLabelAsPlaceholder);
         }
 
-        function onBlurOrFocus(){
-            setLabelAsPlaceholder(
-                select2.$container.hasClass('select2-container--open') ||
-                select2.$container.hasClass('select2-container--focus')
-            );
-        }
+        //Set events to update content and call onChange
+        $select.on('changed.bs.select', function (/*e, clickedIndex, isSelected, previousValue*/) {
+            var selectedIndex = $select[0].selectedIndex;
 
-        select2.on('focus', onBlurOrFocus);
-        select2.on('blur', onBlurOrFocus);
+            if (selectedIndex != -1){
+                var elementIndex = selectpicker.main.map.newIndex[selectedIndex],
+                    options = $(selectpicker.main.elements[elementIndex]).data('bsOptions');
 
-        $select.on('change', function(){
+                selectpicker.$inner = selectpicker.$inner || $select.parent().find('.filter-option-inner-inner');
+
+                selectpicker.$inner.empty();
+                selectpicker.$inner._bsAddHtml(options);
+
+                if (selectpicker.bsOptions.onChange)
+                    selectpicker.bsOptions.onChange( options.id, true );
+            }
             setLabelAsPlaceholder();
         });
 
-        //Set selected id or placeholder
-        $select
-            .val(selectedIdExists ? options.selectedId : -1)
-            .trigger('change.select2');
+        $select.on('show.bs.select', function(){ setLabelAsPlaceholder(false); });
+        $select.on('hide.bs.select', function(){ setLabelAsPlaceholder();      });
 
 
-        //Call onChange (if it and selectedId exists
-        if (selectedIdExists && options.onChange)
-            options.onChange( options.selectedId, true );
-
-        setLabelAsPlaceholder( false );
+        //Set selected item (id any)
+        $select.selectpicker('val', selectedIdFound ? options.selectedId : null);
 
         return $label;
     };
+
+
+
+    $.fn._bsSelectBoxClose = function(){
+        var selectpicker = $(this).data('selectpicker');
+        if (selectpicker && selectpicker.$menu.hasClass('show')){
+            $(this).selectpicker('toggle');
+        }
+
+    };
+
+
 }(jQuery, this, document));
 ;
 /****************************************************************************
@@ -3239,19 +3278,6 @@ options
 	"use strict";
 
     var selectlistId = 0;
-
-    $.fn._selectlist_onMouseenter = function(/*event*/){
-        this
-            .addClass('highlighted')
-            .siblings('.highlighted').removeClass('highlighted');
-    };
-    $.fn._selectlist_onMouseleave = function(/*event*/){
-        this.removeClass('highlighted');
-    };
-    $.fn._selectlist_onMouseleaveList = function(/*event*/){
-        this.find('.highlighted').removeClass('highlighted');
-        this.find('.active').addClass('highlighted');
-    };
 
     $.bsSelectList = $.bsSelectlist = function( options ){
         options =
@@ -3284,18 +3310,14 @@ options
                 .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
                 .addClass( options.center ? 'text-center' : '')
                 .appendTo( $result )
-                ._bsAddHtml( itemOptions/*, true */)
-                .on('mouseenter', $.proxy($item._selectlist_onMouseenter, $item) )
-                .on('mouseleave', $.proxy($item._selectlist_onMouseleave, $item) );
+                ._bsAddHtml( itemOptions/*, true */);
 
             if (isItem)
                 radioGroup.addElement( $item, itemOptions );
         });
 
-        $result
-            .on('mouseleave', $.proxy($result._selectlist_onMouseleaveList, $result) )
-            .data('selectlist_radiogroup', radioGroup)
-            .find('.active').addClass('highlighted');
+        $result.data('selectlist_radiogroup', radioGroup);
+
         return $result;
     };
 
@@ -3414,8 +3436,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     Different sort-functions for moment-objects: (a,b) return a-b
     ********************************************************************/
     function momentSort(m1, m2){
-        if (m1.isSame(m2)) return 0;
-        if (m1.isBefore(m2)) return -1;
+        var moment1 = moment(m1),
+            moment2 = moment(m2);
+        if (moment1.isSame(moment2)) return 0;
+        if (moment1.isBefore(moment2)) return -1;
         return 1;
     }
 
@@ -3480,12 +3504,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             });
 
             //Add rows to radioGroup
-            if (options.selectable){
+            if (options.selectable)
                 options.radioGroup.addElement( $tr );
-                $tr
-                    .on('mouseenter', $.proxy($tr._selectlist_onMouseenter, $tr) )
-                    .on('mouseleave', $.proxy($tr._selectlist_onMouseleave, $tr) );
-            }
         },
 
 
@@ -3785,12 +3805,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             $table.addRow( rowContent );
         });
 
-        if (options.selectable)
-            $table
-                .on('mouseleave', $.proxy($table._selectlist_onMouseleaveList, $table) )
-                .find('.active').addClass('highlighted');
-
-
         if (sortableTable){
             $table.stupidtable =
                 $table.stupidtable( stupidtableOptions )
@@ -3917,7 +3931,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 $container.addClass('show active');
             }
 
-            $content = options.scroll ? $content.addScrollbar() : $content;
+            $content = options.scroll ? $content.addScrollbar('vertical') : $content;
 
 
             //Add content: string, element, function, setup-json-object, or children (=accordion)

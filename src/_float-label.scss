@@ -36,7 +36,7 @@ Only supports the html-structure
         z-index    : 4;
         line-height: 1;
         color      : $title-color;
-        padding    : 0;
+        padding    : 0 2px;
         margin-left: $input-border-width; //Compensates for border
 
         //Specicial for size
@@ -52,7 +52,7 @@ Only supports the html-structure
             left      : -.1em;
             right     : -.1em;
             z-index   : -1;
-            background: white;
+            background: $input-bg;
             content   : " ";
         }
     }
@@ -86,6 +86,10 @@ Only supports the html-structure
             color      : $input-placeholder-color;
             line-height: $input-line-height;
             top        : calc(#{$input-padding-y} + #{$input-border-width});
+            //Transparent bg when laberl is inside element
+            &:after {
+                background: transparent;
+            }
         }
     }
 }
@@ -176,7 +180,7 @@ Style for
         left      : -.1em;
         right     : -.1em;
         z-index   : -1;
-        background: white;
+        background: $input-bg;
         content   : " ";
     }
 }

@@ -13,7 +13,7 @@ Style for elements used to display any file in a modal-window
 
 
 .file-view-header {
-    @include header-variant-sm(true, true);
+    @include header-variant-sm($xs-padding: true);
 }
 
 .file-view-content {

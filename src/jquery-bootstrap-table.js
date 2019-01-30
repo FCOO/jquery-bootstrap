@@ -111,8 +111,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     Different sort-functions for moment-objects: (a,b) return a-b
     ********************************************************************/
     function momentSort(m1, m2){
-        if (m1.isSame(m2)) return 0;
-        if (m1.isBefore(m2)) return -1;
+        var moment1 = moment(m1),
+            moment2 = moment(m2);
+        if (moment1.isSame(moment2)) return 0;
+        if (moment1.isBefore(moment2)) return -1;
         return 1;
     }
 
@@ -177,12 +179,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             });
 
             //Add rows to radioGroup
-            if (options.selectable){
+            if (options.selectable)
                 options.radioGroup.addElement( $tr );
-                $tr
-                    .on('mouseenter', $.proxy($tr._selectlist_onMouseenter, $tr) )
-                    .on('mouseleave', $.proxy($tr._selectlist_onMouseleave, $tr) );
-            }
         },
 
 
@@ -481,12 +479,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         $.each( options.content, function( index, rowContent ){
             $table.addRow( rowContent );
         });
-
-        if (options.selectable)
-            $table
-                .on('mouseleave', $.proxy($table._selectlist_onMouseleaveList, $table) )
-                .find('.active').addClass('highlighted');
-
 
         if (sortableTable){
             $table.stupidtable =

@@ -7,7 +7,7 @@ RIGHT-SIDE-ICON
 Add style to <i> to place it to the right and vertical center
 NOTE: Parent element MUST have @include vertical-align-center();
 ************************************************************/
-@mixin right-side-icon( $fa-icon: $fa-var-chevron-right, $font-size: 0.8em, $hover: false, $opacity: .3 ){
+@mixin right-side-icon( $fa-icon: $fa-var-chevron-right, $font-size: 0.8em, $hover: false, $opacity: .3, $margin-right: 0 ){
     font-size  : $font-size;
     color      : $close-color;
     text-shadow: $close-text-shadow;
@@ -16,7 +16,7 @@ NOTE: Parent element MUST have @include vertical-align-center();
     line-height: 1;
 
     margin-left : auto;
-    margin-right: 0;
+    margin-right: $margin-right;
 
     &:before {
         font-size: $font-size;
@@ -26,9 +26,9 @@ NOTE: Parent element MUST have @include vertical-align-center();
     @if ($hover) {
         opacity: .5;
         @include hover-focus {
-            color: $close-color;
+            color          : $close-color;
             text-decoration: none;
-            opacity: .75;
+            opacity        : .75;
         }
 
     } @else {
@@ -52,115 +52,6 @@ border-color = light blue
     border-color: $input-focus-border-color !important;
     outline: none !important;
 }
-
-/************************************************************
-CONTROL BORDER_COLOR
-All control elements get same border-color when normal, hover, active and error
-************************************************************/
-@mixin control-border-color-hover( $border-color-hover: $control-border-color-hover, $incl-z-index: true){
-    @if $incl-z-index == true {
-        //Move 'up' when focus or hover
-        &.focus:not(:disabled):not(.disabled),
-        &:focus:not(:disabled):not(.disabled),
-        .mouse-hover .hover &:not(:disabled):not(.disabled),
-        .mouse-hover &.hover:not(:disabled):not(.disabled),
-        .mouse-hover &:hover:not(:disabled):not(.disabled) {
-               position: relative;
-               z-index : 4;
-        }
-    }
-
-    //hover, not focus, not disabled
-    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
-        border-color: $border-color-hover;
-    }
-}
-
-@mixin control-border-color( $border-color: $control-border-color, $border-color-hover: $control-border-color-hover, $incl-error: true ){
-    //Normal
-    border : $border-width solid $border-color;
-    outline: none !important;
-
-
-    //:active
-    &:active,  &.active     {   border-color: darken($border-color, $darken-active-percent);    }
-    //:focus
-    &:focus, &.focus        {   border-color: $input-focus-border-color;                        }
-    //:disabled - Disabled comes last to overwrite active and focus
-    &.disabled,  &:disabled {   border-color: $border-color;                                    }
-
-
-    @if $border-color-hover != false {
-        @include control-border-color-hover($border-color-hover);
-    }
-
-    @if $incl-error == true {
-        $border-color-error      : $red;
-        $border-color-error-hover: darken($border-color-error, 20%);
-
-        .has-warning &:not(:focus):not(:disabled):not(.disabled) {
-            border-color: $border-color-error;
-        }
-        .mouse-hover .has-warning .hover &:not(:focus):not(:disabled):not(.disabled),
-        .mouse-hover .has-warning &.hover:not(:focus):not(:disabled):not(.disabled),
-        .mouse-hover .has-warning &:hover:not(:focus):not(:disabled):not(.disabled) {
-            border-color: $border-color-error-hover;
-        }
-    }
-}
-
-@mixin control-color( $color, $color-hover, $color-active, $color-focus  ){
-    //normal
-    color: $color;
-    //:active
-    &:active,  &.active     { color: $color-active; }
-    //:focus
-    &:focus, &.focus        { color: $color-focus;  }
-    //:disabled - Disabled comes last to overwrite active and focus
-    &.disabled,  &:disabled { color: $color;        }
-
-
-    //hover, not focus, not disabled
-    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
-        color: $color-hover;
-    }
-}
-
-@mixin control-color-and-border-color( $color: $control-color, $border-color: $control-border-color, $border-color-hover: $control-border-color-hover, $incl-error: true ){
-
-    $color-hover : darken($color, 20%);
-    $color-active: darken($color, 30%);
-    $color-focus : darken($color, 40%);
-/*
-    //normal
-    color: $color;
-    //:active
-    &:active,  &.active     { color: $color-active; }
-    //:focus
-    &:focus, &.focus        { color: $color-focus;  }
-    //:disabled - Disabled comes last to overwrite active and focus
-    &.disabled,  &:disabled { color: $color;        }
-
-
-    //hover, not focus, not disabled
-    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
-        color: $color-hover;
-    }
-*/
-    @include control-color( $color, $color-hover, $color-active, $color-focus );
-
-    //border-color
-    @include control-border-color ( $border-color, $border-color-hover, $incl-error );
-}
-
-
-
 
 /************************************************************
 CONTENT
@@ -204,6 +95,142 @@ Must have tabindex:"-1" to work with focus
 }
 
 /************************************************************
+CONTROL BORDER-COLOR
+All control elements get same border-color when normal, hover, active and error
+************************************************************/
+@mixin control-border-color-hover( $border-color-hover: $control-border-color-hover, $incl-z-index: true){
+    @if $incl-z-index == true {
+        //Move 'up' when focus or hover
+        &.focus:not(:disabled):not(.disabled),
+        &:focus:not(:disabled):not(.disabled),
+        .mouse-hover .hover &:not(:disabled):not(.disabled),
+        .mouse-hover &.hover:not(:disabled):not(.disabled),
+        .mouse-hover &:hover:not(:disabled):not(.disabled) {
+               position: relative;
+               z-index : 4;
+        }
+    }
+
+    //hover, not focus, not disabled
+    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
+    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
+        border-color: $border-color-hover;
+    }
+}
+
+@mixin control-border-color( $border-color: $control-border-color, $border-color-hover: $control-border-color-hover, $incl-error: true ){
+    //Normal
+    border : $border-width solid $border-color;
+    outline: none !important;
+
+
+    //:active
+    &:active,  &.active     {   border-color: darken($border-color, $darken-active-percent);    }
+    //:focus
+    &:focus, &.focus        {   border-color: $input-focus-border-color;                        }
+    //:disabled - Disabled comes last to overwrite active and focus
+    &.disabled,  &:disabled {   border-color: $border-color;                                    }
+
+
+    @if $border-color-hover != false {
+        @include control-border-color-hover($border-color-hover: $border-color-hover);
+    }
+
+    @if $incl-error == true {
+        $border-color-error      : $red;
+        $border-color-error-hover: darken($border-color-error, 20%);
+
+        .has-warning &:not(:focus):not(:disabled):not(.disabled) {
+            border-color: $border-color-error;
+        }
+        .mouse-hover .has-warning .hover &:not(:focus):not(:disabled):not(.disabled),
+        .mouse-hover .has-warning &.hover:not(:focus):not(:disabled):not(.disabled),
+        .mouse-hover .has-warning &:hover:not(:focus):not(:disabled):not(.disabled) {
+            border-color: $border-color-error-hover;
+        }
+    }
+}
+
+/************************************************************
+CONTROL-COLORS
+Sets all color for text, background, border for normal, :hover, :focus,  :active and .active
+************************************************************/
+@mixin control-colors(
+        $incl-active: true,
+        $incl-border: true,
+        $incl-bg    : true,
+
+        $color       : $control-color,
+        $color-hover : darken($color, $darken-hover-percent),
+        $color-active: darken($color, $darken-active-percent),
+        $color-focus : darken($color, 40%),
+
+        $bg-color       : $control-bg-color,
+        $bg-color-hover : darken($bg-color, $darken-hover-percent),
+        $bg-color-active: darken($bg-color, $darken-active-percent),
+
+        $border-color       : $control-border-color,
+        $border-color-hover : $control-border-color-hover,
+
+        $active-color   : $control-active-color,
+        $active-bg-color: $control-active-bg-color
+      ){
+
+    //Normal
+    color: $color;
+    @if ($incl-bg){
+        @include gradient-bg($bg-color);
+    }
+
+    //hover, not active, not disabled
+    .mouse-hover .hover &:not(:active):not(:disabled):not(.disabled),
+    .mouse-hover &.hover:not(:active):not(:disabled):not(.disabled),
+    .mouse-hover &:hover:not(:active):not(:disabled):not(.disabled) {
+        color: $color-hover;
+        @if ($incl-bg){
+            @include gradient-bg($bg-color-hover);
+        }
+    }
+
+    //:active
+    &:active {
+        color: $color-active;
+        @if ($incl-bg){
+            @include gradient-bg($bg-color-active);
+        }
+    }
+
+    //border-color - all states
+    @if ($incl-border){
+        @include control-border-color($border-color: $border-color, $border-color-hover: $border-color-hover, $incl-error: false);
+    }
+
+    @if ($incl-active){
+        &.active {
+            @include control-colors(
+                $incl-active: false,
+                $incl-border: false,
+                $color      : $active-color,
+                $bg-color   : $active-bg-color
+            );
+        }
+    }
+
+
+    // Disabled comes last to overwrite active and focus
+    //Overwrite bootstrap defalut opacity on element and replace it with opacity on text-color
+    &.disabled,  &:disabled {
+        opacity: 1 !important;
+        color  : rgba($color, $btn-disabled-opacity);
+        @if ($incl-bg){
+            @include gradient-bg($bg-color);
+        }
+    }
+}
+
+
+/************************************************************
 TYPE-COLOR
 Bg-color and color for different 'type' (warning, alert, info, error, success)
 Used in Noty and Modal
@@ -220,7 +247,7 @@ $type-theme: (
     help        : light
 );
 
-@mixin type-colors( $type, $hover-class: false, $darken: 0  ){
+@mixin type-colors( $type, $hover-class: false, $darken: 0 ){
     $color-name: map-get($type-theme, $type);
     $background-color: theme-color-level($color-name, -10);
 
@@ -244,7 +271,6 @@ Headers for modal, popover, popup etc.
 ************************************************************/
 /************************************************************
 color-hover - Background-color and text-color for 'normal' and hover
-SKAL DER BRUGES background ELLER background-color???????
 ************************************************************/
 @mixin color-hover($color, $bg-color, $hover, $bg, $color-hover: false, $bg-color-hover: false ){
     @if $color {
@@ -252,7 +278,6 @@ SKAL DER BRUGES background ELLER background-color???????
     }
     @if $bg and $bg-color {
         background-color: $bg-color;
-//        background: $bg-color;
     }
     @if $hover {
         .mouse-hover &:hover {
@@ -260,7 +285,6 @@ SKAL DER BRUGES background ELLER background-color???????
                 color: if( $color-hover, $color-hover, darken($color, $darken-hover-percent) );
             }
             @if $bg and $bg-color {
-//                background: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) );
                 background-color: if($bg-color-hover, $bg-color-hover, darken($bg-color, $darken-hover-percent) );
             }
         }
@@ -268,103 +292,33 @@ SKAL DER BRUGES background ELLER background-color???????
 }
 
 /************************************************************
-header-color - Colors for headers
+header-colors - Colors for headers
 ************************************************************/
-@mixin header-color( $bg: true ){
+@mixin header-colors(){
     color: $header-color;
-    @if $bg {
-        background-color: $header-bg-color;
-    }
+    background-color: $header-bg-color;
 }
 
 /************************************************************
 title-color - create colors for headers for table and accordion etc.
 ************************************************************/
-@mixin title-color($hover: false, $selected-selector: false, $bg: true, $invers: false ){
+@mixin title-color( $hover: false, $selected-selector: false, $bg: true, $invers: false ){
 
-    @include color-hover( if($invers, $title-active-color, $title-color), if($invers, $title-active-bg-color, $title-bg-color), $hover, $bg);
+    @include color-hover(
+        $color   : if($invers, $title-active-color, $title-color),
+        $bg-color: if($invers, $title-active-bg-color, $title-bg-color),
+        $hover   : $hover,
+        $bg      : $bg
+    );
 
     @if ($selected-selector){
         #{$selected-selector} {
-            @include color-hover( if($invers, $title-color, $title-active-color), if($invers, $title-bg-color, $title-active-bg-color), $hover, $bg);
-        }
-    }
-}
-
-/************************************************************
-select-list-color
-Mixin to set colors for active and selected elements in select-list
-************************************************************/
-@mixin select-list-color( $selector: "&"){
-/*
-    #{$selector}{
-        font-size: 2rem;
-    }
-*/
-    #{$selector} {
-        color     : $selectlist-color;
-        background: $selectlist-bg-color;
-    }
-
-    html.mouse-hover #{$selector} {
-        //Active (selected)
-        &.active  {
-            color     : $control-selected-color;
-            background: $control-selected-bg-color;
-        }
-        &.active.highlighted, &.highlighted  {
-            color     : $control-active-color;
-            background: $control-active-bg-color;
-        }
-    }
-
-    html.no-mouse-hover #{$selector}.active {
-        color     : $control-active-color;
-        background: $control-active-bg-color;
-    }
-}
-
-/************************************************************
-control-active-color
-Mixin to set colors for selected elements and when hover
-************************************************************/
-@mixin control-active-color( $selector: "&", $allowZeroSelected: false ){
-    $allowZeroSelected-selector: ".allow-zero-selected";
-    @if $allowZeroSelected {
-        $allowZeroSelected-selector: "";
-    }
-
-    @at-root {
-        #{$selector}{
-            //Normal: Just bg-color on hover
             @include color-hover(
-                $control-color,     //$color
-                $control-bg-color,  //$bg-color
-                true,               //$hover
-                true                //$bg
+                $color   : if($invers, $title-color, $title-active-color),
+                $bg-color: if($invers, $title-bg-color, $title-active-bg-color),
+                $hover   : $hover,
+                $bg      : $bg
             );
-
-            //Active (selected)
-            &.active  {
-                @include color-hover(
-                    $control-active-color,      //$color
-                    $control-active-bg-color,   //$bg-color
-                    false,                      //$hover
-                    true                        //$bg
-                );
-            }
-        }
-
-        #{$allowZeroSelected-selector} #{$selector}{
-            //Active (selected) AND allowing unselection
-            &.active {
-                @include color-hover(
-                    false, //$color
-                    $control-active-bg-color, //$bg-color
-                    true, //$hover
-                    true  //$bg
-                );
-            }
         }
     }
 }
@@ -412,7 +366,13 @@ header-variant
         }
     }
 
-    @include button-size($padding, $padding, $font-size, $line-height-base, inherit);
+    @include button-size(
+        $padding-y    : $padding,
+        $padding-x    : $padding,
+        $font-size    : $font-size,
+        $line-height  : $line-height-base,
+        $border-radius: inherit
+    );
 
     @if $incl-header == true {
         border-bottom: $modal-header-border-width solid $modal-header-border-color;
@@ -421,23 +381,25 @@ header-variant
     }
 }
 
-@mixin header-variant-sm( $incl-header: true, $xs-padding: false  ) { @include header-variant( false, $incl-header, true, $xs-padding ); }
+@mixin header-variant-sm( $incl-header: true, $xs-padding: false  ) {
+    @include header-variant( $incl-header: $incl-header, $small: true, $xs-padding: $xs-padding );
+}
 
 /************************************************************
 title-variant - as header but with same font-size as siblings
 ************************************************************/
 @mixin title-variant( $small: false ) {
-    @include header-variant( true, false, $small );
+    @include header-variant( $is-title: true, $incl-header: false, $small: $small );
 }
-@mixin title-variant-sm() { @include title-variant( true ); }
+@mixin title-variant-sm() { @include title-variant( $small: true ); }
 
 
 /************************************************************
 footer-variant
 ************************************************************/
 @mixin footer-variant( $incl-border-top: true, $small: false ) {
-    @include header-variant( false, false, $small );
-    @include header-color();
+    @include header-variant( $incl-header: false, $small: $small );
+    @include header-colors();
 
     line-height: 1; //Decrease height
 
@@ -453,7 +415,9 @@ footer-variant
 
 }
 
-@mixin footer-variant-sm( $incl-border-top: true ) { @include footer-variant( $incl-border-top, true ); }
+@mixin footer-variant-sm( $incl-border-top: true ) {
+    @include footer-variant( $incl-border-top: $incl-border-top, $small: true );
+}
 
 
 /************************************************************

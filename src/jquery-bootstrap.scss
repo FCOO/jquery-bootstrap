@@ -25,8 +25,6 @@
 @import "../bower_components/font-awesome/scss/variables";
 @import "../bower_components/font-awesome/scss/mixins";
 
-
-
 /***********************************************
 SET AND ADJUST BOOTSTRAP DEFAULT VALUES
 ************************************************/
@@ -38,9 +36,9 @@ IMPORT BOOTSTRAP SCSS
 @import "../bower_components/bootstrap/scss/bootstrap";
 
 /***********************************************
-IMPORT SELECT2 SCSS
+IMPORT BOOTSTRAP-SELECT SCSS
 ************************************************/
-@import "../bower_components/select2/src/scss/core";
+@import "../bower_components/bootstrap-select/sass/bootstrap-select";
 
 /***********************************************
 BACKGROUND-COLOR AND TEXT COLOR
@@ -66,6 +64,7 @@ ADDITIONS AND ADJUSTMENTS TO FONTAWESOME
 *************************************************/
 @import "fontawesome";
 
+
 /************************************************
 STYLE FOR DIFFERENT ELEMENTS
 *************************************************/
@@ -87,6 +86,8 @@ STYLE FOR DIFFERENT ELEMENTS
 
 @import "modal-backdrop";
 
+@import "bootstrap-select";
+
 @import "form";
 
 @import "float-label";
@@ -99,6 +100,5 @@ STYLE FOR DIFFERENT ELEMENTS
 
 @import "tabs";
 
-@import "select2";
 
 

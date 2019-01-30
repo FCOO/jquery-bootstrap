@@ -53,6 +53,14 @@
         },
 
         /*******************************************************
+        getSelectpicker
+        *******************************************************/
+        getSelectpicker: function(){
+            this.selectpicker = this.selectpicker || this.getElement().data('selectpicker').selectpicker;
+            return this.selectpicker;
+        },
+
+        /*******************************************************
         getRadioGroup
         *******************************************************/
         getRadioGroup: function(){
@@ -75,7 +83,7 @@
             var $elem = this.getElement();
             switch (this.options.type || 'input'){
                 case 'input'            : $elem.val( value );                      break;
-                case 'select'           : $elem.val( value ).trigger('change');    break;
+                case 'select'           : $elem.selectpicker('val', value );       break;
                 case 'checkbox'         : $elem.prop('checked', !!value );         break;
                 case 'selectlist'       : this.getRadioGroup().setSelected(value); break;
                 case 'radiobuttongroup' : this.getRadioGroup().setSelected(value); break;
@@ -96,7 +104,7 @@
             var result = null;
             switch (this.options.type || 'input'){
                 case 'input'            : result = '';    break;
-                case 'select'           : result = -1;    break;
+                case 'select'           : result = null;  break;
                 case 'checkbox'         : result = false; break;
                 case 'selectlist'       : result = this.getRadioGroup().options.list[0].id; break;
                 case 'radiobuttongroup' : result = this.getRadioGroup().options.list[0].id; break;
@@ -133,7 +141,7 @@
                 result = null;
             switch (this.options.type || 'input'){
                 case 'input'            : result = $elem.val();               break;
-                case 'select'           : result = $elem.val();               break;
+                case 'select'           : result = $elem.selectpicker('val'); break;
                 case 'checkbox'         : result = !!$elem.prop('checked');   break;
                 case 'selectlist'       : result = this.getRadioGroup().getSelected(); break;
                 case 'radiobuttongroup' : result = this.getRadioGroup().getSelected(); break;

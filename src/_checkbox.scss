@@ -182,7 +182,6 @@ div.radio {
 
 /***************************************************************************
 @mixin checkbox-radio-size-variant
-
 ***************************************************************************/
 @mixin checkbox-radio-size-variant( $class-postfix, $font-size, $border-radius, $padding-vertical ){
 
@@ -281,15 +280,8 @@ div.radio {
 //Creating different size variations. Using vertical-padding from smaller button
 
 //Standard
-@include checkbox-radio-size-variant('',    $font-size-base, $btn-border-radius,    $btn-padding-y-sm );
-@include checkbox-radio-size-variant('-sm', $font-size-sm,   $btn-border-radius-sm, $btn-padding-y-xs );
-
-/*REMOVED - Only ONE size
-//Large and samll
-@include checkbox-radio-size-variant('-lg', $font-size-lg,   $btn-border-radius-lg, $btn-padding-y    );
-@include checkbox-radio-size-variant('-sm', $font-size-sm,   $btn-border-radius-sm, $btn-padding-y-xs );
-*/
-
+@include checkbox-radio-size-variant($class-postfix: '',    $font-size: $font-size-base, $border-radius: $btn-border-radius,    $padding-vertical: $btn-padding-y-sm );
+@include checkbox-radio-size-variant($class-postfix: '-sm', $font-size: $font-size-sm,   $border-radius: $btn-border-radius-sm, $padding-vertical: $btn-padding-y-xs );
 
 /***************************************************************************
 checkbox-group(-sm | -lg) and radio-group(-sm | -lg)

@@ -74,7 +74,7 @@ form.form-validation {
             padding-top   : 0;
             padding-bottom: 0;
         }
-        @include form-control-feedback( $font-size-header, $input-padding-y, $input-padding-x);
+        @include form-control-feedback( $font-size: $font-size-header, $padding-bottom: $input-padding-y, $padding-left: $input-padding-x);
 
         //Bug fix ? to prevent previous error to disappear when reused
         &.has-warning .form-control-feedback[data-fv-result="INVALID"]{
@@ -83,9 +83,8 @@ form.form-validation {
 
 
         //Different size
-        &.form-group-sm {   @include form-control-feedback( $font-size-header-sm, $input-padding-y-sm, $input-padding-x-sm);    }
-        &.form-group-xs {   @include form-control-feedback( $font-size-header-xs, $input-padding-y-xs, $input-padding-x-xs);    }
-
+        &.form-group-sm {   @include form-control-feedback( $font-size: $font-size-header-sm, $padding-bottom: $input-padding-y-sm, $padding-left: $input-padding-x-sm);    }
+        &.form-group-xs {   @include form-control-feedback( $font-size: $font-size-header-xs, $padding-bottom: $input-padding-y-xs, $padding-left: $input-padding-x-xs);    }
         &.fv-do-not-validate {
             visibility: hidden;
         }

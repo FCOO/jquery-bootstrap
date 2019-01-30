@@ -119,3 +119,9 @@ $h4-font-size           : $header-font-size * 1.5;  //Original = $font-size-base
 $h5-font-size           : $header-font-size * 1.25; //Original = $font-size-base * 1.25 !default;
 $h6-font-size           : $header-font-size;        //Original = $font-size-base !default;
 
+
+/************************************************************
+Adjust dropdown-menu
+************************************************************/
+$dropdown-padding-y: 0;
+$dropdown-spacer   : 0;

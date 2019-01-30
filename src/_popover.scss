@@ -6,13 +6,13 @@ POPOVER
     //Reset padding for popover-header
     .popover-header {
         padding: 0 !important;
-        border-bottom: none; 
+        border-bottom: none;
     }
 
     //Popover-header-content
-    .popover-header-content {     
+    .popover-header-content {
         @include header-variant();
-        @include header-color();
+        @include header-colors();
         font-weight: $btn-font-weight; //Same as buttons
         line-height: $input-btn-line-height; //Same as buttons
 
@@ -28,7 +28,7 @@ POPOVER
             @extend .mx-auto;
         }
     }
-    
+
     //Popover footer
     .popover-footer {
         @include footer-variant();

@@ -19,50 +19,30 @@ div.btn, div.list-group-item {
 }
 
 .btn.btn-#{$btn-style-name}{
-    background-color: $control-bg-color;
-    @include box-shadow($btn-box-shadow);
-
     //min-width used for buttons with short text ("Ok")
     &.min-width {
         min-width: 5em;
     }
 
-    &:active,  &.active {
-        background-color: darken($control-bg-color, $darken-active-percent);
-        background-image: none;
+    @include box-shadow($btn-box-shadow);
+
+    &:active {
         @include box-shadow($btn-active-box-shadow);
         z-index: 2;
     }
 
-    @include control-color-and-border-color();
+    @include control-colors();
 
     &.primary {
-        $color: map-get($theme-colors, primary );
-        @include control-color-and-border-color( $color, $color, darken($color, $darken-border-color-hover-percent));
-    }
+        $primary-color: map-get($theme-colors, primary );
+        @include control-colors(
+                $incl-active: false,
+                $incl-bg    : false,
 
-    // Disabled comes last to overwrite active and focus
-    &.disabled,  &:disabled {
-        background-color: $control-bg-color;
-    }
+                $color: $primary-color,
 
-    //Selected colors when button is checkbox-style
-    @include control-active-color();
-
-    //Overwrite bg-color wwhen button is selected (active)
-    html.mouse-hover &.active:hover {
-        background: $control-active-bg-color;
-    }
-    html.mouse-hover &.active.allow-zero-selected:hover {
-        background: darken($control-active-bg-color, $darken-hover-percent);
-    }
-
-    &.active {
-        @include control-color(
-             $control-active-color,              //$color
-             $control-active-color,              //$color-hover
-             darken($control-active-color, 10%), //$color-active
-             $control-active-color               //$color-focus
+                $border-color      : $primary-color,
+                $border-color-hover: darken($primary-color, $darken-border-color-hover-percent)
         );
     }
 
@@ -89,31 +69,22 @@ div.btn, div.list-group-item {
     TODO: Add transparent-on-light to have dark color og light background
     ************************************************************/
     &.transparent {
-        $transparent-bg-color: rgba(0,0,0,0);
-        $transparent-color   : #D4D4D4;
+        background: none;
 
-        background-color: $transparent-bg-color;
+        $color-transparent: #D4D4D4;
+        @include control-colors(
+            $incl-active: false,
 
-        @include control-color(
-            $transparent-color,                 //$color
-            lighten($transparent-color, 10%),   //$color-hover
-            darken(white, 10%),                 //$color-active
-            white                               //$color-focus
+            $color       : $color-transparent,
+            $color-hover : lighten($color-transparent, $darken-hover-percent),
+            $color-active: lighten($color-transparent, $darken-active-percent),
+            $color-focus : lighten($color-transparent, 40%),
+
+            $bg-color       : rgba(0,0,0,0),
+
+            $border-color      : rgba(0,0,0, .1),
+            $border-color-hover: rgba(0,0,0,.15)
         );
-
-        @include control-border-color (
-            rgba(0,0,0, .1),    //$border-color
-            rgba(0,0,0,.15),    //$border-color-hover
-            false               //$incl-error
-        );
-
-        @include color-hover(
-            $transparent-color,     //$color
-            $transparent-bg-color,  //$bg-color
-            true,                   //$hover
-            true                    //$bg
-        );
-
     }
 
     /************************************************************
@@ -154,10 +125,10 @@ div.btn, div.list-group-item {
         flex-direction : row;
         align-items    : center;
         justify-content: center;
-        @include big-icon-font-size( $input-btn-padding-y, $font-size-base, $input-btn-line-height );
+        @include big-icon-font-size( $original-padding-y: $input-btn-padding-y, $original-font-size: $font-size-base, $original-line-height: $input-btn-line-height );
 
         &.btn-sm {
-            @include big-icon-font-size( $input-btn-padding-y-sm, $font-size-sm, $line-height-sm );
+            @include big-icon-font-size( $original-padding-y: $input-btn-padding-y-sm, $original-font-size: $font-size-sm, $original-line-height: $line-height-sm );
         }
     }
 }
@@ -166,18 +137,22 @@ div.btn, div.list-group-item {
 Modernizr-test for elements with class="active" when selected
 ************************************************************/
 @include show-and-hide-for-modernizr-test(
-	'active', //$modernizr-test ,
-	'.btn',   //$parent-element-type: '',
-	true,     //$incl-no-selector: true,
-    '',       //$display-value
-    false     //$incl-table-display: true
+	$modernizr-test     : 'active',
+	$parent-element-type: '.btn',
+    $incl-table-display : false
 );
 
 /************************************************************
 Including .btn-xs and btn-group-xs as in Bootstrap 3
 ************************************************************/
 .btn-xs {
-    @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $input-btn-line-height-sm, $btn-border-radius-xs);
+    @include button-size(
+        $padding-y    : $btn-padding-y-xs,
+        $padding-x    : $btn-padding-x-xs,
+        $font-size    : $font-size-xs,
+        $line-height  : $input-btn-line-height-sm,
+        $border-radius: $btn-border-radius-xs
+    );
 }
 .btn-group-xs > .btn { @extend .btn-xs; }
 
@@ -211,74 +186,3 @@ BUTTON-GROUP
     padding-top: 3px;
 }
 
-
-/************************************************************
-LIST-GROUP and LIST-GROUP-ITEM - REMOVED FOR NOW
-************************************************************/
-/*
-//Horizontal list-group
-.list-group-horizontal {
-    display       : flex;
-    flex-direction: row;
-}
-
-// Size classes for items in lists
-.list-group > .list-group-item,
-.list-group-horizontal > .list-group-item {
-    @include button-size($btn-padding-y, $btn-padding-x, $font-size-base, $input-btn-line-height, $btn-border-radius);
-}
-
-//Same colors as buttons
-@include control-active-color(".list-group > .list-group-item:not(.disabled), .list-group-horizontal > .list-group-item:not(.disabled)");
-
-
-//Overwrite Bootstrap border-radius
-.list-group > .list-group-item {
-    &:first-child { @include border-top-radius   ($btn-border-radius); }
-    &:last-child  { @include border-bottom-radius($btn-border-radius); }
-}
-
-//Set align-items equal to value for button.btn when list-group-item is a button
-.list-group > button.list-group-item,
-.list-group-horizontal > button.list-group-item {
-    align-items: flex-start;
-}
-
-//Setting size
-.list-group-lg > .list-group-item {
-    @include button-size($btn-padding-y-lg, $btn-padding-x-lg, $font-size-lg, $input-btn-line-height-lg, $btn-border-radius-lg);
-}
-.list-group-sm > .list-group-item {
-    @include button-size($btn-padding-y-sm, $btn-padding-x-sm, $font-size-sm, $input-btn-line-height-sm, $btn-border-radius-sm);
-}
-.list-group-xs > .list-group-item {
-    @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-sm, $input-btn-line-height-sm, $btn-border-radius-sm);
-}
-
-
-//List-items in list-groups with centered contents (default = left)
-.list-group-center > .list-group-item {
-    @extend .justify-content-center;
-}
-
-//Remove round boarder from items depending on it place in the group
-.list-group > .list-group-item,
-.list-group-horizontal > .list-group-item {
-    //No round border for items in the middle
-    &:not(:first-child):not(:last-child) {
-        border-radius: 0;
-    }
-}
-
-//Vertical => no bottom on first and no top on last
-.list-group > .list-group-item {
-    &:first-child:not(:last-child) { @include border-bottom-radius(0); }
-    &:last-child:not(:first-child) { @include border-top-radius(0);    }
-}
-
-//Horizontal => no right on first and no left on last
-.list-group-horizontal > .list-group-item {
-    &:first-child:not(:last-child) { @include border-right-radius(0); }
-    &:last-child:not(:first-child) { @include border-left-radius(0);  }
-}
-*/

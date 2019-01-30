@@ -108,7 +108,7 @@
                 $container.addClass('show active');
             }
 
-            $content = options.scroll ? $content.addScrollbar() : $content;
+            $content = options.scroll ? $content.addScrollbar('vertical') : $content;
 
 
             //Add content: string, element, function, setup-json-object, or children (=accordion)
