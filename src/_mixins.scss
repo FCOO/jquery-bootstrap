@@ -103,8 +103,6 @@ All control elements get same border-color when normal, hover, active and error
         //Move 'up' when focus or hover
         &.focus:not(:disabled):not(.disabled),
         &:focus:not(:disabled):not(.disabled),
-        .mouse-hover .hover &:not(:disabled):not(.disabled),
-        .mouse-hover &.hover:not(:disabled):not(.disabled),
         .mouse-hover &:hover:not(:disabled):not(.disabled) {
                position: relative;
                z-index : 4;
@@ -112,8 +110,6 @@ All control elements get same border-color when normal, hover, active and error
     }
 
     //hover, not focus, not disabled
-    .mouse-hover .hover &:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover &.hover:not(:focus):not(:disabled):not(.disabled),
     .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
         border-color: $border-color-hover;
     }
@@ -137,17 +133,12 @@ All control elements get same border-color when normal, hover, active and error
         @include control-border-color-hover($border-color-hover: $border-color-hover);
     }
 
-    @if $incl-error == true {
-        $border-color-error      : $red;
-        $border-color-error-hover: darken($border-color-error, 20%);
-
+    @if ($incl-error) {
         .has-warning &:not(:focus):not(:disabled):not(.disabled) {
-            border-color: $border-color-error;
+            border-color: $danger;
         }
-        .mouse-hover .has-warning .hover &:not(:focus):not(:disabled):not(.disabled),
-        .mouse-hover .has-warning &.hover:not(:focus):not(:disabled):not(.disabled),
         .mouse-hover .has-warning &:hover:not(:focus):not(:disabled):not(.disabled) {
-            border-color: $border-color-error-hover;
+            border-color: darken($danger, $darken-hover-percent);
         }
     }
 }
@@ -160,6 +151,7 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
         $incl-active: true,
         $incl-border: true,
         $incl-bg    : true,
+        $incl-error : false,
 
         $color       : $control-color,
         $color-hover : darken($color, $darken-hover-percent),
@@ -203,7 +195,7 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
 
     //border-color - all states
     @if ($incl-border){
-        @include control-border-color($border-color: $border-color, $border-color-hover: $border-color-hover, $incl-error: false);
+        @include control-border-color($border-color: $border-color, $border-color-hover: $border-color-hover, $incl-error: $incl-error);
     }
 
     @if ($incl-active){

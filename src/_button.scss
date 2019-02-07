@@ -31,7 +31,7 @@ div.btn, div.list-group-item {
         z-index: 2;
     }
 
-    @include control-colors();
+    @include control-colors($incl-error: true);
 
     &.primary {
         $primary-color: map-get($theme-colors, primary );
@@ -73,14 +73,14 @@ div.btn, div.list-group-item {
 
         $color-transparent: #D4D4D4;
         @include control-colors(
-            $incl-active: false,
+            $incl-active : false,
 
             $color       : $color-transparent,
             $color-hover : lighten($color-transparent, $darken-hover-percent),
             $color-active: lighten($color-transparent, $darken-active-percent),
             $color-focus : lighten($color-transparent, 40%),
 
-            $bg-color       : rgba(0,0,0,0),
+            $bg-color    : rgba(0,0,0,0),
 
             $border-color      : rgba(0,0,0, .1),
             $border-color-hover: rgba(0,0,0,.15)
