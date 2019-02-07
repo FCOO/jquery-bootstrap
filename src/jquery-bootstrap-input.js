@@ -55,9 +55,7 @@
 
             return $label;
         },
-
-
-    }); //$.fn.extend({
+    });
 
 
 }(jQuery, this, document));

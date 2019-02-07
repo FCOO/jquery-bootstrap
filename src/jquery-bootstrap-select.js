@@ -149,6 +149,13 @@
         //wrap inside a label
         var $label = $result._wrapLabel({ label: options.label });
 
+        //Open/close select when click on the label
+        $label.on('click', function(event){
+            $select.selectpicker('toggle');
+            event.stopPropagation();
+            return false;
+        });
+
         //** Add events **
 
         //setLabelAsPlaceholder: Update label position
