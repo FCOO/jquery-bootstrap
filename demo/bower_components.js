@@ -15229,6 +15229,7 @@ return jQuery;
         $(this._element).on(Event$5.KEYDOWN_DISMISS, function (event) {
           if (event.which === ESCAPE_KEYCODE$1) {
             event.preventDefault();
+
             _this5.hide();
           }
         });
@@ -17199,11 +17200,11 @@ return jQuery;
 	var minor = parseInt(splitVersion[1]);
 
 	var JQ_LT_17 = (major < 1) || (major == 1 && minor < 7);
-
+	
 	function eventsData($el) {
 		return JQ_LT_17 ? $el.data('events') : $._data($el[0]).events;
 	}
-
+	
 	function moveHandlerToTop($el, eventName, isDelegated) {
 		var data = eventsData($el);
 		var events = data[eventName];
@@ -17221,7 +17222,7 @@ return jQuery;
 			events.unshift(events.pop());
 		}
 	}
-
+	
 	function moveEventHandlers($elems, eventsString, isDelegate) {
 		var events = eventsString.split(/\s+/);
 		$elems.each(function() {
@@ -17231,7 +17232,7 @@ return jQuery;
 			}
 		});
 	}
-
+	
 	function makeMethod(methodName) {
 		$.fn[methodName + 'First'] = function() {
 			var args = $.makeArray(arguments);
@@ -17256,7 +17257,7 @@ return jQuery;
 	$.fn.delegateFirst = function() {
 		var args = $.makeArray(arguments);
 		var eventsString = args[1];
-
+		
 		if (eventsString) {
 			args.splice(0, 2);
 			$.fn.delegate.apply(this, arguments);
@@ -17276,7 +17277,7 @@ return jQuery;
 
 		return this;
 	};
-
+	
 	// on (jquery >= 1.7)
 	if (!JQ_LT_17) {
 		$.fn.onFirst = function(types, selector) {
@@ -23590,6 +23591,7 @@ var Translator = function (_EventEmitter) {
     var resolved = this.resolve(keys, options);
     var res = resolved && resolved.res;
     var resUsedKey = resolved && resolved.usedKey || key;
+    var resExactUsedKey = resolved && resolved.exactUsedKey || key;
 
     var resType = Object.prototype.toString.apply(res);
     var noObject = ['[object Number]', '[object Function]', '[object RegExp]'];
@@ -23598,7 +23600,7 @@ var Translator = function (_EventEmitter) {
     // object
     var handleAsObjectInI18nFormat = !this.i18nFormat || this.i18nFormat.handleAsObject;
     var handleAsObject = typeof res !== 'string' && typeof res !== 'boolean' && typeof res !== 'number';
-    if (handleAsObjectInI18nFormat && res && handleAsObject && noObject.indexOf(resType) < 0 && !(joinArrays && resType === '[object Array]')) {
+    if (handleAsObjectInI18nFormat && res && handleAsObject && noObject.indexOf(resType) < 0 && !(typeof joinArrays === 'string' && resType === '[object Array]')) {
       if (!options.returnObjects && !this.options.returnObjects) {
         this.logger.warn('accessing an object - but returnObjects options is not enabled!');
         return this.options.returnedObjectHandler ? this.options.returnedObjectHandler(resUsedKey, res, options) : 'key \'' + key + ' (' + this.language + ')\' returned an object instead of string.';
@@ -23607,19 +23609,21 @@ var Translator = function (_EventEmitter) {
       // if we got a separator we loop over children - else we just return object as is
       // as having it set to false means no hierarchy so no lookup for nested values
       if (keySeparator) {
-        var copy$$1 = resType === '[object Array]' ? [] : {}; // apply child translation on a copy
+        var resTypeIsArray = resType === '[object Array]';
+        var copy$$1 = resTypeIsArray ? [] : {}; // apply child translation on a copy
 
         /* eslint no-restricted-syntax: 0 */
+        var newKeyToUse = resTypeIsArray ? resExactUsedKey : resUsedKey;
         for (var m in res) {
           if (Object.prototype.hasOwnProperty.call(res, m)) {
-            var deepKey = '' + resUsedKey + keySeparator + m;
+            var deepKey = '' + newKeyToUse + keySeparator + m;
             copy$$1[m] = this.translate(deepKey, _extends({}, options, { joinArrays: false, ns: namespaces }));
             if (copy$$1[m] === deepKey) copy$$1[m] = res[m]; // if nothing found use orginal value as fallback
           }
         }
         res = copy$$1;
       }
-    } else if (handleAsObjectInI18nFormat && joinArrays && resType === '[object Array]') {
+    } else if (handleAsObjectInI18nFormat && typeof joinArrays === 'string' && resType === '[object Array]') {
       // array special treatment
       res = res.join(joinArrays);
       if (res) res = this.extendTranslation(res, keys, options);
@@ -23738,7 +23742,8 @@ var Translator = function (_EventEmitter) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     var found = void 0;
-    var usedKey = void 0;
+    var usedKey = void 0; // plain key
+    var exactUsedKey = void 0; // key with context / plural
     var usedLng = void 0;
     var usedNS = void 0;
 
@@ -23790,6 +23795,7 @@ var Translator = function (_EventEmitter) {
           /* eslint no-cond-assign: 0 */
           while (possibleKey = finalKeys.pop()) {
             if (!_this4.isValidLookup(found)) {
+              exactUsedKey = possibleKey;
               found = _this4.getResource(code, ns, possibleKey, options);
             }
           }
@@ -23797,7 +23803,7 @@ var Translator = function (_EventEmitter) {
       });
     });
 
-    return { res: found, usedKey: usedKey, usedLng: usedLng, usedNS: usedNS };
+    return { res: found, usedKey: usedKey, exactUsedKey: exactUsedKey, usedLng: usedLng, usedNS: usedNS };
   };
 
   Translator.prototype.isValidLookup = function isValidLookup(res) {
@@ -25091,9 +25097,9 @@ return i18next;
 (function ( $ ) {
 	var attachEvent = document.attachEvent,
 		stylesCreated = false;
-
+	
 	var jQuery_resize = $.fn.resize;
-
+	
 	$.fn.resize = function(callback) {
 		return this.each(function() {
 			if(this == window)
@@ -25108,14 +25114,14 @@ return i18next;
 			removeResizeListener(this, callback);
 		});
 	}
-
+	
 	if (!attachEvent) {
 		var requestFrame = (function(){
 			var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
 								function(fn){ return window.setTimeout(fn, 20); };
 			return function(fn){ return raf(fn); };
 		})();
-
+		
 		var cancelFrame = (function(){
 			var cancel = window.cancelAnimationFrame || window.mozCancelAnimationFrame || window.webkitCancelAnimationFrame ||
 								   window.clearTimeout;
@@ -25139,7 +25145,7 @@ return i18next;
 			return element.offsetWidth != element.__resizeLast__.width ||
 						 element.offsetHeight != element.__resizeLast__.height;
 		}
-
+		
 		function scrollListener(e){
 			var element = this;
 			resetTriggers(this);
@@ -25154,7 +25160,7 @@ return i18next;
 				}
 			});
 		};
-
+		
 		/* Detect CSS Animations support to detect element display/re-attach */
 		var animation = false,
 			animationstring = 'animation',
@@ -25165,8 +25171,8 @@ return i18next;
 			pfx  = '';
 		{
 			var elm = document.createElement('fakeelement');
-			if( elm.style.animationName !== undefined ) { animation = true; }
-
+			if( elm.style.animationName !== undefined ) { animation = true; }    
+			
 			if( animation === false ) {
 				for( var i = 0; i < domPrefixes.length; i++ ) {
 					if( elm.style[ domPrefixes[i] + 'AnimationName' ] !== undefined ) {
@@ -25180,12 +25186,12 @@ return i18next;
 				}
 			}
 		}
-
+		
 		var animationName = 'resizeanim';
 		var animationKeyframes = '@' + keyframeprefix + 'keyframes ' + animationName + ' { from { opacity: 0; } to { opacity: 0; } } ';
 		var animationStyle = keyframeprefix + 'animation: 1ms ' + animationName + '; ';
 	}
-
+	
 	function createStyles() {
 		if (!stylesCreated) {
 			//opacity:0 works around a chrome bug https://code.google.com/p/chromium/issues/detail?id=286360
@@ -25194,7 +25200,7 @@ return i18next;
 					'.resize-triggers, .resize-triggers > div, .contract-trigger:before { content: \" \"; display: block; position: absolute; top: 0; left: 0; height: 100%; width: 100%; overflow: hidden; } .resize-triggers > div { background: #eee; overflow: auto; } .contract-trigger:before { width: 200%; height: 200%; }',
 				head = document.head || document.getElementsByTagName('head')[0],
 				style = document.createElement('style');
-
+			
 			style.type = 'text/css';
 			if (style.styleSheet) {
 				style.styleSheet.cssText = css;
@@ -25206,7 +25212,7 @@ return i18next;
 			stylesCreated = true;
 		}
 	}
-
+	
 	window.addResizeListener = function(element, fn){
 		if (attachEvent) element.attachEvent('onresize', fn);
 		else {
@@ -25221,7 +25227,7 @@ return i18next;
 				element.appendChild(element.__resizeTriggers__);
 				resetTriggers(element);
 				element.addEventListener('scroll', scrollListener, true);
-
+				
 				/* Listen for a css animation to detect element display/re-attach */
 				animationstartevent && element.__resizeTriggers__.addEventListener(animationstartevent, function(e) {
 					if(e.animationName == animationName)
@@ -25231,7 +25237,7 @@ return i18next;
 			element.__resizeListeners__.push(fn);
 		}
 	};
-
+	
 	window.removeResizeListener = function(element, fn){
 		if (attachEvent) element.detachEvent('onresize', fn);
 		else {
@@ -25602,7 +25608,7 @@ return i18next;
 
 ;
 /****************************************************************************
-	modernizr-javascript.js,
+	modernizr-javascript.js, 
 
 	(c) 2016, FCOO
 
@@ -25613,20 +25619,20 @@ return i18next;
 
 (function ($, window, document, undefined) {
 	"use strict";
-
+	
 	var ns = window;
 
     //Extend the jQuery prototype
     $.fn.extend({
-        modernizrOn : function( test ){
-            return this.modernizrToggle( test, true );
+        modernizrOn : function( test ){ 
+            return this.modernizrToggle( test, true ); 
         },
 
-        modernizrOff: function( test ){
-            return this.modernizrToggle( test, false );
+        modernizrOff: function( test ){ 
+            return this.modernizrToggle( test, false ); 
         },
-
-        modernizrToggle: function( test, on ){
+        
+        modernizrToggle: function( test, on ){ 
 		if ( on === undefined )
             return this.modernizrToggle( test, !this.hasClass( test ) );
 
@@ -28488,19 +28494,19 @@ return i18next;
 ;
 /* @preserve
  * The MIT License (MIT)
- *
+ * 
  * Copyright (c) 2013-2018 Petka Antonov
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -28508,7 +28514,7 @@ return i18next;
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
+ * 
  */
 /**
  * bluebird build version 3.5.3
@@ -32023,28 +32029,28 @@ _dereq_('./some.js')(Promise, PromiseArray, apiRejection);
 _dereq_('./filter.js')(Promise, INTERNAL);
 _dereq_('./each.js')(Promise, INTERNAL);
 _dereq_('./any.js')(Promise);
-
-    util.toFastProperties(Promise);
-    util.toFastProperties(Promise.prototype);
-    function fillTypes(value) {
-        var p = new Promise(INTERNAL);
-        p._fulfillmentHandler0 = value;
-        p._rejectionHandler0 = value;
-        p._promise0 = value;
-        p._receiver0 = value;
-    }
-    // Complete slack tracking, opt out of field-type tracking and
-    // stabilize map
-    fillTypes({a: 1});
-    fillTypes({b: 2});
-    fillTypes({c: 3});
-    fillTypes(1);
-    fillTypes(function(){});
-    fillTypes(undefined);
-    fillTypes(false);
-    fillTypes(new Promise(INTERNAL));
-    debug.setBounds(Async.firstLineError, util.lastLineError);
-    return Promise;
+                                                         
+    util.toFastProperties(Promise);                                          
+    util.toFastProperties(Promise.prototype);                                
+    function fillTypes(value) {                                              
+        var p = new Promise(INTERNAL);                                       
+        p._fulfillmentHandler0 = value;                                      
+        p._rejectionHandler0 = value;                                        
+        p._promise0 = value;                                                 
+        p._receiver0 = value;                                                
+    }                                                                        
+    // Complete slack tracking, opt out of field-type tracking and           
+    // stabilize map                                                         
+    fillTypes({a: 1});                                                       
+    fillTypes({b: 2});                                                       
+    fillTypes({c: 3});                                                       
+    fillTypes(1);                                                            
+    fillTypes(function(){});                                                 
+    fillTypes(undefined);                                                    
+    fillTypes(false);                                                        
+    fillTypes(new Promise(INTERNAL));                                        
+    debug.setBounds(Async.firstLineError, util.lastLineError);               
+    return Promise;                                                          
 
 };
 
@@ -32832,8 +32838,8 @@ function ReductionPromiseArray(promises, fn, initialValue, _each) {
 util.inherits(ReductionPromiseArray, PromiseArray);
 
 ReductionPromiseArray.prototype._gotAccum = function(accum) {
-    if (this._eachValues !== undefined &&
-        this._eachValues !== null &&
+    if (this._eachValues !== undefined && 
+        this._eachValues !== null && 
         accum !== INTERNAL) {
         this._eachValues.push(accum);
     }
@@ -35393,7 +35399,7 @@ return index;
 }(jQuery, this.i18next, this, document));
 ;
 /****************************************************************************
-    jquery-scroll-container.js,
+    jquery-scroll-container.js, 
 
     (c) 2017, FCOO
 
@@ -35406,7 +35412,7 @@ return index;
     "use strict";
 
     if ( $('html').hasClass('touchevents') || $('html').hasClass('no-touchevents') )
-        ;    //Modernizr (or someone else) has set the correct class
+        ;    //Modernizr (or someone else) has set the correct class      
     else
         //Default: No touch
         $('html').addClass('no-touchevents');
@@ -35443,16 +35449,16 @@ return index;
             var scrollLeft = Math.ceil( this.scrollLeft() ),
                 scrollTop  = Math.ceil( this.scrollTop()  );
 
-            this._psSetXShadow( 'left',   scrollLeft > 0 );
-            this._psSetXShadow( 'right',  scrollLeft < (this.get(0).scrollWidth - this.get(0).clientWidth) );
+            this._psSetXShadow( 'left',   scrollLeft > 0 ); 
+            this._psSetXShadow( 'right',  scrollLeft < (this.get(0).scrollWidth - this.get(0).clientWidth) ); 
 
-            this._psSetYShadow( 'top',    scrollTop > 0 );
-            this._psSetYShadow( 'bottom', scrollTop < (this.get(0).scrollHeight - this.get(0).clientHeight) );
-
+            this._psSetYShadow( 'top',    scrollTop > 0 ); 
+            this._psSetYShadow( 'bottom', scrollTop < (this.get(0).scrollHeight - this.get(0).clientHeight) ); 
+            
         }
 
     });
-
+    
     var scrollbarOptions = {
         //handlers              //It is a list of handlers to use to scroll the element. Default: ['click-rail', 'drag-scrollbar', 'keyboard', 'wheel', 'touch'] Disabled by default: 'selection'
         //wheelSpeed            //The scroll speed applied to mousewheel event. Default: 1
@@ -35470,7 +35476,7 @@ return index;
         useBothWheelAxes   : true, //=> Mousewheel works in both horizontal and vertical scroll
         scrollXMarginOffset: 1,    //IE11 apears to work betten when == 1
         scrollYMarginOffset: 1,    //                --||--
-
+            
         direction: 'vertical' //["vertical"|"horizontal"|"both"] (default: "vertical")
     };
 
@@ -35503,24 +35509,24 @@ return index;
         //Add background for the bar
         this.scrollbarXRail.prepend( $('<div/>').addClass('ps__scrollbar-x-bg') );
         this.scrollbarYRail.prepend( $('<div/>').addClass('ps__scrollbar-y-bg') );
-
-
-        //Assume the the content is scrolled to the top/left
-        this._psSetXShadow('right',   true  );
+        
+       
+        //Assume the the content is scrolled to the top/left 
+        this._psSetXShadow('right',   true  ); 
         this._psSetYShadow( 'bottom', true  );
 
         // Adding event to update shadows
         this.on('ps-scroll-y ps-scroll-x', $.proxy( this._psUpdateShadow, this ) );
-
-
+        
+        
         //Add inner container to cache resize when adding/removing elements from container
-        this.scrollbarContainer =
+        this.scrollbarContainer = 
             $('<div/>')
                 .addClass('jquery-scroll-container')
                 .appendTo( this );
 
 
-        //Update scrollbar when container or content change size
+        //Update scrollbar when container or content change size        
         var _psUpdate = $.proxy( this._psUpdate, this );
         this.resize( _psUpdate );
         this.scrollbarContainer.resize( _psUpdate );
@@ -35531,8 +35537,8 @@ return index;
 
 /**********************************************************************
 TODO: NEW METHODS
-        //verticalScrollToElement
-        this.verticalScrollToElement = function verticalScrollToElement(elem, options){
+        //verticalScrollToElement    
+        this.verticalScrollToElement = function verticalScrollToElement(elem, options){ 
             elem = elem instanceof $ ? elem : $(elem);
             //Find the different relative positions and heights
             var topInContents = elem.position().top,                                   //The top-position in the hole contentens
@@ -35545,7 +35551,7 @@ TODO: NEW METHODS
 
             if ((topInBox >= 0) && (bottomInBox <= boxHeight)){
                 //Ok - The element is inside the box
-            } else
+            } else 
                 if (topInBox < 0){
                     //The elements top is above the top of the box => scroll element t top of box
                     deltaScroll = topInBox;
@@ -35556,29 +35562,29 @@ TODO: NEW METHODS
                         deltaScroll += (topInBox - deltaScroll);
                     }
                 }
-
+                    
             if (deltaScroll)
                 this.mCustomScrollbar("scrollTo", scrolledBy + deltaScroll, {timeout:0, scrollInertia:0});
         };
 
         //verticalScrollElementToTop( elem ) - scroll elem to the top of the scroll-box. TODO
-
-        //verticalScrollToTop
+        
+        //verticalScrollToTop            
         this.verticalScrollToTop    = function verticalScrollToTop(options){ this.mCustomScrollbar("scrollTo", 'top', options); };
-        //verticalScrollToBottom
+        //verticalScrollToBottom        
         this.verticalScrollToBottom = function verticalScrollToBottom(options){ this.mCustomScrollbar("scrollTo", 'bottom', options);    };
-        //verticalScrollAppend
+        //verticalScrollAppend        
         this.verticalScrollAppend   = function verticalScrollAppend( elem ){ this.find('.mCSB_container').append( elem ); };
-        //verticalScrollPrepend
+        //verticalScrollPrepend        
         this.verticalScrollPrepend  = function verticalScrollPrepend( elem ){ this.find('.mCSB_container').prepend( elem );    };
 
 **********************************************************************/
 
 
-
-    //Initialize/ready
-    $(function() {
-    });
+    
+    //Initialize/ready 
+    $(function() { 
+    }); 
 
 
 
@@ -35589,7 +35595,7 @@ TODO: NEW METHODS
 
     https://github.com/noraesae/perfect-scrollbar
 
-    THIS IS MODIFIED VERSIONS OF THE JS-FILE
+    THIS IS MODIFIED VERSIONS OF THE JS-FILE 
     FROM PERFECT-SCROLLBAR VERSION 0.7.1
 
 ************************************************/
@@ -35616,7 +35622,7 @@ TODO: NEW METHODS
         }
         return n[o].exports
     }
-
+           
     var i=typeof require=="function"&&require;
     for(var o=0;o<r.length;o++)
         s(r[o]);
@@ -36420,7 +36426,7 @@ function bindMouseWheelHandler(element, i) {
   }
 
   function mousewheelHandler(e) {
-    var delta = getDeltaFromEvent(e);
+    var delta = getDeltaFromEvent(e); 
 
     var deltaX = delta[0];
     var deltaY = delta[1];
@@ -43780,7 +43786,7 @@ module.exports = function (element) {
 
     var keys = ['Hours', 'Minutes', 'Seconds', 'Milliseconds'];
     var maxValues = [24, 60, 60, 1000];
-
+    
     // Capitalize first letter
     key = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
 
@@ -44224,7 +44230,7 @@ module.exports = function (element) {
 	}
 
 	function getZone (name, caller) {
-
+		
 		name = normalizeName(name);
 
 		var zone = zones[name];
@@ -46211,12 +46217,12 @@ options:
 })();
 
 ;
-/*
-  @package NOTY - Dependency-free notification library
-  @version version: 3.1.4
-  @contributors https://github.com/needim/noty/graphs/contributors
-  @documentation Examples and Documentation - http://needim.github.com/noty
-  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php
+/* 
+  @package NOTY - Dependency-free notification library 
+  @version version: 3.1.4 
+  @contributors https://github.com/needim/noty/graphs/contributors 
+  @documentation Examples and Documentation - http://needim.github.com/noty 
+  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php 
 */
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -48249,7 +48255,7 @@ Promise$2.prototype = {
     The primary way of interacting with a promise is through its `then` method,
     which registers callbacks to receive either a promise's eventual value or the
     reason why the promise cannot be fulfilled.
-
+  
     ```js
     findUser().then(function(user){
       // user is available
@@ -48257,14 +48263,14 @@ Promise$2.prototype = {
       // user is unavailable, and you are given the reason why
     });
     ```
-
+  
     Chaining
     --------
-
+  
     The return value of `then` is itself a promise.  This second, 'downstream'
     promise is resolved with the return value of the first promise's fulfillment
     or rejection handler, or rejected if the handler throws an exception.
-
+  
     ```js
     findUser().then(function (user) {
       return user.name;
@@ -48274,7 +48280,7 @@ Promise$2.prototype = {
       // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
       // will be `'default name'`
     });
-
+  
     findUser().then(function (user) {
       throw new Error('Found user, but still unhappy');
     }, function (reason) {
@@ -48287,7 +48293,7 @@ Promise$2.prototype = {
     });
     ```
     If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
-
+  
     ```js
     findUser().then(function (user) {
       throw new PedagogicalException('Upstream error');
@@ -48299,15 +48305,15 @@ Promise$2.prototype = {
       // The `PedgagocialException` is propagated all the way down to here
     });
     ```
-
+  
     Assimilation
     ------------
-
+  
     Sometimes the value you want to propagate to a downstream promise can only be
     retrieved asynchronously. This can be achieved by returning a promise in the
     fulfillment or rejection handler. The downstream promise will then be pending
     until the returned promise is settled. This is called *assimilation*.
-
+  
     ```js
     findUser().then(function (user) {
       return findCommentsByAuthor(user);
@@ -48315,9 +48321,9 @@ Promise$2.prototype = {
       // The user's comments are now available
     });
     ```
-
+  
     If the assimliated promise rejects, then the downstream promise will also reject.
-
+  
     ```js
     findUser().then(function (user) {
       return findCommentsByAuthor(user);
@@ -48327,15 +48333,15 @@ Promise$2.prototype = {
       // If `findCommentsByAuthor` rejects, we'll have the reason here
     });
     ```
-
+  
     Simple Example
     --------------
-
+  
     Synchronous Example
-
+  
     ```javascript
     let result;
-
+  
     try {
       result = findResult();
       // success
@@ -48343,9 +48349,9 @@ Promise$2.prototype = {
       // failure
     }
     ```
-
+  
     Errback Example
-
+  
     ```js
     findResult(function(result, err){
       if (err) {
@@ -48355,9 +48361,9 @@ Promise$2.prototype = {
       }
     });
     ```
-
+  
     Promise Example;
-
+  
     ```javascript
     findResult().then(function(result){
       // success
@@ -48365,15 +48371,15 @@ Promise$2.prototype = {
       // failure
     });
     ```
-
+  
     Advanced Example
     --------------
-
+  
     Synchronous Example
-
+  
     ```javascript
     let author, books;
-
+  
     try {
       author = findAuthor();
       books  = findBooksByAuthor(author);
@@ -48382,19 +48388,19 @@ Promise$2.prototype = {
       // failure
     }
     ```
-
+  
     Errback Example
-
+  
     ```js
-
+  
     function foundBooks(books) {
-
+  
     }
-
+  
     function failure(reason) {
-
+  
     }
-
+  
     findAuthor(function(author, err){
       if (err) {
         failure(err);
@@ -48419,9 +48425,9 @@ Promise$2.prototype = {
       }
     });
     ```
-
+  
     Promise Example;
-
+  
     ```javascript
     findAuthor().
       then(findBooksByAuthor).
@@ -48431,7 +48437,7 @@ Promise$2.prototype = {
       // something went wrong
     });
     ```
-
+  
     @method then
     @param {Function} onFulfilled
     @param {Function} onRejected
@@ -48443,25 +48449,25 @@ Promise$2.prototype = {
   /**
     `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
     as the catch block of a try/catch statement.
-
+  
     ```js
     function findAuthor(){
       throw new Error('couldn't find that author');
     }
-
+  
     // synchronous
     try {
       findAuthor();
     } catch(reason) {
       // something went wrong
     }
-
+  
     // async with promises
     findAuthor().catch(function(reason){
       // something went wrong
     });
     ```
-
+  
     @method catch
     @param {Function} onRejection
     Useful for tooling.
@@ -49388,7 +49394,7 @@ module.exports = g;
         //Therefore if iOS, we shall assume that PDF support is not available
         !isIOS && (
             //Modern versions of Firefox come bundled with PDFJS
-            isFirefoxWithPDFJS ||
+            isFirefoxWithPDFJS || 
             //Browsers that still support the original MIME type check
             supportsPdfMimeType || (
                 //Pity the poor souls still using IE

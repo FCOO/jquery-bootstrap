@@ -864,7 +864,6 @@
     function BsModalForm( options ){
         var _this = this;
         this.options = $.extend(true, {}, defaultOptions, options );
-
         this.options.id = this.options.id || 'bsModalFormId' + formId++;
 
         this.options.onClose_user = this.options.onClose || function(){};
@@ -1365,9 +1364,7 @@
 
             return $label;
         },
-
-
-    }); //$.fn.extend({
+    });
 
 
 }(jQuery, this, document));
@@ -1879,7 +1876,7 @@ options
 
     //******************************************************
     //hide_bs_modal - called when a modal is closing
-    function hide_bs_modal( /*event*/ ) {
+    function hide_bs_modal() {
         //Never close pinned modals
         if (this.bsModal.isPinned)
             return false;
@@ -1931,6 +1928,7 @@ options
             //If pinable and pinned => unpin
             if (this.bsModal.isPinned)
                 this._bsModalUnpin();
+
             this._close();
         },
 
@@ -2361,11 +2359,11 @@ options
 
         $result.onClose = options.onClose;
 
-        //Create as modal and adds methods
+        //Create as modal and adds methods - only allow close by esc for non-static modal (typical a non-form)
         $result.modal({
            //Name       Value                                   Type                Default Description
            backdrop :   options.static ? "static" : true,   //  boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
-           keyboard :   true,                               //  boolean	            true	Closes the modal when escape key is pressed
+           keyboard :   !options.static,                    //  boolean	            true	Closes the modal when escape key is pressed
            focus	:   true,                               //  boolean	            true    Puts the focus on the modal when initialized.
            show	    :   false                               //  boolean	            true	Shows the modal when initialized.
         });
@@ -3209,6 +3207,13 @@ options
 
         //wrap inside a label
         var $label = $result._wrapLabel({ label: options.label });
+
+        //Open/close select when click on the label
+        $label.on('click', function(event){
+            $select.selectpicker('toggle');
+            event.stopPropagation();
+            return false;
+        });
 
         //** Add events **
 

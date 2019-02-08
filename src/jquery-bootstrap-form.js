@@ -226,7 +226,6 @@
     function BsModalForm( options ){
         var _this = this;
         this.options = $.extend(true, {}, defaultOptions, options );
-console.log(this.options);
         this.options.id = this.options.id || 'bsModalFormId' + formId++;
 
         this.options.onClose_user = this.options.onClose || function(){};

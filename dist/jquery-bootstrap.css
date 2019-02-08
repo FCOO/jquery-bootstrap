@@ -7633,15 +7633,15 @@ div.btn, div.list-group-item {
   .btn.btn-standard.disabled, .btn.btn-standard:disabled {
     border-color: #ced4da; }
   .btn.btn-standard.focus:not(:disabled):not(.disabled), .btn.btn-standard:focus:not(:disabled):not(.disabled),
-  .mouse-hover .hover .btn.btn-standard:not(:disabled):not(.disabled),
-  .mouse-hover .btn.btn-standard.hover:not(:disabled):not(.disabled),
   .mouse-hover .btn.btn-standard:hover:not(:disabled):not(.disabled) {
     position: relative;
     z-index: 4; }
-  .mouse-hover .hover .btn.btn-standard:not(:focus):not(:disabled):not(.disabled),
-  .mouse-hover .btn.btn-standard.hover:not(:focus):not(:disabled):not(.disabled),
   .mouse-hover .btn.btn-standard:hover:not(:focus):not(:disabled):not(.disabled) {
     border-color: #8C959D; }
+  .has-warning .btn.btn-standard:not(:focus):not(:disabled):not(.disabled) {
+    border-color: #dc3545; }
+  .mouse-hover .has-warning .btn.btn-standard:hover:not(:focus):not(:disabled):not(.disabled) {
+    border-color: #d32535; }
   .btn.btn-standard.active {
     color: #fff;
     background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x; }
@@ -7678,13 +7678,9 @@ div.btn, div.list-group-item {
     .btn.btn-standard.primary.disabled, .btn.btn-standard.primary:disabled {
       border-color: #007bff; }
     .btn.btn-standard.primary.focus:not(:disabled):not(.disabled), .btn.btn-standard.primary:focus:not(:disabled):not(.disabled),
-    .mouse-hover .hover .btn.btn-standard.primary:not(:disabled):not(.disabled),
-    .mouse-hover .btn.btn-standard.primary.hover:not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.primary:hover:not(:disabled):not(.disabled) {
       position: relative;
       z-index: 4; }
-    .mouse-hover .hover .btn.btn-standard.primary:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover .btn.btn-standard.primary.hover:not(:focus):not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.primary:hover:not(:focus):not(:disabled):not(.disabled) {
       border-color: #0056b3; }
     .btn.btn-standard.primary.disabled, .btn.btn-standard.primary:disabled {
@@ -7721,13 +7717,9 @@ div.btn, div.list-group-item {
     .btn.btn-standard.transparent.disabled, .btn.btn-standard.transparent:disabled {
       border-color: rgba(0, 0, 0, 0.1); }
     .btn.btn-standard.transparent.focus:not(:disabled):not(.disabled), .btn.btn-standard.transparent:focus:not(:disabled):not(.disabled),
-    .mouse-hover .hover .btn.btn-standard.transparent:not(:disabled):not(.disabled),
-    .mouse-hover .btn.btn-standard.transparent.hover:not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.transparent:hover:not(:disabled):not(.disabled) {
       position: relative;
       z-index: 4; }
-    .mouse-hover .hover .btn.btn-standard.transparent:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover .btn.btn-standard.transparent.hover:not(:focus):not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.transparent:hover:not(:focus):not(:disabled):not(.disabled) {
       border-color: rgba(0, 0, 0, 0.15); }
     .btn.btn-standard.transparent.disabled, .btn.btn-standard.transparent:disabled {
@@ -8906,21 +8898,15 @@ form.form-validation .form-group {
   .form-control.disabled, .form-control:disabled {
     border-color: #ced4da; }
   .form-control.focus:not(:disabled):not(.disabled), .form-control:focus:not(:disabled):not(.disabled),
-  .mouse-hover .hover .form-control:not(:disabled):not(.disabled),
-  .mouse-hover .form-control.hover:not(:disabled):not(.disabled),
   .mouse-hover .form-control:hover:not(:disabled):not(.disabled) {
     position: relative;
     z-index: 4; }
-  .mouse-hover .hover .form-control:not(:focus):not(:disabled):not(.disabled),
-  .mouse-hover .form-control.hover:not(:focus):not(:disabled):not(.disabled),
   .mouse-hover .form-control:hover:not(:focus):not(:disabled):not(.disabled) {
     border-color: #8C959D; }
   .has-warning .form-control:not(:focus):not(:disabled):not(.disabled) {
     border-color: #dc3545; }
-  .mouse-hover .has-warning .hover .form-control:not(:focus):not(:disabled):not(.disabled),
-  .mouse-hover .has-warning .form-control.hover:not(:focus):not(:disabled):not(.disabled),
   .mouse-hover .has-warning .form-control:hover:not(:focus):not(:disabled):not(.disabled) {
-    border-color: #921925; }
+    border-color: #d32535; }
 
 .form-control-xs, .input-group-xs > .form-control,
 .input-group-xs > .input-group-prepend > .input-group-text,
@@ -9804,13 +9790,9 @@ Adjustment to Bootstrap tabs
     .nav-tabs a.nav-item.nav-link.disabled, .nav-tabs a.nav-item.nav-link:disabled {
       border-color: #ced4da; }
     .nav-tabs a.nav-item.nav-link.focus:not(:disabled):not(.disabled), .nav-tabs a.nav-item.nav-link:focus:not(:disabled):not(.disabled),
-    .mouse-hover .hover .nav-tabs a.nav-item.nav-link:not(:disabled):not(.disabled),
-    .mouse-hover .nav-tabs a.nav-item.nav-link.hover:not(:disabled):not(.disabled),
     .mouse-hover .nav-tabs a.nav-item.nav-link:hover:not(:disabled):not(.disabled) {
       position: relative;
       z-index: 4; }
-    .mouse-hover .hover .nav-tabs a.nav-item.nav-link:not(:focus):not(:disabled):not(.disabled),
-    .mouse-hover .nav-tabs a.nav-item.nav-link.hover:not(:focus):not(:disabled):not(.disabled),
     .mouse-hover .nav-tabs a.nav-item.nav-link:hover:not(:focus):not(:disabled):not(.disabled) {
       border-color: #8C959D; }
     .nav-tabs a.nav-item.nav-link.active {

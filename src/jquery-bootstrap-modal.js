@@ -599,7 +599,6 @@
                 show       : true
             });
 
-console.log('<<', options);
         //Create the modal
         $result =
             $('<div/>')
