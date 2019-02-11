@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "1.48.1",
+  "version": "1.49.0",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "authors": [
     "NielsHolt"
@@ -48,6 +48,19 @@
     "bootstrap-select": {
       "main": [
         "dist/js/bootstrap-select.js"
+      ]
+    },
+    "jquery.scrollbar": {
+      "main": [
+        "jquery.scrollbar.js"
+      ]
+    },
+    "bootstrap": {
+      "dependencies": {
+        "jquery": "latest"
+      },
+      "main": [
+        "dist/js/bootstrap.bundle.js"
       ]
     }
   },

@@ -20,6 +20,19 @@ The default bootstrap structure used for elements in a form is
 </div>
 ************************************************************/
 
+//modal-content with error in fields
+.modal-content.modal-has-warning {
+    border: 1px solid $red;
+    @include box-shadow(0 .25rem .5rem rgba($red, .5)); //As $modal-content-box-shadow-xs  with $red instead of $black
+}
+
+@include media-breakpoint-up(sm) {
+    .modal-content.modal-has-warning {
+        @include box-shadow(0 .5rem 1rem rgba($red, .5)); //as $modal-content-box-shadow-sm-up with $red instead of $black
+    }
+}
+
+
 //General form-group without space for validation message
 .form-group {
     line-height   : 1;
@@ -142,3 +155,5 @@ form.form-validation {
 .input-group-lg > label.has-float-label > .form-control { @extend .form-control-lg; }
 .input-group-sm > label.has-float-label > .form-control { @extend .form-control-sm; }
 .input-group-xs > label.has-float-label > .form-control { @extend .form-control-xs; }
+
+
