@@ -1324,19 +1324,47 @@
         /******************************************************
         $.bsInput( options )
         Create a <input type="text" class="form-control"> inside a <label>
+        Also add input-mask using https://github.com/RobinHerbots/Inputmask
         ******************************************************/
         bsInput: function( options ){
-            return  $('<input/>')
+            if (options.inputmask)
+                options.placeholder = null;
+
+            var $input =
+                    $('<input/>')
                         ._bsAddIdAndName( options )
                         .addClass('form-control-border form-control')
-                        .attr('type', 'text')
-                        ._wrapLabel(options);
+                        .attr('type', 'text');
+
+            if (options.inputmask){
+                /* NOT USED FOR NOW
+                var updateFunc = $.proxy($input._onInputmaskChanged, $input);
+                options.inputmask.oncomplete   = options.inputmask.oncomplete   || updateFunc;
+                options.inputmask.onincomplete = options.inputmask.onincomplete || updateFunc;
+                options.inputmask.oncleared    = options.inputmask.oncleared    || updateFunc;
+                */
+
+                //Bug fix in chrome: Keep mask in input to prevent label "flicking"
+                options.inputmask.clearMaskOnLostFocus = false;
+
+                $input.inputmask(options.inputmask);
+            }
+
+            return $input._wrapLabel(options);
         },
 
-    }); //$.extend({
+    });
 
 
     $.fn.extend({
+        /* NOT USED FOR NOW
+        _onInputmaskChanged: function( inputmaskStatus ){
+            var $this = $(this);
+            $(this).closest('.form-group').toggleClass('has-warning', !$this.inputmask("isComplete"));
+            $(this).closest('.input-group').toggleClass('has-warning', !$this.inputmask("isComplete"));
+        },
+        */
+
         /******************************************************
         _wrapLabel( options )
         Wrap the element inside a <label> and add

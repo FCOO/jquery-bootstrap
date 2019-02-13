@@ -543,23 +543,18 @@ Five different methods are defined with default options depending of the type of
     	//window.noty: method to support noty^2 methods
     	window.noty( options );     
 
-<!--    
-### **** NEW **** 
-#### options
-| Id | Type | Default | Description |
-| :--: | :--: | :-----: | --- |
-| `options1` | `boolean` | `true` | If `true` the ... |
-| `options2` | `string` | `null` | Contain the ... |
 
-### Methods
-
-    .methods1( arg1, arg2,...): Do something
-    .methods2( arg1, arg2,...): Do something else
--->
-
-<!-- 
 <a name="input"></a>
 ## INPUT
+Input fields (`<input type="text">..</input>`) created inside a modal can have a input-mask set using [RobinHerbots/Inputmask](https://github.com/RobinHerbots/Inputmask)
+**Note**: No placeholder is allowed due to some Chrome bug
+See [RobinHerbots/Inputmask](https://github.com/RobinHerbots/Inputmask) for details on how to set the input-mask
+
+### Example
+        {id:'id#N', type:'input', inputmask:{"mask": "(999) 999-9999"}, label: 'Label (with inputmask)'}
+
+
+<!--    
 ### **** NEW **** 
 #### options
 | Id | Type | Default | Description |
