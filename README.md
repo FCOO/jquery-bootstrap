@@ -149,7 +149,7 @@ Return options to create a marker-icon = icon with inner color given as color in
 #### options
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
-| `id` | `string` | `""` | Id of the button |
+| `id` | `string` | `""` | Id of the button. If part of `bsButtonGroup`: If no id is given the item becomes a sub-header |
 | `selected` | `boolean` | `false` | If `true` the button is `selected` (blue) |
 | `focus` | `boolean` | `false` | If `true` the button get focus |
 | `primary` | `boolean` | `false` | If `true` the button get primary-class (blue) |
@@ -191,7 +191,7 @@ Same as for Button-group plus
     
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
-| `id` | `string` | `""` | id for the group |
+| `id` | `string` | `""` | id for the group Id of the item. If no id is given the item becomes a sub-header |
 | `allowZeroSelected` | `boolean` | `false` | See above |
 | `onChange` | `function(id, selected, $buttonGroup)` | `null` | Called when a button is selected |
 

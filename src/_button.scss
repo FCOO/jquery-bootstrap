@@ -186,3 +186,42 @@ BUTTON-GROUP
     padding-top: 3px;
 }
 
+//Header inside vertical button-group
+.btn-group-vertical {
+    .btn-group-header {
+        @include header-variant( $incl-header: false );
+        line-height: 1.3;
+
+        width: 100%;
+
+        background-color: $selectlist-bg-color;
+        color           : $selectlist-color;
+
+
+        //Adjust padding for buttons after a header
+        & ~ .btn {
+            padding-left: 2*$btn-padding-x;
+        }
+    }
+
+    //Small
+    &.btn-group-sm .btn-group-header {
+        @include header-variant-sm( $incl-header: false );
+        line-height: 1.3;
+        & ~ .btn {
+            padding-left: 2*$btn-padding-x-sm;
+        }
+    }
+
+    //Extra small
+    &.btn-group-xs .btn-group-header {
+        @include header-variant-sm( $incl-header: false, $xs-padding: true );
+        line-height: 1.3;
+        & ~ .btn {
+            padding-left: 2*$btn-padding-x-xs;
+        }
+    }
+
+
+
+}

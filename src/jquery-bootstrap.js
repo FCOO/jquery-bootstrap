@@ -13,7 +13,7 @@
 
     /*
 
-    Almost all elements comes in two sizes: normal and small set by options.small: ?lse/true
+    Almost all elements comes in two sizes: normal and small set by options.small: false/true
 
     In jquery-bootstrap.scss sizing class-postfix -xs is added (from Bootstrap 3)
 

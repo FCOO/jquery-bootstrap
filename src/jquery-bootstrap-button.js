@@ -165,8 +165,14 @@
             result.attr( options.attr );
 
         $.each( options.list, function(index, buttonOptions ){
-            $.bsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
-                .appendTo( result );
+            if (buttonOptions.id)
+                $.bsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
+                    .appendTo( result );
+            else
+                $('<div/>')
+                    .addClass('btn-group-header')
+                    ._bsAddHtml( buttonOptions )
+                    .appendTo( result );
         });
         return result;
     };

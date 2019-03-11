@@ -374,8 +374,14 @@
             result.attr( options.attr );
 
         $.each( options.list, function(index, buttonOptions ){
-            $.bsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
-                .appendTo( result );
+            if (buttonOptions.id)
+                $.bsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
+                    .appendTo( result );
+            else
+                $('<div/>')
+                    .addClass('btn-group-header')
+                    ._bsAddHtml( buttonOptions )
+                    .appendTo( result );
         });
         return result;
     };
@@ -4030,7 +4036,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
     /*
 
-    Almost all elements comes in two sizes: normal and small set by options.small: ?lse/true
+    Almost all elements comes in two sizes: normal and small set by options.small: false/true
 
     In jquery-bootstrap.scss sizing class-postfix -xs is added (from Bootstrap 3)
 
