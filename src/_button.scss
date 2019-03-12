@@ -165,11 +165,11 @@ BUTTON-GROUP
     @extend .text-left;
 }
 
-//Vertical button-group insides in popover: width = 100%
-.popover-body .btn-group-vertical {
+//Vertical button-group insides in popover and vertical button-group with full width: width = 100%
+.popover-body .btn-group-vertical,
+.btn-group-vertical.btn-group-full-width {
     @extend .w-100;
 }
-
 
 //Horizontal button-group with full width and equal width or inside input-group
 .input-group .btn-group,
@@ -181,6 +181,21 @@ BUTTON-GROUP
     }
 }
 
+//With border
+.btn-group, .btn-group-vertical {
+    &.btn-group-border {
+        border: 1px solid $card-border-color;
+        border-radius: $btn-border-radius;
+        &.btn-group-sm {
+            border-radius: $btn-border-radius-sm;
+        }
+        &.btn-group-xs {
+            border-radius: $btn-border-radius-xs;
+        }
+    }
+}
+
+
 //Add padding-top when inside a input-group with label
 .has-fixed-label ~ .btn-group {
     padding-top: 3px;
@@ -189,13 +204,14 @@ BUTTON-GROUP
 //Header inside vertical button-group
 .btn-group-vertical {
     .btn-group-header {
-        @include header-variant( $incl-header: false );
+        @include title-variant();
+        @include title-color();
         line-height: 1.3;
 
         width: 100%;
 
-        background-color: $selectlist-bg-color;
-        color           : $selectlist-color;
+//HER        background-color: $selectlist-bg-color;
+//HER        color           : $selectlist-color;
 
 
         //Adjust padding for buttons after a header
@@ -206,7 +222,7 @@ BUTTON-GROUP
 
     //Small
     &.btn-group-sm .btn-group-header {
-        @include header-variant-sm( $incl-header: false );
+        @include title-variant-sm();
         line-height: 1.3;
         & ~ .btn {
             padding-left: 2*$btn-padding-x-sm;
@@ -222,6 +238,17 @@ BUTTON-GROUP
         }
     }
 
-
-
+    //Margin between two .btn-group-vertical
+    & + .btn-group-vertical {
+        margin-top: $content-padding-y;
+        &.btn-group-sm {
+            margin-top: $content-padding-y-sm;
+        }
+        &.btn-group-xs {
+            margin-top: $content-padding-y-sm;
+        }
+    }
 }
+
+
+

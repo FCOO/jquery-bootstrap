@@ -367,8 +367,11 @@
         if (options.allowZeroSelected)
             result.addClass( 'allow-zero-selected' );
 
-        if (options.fullWidth && !options.vertical)
+        if (options.fullWidth)
             result.addClass('btn-group-full-width');
+
+        if (options.border)
+            result.addClass('btn-group-border');
 
         if (options.attr)
             result.attr( options.attr );

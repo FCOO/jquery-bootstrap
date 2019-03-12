@@ -34,7 +34,7 @@ position: fixed;
     </style>
 </head>
 
-<body style="padding: 20px; background-color: #214b87;">
+<body style="padding: 20px; _background-color: #214b87;">
 
     <div id="lang"></div>
 
@@ -1397,6 +1397,30 @@ type: 'checkbox',
         .prependTo( $('#formTest') );
 */
 
+    $.bsButtonGroup({
+        list     : [
+                    {             icon: 'fa-home',   text:'Åg Header'},
+                    {id:'slow',   icon: 'fa-bicycle',   text:'X'},
+                    {id:'medium', icon: 'fa-car', text:'Xx'},
+                    {id:'fast',   icon: 'fa-fighter-jet',   text:'Xxx'}
+                ],
+        _small    : true,
+        vertical : true,
+        border   : true,
+        fullWidth: true
+    }).appendTo($body);
+    $.bsButtonGroup({
+        list     : [
+                    {             icon: 'fa-home',   text:'Åg Header'},
+                    {id:'slow',   icon: 'fa-bicycle',   text:'X'},
+                    {id:'medium', icon: 'fa-car', text:'Xx'},
+                    {id:'fast',   icon: 'fa-fighter-jet',   text:'Xxx'}
+                ],
+        small    : true,
+        vertical : true,
+        border   : true,
+        fullWidth: true
+    }).appendTo($body);
 </script>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
