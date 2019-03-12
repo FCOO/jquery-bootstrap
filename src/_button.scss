@@ -207,12 +207,7 @@ BUTTON-GROUP
         @include title-variant();
         @include title-color();
         line-height: 1.3;
-
         width: 100%;
-
-//HER        background-color: $selectlist-bg-color;
-//HER        color           : $selectlist-color;
-
 
         //Adjust padding for buttons after a header
         & ~ .btn {
