@@ -49799,7 +49799,7 @@ options:
     window.TimeSlider = function (input, options, pluginCount) {
         var _this = this;
 
-        this.VERSION = "6.1.3";
+        this.VERSION = "6.1.4";
 
         //Setting default options
         this.options = $.extend( true, {}, defaultOptions, options );
@@ -49941,7 +49941,12 @@ options:
             //Setting tick at midnight
             value = o.min;
             while (value <= o.max){
-                if ( ((value - this.options.majorTicksOffset) % o.tickDistanceNum === 0) && (this._valueToTzMoment( value, this.options.format.timezone ).hour() === 0) ){
+                //Old version: Force midnights tag to be on minor-tick => error on shift to/from DST (Daylight Saving Time)
+                //if ( ((value - this.options.majorTicksOffset) % o.tickDistanceNum === 0) && (this._valueToTzMoment( value, this.options.format.timezone ).hour() === 0) ){
+
+                //New version: Allow midnights tags on every hour regardless if there are a tag
+                if (this._valueToTzMoment( value, this.options.format.timezone ).hour() === 0){
+
                     midnights++;
                     this.appendTick( valueP, tickOptions );
 
