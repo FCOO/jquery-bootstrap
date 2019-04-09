@@ -12,7 +12,7 @@
 	"use strict";
 
     /*******************************************
-    $.bsMarkerIcon(colorClassName, borderColorClassName, options)
+    $.bsMarkerAsIcon(colorClassName, borderColorClassName, options)
     Return options to create a marker-icon = round icon with
     inner color given as color in colorClassName and
     border-color given as color in borderColorClassName
@@ -21,7 +21,7 @@
         extraClassName: string or string[]. Extra class-name added
         partOfList : true if the icon is part of a list => return [icon-name] instead of [[icon-name]]
     ********************************************/
-    $.bsMarkerIcon = function(colorClassName, borderColorClassName, options){
+    $.bsMarkerAsIcon = function(colorClassName, borderColorClassName, options){
         options = $.extend({
             faClassName   : 'fa-circle',
             extraClassName: '',
@@ -42,5 +42,8 @@
 
         return options.partOfList ? result : [result];
     };
+
+    //Backwards comparability
+    $.bsMarkerIcon = $.bsMarkerAsIcon;
 
 }(jQuery, this, document));

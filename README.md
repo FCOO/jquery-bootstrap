@@ -127,9 +127,9 @@ If `options.context` is given, ALL functions in `options` (eg. `onClick`, `text`
 <a name="utilities"></a>
 ## Utilities
 
-### $.bsMarkerIcon
+### $.bsMarkerAsIcon
 
-    var myIcon = $.bsMarkerIcon(colorClassName, borderColorClassName, options);
+    var myIcon = $.bsMarkerAsIcon(colorClassName, borderColorClassName, options);
 
 Return options to create a marker-icon = icon with inner color given as color in `colorClassName` and     border-color given as color in `borderColorClassName`
 
