@@ -1,87 +1,87 @@
 {
-  "name": "jquery-bootstrap",
-  "version": "1.53.0",
-  "homepage": "https://github.com/fcoo/jquery-bootstrap",
-  "authors": [
-    "NielsHolt"
-  ],
-  "description": "",
-  "main": [
-    "dist/jquery-bootstrap.js",
-    "dist/jquery-bootstrap.css"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/fcoo/jquery-bootstrap.git"
-  },
-  "dependencies": {
-    "bootstrap": "^4.0.0",
-    "i18next": "latest",
-    "jquery-i18next-phrases": "fcoo/jquery-i18next-phrases#^1.1.1",
-    "jquery-checkbox-radio-group": "fcoo/jquery-checkbox-radio-group#^1.0.0",
-    "jquery-scroll-container": "fcoo/jquery-scroll-container#^3.0.0",
-    "jquery-value-format": "fcoo/jquery-value-format#^1.6.0",
-    "bootstrap-popover-extensions": "fcoo/bootstrap-popover-extensions#^1.2.2",
-    "hammerjs": "hammer.js#^2.0.8",
-    "modernizr-javascript": "fcoo/modernizr-javascript#latest",
-    "modernizr-mouse-events": "fcoo/modernizr-mouse-events#latest",
-    "jquery-hammer.js": "fcoo/jquery-hammer.js#latest",
-    "noty": "^3.1.3",
-    "animate.css": "^3.5.2",
-    "jquery-base-slider": "fcoo/jquery-base-slider#^5.0.0",
-    "jquery-time-slider": "fcoo/jquery-time-slider#^6.0.0",
-    "pdfobject": "pipwerks/PDFObject",
-    "js-url": "websanova/js-url#^2.5.3",
-    "jquery-stupid-table": "^1.1.3",
-    "bind-first": "private-face/jquery.bind-first#^0.2.3",
-    "bootstrap-select": "1.13.5",
-    "inputmask": "RobinHerbots/Inputmask#^4.0.6"
-  },
-  "devDependencies": {
-    "bourbon": "latest",
-    "modernizr-mixin": "latest",
-    "mathsass": "latest",
-    "modernizr-scss": "FCOO/modernizr-scss#^2.1.2",
-    "bootstrap-float-label": "tonystar/bootstrap-float-label#^4.0.2",
-    "font-awesome": "fontawesome#^5.6.0"
-  },
-  "overrides": {
-    "bootstrap-select": {
-      "main": [
-        "dist/js/bootstrap-select.js"
-      ]
+    "name": "jquery-bootstrap",
+    "version": "1.53.0",
+    "homepage": "https://github.com/fcoo/jquery-bootstrap",
+    "authors": [
+        "NielsHolt"
+    ],
+    "description": "",
+    "main": [
+        "dist/jquery-bootstrap.js",
+        "dist/jquery-bootstrap.css"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/fcoo/jquery-bootstrap.git"
     },
-    "jquery.scrollbar": {
-      "main": [
-        "jquery.scrollbar.js"
-      ]
+    "dependencies": {
+        "bootstrap": "^4.0.0",
+        "i18next": "latest",
+        "jquery-i18next-phrases": "fcoo/jquery-i18next-phrases#^1.1.1",
+        "jquery-checkbox-radio-group": "fcoo/jquery-checkbox-radio-group#^1.0.0",
+        "jquery-scroll-container": "fcoo/jquery-scroll-container#^3.0.0",
+        "jquery-value-format": "fcoo/jquery-value-format#^1.6.0",
+        "bootstrap-popover-extensions": "fcoo/bootstrap-popover-extensions#^1.2.2",
+        "hammerjs": "hammer.js#^2.0.8",
+        "modernizr-javascript": "fcoo/modernizr-javascript#latest",
+        "modernizr-mouse-events": "fcoo/modernizr-mouse-events#latest",
+        "jquery-hammer.js": "fcoo/jquery-hammer.js#latest",
+        "noty": "^3.1.3",
+        "animate.css": "^3.5.2",
+        "jquery-base-slider": "fcoo/jquery-base-slider#^5.0.0",
+        "jquery-time-slider": "fcoo/jquery-time-slider#^6.0.0",
+        "pdfobject": "pipwerks/PDFObject",
+        "js-url": "websanova/js-url#^2.5.3",
+        "jquery-stupid-table": "^1.1.3",
+        "bind-first": "private-face/jquery.bind-first#^0.2.3",
+        "bootstrap-select": "1.13.5",
+        "inputmask": "RobinHerbots/Inputmask#^4.0.6"
     },
-    "bootstrap": {
-      "dependencies": {
-        "jquery": "latest"
-      },
-      "main": [
-        "dist/js/bootstrap.bundle.js"
-      ]
+    "devDependencies": {
+        "bourbon": "latest",
+        "modernizr-mixin": "latest",
+        "mathsass": "latest",
+        "modernizr-scss": "FCOO/modernizr-scss#^2.1.2",
+        "bootstrap-float-label": "tonystar/bootstrap-float-label#^4.0.2",
+        "font-awesome": "fontawesome#^5.6.0"
     },
-    "inputmask": {
-      "main": [
-        "dist/jquery.inputmask.bundle.js"
-      ]
+    "overrides": {
+        "bootstrap-select": {
+            "main": [
+                "dist/js/bootstrap-select.js"
+            ]
+        },
+        "jquery.scrollbar": {
+            "main": [
+                "jquery.scrollbar.js"
+            ]
+        },
+        "bootstrap": {
+            "dependencies": {
+                "jquery": "latest"
+            },
+            "main": [
+                "dist/js/bootstrap.bundle.js"
+            ]
+        },
+        "inputmask": {
+            "main": [
+                "dist/jquery.inputmask.bundle.js"
+            ]
+        }
+    },
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "moduleType": [
+        "es6"
+    ],
+    "resolutions": {
+        "bootstrap": "^4.0.0"
     }
-  },
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "moduleType": [
-    "es6"
-  ],
-  "resolutions": {
-    "bootstrap": "^4.0.0"
-  }
 }
