@@ -12,7 +12,7 @@
 
 ****************************************************************************/
 
-(function ($ /*, window, document, undefined*/) {
+(function ($, window, document, undefined) {
 	"use strict";
 
     //Setting defaults for bootstrap-select
@@ -20,44 +20,116 @@
 
     $.fn.selectpicker.Constructor.DEFAULTS = $.extend( $.fn.selectpicker.Constructor.DEFAULTS, {
 
-    styleBase         : 'btn',
-    style             : 'btn-standard',
-        size: 'auto',
+        styleBase         : 'btn',
+        style             : 'btn-standard',
+        size              : 'auto',
         selectedTextFormat: 'values',
 
-        title: null,
+        title           : ' ', //Must be not-empty
+        noneSelectedText: '',  //Must be empty
 
-    noneSelectedText: '', //'Er det denne her?',
-
-    width             : '100%', //false,
-    container         : 'body', //false,
+        width       : '100%',
+        container   : 'body',
         hideDisabled: false,
-        showSubtext: false,
-        showIcon   : true,
-        showContent: true,
-        dropupAuto: true,
-        header: false,
-        liveSearch: false,
+        showSubtext : false,
+        showIcon    : true,
+        showContent : true,
+        dropupAuto  : true,
+        header      : false,
+        liveSearch  : false,
         liveSearchPlaceholder: null,
-        liveSearchNormalize: false,
-        liveSearchStyle: 'contains',
+        liveSearchNormalize  : false,
+        liveSearchStyle      : 'contains',
         actionsBox: false,
-        showTick: true,
-    iconBase: $.FONTAWESOME_PREFIX, //'glyphicon',
-    tickIcon: 'fa-ok',              //'glyphicon-ok',
+        showTick  : true,
+        iconBase: $.FONTAWESOME_PREFIX,
+        tickIcon: 'fa-ok',
     });
 
     //Sets max visible items in list to four if the screen is 'small'
     if ( Math.min(window.screen.width, window.screen.height) < 420 )
         $.fn.selectpicker.Constructor.DEFAULTS.size = 4;
 
-    var selectboxId = 0;
+    /**********************************************************
+    Extend selectpicker
+    **********************************************************/
+    var bsSelectpicker = {
+        bsOnLoaded: function(){
+            var dataList  = this.selectpicker.main.data,
+                elemList  = this.selectpicker.main.elements,
+                options   = this.bsOptions,
+                itemIndex = 0;
+
+            //Update content of all items
+            $.each( dataList, function(index, data){
+                if (data.display){
+                    var $child = $(elemList[index]).children().first();
+                    if ($child.length){
+                        $child.empty();
+                        $child._bsAddHtml(options.items[itemIndex]);
+                    }
+
+                    itemIndex++;
+                }
+            });
+
+            //Set selected item (if any)
+            this.$select.selectpicker('val', this.selectedId ? this.selectedId : null);
+        },
+
+        bsOnRendered: function(){
+            this.bsUpdateSelectedItem();
+            this.bsUpdateLabel();
+        },
+
+        bsOnChanged: function(e, clickedIndex, isSelected, previousValue) {
+            var selectedIndex = this.$select[0].selectedIndex;
+
+            if ((selectedIndex > 0) && this.bsOptions.onChange)
+                this.bsOptions.onChange( this.itemOptionsList[selectedIndex].id, true );
+        },
+
+        bsOnShow: function(){
+            this.bsUpdateSelectedItem();
+            this.bsUpdateLabel( false );
+        },
+
+        bsOnHide: function(){
+            this.bsUpdateLabel();
+        },
+
+        bsUpdateSelectedItem: function(){
+            var selectedIndex = this.$select[0].selectedIndex;
+            if (selectedIndex > 0) {
+                this.$inner = this.$inner || this.$select.parent().find('.filter-option-inner-inner');
+                this.$inner.empty();
+                this.$inner._bsAddHtml(this.itemOptionsList[selectedIndex]);
+            }
+        },
+
+        bsUpdateLabel: function( showLabelAsPlaceholder ){
+            if (typeof showLabelAsPlaceholder != 'boolean')
+                showLabelAsPlaceholder = !this.$select.selectpicker('val');
+            this.$formControl.toggleClass('show-label-as-placeholder', showLabelAsPlaceholder);
+        }
+
+    }
+
+    /**********************************************************
+    Extend jQuery-prototype
+    **********************************************************/
+    $.fn._bsSelectBoxClose = function(){
+        var selectpicker = $(this).data('selectpicker');
+//console.log('_bsSelectBoxClose', selectpicker);
+        if (selectpicker && selectpicker.$menu.hasClass('show'))
+            $(this).selectpicker('toggle');
+    };
 
     /**********************************************************
     bsSelectbox
     **********************************************************/
+    var selectboxId = 0;
     $.bsSelectBox = $.bsSelectbox = function( options ){
-
         //Add size-class to button-class
         var buttonSizeClass = $._bsGetSizeClass({
                 baseClass   : 'btn',
@@ -90,56 +162,53 @@
             });
         }
 
-        //Append items
-        var selectedIdFound = false,
-
         //Create result and select-element
-            $select =
+        var $select =
                 $('<select/>')
                     ._bsAddIdAndName( options ),
-            $result =
+            $formControl =
                 $('<div class="form-control-with-label"></div>')
                     .append( $select );
 
         //Convert options.items to select-option
-        var $currentParent = $select;
+        var selectedId = null,
+            $currentParent = $select,
+            itemOptionsList = [{}]; //{} = dummy for the title
+
         $.each( options.items, function( index, itemOptions ){
             if (itemOptions.id){
+                itemOptionsList.push(itemOptions);
+
                 if (itemOptions.id == options.selectedId)
-                    selectedIdFound = true;
+                    selectedId = itemOptions.id;
+
                 $('<option/>')
                     .text(itemOptions.id)
                     .prop('selected', itemOptions.id == options.selectedId)
                     .appendTo($currentParent);
             }
             else
-                $currentParent = $('<optgroup/>').appendTo($select);
+                $currentParent =
+                    $('<optgroup/>')
+                        .prop('label', index)
+                        .appendTo($select);
         });
 
         //Create selectpicker
-        var selectpicker = $select.selectpicker(options).data('selectpicker').selectpicker;
+        var selectpicker = $select.selectpicker(options).data('selectpicker');
+
+        $.extend(selectpicker, bsSelectpicker);
+
         selectpicker.bsOptions = options;
+        selectpicker.itemOptionsList = itemOptionsList;
+        selectpicker.selectedId = selectedId;
+        selectpicker.$select = $select;
+        selectpicker.$formControl = $formControl;
+
+        $select.data('selectpicker', selectpicker);
 
         //Set size-class for dropdown-menu
         $select.parent().find('.dropdown-menu').addClass(dropdownMenuSizeClass);
-
-        //Update the content of the items with bsOptions
-        var itemIndex = 0;
-        $.each( selectpicker.main.data, function(index, data ){
-            if ((data.type == 'option') || (data.type == 'optgroup-label')){
-                var $elem = $(selectpicker.main.elements[index]),
-                    $child = $elem.children().first();
-
-                $child.empty();
-                $child._bsAddHtml(options.items[itemIndex]);
-                $elem.data('bsOptions', options.items[itemIndex] );
-
-                options.items[itemIndex].elementIndex = index;
-                options.items[itemIndex].$element = $elem;
-
-                itemIndex++;
-            }
-        });
 
         //Replace default arrow with Chevrolet-style
         $('<i/>')
@@ -147,7 +216,7 @@
             .appendTo( $select.parent().find('.filter-option-inner') );
 
         //wrap inside a label
-        var $label = $result._wrapLabel({ label: options.label });
+        var $label = $formControl._wrapLabel({ label: options.label });
 
         //Open/close select when click on the label
         $label.on('click', function(event){
@@ -156,53 +225,20 @@
             return false;
         });
 
-        //** Add events **
-
-        //setLabelAsPlaceholder: Update label position
-        function setLabelAsPlaceholder( showLabelAsPlaceholder ){
-            if (typeof showLabelAsPlaceholder != 'boolean')
-                showLabelAsPlaceholder = !$select.selectpicker('val');
-            $result.toggleClass('show-label-as-placeholder', showLabelAsPlaceholder);
-        }
-
-        //Set events to update content and call onChange
-        $select.on('changed.bs.select', function (/*e, clickedIndex, isSelected, previousValue*/) {
-            var selectedIndex = $select[0].selectedIndex;
-
-            if (selectedIndex != -1){
-                var elementIndex = selectpicker.main.map.newIndex[selectedIndex],
-                    options = $(selectpicker.main.elements[elementIndex]).data('bsOptions');
-
-                selectpicker.$inner = selectpicker.$inner || $select.parent().find('.filter-option-inner-inner');
-
-                selectpicker.$inner.empty();
-                selectpicker.$inner._bsAddHtml(options);
-
-                if (selectpicker.bsOptions.onChange)
-                    selectpicker.bsOptions.onChange( options.id, true );
+        //Add events
+        function selectpickerEventFromSelect( methodId ){
+            return function(){
+                var selectpicker = $(this).data('selectpicker');
+                return selectpicker[methodId].apply(selectpicker, arguments);
             }
-            setLabelAsPlaceholder();
-        });
-
-        $select.on('show.bs.select', function(){ setLabelAsPlaceholder(false); });
-        $select.on('hide.bs.select', function(){ setLabelAsPlaceholder();      });
-
-
-        //Set selected item (id any)
-        $select.selectpicker('val', selectedIdFound ? options.selectedId : null);
+        }
+        $select.on('changed.bs.select',  selectpickerEventFromSelect( 'bsOnChanged'  ) );
+        $select.on('loaded.bs.select',   selectpickerEventFromSelect( 'bsOnLoaded'   ) );
+        $select.on('rendered.bs.select', selectpickerEventFromSelect( 'bsOnRendered' ) );
+        $select.on('show.bs.select',     selectpickerEventFromSelect( 'bsOnShow'     ) );
+        $select.on('hide.bs.select',     selectpickerEventFromSelect( 'bsOnHide'     ) );
 
         return $label;
     };
-
-
-
-    $.fn._bsSelectBoxClose = function(){
-        var selectpicker = $(this).data('selectpicker');
-        if (selectpicker && selectpicker.$menu.hasClass('show')){
-            $(this).selectpicker('toggle');
-        }
-
-    };
-
 
 }(jQuery, this, document));

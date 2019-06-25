@@ -39,6 +39,7 @@ position: fixed;
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
+    <!-- <script src="bootstrap-select.js"></script> -->
     <script src="../src/jquery-bootstrap-select.js"></script>
     <script src="../src/jquery-bootstrap-fontawesome.js"></script>
     <script src="../src/jquery-bootstrap-file-view.js"></script>
@@ -347,6 +348,7 @@ return;
 
         var selectItems3 = [
                 {text:{da:'Overskrift', en: 'Header'} },
+                {id: 'item0', text:{da:'Emne#0', en: 'Item#0'} },
                 {id: 'item1', text:{da:'Emne#1', en: 'Item#1'} },
                 {id: 'item2', text:{da:'Emne#2', en: 'Item#2'} },
                 {id: 'item3', text:{da:'Emne#3', en: 'Item#3'} },
@@ -354,7 +356,6 @@ return;
                 {id: 'item5', text:{da:'Emne#5', en: 'Item#5'} },
                 {id: 'item6', text:{da:'Emne#6', en: 'Item#6'} },
                 {id: 'item7', text:{da:'Emne#7', en: 'Item#7'} },
-                {id: 'item8', text:{da:'Emne#8', en: 'Item#8'} },
             ]
 
 /*
@@ -381,7 +382,9 @@ return;
                         _selectedId : 'fast',
                         placeholder: {da:'Vælg hastighed...', en:'Select speed...'},
                         items      : selectItems3,
-                        onChange   : function(id, selected, $buttonGroup){console.log('bsSelectbox', id, selected)},
+                        onChange   : function(id, selected, $buttonGroup){
+//HER                                        console.log('bsSelectbox', id, selected)
+                                    },
                     }),
 
             scroll: false
@@ -392,7 +395,9 @@ return;
         $.bsCheckbox({
             checked: true,
             text: {da:'Vælg mig', en:'Check me'},
-            onChange: function(id, selected, $buttonGroup){console.log('9: bsSelectListPopover', id, selected)},
+            onChange: function(id, selected, $buttonGroup){
+//HER                        console.log('9: bsSelectListPopover', id, selected)
+                      },
         })
         .appendTo( $body );
 
@@ -400,7 +405,9 @@ return;
             className: 'semi-selected',
             checked: true,
             text: {da:'Vælg mig (semi)', en:'Check me (semi)'},
-            onChange: function(id, selected, $buttonGroup){console.log('9: bsSelectListPopover', id, selected)},
+            onChange: function(id, selected, $buttonGroup){
+//HER                        console.log('9: bsSelectListPopover', id, selected)
+                      },
         })
         .appendTo( $body );
 
@@ -410,7 +417,9 @@ return;
             text: {da:'Vælg mig', en:'Select me'},
             icon: ['far fa-square', 'far fa-check-square'],
             selected: true,
-            onChange: function(id, selected){ console.log('3: bsCheckboxButton',id,selected);}
+            onChange: function(id, selected){
+//HER                console.log('3: bsCheckboxButton',id,selected);
+            }
         }).appendTo($body);
 
         $.bsButton({
@@ -445,7 +454,9 @@ return;
             })
             .appendTo( $body )
             .bsButtonGroupPopover({
-                onClick: function(id, selected, $buttonGroup){console.log('COMMON 6: bsButtonGroupPopover', id, selected)},
+                onClick: function(id, selected, $buttonGroup){
+//HER                    console.log('COMMON 6: bsButtonGroupPopover', id, selected)
+                },
                 vertical: true,
                 placement: "right",
                 small: !i,
@@ -468,7 +479,9 @@ return;
             .appendTo( $body )
 
             .bsButtonGroupPopover({
-                onClick: function(id, selected, $buttonGroup){console.log('COMMON 6: bsButtonGroupPopover', id, selected)},
+                onClick: function(id, selected, $buttonGroup){
+//HER                    console.log('COMMON 6: bsButtonGroupPopover', id, selected)
+                },
                 vertical: true,
                 close: true,
                 center: false,
@@ -487,7 +500,9 @@ return;
         $.bsButton()
             .appendTo( $body )
             .bsSelectListPopover({
-                onChange: function(id, selected, $buttonGroup){console.log('7: bsSelectListPopover', id, selected)},
+                onChange: function(id, selected, $buttonGroup){
+//HER                    console.log('7: bsSelectListPopover', id, selected)
+                },
                 vertical: true,
                 center: true,
                 placement: 'right',
@@ -509,7 +524,7 @@ return;
             .bsSelectListPopover({
                 onChange: function(id, selected){
                     var syncHtml = true;
-                    console.log('8: bsSelectListPopover', id, selected );
+//HER                    console.log('8: bsSelectListPopover', id, selected );
                     if (id == 'nm2km'){
                         $testButton.data('popover_radiogroup').setSelected('km');
                         syncHtml = false;
@@ -673,7 +688,9 @@ var now = moment();
             //notFullWidth: true,
 
             selectedId: 'no4_0',
-            onChange: function( id, selected, tr ){console.log( 'Table id =' , id,' selected=',selected);},
+            onChange: function( id, selected, tr ){
+//HER                console.log( 'Table id =' , id,' selected=',selected);
+            },
 
             allowZeroSelected: true,
             //allowReselect: true,
@@ -1022,7 +1039,9 @@ width: 543,
                                     {id: 'item7', text:{da:'Emne#7', en: 'Item#7'} },
                                     {id: 'item8', text:{da:'Emne#8', en: 'Item#8'} },
                                 ],
-                                onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox2', id, selected)},
+                                onChange  : function(id, selected, $buttonGroup){
+//HER                                    console.log('bsSelectbox2', id, selected)
+                                },
                             }
                         }
                     ],
@@ -1051,7 +1070,7 @@ width: 543,
             'theSelectList': 'item3',
             'hemmeligt': 'Dette er super hemmeligt',
 
-            //'theSelect': 'formSelect3',
+            //'theSelectBox': 'formSelect3',
             'formId2-1': 'formSelect3',
         }
 
@@ -1066,9 +1085,11 @@ width: 543,
 
 //noCloseIconOnHeader: true,
 
-                    onChanging: function( values ) { console.log('onChanging', values ); },
+                    onChanging: function( values ) {
+//HER                        console.log('onChanging', values );
+                    },
                     buttons: [
-                        {text:'Set=2', onClick: function(){ testModalForm.setValue('theSelect', 'formSelect1');} }
+                        {text:'Set=2', onClick: function(){ testModalForm.setValue('theSelectBox', 'formSelect1');} }
                     ],
                     onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
                     onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
@@ -1088,14 +1109,14 @@ width: 543,
                                         type: 'selectlist', label: 'En select-list',
                                         id: 'theSelectList',
                                         items     : [
+                                            {id: 'item0', text:{da:'Emne#0', en: 'Item#0'} },
                                             {id: 'item1', text:{da:'Emne#1', en: 'Item#1'} },
-                                                {id: 'item2', text:{da:'Emne#2', en: 'Item#2'} },
+                                            {id: 'item2', text:{da:'Emne#2', en: 'Item#2'} },
                                             {id: 'item3', text:{da:'Emne#3', en: 'Item#3'} },
                                             {id: 'item4', text:{da:'Emne#4', en: 'Item#4'} },
                                             {id: 'item5', text:{da:'Emne#5', en: 'Item#5'} },
                                             {id: 'item6', text:{da:'Emne#6', en: 'Item#6'} },
                                             {id: 'item7', text:{da:'Emne#7', en: 'Item#7'} },
-                                            {id: 'item8', text:{da:'Emne#8', en: 'Item#8'} },
                                         ]
                                     },
                                 },
@@ -1154,14 +1175,15 @@ width: 3*300,
                                             after : {type:'button', text:{da:'kr.', en:'£'}}, before:    {type:'button', icon:'fa-calculator'}
                                     },
                                         {
-                                            id:'theSelect', type: 'select', validators: 'notEmpty', placeholder:"Placeholder", label:'theSelect',
+                                            id:'theSelectBox', type: 'select', validators: 'notEmpty', placeholder:"Placeholder", label:'theSelectBox',
                                             before:    {type:'button', icon:'fa-calculator'},
                                             after : {type:'button', text:{da:'kr.', en:'£'}},
                                             items:[
-                                                {id:'formSelect1', icon:'fa-home', text: '1:Davs'},
-                                                {id:'formSelect2',  text:'2: Item 2'},
+                                                {id:'formSelect0', icon:'fa-home', text: '0:Davs'},
+                                                {id:'formSelect1',  text:'1: Item 1'},
                                                 {                   text:'En overskrift'},
-                                                {id:'formSelect3',  text:'3: Item 3 DEFAULT'},
+                                                {id:'formSelect2',  text:'2: Item 2 DEFAULT'},
+                                                {id:'formSelect3',  text:'3: Item 3'},
                                                 {id:'formSelect4',  text:'4: Item 4'},
                                                 {id:'formSelect5',  text:'5: Item 5'},
                                                 {id:'formSelect6',  text:'6: Item 6'},
@@ -1169,8 +1191,7 @@ width: 3*300,
                                                 {id:'formSelect8',  text:'8: Item 8'},
                                                 {id:'formSelect9',  text:'9: Item 9'},
                                                 {id:'formSelect10', text:'10: Item 10'},
-                                                {id:'formSelect11', text:'11: Item 11'},
-                                                {id:'formSelect12', text:'12: Item 12'}
+                                                {id:'formSelect11', text:'11: Item 11'}
                                             ],
                                             showWhen: {'mySelection': false }
                                         },
@@ -1362,17 +1383,26 @@ small: true,
         label: {icon:'fa-home', text:{da:'Label (DK)',en:'Label (ENG)'}},
         after : {type:'button', text:{da:'kr.', en:'£'}},
         before: {type:'button', icon:'fa-calculator'},
-        selectedId: 'item6',
+        _selectedId: 'NHO_item3',
         type: 'select',
         items: [
-            {id:'item1', icon:'fa-home', text:{da:'Hjem'}},
-            {id:'item2', icon:'fa-map', text:{da:'Ud'}},
-            {id:'item3', icon:'', text:'NIELS_HOLT'},
-            {id:'item4', icon:'', text:'NIELS_HOLT2'},
-            {id:'item5', icon:'', text:'NIELS_HOLT3'},
-            {id:'item6', icon:'', text:'NIELS_HOLT4'}
+            {                   text:'1. overskrift'},
+            {id:'NHO_item0', icon:'fa-home', text:{da:'Hjem = 0'}},
+            {id:'NHO_item1', icon:'fa-map', text:{da:'Ud = 1'}},
+
+            {                   text:'2. overskrift'},
+
+            {id:'NHO_item2', icon:'', text:'NIELS_HOLT = 2'},
+
+            {                   text:'3. overskrift'},
+
+            {id:'NHO_item3', icon:'', text:'NIELS_HOLT = 3'},
+            {id:'NHO_item4', icon:'', text:'NIELS_HOLT = 4'},
+            {id:'NHO_item5', icon:'', text:'NIELS_HOLT = 5'}
         ],
-        onChange: function(){ console.log('GODT', arguments);},
+        onChange: function(){
+            console.log('NIELS_ER_SMART', arguments);
+        },
     }, null, true)
 
 
