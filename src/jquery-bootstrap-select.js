@@ -116,14 +116,18 @@
     }
 
     /**********************************************************
-    Extend jQuery-prototype
+    Add method to close bsSelectBox to $._bsModal_closeMethods
+    (See jquery-bootstrap.js)
     **********************************************************/
-    $.fn._bsSelectBoxClose = function(){
-        var selectpicker = $(this).data('selectpicker');
-//console.log('_bsSelectBoxClose', selectpicker);
-        if (selectpicker && selectpicker.$menu.hasClass('show'))
-            $(this).selectpicker('toggle');
-    };
+    $._bsModal_closeMethods = $._bsModal_closeMethods || [];
+    $._bsModal_closeMethods.push({
+        selector: '.dropdown.bootstrap-select select',
+        method  : function($selectBox){
+            var selectpicker = $selectBox.data('selectpicker');
+            if (selectpicker && selectpicker.$menu.hasClass('show'))
+                $selectBox.selectpicker('toggle');
+        }
+    });
 
     /**********************************************************
     bsSelectbox

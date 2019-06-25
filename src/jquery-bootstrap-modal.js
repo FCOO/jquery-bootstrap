@@ -103,6 +103,26 @@
         };
     }
 
+
+    /******************************************************
+    $._bsModal_closeMethods = [] of {selector[STRING], method[FUNCTION($this)]}
+    List of selector and method-name to be found and called to close
+    elements with some sort of 'opened' part (eg. select-box)
+    These elements are closed when the modal contents is scrolled and
+    when the modal is closed
+    ******************************************************/
+    $._bsModal_closeMethods = $._bsModal_closeMethods || [];
+
+    $.fn._bsModalCloseElements = function(){
+        var _this = this;
+        //'Close' alle elements (eg. select-box
+        $.each($._bsModal_closeMethods, function(index, options){
+            _this.find(options.selector).each(function(){
+                options.method($(this));
+            });
+        });
+    };
+
     //******************************************************
     //show_bs_modal - called when a modal is opening
     function show_bs_modal( /*event*/ ) {
@@ -146,6 +166,9 @@
     //******************************************************
     //hide_bs_modal - called when a modal is closing
     function hide_bs_modal() {
+        //Close elements
+        this._bsModalCloseElements();
+
         //Never close pinned modals
         if (this.bsModal.isPinned)
             return false;
@@ -186,9 +209,13 @@
                     if (this.bsModal.onChange)
                         this.bsModal.onChange( this.bsModal );
                 },
-        _close: function(){ this.modal('hide'); },
+        _close: function(){
+            this.modal('hide');
+        },
 
         close: function(){
+            //Close elements
+            this._bsModalCloseElements();
 
             //If onClose exists => call and check
             if (this.onClose && !this.onClose())
@@ -219,6 +246,7 @@
         setHeaderIconDisabled: function(id){
             this.setHeaderIconEnabled(id, true);
         }
+
     };
 
     /******************************************************
@@ -264,7 +292,8 @@
         //Add sreoll-event to close any bootstrapopen -select
         if (hasScroll)
             $modalBody.on('scroll', function(){
-                $modalContent.find('.dropdown.bootstrap-select select')._bsSelectBoxClose();
+                //Close all elements when scrolling
+                $(this).parents('.modal').first()._bsModalCloseElements();
             });
 
 

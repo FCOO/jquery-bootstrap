@@ -381,8 +381,7 @@
             }
 
             var _this = this,
-                noty =
-                $.bsNoty({
+                noty = $.bsNoty({
                     type     : 'info',
                     modal    : true,
                     layout   :'center',
