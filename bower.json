@@ -19,7 +19,7 @@
         "i18next": "latest",
         "jquery-i18next-phrases": "fcoo/jquery-i18next-phrases#^1.1.1",
         "jquery-checkbox-radio-group": "fcoo/jquery-checkbox-radio-group#^1.0.0",
-        "jquery-scroll-container": "fcoo/jquery-scroll-container#^3.0.0",
+        "jquery-scroll-container": "fcoo/jquery-scroll-container#^5.0.0",
         "jquery-value-format": "fcoo/jquery-value-format#^1.6.0",
         "bootstrap-popover-extensions": "fcoo/bootstrap-popover-extensions#^1.2.2",
         "hammerjs": "hammer.js#^2.0.8",

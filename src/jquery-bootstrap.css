@@ -8,6 +8,8 @@
 
 
 ************************************************/
+/* stylelint-disable order/properties-alphabetical-order */
+/* stylelint-enable */
 /***********************************************
 SET AND ADJUST BOOTSTRAP DEFAULT VALUES
 ************************************************/
@@ -86,7 +88,7 @@ html {
   font-family: sans-serif;
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent; }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block; }
@@ -5564,7 +5566,7 @@ button.bg-dark:focus {
   z-index: 1;
   pointer-events: auto;
   content: "";
-  background-color: transparent; }
+  background-color: rgba(0, 0, 0, 0); }
 
 .m-0 {
   margin: 0 !important; }
@@ -7170,9 +7172,13 @@ select.selectpicker {
   .bootstrap-select > .dropdown-toggle {
     position: relative;
     width: 100%;
-    z-index: 1;
     text-align: right;
-    white-space: nowrap; }
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between; }
+    .bootstrap-select > .dropdown-toggle:after {
+      margin-top: -1px; }
     .bootstrap-select > .dropdown-toggle.bs-placeholder, .bootstrap-select > .dropdown-toggle.bs-placeholder:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder:active {
       color: #999; }
     .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-primary, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-primary:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-primary:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-primary:active, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-secondary, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-secondary:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-secondary:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-secondary:active, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-success, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-success:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-success:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-success:active, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-danger, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-danger:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-danger:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-danger:active, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-info, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-info:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-info:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-info:active, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-dark, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-dark:hover, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-dark:focus, .bootstrap-select > .dropdown-toggle.bs-placeholder.btn-dark:active {
@@ -7186,13 +7192,14 @@ select.selectpicker {
     height: 100% !important;
     padding: 0 !important;
     opacity: 0 !important;
-    border: none; }
+    border: none;
+    z-index: 0 !important; }
     .bootstrap-select > select.mobile-device {
       top: 0;
       left: 0;
       display: block !important;
       width: 100% !important;
-      z-index: 2; }
+      z-index: 2 !important; }
   .has-error .bootstrap-select .dropdown-toggle,
   .error .bootstrap-select .dropdown-toggle,
   .bootstrap-select.is-invalid .dropdown-toggle,
@@ -7214,13 +7221,17 @@ select.selectpicker {
 .bootstrap-select.form-control {
   margin-bottom: 0;
   padding: 0;
-  border: none; }
+  border: none;
+  height: auto; }
   :not(.input-group) > .bootstrap-select.form-control:not([class*="col-"]) {
     width: 100%; }
   .bootstrap-select.form-control.input-group-btn {
+    float: none;
     z-index: auto; }
-    .bootstrap-select.form-control.input-group-btn:not(:first-child):not(:last-child) > .btn {
-      border-radius: 0; }
+
+.form-inline .bootstrap-select,
+.form-inline .bootstrap-select.form-control:not([class*="col-"]) {
+  width: auto; }
 
 .bootstrap-select:not(.input-group-btn), .bootstrap-select[class*="col-"] {
   float: none;
@@ -7247,7 +7258,8 @@ select.selectpicker {
     border-radius: inherit; }
 
 .bootstrap-select.form-control-sm .dropdown-toggle, .input-group-sm > label.has-float-label > .bootstrap-select.form-control .dropdown-toggle,
-.bootstrap-select.form-control-lg .dropdown-toggle, .input-group-lg > label.has-float-label > .bootstrap-select.form-control .dropdown-toggle {
+.bootstrap-select.form-control-lg .dropdown-toggle,
+.input-group-lg > label.has-float-label > .bootstrap-select.form-control .dropdown-toggle {
   font-size: inherit;
   line-height: inherit;
   border-radius: inherit; }
@@ -7255,7 +7267,9 @@ select.selectpicker {
 .bootstrap-select.form-control-sm .dropdown-toggle, .input-group-sm > label.has-float-label > .bootstrap-select.form-control .dropdown-toggle {
   padding: 0.25rem 0.25rem; }
 
-.bootstrap-select.form-control-lg .dropdown-toggle, .input-group-lg > label.has-float-label > .bootstrap-select.form-control .dropdown-toggle {
+
+.bootstrap-select.form-control-lg .dropdown-toggle,
+.input-group-lg > label.has-float-label > .bootstrap-select.form-control .dropdown-toggle {
   padding: 0.5rem 1rem; }
 
 .form-inline .bootstrap-select .form-control {
@@ -7277,26 +7291,34 @@ select.selectpicker {
   .bootstrap-select.bs-container .dropdown-menu {
     z-index: 1060; }
 
-.bootstrap-select .dropdown-toggle:before {
-  content: '';
-  display: inline-block; }
-
 .bootstrap-select .dropdown-toggle .filter-option {
-  position: absolute;
+  position: static;
   top: 0;
   left: 0;
-  padding-top: inherit;
-  padding-right: inherit;
-  padding-bottom: inherit;
-  padding-left: inherit;
+  float: left;
   height: 100%;
   width: 100%;
-  text-align: left; }
-
-.bootstrap-select .dropdown-toggle .filter-option-inner {
-  padding-right: inherit; }
+  text-align: left;
+  overflow: hidden;
+  flex: 0 1 auto; }
+  .bs3.bootstrap-select .dropdown-toggle .filter-option {
+    padding-right: inherit; }
+  .input-group .bs3-has-addon.bootstrap-select .dropdown-toggle .filter-option {
+    position: absolute;
+    padding-top: inherit;
+    padding-bottom: inherit;
+    padding-left: inherit;
+    float: none; }
+    .input-group .bs3-has-addon.bootstrap-select .dropdown-toggle .filter-option .filter-option-inner {
+      padding-right: inherit; }
 
 .bootstrap-select .dropdown-toggle .filter-option-inner-inner {
+  overflow: hidden; }
+
+.bootstrap-select .dropdown-toggle .filter-expand {
+  width: 0 !important;
+  float: left;
+  opacity: 0 !important;
   overflow: hidden; }
 
 .bootstrap-select .dropdown-toggle .caret {
@@ -7376,6 +7398,9 @@ select.selectpicker {
 .bootstrap-select.fit-width .dropdown-toggle .filter-option-inner,
 .bootstrap-select.fit-width .dropdown-toggle .filter-option-inner-inner {
   display: inline; }
+
+.bootstrap-select.fit-width .dropdown-toggle .bs-caret:before {
+  content: '\00a0'; }
 
 .bootstrap-select.fit-width .dropdown-toggle .caret {
   position: static;
@@ -7496,14 +7521,14 @@ headers modal, popover, tables, buttons, list-items etc.
 VARIABLES
 ************************************************/
 /***********************************************
-    _jquery-scroll-container-variables.scss, 
+    _jquery-scroll-container-variables.scss,
 
     (c) 2017, FCOO
 
     https://github.com/FCOO/jquery-scroll-container
     https://github.com/FCOO
 
-    USING MODIFIED VERSIONS OF THE STYLE 
+    USING MODIFIED VERSIONS OF THE STYLE
     FROM PERFECT-SCROLLBAR
     https://github.com/noraesae/perfect-scrollbar
 
@@ -7817,17 +7842,17 @@ div.btn, div.list-group-item {
   .btn.btn-standard.transparent {
     background: none;
     color: #D4D4D4;
-    background: transparent linear-gradient(180deg, rgba(255, 255, 255, 0.15), transparent) repeat-x;
+    background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x;
     border: 1px solid rgba(0, 0, 0, 0.1);
     outline: none !important; }
     .mouse-hover .hover .btn.btn-standard.transparent:not(:active):not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.transparent.hover:not(:active):not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.transparent:hover:not(:active):not(:disabled):not(.disabled) {
       color: #e1e1e1;
-      background: transparent linear-gradient(180deg, rgba(255, 255, 255, 0.15), transparent) repeat-x; }
+      background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
     .btn.btn-standard.transparent:active {
       color: #e7e7e7;
-      background: transparent linear-gradient(180deg, rgba(255, 255, 255, 0.15), transparent) repeat-x; }
+      background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
     .btn.btn-standard.transparent:active, .btn.btn-standard.transparent.active {
       border-color: rgba(0, 0, 0, 0.1); }
     .btn.btn-standard.transparent:focus, .btn.btn-standard.transparent.focus {
@@ -7843,7 +7868,7 @@ div.btn, div.list-group-item {
     .btn.btn-standard.transparent.disabled, .btn.btn-standard.transparent:disabled {
       opacity: 1 !important;
       color: rgba(212, 212, 212, 0.65);
-      background: transparent linear-gradient(180deg, rgba(255, 255, 255, 0.15), transparent) repeat-x; }
+      background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
   .btn.btn-standard.square {
     overflow: hidden;
     height: calc(2 * 0.3125rem + 1.5rem + 2 * 1px);

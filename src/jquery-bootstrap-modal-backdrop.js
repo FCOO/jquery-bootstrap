@@ -14,8 +14,9 @@
 (function ($, window/*, document, undefined*/) {
 	"use strict";
 
-    var zindexModalBackdrop = 1040, //MUST be equal to $zindex-modal-backdrop in bootstrap/scss/_variables.scss
-        zindexAllwaysOnTop  = 9999,
+    $.bsZIndexModalBackdrop = 1040; // zindexModalBackdrop = 1040, //MUST be equal to $zindex-modal-backdrop in bootstrap/scss/_variables.scss
+
+    var zindexAllwaysOnTop  = 9999,
         modalBackdropLevels = 0,
         $modalBackdrop = null;
 
@@ -30,7 +31,7 @@
         if (className)
             this.addClass( className );
         else
-            this.css('z-index', delta === true ? zindexAllwaysOnTop : zindexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
+            this.css('z-index', delta === true ? zindexAllwaysOnTop : $.bsZIndexModalBackdrop + modalBackdropLevels*10  + (delta?delta:0));
         return this;
     };
 

@@ -12,7 +12,7 @@
 
 ****************************************************************************/
 
-(function ($, window, document, undefined) {
+(function ($, window/*, document, undefined*/) {
 	"use strict";
 
     //Setting defaults for bootstrap-select
@@ -82,7 +82,7 @@
             this.bsUpdateLabel();
         },
 
-        bsOnChanged: function(e, clickedIndex, isSelected, previousValue) {
+        bsOnChanged: function(/*e, clickedIndex, isSelected, previousValue*/) {
             var selectedIndex = this.$select[0].selectedIndex;
 
             if ((selectedIndex > 0) && this.bsOptions.onChange)
@@ -112,8 +112,7 @@
                 showLabelAsPlaceholder = !this.$select.selectpicker('val');
             this.$formControl.toggleClass('show-label-as-placeholder', showLabelAsPlaceholder);
         }
-
-    }
+    };
 
     /**********************************************************
     Add method to close bsSelectBox to $._bsModal_closeMethods
@@ -234,7 +233,7 @@
             return function(){
                 var selectpicker = $(this).data('selectpicker');
                 return selectpicker[methodId].apply(selectpicker, arguments);
-            }
+            };
         }
         $select.on('changed.bs.select',  selectpickerEventFromSelect( 'bsOnChanged'  ) );
         $select.on('loaded.bs.select',   selectpickerEventFromSelect( 'bsOnLoaded'   ) );
