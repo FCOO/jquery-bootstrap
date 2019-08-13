@@ -4236,6 +4236,123 @@ STYLE FOR SPECIFIC TYPE
   margin-left: 0.75rem;
   margin-right: 0.75rem; }
 
+/*
+ * Container style
+ */
+.ps {
+  overflow: hidden !important;
+  overflow-anchor: none;
+  -ms-overflow-style: none;
+  touch-action: auto;
+  -ms-touch-action: auto;
+}
+
+/*
+ * Scrollbar rail styles
+ */
+.ps__rail-x {
+  display: none;
+  opacity: 0;
+  transition: background-color .2s linear, opacity .2s linear;
+  -webkit-transition: background-color .2s linear, opacity .2s linear;
+  height: 15px;
+  /* there must be 'bottom' or 'top' for ps__rail-x */
+  bottom: 0px;
+  /* please don't change 'position' */
+  position: absolute;
+}
+
+.ps__rail-y {
+  display: none;
+  opacity: 0;
+  transition: background-color .2s linear, opacity .2s linear;
+  -webkit-transition: background-color .2s linear, opacity .2s linear;
+  width: 15px;
+  /* there must be 'right' or 'left' for ps__rail-y */
+  right: 0;
+  /* please don't change 'position' */
+  position: absolute;
+}
+
+.ps--active-x > .ps__rail-x,
+.ps--active-y > .ps__rail-y {
+  display: block;
+  background-color: transparent;
+}
+
+.ps:hover > .ps__rail-x,
+.ps:hover > .ps__rail-y,
+.ps--focus > .ps__rail-x,
+.ps--focus > .ps__rail-y,
+.ps--scrolling-x > .ps__rail-x,
+.ps--scrolling-y > .ps__rail-y {
+  opacity: 0.6;
+}
+
+.ps .ps__rail-x:hover,
+.ps .ps__rail-y:hover,
+.ps .ps__rail-x:focus,
+.ps .ps__rail-y:focus,
+.ps .ps__rail-x.ps--clicking,
+.ps .ps__rail-y.ps--clicking {
+  background-color: #eee;
+  opacity: 0.9;
+}
+
+/*
+ * Scrollbar thumb styles
+ */
+.ps__thumb-x {
+  background-color: #aaa;
+  border-radius: 6px;
+  transition: background-color .2s linear, height .2s ease-in-out;
+  -webkit-transition: background-color .2s linear, height .2s ease-in-out;
+  height: 6px;
+  /* there must be 'bottom' for ps__thumb-x */
+  bottom: 2px;
+  /* please don't change 'position' */
+  position: absolute;
+}
+
+.ps__thumb-y {
+  background-color: #aaa;
+  border-radius: 6px;
+  transition: background-color .2s linear, width .2s ease-in-out;
+  -webkit-transition: background-color .2s linear, width .2s ease-in-out;
+  width: 6px;
+  /* there must be 'right' for ps__thumb-y */
+  right: 2px;
+  /* please don't change 'position' */
+  position: absolute;
+}
+
+.ps__rail-x:hover > .ps__thumb-x,
+.ps__rail-x:focus > .ps__thumb-x,
+.ps__rail-x.ps--clicking .ps__thumb-x {
+  background-color: #999;
+  height: 11px;
+}
+
+.ps__rail-y:hover > .ps__thumb-y,
+.ps__rail-y:focus > .ps__thumb-y,
+.ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: #999;
+  width: 11px;
+}
+
+/* MS supports */
+@supports (-ms-overflow-style: none) {
+  .ps {
+    overflow: auto !important;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .ps {
+    overflow: auto !important;
+  }
+}
+
 /***********************************************
     jquery-scroll-container.scss,
 
@@ -4244,257 +4361,155 @@ STYLE FOR SPECIFIC TYPE
     https://github.com/FCOO/jquery-scroll-container
     https://github.com/FCOO
 
-    USING MODIFIED VERSIONS OF THE STYLE
-    FROM PERFECT-SCROLLBAR
-    https://github.com/noraesae/perfect-scrollbar
+    USING MODIFIED VERSIONS OF THE STYLE FROM PERFECT-SCROLLBAR
+    https://github.com/mdbootstrap/perfect-scrollbar
 
 ************************************************/
 /***********************************************
     _jquery-scroll-container-variables.scss,
-
-    (c) 2017, FCOO
-
-    https://github.com/FCOO/jquery-scroll-container
-    https://github.com/FCOO
-
-    USING MODIFIED VERSIONS OF THE STYLE
-    FROM PERFECT-SCROLLBAR
-    https://github.com/noraesae/perfect-scrollbar
-
 ************************************************/
 /****************************************************
-.simplebar-wrapper
-    .simplebar-height-auto-observer-wrapper
-        .simplebar-height-auto-observer
+Add adjustmnts to original PerfectScroll style
 
-    .simplebar-mask
-        .simplebar-offset
-            .simplebar-content
 
-    .simplebar-placeholder
+.ps[.ps--focus][.ps--active-y][.ps--active-x][.ps--scrolling-y][.ps--scrolling-x]
+    .ps__rail-y[.ps--clicking].ps__rail
+        .ps__thumb-y
+    .ps__rail-x[.ps--clicking].ps__rail
+        .ps__thumb-x
 
-    .simplebar-track.simplebar-horizontal
-        .simplebar-scrollbar
-
-    .simplebar-track.simplebar-vertical
-        .simplebar-scrollbar
-
+Class ps__rail added by jquery-scroll-container
 ****************************************************/
-[data-simplebar] {
-  position: relative;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-content: flex-start;
-  align-items: flex-start;
-  width: inherit;
-  height: inherit;
-  max-width: inherit;
-  max-height: inherit; }
+.ps .ps__rail-x {
+  height: 0.625rem !important; }
 
-.simplebar-wrapper {
-  overflow: hidden;
-  width: inherit;
-  height: inherit;
-  max-width: inherit;
-  max-height: inherit; }
+.ps .ps__rail-y {
+  width: 0.625rem !important;
+  left: auto !important; }
 
-.simplebar-height-auto-observer-wrapper {
-  box-sizing: inherit !important;
-  height: 100%;
-  width: inherit;
-  max-width: 1px;
-  position: relative;
-  float: left;
-  max-height: 1px;
-  overflow: hidden;
-  z-index: -1;
-  padding: 0;
-  margin: 0;
-  pointer-events: none;
-  flex-grow: inherit;
-  flex-shrink: 0;
-  flex-basis: 0; }
+.ps .ps__rail {
+  opacity: 1 !important;
+  z-index: 100;
+  transition: background-color 0.2s linear !important;
+  -webkit-transition: background-color 0.2s linear !important; }
 
-.simplebar-height-auto-observer {
-  box-sizing: inherit;
-  display: block;
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 1000%;
-  width: 1000%;
-  min-height: 1px;
-  min-width: 1px;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: -1; }
+.ps.ps--focus > .ps__rail,
+.ps > .ps__rail:hover,
+.ps > .ps__rail:focus,
+.ps.ps--scrolling-x > .ps__rail-x,
+.ps.ps--scrolling-y > .ps__rail-y {
+  z-index: 102;
+  background-color: #f0f0f0 !important; }
 
-.simplebar-mask {
-  direction: inherit;
-  position: absolute;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: auto !important;
+.ps .ps__thumb {
+  background-color: #cdcdcd;
+  border-radius: 0.1875rem;
+  transition: background-color 0.2s linear, margin 0.2s ease-in-out !important;
+  -webkit-transition: background-color 0.2s linear, margin 0.2s ease-in-out !important; }
+
+.ps .ps__thumb-x {
   height: auto !important;
-  z-index: 0; }
-
-.simplebar-offset {
-  direction: inherit !important;
-  box-sizing: inherit !important;
-  resize: none !important;
-  position: absolute;
   top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  padding: 0;
-  margin: 0;
-  -webkit-overflow-scrolling: touch; }
-
-.simplebar-content {
-  direction: inherit;
-  box-sizing: border-box !important;
-  position: relative;
-  display: block;
-  height: 100%;
-  /* Required for horizontal native scrollbar to not appear if parent is taller than natural height */
-  width: auto;
-  visibility: visible;
-  overflow: scroll;
-  /* Scroll on this element otherwise element can't have a padding applied properly */
-  max-width: 100%;
-  /* Not required for horizontal scroll to trigger */
-  max-height: 100%;
-  /* Needed for vertical scroll to trigger */ }
-  .scrollbar-vertical .simplebar-content {
-    padding-right: 0.5625rem !important;
-    padding-left: 0.5625rem !important; }
-  .scrollbar-horizontal .simplebar-content {
-    padding-bottom: 0.5625rem !important; }
-
-.simplebar-placeholder {
-  max-height: 100%;
-  max-width: 100%;
-  width: 100%;
-  pointer-events: none; }
-
-/****************************************************
-*****************************************************
-SCROLLBAR
-*****************************************************
-****************************************************/
-/****************************************************
-.simplebar-track = container for hole scroll (bg and bar)
-****************************************************/
-.simplebar-track {
-  z-index: 1;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  background-color: transparent;
-  transition: background-color 0.2s linear; }
-  .simplebar-track.simplebar-hover {
-    z-index: 2;
-    background-color: #f0f0f0; }
-  .simplebar-track.simplebar-dragging {
-    z-index: 3;
-    background-color: #f0f0f0; }
-  .simplebar-track.simplebar-hover, .simplebar-track.simplebar-dragging {
-    background-color: #f0f0f0; }
-
-.simplebar-track.simplebar-vertical {
-  top: 0;
-  width: 0.5625rem; }
-  .simplebar-track.simplebar-vertical:before {
-    width: 0.3125rem;
-    height: 100%;
-    left: 0.125rem; }
-
-.simplebar-track.simplebar-horizontal {
-  left: 0;
-  height: 0.5625rem; }
-  .simplebar-track.simplebar-horizontal:before {
-    width: 100%;
-    height: 0.3125rem;
-    top: 0.125rem; }
-
-/****************************************************
-.simplebar-scrollbar = container for the scroll-bar
-****************************************************/
-.simplebar-scrollbar {
-  position: absolute;
-  box-sizing: border-box; }
-
-.simplebar-track.simplebar-vertical .simplebar-scrollbar {
-  right: 0;
-  width: 0.5625rem;
-  min-height: 25px; }
-
-.simplebar-track.simplebar-horizontal .simplebar-scrollbar {
-  left: 0;
-  top: 0;
-  height: 0.5625rem;
-  min-width: 25px; }
-
-/****************************************************
-.simplebar-scrollbar:before = the scroll-bar
-****************************************************/
-.simplebar-scrollbar:before {
-  position: absolute;
-  content: "";
-  background: #cdcdcd;
-  border-radius: 0.15625rem;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: 0;
-  transition: background-color 0.2s linear, margin 0.2s ease-in-out; }
-
-.simplebar-track.simplebar-vertical .simplebar-scrollbar:before {
-  margin-left: 0.125rem;
-  margin-right: 0.125rem; }
-
-.simplebar-track.simplebar-horizontal .simplebar-scrollbar:before {
+  bottom: 0 !important;
   margin-top: 0.125rem;
   margin-bottom: 0.125rem; }
 
-:not(.simplebar-dragging) > .simplebar-hover.simplebar-track.simplebar-vertical .simplebar-scrollbar:before,
-:not(.simplebar-dragging) > .simplebar-hover.simplebar-track.simplebar-horizontal .simplebar-scrollbar:before {
-  margin: 0;
-  background-color: #a6a6a6; }
+.ps .ps__thumb-y {
+  width: auto !important;
+  left: 0;
+  right: 0 !important;
+  margin-left: 0.125rem;
+  margin-right: 0.125rem; }
 
-.simplebar-dragging.simplebar-track.simplebar-vertical .simplebar-scrollbar:before,
-.simplebar-dragging.simplebar-track.simplebar-horizontal .simplebar-scrollbar:before {
-  margin: 0;
+.ps .ps__rail-x:hover > .ps__thumb-x,
+.ps .ps__rail-x:focus > .ps__thumb-x,
+.ps .ps__rail-x.ps--clicking .ps__thumb-x {
+  background-color: #a6a6a6;
+  margin-top: 0.0625rem;
+  margin-bottom: 0.0625rem; }
+
+.ps .ps__rail-x.ps--clicking .ps__thumb-x {
   background-color: #606060; }
 
-/****************************************************
-*****************************************************
-SHADOW INSIDE AT TOP/BOTTOM OR LEFT/RIGHT WHEN SCROLL
+.ps .ps__rail-y:hover > .ps__thumb-y,
+.ps .ps__rail-y:focus > .ps__thumb-y,
+.ps .ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: #a6a6a6;
+  margin-left: 0.0625rem;
+  margin-right: 0.0625rem; }
 
-Shadow at top/bottom or left/right when content isn't scrolled to beginning/end
-Based on idea from http://dabblet.com/gist/2462915
-*****************************************************
-****************************************************/
-.scrollbar-vertical .simplebar-content {
-  background: linear-gradient(white, white), linear-gradient(white, white) 0 100%, linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)), linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)) 0 100%;
-  background-repeat: no-repeat;
-  background-color: white;
-  background-size: 100% 0.375rem, 100% 0.375rem, 100% 0.375rem, 100% 0.375rem;
-  background-attachment: local, local, scroll, scroll; }
+.ps .ps__rail-y.ps--clicking .ps__thumb-y {
+  background-color: #606060; }
 
-.scrollbar-horizontal .simplebar-content {
-  background: linear-gradient(to right, white, white), linear-gradient(to right, white, white) 100% 0, linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)), linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)) 100% 0;
-  background-repeat: no-repeat;
-  background-color: white;
-  background-size: 0.375rem 100%, 0.375rem 100%, 0.375rem 100%, 0.375rem 100%;
-  background-attachment: local, local, scroll, scroll; }
+.ps.jq-scroll-container-horizontal {
+  padding-bottom: 0.625rem; }
+
+.ps.jq-scroll-container-vertical {
+  padding-right: 0.625rem; }
+  .ps.jq-scroll-container-vertical.jq-scroll-adjust-padding-left {
+    padding-left: 0.625rem; }
+
+.ps .jq-scroll-content {
+  position: relative;
+  z-index: 99;
+  background-color: transparent;
+  padding: 0;
+  margin: 0; }
+
+.jq-scroll-default.jq-scroll-container-horizontal {
+  overflow-x: auto;
+  overflow-y: hidden; }
+  .jq-scroll-default.jq-scroll-container-horizontal.jq-scroll-adjust-padding.no-scroll-at-start, .jq-scroll-default.jq-scroll-container-horizontal.jq-scroll-adjust-padding.no-scroll-at-end {
+    padding-bottom: 0 !important; }
+
+.jq-scroll-default.jq-scroll-container-vertical {
+  overflow-y: auto;
+  overflow-x: hidden; }
+  .jq-scroll-default.jq-scroll-container-vertical.jq-scroll-adjust-padding.no-scroll-at-start, .jq-scroll-default.jq-scroll-container-vertical.jq-scroll-adjust-padding.no-scroll-at-end {
+    padding-right: 0 !important; }
+
+.jq-scroll-default.jq-scroll-container-both {
+  overflow-y: scroll;
+  overflow-x: scroll; }
+
+.jq-scroll-shadow {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 104;
+  -webkit-backface-visibility: hidden; }
+  .jq-scroll-shadow:before {
+    content: '';
+    display: block;
+    position: sticky; }
+
+.jq-scroll-container-vertical .jq-scroll-shadow {
+  height: 0;
+  width: 200%;
+  margin-left: -50%; }
+  .jq-scroll-container-vertical .jq-scroll-shadow:before {
+    height: 6px; }
+  .jq-scroll-container-vertical .jq-scroll-shadow.top-left:before {
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)); }
+  .jq-scroll-container-vertical .jq-scroll-shadow.bottom-right {
+    top: calc( 100% - 7px); }
+    .jq-scroll-container-vertical .jq-scroll-shadow.bottom-right:before {
+      background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)) 0 100%;
+      box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.4); }
+
+.jq-scroll-container-horizontal .jq-scroll-shadow {
+  height: 100%;
+  width: 0; }
+  .jq-scroll-container-horizontal .jq-scroll-shadow:before {
+    width: 6px; }
+  .jq-scroll-container-horizontal .jq-scroll-shadow.top-left:before {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)); }
+  .jq-scroll-container-horizontal .jq-scroll-shadow.bottom-right {
+    left: calc( 100% - 7px); }
+    .jq-scroll-container-horizontal .jq-scroll-shadow.bottom-right:before {
+      background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)) 100% 0;
+      box-shadow: 1px 0px 0px 0px rgba(0, 0, 0, 0.4); }
+
+.scroll-at-start .jq-scroll-shadow.top-left,
+.scroll-at-end .jq-scroll-shadow.bottom-right {
+  display: none; }

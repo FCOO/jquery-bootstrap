@@ -6,22 +6,7 @@ and jusing standard header, buttons and sizes
 
 ************************************************************/
 
-//Calculate padding for modal-body when it is inside a jquery-scroll-container
-//Using $scroll-size and $scrollbar-margin from jquery-scroll-container.
-
-//Minimum padding = scrollbar width plus extra margin
-$min-padding: $scroll-size + $scrollbar-margin-extended;
-
-//Padding for fixed content when modal-body has scrolling
-$modal-body-fixed-scroll-padding-x   : max( $content-padding-x   , $min-padding);
-$modal-body-fixed-scroll-padding-x-sm: max( $content-padding-x-sm, $min-padding);
-
-//Setting the different padding to be the different between original-padding and scroll-margin (and >= 0)
-$modal-body-scroll-padding-y: max( 0, max( $content-padding-y, $min-padding) - $scroll-size );
-$modal-body-scroll-padding-x: max( 0, $modal-body-fixed-scroll-padding-x - $scroll-size );
-
-$modal-body-scroll-padding-y-sm: max( 0, max( $content-padding-y-sm, $min-padding) - $scroll-size );
-$modal-body-scroll-padding-x-sm: max( 0, $modal-body-fixed-scroll-padding-x-sm - $scroll-size );
+//All padding in modal-body equal scrollbar-size = $scroll-size from jquery-scroll-container.
 
 //Overwrite default overflow
 body.modal-open .modal {
@@ -66,7 +51,7 @@ body.modal-open .modal {
     //No box-shadow on modal-content when inside a modal-dialog-inline
     &.modal-dialog-inline .modal-content {
         box-shadow: none;
-        max-height: inherit; //CHECK
+        max-height: inherit;
     }
 
     .modal-content {
@@ -81,7 +66,7 @@ body.modal-open .modal {
 
     //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
     &:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
-        width: calc( 100% - 2*#{$modal-content-border-width} - 2*#{$modal-body-fixed-scroll-padding-x} );
+        width: calc( 100% - 2*#{$modal-content-border-width} - 2*#{$scroll-size} );
         margin-left : auto;
         margin-right: auto;
     }
@@ -276,32 +261,17 @@ body.modal-open .modal {
 
 
 //Adjust padding-left and padding-right if the body is a scroll
-.modal-dialog {
-    .modal-body-fixed.scrollbar-vertical{
-        padding-left : $modal-body-fixed-scroll-padding-x;
-        padding-right: $modal-body-fixed-scroll-padding-x;
+.modal-dialog, .modal-dialog.modal-dialog-sm {
+   .modal-body-fixed.scrollbar-vertical{
+        padding-left : $scroll-size;
+        padding-right: $scroll-size;
     }
     .modal-body.scrollbar-vertical {
-        padding-left : $modal-body-scroll-padding-x;
-        padding-right: $modal-body-scroll-padding-x;
+        padding-left : $scroll-size;
+        padding-right: $scroll-size;
     }
     .modal-body.scrollbar-horizontal {
-        padding-bottom: $modal-body-scroll-padding-y;
-    }
-}
-
-.modal-dialog.modal-dialog-sm {
-    .modal-body-fixed.scrollbar-vertical {
-        padding-left : $modal-body-fixed-scroll-padding-x-sm;
-        padding-right: $modal-body-fixed-scroll-padding-x-sm;
-    }
-
-    .modal-body.scrollbar-vertical {
-        padding-left : $modal-body-scroll-padding-x-sm;
-        padding-right: $modal-body-scroll-padding-x-sm;
-    }
-    .modal-body.scrollbar-horizontal {
-        padding-bottom: $modal-body-scroll-padding-y-sm;
+        padding-bottom: $scroll-size;
     }
 }
 

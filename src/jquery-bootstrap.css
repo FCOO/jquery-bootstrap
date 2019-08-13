@@ -7522,16 +7522,6 @@ VARIABLES
 ************************************************/
 /***********************************************
     _jquery-scroll-container-variables.scss,
-
-    (c) 2017, FCOO
-
-    https://github.com/FCOO/jquery-scroll-container
-    https://github.com/FCOO
-
-    USING MODIFIED VERSIONS OF THE STYLE
-    FROM PERFECT-SCROLLBAR
-    https://github.com/noraesae/perfect-scrollbar
-
 ************************************************/
 /************************************************************
 VARIABLES
@@ -8861,27 +8851,16 @@ body.modal-open .modal {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem; }
 
-.modal-dialog .modal-body-fixed.scrollbar-vertical {
+.modal-dialog .modal-body-fixed.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body-fixed.scrollbar-vertical {
   padding-left: 0.625rem;
   padding-right: 0.625rem; }
 
-.modal-dialog .modal-body.scrollbar-vertical {
-  padding-left: 0.0625rem;
-  padding-right: 0.0625rem; }
-
-.modal-dialog .modal-body.scrollbar-horizontal {
-  padding-bottom: 0.0625rem; }
-
-.modal-dialog.modal-dialog-sm .modal-body-fixed.scrollbar-vertical {
+.modal-dialog .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body.scrollbar-vertical {
   padding-left: 0.625rem;
   padding-right: 0.625rem; }
 
-.modal-dialog.modal-dialog-sm .modal-body.scrollbar-vertical {
-  padding-left: 0.0625rem;
-  padding-right: 0.0625rem; }
-
-.modal-dialog.modal-dialog-sm .modal-body.scrollbar-horizontal {
-  padding-bottom: 0.0625rem; }
+.modal-dialog .modal-body.scrollbar-horizontal, .modal-dialog.modal-dialog-sm .modal-body.scrollbar-horizontal {
+  padding-bottom: 0.625rem; }
 
 .modal-content .modal-body-fixed.no-vertical-padding,
 .modal-content .modal-body.no-vertical-padding {
@@ -9978,10 +9957,10 @@ Adjustment to Bootstrap tabs
 ************************************************************/
 .nav-tabs {
   margin-top: 0.25rem;
-  padding-left: 0.5625rem;
+  padding-left: 0.625rem;
   border-bottom-color: #6c757d; }
   .tab-inner-content .nav-tabs {
-    margin: 0 -0.5625rem; }
+    margin: 0 -0.625rem; }
   .nav-tabs a.nav-item.nav-link {
     position: relative;
     cursor: default;
@@ -10116,8 +10095,8 @@ Adjustment to Bootstrap tabs
     padding: 0.3125rem 0.3125rem;
     font-size: 1rem;
     font-size: 0.8125rem;
-    padding-left: 0.5625rem;
-    padding-right: 0.5625rem; }
+    padding-left: 0.625rem;
+    padding-right: 0.625rem; }
     .tab-content .tab-pane.active .tab-inner-content.scrollbar-vertical, .tab-content .tab-content .tab-pane.active .tab-inner-content {
       padding: 0; }
   .tab-content .tab-pane.active .tab-footer {

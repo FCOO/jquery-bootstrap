@@ -258,7 +258,8 @@
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
             isTabs          = !!(options && options.content && (options.content.type == 'tabs')),
-            scrollDirection = options.scroll === true ? 'vertical' : options.scroll;
+            scrollDirection = options.scroll === true ? 'vertical' : options.scroll,
+            scrollbarClass  = hasScroll ? 'scrollbar-'+scrollDirection : '';
 
         //Remove padding if the content is tabs and content isn't created from bsModal - not pretty :-)
         if (isTabs)
@@ -267,7 +268,7 @@
         //Append fixed content (if any)
         var $modalFixedContent = parts.$fixedContent =
                 $('<div/>')
-                    .addClass('modal-body-fixed ' + (noClassNameForFixed ? '' : className) + (hasScroll ? ' scrollbar-'+scrollDirection : ''))
+                    .addClass('modal-body-fixed ' + (noClassNameForFixed ? '' : className) + ' ' + scrollbarClass /*(hasScroll ? ' scrollbar-'+scrollDirection : '')*/)
                     .appendTo( this );
         if (options.fixedContent)
             $modalFixedContent._bsAddHtml( options.fixedContent, true );
@@ -283,22 +284,27 @@
         if (!options.content || (options.content === {}))
             $modalBody.addClass('modal-body-no-content');
 
+            //If touch-mode AND scrollbar-width > 0 => let jquery-scroll-container auto-adjust padding-right
         var $modalContent = parts.$content =
                 hasScroll ?
-                    $modalBody.addScrollbar({ direction: scrollDirection }) :
+                    $modalBody
+                        .addClass(scrollbarClass)
+                        .addScrollbar({
+                            direction            : scrollDirection,
+                            forceDefaultScrollbar: window.bsIsTouch,
+                            adjustPadding        : window.bsIsTouch && window.getScrollbarWidth() ? 'scroll' : 'none'
+                        }) :
                     $modalBody;
 
+        //Add content
+        $modalContent._bsAppendContent( options.content, options.contentContext );
 
-        //Add sreoll-event to close any bootstrapopen -select
+        //Add scroll-event to close any bootstrapopen -select
         if (hasScroll)
             $modalBody.on('scroll', function(){
                 //Close all elements when scrolling
                 $(this).parents('.modal').first()._bsModalCloseElements();
             });
-
-
-        //Add content
-        $modalContent._bsAppendContent( options.content, options.contentContext );
 
         //Add footer
         parts.$footer =
