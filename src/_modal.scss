@@ -228,6 +228,7 @@ body.modal-open .modal {
             .modal-body-fixed {
                 @include content-padding-sm();
             }
+
             .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
                 @include footer-variant-sm();
             }
@@ -262,16 +263,24 @@ body.modal-open .modal {
 
 //Adjust padding-left and padding-right if the body is a scroll
 .modal-dialog, .modal-dialog.modal-dialog-sm {
-   .modal-body-fixed.scrollbar-vertical{
-        padding-left : $scroll-size;
-        padding-right: $scroll-size;
-    }
+    .modal-body-fixed.scrollbar-vertical,
     .modal-body.scrollbar-vertical {
         padding-left : $scroll-size;
         padding-right: $scroll-size;
     }
     .modal-body.scrollbar-horizontal {
         padding-bottom: $scroll-size;
+    }
+}
+
+//Adjust padding-top and padding-bottom if the body is a scroll without no-vertical-padding
+.modal-body-with-vertical-padding {
+    .modal-dialog & {
+        @include content-padding(true);
+    }
+    .modal-dialog.modal-dialog-xs &,
+    .modal-dialog.modal-dialog-sm & {
+        @include content-padding-sm(true);
     }
 }
 

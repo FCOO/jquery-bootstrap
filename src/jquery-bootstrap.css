@@ -8774,7 +8774,7 @@ body.modal-open .modal {
       word-break: keep-all; }
   .modal-dialog.modal-dialog-sm .modal-content .modal-body,
   .modal-dialog.modal-dialog-sm .modal-content .modal-body-fixed {
-    padding: 0.25rem 0.25rem;
+    padding: 0.3125rem 0.3125rem;
     font-size: 0.8125rem; }
   .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header {
     font-weight: 400;
@@ -8821,7 +8821,7 @@ body.modal-open .modal {
       word-break: keep-all; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-body,
   .modal-dialog.modal-dialog-xs .modal-content .modal-body-fixed {
-    padding: 0.25rem 0.25rem;
+    padding: 0.3125rem 0.3125rem;
     font-size: 0.75rem; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header {
     font-weight: 400;
@@ -8851,16 +8851,23 @@ body.modal-open .modal {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem; }
 
-.modal-dialog .modal-body-fixed.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body-fixed.scrollbar-vertical {
-  padding-left: 0.625rem;
-  padding-right: 0.625rem; }
-
-.modal-dialog .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body.scrollbar-vertical {
+.modal-dialog .modal-body-fixed.scrollbar-vertical,
+.modal-dialog .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body-fixed.scrollbar-vertical,
+.modal-dialog.modal-dialog-sm .modal-body.scrollbar-vertical {
   padding-left: 0.625rem;
   padding-right: 0.625rem; }
 
 .modal-dialog .modal-body.scrollbar-horizontal, .modal-dialog.modal-dialog-sm .modal-body.scrollbar-horizontal {
   padding-bottom: 0.625rem; }
+
+.modal-dialog .modal-body-with-vertical-padding {
+  padding-top: 0.3125rem;
+  padding-bottom: 0.3125rem; }
+
+.modal-dialog.modal-dialog-xs .modal-body-with-vertical-padding,
+.modal-dialog.modal-dialog-sm .modal-body-with-vertical-padding {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem; }
 
 .modal-content .modal-body-fixed.no-vertical-padding,
 .modal-content .modal-body.no-vertical-padding {
@@ -8912,7 +8919,7 @@ Style for elements used to display any file in a modal-window
     word-break: keep-all; }
 
 .file-view-content {
-  padding: 0.25rem 0.25rem;
+  padding: 0.3125rem 0.3125rem;
   font-size: 0.8125rem; }
 
 /************************************************************
@@ -9412,7 +9419,7 @@ Adjustmernt to Bootstrap table
       color: rgba(81, 89, 97, 0.65);
       background: #f8f9fa linear-gradient(180deg, #f9fafb, #f8f9fa) repeat-x; }
   .table tbody tr td {
-    padding: 0.25rem 0.25rem;
+    padding: 0.3125rem 0.3125rem;
     font-size: 0.8125rem; }
     .table tbody tr td.no-horizontal-padding {
       padding-left: 0;
@@ -9534,7 +9541,7 @@ Using Bootstrap Collapse to create accordion
     .accordion .card-header.collapsed .chevrolet:before {
       content: "\f054"; }
   .accordion .card-block {
-    padding: 0.25rem 0.25rem;
+    padding: 0.3125rem 0.3125rem;
     font-size: 0.8125rem;
     border-radius: 0.25rem; }
   .accordion .card-footer {
@@ -9606,7 +9613,7 @@ Using Bootstrap Collapse to create accordion
 .modal-dialog-sm .accordion .card-block,
 .modal-dialog-xs .accordion .card-block,
 .accordion-sm .card-block {
-  padding: 0.25rem 0.25rem;
+  padding: 0.3125rem 0.3125rem;
   font-size: 0.8125rem; }
 
 .modal-dialog-sm .accordion .card-footer,

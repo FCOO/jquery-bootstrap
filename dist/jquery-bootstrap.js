@@ -1587,8 +1587,6 @@ options
 (function ($, i18next,  window /*, document, undefined*/) {
 	"use strict";
 
-
-
     //$.bsHeaderIcons = class-names for the different icons on the header
     $.bsExternalLinkIcon = 'fa-external-link-alt';
 
@@ -1781,6 +1779,17 @@ options
 
 (function ($, window, document, undefined) {
 	"use strict";
+
+    //Adjusting default options and methods for jquery-scroll-contatiner
+    $.extend(window.JqueryScrollContainer.scrollbarOptions, {
+        defaultScrollbarOnTouch: true,
+
+        //If touch-mode AND scrollbar-width > 0 => let jquery-scroll-container auto-adjust padding-right
+        adjustPadding : function(){ return window.bsIsTouch && window.getScrollbarWidth() ? 'scroll' : 'none'; },
+
+        hasTouchEvents: function(){ return window.bsIsTouch; }
+    });
+
 
     /**********************************************************
     bsModal( options ) - create a Bootstrap-modal
@@ -2026,6 +2035,7 @@ options
     of a modal inside this. Created elements are saved in parts
     ******************************************************/
     $.fn._bsModalBodyAndFooter = function(options, parts, className, noClassNameForFixed, noClassNameForFooter){
+
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
             isTabs          = !!(options && options.content && (options.content.type == 'tabs')),
@@ -2055,15 +2065,14 @@ options
         if (!options.content || (options.content === {}))
             $modalBody.addClass('modal-body-no-content');
 
-            //If touch-mode AND scrollbar-width > 0 => let jquery-scroll-container auto-adjust padding-right
+
         var $modalContent = parts.$content =
                 hasScroll ?
                     $modalBody
                         .addClass(scrollbarClass)
                         .addScrollbar({
-                            direction            : scrollDirection,
-                            forceDefaultScrollbar: window.bsIsTouch,
-                            adjustPadding        : window.bsIsTouch && window.getScrollbarWidth() ? 'scroll' : 'none'
+                            direction       : scrollDirection,
+                            contentClassName: options.noVerticalPadding ? '' : 'modal-body-with-vertical-padding'
                         }) :
                     $modalBody;
 
@@ -2382,7 +2391,6 @@ options
     ******************************************************/
     $.bsModal = function( options ){
         var $result, $modalDialog;
-
         //Adjust options
         options =
             $._bsAdjustOptions( options, {

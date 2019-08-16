@@ -41538,6 +41538,12 @@ return PerfectScrollbar;
         //Default: No touch
         $('html').addClass('no-touchevents');
 
+    //Create namespace
+
+    var ns = window.JqueryScrollContainer = window.JqueryScrollContainer || {};
+
+
+    //Get the width of default scrollbar
     var scrollbarWidth = null;
     window.getScrollbarWidth = function() {
         if (scrollbarWidth === null){
@@ -41566,7 +41572,7 @@ return PerfectScrollbar;
         }
     });
 
-    var scrollbarOptions = {
+    ns.scrollbarOptions = {
         //handlers              //It is a list of handlers to use to scroll the element. Default: ['click-rail', 'drag-scrollbar', 'keyboard', 'wheel', 'touch'] Disabled by default: 'selection'
         //wheelSpeed            //The scroll speed applied to mousewheel event. Default: 1
         //wheelPropagation      //If this option is true, when the scroll reaches the end of the side, mousewheel event will be propagated to parent element. Default: false
@@ -41588,15 +41594,18 @@ return PerfectScrollbar;
         scrollXMarginOffset: 1,    //IE11 apears to work betten when == 1. TODO: Should only be 1 for Edge and IE11
         scrollYMarginOffset: 1,    //                --||--
 
-        direction: 'vertical', //["vertical"|"horizontal"|"both"] (default: "vertical")
+        direction       : 'vertical', //["vertical"|"horizontal"|"both"] (default: "vertical")
+        contentClassName: '',         //Class-name added to the inner content-container
 
-        defaultScrollbarOnTouch   : false,      //If true and the browser support touchevents => use simple version using the browsers default scrollbar
-        forceDefaultScrollbar     : false,      //If true => use simple version using the browsers default scrollbar (regardless of defaultScrollbarOnTouch and touchevents-support)
-        adjustPadding             : 'scroll',   //['scroll', 'left', 'both', none']. Defines witch 'side(s)' that will have padding adjusted:
-                                                //  'left'  : Only for direction: 'vertical': The paddingLeft of the container is set equal to the width of the scrollbar
-                                                //  'scroll': Only when using browser default scrollbar: If the width of the default scrollbar > 0 => always have padding == scrollbar-width (also when no scrollbar is present)
-                                                //  'both'  : As 'left' and 'scroll'
-                                                //  'none'  : No adjustment beside the scrollbar when using perfect-scrollbar
+        defaultScrollbarOnTouch: false,       //If true and the browser support touchevents => use simple version using the browsers default scrollbar
+        forceDefaultScrollbar  : false,      //If true => use simple version using the browsers default scrollbar (regardless of defaultScrollbarOnTouch and touchevents-support)
+        adjustPadding          : 'scroll',   //['scroll', 'left', 'both', none']. Defines witch 'side(s)' that will have padding adjusted:
+                                             //  'left'  : Only for direction: 'vertical': The paddingLeft of the container is set equal to the width of the scrollbar
+                                             //  'scroll': Only when using browser default scrollbar: If the width of the default scrollbar > 0 => always have padding == scrollbar-width (also when no scrollbar is present)
+                                             //  'both'  : As 'left' and 'scroll'
+                                             //  'none'  : No adjustment beside the scrollbar when using perfect-scrollbar
+        //hasTouchEvents: `true` if the browser supports touch-events and the scroll should use default scroll
+        hasTouchEvents: function(){ return window.modernizrOn('touchevents'); }
     };
 
 
@@ -41604,6 +41613,7 @@ return PerfectScrollbar;
     $.fn._jscUpdateScrollShadowClass = function( isVertical ){
         var elem = this.get(0),
             hasScroll, position;
+
 
         if (isVertical){
             hasScroll = elem.scrollHeight > (elem.clientHeight + this._jscScrollOffset);
@@ -41632,9 +41642,14 @@ return PerfectScrollbar;
                 direction: options
             };
 
-
         //Update options
-        options = $.extend( {},  scrollbarOptions, options || {} );
+        options = $.extend( {},  ns.scrollbarOptions, options || {} );
+
+        //Get return-values if options[id] is a function
+        $.each(options, function(id, value){
+            if ($.isFunction(value))
+                options[id] = value();
+        });
 
         var observer,
             isVertical   = (options.direction == 'vertical'),
@@ -41662,6 +41677,7 @@ return PerfectScrollbar;
         //TODO: Not working for horizontal scroll
 //        if (!isBoth && !isIE11){
         if (isVertical && !isIE11){
+            this.addClass('jq-scroll-shadow');
             $('<div/>')
                 .addClass('jq-scroll-shadow top-left')
                 .appendTo(this);
@@ -41670,12 +41686,23 @@ return PerfectScrollbar;
                 .appendTo(this);
         }
 
-        if (options.forceDefaultScrollbar || (options.defaultScrollbarOnTouch && $('html').hasClass('touchevents'))){
+
+        this.addClass( directionClassName );
+
+        //Add inner container to hold content
+        this.scrollbarContainer =
+            $('<div/>')
+                .addClass('jq-scroll-content')
+                .addClass(options.contentClassName)
+                .appendTo( this );
+
+        var scrollEventName = '',
+            onResizeFunc = null;
+
+        if (options.forceDefaultScrollbar || (options.defaultScrollbarOnTouch && options.hasTouchEvents )) {
             //Use default browser scrollbar
             scrollbarWidth = scrollbarWidth || window.getScrollbarWidth();
-            this
-                .addClass('jq-scroll-default jq-scroll-content')
-                .addClass( directionClassName );
+            this.addClass('jq-scroll-default');
 
             if (adjustPaddingLeft)
                 this.css('padding-left', scrollbarWidth+'px' );
@@ -41684,23 +41711,12 @@ return PerfectScrollbar;
                     .toggleClass('jq-scroll-adjust-padding', !!scrollbarWidth)
                     .css(isVertical ? 'padding-right' : 'padding-bottom', scrollbarWidth+'px');
 
-            this.resize( updateScrollClass );
-            this.on( 'scroll', updateScrollClass );
-
-            observer = new window.MutationObserver( updateScrollClass );
-            observer.observe(this.get(0), { attributes: true, childList: true, subtree: true });
-
-            updateScrollClass();
-
-            this.get(0).scrollTop = 0;
-            return this;
+            scrollEventName = 'scroll';
+            onResizeFunc = updateScrollClass;
         }
         else {
             //no-touch browser => use perfect.scrollbar
-
-            this
-                .addClass( directionClassName )
-                .toggleClass('jq-scroll-adjust-padding-left', adjustPaddingLeft);
+            this.toggleClass('jq-scroll-adjust-padding-left', adjustPaddingLeft);
 
             //Create perfect.scrollbar
             this.perfectScrollbar = new window.PerfectScrollbar(this.get(0), options );
@@ -41713,30 +41729,27 @@ return PerfectScrollbar;
             $(this.perfectScrollbar.scrollbarX).addClass('ps__thumb');
             $(this.perfectScrollbar.scrollbarY).addClass('ps__thumb');
 
-            //Add inner container to cache resize when adding/removing elements from container
-            this.scrollbarContainer =
-                $('<div/>')
-                    .addClass('jq-scroll-content')
-                    .appendTo( this );
-
-
-            //Update scroll-shadow when scrolling - not working in IE11!
-            if (!isBoth)
-                this.on('ps-scroll-'+(isVertical ? 'y' : 'x'), updateScrollClass );
-
-            //Update scrollbar when container or content change size or elements are added to/removed from the container
-            var psUpdate = function(){
+            scrollEventName = 'ps-scroll-'+(isVertical ? 'y' : 'x');
+            onResizeFunc = function(){
                 _this.perfectScrollbar.update();
                 updateScrollClass();
             };
-            this.resize( psUpdate );
-            this.scrollbarContainer.resize( psUpdate );
-
-            observer = new window.MutationObserver( psUpdate );
-            observer.observe(this.scrollbarContainer.get(0), { attributes: true, childList: true, subtree: true });
-
-            return this.scrollbarContainer;
         }
+
+        //Update scroll-shadow when scrolling
+        if (!isBoth)
+            this.on(scrollEventName, updateScrollClass );
+
+        //Update scrollbar when container or content change size or elements are added to/removed from the content-container
+        this.resize( onResizeFunc );
+        this.scrollbarContainer.resize( onResizeFunc );
+
+        observer = new window.MutationObserver( onResizeFunc );
+        observer.observe(this.scrollbarContainer.get(0), { attributes: true, childList: true, subtree: true });
+
+        this.get(0).scrollTop = 0;
+
+        return this.scrollbarContainer;
     };
 }(jQuery, this, document));
 ;

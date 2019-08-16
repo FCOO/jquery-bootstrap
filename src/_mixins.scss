@@ -57,19 +57,26 @@ border-color = light blue
 CONTENT
 Unifies padding for modal, accordion, popup etc.
 ************************************************************/
-@mixin content-padding()   {
-    padding: $content-padding-y $content-padding-x;
-    font-size: $font-size-base;
+@mixin any-content-padding($padding-y, $padding-x, $font-size, $only-padding-vertical: false){
+    @if $only-padding-vertical == true {
+        padding-top   : $padding-y;
+        padding-bottom: $padding-y;
+    } @else {
+        padding: $content-padding-y $content-padding-x;
+        font-size: $font-size;
+    }
 }
 
-@mixin content-padding-sm(){
-    padding: $content-padding-y-sm $content-padding-x-sm;
-    font-size: $font-size-sm;
+@mixin content-padding($only-padding-vertical: false){
+    @include any-content-padding($content-padding-y, $content-padding-x, $font-size-base, $only-padding-vertical);
 }
 
-@mixin content-padding-xs(){
-    padding: $content-padding-y-sm $content-padding-x-sm;
-    font-size: $font-size-xs;
+@mixin content-padding-sm($only-padding-vertical: false){
+    @include any-content-padding($content-padding-y-sm, $content-padding-x-sm, $font-size-sm, $only-padding-vertical);
+}
+
+@mixin content-padding-xs($only-padding-vertical: false){
+    @include any-content-padding($content-padding-y-sm, $content-padding-x-sm, $font-size-xs, $only-padding-vertical);
 }
 
 /************************************************************
