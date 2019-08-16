@@ -11,6 +11,17 @@
 (function ($, window, document, undefined) {
 	"use strict";
 
+    //Adjusting default options and methods for jquery-scroll-contatiner
+    window.JqueryScrollContainer = window.JqueryScrollContainer || {};
+
+    $.extend(window.JqueryScrollContainer.scrollbarOptions, {
+        defaultScrollbarOnTouch: true,
+//        forceDefaultScrollbar  : function(){ return window.bsIsTouch },
+        adjustPadding          : function(){ return window.bsIsTouch && window.getScrollbarWidth() ? 'scroll' : 'none' }
+        hasTouchEvents         : function(){ return window.bsIsTouch }
+    });
+
+
     /**********************************************************
     bsModal( options ) - create a Bootstrap-modal
 
@@ -291,8 +302,8 @@
                         .addClass(scrollbarClass)
                         .addScrollbar({
                             direction            : scrollDirection,
-                            forceDefaultScrollbar: window.bsIsTouch,
-                            adjustPadding        : window.bsIsTouch && window.getScrollbarWidth() ? 'scroll' : 'none'
+//                            forceDefaultScrollbar: window.bsIsTouch,
+//                            adjustPadding        : window.bsIsTouch && window.getScrollbarWidth() ? 'scroll' : 'none'
                         }) :
                     $modalBody;
 

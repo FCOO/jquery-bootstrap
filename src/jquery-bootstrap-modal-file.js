@@ -11,8 +11,6 @@
 (function ($, i18next,  window /*, document, undefined*/) {
 	"use strict";
 
-
-
     //$.bsHeaderIcons = class-names for the different icons on the header
     $.bsExternalLinkIcon = 'fa-external-link-alt';
 
