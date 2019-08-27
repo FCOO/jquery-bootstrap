@@ -24939,7 +24939,13 @@ if (typeof define === 'function' && define.amd) {
       _classCallCheck(this, Interpolator);
 
       this.logger = baseLogger.create('interpolator');
-      this.init(options, true);
+      this.options = options;
+
+      this.format = options.interpolation && options.interpolation.format || function (value) {
+        return value;
+      };
+
+      this.init(options);
     }
     /* eslint no-param-reassign: 0 */
 
@@ -24948,16 +24954,6 @@ if (typeof define === 'function' && define.amd) {
       key: "init",
       value: function init() {
         var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-        var reset = arguments.length > 1 ? arguments[1] : undefined;
-
-        if (reset) {
-          this.options = options;
-
-          this.format = options.interpolation && options.interpolation.format || function (value) {
-            return value;
-          };
-        }
-
         if (!options.interpolation) options.interpolation = {
           escapeValue: true
         };
@@ -25021,6 +25017,19 @@ if (typeof define === 'function' && define.amd) {
 
         while (match = this.regexpUnescape.exec(str)) {
           value = handleFormat(match[1].trim());
+
+          if (value === undefined) {
+            if (typeof missingInterpolationHandler === 'function') {
+              var temp = missingInterpolationHandler(str, match, options);
+              value = typeof temp === 'string' ? temp : '';
+            } else {
+              this.logger.warn("missed to pass in variable ".concat(match[1], " for interpolating ").concat(str));
+              value = '';
+            }
+          } else if (typeof value !== 'string' && !this.useRawValueToEscape) {
+            value = makeString(value);
+          }
+
           str = str.replace(match[0], regexSafe(value));
           this.regexpUnescape.lastIndex = 0;
           replaces++;
@@ -25037,8 +25046,9 @@ if (typeof define === 'function' && define.amd) {
 
           if (value === undefined) {
             if (typeof missingInterpolationHandler === 'function') {
-              var temp = missingInterpolationHandler(str, match, options);
-              value = typeof temp === 'string' ? temp : '';
+              var _temp = missingInterpolationHandler(str, match, options);
+
+              value = typeof _temp === 'string' ? _temp : '';
             } else {
               this.logger.warn("missed to pass in variable ".concat(match[1], " for interpolating ").concat(str));
               value = '';
@@ -41599,13 +41609,14 @@ return PerfectScrollbar;
 
         defaultScrollbarOnTouch: false,       //If true and the browser support touchevents => use simple version using the browsers default scrollbar
         forceDefaultScrollbar  : false,      //If true => use simple version using the browsers default scrollbar (regardless of defaultScrollbarOnTouch and touchevents-support)
+
         adjustPadding          : 'scroll',   //['scroll', 'left', 'both', none']. Defines witch 'side(s)' that will have padding adjusted:
                                              //  'left'  : Only for direction: 'vertical': The paddingLeft of the container is set equal to the width of the scrollbar
                                              //  'scroll': Only when using browser default scrollbar: If the width of the default scrollbar > 0 => always have padding == scrollbar-width (also when no scrollbar is present)
                                              //  'both'  : As 'left' and 'scroll'
                                              //  'none'  : No adjustment beside the scrollbar when using perfect-scrollbar
         //hasTouchEvents: `true` if the browser supports touch-events and the scroll should use default scroll
-        hasTouchEvents: function(){ return window.modernizrOn('touchevents'); }
+        hasTouchEvents: function(){ return $('html').hasClass('touchevents'); }
     };
 
 
@@ -41677,7 +41688,7 @@ return PerfectScrollbar;
         //TODO: Not working for horizontal scroll
 //        if (!isBoth && !isIE11){
         if (isVertical && !isIE11){
-            this.addClass('jq-scroll-shadow');
+            this.addClass('jq-scroll-container-shadow');
             $('<div/>')
                 .addClass('jq-scroll-shadow top-left')
                 .appendTo(this);
@@ -41715,8 +41726,10 @@ return PerfectScrollbar;
             onResizeFunc = updateScrollClass;
         }
         else {
-            //no-touch browser => use perfect.scrollbar
-            this.toggleClass('jq-scroll-adjust-padding-left', adjustPaddingLeft);
+            //no-touch browser OR force using perfect-scroll => use perfect.scrollbar
+            this
+                .toggleClass('jq-scroll-adjust-padding-left', adjustPaddingLeft)
+                .modernizrToggle('touch', !!options.hasTouchEvents);
 
             //Create perfect.scrollbar
             this.perfectScrollbar = new window.PerfectScrollbar(this.get(0), options );

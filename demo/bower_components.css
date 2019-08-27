@@ -4393,11 +4393,11 @@ Class ps__rail added by jquery-scroll-container
   transition: background-color 0.2s linear !important;
   -webkit-transition: background-color 0.2s linear !important; }
 
-.ps.ps--focus > .ps__rail,
-.ps > .ps__rail:hover,
-.ps > .ps__rail:focus,
-.ps.ps--scrolling-x > .ps__rail-x,
-.ps.ps--scrolling-y > .ps__rail-y {
+.ps.no-touch.ps--focus > .ps__rail,
+.ps.no-touch > .ps__rail:hover,
+.ps.no-touch > .ps__rail:focus,
+.ps.no-touch.ps--scrolling-x > .ps__rail-x,
+.ps.no-touch.ps--scrolling-y > .ps__rail-y {
   z-index: 102;
   background-color: #f0f0f0 !important; }
 
@@ -4406,6 +4406,9 @@ Class ps__rail added by jquery-scroll-container
   border-radius: 0.1875rem;
   transition: background-color 0.2s linear, margin 0.2s ease-in-out !important;
   -webkit-transition: background-color 0.2s linear, margin 0.2s ease-in-out !important; }
+
+.ps.touch .ps__thumb {
+  background-color: #cdcdcd !important; }
 
 .ps .ps__thumb-x {
   height: auto !important;
@@ -4421,24 +4424,24 @@ Class ps__rail added by jquery-scroll-container
   margin-left: 0.125rem;
   margin-right: 0.125rem; }
 
-.ps .ps__rail-x:hover > .ps__thumb-x,
-.ps .ps__rail-x:focus > .ps__thumb-x,
-.ps .ps__rail-x.ps--clicking .ps__thumb-x {
+.ps.no-touch .ps__rail-x:hover > .ps__thumb-x,
+.ps.no-touch .ps__rail-x:focus > .ps__thumb-x,
+.ps.no-touch .ps__rail-x.ps--clicking .ps__thumb-x {
   background-color: #a6a6a6;
   margin-top: 0.0625rem;
   margin-bottom: 0.0625rem; }
 
-.ps .ps__rail-x.ps--clicking .ps__thumb-x {
+.ps.no-touch .ps__rail-x.ps--clicking .ps__thumb-x {
   background-color: #606060; }
 
-.ps .ps__rail-y:hover > .ps__thumb-y,
-.ps .ps__rail-y:focus > .ps__thumb-y,
-.ps .ps__rail-y.ps--clicking .ps__thumb-y {
+.ps.no-touch .ps__rail-y:hover > .ps__thumb-y,
+.ps.no-touch .ps__rail-y:focus > .ps__thumb-y,
+.ps.no-touch .ps__rail-y.ps--clicking .ps__thumb-y {
   background-color: #a6a6a6;
   margin-left: 0.0625rem;
   margin-right: 0.0625rem; }
 
-.ps .ps__rail-y.ps--clicking .ps__thumb-y {
+.ps.no-touch .ps__rail-y.ps--clicking .ps__thumb-y {
   background-color: #606060; }
 
 .ps.jq-scroll-container-horizontal {
@@ -4474,6 +4477,7 @@ Class ps__rail added by jquery-scroll-container
 
 .jq-scroll-shadow {
   position: sticky;
+  position: -webkit-sticky;
   top: 0;
   left: 0;
   z-index: 104;
@@ -4483,11 +4487,11 @@ Class ps__rail added by jquery-scroll-container
     display: block;
     position: sticky; }
 
-.jq-scroll-container-vertical.jq-scroll-shadow {
+.jq-scroll-container-vertical.jq-scroll-container-shadow {
   padding-top: 0 !important;
   padding-bottom: 0 !important; }
 
-.jq-scroll-container-horizontal.jq-scroll-shadow {
+.jq-scroll-container-horizontal.jq-scroll-container-shadow {
   padding-left: 0 !important;
   padding-right: 0 !important; }
 

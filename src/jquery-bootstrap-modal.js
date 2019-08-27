@@ -13,7 +13,7 @@
 
     //Adjusting default options and methods for jquery-scroll-contatiner
     $.extend(window.JqueryScrollContainer.scrollbarOptions, {
-        defaultScrollbarOnTouch: true,
+        defaultScrollbarOnTouch: false,
 
         //If touch-mode AND scrollbar-width > 0 => let jquery-scroll-container auto-adjust padding-right
         adjustPadding : function(){ return window.bsIsTouch && window.getScrollbarWidth() ? 'scroll' : 'none'; },
