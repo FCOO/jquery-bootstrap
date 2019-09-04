@@ -17,13 +17,15 @@ Adjustment to bootstrap-select
                 @include right-side-icon(
                     $fa-icon     : $fa-var-chevron-down,
                     $opacity     : 1,
-                    $margin-right: -0.4em
+                    $margin-right: 0em
                 );
             }
         }
 
         //Remove default arrow
-        &:after { border-color: transparent; }
+        &:after {
+            display: none !important;
+        }
     }
 
     //Adjust padding for items under a group-header

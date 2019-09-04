@@ -24996,17 +24996,20 @@ if (typeof define === 'function' && define.amd) {
         var match;
         var value;
         var replaces;
+        var defaultData = this.options && this.options.interpolation && this.options.interpolation.defaultVariables || {};
+
+        var combindedData = _objectSpread({}, defaultData, data);
 
         function regexSafe(val) {
           return val.replace(/\$/g, '$$$$');
         }
 
         var handleFormat = function handleFormat(key) {
-          if (key.indexOf(_this.formatSeparator) < 0) return getPath(data, key);
+          if (key.indexOf(_this.formatSeparator) < 0) return getPath(combindedData, key);
           var p = key.split(_this.formatSeparator);
           var k = p.shift().trim();
           var f = p.join(_this.formatSeparator).trim();
-          return _this.format(getPath(data, k), f, lng);
+          return _this.format(getPath(combindedData, k), f, lng);
         };
 
         this.resetRegExp();
@@ -41549,9 +41552,7 @@ return PerfectScrollbar;
         $('html').addClass('no-touchevents');
 
     //Create namespace
-
     var ns = window.JqueryScrollContainer = window.JqueryScrollContainer || {};
-
 
     //Get the width of default scrollbar
     var scrollbarWidth = null;
@@ -41573,6 +41574,46 @@ return PerfectScrollbar;
         }
         return scrollbarWidth;
     };
+
+
+    /**************************************************
+    Extend PerfectScrollbar.prototype with two methods
+    .lock(): Lock the scroll and prevents (allmost) all scroll
+    .unlock(): Unlock
+    Also overwrite onScroll to handle lock
+    **************************************************/
+    $.extend(window.PerfectScrollbar.prototype, {
+
+        lock: function(){
+            if (this.isLocked)
+                return;
+            this.isLocked = true;
+            this.lockedScrollTop = this.element.scrollTop;
+            this.lockedScrollLeft = this.element.scrollLeft;
+        },
+
+        unlock: function(){
+            if (!this.isLocked)
+                return;
+            this.element.scrollTop = this.lockedScrollTop;
+            this.element.scrollLeft = this.lockedScrollLeft;
+            this.update();
+            this.isLocked = false;
+        },
+    });
+
+    window.PerfectScrollbar.prototype.onScroll = function (onScroll) {
+		return function () {
+            if (this.isLocked){
+                this.element.scrollTop = this.lockedScrollTop;
+                this.element.scrollLeft = this.lockedScrollLeft;
+            }
+            //Original function/method
+            return onScroll.apply(this, arguments);
+		};
+	} (window.PerfectScrollbar.prototype.onScroll);
+
+
 
     //Extend $.fn with scrollIntoView
     $.fn.extend({
@@ -41644,8 +41685,14 @@ return PerfectScrollbar;
             .modernizrToggle('scroll-at-end', (position == 'end') || !hasScroll);
     };
 
+    /**************************************************
+    Extend jQuery-element with tree new methods
+    .addScrollbar( direction or options )
+    .lockScrollbar()
+    .unlockScrollbar()
+    **************************************************/
 
-    //addScrollBar( direction ) or addScrollBar( options )
+    //addScrollbar( direction ) or addScrollbar( options )
     $.fn.addScrollbar = function( options ){
         var _this = this;
         if ($.type( options ) == "string")
@@ -41747,6 +41794,10 @@ return PerfectScrollbar;
                 _this.perfectScrollbar.update();
                 updateScrollClass();
             };
+
+            //Save perfectScrollbar as data('perfectScrollbar') for both this and container
+            this.data('perfectScrollbar', this.perfectScrollbar );
+            this.scrollbarContainer.data('perfectScrollbar', this.perfectScrollbar );
         }
 
         //Update scroll-shadow when scrolling
@@ -41764,6 +41815,23 @@ return PerfectScrollbar;
 
         return this.scrollbarContainer;
     };
+
+    //$.fn.lockScrollbar
+    $.fn.lockScrollbar = function(){
+        var ps = this.data('perfectScrollbar');
+        if (ps)
+            ps.lock();
+        return this;
+    };
+
+    //$.fn.unlockScrollbar
+    $.fn.unlockScrollbar = function(){
+        var ps = this.data('perfectScrollbar');
+        if (ps)
+            ps.unlock();
+        return this;
+    };
+
 }(jQuery, this, document));
 ;
 // Stupid jQuery table plugin.

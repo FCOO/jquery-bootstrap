@@ -99,12 +99,14 @@
         },
 
         bsUpdateSelectedItem: function(){
+            this.$inner = this.$inner || this.$select.parent().find('.filter-option-inner-inner');
+            this.$inner.empty();
+
             var selectedIndex = this.$select[0].selectedIndex;
-            if (selectedIndex > 0) {
-                this.$inner = this.$inner || this.$select.parent().find('.filter-option-inner-inner');
-                this.$inner.empty();
+            if (selectedIndex > 0)
                 this.$inner._bsAddHtml(this.itemOptionsList[selectedIndex]);
-            }
+            else
+                this.$inner.html('&nbsp;');
         },
 
         bsUpdateLabel: function( showLabelAsPlaceholder ){
@@ -218,6 +220,7 @@
             .addClass('fa chevrolet')
             .appendTo( $select.parent().find('.filter-option-inner') );
 
+console.log(selectpicker);
         //wrap inside a label
         var $label = $formControl._wrapLabel({ label: options.label });
 
