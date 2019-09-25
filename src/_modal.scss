@@ -83,14 +83,19 @@ body.modal-open .modal {
     .modal-content {
         $border-radius: calc( #{$border-radius-lg} - #{$modal-content-border-width} );
 
-        //Create class show-for-modal-extended and hide-for-modal-extended
+        //Create class show-for-modal-SIZE and hide-for-modal-SIZE
         //         and show-for-modal-pinned and hide-for-modal-pined
-        @include show-and-hide-for-modernizr-test(
-            $modernizr-test     : modal-extended ,
-            $parent-element-type: '&',
-            $incl-no-selector   : false,
-            $incl-table-display : false
-        );
+        @each $size in minimized, normal, extended {
+            @include show-and-hide-for-modernizr-test(
+/*                $modernizr-test     : modal-extended ,*/
+                $modernizr-test     : unquote("modal-#{$size}"),
+                $parent-element-type: '&',
+                $incl-no-selector   : true,
+                $incl-table-display : false
+            );
+        }
+
+        //Create class show-for-modal-pinned and hide-for-modal-pined
         @include show-and-hide-for-modernizr-test(
             $modernizr-test     : modal-pinned,
             $parent-element-type: '&',
@@ -101,8 +106,9 @@ body.modal-open .modal {
 
         //When not fixed-height and not normal and/or extended contents always max-height => height adjust to content
         &:not(.modal-fixed-height) {
-            &.no-modal-extended:not(.modal-content-always-max-height),
-            &.modal-extended:not(.modal-extended-content-always-max-height){
+            &.modal-minimized:not(.modal-minimized-always-max-height),
+            &.modal-normal:not(.modal-normal-always-max-height),
+            &.modal-extended:not(.modal-extended-always-max-height){
                 height: auto !important;
             }
         }
@@ -121,9 +127,9 @@ body.modal-open .modal {
 
             //When content always is max height => body.height = 100%
             &.modal-body-always-max-height {
-                display: flex;
+                display       : flex;
                 flex-direction: column;
-                height: fit-content;
+                height        : fit-content;
             }
 
         }
@@ -148,6 +154,30 @@ body.modal-open .modal {
                 &:hover {
                     background-color: darken($header-bg-color, $darken-hover-percent);
                 }
+            }
+        }
+
+        //Special header version for minimized modal windows
+        &.modal-minimized {
+            &.modal-minimized-hide-header .modal-header { display: none; }
+            .modal-header {
+
+                .header-icon-container {
+                    //Allow wrap of icons and let icons fill hole header
+                    flex-wrap: wrap;
+                    flex-shrink: initial;
+                    flex-grow  : 1;
+
+                    //Add vertical sspacing using margin-top and margin-left is not needed when flex-grow  : 1;
+                    margin-top: -.2em;
+                    > * {
+                        margin-top: .2em;
+                        margin-left: 0;
+                    }
+                }
+
+                //Hide all text
+                > :not(.header-icon-container){ display: none; }
             }
         }
 
@@ -212,6 +242,22 @@ body.modal-open .modal {
             }
         }
     } //end of .modal-content
+
+    //hover-style for modal-content when content is clickable
+    .mouse-hover & .modal-content {
+        //.modal-content.modal-SIZE.modal-SIZE-clickable .modal-body[-fixed]: background = button:hover-background on hover
+        &.modal-minimized.modal-minimized-clickable,
+        &.modal-normal.modal-normal-clickable,
+        &.modal-extended.modal-extended-clickable {
+            &:hover {
+                .modal-body, .modal-body-fixed {
+                    cursor: default;
+                    //hover background = hover background for buttons
+                    @include gradient-bg( darken($control-bg-color, $darken-hover-percent) );
+                }
+            }
+        }
+    }
 
 
     /****************************************************

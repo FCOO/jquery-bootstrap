@@ -1262,6 +1262,12 @@ width: 3*300,
             .on('click', function(){ no_content.show(); });
 
         var long_content = $.bsModal({
+
+onNew: function(){ console.log('NEW:  DONT close header'); return false},
+onPin: function(){ console.log('PIN: Close header'); return true},
+
+icons: { back:{onClick: function(){ console.log('BACK: DONT close header'); return false}}},
+
             closeButton: true,
             header:/*{
                 icon: 'fa-home',
@@ -1275,13 +1281,27 @@ width: 3*300,
                 {icon: 'fa-home', text: 'Davs'}
             ],
             show: false,
-            //isExtended: true,
             maxHeight: 300,
+            width: 220,
             content: 'max-height=300<br>Her kommer der nogle laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange ord<br>SLUT',
-            isExtended: true,
+clickable: true,
+            isMinimized: true,
+            minimized: {
+                showHeaderOnClick: true,
+                type:'button',
+                _height: 56,
+                width : 54,
+                content: {icon: 'fa-home'}, //, 'W=<br>54px',
+clickable: true,
+
+            },
+            _isExtended: true,
             extended: {
                 height: true,
+                _flexHeight: true,
+                scroll: true,
                 flexWidth: true,
+clickable: true,
                 content: 'max-height=300 flex-width <br>Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord'+
                             'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +
                             'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +

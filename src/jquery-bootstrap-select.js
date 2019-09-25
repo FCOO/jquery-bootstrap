@@ -220,7 +220,6 @@
             .addClass('fa chevrolet')
             .appendTo( $select.parent().find('.filter-option-inner') );
 
-console.log(selectpicker);
         //wrap inside a label
         var $label = $formControl._wrapLabel({ label: options.label });
 

@@ -448,9 +448,13 @@ Eq.
 | `closeText` | `string or i18n-record`| `{da:'Luk', en:'Close'}` | The text for the close-button. |
 | `closeIcon` | `string`| `"fa-times"` | The icon for the close-button |
 | `extended` | `object`| `null` | The extended content. `{type, fixedContent, flexWidth, noVerticalPadding, content, scroll, footer, width-options, height-options}` If any of the `extended`-values are === `true`the content values are used in extended mode   |
+| `minimized` | `object`| `null` | The minimized content. `{type, fixedContent, flexWidth, noVerticalPadding, content, scroll, footer, width-options, height-options}`  |
 | `onPin` | `function( pinned [boolean] )`| `null` | When given the icons for pin and unpin as shown. Also when pinned the modal can only be closed using the close icon or close-button |
 | `onNew` | `function()`| `null` | When given the icons for open-in-new-window is shown |
 | `noCloseIconOnHeader` | `boolean` | `false` | If `true` no close icon is added on the header |
+| `minimized.showHeaderOnClick` | `boolean` | `false` | If `true` clicking on content => show header (default: extend to normal size) |
+
+
 
 ### Methods
 

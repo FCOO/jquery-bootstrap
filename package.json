@@ -8,9 +8,8 @@
     "type": "git",
     "url": "git://github.com/fcoo/jquery-bootstrap.git"
   },
-  "dependencies": {
-    "grunt": "^1.0.0",
-    "grunt-fcoo-grunt-plugin": "^4.0.0"
+  "devDependencies": {
+    "grunt-fcoo-grunt-plugin": "^5.0.0"
   },
   "license": "MIT"
 }
