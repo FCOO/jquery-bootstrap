@@ -7543,6 +7543,10 @@ $font-size-sm  : .8125rem   13px
 $font-size-xs  : .75rem     12px
 ************************************************************/
 /************************************************************
+MODAL
+Opacity for semi-transparent content
+************************************************************/
+/************************************************************
 LABEL
 Font-sizes for labels are same siae as header but incl a xxs-size
 ************************************************************/
@@ -8116,7 +8120,7 @@ Icons for modal header inside a container
   display: flex;
   align-items: baseline;
   flex-shrink: 0;
-  justify-content: center;
+  justify-content: space-between;
   margin-left: auto;
   margin-right: 0;
   font-size: 1.5em; }
@@ -8620,15 +8624,35 @@ body.modal-open .modal {
     margin-right: auto; }
   .modal-dialog.modal-flex-width .modal-content .modal-body > .jquery-scroll-container {
     width: auto; }
+  .modal-dialog .modal-content.modal-minimized .hide-for-modal-minimized {
+    display: none !important; }
+  .modal-dialog .modal-content.modal-minimized .show-for-no-modal-minimized {
+    display: none !important; }
+  .modal-dialog .modal-content.no-modal-minimized .show-for-modal-minimized {
+    display: none !important; }
+  .modal-dialog .modal-content.no-modal-minimized .hide-for-no-modal-minimized {
+    display: none !important; }
+  .modal-dialog .modal-content.modal-normal .hide-for-modal-normal {
+    display: none !important; }
+  .modal-dialog .modal-content.modal-normal .show-for-no-modal-normal {
+    display: none !important; }
+  .modal-dialog .modal-content.no-modal-normal .show-for-modal-normal {
+    display: none !important; }
+  .modal-dialog .modal-content.no-modal-normal .hide-for-no-modal-normal {
+    display: none !important; }
   .modal-dialog .modal-content.modal-extended .hide-for-modal-extended {
     display: none !important; }
+  .modal-dialog .modal-content.modal-extended .show-for-no-modal-extended {
+    display: none !important; }
   .modal-dialog .modal-content.no-modal-extended .show-for-modal-extended {
+    display: none !important; }
+  .modal-dialog .modal-content.no-modal-extended .hide-for-no-modal-extended {
     display: none !important; }
   .modal-dialog .modal-content.modal-pinned .hide-for-modal-pinned {
     display: none !important; }
   .modal-dialog .modal-content.no-modal-pinned .show-for-modal-pinned {
     display: none !important; }
-  .modal-dialog .modal-content:not(.modal-fixed-height).no-modal-extended:not(.modal-content-always-max-height), .modal-dialog .modal-content:not(.modal-fixed-height).modal-extended:not(.modal-extended-content-always-max-height) {
+  .modal-dialog .modal-content:not(.modal-fixed-height).modal-minimized:not(.modal-minimized-always-max-height), .modal-dialog .modal-content:not(.modal-fixed-height).modal-normal:not(.modal-normal-always-max-height), .modal-dialog .modal-content:not(.modal-fixed-height).modal-extended:not(.modal-extended-always-max-height) {
     height: auto !important; }
   .modal-dialog .modal-content .modal-body p {
     margin: 0; }
@@ -8673,6 +8697,18 @@ body.modal-open .modal {
       cursor: default; }
       .modal-dialog .modal-content .modal-header.clickable:hover {
         background-color: #e5e5e5; }
+  .modal-dialog .modal-content.modal-minimized.modal-minimized-hide-header .modal-header {
+    display: none; }
+  .modal-dialog .modal-content.modal-minimized .modal-header .header-icon-container {
+    flex-wrap: wrap;
+    flex-shrink: initial;
+    flex-grow: 1;
+    margin-top: -.2em; }
+    .modal-dialog .modal-content.modal-minimized .modal-header .header-icon-container > * {
+      margin-top: .2em;
+      margin-left: 0; }
+  .modal-dialog .modal-content.modal-minimized .modal-header > :not(.header-icon-container) {
+    display: none; }
   .modal-dialog .modal-content .modal-body-fixed {
     flex-shrink: 0;
     flex-grow: 0;
@@ -8753,6 +8789,13 @@ body.modal-open .modal {
         margin: 0; }
       .modal-dialog .modal-content .modal-footer.modal-footer-vertical > *:not(:first-child) {
         margin-top: .25rem; }
+  .modal-dialog .modal-content.modal-minimized.modal-minimized-transparent, .modal-dialog .modal-content.modal-normal.modal-normal-transparent, .modal-dialog .modal-content.modal-extended.modal-extended-transparent {
+    background: rgba(255, 255, 255, 0.6); }
+  .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable:hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable:hover .modal-body-fixed, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable.hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable.hover .modal-body-fixed, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable:hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable:hover .modal-body-fixed, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable.hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable.hover .modal-body-fixed, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable:hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable:hover .modal-body-fixed, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable.hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable.hover .modal-body-fixed {
+    cursor: default;
+    background: #e9ecef linear-gradient(180deg, #eceff2, #e9ecef) repeat-x; }
+    .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable:hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable:hover .modal-body-fixed.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable.hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable.hover .modal-body-fixed.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable:hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable:hover .modal-body-fixed.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable.hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable.hover .modal-body-fixed.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable:hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable:hover .modal-body-fixed.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable.hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable.hover .modal-body-fixed.modal-body-transparent {
+      background: rgba(255, 255, 255, 0.8); }
   .modal-dialog.modal-dialog-sm .modal-content .modal-header {
     font-weight: 400;
     display: flex;
@@ -8987,14 +9030,14 @@ Adjustment to bootstrap-select
     cursor: default;
     line-height: 1;
     margin-left: auto;
-    margin-right: -0.4em;
+    margin-right: 0em;
     opacity: 1; }
     .bootstrap-select .dropdown-toggle .filter-option-inner .chevrolet:before {
       font-size: 0.8em;
       content: "\f078"; }
 
 .bootstrap-select .dropdown-toggle:after {
-  border-color: transparent; }
+  display: none !important; }
 
 .bootstrap-select .dropdown-menu li a.opt {
   padding-left: 0.625rem; }

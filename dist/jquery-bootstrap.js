@@ -1780,7 +1780,7 @@ options
 (function ($, window, document, undefined) {
 	"use strict";
 
-    //Adjusting default options and methods for jquery-scroll-contatiner
+    //Adjusting default options and methods for jquery-scroll-container
     $.extend(window.JqueryScrollContainer.scrollbarOptions, {
         defaultScrollbarOnTouch: false,
 
@@ -1812,8 +1812,10 @@ options
         noHorizontalPadding
         content
         scroll: boolean | 'vertical' | 'horizontal'
+        minimized,
         extended: {
             type
+            showHeaderOnClick (only minimized)
             fixedContent
             noVerticalPadding
             noHorizontalPadding
@@ -1832,7 +1834,13 @@ options
     **********************************************************/
     var modalId = 0,
         openModals = 0,
-        modalVerticalMargin = 10; //Top and bottom margin for modal windows
+        modalVerticalMargin = 10, //Top and bottom margin for modal windows
+
+        //Const to set different size of modal-window
+        MODAL_SIZE_NORMAL    = 1, //'normal',
+        MODAL_SIZE_MINIMIZED = 2, //'minimized',
+        MODAL_SIZE_EXTENDED  = 4; //'extended';
+
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
@@ -1841,7 +1849,7 @@ options
     as expected/needed
     Instead a resize-event is added to update the max-height of
     elements with the current value of window.innerHeight
-    Sets both max-height and haight to allow always-max-heigth options
+    Sets both max-height and height to allow always-max-heigth options
     **********************************************************/
     function adjustModalMaxHeight( $modalContent ){
         $modalContent = $modalContent || $('.modal-content.modal-flex-height');
@@ -1878,11 +1886,10 @@ options
         return {
             flexWidth : !!options.flexWidth,
             extraWidth: !!options.extraWidth,
-            megaWidth: !!options.megaWidth,
+            megaWidth : !!options.megaWidth,
             width     : options.width ? options.width+'px' : null
         };
     }
-
 
     /******************************************************
     $._bsModal_closeMethods = [] of {selector[STRING], method[FUNCTION($this)]}
@@ -1989,6 +1996,7 @@ options
                     if (this.bsModal.onChange)
                         this.bsModal.onChange( this.bsModal );
                 },
+
         _close: function(){
             this.modal('hide');
         },
@@ -2034,13 +2042,15 @@ options
     Create the body and footer content (exc header and bottoms)
     of a modal inside this. Created elements are saved in parts
     ******************************************************/
-    $.fn._bsModalBodyAndFooter = function(options, parts, className, noClassNameForFixed, noClassNameForFooter){
+    $.fn._bsModalBodyAndFooter = function(size, options, parts, className, noClassNameForFixed, noClassNameForFooter){
 
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
             isTabs          = !!(options && options.content && (options.content.type == 'tabs')),
             scrollDirection = options.scroll === true ? 'vertical' : options.scroll,
             scrollbarClass  = hasScroll ? 'scrollbar-'+scrollDirection : '';
+
+        className = (className || '') + ' show-for-modal-'+size;
 
         //Remove padding if the content is tabs and content isn't created from bsModal - not pretty :-)
         if (isTabs)
@@ -2049,7 +2059,10 @@ options
         //Append fixed content (if any)
         var $modalFixedContent = parts.$fixedContent =
                 $('<div/>')
-                    .addClass('modal-body-fixed ' + (noClassNameForFixed ? '' : className) + ' ' + scrollbarClass /*(hasScroll ? ' scrollbar-'+scrollDirection : '')*/)
+                    .addClass('modal-body-fixed')
+                    .toggleClass(className, !noClassNameForFixed)
+                    .addClass(scrollbarClass )
+                    .toggleClass('modal-body-transparent', !!options.transparent)
                     .appendTo( this );
         if (options.fixedContent)
             $modalFixedContent._bsAddHtml( options.fixedContent, true );
@@ -2059,6 +2072,7 @@ options
                 $('<div/>')
                     .addClass('modal-body ' + className)
                     .toggleClass('modal-body-always-max-height', !!options.alwaysMaxHeight)
+                    .toggleClass('modal-body-transparent', !!options.transparent)
                     .toggleClass('modal-type-' + options.type, !!options.type)
                     .appendTo( this );
 
@@ -2092,7 +2106,38 @@ options
                     .addClass('modal-footer-header ' + (noClassNameForFooter ? '' : className))
                     .appendTo( this )
                     ._bsAddHtml( options.footer === true ? '' : options.footer );
+
+        //Add onClick to all elements - if nedded
+        if (options.onClick){
+            $modalContent.on('click', options.onClick);
+        }
+
         return this;
+    };
+
+
+    function get$modalContent( $elem ){
+        var bsModal = $elem.bsModal || $elem;
+        return bsModal.$modalContent || $elem;
+    }
+
+    /******************************************************
+    _bsModalSetSizeClass(size) - Set the class-name according to size
+    ******************************************************/
+    $.fn._bsModalSetSizeClass = function(size){
+        return get$modalContent(this)
+                   .modernizrToggle('modal-minimized', size == MODAL_SIZE_MINIMIZED )
+                   .modernizrToggle('modal-normal',    size == MODAL_SIZE_NORMAL)
+                   .modernizrToggle('modal-extended',  size == MODAL_SIZE_EXTENDED );
+    };
+
+    $.fn._bsModalGetSize = function(){
+        var $modalContent = get$modalContent(this);
+        return $modalContent.hasClass('modal-minimized') ?
+                   MODAL_SIZE_MINIMIZED :
+               $modalContent.hasClass('modal-normal') ?
+                   MODAL_SIZE_NORMAL :
+                   MODAL_SIZE_EXTENDED;
     };
 
     /******************************************************
@@ -2100,11 +2145,11 @@ options
     ******************************************************/
     $.fn._bsModalSetHeightAndWidth = function(){
         var bsModal = this.bsModal,
-            $modalContent = bsModal.$modalContent,
+            $modalContent = get$modalContent(this),
             $modalDialog = $modalContent.parent(),
-            isExtended = $modalContent.hasClass('modal-extended'),
-            cssHeight = isExtended ? bsModal.cssExtendedHeight : bsModal.cssHeight,
-            cssWidth = isExtended ? bsModal.cssExtendedWidth : bsModal.cssWidth;
+            size = $modalContent._bsModalGetSize(),
+            cssHeight = bsModal.cssHeight[size],
+            cssWidth = bsModal.cssWidth[size];
 
         //Set height
         $modalContent
@@ -2112,14 +2157,14 @@ options
             .toggleClass('modal-flex-height', !cssHeight)
             .css( cssHeight ? cssHeight : {height: 'auto', maxHeight: null});
         if (!cssHeight)
-            adjustModalMaxHeight( bsModal.$modalContent );
+            adjustModalMaxHeight( $modalContent );
 
         //Set width
         $modalDialog
             .toggleClass('modal-flex-width', cssWidth.flexWidth )
             .toggleClass('modal-extra-width', cssWidth.extraWidth )
             .toggleClass('modal-mega-width', cssWidth.megaWidth )
-            .css('width', cssWidth.width );
+            .css('width', cssWidth.width ? cssWidth.width : '' );
 
         //Call onChange (if any)
         if (bsModal.onChange)
@@ -2127,25 +2172,38 @@ options
     };
 
     /******************************************************
-    _bsModalExtend, _bsModalDiminish, _bsModalToggleHeight
+    _bsModalExtend, _bsModalDiminish, _bsModalToggleHeight,
+    _bsModalSetSize, _bsModalToggleMinimizedHeader
     Methods to change extended-mode
     ******************************************************/
-    $.fn._bsModalExtend = function( event ){
-        if (this.bsModal.$modalContent.hasClass('no-modal-extended'))
-            this._bsModalToggleHeight( event );
+    $.fn._bsModalExtend = function(){
+        return this._bsModalSetSize( this._bsModalGetSize() == MODAL_SIZE_MINIMIZED ? MODAL_SIZE_NORMAL : MODAL_SIZE_EXTENDED);
     };
-    $.fn._bsModalDiminish = function( event ){
-        if (this.bsModal.$modalContent.hasClass('modal-extended'))
-            this._bsModalToggleHeight( event );
-    };
-    $.fn._bsModalToggleHeight = function( event ){
-        this.bsModal.$modalContent.modernizrToggle('modal-extended');
 
+    $.fn._bsModalDiminish = function(){
+        return this._bsModalSetSize( this._bsModalGetSize() == MODAL_SIZE_EXTENDED ? MODAL_SIZE_NORMAL : MODAL_SIZE_MINIMIZED);
+    };
+
+    //Shift between normal and extended size
+    //minimized -> normal, extended -> normal, normal -> extended (if any) else -> minimized
+    $.fn._bsModalToggleHeight = function(){
+        var newSize = this._bsModalGetSize() == MODAL_SIZE_NORMAL ?
+                        (this.bsModal.sizes & MODAL_SIZE_EXTENDED ? MODAL_SIZE_EXTENDED : MODAL_SIZE_MINIMIZED) :
+                        MODAL_SIZE_NORMAL;
+        this._bsModalSetSize(newSize);
+    };
+
+    //Set new size of modal-window
+    $.fn._bsModalSetSize = function(size){
+        this._bsModalSetSizeClass(size);
         this._bsModalSetHeightAndWidth();
+        return false; //Prevent onclick-event on header
+    };
 
-        if (event && event.stopPropagation)
-            event.stopPropagation();
-        return false;
+    //hid/show header for size = minimized
+    $.fn._bsModalToggleMinimizedHeader = function(){
+        if (this._bsModalGetSize() == MODAL_SIZE_MINIMIZED)
+            get$modalContent(this).toggleClass('modal-minimized-hide-header');
     };
 
 /* TODO: animate changes in height and width
@@ -2165,25 +2223,19 @@ options
     _bsModalPin, _bsModalUnpin, _bsModalTogglePin
     Methods to change pinned-status
     ******************************************************/
-    $.fn._bsModalPin = function( event ){
-        if (!this.bsModal.isPinned)
-            this._bsModalTogglePin( event );
+    $.fn._bsModalPin = function(){
+        return this.bsModal.isPinned ? false : this._bsModalTogglePin();
     };
-    $.fn._bsModalUnpin = function( event ){
-        if (this.bsModal.isPinned)
-            this._bsModalTogglePin( event );
+    $.fn._bsModalUnpin = function( /*event*/ ){
+        return this.bsModal.isPinned ? this._bsModalTogglePin() : false;
     };
-    $.fn._bsModalTogglePin = function( event ){
+    $.fn._bsModalTogglePin = function( /*event*/ ){
         var $modalContent = this.bsModal.$modalContent;
         this.bsModal.isPinned = !this.bsModal.isPinned;
         $modalContent.modernizrToggle('modal-pinned', !!this.bsModal.isPinned);
-        this.bsModal.onPin( this.bsModal.isPinned );
 
-        if (event && event.stopPropagation)
-            event.stopPropagation();
-        return false;
+        return this.bsModal.onPin( this.bsModal.isPinned );
     };
-
 
 
     /******************************************************
@@ -2196,20 +2248,35 @@ options
 
         //this.bsModal contains all created elements
         this.bsModal = {};
-
         this.bsModal.onChange = options.onChange || null;
 
-        //Set bsModal.cssHeight and (optional) bsModal.cssExtendedHeight
-        this.bsModal.cssHeight = getHeightFromOptions( options );
-        if (options.extended){
-            if (options.extended.height == true)
-                this.bsModal.cssExtendedHeight = this.bsModal.cssHeight;
-            else
-                this.bsModal.cssExtendedHeight = getHeightFromOptions( options.extended );
+        //bsModal.cssHeight and bsModal.cssWidth = [size] of { width or height options}
+        this.bsModal.cssHeight = {};
+        this.bsModal.cssWidth  = {};
+        this.bsModal.sizes = MODAL_SIZE_NORMAL;
+
+        //Set bsModal.cssHeight
+        this.bsModal.cssHeight[MODAL_SIZE_NORMAL] = getHeightFromOptions( options );
+
+        if (options.minimized){
+            this.bsModal.sizes += MODAL_SIZE_MINIMIZED;
+            this.bsModal.cssHeight[MODAL_SIZE_MINIMIZED] = getHeightFromOptions(options.minimized);
         }
 
-        //Set bsModal.cssWidth and (optional) bsModal.cssExtendedWidth
-        this.bsModal.cssWidth = getWidthFromOptions( options );
+        if (options.extended){
+            this.bsModal.sizes += MODAL_SIZE_EXTENDED;
+            if (options.extended.height == true)
+                this.bsModal.cssHeight[MODAL_SIZE_EXTENDED] = this.bsModal.cssHeight[MODAL_SIZE_NORMAL];
+            else
+                this.bsModal.cssHeight[MODAL_SIZE_EXTENDED] = getHeightFromOptions( options.extended );
+        }
+
+        //Set bsModal.cssWidth
+        this.bsModal.cssWidth[MODAL_SIZE_NORMAL] = getWidthFromOptions( options );
+
+        if (options.minimized)
+            this.bsModal.cssWidth[MODAL_SIZE_MINIMIZED] = getWidthFromOptions(options.minimized);
+
         if (options.extended){
             //If options.extended.width == true or none width-options is set in extended => use same width as normal-mode
             if ( (options.extended.width == true) ||
@@ -2219,35 +2286,58 @@ options
                    (options.extended.width == undefined)
                  )
               )
-                this.bsModal.cssExtendedWidth = this.bsModal.cssWidth;
+                this.bsModal.cssWidth[MODAL_SIZE_EXTENDED] = this.bsModal.cssWidth[MODAL_SIZE_NORMAL];
             else
-                this.bsModal.cssExtendedWidth = getWidthFromOptions( options.extended );
+                this.bsModal.cssWidth[MODAL_SIZE_EXTENDED] = getWidthFromOptions( options.extended );
         }
+
 
 
         var $modalContent = this.bsModal.$modalContent =
                 $('<div/>')
                     .addClass('modal-content')
                     .addClass(options.modalContentClassName)
-                    .modernizrToggle('modal-extended', !!options.isExtended )
-
-                    .toggleClass('modal-content-always-max-height',          !!options.alwaysMaxHeight)
-                    .toggleClass('modal-extended-content-always-max-height', !!options.extended && !!options.extended.alwaysMaxHeight)
-
                     .modernizrOff('modal-pinned')
                     .appendTo( this );
 
+        //Set modal-[SIZE]-[STATE] class
+        function setStateClass(postClassName, optionId){
+            $modalContent
+                .toggleClass('modal-minimized-'+postClassName, !!options.minimized && !!options.minimized[optionId])
+                .toggleClass('modal-normal-'+postClassName,    !!options[optionId])
+                .toggleClass('modal-extended-'+postClassName,  !!options.extended && !!options.extended[optionId]);
+        }
+        //Add class to make content always max-height
+        setStateClass('always-max-height', 'alwaysMaxHeight');
+        //Add class to make content clickable
+        setStateClass('clickable', 'clickable');
+        //Add class to make content semi-transparent
+        setStateClass('transparent', 'transparent');
 
 
+        this._bsModalSetSizeClass(
+            options.minimized && options.isMinimized ?
+                MODAL_SIZE_MINIMIZED :
+            options.extended && options.isExtended ?
+                MODAL_SIZE_EXTENDED :
+                MODAL_SIZE_NORMAL
+        );
         this._bsModalSetHeightAndWidth();
 
         var modalExtend       = $.proxy( this._bsModalExtend,       this),
             modalDiminish     = $.proxy( this._bsModalDiminish,     this),
             modalToggleHeight = $.proxy( this._bsModalToggleHeight, this),
-
             modalPin          = $.proxy( this._bsModalPin,          this),
-            modalUnpin        = $.proxy( this._bsModalUnpin,        this);
+            modalUnpin        = $.proxy( this._bsModalUnpin,        this),
+            iconExtendClassName   = '',
+            iconDiminishClassName = '',
+            multiSize = this.bsModal.sizes > MODAL_SIZE_NORMAL;
 
+        //If multi size: Set the class-name for the extend and diminish icons.
+        if (multiSize){
+            iconExtendClassName   = this.bsModal.sizes & MODAL_SIZE_EXTENDED  ? 'hide-for-modal-extended'  : 'hide-for-modal-normal';
+            iconDiminishClassName = this.bsModal.sizes & MODAL_SIZE_MINIMIZED ? 'hide-for-modal-minimized' : 'hide-for-modal-normal';
+        }
 
         this.bsModal.onPin = options.onPin;
         this.bsModal.isPinned = false;
@@ -2263,11 +2353,11 @@ options
 
             //Icons
             icons    : {
-                pin     : { className: 'hide-for-modal-pinned',   onClick: options.onPin    ? modalPin      : null },
-                unpin   : { className: 'show-for-modal-pinned',   onClick: options.onPin    ? modalUnpin    : null },
-                extend  : { className: 'hide-for-modal-extended', onClick: options.extended ? modalExtend   : null, altEvents:'swipeup'   },
-                diminish: { className: 'show-for-modal-extended', onClick: options.extended ? modalDiminish : null, altEvents:'swipedown' },
-                new     : { className: '',                        onClick: options.onNew    ? $.proxy(options.onNew, this) : null },
+                pin     : { className: 'hide-for-modal-pinned', onClick: options.onPin ? modalPin      : null },
+                unpin   : { className: 'show-for-modal-pinned', onClick: options.onPin ? modalUnpin    : null },
+                extend  : { className: iconExtendClassName,     onClick: multiSize ? modalExtend   : null, altEvents:'swipeup'   },
+                diminish: { className: iconDiminishClassName,   onClick: multiSize ? modalDiminish : null, altEvents:'swipedown' },
+                new     : { className: '',                      onClick: options.onNew ? $.proxy(options.onNew, this) : null },
             }
         }, options );
 
@@ -2305,7 +2395,7 @@ options
                         .appendTo( $modalContent );
 
             //Add dbl-click on header to change to/from extended
-            if (options.extended)
+            if (options.minimized || options.extended)
                 $modalHeader
                     .addClass('clickable')
                     .on('doubletap', modalToggleHeight );
@@ -2332,19 +2422,56 @@ options
             }
         }
 
+        //Create minimized content
+        if (options.minimized){
+            this.bsModal.minimized = {};
+                $modalContent.addClass('modal-minimized-hide-header');
+                var bsModalToggleMinimizedHeader = $.proxy(this._bsModalToggleMinimizedHeader, this);
+                options.minimized.onClick =
+                    options.minimized.showHeaderOnClick ?
+                        bsModalToggleMinimizedHeader :
+                        modalExtend;
+
+            //Close header when a icon is clicked
+            if (options.minimized.showHeaderOnClick)
+                this.bsModal.$header.on('click', bsModalToggleMinimizedHeader);
+
+            $modalContent._bsModalBodyAndFooter( 'minimized', options.minimized, this.bsModal.minimized );
+
+            if (options.minimized.showHeaderOnClick){
+                //Using fixed-height as height of content
+                var cssHeight = this.bsModal.cssHeight[MODAL_SIZE_MINIMIZED];
+                if (cssHeight && cssHeight.height)
+                    this.bsModal.minimized.$content.height(cssHeight.height);
+
+                this.bsModal.cssHeight[MODAL_SIZE_MINIMIZED] = null;
+            }
+        }
+
         //Create normal content
-        $modalContent._bsModalBodyAndFooter(options, this.bsModal, 'hide-for-modal-extended', noClassNameForFixed, false );
+        if (options.clickable)
+            //Set default on-click
+            options.onClick = options.onClick ||
+                options.extended ?
+                    modalExtend :
+                options.minimized ?
+                    modalDiminish :
+                    null;
+
+        $modalContent._bsModalBodyAndFooter('normal', options, this.bsModal, noClassNameForFixed, false );
 
         //Create extended content (if any)
         if (options.extended){
             this.bsModal.extended = {};
-            $modalContent._bsModalBodyAndFooter( options.extended, this.bsModal.extended, 'show-for-modal-extended', false, noClassNameForFooter );
+            if (options.extended.clickable)
+                options.extended.onClick = options.extended.onClick || modalDiminish;
+            $modalContent._bsModalBodyAndFooter( 'extended', options.extended, this.bsModal.extended, false, noClassNameForFooter );
         }
 
-        //Add buttons (if any)
+        //Add buttons (if any). Allways hidden for minimized
         var $modalButtonContainer = this.bsModal.$buttonContainer =
                 $('<div/>')
-                    .addClass('modal-footer')
+                    .addClass('modal-footer hide-for-modal-minimized')
                     .toggleClass('modal-footer-vertical', !!options.verticalButtons)
                     .appendTo( $modalContent ),
             $modalButtons = this.bsModal.$buttons = [],
@@ -3241,12 +3368,14 @@ options
         },
 
         bsUpdateSelectedItem: function(){
+            this.$inner = this.$inner || this.$select.parent().find('.filter-option-inner-inner');
+            this.$inner.empty();
+
             var selectedIndex = this.$select[0].selectedIndex;
-            if (selectedIndex > 0) {
-                this.$inner = this.$inner || this.$select.parent().find('.filter-option-inner-inner');
-                this.$inner.empty();
+            if (selectedIndex > 0)
                 this.$inner._bsAddHtml(this.itemOptionsList[selectedIndex]);
-            }
+            else
+                this.$inner.html('&nbsp;');
         },
 
         bsUpdateLabel: function( showLabelAsPlaceholder ){

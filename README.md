@@ -429,31 +429,47 @@ Eq.
 | :--: | :--: | :-----: | --- |
 | `header` | `content` or `[] of content` | `""` | See above |
 | `noHeader` | `boolean` | `false` | Prevent header even if `options.header` is set |
-| `flexWidth` | `boolean` | `false` | The default width of a modal is 300px. If `true` the width of the modal will adjust to the width of the browser up to 500px |
-| `extraWidth` | `boolean` | `false` | Only when `flexWidth` is set: If `true` the width of the modal will adjust to the width of the browser up to 800px |
-| `megaWidth` | `boolean` | `false` | Only when `flexWidth` is set: If `true` the width of the modal will adjust to the width of the browser up to 1200px |
-| `maxHeight` | `number`| `null` | The max-height of the modal |
-| `height` | `number`| `null` | The fixed height of the modal. If neither `maxHeight` or `height` is set the max-height is adjusted to window-height  |
-| `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
-| `type` | `string` | `""` | Sets `background-color` and `color` to match the [Noty](#noty) types<br> Possible value=`"alert"`, `"success"`, `"warning"`, `"error"`, `"info"`  |
 | `noVerticalPadding` | `boolean` | `false` | If `true` the vertical padding around the contents is zero |
 | `show` | `boolean` |  `true` | The modal is shown after creation |
 | `static` | `boolean` |  `false` | If `true` the modal can only be closed on top-right (x) or a button|
-| `fixedContent` |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
-| `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
-| `contentContext` |  | `null` | The context for `content` (only `function`) |
-| `footer` | `content` or `[] of content` | `""` | See above |
 | `closeButton` | `boolean` | `true` | If `true` a close button is added. See `closeText` and `closeIcon` below |
 | `buttons` | `[] of button-options` | `[]` | Array of options for buttons in the footer. See Button above. `closeOnClick: true/false` is added to set if the button closes the modal |
 | `closeText` | `string or i18n-record`| `{da:'Luk', en:'Close'}` | The text for the close-button. |
 | `closeIcon` | `string`| `"fa-times"` | The icon for the close-button |
-| `extended` | `object`| `null` | The extended content. `{type, fixedContent, flexWidth, noVerticalPadding, content, scroll, footer, width-options, height-options}` If any of the `extended`-values are === `true`the content values are used in extended mode   |
-| `minimized` | `object`| `null` | The minimized content. `{type, fixedContent, flexWidth, noVerticalPadding, content, scroll, footer, width-options, height-options}`  |
+| `extended` | `object`| `null` | The extended content. See below. |
+| `minimized` | `object`| `null` | The minimized content. See below. |
 | `onPin` | `function( pinned [boolean] )`| `null` | When given the icons for pin and unpin as shown. Also when pinned the modal can only be closed using the close icon or close-button |
 | `onNew` | `function()`| `null` | When given the icons for open-in-new-window is shown |
 | `noCloseIconOnHeader` | `boolean` | `false` | If `true` no close icon is added on the header |
-| `minimized.showHeaderOnClick` | `boolean` | `false` | If `true` clicking on content => show header (default: extend to normal size) |
+| `isMinimized` | `boolean` | `false` | If `true` the modal initial as minimized |
+| `isExtended` | `boolean` | `false` | If `true` the modal initial as maximized |
 
+#### Content options 
+The following options can be set for the tree different content: 
+
+- minimized: `options.minimimized`
+- normal: `options`
+- extended: `options.extended`. Id marked with (*): If `options.extended.ID: true` => inherited the value from `options.ID`
+
+
+| Id | Type | Default | Description |
+| :--: | :--: | :-----: | --- |
+| `type` | `string` | `""` | Sets `background-color` and `color` to match the [Noty](#noty) types<br> Possible value=`"alert"`, `"success"`, `"warning"`, `"error"`, `"info"`  |
+| `width` (*) | `number` | `null` | The width of the modal. Default width is 300px. |
+| `flexWidth` | `boolean` | `false` | The default width of a modal is 300px. If `true` the width of the modal will adjust to the width of the browser up to 500px |
+| `extraWidth` | `boolean` | `false` | Only when `flexWidth` is set: If `true` the width of the modal will adjust to the width of the browser up to 800px |
+| `height` (*) | `number`| `null` | The fixed height of the modal. If neither `maxHeight` or `height` is set the max-height is adjusted to window-height  |
+| `megaWidth` | `boolean` | `false` | Only when `flexWidth` is set: If `true` the width of the modal will adjust to the width of the browser up to 1200px |
+| `maxHeight` | `number`| `null` | The max-height of the modal |
+| `alwaysMaxHeight` | `boolean` | `false` | If `true` the modal is always maximum height regardless of content |
+| `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
+| `fixedContent` (*) |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
+| `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
+| `contentContext` |  | `null` | The context for `content` (only `function`) |
+| `footer` (*) | `content` or `[] of content` | `""` | See above |
+| `transparent` | `boolean` | `false` | If `true` the background of the content gets semi-transparent |
+| `showHeaderOnClick` | `boolean` | `false` | Only for `options.minimized`: If `true` clicking on content => show header (default: extend to normal size) |
+| `onClick` | `function( pinned [boolean] )`| `null` | Event when content is clicked |
 
 
 ### Methods

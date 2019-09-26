@@ -290,7 +290,10 @@
         //Append fixed content (if any)
         var $modalFixedContent = parts.$fixedContent =
                 $('<div/>')
-                    .addClass('modal-body-fixed ' + (noClassNameForFixed ? '' : className) + ' ' + scrollbarClass )
+                    .addClass('modal-body-fixed')
+                    .toggleClass(className, !noClassNameForFixed)
+                    .addClass(scrollbarClass )
+                    .toggleClass('modal-body-transparent', !!options.transparent)
                     .appendTo( this );
         if (options.fixedContent)
             $modalFixedContent._bsAddHtml( options.fixedContent, true );
@@ -300,6 +303,7 @@
                 $('<div/>')
                     .addClass('modal-body ' + className)
                     .toggleClass('modal-body-always-max-height', !!options.alwaysMaxHeight)
+                    .toggleClass('modal-body-transparent', !!options.transparent)
                     .toggleClass('modal-type-' + options.type, !!options.type)
                     .appendTo( this );
 
@@ -341,7 +345,6 @@
 
         return this;
     };
-
 
 
     function get$modalContent( $elem ){
@@ -466,7 +469,6 @@
     };
 
 
-
     /******************************************************
     _bsModalContent
     Create the content of a modal inside this
@@ -520,23 +522,29 @@
                 this.bsModal.cssWidth[MODAL_SIZE_EXTENDED] = getWidthFromOptions( options.extended );
         }
 
+
+
         var $modalContent = this.bsModal.$modalContent =
                 $('<div/>')
                     .addClass('modal-content')
                     .addClass(options.modalContentClassName)
-
-                    //Add class to make content always max-height
-                    .toggleClass('modal-minimized-always-max-height', !!options.minimized && !!options.minimized.alwaysMaxHeight)
-                    .toggleClass('modal-normal-always-max-height',    !!options.alwaysMaxHeight)
-                    .toggleClass('modal-extended-always-max-height',  !!options.extended && !!options.extended.alwaysMaxHeight)
-
-                    //Add class to make content clickable
-                    .toggleClass('modal-minimized-clickable', !!options.minimized && !!options.minimized.clickable)
-                    .toggleClass('modal-normal-clickable',    !!options.clickable)
-                    .toggleClass('modal-extended-clickable',  !!options.extended && !!options.extended.clickable)
-
                     .modernizrOff('modal-pinned')
                     .appendTo( this );
+
+        //Set modal-[SIZE]-[STATE] class
+        function setStateClass(postClassName, optionId){
+            $modalContent
+                .toggleClass('modal-minimized-'+postClassName, !!options.minimized && !!options.minimized[optionId])
+                .toggleClass('modal-normal-'+postClassName,    !!options[optionId])
+                .toggleClass('modal-extended-'+postClassName,  !!options.extended && !!options.extended[optionId]);
+        }
+        //Add class to make content always max-height
+        setStateClass('always-max-height', 'alwaysMaxHeight');
+        //Add class to make content clickable
+        setStateClass('clickable', 'clickable');
+        //Add class to make content semi-transparent
+        setStateClass('transparent', 'transparent');
+
 
         this._bsModalSetSizeClass(
             options.minimized && options.isMinimized ?

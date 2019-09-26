@@ -39,6 +39,13 @@ $font-size-header-sm: $font-size-xs;
 $font-size-header-xs: $font-size-xs; //Same as $font-size-header-sm by design
 
 /************************************************************
+MODAL
+Opacity for semi-transparent content
+************************************************************/
+$modal-body-transparent-opacity      : .6;
+$modal-body-transparent-hover-opacity: .8;
+
+/************************************************************
 LABEL
 Font-sizes for labels are same siae as header but incl a xxs-size
 ************************************************************/

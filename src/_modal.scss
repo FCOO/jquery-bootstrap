@@ -60,8 +60,6 @@ body.modal-open .modal {
         -ms-word-break: break-word;  //Fallback for IE11
         word-break: break-word;
         word-wrap : break-word;
-
-
     }
 
     //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
@@ -243,17 +241,31 @@ body.modal-open .modal {
         }
     } //end of .modal-content
 
+    //Semi-transparent background when options.semiTransparent is set
+    .modal-content {
+        &.modal-minimized.modal-minimized-transparent,
+        &.modal-normal.modal-normal-transparent,
+        &.modal-extended.modal-extended-transparent {
+            background: rgba($modal-content-bg, $modal-body-transparent-opacity);
+        }
+    }
+
+
+
     //hover-style for modal-content when content is clickable
     .mouse-hover & .modal-content {
         //.modal-content.modal-SIZE.modal-SIZE-clickable .modal-body[-fixed]: background = button:hover-background on hover
         &.modal-minimized.modal-minimized-clickable,
         &.modal-normal.modal-normal-clickable,
         &.modal-extended.modal-extended-clickable {
-            &:hover {
+            &:hover, &.hover {
                 .modal-body, .modal-body-fixed {
                     cursor: default;
                     //hover background = hover background for buttons
                     @include gradient-bg( darken($control-bg-color, $darken-hover-percent) );
+                    &.modal-body-transparent {
+                        background: rgba($modal-content-bg, $modal-body-transparent-hover-opacity);
+                    }
                 }
             }
         }
