@@ -470,6 +470,8 @@ The following options can be set for the tree different content:
 | `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `contentContext` |  | `null` | The context for `content` (only `function`) |
 | `footer` (*) | `content` or `[] of content` | `""` | See above |
+| `fixedClassName` | `string` | `""` | Extra class-name(s) for `<div>` containing `options.fixedContent`  |
+| `className` | `string` | `""` | Extra class-name(s) for `<div>` containing `options.content`  |
 | `transparent` | `boolean` | `false` | If `true` the background of the content gets semi-transparent |
 | `showHeaderOnClick` | `boolean` | `false` | Only for `options.minimized`: If `true` clicking on content => show header (default: extend to normal size) |
 | `onClick` | `function( pinned [boolean] )`| `null` | Event when content is clicked |

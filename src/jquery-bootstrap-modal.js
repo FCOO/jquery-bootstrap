@@ -299,6 +299,7 @@
                     .toggleClass('no-horizontal-padding', !!options.noHorizontalPadding)
                     .toggleClass('modal-body-transparent', !!options.transparent)
                     .toggleClass('modal-type-' + options.type, !!options.type)
+                    .addClass(options.fixedClassName || '')
                     .appendTo( this );
         if (options.fixedContent)
             $modalFixedContent._bsAddHtml( options.fixedContent, true );
@@ -312,6 +313,7 @@
                     .toggleClass('no-horizontal-padding', !!options.noHorizontalPadding)
                     .toggleClass('modal-body-transparent', !!options.transparent)
                     .toggleClass('modal-type-' + options.type, !!options.type)
+                    .addClass(options.className || '')
                     .appendTo( this );
 
         if (!options.content || (options.content === {}))
@@ -760,8 +762,6 @@
         options =
             $._bsAdjustOptions( options, {
                 baseClass: 'modal-dialog',
-//HER                class    : (options.noVerticalPadding   ? 'no-vertical-padding'    : '') +
-//HER                           (options.noHorizontalPadding ? ' no-horizontal-padding' : ''),
 
                 //Header
                 noHeader : false,

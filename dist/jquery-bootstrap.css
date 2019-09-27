@@ -7160,6 +7160,12 @@ a.text-dark:hover, a.text-dark:focus {
 /***********************************************
 IMPORT BOOTSTRAP-SELECT SCSS
 ************************************************/
+@keyframes bs-notify-fadeOut {
+  0% {
+    opacity: 0.9; }
+  100% {
+    opacity: 0; } }
+
 select.bs-select-hidden,
 .bootstrap-select > select.bs-select-hidden,
 select.selectpicker {
@@ -7383,6 +7389,8 @@ select.selectpicker {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box; }
+    .bootstrap-select .dropdown-menu .notify.fadeOut {
+      animation: 300ms linear 750ms forwards bs-notify-fadeOut; }
 
 .bootstrap-select .no-results {
   padding: 3px;
