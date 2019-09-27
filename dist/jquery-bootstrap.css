@@ -8917,16 +8917,8 @@ body.modal-open .modal {
   padding-top: 0 !important;
   padding-bottom: 0 !important; }
 
-.no-vertical-padding .modal-content .modal-body-fixed, .no-vertical-padding .modal-content .modal-body {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important; }
-
 .modal-content .modal-body-fixed.no-horizontal-padding,
 .modal-content .modal-body.no-horizontal-padding {
-  padding-left: 0 !important;
-  padding-right: 0 !important; }
-
-.no-horizontal-padding .modal-content .modal-body-fixed, .no-horizontal-padding .modal-content .modal-body {
   padding-left: 0 !important;
   padding-right: 0 !important; }
 

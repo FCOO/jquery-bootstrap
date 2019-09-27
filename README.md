@@ -429,7 +429,8 @@ Eq.
 | :--: | :--: | :-----: | --- |
 | `header` | `content` or `[] of content` | `""` | See above |
 | `noHeader` | `boolean` | `false` | Prevent header even if `options.header` is set |
-| `noVerticalPadding` | `boolean` | `false` | If `true` the vertical padding around the contents is zero |
+| `noVerticalPadding` | `boolean` | `false` | If `true` the vertical padding around all contents is zero |
+| `noHorizontalPadding` | `boolean` | `false` | If `true` the horizontal padding around all contents is zero |
 | `show` | `boolean` |  `true` | The modal is shown after creation |
 | `static` | `boolean` |  `false` | If `true` the modal can only be closed on top-right (x) or a button|
 | `closeButton` | `boolean` | `true` | If `true` a close button is added. See `closeText` and `closeIcon` below |
@@ -463,6 +464,8 @@ The following options can be set for the tree different content:
 | `maxHeight` | `number`| `null` | The max-height of the modal |
 | `alwaysMaxHeight` | `boolean` | `false` | If `true` the modal is always maximum height regardless of content |
 | `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
+| `noVerticalPadding` | `boolean` | `false` | If `true` the vertical padding around the contents is zero |
+| `noHorizontalPadding` | `boolean` | `false` | If `true` the horizontal padding around th contents is zero |
 | `fixedContent` (*) |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `contentContext` |  | `null` | The context for `content` (only `function`) |

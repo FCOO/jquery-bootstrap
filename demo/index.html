@@ -1263,10 +1263,9 @@ width: 3*300,
 
         var long_content = $.bsModal({
 
-onNew: function(){ console.log('NEW:  DONT close header'); return false},
-onPin: function(){ console.log('PIN: Close header'); return true},
-
-icons: { back:{onClick: function(){ console.log('BACK: DONT close header'); return false}}},
+            onNew: function(){ console.log('NEW:  DONT close header'); return false},
+            onPin: function(){ console.log('PIN: Close header'); return true},
+            icons: { back:{onClick: function(){ console.log('BACK: DONT close header'); return false}}},
 
             closeButton: true,
             header:/*{
@@ -1284,8 +1283,8 @@ icons: { back:{onClick: function(){ console.log('BACK: DONT close header'); retu
             maxHeight: 300,
             width: 220,
             content: 'max-height=300<br>Her kommer der nogle laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange ord<br>SLUT',
-clickable: true,
-transparent: true,
+            clickable: true,
+            transparent: true,
 
             isMinimized: true,
             minimized: {
@@ -1294,7 +1293,10 @@ transparent: true,
                 _height: 56,
                 width : 54,
                 content: {icon: 'fa-home'}, //, 'W=<br>54px',
-clickable: true,
+                noVerticalPadding: true,
+                noHorizontalPadding: true,
+
+                clickable: true,
 
             },
             _isExtended: true,

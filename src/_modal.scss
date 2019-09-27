@@ -351,22 +351,10 @@ body.modal-open .modal {
         padding-bottom: 0 !important;
     }
 }
-.no-vertical-padding .modal-content {
-    .modal-body-fixed, .modal-body {
-        padding-top   : 0 !important;
-        padding-bottom: 0 !important;
-    }
-}
 
 .modal-content {
     .modal-body-fixed.no-horizontal-padding,
     .modal-body.no-horizontal-padding {
-        padding-left : 0 !important;
-        padding-right: 0 !important;
-    }
-}
-.no-horizontal-padding .modal-content {
-    .modal-body-fixed, .modal-body {
         padding-left : 0 !important;
         padding-right: 0 !important;
     }

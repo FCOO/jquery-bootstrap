@@ -284,8 +284,10 @@
         className = (className || '') + ' show-for-modal-'+size;
 
         //Remove padding if the content is tabs and content isn't created from bsModal - not pretty :-)
-        if (isTabs)
-            className = className + ' no-vertical-padding no-horizontal-padding';
+        if (isTabs){
+            options.noVerticalPadding = true;
+            options.noHorizontalPadding = true;
+        }
 
         //Append fixed content (if any)
         var $modalFixedContent = parts.$fixedContent =
@@ -293,7 +295,10 @@
                     .addClass('modal-body-fixed')
                     .toggleClass(className, !noClassNameForFixed)
                     .addClass(scrollbarClass )
+                    .toggleClass('no-vertical-padding', !!options.noVerticalPadding)
+                    .toggleClass('no-horizontal-padding', !!options.noHorizontalPadding)
                     .toggleClass('modal-body-transparent', !!options.transparent)
+                    .toggleClass('modal-type-' + options.type, !!options.type)
                     .appendTo( this );
         if (options.fixedContent)
             $modalFixedContent._bsAddHtml( options.fixedContent, true );
@@ -303,6 +308,8 @@
                 $('<div/>')
                     .addClass('modal-body ' + className)
                     .toggleClass('modal-body-always-max-height', !!options.alwaysMaxHeight)
+                    .toggleClass('no-vertical-padding', !!options.noVerticalPadding)
+                    .toggleClass('no-horizontal-padding', !!options.noHorizontalPadding)
                     .toggleClass('modal-body-transparent', !!options.transparent)
                     .toggleClass('modal-type-' + options.type, !!options.type)
                     .appendTo( this );
@@ -753,8 +760,8 @@
         options =
             $._bsAdjustOptions( options, {
                 baseClass: 'modal-dialog',
-                class    : (options.noVerticalPadding   ? 'no-vertical-padding'    : '') +
-                           (options.noHorizontalPadding ? ' no-horizontal-padding' : ''),
+//HER                class    : (options.noVerticalPadding   ? 'no-vertical-padding'    : '') +
+//HER                           (options.noHorizontalPadding ? ' no-horizontal-padding' : ''),
 
                 //Header
                 noHeader : false,
