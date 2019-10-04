@@ -684,9 +684,9 @@
         }
 
         //Create normal content
-        if (options.clickable)
+        if (options.clickable && !options.onClick)
             //Set default on-click
-            options.onClick = options.onClick ||
+            options.onClick =
                 options.extended ?
                     modalExtend :
                 options.minimized ?

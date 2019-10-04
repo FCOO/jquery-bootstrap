@@ -42,8 +42,8 @@ $font-size-header-xs: $font-size-xs; //Same as $font-size-header-sm by design
 BUTTON AND MODAL
 Opacity for semi-transparent and transparent content
 ************************************************************/
-$semi-transparent-opacity      : .6;
-$semi-transparent-opacity-hover: .8;
+$semi-transparent-opacity      : .5;
+$semi-transparent-opacity-hover: .75;
 
 //Button
 $button-bg-color-semi-transparent      : rgba($control-bg-color, $semi-transparent-opacity);
