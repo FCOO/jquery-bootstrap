@@ -228,11 +228,15 @@
     **********************************************************/
     $.bsButton = function( options ){
         var optionToClassName = {
-                primary    : 'primary',
-                transparent: 'transparent',
-                square     : 'square',
-                bigIcon    : 'big-icon'
+                primary        : 'primary',
+                transparent    : 'transparent',
+                semiTransparent: 'semi-transparent',
+                square         : 'square',
+                bigIcon        : 'big-icon',
+                selected       : 'active',
+                focus          : 'init_focus'
             };
+
 
         options = options || {};
         options =
@@ -267,12 +271,6 @@
         result._bsAddBaseClassAndSize( options );
         if (!options.radioGroup)
             result._bsAddIdAndName( options );
-
-        if (options.selected)
-            result.addClass('active');
-
-        if (options.focus)
-            result.addClass('init_focus');
 
         if (options.attr)
             result.attr( options.attr );
@@ -2066,7 +2064,7 @@ options
                     .addClass(scrollbarClass )
                     .toggleClass('no-vertical-padding', !!options.noVerticalPadding)
                     .toggleClass('no-horizontal-padding', !!options.noHorizontalPadding)
-                    .toggleClass('modal-body-transparent', !!options.transparent)
+                    .toggleClass('modal-body-semi-transparent', !!options.semiTransparent)
                     .toggleClass('modal-type-' + options.type, !!options.type)
                     .addClass(options.fixedClassName || '')
                     .appendTo( this );
@@ -2080,7 +2078,7 @@ options
                     .toggleClass('modal-body-always-max-height', !!options.alwaysMaxHeight)
                     .toggleClass('no-vertical-padding', !!options.noVerticalPadding)
                     .toggleClass('no-horizontal-padding', !!options.noHorizontalPadding)
-                    .toggleClass('modal-body-transparent', !!options.transparent)
+                    .toggleClass('modal-body-semi-transparent', !!options.semiTransparent)
                     .toggleClass('modal-type-' + options.type, !!options.type)
                     .addClass(options.className || '')
                     .appendTo( this );
@@ -2300,8 +2298,6 @@ options
                 this.bsModal.cssWidth[MODAL_SIZE_EXTENDED] = getWidthFromOptions( options.extended );
         }
 
-
-
         var $modalContent = this.bsModal.$modalContent =
                 $('<div/>')
                     .addClass('modal-content')
@@ -2321,8 +2317,7 @@ options
         //Add class to make content clickable
         setStateClass('clickable', 'clickable');
         //Add class to make content semi-transparent
-        setStateClass('transparent', 'transparent');
-
+        setStateClass('semi-transparent', 'semiTransparent');
 
         this._bsModalSetSizeClass(
             options.minimized && options.isMinimized ?
@@ -2409,8 +2404,6 @@ options
                     .addClass('clickable')
                     .on('doubletap', modalToggleHeight );
         }
-        else
-            $modalContent.addClass('no-modal-header');
 
         //If options.extended.fixedContent == true and/or options.extended.footer == true => normal and extended uses same fixed and/or footer content
         var noClassNameForFixed = false,

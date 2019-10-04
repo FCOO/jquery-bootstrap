@@ -297,7 +297,7 @@
                     .addClass(scrollbarClass )
                     .toggleClass('no-vertical-padding', !!options.noVerticalPadding)
                     .toggleClass('no-horizontal-padding', !!options.noHorizontalPadding)
-                    .toggleClass('modal-body-transparent', !!options.transparent)
+                    .toggleClass('modal-body-semi-transparent', !!options.semiTransparent)
                     .toggleClass('modal-type-' + options.type, !!options.type)
                     .addClass(options.fixedClassName || '')
                     .appendTo( this );
@@ -311,7 +311,7 @@
                     .toggleClass('modal-body-always-max-height', !!options.alwaysMaxHeight)
                     .toggleClass('no-vertical-padding', !!options.noVerticalPadding)
                     .toggleClass('no-horizontal-padding', !!options.noHorizontalPadding)
-                    .toggleClass('modal-body-transparent', !!options.transparent)
+                    .toggleClass('modal-body-semi-transparent', !!options.semiTransparent)
                     .toggleClass('modal-type-' + options.type, !!options.type)
                     .addClass(options.className || '')
                     .appendTo( this );
@@ -531,8 +531,6 @@
                 this.bsModal.cssWidth[MODAL_SIZE_EXTENDED] = getWidthFromOptions( options.extended );
         }
 
-
-
         var $modalContent = this.bsModal.$modalContent =
                 $('<div/>')
                     .addClass('modal-content')
@@ -552,8 +550,7 @@
         //Add class to make content clickable
         setStateClass('clickable', 'clickable');
         //Add class to make content semi-transparent
-        setStateClass('transparent', 'transparent');
-
+        setStateClass('semi-transparent', 'semiTransparent');
 
         this._bsModalSetSizeClass(
             options.minimized && options.isMinimized ?
@@ -640,8 +637,6 @@
                     .addClass('clickable')
                     .on('doubletap', modalToggleHeight );
         }
-        else
-            $modalContent.addClass('no-modal-header');
 
         //If options.extended.fixedContent == true and/or options.extended.footer == true => normal and extended uses same fixed and/or footer content
         var noClassNameForFixed = false,

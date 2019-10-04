@@ -156,6 +156,7 @@ Return options to create a marker-icon = icon with inner color given as color in
 | `square` | `boolean` | `false` | If `true` the button get equal `height` and `min-width` (used primarily for icon-buttons) |
 | `bigIcon` | `boolean` | `false` | If `true` the button get a almost 100% height icon (used primarily for icon-buttons) |
 | `transparent` | `boolean` | `false` | If `true` the button get transparent and light text-color (assuming dark background) |
+| `semiTransparent` | `boolean` | `false` | If `true` the button get semi-transparent |
 | `attr` | `object` | `null` | |
 | `prop` | `object` | `null` | |
 | `onClick` | `function()` | `null` | function to be called on-click |
@@ -472,7 +473,7 @@ The following options can be set for the tree different content:
 | `footer` (*) | `content` or `[] of content` | `""` | See above |
 | `fixedClassName` | `string` | `""` | Extra class-name(s) for `<div>` containing `options.fixedContent`  |
 | `className` | `string` | `""` | Extra class-name(s) for `<div>` containing `options.content`  |
-| `transparent` | `boolean` | `false` | If `true` the background of the content gets semi-transparent |
+| `semiTransparent` | `boolean` | `false` | If `true` the background of the content gets semi-transparent |
 | `showHeaderOnClick` | `boolean` | `false` | Only for `options.minimized`: If `true` clicking on content => show header (default: extend to normal size) |
 | `onClick` | `function( pinned [boolean] )`| `null` | Event when content is clicked |
 

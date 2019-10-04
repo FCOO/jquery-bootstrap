@@ -87,6 +87,16 @@ div.btn, div.list-group-item {
         );
     }
 
+    &.semi-transparent {
+        background: none;
+        @include control-colors(
+            $incl-active    : false,
+            $incl-border    : false,
+            $bg-color       : $button-bg-color-semi-transparent,
+            $bg-color-hover : $button-bg-color-semi-transparent-hover,
+            $bg-color-active: darken($button-bg-color-semi-transparent-hover, $darken-active-percent)
+        );
+    }
     /************************************************************
     Special version to have square buttons (with only icon)
     ************************************************************/

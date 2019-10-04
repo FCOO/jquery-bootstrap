@@ -39,11 +39,20 @@ $font-size-header-sm: $font-size-xs;
 $font-size-header-xs: $font-size-xs; //Same as $font-size-header-sm by design
 
 /************************************************************
-MODAL
-Opacity for semi-transparent content
+BUTTON AND MODAL
+Opacity for semi-transparent and transparent content
 ************************************************************/
-$modal-body-transparent-opacity      : .6;
-$modal-body-transparent-hover-opacity: .8;
+$semi-transparent-opacity      : .6;
+$semi-transparent-opacity-hover: .8;
+
+//Button
+$button-bg-color-semi-transparent      : rgba($control-bg-color, $semi-transparent-opacity);
+$button-bg-color-semi-transparent-hover: rgba($control-bg-color, $semi-transparent-opacity-hover);
+
+//Modal
+$modal-content-bg-semi-transparent      : rgba($modal-content-bg, $semi-transparent-opacity);
+$modal-content-bg-semi-transparent-hover: rgba($modal-content-bg, $semi-transparent-opacity-hover);
+
 
 /************************************************************
 LABEL

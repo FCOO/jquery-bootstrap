@@ -21,9 +21,9 @@ MODAL-BACKDROP
     animation: fadeOutToNone .3s ease-out;
 
     &.hidden {
-        display: none;        
+        display: none;
     }
-    
+
     &.show {
         display  : block;
         opacity  : $modal-backdrop-opacity;

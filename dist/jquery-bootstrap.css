@@ -7551,8 +7551,8 @@ $font-size-sm  : .8125rem   13px
 $font-size-xs  : .75rem     12px
 ************************************************************/
 /************************************************************
-MODAL
-Opacity for semi-transparent content
+BUTTON AND MODAL
+Opacity for semi-transparent and transparent content
 ************************************************************/
 /************************************************************
 LABEL
@@ -7871,6 +7871,22 @@ div.btn, div.list-group-item {
       opacity: 1 !important;
       color: rgba(212, 212, 212, 0.65);
       background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
+  .btn.btn-standard.semi-transparent {
+    background: none;
+    color: #515961;
+    background: rgba(248, 249, 250, 0.6) linear-gradient(180deg, rgba(250, 251, 251, 0.66), rgba(248, 249, 250, 0.6)) repeat-x; }
+    .mouse-hover .hover .btn.btn-standard.semi-transparent:not(:active):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.semi-transparent.hover:not(:active):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.semi-transparent:hover:not(:active):not(:disabled):not(.disabled) {
+      color: #454c53;
+      background: rgba(248, 249, 250, 0.8) linear-gradient(180deg, rgba(249, 250, 251, 0.83), rgba(248, 249, 250, 0.8)) repeat-x; }
+    .btn.btn-standard.semi-transparent:active {
+      color: #40464c;
+      background: rgba(226, 230, 234, 0.8) linear-gradient(180deg, rgba(232, 235, 238, 0.83), rgba(226, 230, 234, 0.8)) repeat-x; }
+    .btn.btn-standard.semi-transparent.disabled, .btn.btn-standard.semi-transparent:disabled {
+      opacity: 1 !important;
+      color: rgba(81, 89, 97, 0.65);
+      background: rgba(248, 249, 250, 0.6) linear-gradient(180deg, rgba(250, 251, 251, 0.66), rgba(248, 249, 250, 0.6)) repeat-x; }
   .btn.btn-standard.square {
     overflow: hidden;
     height: calc(2 * 0.3125rem + 1.5rem + 2 * 1px);
@@ -8676,8 +8692,6 @@ body.modal-open .modal {
   .modal-dialog .modal-content:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
   .modal-dialog .modal-content.modal-extended .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
     border-top: none; }
-  .modal-dialog .modal-content.no-modal-header {
-    padding-top: calc( 0.3rem - 1px); }
   .modal-dialog .modal-content .modal-header {
     flex-shrink: 0;
     flex-grow: 0;
@@ -8749,11 +8763,6 @@ body.modal-open .modal {
     .modal-dialog .modal-content .modal-body.modal-type-help {
       background-color: #fefefe;
       color: #818182; }
-  .modal-dialog .modal-content .modal-footer-header:empty + .modal-footer:empty {
-    display: block;
-    height: calc( 0.3rem - 1px);
-    padding: 0;
-    border: none; }
   .modal-dialog .modal-content .modal-footer-header {
     flex-shrink: 0;
     flex-grow: 0;
@@ -8797,12 +8806,14 @@ body.modal-open .modal {
         margin: 0; }
       .modal-dialog .modal-content .modal-footer.modal-footer-vertical > *:not(:first-child) {
         margin-top: .25rem; }
-  .modal-dialog .modal-content.modal-minimized.modal-minimized-transparent, .modal-dialog .modal-content.modal-normal.modal-normal-transparent, .modal-dialog .modal-content.modal-extended.modal-extended-transparent {
-    background: rgba(255, 255, 255, 0.6); }
-  .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable:hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable:hover .modal-body-fixed, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable.hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable.hover .modal-body-fixed, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable:hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable:hover .modal-body-fixed, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable.hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable.hover .modal-body-fixed, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable:hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable:hover .modal-body-fixed, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable.hover .modal-body, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable.hover .modal-body-fixed {
+  .modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent, .modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent, .modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent {
+    background: none; }
+    .modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-body, .modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-body-fixed, .modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-footer, .modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-body, .modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-body-fixed, .modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-footer, .modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-body, .modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-body-fixed, .modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-footer {
+      background: rgba(255, 255, 255, 0.6); }
+  .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable .modal-body:hover, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable .modal-body.hover, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable .modal-body-fixed:hover, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable .modal-body-fixed.hover, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable .modal-body:hover, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable .modal-body.hover, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable .modal-body-fixed:hover, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable .modal-body-fixed.hover, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable .modal-body:hover, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable .modal-body.hover, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable .modal-body-fixed:hover, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable .modal-body-fixed.hover {
     cursor: default;
     background: #e9ecef linear-gradient(180deg, #eceff2, #e9ecef) repeat-x; }
-    .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable:hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable:hover .modal-body-fixed.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable.hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable.hover .modal-body-fixed.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable:hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable:hover .modal-body-fixed.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable.hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable.hover .modal-body-fixed.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable:hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable:hover .modal-body-fixed.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable.hover .modal-body.modal-body-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable.hover .modal-body-fixed.modal-body-transparent {
+    .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable .modal-body:hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable .modal-body.hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable .modal-body-fixed:hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable .modal-body-fixed.hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable .modal-body:hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable .modal-body.hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable .modal-body-fixed:hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-normal.modal-normal-clickable .modal-body-fixed.hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable .modal-body:hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable .modal-body.hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable .modal-body-fixed:hover.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content.modal-extended.modal-extended-clickable .modal-body-fixed.hover.modal-body-semi-transparent {
       background: rgba(255, 255, 255, 0.8); }
   .modal-dialog.modal-dialog-sm .modal-content .modal-header {
     font-weight: 400;
@@ -8904,11 +8915,12 @@ body.modal-open .modal {
 
 .modal-dialog .modal-body-fixed.scrollbar-vertical,
 .modal-dialog .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body-fixed.scrollbar-vertical,
-.modal-dialog.modal-dialog-sm .modal-body.scrollbar-vertical {
+.modal-dialog.modal-dialog-sm .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-xs .modal-body-fixed.scrollbar-vertical,
+.modal-dialog.modal-dialog-xs .modal-body.scrollbar-vertical {
   padding-left: 0.625rem;
   padding-right: 0.625rem; }
 
-.modal-dialog .modal-body.scrollbar-horizontal, .modal-dialog.modal-dialog-sm .modal-body.scrollbar-horizontal {
+.modal-dialog .modal-body.scrollbar-horizontal, .modal-dialog.modal-dialog-sm .modal-body.scrollbar-horizontal, .modal-dialog.modal-dialog-xs .modal-body.scrollbar-horizontal {
   padding-bottom: 0.625rem; }
 
 .modal-dialog .modal-body-with-vertical-padding {
