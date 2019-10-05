@@ -7879,7 +7879,7 @@ div.btn, div.list-group-item {
     .mouse-hover .btn.btn-standard.semi-transparent.hover:not(:active):not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.semi-transparent:hover:not(:active):not(:disabled):not(.disabled) {
       color: #454c53;
-      background: rgba(248, 249, 250, 0.75) linear-gradient(180deg, rgba(250, 250, 251, 0.7875), rgba(248, 249, 250, 0.75)) repeat-x; }
+      background: rgba(248, 249, 250, 0.75); }
     .btn.btn-standard.semi-transparent:active {
       color: #40464c;
       background: rgba(226, 230, 234, 0.75); }

@@ -188,7 +188,6 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
     //Normal
     color: $color;
     @if ($incl-bg){
-//HER        @include gradient-bg($bg-color);
         @include _bg-color($bg-color, $no-gradians);
     }
 
@@ -198,7 +197,7 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
     .mouse-hover &:hover:not(:active):not(:disabled):not(.disabled) {
         color: $color-hover;
         @if ($incl-bg){
-            @include gradient-bg($bg-color-hover);
+        @include _bg-color($bg-color-hover, $no-gradians);
         }
     }
 
@@ -206,7 +205,6 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
     &:active {
         color: $color-active;
         @if ($incl-bg){
-//HER            @include gradient-bg($bg-color-active);
             @include _bg-color($bg-color-active, $no-gradians);
         }
     }
@@ -233,9 +231,7 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
         opacity: 1 !important;
         color  : rgba($color, $btn-disabled-opacity);
         @if ($incl-bg){
-//HER            @include gradient-bg($bg-color);
             @include _bg-color($bg-color, $no-gradians);
-
         }
     }
 
