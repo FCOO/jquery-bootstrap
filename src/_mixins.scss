@@ -154,11 +154,19 @@ All control elements get same border-color when normal, hover, active and error
 CONTROL-COLORS
 Sets all color for text, background, border for normal, :hover, :focus,  :active and .active
 ************************************************************/
+@mixin _bg-color($color, $no-gradians) {
+    @if $no-gradians {
+        background: $color;
+    } @else {
+        @include gradient-bg($color);
+    }
+}
 @mixin control-colors(
         $incl-active: true,
         $incl-border: true,
         $incl-bg    : true,
         $incl-error : false,
+        $no-gradians: false,
 
         $color       : $control-color,
         $color-hover : darken($color, $darken-hover-percent),
@@ -176,10 +184,12 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
         $active-bg-color: $control-active-bg-color
       ){
 
+
     //Normal
     color: $color;
     @if ($incl-bg){
-        @include gradient-bg($bg-color);
+//HER        @include gradient-bg($bg-color);
+        @include _bg-color($bg-color, $no-gradians);
     }
 
     //hover, not active, not disabled
@@ -196,7 +206,8 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
     &:active {
         color: $color-active;
         @if ($incl-bg){
-            @include gradient-bg($bg-color-active);
+//HER            @include gradient-bg($bg-color-active);
+            @include _bg-color($bg-color-active, $no-gradians);
         }
     }
 
@@ -216,16 +227,18 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
         }
     }
 
-
     // Disabled comes last to overwrite active and focus
     //Overwrite bootstrap defalut opacity on element and replace it with opacity on text-color
     &.disabled,  &:disabled {
         opacity: 1 !important;
         color  : rgba($color, $btn-disabled-opacity);
         @if ($incl-bg){
-            @include gradient-bg($bg-color);
+//HER            @include gradient-bg($bg-color);
+            @include _bg-color($bg-color, $no-gradians);
+
         }
     }
+
 }
 
 

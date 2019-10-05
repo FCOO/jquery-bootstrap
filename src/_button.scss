@@ -92,6 +92,7 @@ div.btn, div.list-group-item {
         @include control-colors(
             $incl-active    : false,
             $incl-border    : false,
+            $no-gradians    : true,
             $bg-color       : $button-bg-color-semi-transparent,
             $bg-color-hover : $button-bg-color-semi-transparent-hover,
             $bg-color-active: darken($button-bg-color-semi-transparent-hover, $darken-active-percent)
