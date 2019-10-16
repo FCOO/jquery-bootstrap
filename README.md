@@ -160,6 +160,7 @@ Return options to create a marker-icon = icon with inner color given as color in
 | `attr` | `object` | `null` | |
 | `prop` | `object` | `null` | |
 | `onClick` | `function()` | `null` | function to be called on-click |
+| `returnFromClick` | `boolean` | `false` | Return value from onClick. If `false` (default) event bubble is prevented |
 | `content` | `content` or `[] of content` | `""` | See above |
 
 #### Link-button
@@ -249,7 +250,7 @@ As for Selectbox without `placeholder`
 | :--: | :--: | :-----: | --- |
 | `header` | `content` or `[] of content` | `""` | See above |
 | `close` | `boolean` | `false` | Show close cross in header |
-| `trigger` | `String` | `"click"` | How the popover is triggered - `"click"`, `"hover"`, `"focus"`, or `"manual"` |
+| `trigger` | `String` | `"click"` | How the popover is triggered - `"click"`, `"hover"`, `"focus"`, `"context"`/`"contextmenu"` or `"manual"` |
 | `vertical` | `boolean` | `false` | 
 | `placement` | `String` | | `"top", "bottom", "left", "right"` Default = `"right"` for `vertical: false` and `"top"` for `vertical:true` |
 | `closeOnClick` | `boolean` | `false` | If `true` the popover will close when it is clicked |

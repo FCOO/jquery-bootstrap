@@ -255,7 +255,6 @@ body.modal-open .modal {
                     //hover background = hover background for buttons
                     @include gradient-bg( darken($control-bg-color, $darken-hover-percent) );
                     &.modal-body-semi-transparent {
-//HER                        background: darken($modal-content-bg-semi-transparent, $darken-hover-percent);
                         background: $modal-content-bg-semi-transparent-hover;
                     }
                 }

@@ -15,7 +15,9 @@
     To sequre that all popovers are closed when the user click or
     tap outside the popover the following event are added
     **********************************************************/
-    var popoverClassName = 'hasPopover';
+    var popoverClassName = 'has-popover',
+        popoverCloseOnClick = 'popover-close-on-click',
+        no_popoverCloseOnClick = 'no-' + popoverCloseOnClick;
 
     $('body').on("touchstart mousedown", function( event ){
         $('.'+popoverClassName).each(function () {
@@ -63,7 +65,8 @@
         options = $._bsAdjustOptions( options );
 
         var $this = $(this),
-            $header = '';
+            $header = '',
+            $footer = '';
 
         //Add header (if any)
         if (options.header || options.close){
@@ -76,17 +79,32 @@
 
             $header =
                 $('<div/>')
+                    .addClass( no_popoverCloseOnClick )
                     ._bsHeaderAndIcons( options );
+        }
+
+        if (options.footer)
+            $footer =
+                $('<div/>')
+                    .addClass( 'w-100 ' + no_popoverCloseOnClick )
+                    ._bsAddHtml( options.footer );
+
+        //If trigger == 'context' or 'contextmenu' use 'manual' and add event
+        if ((options.trigger == 'context') || (options.trigger == 'contextmenu')){
+            options.trigger = 'manual';
+            this.on('contextmenu.jbs.popover', function(){
+                $this.popover('show');
+                return false;
+            });
         }
 
         var popoverOptions = {
                 trigger  :  options.trigger || 'click', //or 'hover' or 'focus' ORIGINAL='click'
-                //delay    : { show: 0, hide: 1000 },
                 toggle   :  options.toggle || 'popover',
                 html     :  true,
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
                 container:  'body',
-                template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + '" role="tooltip">'+
+                template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + ' ' + (options.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick) + '" role="tooltip">'+
                                 '<div class="popover-header"></div>' +
                                 '<div class="popover-body"></div>' +
                                 '<div class="popover-footer"></div>' +
@@ -95,7 +113,7 @@
 
                 title    : $header,
                 content  : options.content,
-                footer   : options.footer ? $('<div/>')._bsAddHtml( options.footer ) : ''
+                footer   : $footer
             };
         if (options.delay)
             popoverOptions.delay = options.delay;
@@ -127,13 +145,24 @@
     };
 
     function popover_onShow(){
+        //If popover is opened by hover => close all other popover
+        var $this = $(this),
+            thisPopoverId = $this.attr('aria-describedby');
+
+        if ($this.data('popover_options').trigger == 'hover')
+            $('.'+popoverClassName).each(function () {
+                var $this2 = $(this);
+                if ($this2.attr('aria-describedby') != thisPopoverId)
+                    $this2.popover('hide');
+            });
     }
 
     function popover_onShown(){
         //Find the popover-element. It has id == aria-describedby
         var $this = $(this),
             popoverId = $this.attr('aria-describedby'),
-            options = $this.data('popover_options');
+            options = $this.data('popover_options'),
+            popover = $this.data('bs.popover');
 
         this._$popover_element = popoverId ? $('#' + popoverId) : null;
         if (this._$popover_element){
@@ -141,18 +170,56 @@
             //Translate content
             this._$popover_element.localize();
 
-            //Close the popup when anything is clicked
-            if (options.closeOnClick){
-                this._$popover_element.on('click.bs.popover', function(){
-                    $this.popover('hide');
+            //On click: Check if the popover needs to close.
+            this._$popover_element.on('click.jbs.popover', function(event){
+                //Find first element with class 'popover-close-on-click' or 'no-popover-close-on-click'
+                var $elem = $(event.target);
+                while ($elem.length){
+                    if ($elem.hasClass(popoverCloseOnClick)){
+                        $this.popover('hide');
+                        break;
+                    }
+                    if ($elem.hasClass(no_popoverCloseOnClick))
+                        break;
+                    $elem = $elem.parent();
+                }
+            });
+
+            //If the popover was opened by hover => prevent it from closing when hover the popover itself
+            if (options.trigger == 'hover'){
+                var _clearTimeout = function(){
+                        //Stop the hide by timeout
+                        if (popover._timeout){
+                            window.clearTimeout(popover._timeout);
+                            popover._timeout = 0;
+                        }
+                    };
+
+                $this.on('mouseenter.jbs.popover', _clearTimeout );
+
+                this._$popover_element.on('mouseenter.jbs.popover', _clearTimeout );
+
+                this._$popover_element.on('mouseleave.jbs.popover', function(){
+                    //If not delay is given => close popover
+                    if (!popover.config.delay || !popover.config.delay.hide) {
+                        popover.hide();
+                        return;
+                    }
+
+                    //Else: Set timeout to close popover
+                    popover._timeout = window.setTimeout(
+                        function(){ popover.hide(); },
+                        popover.config.delay.hide
+                    );
                 });
             }
         }
     }
 
     function popover_onHide(){
+        $(this).off('mouseenter.jbs.popover');
         if (this._$popover_element)
-            this._$popover_element.off('click.bs.popover mousedown.bs.popover');
+            this._$popover_element.off('click.jbs.popover mousedown.jbs.popover mouseenter.jbs.popover mouseleave.jbs.popover');
     }
 
     function popover_onHidden(){
@@ -161,14 +228,32 @@
     }
 
 
-
-
     /**********************************************************
     bsButtonGroupPopover( options ) - create a Bootstrap-popover with buttons
     **********************************************************/
     $.fn.bsButtonGroupPopover = function( options, isSelectList ){
-        var $content = isSelectList ? $.bsSelectList( options ) : $.bsButtonGroup( options );
 
+        //Setting bsButton.options.class based on bsPopover.options.closeOnClick
+        if (!isSelectList){
+            $.each(options.buttons, function(index, buttonOptions){
+                var closeOnClickClass = '';
+                //If button has individuel clickOnClick => use it
+                if (buttonOptions.id){
+                    if ($.type(buttonOptions.closeOnClick) == 'boolean')
+                        closeOnClickClass = buttonOptions.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick;
+                }
+                else
+                    //Set no-close-on-click if not allready the global setting
+                    closeOnClickClass = options.closeOnClick ? no_popoverCloseOnClick : '';
+
+                buttonOptions.class = (buttonOptions.class || '') + ' ' + closeOnClickClass;
+
+            });
+
+            options.returnFromClick = true;
+        }
+
+        var $content = isSelectList ? $.bsSelectList( options ) : $.bsButtonGroup( options );
         if (isSelectList)
             this.data('popover_radiogroup', $content.data('selectlist_radiogroup') );
 
@@ -178,12 +263,16 @@
 
     /**********************************************************
     bsRadioButtonPopover( options ) - create a Bootstrap-popover with radio-buttons
+    Default is closeOnClick = true
     **********************************************************/
     $.fn.bsSelectListPopover = function( options ){
-        return this.bsButtonGroupPopover( $.extend({}, options, {
-                        postOnChange : $.proxy( selectListPopover_postOnChange, this ),
-                        postCreate   : $.proxy( selectListPopover_postCreate, this ),
-                    }), true );
+        return this.bsButtonGroupPopover( $.extend(
+                        { closeOnClick: true },
+                        options,
+                        {
+                            postOnChange : $.proxy( selectListPopover_postOnChange, this ),
+                            postCreate   : $.proxy( selectListPopover_postCreate, this ),
+                        }), true );
     };
 
     function selectListPopover_postCreate( content ){

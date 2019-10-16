@@ -450,6 +450,7 @@ return;
         for (var i=0; i<titles.length; i++ )
             $.bsButton({
                 small: !i,
+
                 text: titles[i]
             })
             .appendTo( $body )
@@ -458,14 +459,15 @@ return;
 //HER                    console.log('COMMON 6: bsButtonGroupPopover', id, selected)
                 },
                 vertical: true,
-                placement: "right",
+                placement: i ? "right" : 'top',
+                closeOnClick: false,
                 small: !i,
                 header: {icon:'fa-home', text:titles[i]},
                 close: i,
                 footer: {icon:'fa-home', text:titles[i]},
                 buttons: [
                     {             icon: 'fa-home',   text:'Åg Header'},
-                    {id:'slow',   icon: 'fa-bicycle',   text:'X'},
+                    {id:'slow',   icon: 'fa-bicycle',   text:'Close/Luk', closeOnClick: true},
                     {id:'medium', icon: 'fa-car', text:'Xx'},
                     {id:'fast',   icon: 'fa-fighter-jet',   text:'Xxx'}
                 ]
@@ -477,7 +479,6 @@ return;
             _icon: 'fa-comment-o'
         })
             .appendTo( $body )
-
             .bsButtonGroupPopover({
                 onClick: function(id, selected, $buttonGroup){
 //HER                    console.log('COMMON 6: bsButtonGroupPopover', id, selected)
@@ -507,12 +508,62 @@ return;
                 center: true,
                 placement: 'right',
                 syncHtml: true,
-                closeOnClick: true,
                 selectedId: 'fast',
                 buttons: [
                     {id: 'slow',   icon: 'fa-bicycle'   },
                     {id: 'medium', icon: 'fa-car' },
                     {id: 'fast',   icon: 'fa-fighter-jet' }
+                ]
+            })
+
+
+
+        $.bsButton({text:{ da:'hover mig', en:'hover me' }})
+            .appendTo( $body )
+            .bsSelectListPopover({
+                onChange: function(id, selected, $buttonGroup){
+//HER                    console.log('7.5: bsSelectListPopover', id, selected)
+                },
+                trigger: 'hover',
+                vertical: true,
+                small: true,
+                center: false,
+                placement: 'top',
+                delay: 1000,//{show:1000, hide:1000},
+                selectedId: 'fast',
+                header: {
+                    icon: 'fa-hover',
+                    text: 'Hej do'
+                },
+                buttons: [
+                    {              icon: 'fa-bicycle', text:'En OVERSKRIFT'   },
+                    {id: 'slow',   icon: 'fa-bicycle', text:'En cykel'   },
+                    {id: 'medium', icon: 'fa-car', text:'En bil' },
+                    {id: 'fast',   icon: 'fa-fighter-jet', text:'En flyver' }
+                ]
+            })
+
+        $.bsButton({text:{ da:'Højre-klik mig', en:'Right click me' }})
+            .appendTo( $body )
+            .bsSelectListPopover({
+                onChange: function(id, selected, $buttonGroup){
+//HER                    console.log('7.5: bsSelectListPopover', id, selected)
+                },
+                trigger: 'context',
+                vertical: true,
+                small: true,
+                center: false,
+                placement: 'top',
+                delay: 1000,//{show:1000, hide:1000},
+                selectedId: 'fast',
+                header: {
+                    icon: 'fa-hover',
+                    text: 'Hej do'
+                },
+                buttons: [
+                    {id: 'slow',   icon: 'fa-bicycle', text:'En cykel'   },
+                    {id: 'medium', icon: 'fa-car', text:'En bil' },
+                    {id: 'fast',   icon: 'fa-fighter-jet', text:'En flyver' }
                 ]
             })
 
@@ -538,7 +589,6 @@ return;
                 center: true,
                 vertical: true,
                 syncHtml: true,
-                closeOnClick: true,
 //Test of hover
 //trigger  :  'hover', // or 'focus' ORIGINAL='click'
 //delay    : { show: 1000, hide: 1000 },

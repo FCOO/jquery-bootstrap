@@ -470,7 +470,7 @@
         _bsButtonOnClick: function(){
             var options = this.data('bsButton_options');
             $.proxy( options.onClick, options.context )( options.id, null, this );
-            return false;
+            return options.returnFromClick || false;
         },
 
         /****************************************************************************************

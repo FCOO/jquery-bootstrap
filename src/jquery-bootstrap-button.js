@@ -32,19 +32,20 @@
         options = options || {};
         options =
             $._bsAdjustOptions( options, {
-                tagName       : 'a', //Using <a> instead of <button> to be able to control font-family
-                baseClass     : 'btn',
-                styleClass    : bsButtonClass,
-                class         : function( opt ){
-                                    var result = '';
-                                    $.each( optionToClassName, function( id, className ){
-                                        if (opt[id])
-                                            result = result + (result?' ':'') + className;
-                                    });
-                                    return result;
-                                } (options),
-                useTouchSize  : true,
-                addOnClick    : true
+                tagName         : 'a', //Using <a> instead of <button> to be able to control font-family
+                baseClass       : 'btn',
+                styleClass      : bsButtonClass,
+                class           : function( opt ){
+                                      var result = '';
+                                      $.each( optionToClassName, function( id, className ){
+                                          if (opt[id])
+                                              result = result + (result?' ':'') + className;
+                                      });
+                                     return result;
+                                  } (options),
+                useTouchSize    : true,
+                addOnClick      : true,
+                returnFromClick : false
             });
 
         var result = $('<'+ options.tagName + ' tabindex="0"/>');
@@ -134,7 +135,10 @@
                 center                : !options.vertical, //Default: center on horizontal and left on vertical
                 useTouchSize          : true,
                 attr                  : { role: 'group' },
-                buttonOptions         : { onClick: options.onClick }
+                buttonOptions         : {
+                    onClick        : options.onClick,
+                    returnFromClick: options.returnFromClick
+                }
             });
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
@@ -172,6 +176,7 @@
             else
                 $('<div/>')
                     .addClass('btn-group-header')
+                    .addClass( buttonOptions.class )
                     ._bsAddHtml( buttonOptions )
                     .appendTo( result );
         });
