@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function ($, i18next, window /*, document, undefined*/) {
+(function ($, i18next, window, document, undefined) {
 	"use strict";
 
     /*
@@ -115,8 +115,14 @@
 
         options = $.extend( true, {}, defaultOptions || {}, options, forceOptions || {} );
 
-        options.selected = options.selected || options.checked || options.active || options.open || options.isOpen;
-        options.list     = options.list     || options.buttons || options.items || options.children;
+        $.each(['selected', 'checked', 'active', 'open', 'isOpen'], function(index, id){
+            if (options[id] !== undefined){
+                options.selected = !!options[id];
+                return false;
+            }
+        });
+
+        options.list = options.list || options.buttons || options.items || options.children;
 
         options = adjustContentAndContextOptions( options, options.context );
 

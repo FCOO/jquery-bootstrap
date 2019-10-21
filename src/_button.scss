@@ -258,3 +258,44 @@ BUTTON-GROUP
 
 
 
+/************************************************************
+MENU (BUTTON-GROUP)
+************************************************************/
+.bs-menu-container {
+
+    hr {
+        width: 100%;
+        margin: 0;
+        height: 12px;
+        &:first-child {
+            display: none;
+        }
+    }
+
+    .btn {
+
+
+        //Adjust icons and text
+//HER        > i {
+//HER            width: 1.1em;
+//HER            text-align: left;
+//HER        }
+//HER        > .container-stacked-icons {
+//HER            text-align: left;
+//HER            .stacked-icon  {
+//HER                width: .55em;
+//HER            }
+//HER        }
+
+//HER        &:not(.test) + .btn.test {
+//HER            margin-top: 10em;
+//HER        }
+        &.test {
+            margin-bottom: 1em;
+            margin-top: 1em;
+        }
+
+    }
+
+
+}

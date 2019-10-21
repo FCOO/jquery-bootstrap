@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function (/*$, window/*, document, undefined*/) {
+(function ($/*, window, document, undefined*/) {
 	"use strict";
 
     var bsButtonClass = 'btn-standard';  //MUST correspond with $btn-style-name in src/_variables.scss
@@ -38,7 +38,7 @@
                 class           : function( opt ){
                                       var result = '';
                                       $.each( optionToClassName, function( id, className ){
-                                          if (opt[id])
+                                          if (opt[id] && (!$.isFunction(opt[id]) || opt[id]()))
                                               result = result + (result?' ':'') + className;
                                       });
                                      return result;
@@ -197,7 +197,7 @@
         //Set options for RadioGroup
         $.each( options.list, function(index, buttonOptions ){
             buttonOptions = $._bsAdjustOptions( buttonOptions );
-            if (buttonOptions.id && buttonOptions.selected) {
+            if (buttonOptions.id && buttonOptions.selected && (!$.isFunction(buttonOptions.selected) || buttonOptions.selected()) ) {
                 options.selectedId = buttonOptions.id;
                 return false;
             }

@@ -39,6 +39,7 @@
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
+    <script src="../src/jquery-bootstrap-menu.js"></script>
     <script src="../src/jquery-bootstrap-select.js"></script>
     <script src="../src/jquery-bootstrap-fontawesome.js"></script>
     <script src="../src/jquery-bootstrap-file-view.js"></script>
@@ -396,7 +397,7 @@ return;
             checked: true,
             text: {da:'Vælg mig', en:'Check me'},
             onChange: function(id, selected, $buttonGroup){
-//HER                        console.log('9: bsSelectListPopover', id, selected)
+                        console.log('bsCheckbox', id, selected)
                       },
         })
         .appendTo( $body );
@@ -416,9 +417,9 @@ return;
 //            text: [{da:'Uvalgt', en:'Unselected'}, {da:'Valgt', en:'Selected'}],
             text: {da:'Vælg mig', en:'Select me'},
             icon: ['far fa-square', 'far fa-check-square'],
-            selected: true,
+            selected: false,
             onChange: function(id, selected){
-//HER                console.log('3: bsCheckboxButton',id,selected);
+                console.log('3: bsCheckboxButton',id,selected);
             }
         }).appendTo($body);
 
@@ -1527,6 +1528,37 @@ type: 'checkbox',
         border   : true,
         fullWidth: true
     }).appendTo($body);
+
+
+    /*****************************
+    bsMenu
+    *****************************/
+    header('bsMenu');
+    $.bsMenu({
+        fullWidth: true,
+
+        onChange: function(id, selected, $radioGroup){
+            console.log('onChange', id, selected, $radioGroup);
+        },
+        list: [
+            {text:{da:'En overskrift', en:'A header'}},
+            {id: 'button1', icon: 'fa-home', text:{da:'En knap', en:'A button'}, onClick: function(){console.log('onClick button1', arguments)}},
+            {id: 'checkbox1', type:'checkbox', selected: true,  icon: ['far fa-square', 'far fa-check-square'], text:{da:'En checkbox#1', en:'A checkbox#1'}},
+            {id: 'checkbox2', type:'checkbox', selected: false, icon: ['far fa-square', 'far fa-check-square'], text:{da:'En checkbox#2', en:'A checkbox#2'}},
+            {radioGroupId: 'radio1', type:'radio', list: [
+                    {id:'slow',   icon: 'fa-bicycle',   text:'Cykel'},
+                    {id:'medium', icon: 'fa-car', text:'Bil', selected: true},
+                    {id:'fast',   icon: 'fa-fighter-jet',   text:'Jetjaver'}
+            ]}
+
+        ]
+
+    }).appendTo($body);
+
+
+
+
+
 </script>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
