@@ -19,9 +19,11 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Selectbox](#selectbox)
 - [SelectList](#selectlist)
 - [Radio and Checkbox](#radioandcheckbox)
+- [Menu](#menu)
 - [Popover](#popover)
 - [Button-group-popover](#buttongrouppopover)
 - [SelectList-popover](#selectlistpopover)
+- [Menu-popover](#menupopover)
 - [Table](#table)
 - [List](#list)
 - [Accordion](#accordion)
@@ -231,7 +233,7 @@ As for Selectbox without `placeholder`
 <a name="radioandcheckbox"></a>
 ## Radio and Checkbox
 
-	var myChackbox = $.bsCheckbox( options );
+	var myCheckbox = $.bsCheckbox( options );
 
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
@@ -239,6 +241,18 @@ As for Selectbox without `placeholder`
 | `content` | `content` or `[] of content` | `null` | See above |
 | `onChange` | `function(id, selected, $buttonGroup)` | `null` | Called when (de-)checked |
 | `type` | `string` | `"checkbox"` | If `type:"radio"` the checkbox is displayed as a radio |
+
+
+<a name="menu"></a>
+## Menu
+	var myMenu = $.bsMenu( options );
+
+Create a combination of header, [Button-group](#buttongroup), [Radio-button-group](radiobuttongroup), [Checkbox](radioandcheckbox) and given `content`
+
+Description NOT complete. See `src/jquery-bootstrap-menu.js` for more
+
+
+
 
 <a name="popover"></a>
 ## Popover
@@ -257,7 +271,6 @@ As for Selectbox without `placeholder`
 | `content` | | | The content of the popover. `function, DOM-element, jQuery-object` |
 | `footer` | `content` or `[] of content` | `""` | See above |
 
-
 <a name="buttongrouppopover"></a>
 ## Button-group-popover
 
@@ -275,6 +288,15 @@ Same as for [Popover](#popover) plus `center` and `list`/`buttons` as in [Button
 Same as for [Popover](#popover) plus [SelectList](#selectlist) plus
 
  `syncHtml`: [Boolean] - update html of owner-element with html of selected item
+
+
+<a name="menupopover"></a>
+## Menu-popover
+
+	var myMenuPopover = $(selector).bsMenuPopover( options );
+
+### options
+Same as for [Popover](#popover) plus `list` as in [Menu](#menu)
 
 
 <a name="table"></a>

@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function ($/*, window, document, undefined*/) {
+(function ($, window, document, undefined) {
 	"use strict";
 
     /**********************************************************
@@ -228,6 +228,30 @@
     }
 
 
+    //adjustItemOptionsForPopover - Adjust class-name for buttons/items in a popover
+    function adjustItemOptionsForPopover(options, listId){
+        $.each(options[listId], function(index, itemOptions){
+            var closeOnClickClass = '';
+            //If button has individuel clickOnClick => use it
+            if (itemOptions.id){
+                if ($.type(itemOptions.closeOnClick) == 'boolean')
+                    closeOnClickClass = itemOptions.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick;
+            }
+            else
+                //Set no-close-on-click if not allready the global setting
+                closeOnClickClass = no_popoverCloseOnClick;
+
+            itemOptions.class = (itemOptions.class || '') + ' ' + closeOnClickClass;
+
+            //Use options.closeOnClick if no is given
+            if (itemOptions.closeOnClick == undefined)
+                itemOptions.closeOnClick = options.closeOnClick;
+            //Adjust child-list (if any)
+            adjustItemOptionsForPopover(itemOptions, listId);
+        });
+    }
+
+
     /**********************************************************
     bsButtonGroupPopover( options ) - create a Bootstrap-popover with buttons
     **********************************************************/
@@ -235,21 +259,7 @@
 
         //Setting bsButton.options.class based on bsPopover.options.closeOnClick
         if (!isSelectList){
-            $.each(options.buttons, function(index, buttonOptions){
-                var closeOnClickClass = '';
-                //If button has individuel clickOnClick => use it
-                if (buttonOptions.id){
-                    if ($.type(buttonOptions.closeOnClick) == 'boolean')
-                        closeOnClickClass = buttonOptions.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick;
-                }
-                else
-                    //Set no-close-on-click if not allready the global setting
-                    closeOnClickClass = options.closeOnClick ? no_popoverCloseOnClick : '';
-
-                buttonOptions.class = (buttonOptions.class || '') + ' ' + closeOnClickClass;
-
-            });
-
+            adjustItemOptionsForPopover(options, 'buttons');
             options.returnFromClick = true;
         }
 
@@ -257,7 +267,7 @@
         if (isSelectList)
             this.data('popover_radiogroup', $content.data('selectlist_radiogroup') );
 
-        return this.bsPopover(  $.extend( options, { content:  $content }) );
+        return this.bsPopover( $.extend( options, { content:  $content }) );
     };
 
 
@@ -286,5 +296,16 @@
             //Update owner html to be equal to $item
             this.html( $item.html() );
     }
+
+    /**********************************************************
+    bsMenuPopover( options ) - create a Bootstrap-popover with a bsMenu
+    **********************************************************/
+    $.fn.bsMenuPopover = function( options ){
+        adjustItemOptionsForPopover(options, 'list');
+        return this.bsPopover( $.extend(options, {content: $.bsMenu(options)}) );
+    };
+
+
+
 
 }(jQuery, this, document));

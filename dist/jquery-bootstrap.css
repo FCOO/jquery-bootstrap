@@ -8025,6 +8025,17 @@ BUTTON-GROUP
     margin-top: 0.25rem; }
 
 /************************************************************
+MENU (BUTTON-GROUP)
+************************************************************/
+.bs-menu-container hr {
+  width: 100%;
+  margin: 0.3125rem 0;
+  padding: 0; }
+
+.bs-menu-container hr.first.before, .bs-menu-container hr.last.after, .bs-menu-container hr + hr {
+  display: none; }
+
+/************************************************************
 POPOVER
 
 ************************************************************/

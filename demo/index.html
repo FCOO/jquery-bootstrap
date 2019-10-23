@@ -1534,28 +1534,47 @@ type: 'checkbox',
     bsMenu
     *****************************/
     header('bsMenu');
-    $.bsMenu({
-        fullWidth: true,
-
-        onChange: function(id, selected, $radioGroup){
-            console.log('onChange', id, selected, $radioGroup);
-        },
-        list: [
+    var list = [
+            {type:'content', content: $('<div class="w-100">Davs</div>'), closeOnClick: false },
             {text:{da:'En overskrift', en:'A header'}},
             {id: 'button1', icon: 'fa-home', text:{da:'En knap', en:'A button'}, onClick: function(){console.log('onClick button1', arguments)}},
             {id: 'checkbox1', type:'checkbox', selected: true,  icon: ['far fa-square', 'far fa-check-square'], text:{da:'En checkbox#1', en:'A checkbox#1'}},
             {id: 'checkbox2', type:'checkbox', selected: false, icon: ['far fa-square', 'far fa-check-square'], text:{da:'En checkbox#2', en:'A checkbox#2'}},
-            {radioGroupId: 'radio1', type:'radio', list: [
-                    {id:'slow',   icon: 'fa-bicycle',   text:'Cykel'},
+            {radioGroupId: 'radio1', type:'radio', lineBefore: true, lineAfter: true, _hidden: true, list: [
+                    {id:'slow',   icon: 'fa-bicycle',   text:'Cykel', closeOnClick: false},
                     {id:'medium', icon: 'fa-car', text:'Bil', selected: true},
                     {id:'fast',   icon: 'fa-fighter-jet',   text:'Jetjaver'}
             ]}
+        ];
 
-        ]
-
+    $.bsMenu({
+        fullWidth: true,
+_small: true,
+        onChange: function(id, selected, $radioGroup){
+            console.log('onChange', id, selected, $radioGroup);
+        },
+        list: list
     }).appendTo($body);
 
 
+
+    header('bsMenupopover');
+    $.bsButton({text:'Klik mig (klik på cykel lukker ikke!)'})
+        .appendTo($body)
+        .bsMenuPopover({
+            closeOnClick: true,
+            placement: 'top',
+            list: list
+         });
+
+    $.bsButton({text:'Klik mig (klik på cykel lukker ikke!)', small:true})
+        .appendTo($body)
+        .bsMenuPopover({
+            closeOnClick: true,
+            small: true,
+            placement: 'top',
+            list: list
+         });
 
 
 
