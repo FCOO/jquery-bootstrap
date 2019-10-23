@@ -171,7 +171,15 @@ Return options to create a marker-icon = icon with inner color given as color in
 
 #### Checkbox-button
 
-    var myCheckboxButton = $.bsCheckboxButton( options ); //See src/jquery-bootstrap-button.js for description
+    var myCheckboxButton = $.bsCheckboxButton( options ); 
+
+See `src/jquery-bootstrap-button.js` for description
+
+#### Standard checkbox-button
+
+    var myStandardCheckboxButton = $.bsStandardCheckboxButton( options );
+
+See `src/jquery-bootstrap-button.js` for description
 
 <a name="buttongroup"></a>
 ## Button-group

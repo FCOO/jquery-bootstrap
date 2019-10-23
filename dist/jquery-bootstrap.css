@@ -7713,13 +7713,35 @@ Bootstrap allready have the following classes
     .container-stacked-icons .stacked-icon:not(:first-child) {
       margin-left: -1em; }
 
+.text-checked, .text-active {
+  color: #007bff; }
+
 /************************************************************
-Modernizr-test for stacted icon with parent with class="active" when selected
+Modernizr-test for stacted icon with parent with
+class="active" or "checked" when selected
 ************************************************************/
 .active .container-stacked-icons i.icon-hide-for-active {
+  opacity: 0; }
+
+.active .container-stacked-icons i.icon-show-for-active {
+  opacity: inherit; }
+
+.no-active .container-stacked-icons i.icon-hide-for-active {
   opacity: inherit; }
 
 .no-active .container-stacked-icons i.icon-show-for-active {
+  opacity: 0; }
+
+.checked .container-stacked-icons i.icon-hide-for-checked {
+  opacity: 0; }
+
+.checked .container-stacked-icons i.icon-show-for-checked {
+  opacity: inherit; }
+
+.no-checked .container-stacked-icons i.icon-hide-for-checked {
+  opacity: inherit; }
+
+.no-checked .container-stacked-icons i.icon-show-for-checked {
   opacity: 0; }
 
 /************************************************************

@@ -59,14 +59,22 @@ Bootstrap allready have the following classes
     }
 }
 
-
-/************************************************************
-Modernizr-test for stacted icon with parent with class="active" when selected
-************************************************************/
-.active .container-stacked-icons i.icon-hide-for-active {
-    opacity: inherit;
+//color-classes for activr/checked icons
+.text-checked, .text-active {
+    color: $control-active-bg-color;
 }
 
-.no-active .container-stacked-icons i.icon-show-for-active {
-    opacity: 0;
+/************************************************************
+Modernizr-test for stacted icon with parent with
+class="active" or "checked" when selected
+************************************************************/
+@each $class-name in active, checked {
+    .#{$class-name} .container-stacked-icons {
+        i.icon-hide-for-#{$class-name} { opacity: 0;       }
+        i.icon-show-for-#{$class-name} { opacity: inherit; }
+    }
+    .no-#{$class-name} .container-stacked-icons {
+        i.icon-hide-for-#{$class-name} { opacity: inherit; }
+        i.icon-show-for-#{$class-name} { opacity: 0;       }
+    }
 }

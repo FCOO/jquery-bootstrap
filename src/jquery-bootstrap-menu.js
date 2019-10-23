@@ -131,7 +131,7 @@
                     break;
 
                 case 'checkbox':
-                    $item = $.bsCheckboxButton(itemOptions);
+                    $item = $.bsStandardCheckboxButton(itemOptions);
                     break;
 
                 case 'radio':

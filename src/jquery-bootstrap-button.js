@@ -92,6 +92,7 @@
 
     /**********************************************************
     bsCheckboxButton( options ) - create a Bootstrap-button as a checkbox
+    with 'blue' background when selected (active) and individuel icons
     options:
         icon: string or array[0-1] of string
         text: string or array[0-1] of string
@@ -118,6 +119,25 @@
             options.modernizr = true;
         }
         return $.bsButton( options ).checkbox( $.extend(options, {className: 'active'}) );
+    };
+
+
+    /**********************************************************
+    bsStandardCheckboxButton( options ) - create a standard
+    Bootstrap-button as a checkbox with check-icon in blue box
+    **********************************************************/
+    $.bsStandardCheckboxButton = function( options ){
+        //Clone options to avoid reflux
+        options = $.extend({}, options, {
+            class    : 'allow-zero-selected',
+            modernizr: true,
+            icon: [[
+                'fas fa-square text-checked      icon-show-for-checked', //"Blue" background
+                'far fa-check-square text-white  icon-show-for-checked', //Check marker
+                'far fa-square'                                          //Border
+            ]]
+        });
+        return $.bsButton( options ).checkbox( $.extend(options, {className: 'checked'}) );
     };
 
     /**********************************************************
