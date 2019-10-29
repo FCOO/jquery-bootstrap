@@ -1593,7 +1593,6 @@ options
     }
 
     $.bsMenu = function( options ){
-
         //Adjust options.list
         options = $.extend({}, options || {});
         var list = options.list = options.list || [];
@@ -1687,7 +1686,6 @@ options
 
             options.list[index].$item = $item;
         });
-
         $result.data('bsMenu_options', options);
         var update = $.proxy(updateBsMenu, $result);
         $result.on('click', update);
@@ -3279,23 +3277,31 @@ options
 
 ****************************************************************************/
 
-(function ($, window, document, undefined) {
+(function ($, window/*, document, undefined*/) {
 	"use strict";
 
     /**********************************************************
     To sequre that all popovers are closed when the user click or
     tap outside the popover the following event are added
     **********************************************************/
-    var popoverClassName = 'has-popover',
-        popoverCloseOnClick = 'popover-close-on-click',
-        no_popoverCloseOnClick = 'no-' + popoverCloseOnClick;
+    var popoverClassName        = 'has-popover',
+        popoverCloseOnClick     = 'popover-close-on-click',
+        no_popoverCloseOnClick  = 'no-' + popoverCloseOnClick;
 
-    $('body').on("touchstart mousedown", function( event ){
+
+    $.bsPopover_closeAll = function( checkFunc ){
         $('.'+popoverClassName).each(function () {
             var $this = $(this);
-            // hide any open popover when the anywhere else in the body is clicked
-            if (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0)
+            if (!checkFunc || checkFunc($this))
                 $this.popover('hide');
+        });
+    };
+
+
+    $('body').on("touchstart mousedown", function( event ){
+        $.bsPopover_closeAll( function( $this ){
+            // hide any open popover when the click is not inside the body of a popover
+            return (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0);
         });
     });
 
@@ -3421,10 +3427,8 @@ options
             thisPopoverId = $this.attr('aria-describedby');
 
         if ($this.data('popover_options').trigger == 'hover')
-            $('.'+popoverClassName).each(function () {
-                var $this2 = $(this);
-                if ($this2.attr('aria-describedby') != thisPopoverId)
-                    $this2.popover('hide');
+            $.bsPopover_closeAll( function( $this2 ){
+                return $this2.attr('aria-describedby') != thisPopoverId;
             });
     }
 
@@ -3503,22 +3507,18 @@ options
     function adjustItemOptionsForPopover(options, listId){
         $.each(options[listId], function(index, itemOptions){
             var closeOnClickClass = '';
-            //If button has individuel clickOnClick => use it
-            if (itemOptions.id){
-                if ($.type(itemOptions.closeOnClick) == 'boolean')
-                    closeOnClickClass = itemOptions.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick;
-            }
+            //If item has individuel clickOnClick => use it
+            if ($.type(itemOptions.closeOnClick) == 'boolean')
+                closeOnClickClass = itemOptions.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick;
             else
-                //Set no-close-on-click if not allready the global setting
-                closeOnClickClass = no_popoverCloseOnClick;
+                if (!itemOptions.id)
+                    closeOnClickClass = no_popoverCloseOnClick;
 
-            itemOptions.class = (itemOptions.class || '') + ' ' + closeOnClickClass;
+            itemOptions.class = itemOptions.class || '';
+            itemOptions.class = (itemOptions.class ? itemOptions.class + ' ' : '') + closeOnClickClass;
 
-            //Use options.closeOnClick if no is given
-            if (itemOptions.closeOnClick == undefined)
-                itemOptions.closeOnClick = options.closeOnClick;
             //Adjust child-list (if any)
-            adjustItemOptionsForPopover(itemOptions, listId);
+            itemOptions = adjustItemOptionsForPopover(itemOptions, listId);
         });
     }
 

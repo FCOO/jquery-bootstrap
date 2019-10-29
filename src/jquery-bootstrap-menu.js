@@ -69,7 +69,6 @@
     }
 
     $.bsMenu = function( options ){
-
         //Adjust options.list
         options = $.extend({}, options || {});
         var list = options.list = options.list || [];
@@ -163,7 +162,6 @@
 
             options.list[index].$item = $item;
         });
-
         $result.data('bsMenu_options', options);
         var update = $.proxy(updateBsMenu, $result);
         $result.on('click', update);

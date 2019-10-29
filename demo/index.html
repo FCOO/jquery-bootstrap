@@ -1556,6 +1556,19 @@ type: 'checkbox',
             ]}
         ];
 
+    var list2 = [
+            {text:{da:'En overskrift', en:'A header'}},
+            {id: 'button1', icon: 'fa-home', text:{da:'En knap', en:'A button'}, onClick: function(){console.log('onClick button1', arguments)}},
+            {id: 'checkbox1', type:'checkbox', selected: true,  icon: ['far fa-square', 'far fa-check-square'], text:{da:'En checkbox#1', en:'A checkbox#1'}},
+            {id: 'checkbox2', type:'checkbox', selected: false, icon: ['far fa-square', 'far fa-check-square'], text:{da:'En checkbox#2', en:'A checkbox#2'}},
+            {type:'content', content: $('<div class="w-100">Davs</div>'), closeOnClick: false },
+            {radioGroupId: 'radio1', type:'radio', lineBefore: true, lineAfter: true, _hidden: true, closeOnClick: false, list: [
+                    {id:'slow2',   icon: 'fa-bicycle',   text:'Cykel', closeOnClick: true},
+                    {id:'medium2', icon: 'fa-car', text:'Bil', selected: true},
+                    {id:'fast2',   icon: 'fa-fighter-jet',   text:'Jetjaver'}
+            ]}
+        ];
+
     $.bsMenu({
         fullWidth: true,
 _small: true,
@@ -1565,9 +1578,8 @@ _small: true,
         list: list
     }).appendTo($body);
 
-
-
     header('bsMenupopover');
+
     $.bsButton({text:'Klik mig (klik på cykel lukker ikke!)'})
         .appendTo($body)
         .bsMenuPopover({
@@ -1576,16 +1588,15 @@ _small: true,
             list: list
          });
 
-    $.bsButton({text:'Klik mig (klik på cykel lukker ikke!)', small:true})
+
+    $.bsButton({text:'Klik mig (klik på cykel lukker!)', small:true})
         .appendTo($body)
         .bsMenuPopover({
             closeOnClick: true,
-            small: true,
+            //small: true,
             placement: 'top',
-            list: list
+            list: list2
          });
-
-
 
 </script>
 
