@@ -1596,7 +1596,6 @@ options
         //Adjust options.list
         options = $.extend({}, options || {});
         var list = options.list = options.list || [];
-//console.log(3, options.list[5]);
         $.each(list, function(index, itemOptions){
 
             //Set type from other values
@@ -1641,7 +1640,7 @@ options
             setDefault('disabled');
             setDefault('hidden');
         });
-//console.log(4, options.list[5]);
+
         //Create bsButtonGroup, but without any buttons (for now)
         var $result = $.bsButtonGroup( $.extend({}, options, {class:'bs-menu-container', center: false, vertical: true, list: [] }) );
 
@@ -3575,9 +3574,7 @@ var result = $.extend({}, options);
     bsMenuPopover( options ) - create a Bootstrap-popover with a bsMenu
     **********************************************************/
     $.fn.bsMenuPopover = function( options ){
-//console.log(test,1, options.list[5].class, options.list[5].id);
         options = adjustItemOptionsForPopover(options, 'list');
-//console.log(2, options.list[5].class, options.list[5].id);
         return this.bsPopover( $.extend(options, {content: $.bsMenu(options)}) );
     };
 

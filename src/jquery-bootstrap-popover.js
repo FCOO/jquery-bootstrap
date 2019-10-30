@@ -306,9 +306,7 @@ var result = $.extend({}, options);
     bsMenuPopover( options ) - create a Bootstrap-popover with a bsMenu
     **********************************************************/
     $.fn.bsMenuPopover = function( options ){
-//console.log(test,1, options.list[5].class, options.list[5].id);
         options = adjustItemOptionsForPopover(options, 'list');
-//console.log(2, options.list[5].class, options.list[5].id);
         return this.bsPopover( $.extend(options, {content: $.bsMenu(options)}) );
     };
 
