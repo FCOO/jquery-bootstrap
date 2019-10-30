@@ -236,21 +236,24 @@
 
     //adjustItemOptionsForPopover - Adjust class-name for buttons/items in a popover
     function adjustItemOptionsForPopover(options, listId){
+var result = $.extend({}, options);
         $.each(options[listId], function(index, itemOptions){
             var closeOnClickClass = '';
             //If item has individuel clickOnClick => use it
             if ($.type(itemOptions.closeOnClick) == 'boolean')
                 closeOnClickClass = itemOptions.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick;
             else
-                if (!itemOptions.id)
+                if (!itemOptions.id && !itemOptions.list)
                     closeOnClickClass = no_popoverCloseOnClick;
 
             itemOptions.class = itemOptions.class || '';
             itemOptions.class = (itemOptions.class ? itemOptions.class + ' ' : '') + closeOnClickClass;
 
             //Adjust child-list (if any)
-            itemOptions = adjustItemOptionsForPopover(itemOptions, listId);
+//HER            itemOptions = adjustItemOptionsForPopover(itemOptions, listId);
+            result[listId][index] = adjustItemOptionsForPopover(itemOptions, listId);
         });
+        return result;
     }
 
 
@@ -261,7 +264,7 @@
 
         //Setting bsButton.options.class based on bsPopover.options.closeOnClick
         if (!isSelectList){
-            adjustItemOptionsForPopover(options, 'buttons');
+            options = adjustItemOptionsForPopover(options, 'buttons');
             options.returnFromClick = true;
         }
 
@@ -303,7 +306,9 @@
     bsMenuPopover( options ) - create a Bootstrap-popover with a bsMenu
     **********************************************************/
     $.fn.bsMenuPopover = function( options ){
-        adjustItemOptionsForPopover(options, 'list');
+//console.log(test,1, options.list[5].class, options.list[5].id);
+        options = adjustItemOptionsForPopover(options, 'list');
+//console.log(2, options.list[5].class, options.list[5].id);
         return this.bsPopover( $.extend(options, {content: $.bsMenu(options)}) );
     };
 

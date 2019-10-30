@@ -72,7 +72,7 @@
         //Adjust options.list
         options = $.extend({}, options || {});
         var list = options.list = options.list || [];
-
+//console.log(3, options.list[5]);
         $.each(list, function(index, itemOptions){
 
             //Set type from other values
@@ -117,7 +117,7 @@
             setDefault('disabled');
             setDefault('hidden');
         });
-
+//console.log(4, options.list[5]);
         //Create bsButtonGroup, but without any buttons (for now)
         var $result = $.bsButtonGroup( $.extend({}, options, {class:'bs-menu-container', center: false, vertical: true, list: [] }) );
 
