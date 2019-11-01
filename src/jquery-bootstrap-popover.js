@@ -29,7 +29,7 @@
     };
 
 
-    $('body').on("touchstart mousedown", function( event ){
+    $('body').on("touchstart.jbs.popover mousedown.jbs.popover", function( event ){
         $.bsPopover_closeAll( function( $this ){
             // hide any open popover when the click is not inside the body of a popover
             return (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0);
@@ -236,7 +236,7 @@
 
     //adjustItemOptionsForPopover - Adjust class-name for buttons/items in a popover
     function adjustItemOptionsForPopover(options, listId){
-var result = $.extend({}, options);
+        var result = $.extend({}, options);
         $.each(options[listId], function(index, itemOptions){
             var closeOnClickClass = '';
             //If item has individuel clickOnClick => use it
@@ -250,7 +250,6 @@ var result = $.extend({}, options);
             itemOptions.class = (itemOptions.class ? itemOptions.class + ' ' : '') + closeOnClickClass;
 
             //Adjust child-list (if any)
-//HER            itemOptions = adjustItemOptionsForPopover(itemOptions, listId);
             result[listId][index] = adjustItemOptionsForPopover(itemOptions, listId);
         });
         return result;
