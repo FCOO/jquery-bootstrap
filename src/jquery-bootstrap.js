@@ -574,6 +574,10 @@
                     }
                 }
 
+                //Overwrite insideFormGroup if value given in options
+                if ( $.type( options.insideFormGroup ) == "boolean")
+                    insideFormGroup = options.insideFormGroup;
+
                 //Set the parent-element where to append to created element(s)
                 var $parent = this,
                     insideInputGroup = false;
