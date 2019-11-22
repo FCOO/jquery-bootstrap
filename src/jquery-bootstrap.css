@@ -8689,8 +8689,12 @@ body.modal-open .modal {
     display: none !important; }
   .modal-dialog .modal-content.no-modal-minimized .hide-for-no-modal-minimized {
     display: none !important; }
+  .modal-dialog .modal-content.modal-minimized > .show-for-modal-minimized {
+    display: block !important; }
   .modal-dialog .modal-content.modal-minimized > .hide-for-modal-minimized {
     display: none !important; }
+  .modal-dialog .modal-content.no-modal-minimized > .hide-for-modal-minimized {
+    display: block !important; }
   .modal-dialog .modal-content.no-modal-minimized > .show-for-modal-minimized {
     display: none !important; }
   .modal-dialog .modal-content.modal-normal .hide-for-modal-normal {
@@ -8701,8 +8705,12 @@ body.modal-open .modal {
     display: none !important; }
   .modal-dialog .modal-content.no-modal-normal .hide-for-no-modal-normal {
     display: none !important; }
+  .modal-dialog .modal-content.modal-normal > .show-for-modal-normal {
+    display: block !important; }
   .modal-dialog .modal-content.modal-normal > .hide-for-modal-normal {
     display: none !important; }
+  .modal-dialog .modal-content.no-modal-normal > .hide-for-modal-normal {
+    display: block !important; }
   .modal-dialog .modal-content.no-modal-normal > .show-for-modal-normal {
     display: none !important; }
   .modal-dialog .modal-content.modal-extended .hide-for-modal-extended {
@@ -8713,8 +8721,12 @@ body.modal-open .modal {
     display: none !important; }
   .modal-dialog .modal-content.no-modal-extended .hide-for-no-modal-extended {
     display: none !important; }
+  .modal-dialog .modal-content.modal-extended > .show-for-modal-extended {
+    display: block !important; }
   .modal-dialog .modal-content.modal-extended > .hide-for-modal-extended {
     display: none !important; }
+  .modal-dialog .modal-content.no-modal-extended > .hide-for-modal-extended {
+    display: block !important; }
   .modal-dialog .modal-content.no-modal-extended > .show-for-modal-extended {
     display: none !important; }
   .modal-dialog .modal-content.modal-pinned .hide-for-modal-pinned {
