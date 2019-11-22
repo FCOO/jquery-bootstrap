@@ -29,12 +29,21 @@
     };
 
 
-    $('body').on("touchstart.jbs.popover mousedown.jbs.popover", function( event ){
-        $.bsPopover_closeAll( function( $this ){
-            // hide any open popover when the click is not inside the body of a popover
-            return (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0);
+    $('body')
+        .on("touchstart.jbs.popover mousedown.jbs.popover", function( event ){
+            $.bsPopover_closeAll( function( $this ){
+                // hide any open popover when the click is not inside the body of a popover
+                return (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0);
+            });
+        })
+        //Close all popover on esc
+		.on('keydown', function( event ){
+            if (event.altKey || event.ctrlKey || event.metaKey)
+                return;
+            if (event.keyCode === 27)
+                $.bsPopover_closeAll();
         });
-    });
+
 
     /***********************************************************
 	Extend the $.fn.popover.Constructor.prototype.setContent to
