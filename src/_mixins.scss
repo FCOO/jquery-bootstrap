@@ -419,7 +419,7 @@ footer-variant
     border-top-right-radius: 0 !important;
 
     //Hide when empty
-    &:empty { display: none; }
+    &:empty { display: none !important; }
 
 }
 

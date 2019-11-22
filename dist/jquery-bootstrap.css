@@ -8117,7 +8117,7 @@ POPOVER
     overflow: visible;
     word-break: keep-all; }
   .popover .popover-footer:empty {
-    display: none; }
+    display: none !important; }
 
 .popover.popover-sm .popover-header-content {
   font-weight: 400;
@@ -8162,7 +8162,7 @@ POPOVER
     overflow: visible;
     word-break: keep-all; }
   .popover.popover-sm .popover-footer:empty {
-    display: none; }
+    display: none !important; }
 
 /************************************************************
 HEADER
@@ -8845,7 +8845,7 @@ body.modal-open .modal {
       overflow: visible;
       word-break: keep-all; }
     .modal-dialog .modal-content .modal-footer-header:empty {
-      display: none; }
+      display: none !important; }
     .modal-dialog .modal-content .modal-footer-header:not(:empty) + .modal-footer {
       border-top: none; }
   .modal-dialog .modal-content .modal-footer {
@@ -8918,7 +8918,7 @@ body.modal-open .modal {
       overflow: visible;
       word-break: keep-all; }
     .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header:empty {
-      display: none; }
+      display: none !important; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-header {
     font-weight: 400;
     display: flex;
@@ -8965,7 +8965,7 @@ body.modal-open .modal {
       overflow: visible;
       word-break: keep-all; }
     .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header:empty {
-      display: none; }
+      display: none !important; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-footer {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem; }
@@ -9679,7 +9679,7 @@ Using Bootstrap Collapse to create accordion
       overflow: visible;
       word-break: keep-all; }
     .accordion .card-footer:empty {
-      display: none; }
+      display: none !important; }
   .accordion.no-transition .collapsing,
   .accordion.no-transition .collapse {
     transition: none !important; }
@@ -9759,7 +9759,7 @@ Using Bootstrap Collapse to create accordion
   .modal-dialog-sm .accordion .card-footer:empty,
   .modal-dialog-xs .accordion .card-footer:empty,
   .accordion-sm .card-footer:empty {
-    display: none; }
+    display: none !important; }
 
 /************************************************************
 NOTY
@@ -9945,7 +9945,7 @@ for noty is copyed and modified
       overflow: visible;
       word-break: keep-all; }
     .noty_bar .noty-footer:empty {
-      display: none; }
+      display: none !important; }
   .noty_bar .noty-buttons {
     padding: 0.3125rem 0.3125rem;
     font-size: 1rem;
@@ -10243,7 +10243,7 @@ Adjustment to Bootstrap tabs
       overflow: visible;
       word-break: keep-all; }
     .tab-content .tab-pane.active .tab-footer:empty {
-      display: none; }
+      display: none !important; }
     .tab-content .tab-pane.active .tab-footer:empty {
       display: none; }
 
