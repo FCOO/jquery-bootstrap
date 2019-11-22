@@ -8681,29 +8681,29 @@ body.modal-open .modal {
     margin-right: auto; }
   .modal-dialog.modal-flex-width .modal-content .modal-body > .jquery-scroll-container {
     width: auto; }
-  .modal-dialog .modal-content.modal-minimized .hide-for-modal-minimized {
+  .modal-dialog .modal-content.modal-minimized > .hide-for-modal-minimized {
     display: none !important; }
-  .modal-dialog .modal-content.modal-minimized .show-for-no-modal-minimized {
+  .modal-dialog .modal-content.modal-minimized > .show-for-no-modal-minimized {
     display: none !important; }
-  .modal-dialog .modal-content.no-modal-minimized .show-for-modal-minimized {
+  .modal-dialog .modal-content.no-modal-minimized > .show-for-modal-minimized {
     display: none !important; }
-  .modal-dialog .modal-content.no-modal-minimized .hide-for-no-modal-minimized {
+  .modal-dialog .modal-content.no-modal-minimized > .hide-for-no-modal-minimized {
     display: none !important; }
-  .modal-dialog .modal-content.modal-normal .hide-for-modal-normal {
+  .modal-dialog .modal-content.modal-normal > .hide-for-modal-normal {
     display: none !important; }
-  .modal-dialog .modal-content.modal-normal .show-for-no-modal-normal {
+  .modal-dialog .modal-content.modal-normal > .show-for-no-modal-normal {
     display: none !important; }
-  .modal-dialog .modal-content.no-modal-normal .show-for-modal-normal {
+  .modal-dialog .modal-content.no-modal-normal > .show-for-modal-normal {
     display: none !important; }
-  .modal-dialog .modal-content.no-modal-normal .hide-for-no-modal-normal {
+  .modal-dialog .modal-content.no-modal-normal > .hide-for-no-modal-normal {
     display: none !important; }
-  .modal-dialog .modal-content.modal-extended .hide-for-modal-extended {
+  .modal-dialog .modal-content.modal-extended > .hide-for-modal-extended {
     display: none !important; }
-  .modal-dialog .modal-content.modal-extended .show-for-no-modal-extended {
+  .modal-dialog .modal-content.modal-extended > .show-for-no-modal-extended {
     display: none !important; }
-  .modal-dialog .modal-content.no-modal-extended .show-for-modal-extended {
+  .modal-dialog .modal-content.no-modal-extended > .show-for-modal-extended {
     display: none !important; }
-  .modal-dialog .modal-content.no-modal-extended .hide-for-no-modal-extended {
+  .modal-dialog .modal-content.no-modal-extended > .hide-for-no-modal-extended {
     display: none !important; }
   .modal-dialog .modal-content.modal-pinned .hide-for-modal-pinned {
     display: none !important; }

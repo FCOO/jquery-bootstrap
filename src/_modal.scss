@@ -24,6 +24,7 @@ body.modal-open .modal {
     &.show .modal-dialog { opacity: 1; }
 }
 
+
 /****************************************************
 .MODEL-DIALOG
 ****************************************************/
@@ -85,10 +86,11 @@ body.modal-open .modal {
         //         and show-for-modal-pinned and hide-for-modal-pined
         @each $size in minimized, normal, extended {
             @include show-and-hide-for-modernizr-test(
-                $modernizr-test     : unquote("modal-#{$size}"),
-                $parent-element-type: '&',
-                $incl-no-selector   : true,
-                $incl-table-display : false
+                $modernizr-test      : unquote("modal-#{$size}"),
+                $parent-element-type : '&',
+                $incl-no-selector    : true,
+                $incl-table-display  : false,
+                $only-direct-children: true
             );
         }
 
