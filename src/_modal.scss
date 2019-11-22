@@ -98,7 +98,7 @@ body.modal-open .modal {
                 $incl-no-selector    : false,
                 $incl-table-display  : false,
                 $only-direct-children: true,
-                $display-value       : 'block !important'
+                $display-value       : 'inherit !important'
             );
         }
 
