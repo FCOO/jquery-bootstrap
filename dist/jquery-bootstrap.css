@@ -8741,7 +8741,7 @@ body.modal-open .modal {
     margin: 0;
     padding-left: 2em; }
   .modal-dialog .modal-content .modal-body.modal-body-no-content {
-    display: none; }
+    display: none !important; }
   .modal-dialog .modal-content .modal-body.modal-body-always-max-height {
     display: flex;
     flex-direction: column;
@@ -8795,7 +8795,7 @@ body.modal-open .modal {
     padding: 0.3125rem 0.3125rem;
     font-size: 1rem; }
     .modal-dialog .modal-content .modal-body-fixed:empty {
-      display: none; }
+      display: none !important; }
   .modal-dialog .modal-content .modal-body {
     flex-shrink: 1;
     flex-grow: 1;
@@ -8853,7 +8853,7 @@ body.modal-open .modal {
     flex-grow: 0;
     padding: 0.3125rem; }
     .modal-dialog .modal-content .modal-footer:empty, .modal-dialog .modal-content .modal-footer.modal-footer-vertical:empty {
-      display: none; }
+      display: none !important; }
     .modal-dialog .modal-content .modal-footer.modal-footer-vertical {
       display: flex;
       flex-direction: column;

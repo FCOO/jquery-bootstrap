@@ -129,7 +129,7 @@ body.modal-open .modal {
 
             //When modal-body is empty: Hide modal-body and remove top-border from footer
             &.modal-body-no-content {
-                display: none
+                display: none !important;
             }
 
             //When content always is max height => body.height = 100%
@@ -192,7 +192,7 @@ body.modal-open .modal {
             overflow   : hidden;
             @include content-padding();
 
-            &:empty { display: none; }
+            &:empty { display: none !important; }
         }
         .modal-body {
             flex-shrink: 1; //Only .modal-body is shrink
@@ -226,7 +226,7 @@ body.modal-open .modal {
 
             &:empty,
             &.modal-footer-vertical:empty {
-                display: none;
+                display: none !important;
             }
 
             &.modal-footer-vertical {
