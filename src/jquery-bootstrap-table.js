@@ -279,7 +279,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         asModal: function( modalOptions ){
             var showHeader = this.find('.no-header').length == 0,
                 _this      = this,
-                $tableWithHeader = null,
+                $tableWithHeader,
                 $result, $thead, count;
 
             if (showHeader){
