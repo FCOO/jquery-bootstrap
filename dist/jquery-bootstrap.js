@@ -2258,15 +2258,17 @@ options
         }
 
         //Append fixed content (if any)
-        var $modalFixedContent = parts.$fixedContent =
+        //options.fixedContentOptions = options different from content for fixed-content
+        var fixedOptions = $.extend({}, options, options.fixedContentOptions || {}),
+            $modalFixedContent = parts.$fixedContent =
                 $('<div/>')
                     .addClass('modal-body-fixed')
                     .toggleClass(className, !noClassNameForFixed)
                     .addClass(scrollbarClass )
-                    .toggleClass('no-vertical-padding',         !!options.noVerticalPadding)
-                    .toggleClass('no-horizontal-padding',       !!options.noHorizontalPadding)
-                    .toggleClass('modal-body-semi-transparent', !!options.semiTransparent)
-                    .toggleClass('modal-type-' + options.type,  !!options.type)
+                    .toggleClass('no-vertical-padding',         !!/*options*/fixedOptions.noVerticalPadding)
+                    .toggleClass('no-horizontal-padding',       !!/*options*/fixedOptions.noHorizontalPadding)
+                    .toggleClass('modal-body-semi-transparent', !!/*options*/fixedOptions.semiTransparent)
+                    .toggleClass('modal-type-' + options.type,  !!/*options*/fixedOptions.type)
                     .addClass(options.fixedClassName || '')
                     .appendTo( this );
         if (options.fixedContent)
@@ -3814,7 +3816,9 @@ options
             .appendTo( $select.parent().find('.filter-option-inner') );
 
         //wrap inside a label
-        var $label = $formControl._wrapLabel({ label: options.label });
+        var $label =
+                $formControl._wrapLabel({ label: options.label })
+                .toggleClass('w-100', !!options.fullWidth);
 
         //Open/close select when click on the label
         $label.on('click', function(event){

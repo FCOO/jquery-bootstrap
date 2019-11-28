@@ -221,7 +221,9 @@
             .appendTo( $select.parent().find('.filter-option-inner') );
 
         //wrap inside a label
-        var $label = $formControl._wrapLabel({ label: options.label });
+        var $label =
+                $formControl._wrapLabel({ label: options.label })
+                .toggleClass('w-100', !!options.fullWidth);
 
         //Open/close select when click on the label
         $label.on('click', function(event){

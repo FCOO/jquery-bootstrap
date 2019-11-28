@@ -219,6 +219,7 @@ Same as for Button-group plus
 | :--: | :--: | :-----: | --- |
 | `selectedId` | `string` | `null` | id of selected item |
 | `placeholder` | `content` or `[] of content` | `""` | See above |
+| `fullWidth` | `boolean` | `false`| If `true` the selectbox get full width of parent |
 | `onChange` | `function(id, selected, $buttonGroup)` | `null` | Called when item is selected |
 | `items` | `[] of itemOptions` | `[]` | The items and sub-headers |
 
@@ -499,6 +500,7 @@ The following options can be set for the tree different content:
 | `noVerticalPadding` | `boolean` | `false` | If `true` the vertical padding around the contents is zero |
 | `noHorizontalPadding` | `boolean` | `false` | If `true` the horizontal padding around th contents is zero |
 | `fixedContent` (*) |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
+| `fixedContentOptions` |  |  | Options different from content for fixed-content |
 | `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `contentContext` |  | `null` | The context for `content` (only `function`) |
 | `footer` (*) | `content` or `[] of content` | `""` | See above |
