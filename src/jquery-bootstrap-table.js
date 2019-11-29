@@ -59,6 +59,36 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
 
 *******************************************************************/
+
+    /********************************************************************
+    Different sort-functions for moment-objects: (a,b) return a-b
+    ********************************************************************/
+    function momentSort(m1, m2, startOf){
+        var moment1 = moment(m1),
+            moment2 = moment(m2);
+
+        if (startOf){
+            moment1.startOf(startOf);
+            moment2.startOf(startOf);
+        }
+        return moment1 - moment2;
+    }
+
+    //momentDateSort - sort by date despide the time
+    function momentDateSort(m1, m2){
+        return momentSort(m1, m2, 'day');
+    }
+
+    //momentTimeSort - sort by time despide ther date
+    function momentTimeSort(m1, m2){
+        return momentSort(
+            moment(m1).date(1).month(0).year(2000),
+            moment(m2).date(1).month(0).year(2000)
+        );
+    }
+
+
+
     var defaultOptions = {
             baseClass           : 'table',
             styleClass          : 'fixed',
@@ -71,8 +101,13 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             centerInContainer   : false,
             useTouchSize        : true,
             defaultColunmOptions: {},
-            rowClassName        : []
+            rowClassName        : [],
 
+            stupidtable: {
+                'moment'     : momentSort,
+                'moment_date': momentDateSort,
+                'moment_time': momentTimeSort
+            }
         },
 
         defaultColunmOptions = {
@@ -107,38 +142,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         return $element;
     }
 
-    /********************************************************************
-    Different sort-functions for moment-objects: (a,b) return a-b
-    ********************************************************************/
-    function momentSort(m1, m2){
-        var moment1 = moment(m1),
-            moment2 = moment(m2);
-        if (moment1.isSame(moment2)) return 0;
-        if (moment1.isBefore(moment2)) return -1;
-        return 1;
-    }
-
-    //momentDateSort - sort by date despide the time
-    function momentDateSort(m1, m2){
-        return momentSort(
-            moment(m1).startOf('day'),
-            moment(m2).startOf('day')
-        );
-    }
-
-    //momentTimeSort - sort by time despide ther date
-    function momentTimeSort(m1, m2){
-        return momentSort(
-            moment(m1).date(1).month(0).year(2000),
-            moment(m2).date(1).month(0).year(2000)
-        );
-    }
-
-    var stupidtableOptions = {
-            'moment'     : momentSort,
-            'moment_date': momentDateSort,
-            'moment_time': momentTimeSort
-        };
 
     /**********************************************************
     Prototype for bsTable
@@ -164,7 +167,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             $.each( options.columns, function( index, columnOptions ){
                 var content = rowContent[columnOptions.id],
                     $td = $('<td/>').appendTo($tr);
-
                 adjustThOrTd( $td, columnOptions, !options.showHeader );
 
                 if ($.isPlainObject(content) && content.className)
@@ -173,9 +175,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 //Build the content using _bsAppendContent or jquery-value-format
                 if (columnOptions.vfFormat)
                     $td.vfValueFormat( content, columnOptions.vfFormat, columnOptions.vfOptions );
-                else {
+                else
                     $td._bsAppendContent( content );
-                }
             });
 
             //Add rows to radioGroup
@@ -205,23 +206,23 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         **********************************************************/
         beforeTableSort: function(event, sortInfo){
             var column          = this._getColumn(sortInfo.column),
-                sortMulticolumn = column.$th.data('sort-multicolumn') || '',
+                sortMulticolumn = column.$th.attr('data-sort-multicolumn') || '',
                 _this           = this;
 
             //Remove all group-header-rows
             this.find('.table-sort-group-header').remove();
 
             //Convert sortMulticolumn to array
-            sortMulticolumn = sortMulticolumn.split(',');
-            sortMulticolumn.push(''+column.index);
+            sortMulticolumn = sortMulticolumn ? sortMulticolumn.split(',') : [];
+            sortMulticolumn.push(column.index);
 
             $.each( sortMulticolumn, function( dummy, columnIndex ){
-                var column = _this._getColumn( parseInt( columnIndex ) );
+                var column = _this._getColumn( columnIndex );
                 //If cell-content is vfFormat-object => Set 'sort-value' from vfFormat
                 if (column.vfFormat){
                     _this.find('td:nth-child('+(column.index+1)+')').each( function( dummy, td ){
                         var $td = $(td);
-                        $td.data( 'sort-value', $td.data('vf-value') );
+                        $td.data( 'sort-value', $td.vfValue() );
                     });
                 }
             });
@@ -301,8 +302,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 count  = 20;
             }
 
-
-
             $result = $.bsModal(
                             $.extend( modalOptions || {}, {
                                 flexWidth        : true,
@@ -352,8 +351,9 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     /**********************************************************
     bsTable( options ) - create a Bootstrap-table
     **********************************************************/
-    var tableId  = 0,
-        rowId    = 0;
+    var tableId    = 0,
+        rowId      = 0,
+        sortId     = 0;
 
     $.bsTable = function( options ){
 
@@ -371,6 +371,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         //Adjust each column
         var columnIds = {};
+
         $.each( options.columns, function( index, columnOptions ){
             columnOptions.sortable = columnOptions.sortable || columnOptions.sortBy;
             columnOptions = $.extend( true,
@@ -385,6 +386,13 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             columnIds[columnOptions.id] = columnOptions;
             options.columns[index] = columnOptions;
+
+            //If column is sortable and sortBy is a function => add function to options.stupidtable
+            if (columnOptions.sortable && $.isFunction(columnOptions.sortBy)){
+                var stupidtableSortId = 'stupidtableSort'+ sortId++;
+                options.stupidtable[stupidtableSortId] = columnOptions.sortBy;
+                columnOptions.sortBy = stupidtableSortId;
+            }
         });
 
         var id = 'bsTable'+ tableId++,
@@ -426,7 +434,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         */
         $.each( options.columns, function( index, columnOptions ){
             if (columnOptions.sortable)
-                multiSortList.push( {columnIndex: index, sortIndex: columnOptions.sortIndex });
+                multiSortList.push( {columnId: columnOptions.id, columnIndex: ''+index, sortIndex: columnOptions.sortIndex });
         });
         multiSortList.sort(function( c1, c2){ return c1.sortIndex - c2.sortIndex; });
 
@@ -452,9 +460,17 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                             sortMulticolumn = (sortMulticolumn ? sortMulticolumn + ',' : '') + multiSort.columnIndex;
                     });
 
-                    if (sortMulticolumn)
-                        columnOptions.$th.attr('data-sort-multicolumn', sortMulticolumn);
+                    if (sortMulticolumn){
+                        /*
+                        Bug fix in jquery-stupid-table
+                        if sortMulticolumn == index for one column ("X") => data('sort-multicolumn') return an integer => error in jquery-stupid-table (split not a method for integer)
+                        Solved by setting sortMulticolumn = "X,X" instead of X when only ons column is included
+                        */
+                        if (sortMulticolumn.indexOf(',') == -1)
+                            sortMulticolumn = sortMulticolumn + ',' + sortMulticolumn;
 
+                        columnOptions.$th.attr('data-sort-multicolumn', sortMulticolumn);
+                    }
                     sortableTable = true;
                 }
 
@@ -482,11 +498,11 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         if (sortableTable){
             $table.stupidtable =
-                $table.stupidtable( stupidtableOptions )
+                $table.stupidtable( options.stupidtable )
                     .bind('beforetablesort', $.proxy( $table.beforeTableSort, $table ) )
                     .bind('aftertablesort',  $.proxy( $table.afterTableSort,  $table ) );
 
-            if (sortDefaultId)
+            if (sortDefaultId, sortDefaultDir)
                 $table.sortBy(sortDefaultId, sortDefaultDir);
         }
         return $table;

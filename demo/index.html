@@ -63,6 +63,8 @@
 	<script>
     $.FONTAWESOME_PREFIX = 'fas';
 
+
+
 /*
 keyboardJS.bind('ctrl',
     function(e) {
@@ -104,14 +106,23 @@ $('body').on('wheel', function(e){
                 while (result.length < 8)
                     result = '0' + result;
                 return '>>' + result;
-            }
+            },
         });
 
         $.valueFormat.add({
             id: 'myMomentFormat',
             format: function( value, options ){
-                return moment(value).format('YY-MM-DD ddd HH-MM');
+                return moment(value).format('DD-MM-YYYY ddd HH-MM')+'<br>('+moment(value).format('YYYY-MM-DD-HH-MM')+')';
+            },
+            convert: function( momentOrStr ){
+//console.log('convert', momentOrStr );
+                return $.type( momentOrStr ) == "string" ? momentOrStr : momentOrStr.format();
+            },
+            convertBack: function( str ){
+//console.log('convertback', str, moment(str).isValid() );
+                return moment(str);
             }
+
         });
 
         var $body = $('body');
@@ -670,7 +681,9 @@ $testButton.data('popover_radiogroup').setSelected('nm');
 var now = moment();
         for (var i=0; i<longTableContent.length; i++ ){
             longTableContent[i].stargazers_count = Math.round(1000000*Math.random())/100;
-            longTableContent[i].date = moment(now);//.add( Math.round(100*Math.random()), 'd').add( Math.round(1000*Math.random()), 'm');
+            longTableContent[i].date = moment(now).add( Math.round(100*Math.random()), 'd');//.add( Math.round(1000*Math.random()), 'm');
+
+longTableContent[i].stargazers_count = i;
         }
 
         var testContent =
@@ -756,10 +769,10 @@ var now = moment();
             allowZeroSelected: true,
             //allowReselect: true,
             columns: [
-                { id: 'no',                                 header: '#',     align: 'center', width: '1rem', noHorizontalPadding: true},
-                { id: 'name',               noWrap: true,   header: {icon:'fa-home', text:{da:'Navn', en:'Name'}},  align: 'center', sortable: true, sortHeader: true, sortIndex:1000},
-                { id: 'stargazers_count',                   header: 'Stars', align: 'center', vfFormat:"myNumberFormat", sortBy:'int'},
-                { id: 'date',               header: 'Date', align: 'center', vfFormat:"myMomentFormat", sortBy:'moment', sortDefault: true/*'desc'*/},
+                { id: 'no',                                 align: 'center', header: '#',     width: '1rem', noHorizontalPadding: true},
+                { id: 'name',               noWrap: true,   align: 'left',   header: {icon:'fa-home', text:{da:'Navn', en:'Name'}},  sortable: true, sortHeader: true, sortIndex:1000},
+                { id: 'stargazers_count',                   align: 'center', header: 'Stars', vfFormat:"myNumberFormat",             sortable: true, sortBy: function(e1,e2){return e1-e2;}},
+                { id: 'date',                               align: 'center', header: 'Date',  vfFormat:"myMomentFormat",             sortable: true, sortBy:'moment', sortDefault: true/*'desc'*/},
                 { id: 'forks_count',        noWrap: true,   header: 'Forks', align: 'center'},
 //                { id: 'description',        truncate: true, header:{icon: 'fa-home', text: 'Description'}}
             ],
@@ -777,7 +790,6 @@ var now = moment();
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             show: false
         }),
-
 
         myBsList = $.bsList({
             content: [
