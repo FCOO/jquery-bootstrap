@@ -173,8 +173,11 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     $td.addClass(content.className);
 
                 //Build the content using the createContent-function, _bsAppendContent, or jquery-value-format
-                if (columnOptions.createContent)
+                if (columnOptions.createContent){
                     columnOptions.createContent( content, $td );
+                    //Save original contant as sort-by-value
+                    $td.data('sort-value', content );
+                }
                 else
                     if (columnOptions.vfFormat)
                         $td.vfValueFormat( content, columnOptions.vfFormat, columnOptions.vfOptions );
