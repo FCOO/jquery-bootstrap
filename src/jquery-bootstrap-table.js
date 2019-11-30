@@ -172,11 +172,14 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 if ($.isPlainObject(content) && content.className)
                     $td.addClass(content.className);
 
-                //Build the content using _bsAppendContent or jquery-value-format
-                if (columnOptions.vfFormat)
-                    $td.vfValueFormat( content, columnOptions.vfFormat, columnOptions.vfOptions );
+                //Build the content using the createContent-function, _bsAppendContent, or jquery-value-format
+                if (columnOptions.createContent)
+                    columnOptions.createContent( content, $td );
                 else
-                    $td._bsAppendContent( content );
+                    if (columnOptions.vfFormat)
+                        $td.vfValueFormat( content, columnOptions.vfFormat, columnOptions.vfOptions );
+                    else
+                        $td._bsAppendContent( content );
             });
 
             //Add rows to radioGroup

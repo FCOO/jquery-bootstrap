@@ -355,6 +355,7 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | `sortHeader` | `boolean` | `false` | If `true` a header-row is added every time the sorted value changes |
 | `vfFormat` | `string` | `""` | See above |
 | `vfOptions` | `object` | null | See above |
+| `createContent` | `function(content, $td)` | null | function to create content inside $td. Is alternative to direct values |
 | `width` | `string` | null | The fixed width of the column |
 | `noHorizontalPadding` | `boolean` | `false` | If `true` the horizontal padding of the cells in the column is zero |
 
