@@ -788,6 +788,10 @@ longTableContent[i].stargazers_count = i;
             extraWidth: true,
             static: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
+            buttons: [
+                {text:'Filter: Stats > 30', onClick: function(){console.log(myBsTable); return; myBsTable.filter(null, {'stargazers_count': function(value){ return value > 30; }})}},
+                {text:'Filter: Stats odd', onClick: function(){console.log(myBsTable); return; myBsTable.filter(null, {'stargazers_count': function(value){ return !!(value % 2); }})}},
+            ],
             show: false
         }),
 

@@ -34,6 +34,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         sortDefault  : [string or boolean]. false. Possible values = false, true, "asc" or "desc". true => "asc"
         sortHeader   : [boolean] false. If true a header-row is added every time the sorted value changes
 
+        filter       : function(rawValue, colunmOptions) null. Return true if row is included based on single value
+
     }
 
     showHeader          [boolean] true
@@ -54,6 +56,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     defaultColunmOptions: {}. Any of the options for columns to be used as default values
 
     rowClassName      : [] of string. []. Class-names for each row
+
+    rowFilter         : function(rowData, rowId) null. Return true if row is to be included/shown
+
+
 
     Sorting is done by https://github.com/joequery/Stupid-Table-Plugin
 
@@ -102,6 +108,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             useTouchSize        : true,
             defaultColunmOptions: {},
             rowClassName        : [],
+
 
             stupidtable: {
                 'moment'     : momentSort,
@@ -278,6 +285,20 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     }
                 });
             }
+        },
+
+        /**********************************************************
+        filter -
+        **********************************************************/
+        filter: function( rowF, columnF ){
+            var options = $(this).data(dataTableId),
+                rowFilter = rowF || options.rowFilter,
+                columnFilter = columnF || {};
+            $.each( this.columns, function( index, columnOptions ){
+                console.log(columnOptions.id);
+            });
+
+
         },
 
         /**********************************************************

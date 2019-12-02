@@ -32,8 +32,9 @@
     $('body')
         .on("touchstart.jbs.popover mousedown.jbs.popover", function( event ){
             $.bsPopover_closeAll( function( $this ){
+
                 // hide any open popover when the click is not inside the body of a popover
-                return (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0);
+                return (!$this.is(event.target) && (!$this.has(event.target) || $this.has(event.target).length === 0) && (!$('.popover').has(event.target) || $('.popover').has(event.target).length === 0));
             });
         })
         //Close all popover on esc
