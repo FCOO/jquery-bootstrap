@@ -57,7 +57,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
     rowClassName      : [] of string. []. Class-names for each row
 
-    rowFilter         : function(rowData, rowId) null. Return true if row is to be included/shown
+    rowFilter         : function(rowData, rowId) null. Return true if row is to be included/shown. rowData = {id: value}
 
 
 
@@ -205,6 +205,55 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             return $.isNumeric(idOrIndex) ? this.columns[idOrIndex] : this.columnIds[idOrIndex];
         },
 
+
+
+        /**********************************************************
+        eachRow - Call rowFunc = function($tr, $tdList, sortValueList) for all rows
+        **********************************************************/
+        eachRow: function( rowFunc ){
+            var _this = this;
+
+            this.find('tbody tr').each( function( rowIndex, tr ){
+                var $tr = $(tr),
+                    id = $tr.attr('id'),
+                    $tdList = [],
+                    valueList = [],
+                    values = {};
+
+                $tr.find('td').each(function(index, td){
+                    var $td = $(td);
+                    $tdList.push( $td );
+                });
+
+                //Find the "raw" content eq. before any display adjusting was made
+                $.each($tdList, function( columnIndex, $td ){
+                    var column = _this._getColumn( columnIndex ),
+                        value  = '';
+
+                    //If cell-content is vfFormat-object => Get 'sort-value' from vfFormat
+                    if (column.vfFormat)
+                        value = $td.vfValue();
+                    else
+                        //If cell-content is created using the createContent-function => Get value for data-sort-value
+                        if (column.createContent)
+                            value = $td.data('sort-value');
+                        else
+                            value = $td.text();
+                    valueList.push(value);
+                    values[column.id] = value;
+                });
+
+                rowFunc({
+                    id       : id,
+                    $tr      : $tr,
+                    $tdList  : $tdList,
+                    valueList: valueList,
+                    values   : values
+                });
+            });
+            return this;
+        },
+
         /**********************************************************
         sortBy - Sort the table
         **********************************************************/
@@ -212,6 +261,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             var column = this._getColumn(idOrIndex);
             if (column)
                 column.$th.stupidsort( dir );
+        },
+
+        _resort: function(){
+            this.sortBy( this.lastSortBy.columnIndex, this.lastSortBy.direction );
         },
 
         /**********************************************************
@@ -229,15 +282,12 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             sortMulticolumn = sortMulticolumn ? sortMulticolumn.split(',') : [];
             sortMulticolumn.push(column.index);
 
-            $.each( sortMulticolumn, function( dummy, columnIndex ){
-                var column = _this._getColumn( columnIndex );
-                //If cell-content is vfFormat-object => Set 'sort-value' from vfFormat
-                if (column.vfFormat){
-                    _this.find('td:nth-child('+(column.index+1)+')').each( function( dummy, td ){
-                        var $td = $(td);
-                        $td.data( 'sort-value', $td.vfValue() );
-                    });
-                }
+            //Save all vfFormat-values as data-sort-value
+            this.eachRow(function(opt){
+                $.each(sortMulticolumn, function(dummy, columnIndex ){
+                    if (_this._getColumn( columnIndex ).vfFormat)
+                        opt.$tdList[columnIndex].data('sort-value', opt.valueList[columnIndex]);
+                });
             });
         },
 
@@ -245,6 +295,11 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         afterTableSort - Called after the table is being sorted by StupidTable
         **********************************************************/
         afterTableSort: function(event, sortInfo){
+            this.lastSortBy = {
+                    columnIndex: sortInfo.column,
+                    direction  : sortInfo.direction
+            };
+
             //Update the class-names of the cloned <thead>
             var cloneThList = this.$theadClone.find('th');
             this.find('thead th').each( function( index, th ){
@@ -267,7 +322,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 $tdBase.append( $('<span>:</span>') );
 
                 var lastText = "Denne her text kommer sikkert ikke igen";
-                this.find('tbody tr td:nth-child(' + (sortInfo.column+1) +')').each( function( index, td ){
+                this.find('tbody tr:not(.filter-out) td:nth-child(' + (sortInfo.column+1) +')').each( function( index, td ){
                     var $td = $(td),
                         nextText = $td.text();
                     if (nextText != lastText){
@@ -288,17 +343,53 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         },
 
         /**********************************************************
-        filter -
+        resetFilterTable
         **********************************************************/
-        filter: function( rowF, columnF ){
-            var options = $(this).data(dataTableId),
+        resetFilterTable: function(dontSort){
+            this.find('tbody tr').removeClass('filter-out');
+            if (!dontSort)
+                this._resort();
+        },
+
+        /**********************************************************
+        filterTable -
+        **********************************************************/
+        filterTable: function( rowF, columnF ){
+            var _this = this,
+                options = $(this).data(dataTableId),
                 rowFilter = rowF || options.rowFilter,
-                columnFilter = columnF || {};
-            $.each( this.columns, function( index, columnOptions ){
-                console.log(columnOptions.id);
+                columnFilter = {};
+
+            this.resetFilterTable(true);
+
+            //Setting columnFilter = columnF OR columnOptions[].filter
+            if (columnF)
+                columnFilter = columnF;
+            else
+                $.each(this.columnIds, function(id, opt){
+                    if (opt.filter)
+                        columnFilter[id] = opt.filter;
+                });
+
+
+            this.eachRow( function( opt ){
+                var result = true; //Included
+                if (rowFilter)
+                    //Row filter always before column-filter
+                    result = rowFilter(opt.values, opt.id );
+                else {
+                    $.each(columnFilter, function(id, filterFunc){
+                        if (!filterFunc(opt.values[id], _this._getColumn(id))){
+                            result = false;
+                            return false;
+                        }
+                    });
+                }
+                opt.$tr.toggleClass('filter-out', !result);
             });
 
-
+            //Sort table again
+            this._resort();
         },
 
         /**********************************************************
@@ -524,10 +615,9 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         });
 
         if (sortableTable){
-            $table.stupidtable =
-                $table.stupidtable( options.stupidtable )
-                    .bind('beforetablesort', $.proxy( $table.beforeTableSort, $table ) )
-                    .bind('aftertablesort',  $.proxy( $table.afterTableSort,  $table ) );
+            $table.stupidtable( options.stupidtable )
+                .bind('beforetablesort', $.proxy( $table.beforeTableSort, $table ) )
+                .bind('aftertablesort',  $.proxy( $table.afterTableSort,  $table ) );
 
             if (sortDefaultId, sortDefaultDir)
                 $table.sortBy(sortDefaultId, sortDefaultDir);

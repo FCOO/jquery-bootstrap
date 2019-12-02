@@ -175,8 +175,7 @@
     function shown_bs_modal( /*event*/ ) {
         //Focus on focus-element
         var $focusElement = $(this).find('.init_focus').last();
-console.log('>>>>>>>>>',$focusElement, $focusElement.length);
-        if ($focusElement && $focusElement.length){
+        if ($focusElement.length){
             document.activeElement.blur();
             $focusElement.focus();
         }

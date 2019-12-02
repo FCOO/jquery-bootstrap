@@ -337,6 +337,7 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | `columns` | `[] of columnOptions` | `[]` | &nbsp; |
 | `content` | `[] of contentOptions` | `[]` | &nbsp;  |
 | `rowClassName` | `[] of string` | `[]` |  Class-names for each row |
+| `rowFilter` | `function(rowData, rowId)` | `null` |  Filter on row-level: Return `true` if row is to be included/shown. `rowData = {id: value}` |
 
 
 #### columnOptions
@@ -358,6 +359,9 @@ To set common format all data in a column set the column-options `vfFormat` and 
 | `createContent` | `function(content, $td)` | null | function to create content inside $td. Is alternative to direct values |
 | `width` | `string` | null | The fixed width of the column |
 | `noHorizontalPadding` | `boolean` | `false` | If `true` the horizontal padding of the cells in the column is zero |
+| `filter` | `function(rawValue, colunmOptions)` | `null` |  Filter on cell-level: Return `true` if row is to be included/shown based on single column value. |
+
+
 
 #### contentOptions
 | Id | Type | Default | Description |
@@ -386,6 +390,17 @@ Eq.
 
     .addRow(  rowContent ); //Add a row dynamically
     .asModal(  modalOptions ); //Return a bsModal (see below) with the table as content
+
+    .sortBy( idOrIndex, dir ); //Sort the table by column given by idOrIndex. dir = 'acs' or 'desc'
+    
+    .resetFilterTable(); //Reset previuos filtering (show all rows)
+    
+    .filterTable( rowF, columnF ); 
+    //Filter the table. rowF (optional) and columnF (optional) 
+    //overwrites any filter given by options.rowFilter or columnOptions.filter
+
+
+
 
 <a name="list"></a>
 ## List

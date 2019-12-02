@@ -105,6 +105,11 @@ Adjustmernt to Bootstrap table
         cursor: default;
     }
 
+    //Hidden row (filtered out)
+    & tbody tr.filter-out {
+        display: none;
+    }
+
     /*************************************
     Cells
     *************************************/

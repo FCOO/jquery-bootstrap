@@ -105,7 +105,7 @@ $('body').on('wheel', function(e){
                 var result = parseFloat(Math.round(value)) + '<<';
                 while (result.length < 8)
                     result = '0' + result;
-                return '>>' + result;
+                return Math.random() + '>>' + result;
             },
         });
 
@@ -789,8 +789,10 @@ longTableContent[i].stargazers_count = i;
             static: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             buttons: [
-                {text:'Filter: Stats > 30', onClick: function(){console.log(myBsTable); return; myBsTable.filter(null, {'stargazers_count': function(value){ return value > 30; }})}},
-                {text:'Filter: Stats odd', onClick: function(){console.log(myBsTable); return; myBsTable.filter(null, {'stargazers_count': function(value){ return !!(value % 2); }})}},
+                {text:'Filter: Stats > 30',          onClick: function(){myBsTable.filterTable(null, {'stargazers_count': function(value){ return value > 30;    }})}},
+                {text:'Filter: Stats odd',           onClick: function() {myBsTable.filterTable(null, {'stargazers_count': function(value){ return !!(value % 2); }})}},
+                {text:'Filter: Navn <> "Dansk!!!"',  onClick: function() {myBsTable.filterTable(null, {'name': function(value){return (value != "Dansk!!!"); }})}},
+                {text:'Reset',                       onClick: function() {myBsTable.resetFilterTable();}},
             ],
             show: false
         }),
