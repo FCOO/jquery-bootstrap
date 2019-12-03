@@ -107,7 +107,7 @@ Adjustmernt to Bootstrap table
 
     //Hidden row (filtered out)
     & tbody tr.filter-out {
-        display: none;
+        visibility: collapse;
     }
 
     /*************************************

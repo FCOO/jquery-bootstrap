@@ -778,7 +778,10 @@ longTableContent[i].stargazers_count = i;
             ],
             content: longTableContent,
             rowClassName: ['dette-er-en-test']
-        }),
+        })
+        .filterTable(null, {
+            'name': function(value){return (value != "Dansk!!!");}
+        });
 
         m_table = myBsTable.asModal({
             header:'En stor tabel med "allowZeroSelected: true"',

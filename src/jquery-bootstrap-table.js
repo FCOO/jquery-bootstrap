@@ -349,6 +349,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             this.find('tbody tr').removeClass('filter-out');
             if (!dontSort)
                 this._resort();
+            return this;
         },
 
         /**********************************************************
@@ -390,6 +391,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             //Sort table again
             this._resort();
+
+            return this;
         },
 
         /**********************************************************
@@ -544,6 +547,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             sortDefaultDir = 'asc',
             multiSortList  = [];
 
+        $table.lastSortBy = {};
+
         /* From https://github.com/joequery/Stupid-Table-Plugin:
             "A multicolumn sort allows you to define secondary columns to sort by in the event of a tie with two elements in the sorted column.
                 Specify a comma-separated list of th identifiers in a data-sort-multicolumn attribute on a <th> element..."
@@ -614,6 +619,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             $table.addRow( rowContent );
         });
 
+
         if (sortableTable){
             $table.stupidtable( options.stupidtable )
                 .bind('beforetablesort', $.proxy( $table.beforeTableSort, $table ) )
@@ -622,6 +628,12 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (sortDefaultId, sortDefaultDir)
                 $table.sortBy(sortDefaultId, sortDefaultDir);
         }
+
+
+
+//HER        this.lastSortBy.columnIndex, this.lastSortBy.direction );
+
+
         return $table;
     };
 

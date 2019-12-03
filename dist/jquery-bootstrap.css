@@ -9650,7 +9650,7 @@ Adjustmernt to Bootstrap table
       color: rgba(81, 89, 97, 0.65);
       background: #f8f9fa linear-gradient(180deg, #f9fafb, #f8f9fa) repeat-x; }
   .table tbody tr.filter-out {
-    display: none; }
+    visibility: collapse; }
   .table tbody tr td {
     padding: 0.3125rem 0.3125rem;
     font-size: 0.8125rem; }
