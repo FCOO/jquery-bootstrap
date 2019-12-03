@@ -5130,6 +5130,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 textArray       = getArray( options.text ),
                 vfFormatArray   = getArray( options.vfFormat ),
                 vfValueArray    = getArray( options.vfValue ),
+                i18nextArray    = getArray( options.i18next ),
                 vfOptionsArray  = getArray( options.vfOptions ),
                 textStyleArray  = getArray( options.textStyle ),
                 linkArray       = getArray( ignoreLink ? [] : options.link || options.onClick ),
@@ -5167,7 +5168,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                             if ( ($.type( text ) == "string") && !i18next.exists(text) )
                                 $text.html( text );
                             else
-                                $text.i18n( text, 'html' );
+                                $text.i18n( text, 'html', i18nextArray[ index ] );
                         }
 
                 if (index < textClassArray.length)

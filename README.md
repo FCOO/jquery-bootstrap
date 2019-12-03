@@ -64,8 +64,14 @@ Can be a standard class-name for a icon-font packages (eg. Fontawesome) or a jso
 - [i18next-phrases]-object - `{lang1:"...", lang2:"...",...langN:"..."}`
 
 
-    { icon:" fa-home", text: "With icon" }
-    { icon:" fa-home", text: {da:"På dansk", en:"In English"} }
+        { icon:"fa-home", text: "With icon" }
+        { icon:"fa-home", text: {da:"På dansk", en:"In English"} }
+
+
+#### `i18next`, `vfFormat`, `vfValue`, and `vfOptions`
+Options for [i18next](https://www.i18next.com/) is passed as `i18next`
+
+        {text:"aNamespace;anId", i18next:{count:4}}
 
 #### `vfFormat`, `vfValue`, and `vfOptions`
 The content of a element can be set and updated using [jquery-value-format].
