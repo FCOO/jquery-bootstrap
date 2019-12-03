@@ -697,6 +697,7 @@
             buttons       : [],     //Extra button between
             static        : true,   //Only close modal-form on (X)
             formValidation: false,  //When true: make room for formValidation messages
+            closeWithoutWarning: false, //When true the form can close without warning for not-saved changes
         };
 
 
@@ -1050,6 +1051,13 @@
             //Check if any of the new values are different from the original ones
             if (!this.isDifferent(this.originalValues)){
                 this.options.onClose_user();
+                return true;
+            }
+
+            if (this.options.closeWithoutWarning){
+                this.originalValues = this.getValues();
+                if (this.options.onCancel)
+                    this.options.onCancel(this.originalValues);
                 return true;
             }
 
