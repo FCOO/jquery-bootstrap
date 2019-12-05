@@ -914,7 +914,9 @@ longTableContent[i].stargazers_count = i;
                             fixedContent: 'Extended fixed (common)',
                             footer: true,
                             scroll: true
-                        }
+                        },
+                        onShow: function(bsModal){ console.log('onShow', bsModal); },
+                        onClose: function(bsModal){ console.log('onClose', bsModal); return true},
                     });
             }
         }

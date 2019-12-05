@@ -147,8 +147,6 @@
         //Close all popover
         $('.popover.show').popover('hide');
 
-        var $this = $(this);
-
         openModals++;
 
         //Move up the backdrop
@@ -158,16 +156,19 @@
         $._bsNotyAddLayer();
 
         //Move the modal to the front
-        $this._setModalBackdropZIndex();
+        this._setModalBackdropZIndex();
 
         //Prevent the modal from closing with esc if there are a modal noty
-        $(this).keydown( function( event ){
+        this.keydown( function( event ){
             if (window._bsNotyModal){
                 window._bsNotyModal.close();
                 event.stopImmediatePropagation();
                 return false;
             }
         });
+
+        if (this.onShow)
+            this.onShow(this);
     }
 
     //******************************************************
@@ -237,7 +238,7 @@
             this._bsModalCloseElements();
 
             //If onClose exists => call and check
-            if (this.onClose && !this.onClose())
+            if (this.onClose && !this.onClose(this))
                 return false;
 
             //If pinable and pinned => unpin
@@ -802,6 +803,7 @@
         $modalDialog._bsModalContent( options );
         $result.data('bsModalDialog', $modalDialog);
 
+        $result.onShow = options.onShow;
         $result.onClose = options.onClose;
 
         //Create as modal and adds methods - only allow close by esc for non-static modal (typical a non-form)
@@ -814,7 +816,7 @@
         });
         $result.bsModal = $modalDialog.bsModal;
         $result.on({
-            'show.bs.modal'  : show_bs_modal,
+            'show.bs.modal'  : $.proxy(show_bs_modal, $result),//show_bs_modal,
             'shown.bs.modal' : shown_bs_modal,
             'hide.bs.modal'  : $.proxy(hide_bs_modal, $result),
             'hidden.bs.modal': hidden_bs_modal,
