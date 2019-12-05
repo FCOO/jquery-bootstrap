@@ -74,7 +74,7 @@
             });
 
             //Set selected item (if any)
-            this.$select.selectpicker('val', this.selectedId ? this.selectedId : null);
+            this.$select.selectpicker('val', this.selectedId ? this.selectedId : undefined);
         },
 
         bsOnRendered: function(){

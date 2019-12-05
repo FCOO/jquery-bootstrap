@@ -1015,7 +1015,6 @@
                 this.$bsModal.bsSelectTab(tabIndexOrId);
 
             this.setValues( values, false, true );
-
             this.originalValues = this.getValues();
 
             //Reset validation
@@ -3678,7 +3677,7 @@ options
             });
 
             //Set selected item (if any)
-            this.$select.selectpicker('val', this.selectedId ? this.selectedId : null);
+            this.$select.selectpicker('val', this.selectedId ? this.selectedId : undefined);
         },
 
         bsOnRendered: function(){

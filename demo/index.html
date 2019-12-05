@@ -1151,9 +1151,8 @@ width: 543,
             'mySelection': false,
             'theSelectList': 'item3',
             'hemmeligt': 'Dette er super hemmeligt',
-
-            //'theSelectBox': 'formSelect3',
-            'formId2-1': 'formSelect3',
+            'theSelectBox': 'theSelectBox3',
+            'formId2-1': 'radiogroup2',
         }
 
         $('<button>TEST</button>')
@@ -1171,7 +1170,7 @@ width: 543,
 //HER                        console.log('onChanging', values );
                     },
                     buttons: [
-                        {text:'Set=2', onClick: function(){ testModalForm.setValue('theSelectBox', 'formSelect1');} }
+                        {text:'Set=2', onClick: function(){ testModalForm.setValue('theSelectBox', 'theSelectBox1');} }
                     ],
                     onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
                     onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
@@ -1184,6 +1183,7 @@ width: 543,
                         content: {
                             type: 'accordion',
                             list: [
+
                                 {
                                     icon: 'fa-home',
                                     title:{da:'Selectlist'},
@@ -1202,10 +1202,12 @@ width: 543,
                                         ]
                                     },
                                 },
+
                                 {
                                     icon: 'fa-globe',
                                     title:{da:'En test', en:'A test'},
                                     content: [
+
                                         {
                                             id: 'hemmeligt',
                                             type: 'hidden'
@@ -1232,57 +1234,42 @@ width: 543,
                                             showLineColor: false,
                                             XXonChanging: function( obj ){ console.log( obj.value ); }
                                         },
-
-/*                                        {
-                                            id: 'mySlider2', type:'slider', label:'My slider 2',
-                                            _noBorder: true,
-                                            handle: 'round',
-                                            _showFromTo: false,
-                                            grid: true,
-                                            slider: '
-                                            min:-24, max:48, majorTicksOffset:0, stepOffset:0,
-                                            mousewheel: true,
-                                            showLineColor: false,
-handleFixed: true,
-width: 3*300,
-
-                                            _onChanging: function( obj ){ console.log( obj.value ); }
-                                        },
-*/
                                         {
                                             id:'mySelection', type:'checkbox', text: 'Vælg mig'
                                         },
                                         {
                                             id:'formId2', validators: 'notEmpty _MYvalidatorName', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)',
                                             after : {type:'button', text:{da:'kr.', en:'£'}}, before:    {type:'button', icon:'fa-calculator'}
-                                    },
+                                        },
+
                                         {
                                             id:'theSelectBox', type: 'select', validators: 'notEmpty', placeholder:"Placeholder", label:'theSelectBox',
                                             before:    {type:'button', icon:'fa-calculator'},
                                             after : {type:'button', text:{da:'kr.', en:'£'}},
                                             items:[
-                                                {id:'formSelect0', icon:'fa-home', text: '0:Davs'},
-                                                {id:'formSelect1',  text:'1: Item 1'},
+                                                {id:'theSelectBox0', icon:'fa-home', text: '0:Davs'},
+                                                {id:'theSelectBox1',  text:'1: Item 1'},
                                                 {                   text:'En overskrift'},
-                                                {id:'formSelect2',  text:'2: Item 2 DEFAULT'},
-                                                {id:'formSelect3',  text:'3: Item 3'},
-                                                {id:'formSelect4',  text:'4: Item 4'},
-                                                {id:'formSelect5',  text:'5: Item 5'},
-                                                {id:'formSelect6',  text:'6: Item 6'},
-                                                {id:'formSelect7',  text:'7: Item 7'},
-                                                {id:'formSelect8',  text:'8: Item 8'},
-                                                {id:'formSelect9',  text:'9: Item 9'},
-                                                {id:'formSelect10', text:'10: Item 10'},
-                                                {id:'formSelect11', text:'11: Item 11'}
+                                                {id:'theSelectBox2',  text:'2: Item 2 DEFAULT'},
+                                                {id:'theSelectBox3',  text:'3: Item 3'},
+                                                {id:'theSelectBox4',  text:'4: Item 4'},
+                                                {id:'theSelectBox5',  text:'5: Item 5'},
+                                                {id:'theSelectBox6',  text:'6: Item 6'},
+                                                {id:'theSelectBox7',  text:'7: Item 7'},
+                                                {id:'theSelectBox8',  text:'8: Item 8'},
+                                                {id:'theSelectBox9',  text:'9: Item 9'},
+                                                {id:'theSelectBox10', text:'10: Item 10'},
+                                                {id:'theSelectBox11', text:'11: Item 11'}
                                             ],
-                                            showWhen: {'mySelection': false }
+                                            _showWhen: {'mySelection': false }
                                         },
+
                                         {
-                                            id:'formId2-1', type: 'radiobuttongroup', selectedId: 'formSelect3', label:'Label',
+                                            id:'formId2-1', type: 'radiobuttongroup', label:'Label',
                                             items:[
-                                                {id:'formSelect1', icon:'fa-home', text: 'Davs'},
-                                                {id:'formSelect2', text:'Item 2'},
-                                                {id:'formSelect3', text:'Item 3'}
+                                                {id:'radiogroup1', icon:'fa-home', text: 'Davs'},
+                                                {id:'radiogroup2', text:'Item 2'},
+                                                {id:'radiogroup3', text:'Item 3'}
                                             ]
                                         },
                                         {
@@ -1291,6 +1278,7 @@ width: 3*300,
                                         {
                                             id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {           type:'button',  icon:'fa-calculator'}
                                         },
+
                                     ]
                                 },
                                 {

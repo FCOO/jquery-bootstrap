@@ -342,7 +342,6 @@
                 this.$bsModal.bsSelectTab(tabIndexOrId);
 
             this.setValues( values, false, true );
-
             this.originalValues = this.getValues();
 
             //Reset validation
