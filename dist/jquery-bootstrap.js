@@ -859,12 +859,18 @@
         showOrHide: function( values ){
             if (this.options.showWhen || this.options.hideWhen){
                 var show = !this.options.showWhen; //If showWhen is given default is false = not show
-                $.each( this.options.hideWhen || {}, function( userId, value ){
-                    if (values[userId] == value)
+                $.each( this.options.hideWhen || {}, function( userId, hideValue ){
+                    var value = values[userId];
+                    if ( ( $.isArray(hideValue) && (hideValue.indexOf(value) != -1)) ||
+                         (!$.isArray(hideValue) && (hideValue == value))
+                       )
                         show = false;
                 });
-                $.each( this.options.showWhen || {}, function( userId, value ){
-                    if (values[userId] == value)
+                $.each( this.options.showWhen || {}, function( userId, showValue ){
+                    var value = values[userId];
+                    if ( ( $.isArray(showValue) && (showValue.indexOf(value) != -1)) ||
+                         (!$.isArray(showValue) && (showValue == value))
+                       )
                         show = true;
                 });
 
