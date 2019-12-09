@@ -536,6 +536,7 @@ The following options can be set for the tree different content:
 ### Methods
 
     .show(); //Show the modal
+    .update( options ); //Empty and replace the content of the header, content, fixed-content, footer (both normal, extended and minimized)
 
 <a name="modalform"></a>
 ## ModalForm

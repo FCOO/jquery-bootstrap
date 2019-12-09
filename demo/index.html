@@ -1395,6 +1395,40 @@ clickable: true,
             .appendTo( $body)
             .on('click', function(){ long_content.show(); });
 
+
+        var theSameModal = null;
+        var theNumber = 0;
+        $.bsButton({text: 'New content in same modal', onClick:function(){
+
+            function number(){ return theNumber + ' '+Math.round( Math.random()*100000); }
+
+            var options = {
+                    header : {text: 'header='+number()},
+                    fixedContent: {text: 'fixed='+number()},
+                    content: {text: 'content='+number()},
+                    footer: {text: 'footer='+number()},
+
+                    minimized: {
+                        fixedContent: {text: 'minimized fixed='+number()},
+                        content: {text: 'minimized content='+number()},
+                        footer: {text: 'minimized footer='+number()},
+                    },
+                    extended: {
+                        fixedContent: theNumber ? {text: 'extended fixed='+number()} : null,
+                        content: {text: 'extended content='+number()},
+                        footer: {text: 'extended footer='+number()},
+                    },
+                }
+            theNumber++;
+            theSameModal = theSameModal ?
+                           theSameModal.update(options) :
+                           $.bsModal(options);
+
+            theSameModal.show();
+
+        }}).appendTo( $body);
+
+
 var $test =
     $.bsTabs({
         height:'100px',scroll: false,
