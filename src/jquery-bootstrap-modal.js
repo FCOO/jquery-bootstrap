@@ -297,9 +297,11 @@
                 var containers     = id ? _this.bsModal[id] : _this.bsModal,
                     contentOptions = id ? options[id]       : options;
 
-                updateElement( containers.$fixedContent, contentOptions.fixedContent, '_bsAddHtml',       true );
-                updateElement( containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext );
-                updateElement( containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
+                if (containers && contentOptions){
+                    updateElement( containers.$fixedContent, contentOptions.fixedContent, '_bsAddHtml',       true );
+                    updateElement( containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext );
+                    updateElement( containers.$footer,       contentOptions.footer === true ? '' : contentOptions.footer,       '_bsAddHtml' );
+                }
             });
 
 
