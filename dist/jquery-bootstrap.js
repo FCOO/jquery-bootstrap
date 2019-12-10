@@ -4322,6 +4322,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             this.find('tbody tr').removeClass('filter-out');
             if (!dontSort)
                 this._resort();
+            this.setHeaderHeight();
             return this;
         },
 
@@ -4365,6 +4366,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             //Sort table again
             this._resort();
 
+            this.setHeaderHeight();
             return this;
         },
 
@@ -4407,7 +4409,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             if (showHeader){
                 //Using timeout to wait for the browser to update DOM and get height of the header
-                var setHeaderHeight = function(){
+                var setHeaderHeight = this.setHeaderHeight = function(){
                         var height = $tableWithHeader.outerHeight();
                         if (height <= 0){
                             count--;
