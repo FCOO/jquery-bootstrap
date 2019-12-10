@@ -3848,6 +3848,7 @@ options
                 $('<option/>')
                     .text(itemOptions.id)
                     .prop('selected', itemOptions.id == options.selectedId)
+                    .prop('title', ' ')  //Must be not-empty
                     .appendTo($currentParent);
             }
             else

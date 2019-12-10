@@ -40,6 +40,9 @@ $spacer                 : 1rem !default;
 /************************************************************
 Adjust dropdown-menu
 ************************************************************/
+/************************************************************
+Adjust modal
+************************************************************/
 /***********************************************
 IMPORT BOOTSTRAP SCSS
 ************************************************/
@@ -4242,7 +4245,7 @@ a.close.disabled {
   .modal.show .modal-dialog {
     transform: none; }
   .modal.modal-static .modal-dialog {
-    transform: scale(1.02); }
+    transform: none; }
 
 .modal-dialog-scrollable {
   display: flex;
@@ -9651,6 +9654,8 @@ Adjustmernt to Bootstrap table
       background: #f8f9fa linear-gradient(180deg, #f9fafb, #f8f9fa) repeat-x; }
   .table tbody tr.filter-out {
     visibility: collapse; }
+    .table tbody tr.filter-out td {
+      display: none; }
   .table tbody tr td {
     padding: 0.3125rem 0.3125rem;
     font-size: 0.8125rem; }
