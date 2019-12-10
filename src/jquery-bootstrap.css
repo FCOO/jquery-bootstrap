@@ -12763,6 +12763,9 @@ Adjustmernt to Bootstrap table
 .table tbody tr.filter-out {
   visibility: collapse;
 }
+.table tbody tr.filter-out td {
+  display: none;
+}
 .table tbody tr td {
   padding: 0.3125rem 0.3125rem;
   font-size: 0.8125rem;

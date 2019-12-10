@@ -363,6 +363,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             this.resetFilterTable(true);
 
+console.log('Before=',this.height());
             //Setting columnFilter = columnF OR columnOptions[].filter
             if (columnF)
                 columnFilter = columnF;
@@ -391,6 +392,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             //Sort table again
             this._resort();
+console.log('After=',this.height());
 
             return this;
         },
