@@ -125,3 +125,10 @@ Adjust dropdown-menu
 ************************************************************/
 $dropdown-padding-y: 0;
 $dropdown-spacer   : 0;
+
+
+/************************************************************
+Adjust modal
+************************************************************/
+//Remove "shake" effect for modal
+$modal-scale-transform: none; //default = scale(1.02) !default;
