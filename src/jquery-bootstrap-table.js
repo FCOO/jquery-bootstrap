@@ -349,7 +349,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             this.find('tbody tr').removeClass('filter-out');
             if (!dontSort)
                 this._resort();
-            this.setHeaderHeight();
+            if (this.setHeaderHeight)
+                this.setHeaderHeight();
             return this;
         },
 
@@ -393,7 +394,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             //Sort table again
             this._resort();
 
-            this.setHeaderHeight();
+            if (this.setHeaderHeight)
+                this.setHeaderHeight();
             return this;
         },
 

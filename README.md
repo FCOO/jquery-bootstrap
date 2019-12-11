@@ -499,6 +499,7 @@ Eq.
 | `noCloseIconOnHeader` | `boolean` | `false` | If `true` no close icon is added on the header |
 | `isMinimized` | `boolean` | `false` | If `true` the modal initial as minimized |
 | `isExtended` | `boolean` | `false` | If `true` the modal initial as maximized |
+| `historyList` | `HistoryList` | `null` | If given the modal gets backward and forward icons in header to go backward and forward in the historyList. See demo and [history.js](https://github.com/fcoo/history.js))  |
 
 #### Content options 
 The following options can be set for the tree different content: 

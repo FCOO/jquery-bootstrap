@@ -1396,14 +1396,13 @@ clickable: true,
             .on('click', function(){ long_content.show(); });
 
 
-        var theSameModal = null;
-        var theNumber = 0;
-        $.bsButton({text: 'New content in same modal', onClick:function(){
-
-            function number(){ return theNumber + ' '+Math.round( Math.random()*100000); }
-
+        function newNumberModal( _number ){
+            function number(){ return _number + ' '+Math.round( Math.random()*100000); }
             var options = {
                     header : {text: 'header='+number()},
+
+                    historyList: historyList,
+
                     fixedContent: {text: 'fixed='+number()},
                     content: {text: 'content='+number()},
                     footer: {text: 'footer='+number()},
@@ -1419,12 +1418,26 @@ clickable: true,
                         footer: {text: 'extended footer='+number()},
                     },
                 }
-            theNumber++;
             theSameModal = theSameModal ?
                            theSameModal.update(options) :
                            $.bsModal(options);
 
             theSameModal.show();
+
+        }
+        var theSameModal = null;
+        var theNumber = 0;
+        var historyList = new HistoryList({
+                action: newNumberModal
+            });
+
+        $.bsButton({text: 'New content in same modal with history', onClick:function(){
+            historyList
+                .goLast()
+                .add( theNumber );
+
+            newNumberModal( theNumber );
+            theNumber++;
 
         }}).appendTo( $body);
 

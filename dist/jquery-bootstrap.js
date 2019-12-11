@@ -2042,6 +2042,7 @@ options
         closeIcon
         closeText
         noCloseIconOnHeader
+        historyList         - The modal gets backward and forward icons in header to go backward and forward in the historyList. See demo and https://github.com/fcoo/history.js
 
     **********************************************************/
     var modalId = 0,
@@ -2779,6 +2780,20 @@ options
     };
 
 
+
+    //bsModal_updateIcons_historylist - Updates backward- and forward-icons in modal-header according to status of historyList
+    function bsModal_updateIcons_historylist( backAvail, forwardAvail, historyList ){
+        if (historyList.lastIndex <= 0) return;
+
+        //Show icons
+        this.getHeaderIcon('back').css('visibility', 'initial');
+        this.getHeaderIcon('forward').css('visibility', 'initial');
+
+        //Update icons
+        this.setHeaderIconEnabled('back'   , !backAvail );
+        this.setHeaderIconEnabled('forward', !forwardAvail );
+    }
+
     /******************************************************
     bsModal
     ******************************************************/
@@ -2828,6 +2843,15 @@ options
         options.icons = options.icons || {};
         options.icons.close = { onClick: $.proxy( bsModal_prototype.close, $result) };
 
+        //Add backward- and forward-icons and update-function if modal is connected to a historyList
+        if (options.historyList){
+            options.icons.back    = {onClick: function(){ options.historyList.goBack();    }};
+            options.icons.forward = {onClick: function(){ options.historyList.goForward(); }};
+
+            options.historyList.options.onUpdate = $.proxy( bsModal_updateIcons_historylist, $result );
+        }
+
+        //Create modal content
         $modalDialog._bsModalContent( options );
         $result.data('bsModalDialog', $modalDialog);
 
@@ -2843,6 +2867,13 @@ options
            show	    :   false                               //  boolean	            true	Shows the modal when initialized.
         });
         $result.bsModal = $modalDialog.bsModal;
+
+        if (options.historyList){
+            //Hide back- and forward-icons
+            $result.getHeaderIcon('back').css('visibility', 'hidden');
+            $result.getHeaderIcon('forward').css('visibility', 'hidden');
+        }
+
         $result.on({
             'show.bs.modal'  : $.proxy(show_bs_modal, $result),//show_bs_modal,
             'shown.bs.modal' : shown_bs_modal,
@@ -4322,7 +4353,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             this.find('tbody tr').removeClass('filter-out');
             if (!dontSort)
                 this._resort();
-            this.setHeaderHeight();
+            if (this.setHeaderHeight)
+                this.setHeaderHeight();
             return this;
         },
 
@@ -4366,7 +4398,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             //Sort table again
             this._resort();
 
-            this.setHeaderHeight();
+            if (this.setHeaderHeight)
+                this.setHeaderHeight();
             return this;
         },
 
