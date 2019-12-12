@@ -11,6 +11,9 @@
 (function ($ /*, window, document, undefined*/) {
 	"use strict";
 
+    // Create $.BSASMODAL - See src/jquery-bootstrap.js for details
+    $.BSASMODAL = $.BSASMODAL || {};
+
     //Add/Remove class "show" to .card
     function card_onShown(){
         var $this = $(this);
@@ -79,13 +82,13 @@
     **********************************************************/
     var accordionId = 0;
 
-    function bsAccordion_asModal( options ){
+    $.BSASMODAL.BSACCORDION = function( options ){
         return $.bsModal( $.extend( {
                               flexWidth: true,
                               content  : this,
                           }, options)
                );
-    }
+    };
 
 
     $.bsAccordion = function( options ){
@@ -104,6 +107,7 @@
         }
 
         var $result = $('<div/>')
+                        .addClass('BSACCORDION')
                         ._bsAddBaseClassAndSize( options )
                         .attr({
                             'id'      : id,
@@ -198,7 +202,6 @@
         }); //End of $.each( options.list, function( index, opt ){
 
         $result.collapse(/*options*/);
-        $result.asModal = bsAccordion_asModal;
 
         if (options.onChange){
             $result.data('accordion_onChange', options.onChange);

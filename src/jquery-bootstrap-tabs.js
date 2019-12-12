@@ -11,6 +11,32 @@
 (function ($/*, window, document, undefined*/) {
 	"use strict";
 
+    // Create $.BSASMODAL - See src/jquery-bootstrap.js for details
+    $.BSASMODAL = $.BSASMODAL || {};
+
+
+    $.BSASMODAL.BSTABS = function( options ){
+        var $result =
+                $.bsModal(
+                    $.extend( {
+                        flexWidth          : true,
+                        noVerticalPadding  : true,
+                        noHorizontalPadding: true,
+                        scroll             : false,
+                        content            : this._$contents,
+                        fixedContent       : this._$tabs,
+                    }, options)
+               );
+
+        //Save ref to the scrollBar containing the content and update scrollBar when tab are changed
+        var $scrollBar = $result.data('bsModalDialog').bsModal.$content.parent();
+        this._$tabs.find('a').on('shown.bs.tab', function() {
+            $scrollBar.perfectScrollbar('update');
+        });
+
+        return $result;
+    };
+
     /******************************************************
     bsTabs
 <nav>
@@ -28,7 +54,8 @@
     ******************************************************/
     var tabsId = 0;
     $.bsTabs = function( options ){
-        var $result = $('<div/>'),
+        var $result = $('<div/>')
+                        .addClass('BSTABS'),
             id = 'bsTabs'+ tabsId++,
 
             $tabs =
@@ -116,35 +143,11 @@
                 $content._bsAppendContent( opt.content, opt.contentContext );
 
         });
-        $result.asModal = bsTabs_asModal;
         $result._$tabs = $tabs;
         $result._$contents = $contents;
 
         return $result;
     };
-
-    function bsTabs_asModal( options ){
-        var $result =
-                $.bsModal(
-                    $.extend( {
-                        flexWidth          : true,
-                        noVerticalPadding  : true,
-                        noHorizontalPadding: true,
-                        scroll             : false,
-                        content            : this._$contents,
-                        fixedContent       : this._$tabs,
-                    }, options)
-               );
-
-        //Save ref to the scrollBar containing the content and update scrollBar when tab are changed
-        var $scrollBar = $result.data('bsModalDialog').bsModal.$content.parent();
-        this._$tabs.find('a').on('shown.bs.tab', function() {
-            $scrollBar.perfectScrollbar('update');
-        });
-
-        return $result;
-    }
-
 
     //Extend $.fn with method to select a tab given by id (string) or index (integer)
     $.fn.bsSelectTab = function( indexOrId ){

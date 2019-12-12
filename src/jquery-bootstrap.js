@@ -28,7 +28,29 @@
     //Create namespace
 	var ns = window;
 
-    ns.bsIsTouch =  true;
+    /*
+    Create $.BSASMODAL = record with {className: asModal-function} where className is added to any $element that have a asModal-function
+    Ex.:
+    $.BSASMODAL['BSTABLE'] = function(){ //Create bsModal for this }
+    var myTable = $.bsTable({...}); //Add 'BSTABLE' to class-name for  result
+    myTable.asModal({...});
+    */
+    $.BSASMODAL = $.BSASMODAL || {};
+    $.fn.asModal = function(options){
+        var _this   = this,
+            asModal = null;
+
+        $.each($.BSASMODAL, function(id, asModalFunc){
+            if (_this.hasClass(id)){
+                asModal = asModalFunc;
+                return false;
+            }
+        });
+        return asModal ? $.proxy(asModal, this)( options ) : null;
+    };
+
+
+    ns.bsIsTouch = true;
 
     $.EMPTY_TEXT = '___***EMPTY***___';
 
