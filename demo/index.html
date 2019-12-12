@@ -828,8 +828,13 @@ longTableContent[i].stargazers_count = i;
 
 
 
-        $accordion = $.bsAccordion({ neverClose: true, multiOpen: true, allOpen: true, children: accor_children, footer: 'footer' }),
-        $accordion2 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
+        $accordion = $.bsAccordion({neverClose: true, multiOpen: true, allOpen: true, children: accor_children, footer: 'footer'}),
+        $accordion2 = $.bsAccordion({
+            children: accor_children, footer: 'footer',
+            onChange: function(acc, status){
+                //console.log('>> >> >>',status);
+            }
+        }),
         $accordion3 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
         $accordion4 = $.bsAccordion({ children: accor_children, footer: 'footer'  }),
 

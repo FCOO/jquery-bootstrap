@@ -428,6 +428,7 @@ Eq.
 
     $myAccordion = $.bsAccordion( accordionChildOptions ); //accordionChildOptions.children must exists
 
+
 ### accordionChildOptions
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
@@ -438,6 +439,7 @@ Eq.
 | `content` | `jQuery-object` / `DOM-element` / `function( $container )` | `""` | The content of the accordion-card |
 | `children` (or `list`) | `[] of accordionChildOptions` | `null` | The children cards |
 | `footer` | `content` or `[] of content` | `""` | See above |
+| `onChange` | `function( $accordion, status)` | `null` | ONLY TOP-LEVEL: Called when a card is opened or closed.<br>`status = []STATUSLEVEL. STATUSLEVEL = [](false or STATUSLEVEL)`<br>`false = the card is closed. []=status for all children of the card` |
 
 ### Methods
 
