@@ -920,8 +920,8 @@ longTableContent[i].stargazers_count = i;
                             footer: true,
                             scroll: true
                         },
-                        onShow: function(bsModal){ console.log('onShow', bsModal); },
-                        onClose: function(bsModal){ console.log('onClose', bsModal); return true},
+                        onShow: function(bsModal){ /*console.log('onShow', bsModal);*/ },
+                        onClose: function(bsModal){ /*console.log('onClose', bsModal);*/ return true},
                     });
             }
         }
@@ -1418,9 +1418,9 @@ clickable: true,
                         footer: {text: 'minimized footer='+number()},
                     },
                     extended: {
-                        fixedContent: theNumber ? {text: 'extended fixed='+number()} : null,
+                        fixedContent: true,
                         content: {text: 'extended content='+number()},
-                        footer: {text: 'extended footer='+number()},
+                        footer: true,//{text: 'extended footer='+number()},
                     },
                 }
             theSameModal = theSameModal ?
