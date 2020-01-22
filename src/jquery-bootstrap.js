@@ -399,13 +399,18 @@
             }
 
             //**************************************************
-//Removed since no content is given
-//            if (checkForContent && (options.content != null))
-//                return this._bsAddHtml( options.content );
-
             options = options || '';
-
             var _this = this;
+
+            //options.content = options or function
+            if (options.content){
+                if ($.isFunction(options.content)){
+                    options.content(this);
+                    return this;
+                }
+                else
+                    return this._bsAddHtml( options.content, htmlInDiv, ignoreLink );
+            }
 
             //options = array => add each
             if ($.isArray( options )){
