@@ -1046,7 +1046,9 @@ width: 543,
                     hideNotSelectedText: true,
                     list: [
                         {
-                            icon: 'fa-home',  text:{da:'Hjem', en:'Home'},
+//HERHER                            header: {icon: 'fa-home',  text:{da:'Hjem', en:'Home'}},
+                            icon: 'fa-home',
+                            text:{da:'Hjem', en:'Home'},
                             selected: true,
                             content: [
 
@@ -1194,7 +1196,8 @@ width: 543,
 
                                 {
                                     icon: 'fa-home',
-                                    title:{da:'Selectlist'},
+                                    text:{da:'Selectlist'},
+                                    //header: {icon:'fa-home', text:{da:'Selectlist'}},
                                     content: {
                                         type: 'selectlist', label: 'En select-list',
                                         id: 'theSelectList',
@@ -1269,11 +1272,12 @@ width: 543,
                                                 {id:'theSelectBox10', text:'10: Item 10'},
                                                 {id:'theSelectBox11', text:'11: Item 11'}
                                             ],
-                                            showWhen: {'mySelection': false }
+                                            showWhen: {'mySelection': false },
+                                            freeSpaceWhenHidden: true
                                         },
 
                                         {
-                                            id:'formId2-1', type: 'radiobuttongroup', label:'Label', centerInParent: true,
+                                            id:'formId2-1', type: 'radiobuttongroup', label:'Label', centerInParent: false,
                                             items:[
                                                 {id:'radiogroup1', icon:'fa-home', text: 'Davs'},
                                                 {id:'radiogroup2', text:'Item 2'},

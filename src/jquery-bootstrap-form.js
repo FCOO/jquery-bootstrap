@@ -207,7 +207,13 @@
                     this.resetValue( true );
                 }
 
-                this.getFormGroup().css('visibility', show ? 'visible' : 'hidden');
+                if (this.options.freeSpaceWhenHidden)
+                    //When the element is invisible: Use display:none
+                    this.getFormGroup().toggleClass('d-none', !show);
+                else
+                    //When the element is invisible: Use visibility:hidden to keep structure of form and it elements
+                    this.getFormGroup().css('visibility', show ? 'visible' : 'hidden');
+
                 this.getElement().prop('disabled', !show);
 
                 this.modalForm._enableInputValidation( this, show );
@@ -221,8 +227,9 @@
     BsModalForm( options )
     options:
         content: json-object with full content Samer as content for bsModal with extention of
-            id, and
+            id = STRING
             showWhen and hideWhen = [id] of value: hide or show element when another element with id has value
+            freeSpaceWhenHidden = BOOLEAN, when true the element will not appear in the form when it is hidden (as display: none). If false the space is allocated to the hidden element (as visibility: hidden)
 
         extended.content: Same as options.content, but NOT BOTH
         useExtended: false - When true the extended.content is used as the content of the form

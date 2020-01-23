@@ -113,16 +113,10 @@
         //*********************************************************************
         //adjustContentOptions: Adjust options for the content of elements
         function adjustContentAndContextOptions( options, context ){
-            options.icon     = options.icon || options.headerIcon || options.titleIcon;
-            options.text     = options.text || options.header || options.title;
+//HER            options.text     = options.text || options.header || options.title;
 
-            options.iconClass = options.iconClass       || options.iconClassName       ||
-                                options.headerIconClass || options.headerIconClassName ||
-                                options.titleIconClass  || options.titleIconClassName;
-
-            options.textClass = options.textClass   || options.textClassName   ||
-                                options.headerClass || options.headerClassName ||
-                                options.titleClass  || options.titleClassName;
+            options.iconClass = options.iconClass || options.iconClassName;
+            options.textClass = options.textClass || options.textClassName;
 
             //If context is given => convert all function to proxy
             if (context)
