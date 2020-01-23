@@ -113,8 +113,7 @@
         //*********************************************************************
         //adjustContentOptions: Adjust options for the content of elements
         function adjustContentAndContextOptions( options, context ){
-//HER            options.text     = options.text || options.header || options.title;
-
+            options.text      = options.text || options.title;
             options.iconClass = options.iconClass || options.iconClassName;
             options.textClass = options.textClass || options.textClassName;
 
@@ -395,16 +394,6 @@
             //**************************************************
             options = options || '';
             var _this = this;
-
-            //options.content = options or function
-            if (options.content){
-                if ($.isFunction(options.content)){
-                    options.content(this);
-                    return this;
-                }
-                else
-                    return this._bsAddHtml( options.content, htmlInDiv, ignoreLink );
-            }
 
             //options = array => add each
             if ($.isArray( options )){

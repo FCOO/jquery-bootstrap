@@ -1046,7 +1046,6 @@ width: 543,
                     hideNotSelectedText: true,
                     list: [
                         {
-//HERHER                            header: {icon: 'fa-home',  text:{da:'Hjem', en:'Home'}},
                             icon: 'fa-home',
                             text:{da:'Hjem', en:'Home'},
                             selected: true,
@@ -1273,7 +1272,7 @@ width: 543,
                                                 {id:'theSelectBox11', text:'11: Item 11'}
                                             ],
                                             showWhen: {'mySelection': false },
-                                            freeSpaceWhenHidden: true
+                                            freeSpaceWhenHidden: false
                                         },
 
                                         {
@@ -1294,8 +1293,8 @@ width: 543,
                                     ]
                                 },
                                 {
-                                    icon: 'fa-globe',
-                                    title:{da:'En anden test', en:'Another test'},
+                                    icon : 'fa-globe',
+                                    text :{da:'En anden test', en:'Another test'},
                                     content: {
                                         type: 'list',
                                         columns: [{fixedWidth: true, noWrap:true}],

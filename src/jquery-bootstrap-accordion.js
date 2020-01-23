@@ -150,9 +150,6 @@
                     'aria-controls': collapseId,
                     'aria-target': '#'+collapseId
                 });
-console.log(opt.header || opt);
-
-opt = $._bsAdjustOptions(opt);
 
             $card.append(
                 $('<div/>')

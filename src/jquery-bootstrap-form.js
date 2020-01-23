@@ -291,7 +291,6 @@
 
         //Create the form
         this.$form = $('<form/>');
-
         if (this.options.extended && this.options.useExtended){
             this.$form._bsAppendContent( this.options.extended.content, this.options.contentContext );
             this.options.extended.content = this.$form;
