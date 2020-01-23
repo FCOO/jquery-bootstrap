@@ -24,6 +24,7 @@
                 semiTransparent: 'semi-transparent',
                 square         : 'square',
                 bigIcon        : 'big-icon',
+                extraLargeIcon : 'extra-large-icon',
                 selected       : 'active',
                 focus          : 'init_focus'
             };
@@ -36,12 +37,12 @@
                 baseClass       : 'btn',
                 styleClass      : bsButtonClass,
                 class           : function( opt ){
-                                      var result = '';
+                                      var result = [opt.class || ''];
                                       $.each( optionToClassName, function( id, className ){
                                           if (opt[id] && (!$.isFunction(opt[id]) || opt[id]()))
-                                              result = result + (result?' ':'') + className;
+                                              result.push(className);
                                       });
-                                     return result;
+                                     return result.join(' ');
                                   } (options),
                 useTouchSize    : true,
                 addOnClick      : true,

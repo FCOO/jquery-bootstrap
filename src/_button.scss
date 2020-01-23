@@ -142,6 +142,16 @@ div.btn, div.list-group-item {
             @include big-icon-font-size( $original-padding-y: $input-btn-padding-y-sm, $original-font-size: $font-size-sm, $original-line-height: $line-height-sm );
         }
     }
+
+    //Extra-extra large icon => The button gets bigger
+    &.extra-large-icon {
+        line-height    : 1;
+        padding        : $big-icon-padding !important;
+        flex-direction : row;
+        align-items    : center;
+        justify-content: center;
+        font-size      : 2rem;
+    }
 }
 
 /************************************************************
@@ -182,7 +192,7 @@ BUTTON-GROUP
     @extend .w-100;
 }
 
-//Horizontal button-group with full width and equal width or inside input-group
+//Horizontal button-group inside input-group or with full width gets equal width
 .input-group .btn-group,
 .btn-group:not(.btn-group-vertical).btn-group-full-width {
     display: flex;
