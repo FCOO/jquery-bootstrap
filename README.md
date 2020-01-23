@@ -198,6 +198,7 @@ See `src/jquery-bootstrap-button.js` for description
 | `vertical` | `boolean` | `false` | `false`: Buttons side-by-side.  `true`: Buttons in list |
 | `center` | `boolean` | `options.vertical`| Center-align then content of the buttons |
 | `fullWidth` | `boolean` | `false`| If `true` and `vertical:false`the group get full width of parent and all buttons get equal width |
+| `centerInParent` | `boolean` | `false`| If `true` and `vertical:false`the group get centered in it parent and the buttons gets there individual width |
 | `border` | `boolean` | `false`| If `true` the group get a border |
 | `buttons` or `list` | `[] of button-options` | `[]`| Array of options for the buttons (See above) |
 

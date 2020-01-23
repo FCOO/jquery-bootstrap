@@ -1163,7 +1163,7 @@ width: 543,
             'formId2-1': 'radiogroup2',
         }
 
-        $('<button>TEST</button>')
+        $('<button>Form</button>')
             .appendTo( $body)
             .on('click', function(){
                 testModalForm = testModalForm || $.bsModalForm({
@@ -1273,7 +1273,7 @@ width: 543,
                                         },
 
                                         {
-                                            id:'formId2-1', type: 'radiobuttongroup', label:'Label',
+                                            id:'formId2-1', type: 'radiobuttongroup', label:'Label', centerInParent: true,
                                             items:[
                                                 {id:'radiogroup1', icon:'fa-home', text: 'Davs'},
                                                 {id:'radiogroup2', text:'Item 2'},

@@ -202,6 +202,13 @@ BUTTON-GROUP
     }
 }
 
+//Horizontal button-group centered in it parent
+.btn-group:not(.btn-group-vertical).btn-group-center-in-parent {
+    width  : auto;
+    margin : auto;
+    display: block;
+}
+
 //With border
 .btn-group, .btn-group-vertical {
     &.btn-group-border {

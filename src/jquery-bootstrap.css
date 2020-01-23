@@ -10930,6 +10930,12 @@ BUTTON-GROUP
   flex: 1 0 10px;
 }
 
+.btn-group:not(.btn-group-vertical).btn-group-center-in-parent {
+  width: auto;
+  margin: auto;
+  display: block;
+}
+
 .btn-group.btn-group-border, .btn-group-vertical.btn-group-border {
   border: 1px solid #afb4ba;
   border-radius: 0.25rem;

@@ -184,6 +184,10 @@
         if (options.fullWidth)
             result.addClass('btn-group-full-width');
 
+        if (options.centerInParent)
+            result.addClass('btn-group-center-in-parent');
+
+
         if (options.border)
             result.addClass('btn-group-border');
 
