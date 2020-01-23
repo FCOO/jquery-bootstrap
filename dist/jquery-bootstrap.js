@@ -268,6 +268,7 @@
                 semiTransparent: 'semi-transparent',
                 square         : 'square',
                 bigIcon        : 'big-icon',
+                extraLargeIcon : 'extra-large-icon',
                 selected       : 'active',
                 focus          : 'init_focus'
             };
@@ -280,12 +281,12 @@
                 baseClass       : 'btn',
                 styleClass      : bsButtonClass,
                 class           : function( opt ){
-                                      var result = '';
+                                      var result = [opt.class || ''];
                                       $.each( optionToClassName, function( id, className ){
                                           if (opt[id] && (!$.isFunction(opt[id]) || opt[id]()))
-                                              result = result + (result?' ':'') + className;
+                                              result.push(className);
                                       });
-                                     return result;
+                                     return result.join(' ');
                                   } (options),
                 useTouchSize    : true,
                 addOnClick      : true,
@@ -426,6 +427,10 @@
 
         if (options.fullWidth)
             result.addClass('btn-group-full-width');
+
+        if (options.centerInParent)
+            result.addClass('btn-group-center-in-parent');
+
 
         if (options.border)
             result.addClass('btn-group-border');
@@ -915,7 +920,13 @@
                     this.resetValue( true );
                 }
 
-                this.getFormGroup().css('visibility', show ? 'visible' : 'hidden');
+                if (this.options.freeSpaceWhenHidden)
+                    //When the element is invisible: Use display:none
+                    this.getFormGroup().toggleClass('d-none', !show);
+                else
+                    //When the element is invisible: Use visibility:hidden to keep structure of form and it elements
+                    this.getFormGroup().css('visibility', show ? 'visible' : 'hidden');
+
                 this.getElement().prop('disabled', !show);
 
                 this.modalForm._enableInputValidation( this, show );
@@ -929,8 +940,9 @@
     BsModalForm( options )
     options:
         content: json-object with full content Samer as content for bsModal with extention of
-            id, and
+            id = STRING
             showWhen and hideWhen = [id] of value: hide or show element when another element with id has value
+            freeSpaceWhenHidden = BOOLEAN, when true the element will not appear in the form when it is hidden (as display: none). If false the space is allocated to the hidden element (as visibility: hidden)
 
         extended.content: Same as options.content, but NOT BOTH
         useExtended: false - When true the extended.content is used as the content of the form
@@ -992,7 +1004,6 @@
 
         //Create the form
         this.$form = $('<form/>');
-
         if (this.options.extended && this.options.useExtended){
             this.$form._bsAppendContent( this.options.extended.content, this.options.contentContext );
             this.options.extended.content = this.$form;
@@ -4972,16 +4983,9 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         //*********************************************************************
         //adjustContentOptions: Adjust options for the content of elements
         function adjustContentAndContextOptions( options, context ){
-            options.icon     = options.icon || options.headerIcon || options.titleIcon;
-            options.text     = options.text || options.header || options.title;
-
-            options.iconClass = options.iconClass       || options.iconClassName       ||
-                                options.headerIconClass || options.headerIconClassName ||
-                                options.titleIconClass  || options.titleIconClassName;
-
-            options.textClass = options.textClass   || options.textClassName   ||
-                                options.headerClass || options.headerClassName ||
-                                options.titleClass  || options.titleClassName;
+            options.text      = options.text || options.title;
+            options.iconClass = options.iconClass || options.iconClassName;
+            options.textClass = options.textClass || options.textClassName;
 
             //If context is given => convert all function to proxy
             if (context)
@@ -5258,12 +5262,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             }
 
             //**************************************************
-//Removed since no content is given
-//            if (checkForContent && (options.content != null))
-//                return this._bsAddHtml( options.content );
-
             options = options || '';
-
             var _this = this;
 
             //options = array => add each

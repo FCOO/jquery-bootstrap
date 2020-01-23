@@ -8051,6 +8051,13 @@ div.btn, div.list-group-item {
     font-size: 1.625rem; }
     .btn.btn-standard.big-icon.btn-sm, .btn-group-sm > .btn.btn-standard.big-icon {
       font-size: 1.21875rem; }
+  .btn.btn-standard.extra-large-icon {
+    line-height: 1;
+    padding: 0.25rem !important;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem; }
 
 /************************************************************
 Modernizr-test for elements with class="active" when selected
@@ -8086,6 +8093,11 @@ BUTTON-GROUP
   .input-group .btn-group .btn,
   .btn-group:not(.btn-group-vertical).btn-group-full-width .btn {
     flex: 1 0 10px; }
+
+.btn-group:not(.btn-group-vertical).btn-group-center-in-parent {
+  width: auto;
+  margin: auto;
+  display: block; }
 
 .btn-group.btn-group-border, .btn-group-vertical.btn-group-border {
   border: 1px solid #afb4ba;
@@ -8819,6 +8831,14 @@ body.modal-open .modal {
     display: initial !important; }
   .modal-dialog .modal-content.no-modal-minimized > .show-for-modal-minimized {
     display: none !important; }
+  .modal-dialog .modal-content.modal-minimized-always-max-height.modal-minimized > .show-for-modal-minimized {
+    display: flex !important; }
+  .modal-dialog .modal-content.modal-minimized-always-max-height.modal-minimized > .hide-for-modal-minimized {
+    display: none !important; }
+  .modal-dialog .modal-content.modal-minimized-always-max-height.no-modal-minimized > .hide-for-modal-minimized {
+    display: flex !important; }
+  .modal-dialog .modal-content.modal-minimized-always-max-height.no-modal-minimized > .show-for-modal-minimized {
+    display: none !important; }
   .modal-dialog .modal-content.modal-normal .hide-for-modal-normal {
     display: none !important; }
   .modal-dialog .modal-content.modal-normal .show-for-no-modal-normal {
@@ -8835,6 +8855,14 @@ body.modal-open .modal {
     display: initial !important; }
   .modal-dialog .modal-content.no-modal-normal > .show-for-modal-normal {
     display: none !important; }
+  .modal-dialog .modal-content.modal-normal-always-max-height.modal-normal > .show-for-modal-normal {
+    display: flex !important; }
+  .modal-dialog .modal-content.modal-normal-always-max-height.modal-normal > .hide-for-modal-normal {
+    display: none !important; }
+  .modal-dialog .modal-content.modal-normal-always-max-height.no-modal-normal > .hide-for-modal-normal {
+    display: flex !important; }
+  .modal-dialog .modal-content.modal-normal-always-max-height.no-modal-normal > .show-for-modal-normal {
+    display: none !important; }
   .modal-dialog .modal-content.modal-extended .hide-for-modal-extended {
     display: none !important; }
   .modal-dialog .modal-content.modal-extended .show-for-no-modal-extended {
@@ -8850,6 +8878,14 @@ body.modal-open .modal {
   .modal-dialog .modal-content.no-modal-extended > .hide-for-modal-extended {
     display: initial !important; }
   .modal-dialog .modal-content.no-modal-extended > .show-for-modal-extended {
+    display: none !important; }
+  .modal-dialog .modal-content.modal-extended-always-max-height.modal-extended > .show-for-modal-extended {
+    display: flex !important; }
+  .modal-dialog .modal-content.modal-extended-always-max-height.modal-extended > .hide-for-modal-extended {
+    display: none !important; }
+  .modal-dialog .modal-content.modal-extended-always-max-height.no-modal-extended > .hide-for-modal-extended {
+    display: flex !important; }
+  .modal-dialog .modal-content.modal-extended-always-max-height.no-modal-extended > .show-for-modal-extended {
     display: none !important; }
   .modal-dialog .modal-content.modal-pinned .hide-for-modal-pinned {
     display: none !important; }
