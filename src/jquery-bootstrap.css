@@ -7809,6 +7809,15 @@ Bootstrap allready have the following classes
 .font-italic
 
 */
+.opacity-0 {
+  opacity: 0; }
+
+.opacity-50 {
+  opacity: 50; }
+
+.opacity-100 {
+  opacity: 100; }
+
 .container-icon-and-text:not(.fa-stack) > span:not(:last-child),
 .container-icon-and-text:not(.fa-stack) > a:not(:last-child),
 .container-icon-and-text:not(.fa-stack) > .container-stacked-icons:not(:last-child):not(.fa-no-margin),
