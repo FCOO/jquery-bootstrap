@@ -11782,6 +11782,18 @@ body.modal-open .modal {
 .modal-dialog .modal-content.no-modal-minimized > .show-for-modal-minimized {
   display: none !important;
 }
+.modal-dialog .modal-content.modal-minimized-always-max-height.modal-minimized > .show-for-modal-minimized {
+  display: flex !important;
+}
+.modal-dialog .modal-content.modal-minimized-always-max-height.modal-minimized > .hide-for-modal-minimized {
+  display: none !important;
+}
+.modal-dialog .modal-content.modal-minimized-always-max-height.no-modal-minimized > .hide-for-modal-minimized {
+  display: flex !important;
+}
+.modal-dialog .modal-content.modal-minimized-always-max-height.no-modal-minimized > .show-for-modal-minimized {
+  display: none !important;
+}
 .modal-dialog .modal-content.modal-normal .hide-for-modal-normal {
   display: none !important;
 }
@@ -11806,6 +11818,18 @@ body.modal-open .modal {
 .modal-dialog .modal-content.no-modal-normal > .show-for-modal-normal {
   display: none !important;
 }
+.modal-dialog .modal-content.modal-normal-always-max-height.modal-normal > .show-for-modal-normal {
+  display: flex !important;
+}
+.modal-dialog .modal-content.modal-normal-always-max-height.modal-normal > .hide-for-modal-normal {
+  display: none !important;
+}
+.modal-dialog .modal-content.modal-normal-always-max-height.no-modal-normal > .hide-for-modal-normal {
+  display: flex !important;
+}
+.modal-dialog .modal-content.modal-normal-always-max-height.no-modal-normal > .show-for-modal-normal {
+  display: none !important;
+}
 .modal-dialog .modal-content.modal-extended .hide-for-modal-extended {
   display: none !important;
 }
@@ -11828,6 +11852,18 @@ body.modal-open .modal {
   display: initial !important;
 }
 .modal-dialog .modal-content.no-modal-extended > .show-for-modal-extended {
+  display: none !important;
+}
+.modal-dialog .modal-content.modal-extended-always-max-height.modal-extended > .show-for-modal-extended {
+  display: flex !important;
+}
+.modal-dialog .modal-content.modal-extended-always-max-height.modal-extended > .hide-for-modal-extended {
+  display: none !important;
+}
+.modal-dialog .modal-content.modal-extended-always-max-height.no-modal-extended > .hide-for-modal-extended {
+  display: flex !important;
+}
+.modal-dialog .modal-content.modal-extended-always-max-height.no-modal-extended > .show-for-modal-extended {
   display: none !important;
 }
 .modal-dialog .modal-content.modal-pinned .hide-for-modal-pinned {
