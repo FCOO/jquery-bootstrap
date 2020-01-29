@@ -5467,6 +5467,12 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     //Create outer form-group
                     insideInputGroup = true;
                     $parent = $divXXGroup('form-group', options).appendTo( $parent );
+
+                    if (options.lineBefore)
+                        $('<hr/>')
+                            .toggleClass('above-label', !!options.label)
+                            .appendTo( $parent );
+
                     if (noValidation || options.noValidation)
                         $parent.addClass('no-validation');
                 }

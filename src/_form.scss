@@ -40,16 +40,27 @@ The default bootstrap structure used for elements in a form is
 
     padding-top   :     $input-padding-y;
     padding-bottom: 2 * $input-padding-y;
+    hr {
+        margin-top   : 0;
+        margin-bottom: $input-padding-y;
+        &.above-label {
+            margin-bottom: 3 * $input-padding-y;
+        }
+        border-color : $card-border-color;
+    }
 }
 
 //Different size
 .form-group.form-group-sm {
     padding-top   :     $input-padding-y-sm;
     padding-bottom: 2 * $input-padding-y-sm;
+    hr.above-label { margin-bottom: 3 * $input-padding-y-sm; }
 }
 .form-group.form-group-xs {
     padding-top   :     $input-padding-y-xs;
     padding-bottom: 2 * $input-padding-y-xs;
+    hr.above-label { margin-bottom: 3 * $input-padding-y-xs; }
+
 }
 
 /************************************************************
