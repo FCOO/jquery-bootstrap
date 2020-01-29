@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "1.71.0",
+  "version": "1.71.1",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "authors": [
     "NielsHolt"
@@ -68,6 +68,11 @@
     "inputmask": {
       "main": [
         "dist/jquery.inputmask.bundle.js"
+      ]
+    },
+    "js-url": {
+      "main": [
+        "dist/url.min.js"
       ]
     }
   },
