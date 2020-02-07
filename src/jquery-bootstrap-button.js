@@ -29,21 +29,21 @@
                 focus          : 'init_focus'
             };
 
-
         options = options || {};
+
+        //Add class-name corresponding to options
+        var newClass = [options.class || ''];
+        $.each( optionToClassName, function( id, className ){
+            if (options[id] && (!$.isFunction(options[id]) || options[id]()))
+                newClass.push(className);
+        });
+        options.class = newClass.join(' ');
+
         options =
             $._bsAdjustOptions( options, {
                 tagName         : 'a', //Using <a> instead of <button> to be able to control font-family
                 baseClass       : 'btn',
                 styleClass      : bsButtonClass,
-                class           : function( opt ){
-                                      var result = [opt.class || ''];
-                                      $.each( optionToClassName, function( id, className ){
-                                          if (opt[id] && (!$.isFunction(opt[id]) || opt[id]()))
-                                              result.push(className);
-                                      });
-                                     return result.join(' ');
-                                  } (options),
                 useTouchSize    : true,
                 addOnClick      : true,
                 returnFromClick : false
@@ -104,7 +104,6 @@
     $.bsCheckboxButton = function( options ){
         //Clone options to avoid reflux
         options = $.extend({}, options);
-
         options.class = 'allow-zero-selected';
 
         //Use modernizr-mode and classes if icon and/or text containe two values
