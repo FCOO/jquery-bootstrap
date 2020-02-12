@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "1.71.2",
+  "version": "1.71.3",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "authors": [
     "NielsHolt"
@@ -36,7 +36,7 @@
     "bind-first": "private-face/jquery.bind-first#^0.2.3",
     "bootstrap-select": "1.13.11",
     "inputmask": "RobinHerbots/Inputmask#^4.0.6",
-    "history": "fcoo/history.js#^1.0.9"
+    "history.js": "fcoo/history.js#^1.0.9"
   },
   "devDependencies": {
     "bourbon": "latest",
