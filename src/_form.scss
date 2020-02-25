@@ -34,12 +34,18 @@ The default bootstrap structure used for elements in a form is
 
 
 //General form-group without space for validation message
+//Standard is that padding-bottom = 2*padding-top to make space for the label on the next input
+//If there are no label on the input after => add class small-bottom-padding to adjust bottom-padding
 .form-group {
     line-height   : 1;
     margin-bottom : 0;
 
     padding-top   :     $input-padding-y;
     padding-bottom: 2 * $input-padding-y;
+    &.small-bottom-padding {
+        padding-bottom: $input-padding-y;
+    }
+
     hr {
         margin-top   : 0;
         margin-bottom: $input-padding-y;
@@ -54,13 +60,18 @@ The default bootstrap structure used for elements in a form is
 .form-group.form-group-sm {
     padding-top   :     $input-padding-y-sm;
     padding-bottom: 2 * $input-padding-y-sm;
+    &.small-bottom-padding {
+        padding-bottom: $input-padding-y-sm;
+    }
     hr.above-label { margin-bottom: 3 * $input-padding-y-sm; }
 }
 .form-group.form-group-xs {
     padding-top   :     $input-padding-y-xs;
     padding-bottom: 2 * $input-padding-y-xs;
+    &.small-bottom-padding {
+        padding-bottom: $input-padding-y-xs;
+    }
     hr.above-label { margin-bottom: 3 * $input-padding-y-xs; }
-
 }
 
 /************************************************************

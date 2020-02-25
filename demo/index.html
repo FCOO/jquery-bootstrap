@@ -1261,8 +1261,18 @@ width: 543,
                                             id:'mySelection', type:'checkbox', text: 'Vælg mig'
                                         },
                                         {
+                                            type: 'inputGroup', label: 'Dette er en input-group',
+                                            content: [
+                                                {id:'mySelection2', type:'checkbox', text: 'Vælg mig #2', noValidation: true, smallBottomPadding: true},
+                                                {id:'mySelection3', type:'checkbox', text: 'Vælg mig #3', noValidation: true, smallBottomPadding: true},
+                                                {id:'mySelection4', type:'checkbox', text: 'Vælg mig #4', noValidation: true},
+//HER                                            ]
+//HER                                        },
+                                        {
                                             id:'formId2', validators: 'notEmpty _MYvalidatorName', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)',
                                             after : {type:'button', text:{da:'kr.', en:'£'}}, before:    {type:'button', icon:'fa-calculator'}
+                                        },
+                                            ]
                                         },
 
                                         {

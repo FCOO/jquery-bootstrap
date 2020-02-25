@@ -536,6 +536,11 @@
                 return $.bsInput( options ).css('display', 'none');
             }
 
+            function buildInputGroup( options, $parent ){
+                return $parent
+                           .addClass('flex-column')
+                           ._bsAppendContent(options.content);
+            }
 
             if (!options)
                 return this;
@@ -581,6 +586,7 @@
                         case 'text'             :   buildFunc = buildText;              insideFormGroup = true; addBorder = true; noValidation = true; break;
                         case 'fileview'         :   buildFunc = $.bsFileView;           break;
                         case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
+                        case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
 //                        case 'xx'               :   buildFunc = $.bsXx;               break;
                     }
                 }
@@ -597,6 +603,8 @@
                     //Create outer form-group
                     insideInputGroup = true;
                     $parent = $divXXGroup('form-group', options).appendTo( $parent );
+                    if (options.smallBottomPadding)
+                        $parent.addClass('small-bottom-padding');
 
                     if (options.lineBefore)
                         $('<hr/>')
