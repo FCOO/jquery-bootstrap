@@ -3827,6 +3827,9 @@ options
         },
 
         bsOnShow: function(){
+            //Translate content
+            this.$menu.localize();
+
             this.bsUpdateSelectedItem();
             this.bsUpdateLabel( false );
         },
