@@ -55,6 +55,10 @@ Only supports the html-structure
             background: $input-bg;
             content   : " ";
         }
+        //Hide when empty
+        &:empty {
+            display: none;
+        }
     }
 
     //Text-cursor for input type=text
