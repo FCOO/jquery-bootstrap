@@ -51,6 +51,12 @@
 
         var result = $('<'+ options.tagName + ' tabindex="0"/>');
 
+        //title are added to the button instead of only to the <span> with the text
+        if (options.title){
+            result.i18n(options.title, 'title');
+            options.title = null;
+        }
+
         if (options.tagName == 'a'){
             if (options.link)
                 result
