@@ -492,6 +492,22 @@
         },
 
         /*******************************************************
+        getInput(id or userId)
+        *******************************************************/
+        getInput: function(id){
+            var result = this.inputs[id];
+            if (!result)
+                this._eachInput( function( input ){
+                    if (input.options.userId == id){
+                        result = input;
+                        return false;
+                    }
+console.log(input);
+                });
+            return result;
+        },
+
+        /*******************************************************
         setValue
         *******************************************************/
         setValue: function(id, value){
