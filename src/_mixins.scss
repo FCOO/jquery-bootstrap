@@ -343,9 +343,9 @@ Padding are set to button y-padding (moving text to the left)
 /************************************************************
 header-variant
 ************************************************************/
-@mixin header-variant( $is-title: false, $incl-header: true, $small: false, $xs-padding: false ) {
+@mixin header-variant( $is-title: false, $incl-header: true, $small: false, $xs-padding: false, $font-weight: $font-weight-base ) {
 
-    font-weight: $font-weight-base;
+    font-weight: $font-weight;
 
     @include span-text-truncate();
     span.fixed-header {
@@ -389,8 +389,8 @@ header-variant
     }
 }
 
-@mixin header-variant-sm( $incl-header: true, $xs-padding: false  ) {
-    @include header-variant( $incl-header: $incl-header, $small: true, $xs-padding: $xs-padding );
+@mixin header-variant-sm( $incl-header: true, $xs-padding: false, $font-weight: $font-weight-base ) {
+    @include header-variant( $incl-header: $incl-header, $small: true, $xs-padding: $xs-padding, $font-weight: $font-weight );
 }
 
 /************************************************************

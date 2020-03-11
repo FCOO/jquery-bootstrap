@@ -7,20 +7,6 @@ bsSelectList
         ...
 
 ************************************************************/
-//HER//If the select has a scrollbar the left margin is reduced with the scrollbar-width to vertical-align content
-//HER.dropdown-menu.scrollbar-vertical {
-//HER    .dropdown-item, .dropdown-header {
-//HER        margin-left: -$scroll-size;
-//HER        width: calc(100% + 2*#{$scroll-size});
-//HER    }
-//HER    &.ps--active-y {
-//HER        .dropdown-item, .dropdown-header {
-//HER            width: calc(100% + #{$scroll-size});
-//HER        }
-//HER    }
-//HER}
-
-
 .dropdown-menu, .selectList {
     @include control-container();
     padding: 0;
@@ -47,7 +33,7 @@ bsSelectList
 
     }
     .dropdown-header {
-        @include header-variant( $incl-header: false );
+        @include header-variant( $incl-header: false, $font-weight: $font-weight-bold );
 
         background-color: $selectlist-bg-color;
         color: $selectlist-color;
@@ -69,7 +55,7 @@ bsSelectList
         );
     }
     .dropdown-header {
-        @include header-variant-sm( $incl-header: false );
+        @include header-variant-sm( $incl-header: false, $font-weight: $font-weight-bold );
         line-height: $line-height-base * $font-size-sm / $font-size-xs; //Adjust line-height to make header and item same height
     }
 }
@@ -86,7 +72,7 @@ bsSelectList
         );
     }
     .dropdown-header {
-        @include header-variant-sm( $incl-header: false, $xs-padding: true );
+        @include header-variant-sm( $incl-header: false, $font-weight: $font-weight-bold, $xs-padding: true );
     }
 }
 
