@@ -502,7 +502,6 @@
                         result = input;
                         return false;
                     }
-console.log(input);
                 });
             return result;
         },
