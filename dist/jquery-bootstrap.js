@@ -5001,12 +5001,11 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         return options;
     };
 
-    //$._bsAdjustOptions: Adjust options to allow text/name/title/header etc.
+    //$._bsAdjustOptions: Adjust options to allow text/name/header etc.
     $._bsAdjustOptions = function( options, defaultOptions, forceOptions ){
         //*********************************************************************
         //adjustContentOptions: Adjust options for the content of elements
         function adjustContentAndContextOptions( options, context ){
-            options.text      = options.text || options.title;
             options.iconClass = options.iconClass || options.iconClassName;
             options.textClass = options.textClass || options.textClassName;
 
