@@ -361,6 +361,7 @@
 
             this.showOrHide( null );
             this.isCreated = true;
+            this.onChanging();
         },
 
         /*******************************************************
