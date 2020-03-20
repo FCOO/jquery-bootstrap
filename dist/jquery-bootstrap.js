@@ -922,7 +922,7 @@
                     this.$outerElement = this.getElement().parents('.form-group').first();
                     if (!this.$outerElement.length)
                         this.$outerElement = this.getElement();
-                };
+                }
 
                 if (this.options.freeSpaceWhenHidden)
                     //When the element is invisible: Use display:none
