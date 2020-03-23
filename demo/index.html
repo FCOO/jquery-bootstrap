@@ -34,7 +34,7 @@
     </style>
 </head>
 
-<body style="padding: 20px; background-color: red;">
+<body style="padding: 20px; _background-color: red;">
 
     <div id="lang"></div>
 
@@ -1648,15 +1648,24 @@ type: 'checkbox',
     var list1 = [
             {type:'content', content: $('<div class="w-100">Davs</div>'), closeOnClick: false },
             {text:{da:'En overskrift', en:'A header'}},
-            {id: 'button1', icon: 'fa-home', text:{da:'En knap', en:'A button'}, onClick: function(){console.log('onClick button1', arguments)}},
-            {id: 'checkbox1', type:'checkbox', selected: true,  text:{da:'En checkbox#1', en:'A checkbox#1'}},
+            {id: 'button1', icon: 'fa-home', text:{da:'En knap', en:'A button'}, onClick: function(){console.log('onClick button1', arguments);} },
+            {id: 'checkbox1', type:'checkbox', selected: true,  text:{da:'En checkbox#1', en:'A checkbox#1'},
+                onChange: function(id, selected){
+                    console.log('onChange-checkbox1', id, selected);
+                }
+            },
             {id: 'checkbox2', type:'checkbox', selected: false, text:{da:'En checkbox#2 (lukker ikke)', en:'A checkbox#2 (dont close)'}, closeOnClick: false},
             {id: 'checkbox3', type:'checkbox', selected: false, text:'Dette er kun på dansk'},
             {radioGroupId: 'radio1', type:'radio', lineBefore: true, lineAfter: true, _hidden: true, list: [
                     {id:'slow',   icon: 'fa-bicycle',   text:'Cykel', closeOnClick: false},
                     {id:'medium', icon: 'fa-car', text:'Bil', selected: true},
                     {id:'fast',   icon: 'fa-fighter-jet',   text:'Jetjaver'}
-            ]}
+                ],
+                onChange: function(selectedId){
+                    console.log('onChange-radio1', selectedId);
+                }
+
+            }
         ];
 
     var list2 = [
@@ -1685,13 +1694,21 @@ _small: true,
 
     header('bsMenupopover');
 
-    $.bsButton({text:'1: Klik mig (klik på cykel lukker ikke!)'})
+    var buttonWithPopoverMenu1 = $.bsButton({text:'1: Klik mig (klik på cykel lukker ikke!)'})
         .appendTo($body)
         .bsMenuPopover({
             closeOnClick: true,
             placement: 'top',
             list: list1
          });
+
+    console.log('getValues', buttonWithPopoverMenu1.bsMenuPopover_getValues());
+    buttonWithPopoverMenu1.bsMenuPopover_setValues( {checkbox1: false});
+    buttonWithPopoverMenu1.bsMenuPopover_setValues( {checkbox1: false, radio1: "medium"});
+    buttonWithPopoverMenu1.bsMenuPopover_setValues( {checkbox1: true, radio1: "fast"});
+    console.log('getValues', buttonWithPopoverMenu1.bsMenuPopover_getValues());
+
+
 
     $.bsButton({text:'2: Klik mig (klik på cykel lukker!)', small:true})
         .appendTo($body)

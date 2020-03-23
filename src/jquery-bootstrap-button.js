@@ -143,7 +143,13 @@
                 'far fa-square'                                          //Border
             ]]
         });
-        return $.bsButton( options ).checkbox( $.extend(options, {className: 'checked'}) );
+
+        //Bug fix: To avoid bsButton to add class 'active', selected is set to false in options for bsButton
+        var bsButtonOptions = $.extend({}, options);
+        bsButtonOptions.selected = false;
+        var $result = $.bsButton( bsButtonOptions ).checkbox( $.extend(options, {className: 'checked'}) );
+
+        return $result;
     };
 
     /**********************************************************
@@ -168,6 +174,7 @@
             });
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
+
         var result = $('<'+ options.tagName + '/>')
                         ._bsAddIdAndName( options )
                         ._bsAddBaseClassAndSize( options );

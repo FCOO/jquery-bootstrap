@@ -387,7 +387,13 @@
                 'far fa-square'                                          //Border
             ]]
         });
-        return $.bsButton( options ).checkbox( $.extend(options, {className: 'checked'}) );
+
+        //Bug fix: To avoid bsButton to add class 'active', selected is set to false in options for bsButton
+        var bsButtonOptions = $.extend({}, options);
+        bsButtonOptions.selected = false;
+        var $result = $.bsButton( bsButtonOptions ).checkbox( $.extend(options, {className: 'checked'}) );
+
+        return $result;
     };
 
     /**********************************************************
@@ -412,6 +418,7 @@
             });
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
+
         var result = $('<'+ options.tagName + '/>')
                         ._bsAddIdAndName( options )
                         ._bsAddBaseClassAndSize( options );
@@ -1725,7 +1732,7 @@ options
 
         //Append the items
         $.each(list, function(index, itemOptions){
-            var $item = null;
+            var $item = null, radioGroup = null;
             switch (itemOptions.type){
                 case 'button':
                     $item = $.bsButton($.extend(itemOptions, {returnFromClick: true}));
@@ -1736,7 +1743,8 @@ options
                     break;
 
                 case 'radio':
-                    $item = $.bsRadioButtonGroup(itemOptions).children();
+                    $item = $.bsRadioButtonGroup( $.extend({vertical: true}, itemOptions));
+                    radioGroup = $item.data('radioGroup');
                     break;
 
                 case 'content':
@@ -1763,6 +1771,7 @@ options
                 );
 
             options.list[index].$item = $item;
+            options.list[index].radioGroup = radioGroup;
         });
         $result.data('bsMenu_options', options);
         var update = $.proxy(updateBsMenu, $result);
@@ -1773,8 +1782,55 @@ options
         return $result;
     };
 
+    function eachBsMenuListItem( itemFunc, values, $this ){
+        $.each($this.data('bsMenu_options').list, function(index, item){
+            if (item.id && ( (item.type == 'checkbox') || (item.type == 'radio') ) )
+                itemFunc(item, values, $this );
+        });
+        return values;
+    }
 
+    $.fn._bsMenu_getValues = function(){
+        var values = {};
+        eachBsMenuListItem(
+            function( item, values ){
+                switch (item.type){
+                    case 'checkbox':
+                        values[item.id] = item.$item._cbxGet();
+                        break;
+                    case 'radio':
+                        values[item.id] = item.radioGroup.getSelected();
+                        break;
+                }
+            },
+            values,
+            this
+        );
+        return values;
+    };
 
+    $.fn._bsMenu_setValues = function(values){
+        eachBsMenuListItem(
+            function( item, values ){
+                var newValue = values[item.id];
+                if (newValue !== undefined){
+                    switch (item.type){
+                        case 'checkbox':
+                            if (item.$item._cbxGet() != newValue)
+                                item.$item._cbxSet( newValue );
+                            break;
+                        case 'radio':
+                            if (item.radioGroup.getSelected() != newValue)
+                                item.radioGroup.setSelected( newValue );
+                            break;
+                    }
+                }
+            },
+            values,
+            this
+        );
+        return values;
+    };
 }(jQuery, this, document));
 ;
 /****************************************************************************
@@ -3748,10 +3804,22 @@ options
     **********************************************************/
     $.fn.bsMenuPopover = function( options ){
         options = adjustItemOptionsForPopover(options, 'list');
-        return this.bsPopover( $.extend(options, {content: $.bsMenu(options)}) );
+
+        options.content = $.bsMenu(options);
+        this.data('popover_menu', options.content);
+
+        return this.bsPopover( options );
     };
 
 
+
+    $.fn.bsMenuPopover_getValues = function(){
+        return this.data('popover_menu')._bsMenu_getValues();
+    };
+
+    $.fn.bsMenuPopover_setValues = function( values ){
+        this.data('popover_menu')._bsMenu_setValues(values);
+    };
 
 
 }(jQuery, this, document));

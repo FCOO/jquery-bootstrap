@@ -316,10 +316,22 @@
     **********************************************************/
     $.fn.bsMenuPopover = function( options ){
         options = adjustItemOptionsForPopover(options, 'list');
-        return this.bsPopover( $.extend(options, {content: $.bsMenu(options)}) );
+
+        options.content = $.bsMenu(options);
+        this.data('popover_menu', options.content);
+
+        return this.bsPopover( options );
     };
 
 
+
+    $.fn.bsMenuPopover_getValues = function(){
+        return this.data('popover_menu')._bsMenu_getValues();
+    };
+
+    $.fn.bsMenuPopover_setValues = function( values ){
+        this.data('popover_menu')._bsMenu_setValues(values);
+    };
 
 
 }(jQuery, this, document));
