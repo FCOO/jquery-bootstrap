@@ -176,6 +176,10 @@ $('body').on('wheel', function(e){
         }).appendTo( $body );
 
         header('Buttons');
+        $.bsButton({icon: 'fa-map', square: true                }).appendTo( $body );
+        $.bsButton({icon: 'fa-map', square: true, bigIcon: true }).appendTo( $body );
+
+
         $.bsButton({text: 'Transparent', icon: 'fa-home', transparent: true}).appendTo( $body );
         $.bsButton({text: 'Semi Transparent', icon: 'fa-home', semiTransparent: true}).appendTo( $body );
 

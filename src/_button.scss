@@ -102,48 +102,42 @@ div.btn, div.list-group-item {
     Special version to have square buttons (with only icon)
     ************************************************************/
     &.square {
-        overflow: hidden;
+        $square-icon-width: 1.25em; //Same as fa-fw
 
-        $dim: calc(2 * #{$input-btn-padding-y} + #{$font-size-base * $input-btn-line-height} + 2 * #{$border-width});
+        //Horizontal and vertical center using flex-box
+        display        : inline-flex;
+        align-items    : center;
+        justify-content: center;
+
+        padding: 0 !important;
+
+        $dim: 2 * $input-btn-padding-y + $font-size-base * $input-btn-line-height + 2 * $border-width / 16px * 1rem;
         height: $dim;
-        min-width: $dim;
-        padding: $input-btn-padding-y;
+        width : $dim;
 
         &.btn-sm {
-            $small-dim: calc(2 * #{$input-btn-padding-y-sm} + #{$font-size-sm * $line-height-sm} + 2 * #{$border-width});
+            $small-dim: 2 * $input-btn-padding-y-sm + $font-size-sm * $line-height-sm + 2 * $border-width / 16px * 1rem;
             height: $small-dim;
-            min-width: $small-dim;
-            padding: $input-btn-padding-y-sm;
+            width : $small-dim;
         }
-        //Center icon
+
+        //.big-icon = Extra big icons
+        @mixin big-icon-font-size( $original-font-size ){
+            font-size: round($original-font-size/1rem*1.6*16px) / 16px * 1rem;
+        }
+        &.big-icon          { @include big-icon-font-size( $font-size-base ); }
+        &.btn-sm.big-icon   { @include big-icon-font-size( $font-size-sm   ); }
+
+        //Center icon and make space for icons with width > height
         & > i.fa {
+            width     : $square-icon-width;
+            height    : 1em;
             text-align: center;
         }
     }
 
-    /************************************************************
-    Special version to have extra large icon
-    ************************************************************/
-    $big-icon-padding: 0.25rem;
-    @mixin big-icon-font-size( $original-padding-y, $original-font-size, $original-line-height ){
-        //Ensure that the dim of the button is the same with big icons
-        font-size  : 2 * $original-padding-y + $original-font-size * $original-line-height - 2 * $big-icon-padding;
-    }
-
-    &.big-icon {
-        line-height    : 1;
-        padding        : $big-icon-padding !important;
-        flex-direction : row;
-        align-items    : center;
-        justify-content: center;
-        @include big-icon-font-size( $original-padding-y: $input-btn-padding-y, $original-font-size: $font-size-base, $original-line-height: $input-btn-line-height );
-
-        &.btn-sm {
-            @include big-icon-font-size( $original-padding-y: $input-btn-padding-y-sm, $original-font-size: $font-size-sm, $original-line-height: $line-height-sm );
-        }
-    }
-
     //Extra-extra large icon => The button gets bigger
+    $big-icon-padding: 0.25rem;
     &.extra-large-icon {
         line-height    : 1;
         padding        : $big-icon-padding !important;
