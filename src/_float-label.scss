@@ -163,7 +163,7 @@ Style for
 .input-group.input-group-border .has-fixed-label {
     position   : absolute;
     left       : 0;
-    top        : calc(-1 * (#{$input-border-width} + .5em));
+    top        : calc(-1 * (#{$input-border-width} + 1px + .5em));
     cursor     : default;
     z-index    : 4;
     line-height: 1;
