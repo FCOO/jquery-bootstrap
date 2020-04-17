@@ -2622,7 +2622,7 @@ options
         }
 
         this.bsModal.onPin = options.onPin;
-        this.bsModal.isPinned = false
+        this.bsModal.isPinned = false;
 
         options = $.extend( true, {
             headerClassName     : 'modal-header',

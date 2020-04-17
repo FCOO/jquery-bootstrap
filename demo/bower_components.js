@@ -17925,9 +17925,9 @@ return jQuery;
 }(jQuery, this, document));
 ;
 /*!
- * Bootstrap-select v1.13.11 (https://developer.snapappointments.com/bootstrap-select)
+ * Bootstrap-select v1.13.13 (https://developer.snapappointments.com/bootstrap-select)
  *
- * Copyright 2012-2019 SnapAppointments, LLC
+ * Copyright 2012-2020 SnapAppointments, LLC
  * Licensed under MIT (https://github.com/snapappointments/bootstrap-select/blob/master/LICENSE)
  */
 
@@ -18281,7 +18281,7 @@ return jQuery;
       opt = options[i];
 
       if (!(opt.disabled || opt.parentNode.tagName === 'OPTGROUP' && opt.parentNode.disabled)) {
-        value.push(opt.value || opt.text);
+        value.push(opt.value);
       }
     }
 
@@ -18613,6 +18613,8 @@ return jQuery;
   }
 
   elementTemplates.a.setAttribute('role', 'option');
+  if (version.major === '4') elementTemplates.a.className = 'dropdown-item';
+
   elementTemplates.subtext.className = 'text-muted';
 
   elementTemplates.text = elementTemplates.span.cloneNode(false);
@@ -18652,8 +18654,7 @@ return jQuery;
         }
       }
 
-      if (typeof classes !== 'undefined' && classes !== '') a.className = classes;
-      if (version.major === '4') a.classList.add('dropdown-item');
+      if (typeof classes !== 'undefined' && classes !== '') a.classList.add.apply(a.classList, classes.split(' '));
       if (inline) a.setAttribute('style', inline);
 
       return a;
@@ -18675,7 +18676,7 @@ return jQuery;
           // need to use <i> for icons in the button to prevent a breaking change
           // note: switch to span in next major release
           iconElement = (useFragment === true ? elementTemplates.i : elementTemplates.span).cloneNode(false);
-          iconElement.className = options.iconBase + ' ' + options.icon;
+          iconElement.className = this.options.iconBase + ' ' + options.icon;
 
           elementTemplates.fragment.appendChild(iconElement);
           elementTemplates.fragment.appendChild(whitespace);
@@ -18704,13 +18705,13 @@ return jQuery;
           subtextElement,
           iconElement;
 
-      textElement.innerHTML = options.label;
+      textElement.innerHTML = options.display;
 
       if (options.icon) {
         var whitespace = elementTemplates.whitespace.cloneNode(false);
 
         iconElement = elementTemplates.span.cloneNode(false);
-        iconElement.className = options.iconBase + ' ' + options.icon;
+        iconElement.className = this.options.iconBase + ' ' + options.icon;
 
         elementTemplates.fragment.appendChild(iconElement);
         elementTemplates.fragment.appendChild(whitespace);
@@ -18747,6 +18748,7 @@ return jQuery;
       search: {},
       current: {}, // current changes if a search is in progress
       view: {},
+      isSearching: false,
       keydown: {
         keyHistory: '',
         resetKeyHistory: {
@@ -18758,6 +18760,9 @@ return jQuery;
         }
       }
     };
+
+    this.sizeInfo = {};
+
     // If we have no title yet, try to pull it from the html title attribute (jQuery doesnt' pick it up as it's not a
     // data-attribute)
     if (this.options.title === null) {
@@ -18785,7 +18790,7 @@ return jQuery;
     this.init();
   };
 
-  Selectpicker.VERSION = '1.13.11';
+  Selectpicker.VERSION = '1.13.13';
 
   // part of this is duplicated in i18n/defaults-en_US.js. Make sure to update both.
   Selectpicker.DEFAULTS = {
@@ -18862,6 +18867,7 @@ return jQuery;
       }
 
       this.$newElement = this.createDropdown();
+      this.buildData();
       this.$element
         .after(this.$newElement)
         .prependTo(this.$newElement);
@@ -18950,7 +18956,7 @@ return jQuery;
       }
 
       setTimeout(function () {
-        that.createLi();
+        that.buildList();
         that.$element.trigger('loaded' + EVENT_KEY);
       });
     },
@@ -18985,7 +18991,7 @@ return jQuery;
       if (this.options.liveSearch) {
         searchbox =
           '<div class="bs-searchbox">' +
-            '<input type="text" class="form-control" autocomplete="off"' +
+            '<input type="search" class="form-control" autocomplete="off"' +
               (
                 this.options.liveSearchPlaceholder === null ? ''
                 :
@@ -19093,6 +19099,7 @@ return jQuery;
           selected,
           prevActive;
 
+      this.selectpicker.isSearching = isSearching;
       this.selectpicker.current = isSearching ? this.selectpicker.search : this.selectpicker.main;
 
       this.setPositionData();
@@ -19381,22 +19388,13 @@ return jQuery;
       return updateIndex;
     },
 
-    createLi: function () {
-      var that = this,
-          iconBase = this.options.iconBase,
-          optionSelector = ':not([hidden]):not([data-hidden="true"])',
-          mainElements = [],
+    buildData: function () {
+      var optionSelector = ':not([hidden]):not([data-hidden="true"])',
           mainData = [],
-          widestOptionLength = 0,
           optID = 0,
           startIndex = this.setPlaceholder() ? 1 : 0; // append the titleOption if necessary and skip the first option in the loop
 
       if (this.options.hideDisabled) optionSelector += ':not(:disabled)';
-
-      if ((that.options.showTick || that.multiple) && !elementTemplates.checkMark.parentNode) {
-        elementTemplates.checkMark.className = iconBase + ' ' + that.options.tickIcon + ' check-mark';
-        elementTemplates.a.appendChild(elementTemplates.checkMark);
-      }
 
       var selectOptions = this.$element[0].querySelectorAll('select > *' + optionSelector);
 
@@ -19414,14 +19412,6 @@ return jQuery;
 
         config = config || {};
         config.type = 'divider';
-
-        mainElements.push(
-          generateOption.li(
-            false,
-            classNames.DIVIDER,
-            (config.optID ? config.optID + 'div' : undefined)
-          )
-        );
 
         mainData.push(config);
       }
@@ -19443,30 +19433,14 @@ return jQuery;
 
           if (config.optID) optionClass = 'opt ' + optionClass;
 
+          config.optionClass = optionClass.trim();
+          config.inlineStyle = inlineStyle;
           config.text = option.textContent;
 
           config.content = option.getAttribute('data-content');
           config.tokens = option.getAttribute('data-tokens');
           config.subtext = option.getAttribute('data-subtext');
           config.icon = option.getAttribute('data-icon');
-          config.iconBase = iconBase;
-
-          var textElement = generateOption.text(config);
-          var liElement = generateOption.li(
-            generateOption.a(
-              textElement,
-              optionClass,
-              inlineStyle
-            ),
-            '',
-            config.optID
-          );
-
-          if (liElement.firstChild) {
-            liElement.firstChild.id = that.selectId + '-' + liIndex;
-          }
-
-          mainElements.push(liElement);
 
           option.liIndex = liIndex;
 
@@ -19474,26 +19448,10 @@ return jQuery;
           config.type = 'option';
           config.index = liIndex;
           config.option = option;
-          config.disabled = config.disabled || option.disabled;
+          config.selected = !!option.selected;
+          config.disabled = config.disabled || !!option.disabled;
 
           mainData.push(config);
-
-          var combinedLength = 0;
-
-          // count the number of characters in the option - not perfect, but should work in most cases
-          if (config.display) combinedLength += config.display.length;
-          if (config.subtext) combinedLength += config.subtext.length;
-          // if there is an icon, ensure this option's width is checked
-          if (config.icon) combinedLength += 1;
-
-          if (combinedLength > widestOptionLength) {
-            widestOptionLength = combinedLength;
-
-            // guess which option is the widest
-            // use this when calculating menu width
-            // not perfect, but it's fast, and the width will be updating accordingly when scrolling
-            that.selectpicker.view.widestOption = mainElements[mainElements.length - 1];
-          }
         }
       }
 
@@ -19506,12 +19464,12 @@ return jQuery;
         if (!options.length) return;
 
         var config = {
-              label: htmlEscape(optgroup.label),
+              display: htmlEscape(optgroup.label),
               subtext: optgroup.getAttribute('data-subtext'),
               icon: optgroup.getAttribute('data-icon'),
-              iconBase: iconBase
+              type: 'optgroup-label',
+              optgroupClass: ' ' + (optgroup.className || '')
             },
-            optgroupClass = ' ' + (optgroup.className || ''),
             headerIndex,
             lastIndex;
 
@@ -19521,18 +19479,9 @@ return jQuery;
           addDivider({ optID: optID });
         }
 
-        var labelElement = generateOption.label(config);
+        config.optID = optID;
 
-        mainElements.push(
-          generateOption.li(labelElement, 'dropdown-header' + optgroupClass, optID)
-        );
-
-        mainData.push({
-          display: config.label,
-          subtext: config.subtext,
-          type: 'optgroup-label',
-          optID: optID
-        });
+        mainData.push(config);
 
         for (var j = 0, len = options.length; j < len; j++) {
           var option = options[j];
@@ -19545,8 +19494,8 @@ return jQuery;
           addOption(option, {
             headerIndex: headerIndex,
             lastIndex: lastIndex,
-            optID: optID,
-            optgroupClass: optgroupClass,
+            optID: config.optID,
+            optgroupClass: config.optgroupClass,
             disabled: optgroup.disabled
           });
         }
@@ -19566,10 +19515,86 @@ return jQuery;
         }
       }
 
-      this.selectpicker.main.elements = mainElements;
-      this.selectpicker.main.data = mainData;
+      this.selectpicker.main.data = this.selectpicker.current.data = mainData;
+    },
 
-      this.selectpicker.current = this.selectpicker.main;
+    buildList: function () {
+      var that = this,
+          selectData = this.selectpicker.main.data,
+          mainElements = [],
+          widestOptionLength = 0;
+
+      if ((that.options.showTick || that.multiple) && !elementTemplates.checkMark.parentNode) {
+        elementTemplates.checkMark.className = this.options.iconBase + ' ' + that.options.tickIcon + ' check-mark';
+        elementTemplates.a.appendChild(elementTemplates.checkMark);
+      }
+
+      function buildElement (item) {
+        var liElement,
+            combinedLength = 0;
+
+        switch (item.type) {
+          case 'divider':
+            liElement = generateOption.li(
+              false,
+              classNames.DIVIDER,
+              (item.optID ? item.optID + 'div' : undefined)
+            );
+
+            break;
+
+          case 'option':
+            liElement = generateOption.li(
+              generateOption.a(
+                generateOption.text.call(that, item),
+                item.optionClass,
+                item.inlineStyle
+              ),
+              '',
+              item.optID
+            );
+
+            if (liElement.firstChild) {
+              liElement.firstChild.id = that.selectId + '-' + item.index;
+            }
+
+            break;
+
+          case 'optgroup-label':
+            liElement = generateOption.li(
+              generateOption.label.call(that, item),
+              'dropdown-header' + item.optgroupClass,
+              item.optID
+            );
+
+            break;
+        }
+
+        mainElements.push(liElement);
+
+        // count the number of characters in the option - not perfect, but should work in most cases
+        if (item.display) combinedLength += item.display.length;
+        if (item.subtext) combinedLength += item.subtext.length;
+        // if there is an icon, ensure this option's width is checked
+        if (item.icon) combinedLength += 1;
+
+        if (combinedLength > widestOptionLength) {
+          widestOptionLength = combinedLength;
+
+          // guess which option is the widest
+          // use this when calculating menu width
+          // not perfect, but it's fast, and the width will be updating accordingly when scrolling
+          that.selectpicker.view.widestOption = mainElements[mainElements.length - 1];
+        }
+      }
+
+      for (var len = selectData.length, i = 0; i < len; i++) {
+        var item = selectData[i];
+
+        buildElement(item);
+      }
+
+      this.selectpicker.main.elements = this.selectpicker.current.elements = mainElements;
     },
 
     findLis: function () {
@@ -19577,10 +19602,9 @@ return jQuery;
     },
 
     render: function () {
-      // ensure titleOption is appended and selected (if necessary) before getting selectedOptions
-      this.setPlaceholder();
-
       var that = this,
+          // ensure titleOption is appended and selected (if necessary) before getting selectedOptions
+          startIndex = this.setPlaceholder() ? 1 : 0,
           element = this.$element[0],
           selectedOptions = getSelectedOptions(element, this.options.hideDisabled),
           selectedCount = selectedOptions.length,
@@ -19597,7 +19621,7 @@ return jQuery;
       this.tabIndex();
 
       if (this.options.selectedTextFormat === 'static') {
-        titleFragment = generateOption.text({ text: this.options.title }, true);
+        titleFragment = generateOption.text.call(this, { text: this.options.title }, true);
       } else {
         showCount = this.multiple && this.options.selectedTextFormat.indexOf('count') !== -1 && selectedCount > 1;
 
@@ -19609,15 +19633,11 @@ return jQuery;
 
         // only loop through all selected options if the count won't be shown
         if (showCount === false) {
-          for (var selectedIndex = 0; selectedIndex < selectedCount; selectedIndex++) {
+          for (var selectedIndex = startIndex; selectedIndex < selectedCount; selectedIndex++) {
             if (selectedIndex < 50) {
               var option = selectedOptions[selectedIndex],
-                  titleOptions = {},
-                  thisData = {
-                    content: option.getAttribute('data-content'),
-                    subtext: option.getAttribute('data-subtext'),
-                    icon: option.getAttribute('data-icon')
-                  };
+                  thisData = this.selectpicker.main.data[option.liIndex],
+                  titleOptions = {};
 
               if (this.multiple && selectedIndex > 0) {
                 titleFragment.appendChild(multipleSeparator.cloneNode(false));
@@ -19631,13 +19651,12 @@ return jQuery;
               } else {
                 if (that.options.showIcon) {
                   titleOptions.icon = thisData.icon;
-                  titleOptions.iconBase = this.options.iconBase;
                 }
                 if (that.options.showSubtext && !that.multiple && thisData.subtext) titleOptions.subtext = ' ' + thisData.subtext;
                 titleOptions.text = option.textContent.trim();
               }
 
-              titleFragment.appendChild(generateOption.text(titleOptions, true));
+              titleFragment.appendChild(generateOption.text.call(this, titleOptions, true));
             } else {
               break;
             }
@@ -19655,7 +19674,7 @@ return jQuery;
           var totalCount = this.$element[0].querySelectorAll('select > option' + optionSelector + ', optgroup' + optionSelector + ' option' + optionSelector).length,
               tr8nText = (typeof this.options.countSelectedText === 'function') ? this.options.countSelectedText(selectedCount, totalCount) : this.options.countSelectedText;
 
-          titleFragment = generateOption.text({
+          titleFragment = generateOption.text.call(this, {
             text: tr8nText.replace('{0}', selectedCount.toString()).replace('{1}', totalCount.toString())
           }, true);
         }
@@ -19668,7 +19687,7 @@ return jQuery;
 
       // If the select doesn't have a title, then use the default, or if nothing is set at all, use noneSelectedText
       if (!titleFragment.childNodes.length) {
-        titleFragment = generateOption.text({
+        titleFragment = generateOption.text.call(this, {
           text: typeof this.options.title !== 'undefined' ? this.options.title : this.options.noneSelectedText
         }, true);
       }
@@ -19741,9 +19760,7 @@ return jQuery;
     },
 
     liHeight: function (refresh) {
-      if (!refresh && (this.options.size === false || this.sizeInfo)) return;
-
-      if (!this.sizeInfo) this.sizeInfo = {};
+      if (!refresh && (this.options.size === false || Object.keys(this.sizeInfo).length)) return;
 
       var newElement = document.createElement('div'),
           menu = document.createElement('div'),
@@ -19765,6 +19782,7 @@ return jQuery;
       text.className = 'text';
       a.className = 'dropdown-item ' + (firstOption ? firstOption.className : '');
       newElement.className = this.$menu[0].parentNode.className + ' ' + classNames.SHOW;
+      newElement.style.width = 0; // ensure button width doesn't affect natural width of menu when calculating
       if (this.options.width === 'auto') menu.style.minWidth = 0;
       menu.className = classNames.MENU + ' ' + classNames.SHOW;
       menuInner.className = 'inner ' + classNames.SHOW;
@@ -19898,7 +19916,8 @@ return jQuery;
           _minHeight,
           maxHeight,
           menuInnerMinHeight,
-          estimate;
+          estimate,
+          isDropup;
 
       if (this.options.dropupAuto) {
         // Get the estimated height of the menu without scrollbars.
@@ -19906,7 +19925,16 @@ return jQuery;
         // below the button without setting dropup, but we can't know
         // the exact height of the menu until createView is called later
         estimate = liHeight * this.selectpicker.current.elements.length + menuPadding.vert;
-        this.$newElement.toggleClass(classNames.DROPUP, this.sizeInfo.selectOffsetTop - this.sizeInfo.selectOffsetBot > this.sizeInfo.menuExtras.vert && estimate + this.sizeInfo.menuExtras.vert + 50 > this.sizeInfo.selectOffsetBot);
+
+        isDropup = this.sizeInfo.selectOffsetTop - this.sizeInfo.selectOffsetBot > this.sizeInfo.menuExtras.vert && estimate + this.sizeInfo.menuExtras.vert + 50 > this.sizeInfo.selectOffsetBot;
+
+        // ensure dropup doesn't change while searching (so menu doesn't bounce back and forth)
+        if (this.selectpicker.isSearching === true) {
+          isDropup = this.selectpicker.dropup;
+        }
+
+        this.$newElement.toggleClass(classNames.DROPUP, isDropup);
+        this.selectpicker.dropup = isDropup;
       }
 
       if (this.options.size === 'auto') {
@@ -19963,32 +19991,33 @@ return jQuery;
       this.liHeight(refresh);
 
       if (this.options.header) this.$menu.css('padding-top', 0);
-      if (this.options.size === false) return;
 
-      var that = this,
-          $window = $(window);
+      if (this.options.size !== false) {
+        var that = this,
+            $window = $(window);
 
-      this.setMenuSize();
+        this.setMenuSize();
 
-      if (this.options.liveSearch) {
-        this.$searchbox
-          .off('input.setMenuSize propertychange.setMenuSize')
-          .on('input.setMenuSize propertychange.setMenuSize', function () {
-            return that.setMenuSize();
-          });
+        if (this.options.liveSearch) {
+          this.$searchbox
+            .off('input.setMenuSize propertychange.setMenuSize')
+            .on('input.setMenuSize propertychange.setMenuSize', function () {
+              return that.setMenuSize();
+            });
+        }
+
+        if (this.options.size === 'auto') {
+          $window
+            .off('resize' + EVENT_KEY + '.' + this.selectId + '.setMenuSize' + ' scroll' + EVENT_KEY + '.' + this.selectId + '.setMenuSize')
+            .on('resize' + EVENT_KEY + '.' + this.selectId + '.setMenuSize' + ' scroll' + EVENT_KEY + '.' + this.selectId + '.setMenuSize', function () {
+              return that.setMenuSize();
+            });
+        } else if (this.options.size && this.options.size != 'auto' && this.selectpicker.current.elements.length > this.options.size) {
+          $window.off('resize' + EVENT_KEY + '.' + this.selectId + '.setMenuSize' + ' scroll' + EVENT_KEY + '.' + this.selectId + '.setMenuSize');
+        }
       }
 
-      if (this.options.size === 'auto') {
-        $window
-          .off('resize' + EVENT_KEY + '.' + this.selectId + '.setMenuSize' + ' scroll' + EVENT_KEY + '.' + this.selectId + '.setMenuSize')
-          .on('resize' + EVENT_KEY + '.' + this.selectId + '.setMenuSize' + ' scroll' + EVENT_KEY + '.' + this.selectId + '.setMenuSize', function () {
-            return that.setMenuSize();
-          });
-      } else if (this.options.size && this.options.size != 'auto' && this.selectpicker.current.elements.length > this.options.size) {
-        $window.off('resize' + EVENT_KEY + '.' + this.selectId + '.setMenuSize' + ' scroll' + EVENT_KEY + '.' + this.selectId + '.setMenuSize');
-      }
-
-      that.createView(false, true, refresh);
+      this.createView(false, true, refresh);
     },
 
     setWidth: function () {
@@ -20218,8 +20247,6 @@ return jQuery;
     },
 
     checkDisabled: function () {
-      var that = this;
-
       if (this.isDisabled()) {
         this.$newElement[0].classList.add(classNames.DISABLED);
         this.$button.addClass(classNames.DISABLED).attr('tabindex', -1).attr('aria-disabled', true);
@@ -20233,10 +20260,6 @@ return jQuery;
           this.$button.removeAttr('tabindex');
         }
       }
-
-      this.$button.on('click', function () {
-        return !that.isDisabled();
-      });
     },
 
     tabIndex: function () {
@@ -20526,8 +20549,6 @@ return jQuery;
 
           if (normalizeSearch) q = normalizeToBase(q);
 
-          that._$lisSelected = that.$menuInner.find('.selected');
-
           for (var i = 0; i < that.selectpicker.main.data.length; i++) {
             var li = that.selectpicker.main.data[i];
 
@@ -20630,14 +20651,14 @@ return jQuery;
 
       element.classList.add('bs-select-hidden');
 
-      for (var i = 0, len = this.selectpicker.current.elements.length; i < len; i++) {
-        var liData = this.selectpicker.current.data[i],
+      for (var i = 0, data = this.selectpicker.current.data, len = data.length; i < len; i++) {
+        var liData = data[i],
             option = liData.option;
 
         if (option && !liData.disabled && liData.type !== 'divider') {
           if (liData.selected) previousSelected++;
           option.selected = status;
-          if (status) currentSelected++;
+          if (status === true) currentSelected++;
         }
       }
 
@@ -20686,6 +20707,9 @@ return jQuery;
           scrollTop = that.$menuInner[0].scrollTop,
           isVirtual = that.isVirtual(),
           position0 = isVirtual === true ? that.selectpicker.view.position0 : 0;
+
+      // do nothing if a function key is pressed
+      if (e.which >= 112 && e.which <= 123) return;
 
       isActive = that.$newElement.hasClass(classNames.SHOW);
 
@@ -20897,7 +20921,8 @@ return jQuery;
       this.checkDisabled();
       this.setStyle();
       this.render();
-      this.createLi();
+      this.buildData();
+      this.buildList();
       this.setWidth();
 
       this.setSize(true);
@@ -21050,8 +21075,13 @@ return jQuery;
     return this;
   };
 
+  // get Bootstrap's keydown event handler for either Bootstrap 4 or Bootstrap 3
+  var bootstrapKeydown = $.fn.dropdown.Constructor._dataApiKeydownHandler || $.fn.dropdown.Constructor.prototype.keydown;
+
   $(document)
     .off('keydown.bs.dropdown.data-api')
+    .on('keydown.bs.dropdown.data-api', ':not(.bootstrap-select) > [data-toggle="dropdown"]', bootstrapKeydown)
+    .on('keydown.bs.dropdown.data-api', ':not(.bootstrap-select) > .dropdown-menu', bootstrapKeydown)
     .on('keydown' + EVENT_KEY, '.bootstrap-select [data-toggle="dropdown"], .bootstrap-select [role="listbox"], .bootstrap-select .bs-searchbox input', Selectpicker.prototype.keydown)
     .on('focusin.modal', '.bootstrap-select [data-toggle="dropdown"], .bootstrap-select [role="listbox"], .bootstrap-select .bs-searchbox input', function (e) {
       e.stopPropagation();
@@ -24298,6 +24328,7 @@ if (typeof define === 'function' && define.amd) {
 
     return data;
   }
+  var isIE10 = typeof window !== 'undefined' && window.navigator && window.navigator.userAgent && window.navigator.userAgent.indexOf('MSIE') > -1;
 
   var ResourceStore =
   /*#__PURE__*/
@@ -24315,7 +24346,10 @@ if (typeof define === 'function' && define.amd) {
       _classCallCheck(this, ResourceStore);
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(ResourceStore).call(this));
-      EventEmitter.call(_assertThisInitialized(_this)); // <=IE10 fix (unable to call parent constructor)
+
+      if (isIE10) {
+        EventEmitter.call(_assertThisInitialized(_this)); // <=IE10 fix (unable to call parent constructor)
+      }
 
       _this.data = data || {};
       _this.options = options;
@@ -24490,7 +24524,10 @@ if (typeof define === 'function' && define.amd) {
       _classCallCheck(this, Translator);
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(Translator).call(this));
-      EventEmitter.call(_assertThisInitialized(_this)); // <=IE10 fix (unable to call parent constructor)
+
+      if (isIE10) {
+        EventEmitter.call(_assertThisInitialized(_this)); // <=IE10 fix (unable to call parent constructor)
+      }
 
       copy(['resourceStore', 'languageUtils', 'pluralResolver', 'interpolator', 'backendConnector', 'i18nFormat', 'utils'], services, _assertThisInitialized(_this));
       _this.options = options;
@@ -24908,6 +24945,7 @@ if (typeof define === 'function' && define.amd) {
         var found = fallbacks[code];
         if (!found) found = fallbacks[this.getScriptPartFromCode(code)];
         if (!found) found = fallbacks[this.formatLanguageCode(code)];
+        if (!found) found = fallbacks[this.getLanguagePartFromCode(code)];
         if (!found) found = fallbacks["default"];
         return found || [];
       }
@@ -25221,6 +25259,18 @@ if (typeof define === 'function' && define.amd) {
     return PluralResolver;
   }();
 
+  function _arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
+  }
+
+  function _nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance");
+  }
+
+  function _toArray(arr) {
+    return _arrayWithHoles(arr) || _iterableToArray(arr) || _nonIterableRest();
+  }
+
   var Interpolator =
   /*#__PURE__*/
   function () {
@@ -25370,6 +25420,8 @@ if (typeof define === 'function' && define.amd) {
     }, {
       key: "nest",
       value: function nest(str, fc) {
+        var _this2 = this;
+
         var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
         var match;
         var value;
@@ -25405,6 +25457,28 @@ if (typeof define === 'function' && define.amd) {
 
 
         while (match = this.nestingRegexp.exec(str)) {
+          var formatters = [];
+          /**
+           * If there is more than one parameter (contains the format separator). E.g.:
+           *   - t(a, b)
+           *   - t(a, b, c)
+           *
+           * And those parameters are not dynamic values (parameters do not include curly braces). E.g.:
+           *   - Not t(a, { "key": "{{variable}}" })
+           *   - Not t(a, b, {"keyA": "valueA", "keyB": "valueB"})
+           */
+
+          if (match[0].includes(this.formatSeparator) && !/{.*}/.test(match[1])) {
+            var _match$1$split$map = match[1].split(this.formatSeparator).map(function (elem) {
+              return elem.trim();
+            });
+
+            var _match$1$split$map2 = _toArray(_match$1$split$map);
+
+            match[1] = _match$1$split$map2[0];
+            formatters = _match$1$split$map2.slice(1);
+          }
+
           value = fc(handleHasOptions.call(this, match[1].trim(), clonedOptions), clonedOptions); // is only the nesting key (key1 = '$(key2)') return the value without stringify
 
           if (value && match[0] === str && typeof value !== 'string') return value; // no string to include or empty
@@ -25414,9 +25488,12 @@ if (typeof define === 'function' && define.amd) {
           if (!value) {
             this.logger.warn("missed to resolve ".concat(match[1], " for nesting ").concat(str));
             value = '';
-          } // Nested keys should not be escaped by default #854
-          // value = this.escapeValue ? regexSafe(utils.escape(value)) : regexSafe(value);
+          }
 
+          value = formatters.reduce(function (v, f) {
+            return _this2.format(v, f, options.lng, options);
+          }, value.trim()); // Nested keys should not be escaped by default #854
+          // value = this.escapeValue ? regexSafe(utils.escape(value)) : regexSafe(value);
 
           str = str.replace(match[0], value);
           this.regexp.lastIndex = 0;
@@ -25428,10 +25505,6 @@ if (typeof define === 'function' && define.amd) {
 
     return Interpolator;
   }();
-
-  function _arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-  }
 
   function _iterableToArrayLimit(arr, i) {
     var _arr = [];
@@ -25457,10 +25530,6 @@ if (typeof define === 'function' && define.amd) {
     }
 
     return _arr;
-  }
-
-  function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance");
   }
 
   function _slicedToArray(arr, i) {
@@ -25489,7 +25558,10 @@ if (typeof define === 'function' && define.amd) {
       _classCallCheck(this, Connector);
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(Connector).call(this));
-      EventEmitter.call(_assertThisInitialized(_this)); // <=IE10 fix (unable to call parent constructor)
+
+      if (isIE10) {
+        EventEmitter.call(_assertThisInitialized(_this)); // <=IE10 fix (unable to call parent constructor)
+      }
 
       _this.backend = backend;
       _this.store = store;
@@ -25613,7 +25685,7 @@ if (typeof define === 'function' && define.amd) {
         var _this3 = this;
 
         var tried = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-        var wait = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 250;
+        var wait = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 350;
         var callback = arguments.length > 5 ? arguments[5] : undefined;
         if (!lng.length) return callback(null, {}); // noting to load
 
@@ -25841,7 +25913,10 @@ if (typeof define === 'function' && define.amd) {
       _classCallCheck(this, I18n);
 
       _this = _possibleConstructorReturn(this, _getPrototypeOf(I18n).call(this));
-      EventEmitter.call(_assertThisInitialized(_this)); // <=IE10 fix (unable to call parent constructor)
+
+      if (isIE10) {
+        EventEmitter.call(_assertThisInitialized(_this)); // <=IE10 fix (unable to call parent constructor)
+      }
 
       _this.options = transformOptions(options);
       _this.services = {};
@@ -26048,6 +26123,9 @@ if (typeof define === 'function' && define.amd) {
     }, {
       key: "use",
       value: function use(module) {
+        if (!module) throw new Error('You are passing an undefined module! Please check the object you are passing to i18next.use()');
+        if (!module.type) throw new Error('You are passing a wrong module! Please check the object you are passing to i18next.use()');
+
         if (module.type === 'backend') {
           this.modules.backend = module;
         }
@@ -26298,6 +26376,10 @@ if (typeof define === 'function' && define.amd) {
         membersToCopy.forEach(function (m) {
           clone[m] = _this8[m];
         });
+        clone.services = _objectSpread({}, this.services);
+        clone.services.utils = {
+          hasLoadedNamespace: clone.hasLoadedNamespace.bind(clone)
+        };
         clone.translator = new Translator(clone.services, clone.options);
         clone.translator.on('*', function (event) {
           for (var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
@@ -26309,6 +26391,9 @@ if (typeof define === 'function' && define.amd) {
         clone.init(mergedOptions, callback);
         clone.translator.options = clone.options; // sync options
 
+        clone.translator.backendConnector.services.utils = {
+          hasLoadedNamespace: clone.hasLoadedNamespace.bind(clone)
+        };
         return clone;
       }
     }]);
@@ -31262,7 +31347,7 @@ if (typeof define === 'function' && define.amd) {
         handle      : "down",   // Choose handle type, could be "horizontal", "vertical", "down", "up", "left", "right", "round", "range", or "fixed"
         readOnly    : false,    // Locks slider and makes it inactive.
         disable     : false,    // Locks slider and makes it disable ("dissy")
-        handleFixed: false,     // Special version where the slider is fixed and the grid are moved left or right to select value. handle is set to "single"
+        handleFixed : false,    // Special version where the slider is fixed and the grid are moved left or right to select value. handle is set to "single"
                                 // A value for options.width OR options.valueDistances must be provided
         mousewheel  : true,     // Adds mousewheel-event to the parent-element of the slider. Works best if the parent-element only contains the slider and has a fixed height and width
         resizable   : false,    //If true the container of the slider can be resized and the grid will automatic redraw to adjust number of ticks and labels to the new width
@@ -31337,12 +31422,12 @@ if (typeof define === 'function' && define.amd) {
 
         //Adjust labels and markers
         prettify        : null,  // Set up your prettify function. Can be anything. For example, you can set up unix time as slider values and than transform them to cool looking dates.
-        prettifyLabel  : null,  // As  prettify  but for the labels in the grid.
+        prettifyLabel  : null,   // As  prettify  but for the labels in the grid.
         prefix          : "",    // Set prefix for values. Will be set up right before the number: $100
         postfix         : "",    // Set postfix for values. Will be set up right after the number: 100k
-        decorateBoth   : true,  // Used for options.double:true and only if prefix or postfix was set up. Determine how to decorate close values. For example: $10k - $100k or $10 - 100k
-        decorateLabel  : false, // The labels in the grid also gets  prefix  and/or  postfix
-        valuesSeparator: " - ", // Text between min and max value when labels are combined. valuesSeparator:" to " => "12 to 24"
+        decorateBoth   : true,   // Used for options.double:true and only if prefix or postfix was set up. Determine how to decorate close values. For example: $10k - $100k or $10 - 100k
+        decorateLabel  : false,  // The labels in the grid also gets  prefix  and/or  postfix
+        valuesSeparator: " - ",  // Text between min and max value when labels are combined. valuesSeparator:" to " => "12 to 24"
 
         //Callback
         onCreate : null, // Called when the slider is created the first time.
@@ -31357,34 +31442,43 @@ if (typeof define === 'function' && define.amd) {
         //Buttons
         buttons      : {value:{}, from:{}, to:{} },
         /*
-        JSON-record with id or buttons for first, previous, (now,) next, and last value
+        JSON-record with id or buttons for first, previousPage, previousShift, previous, (now,) next, nextShift, nextPage and last value
             options.buttons = {
                 value: {buttonList},
                 from : {buttonList},
                 to   : {buttonList}
             }
             {buttonList} = {
-                firstBtn   : element or string,
-                previousBtn: element or string,
-                nowBtn     : element or string,
-                nextBtn    : element or string,
-                lastBtn    : element or string
+                firstBtn        : element or string,
+                previousPageBtn : element or string,
+                previousShiftBtn: element or string,
+                previousBtn     : element or string,
+                nowBtn          : element or string,
+                nextBtn         : element or string,
+                nextShiftBtn    : element or string,
+                nextPageBtn     : element or string,
+                lastBtn         : element or string
             }
         */
+
 
         /****************************************
         Internal options
         ****************************************/
-        minDistanceRem: 4/16, //Minimum distance between ticks and between labels
-
-        //Internal options for clicking on buttons
+        //The standard button-ids are firstBtn, previousBtn, nowBtn, nextBtn, lastBtn with the following steps
         buttonOptions: {
-            'firstBtn'   : { sign: -1, delta: 99 },
-            'previousBtn': { sign: -1, delta:  1 },
-            'nowBtn'     : { sign: +1, delta:  0 },
-            'nextBtn'    : { sign: +1, delta:  1 },
-            'lastBtn'    : { sign: +1, delta: 99 }
-        }
+            'firstBtn'        : { sign: -1, delta: 99 },
+            'previousPageBtn' : { sign: -1, delta:  3 },
+            'previousShiftBtn': { sign: -1, delta:  2 },
+            'previousBtn'     : { sign: -1, delta:  1 },
+            'nowBtn'          : { sign: +1, delta:  0 },
+            'nextBtn'         : { sign: +1, delta:  1 },
+            'nextShiftBtn'    : { sign: +1, delta:  2 },
+            'nextPageBtn'     : { sign: +1, delta:  3 },
+            'lastBtn'         : { sign: +1, delta: 99 }
+        },
+
+        minDistanceRem: 4/16 //Minimum distance between ticks and between labels
 
     };
 
@@ -31498,7 +31592,7 @@ if (typeof define === 'function' && define.amd) {
         Set and adjust options that can't be changed by this.update(options)
         *******************************************************************/
         // get config from options
-        this.options = $.extend( {}, defaultOptions, options );
+        this.options = $.extend(true, {}, defaultOptions, options );
 
         if (this.options.handleFixed){
             this.options.double = false;
@@ -32011,7 +32105,9 @@ if (typeof define === 'function' && define.amd) {
                 this.cache.$container.addClass("has-pin");
 
             //Append buttons
-            function getButton( id ){ return $.type( id ) === 'string' ? $('#' +  id ) : id; }
+            function getButton( id ){
+                return $.type( id ) === 'string' ? $('#' +  id ) : id;
+            }
             this.options.buttons.value = this.options.buttons.value || {};
             this.options.buttons.from = this.options.buttons.from || {};
             this.options.buttons.to   = this.options.buttons.to   || {};
@@ -32135,7 +32231,7 @@ if (typeof define === 'function' && define.amd) {
                     this.mousewheel
                 );
 
-            //Add keyboard events to theline
+            //Add keyboard events to the line
             addEvents( this.cache.$line, "keydown", this.key );
 
             //Bind click on buttons
@@ -32147,7 +32243,7 @@ if (typeof define === 'function' && define.amd) {
                     addEvents( $btn, 'mouseleave', _this.endRepeatingClick,                  true    );
                     addEvents( $btn, 'click',      _this.moveByButtonOrKeyboardOrMouseWheel, options );
 
-                    if ( $btn && $btn.autoclickWhilePressed && (options.delta == 1) && (!$btn.data('auto-click-when-pressed-added')) ){
+                    if ( $btn && $btn.autoclickWhilePressed && options.delta && (options.delta != 99) && (!$btn.data('auto-click-when-pressed-added')) ){
                         $btn.data('auto-click-when-pressed-added', true);
                         $btn.autoclickWhilePressed();
                     }
@@ -32485,7 +32581,6 @@ if (typeof define === 'function' && define.amd) {
 
             this.currentHandleBlur();
 
-
             //First check if the tap was on a handle or the marker of a handler
             if (!this.options.isFixed)
                 $.each( this.handles, function( id, handle ){
@@ -32648,8 +32743,6 @@ if (typeof define === 'function' && define.amd) {
         },
 
 
-
-
         /*******************************************************************
         updateHandlesAndLines
         *******************************************************************/
@@ -32692,6 +32785,7 @@ if (typeof define === 'function' && define.amd) {
                 var containerLeft =
                         -1.0 * this.dimentions.containerWidthRem * this.handles.fixed.value.percent/100 +
                          0.5 * this.dimentions.outerContainerWidthRem;
+
                 this.cache.$container.css('left', toFixed(containerLeft) + 'rem');
             }
 
@@ -39946,6 +40040,11 @@ module.exports = ret;
         return Promise.defaultErrorHandler( createErrorObject( reason, url ) );
     }
 
+    //Promise.defaultPrefetch = function(url, options): To be called before ALL fetch
+    Promise.defaultPrefetch = null;
+
+    //Promise.defaultFinally = function(): To be called as finally for ALL Promise.get
+    Promise.defaultFinally = null;
 
     /**************************************************************
     Promise.fetch( url, options )
@@ -39956,7 +40055,7 @@ module.exports = ret;
         options = $.extend( {}, {
             retries   : 3,
             retryDelay: 1000,
-            noCache   : true,
+            noCache   : false,
             //            cache     : 'reload',  //TODO: Check if it works
 /*REMOVE FOR NOW. NEED TO FIND A WAY TO FORCE NO-CACHE
             headers   : {
@@ -39968,6 +40067,9 @@ module.exports = ret;
         //Adding parame dummy=12345678 if options.noCache: true to force no-cache. TODO: Replaced with correct header
         if (options.noCache)
             url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
+
+        if (Promise.defaultPrefetch)
+            Promise.defaultPrefetch(url, options);
 
         return new Promise(function(resolve, reject) {
             var wrappedFetch = function(n) {
@@ -40109,8 +40211,15 @@ module.exports = ret;
                 result = result.catch( function(){} );
 
         //Adding finally (if any)
-        if (fin)
-            result = result.finally( fin );
+        if (fin || Promise.defaultFinally){
+            var finFunc =   fin && Promise.defaultFinally ?
+                            function(){
+                                fin.apply(null, arguments);
+                                Promise.defaultFinally.apply(null, arguments);
+                            } : fin || Promise.defaultFinally;
+
+            result = result.finally( finFunc );
+        }
 
         result.promiseOptions = options;
         return result;
@@ -51025,7 +51134,7 @@ options:
     window.TimeSlider = function (input, options, pluginCount) {
         var _this = this;
 
-        this.VERSION = "6.1.4";
+        this.VERSION = "6.1.5";
 
         //Setting default options
         this.options = $.extend( true, {}, defaultOptions, options );
@@ -51343,6 +51452,9 @@ options:
         setFormat
         ***************************************************************/
         setFormat: function( format ){
+            //Reset label-width in case time-format is changed (12h <-> 24h)
+            this.options.maxLabelWidthRem = 0;
+
             this._updateOptionsFormat( format );
             this.update();
             this.updateDisplay();
