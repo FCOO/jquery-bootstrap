@@ -795,6 +795,16 @@
         },
 
         /*******************************************************
+        getFormGroup
+        *******************************************************/
+        getFormGroup: function(){
+            this.$formGroup = this.$formGroup || this.getElement().parents('.form-group').first();
+            if (!this.$formGroup.length)
+                this.$formGroup = this.getElement();
+            return this.$formGroup;
+        },
+
+        /*******************************************************
         setValue
         *******************************************************/
         setValue: function(value, validate){
@@ -924,19 +934,13 @@
                     this.resetValue( true );
                 }
 
-                if (!this.$outerElement){
-                    //Find the element to show/hide
-                    this.$outerElement = this.getElement().parents('.form-group').first();
-                    if (!this.$outerElement.length)
-                        this.$outerElement = this.getElement();
-                }
 
                 if (this.options.freeSpaceWhenHidden)
                     //When the element is invisible: Use display:none
-                    this.$outerElement.toggleClass('d-none', !show);
+                    this.getFormGroup().toggleClass('d-none', !show);
                 else
                     //When the element is invisible: Use visibility:hidden to keep structure of form and it elements
-                    this.$outerElement.css('visibility', show ? 'visible' : 'hidden');
+                    this.getFormGroup().css('visibility', show ? 'visible' : 'hidden');
 
                 this.getElement().prop('disabled', !show);
 
