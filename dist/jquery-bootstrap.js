@@ -1477,6 +1477,17 @@
             return $input._wrapLabel(options);
         },
 
+
+        /******************************************************
+        $.bsText( options )
+        Create a <div> with text inside a <label>
+        ******************************************************/
+        bsText: function( options ){
+            return $('<div/>')
+                       ._bsAddHtml( options )
+                       .addClass('form-control-border form-control no-hover')
+                       ._wrapLabel(options);
+        }
     });
 
 
@@ -1884,6 +1895,7 @@ options
         if (!$modalBackdrop)
             $modalBackdrop =
                 $('<div/>')
+                    .append( $('<i/>')._bsAddHtml({icon:'fa-spinner fa-spin'}) )
                     .addClass('global-backdrop')
                     .appendTo( $('body') );
 
@@ -1895,7 +1907,7 @@ options
 
     /******************************************************
     $._removeModalBackdropLevel
-    Move the backdrop up in z-index
+    Move the backdrop down in z-index
     ******************************************************/
     $._removeModalBackdropLevel = function( noDelay ){
         modalBackdropLevels--;
@@ -1910,6 +1922,27 @@ options
                 window.setTimeout( function(){ $modalBackdrop.addClass('hidden'); }, 2000 );
         }
     };
+
+
+    /******************************************************
+    $.workingOn / $.workingOff
+    Display/hide a bagdrop while some process is 'working'
+    ******************************************************/
+    $.workingOn = function(){
+        window.setTimeout(function(){
+            $._addModalBackdropLevel();
+            $modalBackdrop.addClass('working');
+        }, 100);
+    };
+    $.workingOff = function(){
+        window.setTimeout(function(){
+            $._removeModalBackdropLevel(true);
+            $modalBackdrop.removeClass('working');
+        }, 100);
+
+    };
+
+
 }(jQuery, this, document));
 ;
 /****************************************************************************
@@ -5496,7 +5529,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             function buildBaseSlider(options, $parent){ buildSlider(options, 'baseSlider', $parent); }
             function buildTimeSlider(options, $parent){ buildSlider(options, 'timeSlider', $parent); }
 
-            function buildText( options ){
+            function buildTextBox( options ){
                 return $('<div/>')._bsAddHtml( options );
             }
 
@@ -5509,6 +5542,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                            .addClass('flex-column')
                            ._bsAppendContent(options.content);
             }
+
 
             if (!options)
                 return this;
@@ -5551,7 +5585,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                         case 'accordion'        :   buildFunc = $.bsAccordion;          break;
                         case 'slider'           :   buildFunc = buildBaseSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'timeslider'       :   buildFunc = buildTimeSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
-                        case 'text'             :   buildFunc = buildText;              insideFormGroup = true; addBorder = true; noValidation = true; break;
+                        case 'text'             :   buildFunc = $.bsText;               insideFormGroup = true; break;
+                        case 'textbox'          :   buildFunc = buildTextBox;           insideFormGroup = true; addBorder = true; noValidation = true; break;
                         case 'fileview'         :   buildFunc = $.bsFileView;           break;
                         case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
                         case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;

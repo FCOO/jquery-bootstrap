@@ -25,11 +25,23 @@ MODAL-BACKDROP
     }
 
     &.show {
-        display  : block;
+//        display  : block;
+        display        : flex;
+        justify-content: center;
+        align-items    : center;
         opacity  : $modal-backdrop-opacity;
         animation: fadeInFromNone .3s ease-out;
     }
 
+    i {
+        display  : none;
+        font-size: 24px;
+        color    : white;
+      }
+    &.working {
+        z-index: 99999 !important;
+        i { display: block; }
+    }
 }
 
 @keyframes fadeInFromNone {

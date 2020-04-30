@@ -108,16 +108,16 @@ All control elements get same border-color when normal, hover, active and error
 @mixin control-border-color-hover( $border-color-hover: $control-border-color-hover, $incl-z-index: true){
     @if $incl-z-index == true {
         //Move 'up' when focus or hover
-        &.focus:not(:disabled):not(.disabled),
-        &:focus:not(:disabled):not(.disabled),
-        .mouse-hover &:hover:not(:disabled):not(.disabled) {
+        &.focus:not(:disabled):not(.disabled):not(.no-hover),
+        &:focus:not(:disabled):not(.disabled):not(.no-hover),
+        .mouse-hover &:hover:not(:disabled):not(.disabled):not(.no-hover) {
                position: relative;
                z-index : 4;
         }
     }
 
     //hover, not focus, not disabled
-    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled) {
+    .mouse-hover &:hover:not(:focus):not(:disabled):not(.disabled):not(.no-hover) {
         border-color: $border-color-hover;
     }
 }

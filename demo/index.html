@@ -266,15 +266,15 @@ return;
             });
 
             $.bsNoty({
-                type: 'success',
+                type  : 'success',
                 layout:'center',
-                text: {
+                text  : {
                     icon: 'fa-check',
                     text:{da:'Opsæning gemt', en:'Settings saved'}
                 },
-                closeWith:['click'],
-                force: true, //timeout: 2000
-                modal: true,
+                closeWith: ['click'],
+                force    : true,
+                modal    : true,
                 textAlign: 'center'
             });
 
@@ -1241,8 +1241,17 @@ width: 543,
                                             type: 'hidden'
                                         },
                                         {
-                                            type: 'text', label: 'En label',
+                                            type: 'textbox', label: 'TextBox',
                                             text: 'Davs med dig<br>Ny linie'
+                                        },
+                                        {
+                                            type: 'text', label: 'Text',
+                                            icon:' fa-home',
+                                            text: {da:'Davs med dig',en:'Hello with you'},
+
+                                            after : {type:'button', text:{da:'kr.', en:'£'}},
+                                            before: {type:'button',  icon:'fa-calculator'}
+
                                         },
 
                                         {
@@ -1722,6 +1731,13 @@ _small: true,
             placement: 'top',
             list: list2
          });
+
+
+    setTimeout($.workingOn, 2000);
+    setTimeout($.workingOff, 10000);
+
+
+
 </script>
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
