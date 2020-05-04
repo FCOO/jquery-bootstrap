@@ -4166,7 +4166,7 @@ options
                 .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
                 .addClass( options.center ? 'text-center' : '')
                 .appendTo( $result )
-                ._bsAddHtml( itemOptions/*, true */);
+                ._bsAddHtml( itemOptions, false, false, true );
 
             if (isItem)
                 radioGroup.addElement( $item, itemOptions );
@@ -5362,7 +5362,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         checkForContent: [Boolean] If true AND options.content exists => use options.content instead
         ****************************************************************************************/
 
-        _bsAddHtml:  function( options, /*checkForContent*/htmlInDiv, ignoreLink ){
+        _bsAddHtml:  function( options, htmlInDiv, ignoreLink, checkForContent ){
             //**************************************************
             function getArray( input ){
                 return input ? $.isArray( input ) ? input : [input] : [];
@@ -5390,6 +5390,11 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             //**************************************************
             options = options || '';
+
+            if (options.content && checkForContent)
+                return this._bsAddHtml(options.content, htmlInDiv, ignoreLink);
+
+
             var _this = this;
 
             //options = array => add each
