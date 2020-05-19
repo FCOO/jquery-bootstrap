@@ -54,7 +54,18 @@
                        ._bsAddHtml( options )
                        .addClass('form-control-border form-control no-hover')
                        ._wrapLabel(options);
+        },
+
+        /******************************************************
+        $.bsTextArea( options )
+        Create a <div> with text inside a <label>
+        ******************************************************/
+        bsTextArea: function( options ){
+            var $result = $.bsText( options );
+            $result.children('.form-control').css('height', 'auto');
+            return $result;
         }
+
     });
 
 

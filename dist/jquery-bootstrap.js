@@ -1487,7 +1487,18 @@
                        ._bsAddHtml( options )
                        .addClass('form-control-border form-control no-hover')
                        ._wrapLabel(options);
+        },
+
+        /******************************************************
+        $.bsTextArea( options )
+        Create a <div> with text inside a <label>
+        ******************************************************/
+        bsTextArea: function( options ){
+            var $result = $.bsText( options );
+            $result.children('.form-control').css('height', 'auto');
+            return $result;
         }
+
     });
 
 
@@ -5591,6 +5602,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                         case 'slider'           :   buildFunc = buildBaseSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'timeslider'       :   buildFunc = buildTimeSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'text'             :   buildFunc = $.bsText;               insideFormGroup = true; break;
+                        case 'textarea'         :   buildFunc = $.bsTextArea;           insideFormGroup = true; break;
                         case 'textbox'          :   buildFunc = buildTextBox;           insideFormGroup = true; addBorder = true; noValidation = true; break;
                         case 'fileview'         :   buildFunc = $.bsFileView;           break;
                         case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;

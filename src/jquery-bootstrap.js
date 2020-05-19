@@ -593,6 +593,7 @@
                         case 'slider'           :   buildFunc = buildBaseSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'timeslider'       :   buildFunc = buildTimeSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                         case 'text'             :   buildFunc = $.bsText;               insideFormGroup = true; break;
+                        case 'textarea'         :   buildFunc = $.bsTextArea;           insideFormGroup = true; break;
                         case 'textbox'          :   buildFunc = buildTextBox;           insideFormGroup = true; addBorder = true; noValidation = true; break;
                         case 'fileview'         :   buildFunc = $.bsFileView;           break;
                         case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;

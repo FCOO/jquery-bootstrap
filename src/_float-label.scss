@@ -90,7 +90,7 @@ Only supports the html-structure
             color      : $input-placeholder-color;
             line-height: $input-line-height;
             top        : calc(#{$input-padding-y} + #{$input-border-width});
-            //Transparent bg when laberl is inside element
+            //Transparent bg when label is inside element
             &:after {
                 background: transparent;
             }
