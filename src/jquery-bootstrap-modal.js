@@ -320,7 +320,8 @@
                     contentOptions = id ? options[id]       : options;
 
                 if (containers && contentOptions){
-                    updateElement( 1, containers.$fixedContent, contentOptions.fixedContent, '_bsAddHtml',       true );
+//Changed 2020-05-22                    updateElement( 1, containers.$fixedContent, contentOptions.fixedContent, '_bsAddHtml',       true );
+                    updateElement( 1, containers.$fixedContent, contentOptions.fixedContent, '_bsAppendContent', contentOptions.fixedContentContext );
                     updateElement( 2, containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext );
                     updateElement( 3, containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
@@ -366,7 +367,8 @@
                     .appendTo( this );
 
         if (options.fixedContent)
-            $modalFixedContent._bsAddHtml( options.fixedContent, true );
+//Changed 2020-05-22            $modalFixedContent._bsAddHtml( options.fixedContent, true );
+            $modalFixedContent._bsAppendContent( options.fixedContent, options.fixedContentContext );
 
         //Append body and content
         var $modalBody = parts.$body =

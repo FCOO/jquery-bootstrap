@@ -2471,7 +2471,8 @@ options
                     contentOptions = id ? options[id]       : options;
 
                 if (containers && contentOptions){
-                    updateElement( 1, containers.$fixedContent, contentOptions.fixedContent, '_bsAddHtml',       true );
+//Changed 2020-05-22                    updateElement( 1, containers.$fixedContent, contentOptions.fixedContent, '_bsAddHtml',       true );
+                    updateElement( 1, containers.$fixedContent, contentOptions.fixedContent, '_bsAppendContent', contentOptions.fixedContentContext );
                     updateElement( 2, containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext );
                     updateElement( 3, containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
@@ -2517,7 +2518,8 @@ options
                     .appendTo( this );
 
         if (options.fixedContent)
-            $modalFixedContent._bsAddHtml( options.fixedContent, true );
+//Changed 2020-05-22            $modalFixedContent._bsAddHtml( options.fixedContent, true );
+            $modalFixedContent._bsAppendContent( options.fixedContent, options.fixedContentContext );
 
         //Append body and content
         var $modalBody = parts.$body =
@@ -5591,6 +5593,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     switch (type){
                         case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
                         case 'button'           :   buildFunc = $.bsButton;             break;
+                        case 'buttongroup'      :   buildFunc = $.bsButtonGroup;        break;
+                        case 'menu'             :   buildFunc = $.bsMenu;               break;
                         case 'select'           :   buildFunc = $.bsSelectBox;          insideFormGroup = true; break;
                         case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
                         case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
@@ -5608,6 +5612,9 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                         case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
                         case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
 //                        case 'xx'               :   buildFunc = $.bsXx;               break;
+
+                        default                 :   buildFunc = $.fn._bsAddHtml;        buildInsideParent = true;
+
                     }
                 }
 

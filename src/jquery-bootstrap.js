@@ -582,6 +582,8 @@
                     switch (type){
                         case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
                         case 'button'           :   buildFunc = $.bsButton;             break;
+                        case 'buttongroup'      :   buildFunc = $.bsButtonGroup;        break;
+                        case 'menu'             :   buildFunc = $.bsMenu;               break;
                         case 'select'           :   buildFunc = $.bsSelectBox;          insideFormGroup = true; break;
                         case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
                         case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
@@ -599,6 +601,9 @@
                         case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
                         case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
 //                        case 'xx'               :   buildFunc = $.bsXx;               break;
+
+                        default                 :   buildFunc = $.fn._bsAddHtml;        buildInsideParent = true;
+
                     }
                 }
 
