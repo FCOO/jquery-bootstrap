@@ -327,6 +327,14 @@
                 }
             });
             return this;
+        },
+
+        //Methods used by $.BsModalContentPromise
+        _bsModalPromise_Update: function(options){
+            this.update(options);
+        },
+        _bsModalPromise_Reject: function(){
+            this.close();
         }
     };
 
