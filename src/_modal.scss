@@ -38,7 +38,7 @@ body.modal-open .modal {
     margin    : 0 auto;
 
     min-height: 100%;
-    max-width : calc(100vw - #{2*$modal-dialog-margin});
+    max-width : 100vw; //calc(100vw - #{2*$modal-dialog-margin});
     width     : $modal-sm-rem;
 
     //Estra width for flexWidth and extraWidth

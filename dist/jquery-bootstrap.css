@@ -4369,7 +4369,7 @@ a.close.disabled {
   .modal-content {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5); }
   .modal-sm {
-    max-width: 300px; } }
+    max-width: 320px; } }
 
 @media (min-width: 992px) {
   .modal-lg,
@@ -8845,8 +8845,8 @@ body.modal-open .modal {
   font-size: 1rem;
   margin: 0 auto;
   min-height: 100%;
-  max-width: calc(100vw - 1rem);
-  width: 18.75rem;
+  max-width: 100vw;
+  width: 20rem;
   /****************************************************
     .MODAL-CONTENT
     AND ITS COMPONENTS (HEADER, FIXED-BODY, BODY AND FOOTER)
