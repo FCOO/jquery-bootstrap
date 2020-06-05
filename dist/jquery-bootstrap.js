@@ -2198,7 +2198,7 @@ jquery-bootstrap-modal-promise.js
         options
             getModalOptions(data): Convert data to options for owners modal (optional)
         **********************************************/
-        addBsModalOwner( owner, options ){
+        addBsModalOwner: function( owner, options ){
             this.ownerList = this.ownerList || [];
             this.ownerList.push({owner: owner, options: options});
 
