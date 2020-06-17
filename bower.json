@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "1.77.3",
+  "version": "1.77.4",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "authors": [
     "NielsHolt"
@@ -28,7 +28,6 @@
     "modernizr-mouse-events": "fcoo/modernizr-mouse-events#latest",
     "jquery-hammer.js": "fcoo/jquery-hammer.js#latest",
     "noty": "^3.1.3",
-    "animate.css": "^4.1.0",
     "jquery-base-slider": "fcoo/jquery-base-slider#^5.0.0",
     "jquery-time-slider": "fcoo/jquery-time-slider#^6.0.0",
     "pdfobject": "fcoo/PDFObject",
@@ -40,6 +39,7 @@
     "history.js": "fcoo/history.js#^1.0.9"
   },
   "devDependencies": {
+    "animate.css": "^4.1.0",
     "bourbon": "latest",
     "modernizr-mixin": "latest",
     "mathsass": "latest",
