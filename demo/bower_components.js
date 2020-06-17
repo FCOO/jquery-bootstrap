@@ -17633,6 +17633,55 @@ return jQuery;
 //# sourceMappingURL=bootstrap.bundle.js.map
 
 ;
+const fs = require('fs');
+const {homepage, version, author, animateConfig} = JSON.parse(fs.readFileSync('package.json'));
+
+const header = `
+@charset "UTF-8";
+
+/*!
+ * animate.css - ${homepage}
+ * Version - ${version}
+ * Licensed under the MIT license - http://opensource.org/licenses/MIT
+ *
+ * Copyright (c) ${new Date().getFullYear()} ${author.name}
+ */
+
+
+  `;
+
+module.exports = (ctx) => {
+  const prefix = ctx.env === 'compat' ? '' : animateConfig.prefix;
+  const devMessage = `🎉🎉🎉🎉 \nanimate.css ${ctx.env} build was compiled sucessfully! \n`;
+
+  console.log(devMessage);
+
+  return {
+    map: ctx.options.map,
+    parser: ctx.options.parser,
+    plugins: {
+      'postcss-import': {root: ctx.file.dirname},
+      'postcss-prefixer': {
+        prefix,
+        ignore: [/\[class\*=.*\]/],
+      },
+      'postcss-preset-env': {
+        autoprefixer: {
+          cascade: false,
+        },
+        features: {
+          'custom-properties': true,
+        },
+      },
+      cssnano: ctx.env === 'production' || ctx.env === 'compat' ? {} : false,
+      'postcss-header': {
+        header,
+      },
+    },
+  };
+};
+
+;
 /*
  * jQuery.bind-first library v0.2.3
  * Copyright (c) 2013 Vladimir Zhuravlev
@@ -42702,7 +42751,7 @@ return index;
 
 ;
 //! moment.js
-//! version : 2.25.3
+//! version : 2.26.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -45466,8 +45515,6 @@ return index;
             token = tokens[i];
             parsedInput = (string.match(getParseRegexForToken(token, config)) ||
                 [])[0];
-            // console.log('token', token, 'parsedInput', parsedInput,
-            //         'regex', getParseRegexForToken(token, config));
             if (parsedInput) {
                 skipped = string.substr(0, string.indexOf(parsedInput));
                 if (skipped.length > 0) {
@@ -48323,7 +48370,7 @@ return index;
 
     //! moment.js
 
-    hooks.version = '2.25.3';
+    hooks.version = '2.26.0';
 
     setHookCallback(createLocal);
 
