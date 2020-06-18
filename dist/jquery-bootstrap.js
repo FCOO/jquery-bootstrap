@@ -3355,6 +3355,7 @@ jquery-bootstrap-modal-promise.js
                 close: 'animated ' + animateClose
             };
 
+
         //Save buttons and remove if from options to prevent default buttons
         var buttons = options.buttons;
         options.buttons = null;
@@ -3521,8 +3522,7 @@ jquery-bootstrap-modal-promise.js
                 window._bsNotyModal = this.prevBsNotyModal;
             });
 
-    }
-
+        }
 
         if (show)
             result.show();

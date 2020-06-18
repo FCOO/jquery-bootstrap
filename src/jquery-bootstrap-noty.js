@@ -159,6 +159,7 @@
                 close: 'animated ' + animateClose
             };
 
+
         //Save buttons and remove if from options to prevent default buttons
         var buttons = options.buttons;
         options.buttons = null;
@@ -325,8 +326,7 @@
                 window._bsNotyModal = this.prevBsNotyModal;
             });
 
-    }
-
+        }
 
         if (show)
             result.show();
