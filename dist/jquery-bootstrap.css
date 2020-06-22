@@ -9820,11 +9820,15 @@ The default bootstrap structure used for elements in a form is
   .form-group.small-bottom-padding {
     padding-bottom: 0.3125rem; }
   .form-group hr {
-    margin-top: 0;
-    margin-bottom: 0.3125rem;
     border-color: #afb4ba; }
-    .form-group hr.above-label {
-      margin-bottom: 0.9375rem; }
+    .form-group hr.before {
+      margin-top: 0;
+      margin-bottom: 0.3125rem; }
+      .form-group hr.before.above-label {
+        margin-bottom: 0.9375rem; }
+    .form-group hr.after {
+      margin-top: 0.3125rem;
+      margin-bottom: 0; }
 
 .form-group.form-group-sm {
   padding-top: 0.25rem;

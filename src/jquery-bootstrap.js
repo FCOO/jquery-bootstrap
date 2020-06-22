@@ -624,13 +624,14 @@
 
                     if (options.lineBefore)
                         $('<hr/>')
+                            .addClass('before')
                             .toggleClass('above-label', !!options.label)
                             .appendTo( $parent );
 
                     if (noValidation || options.noValidation)
                         $parent.addClass('no-validation');
                 }
-
+                var $originalParent = $parent;
                 if (insideInputGroup || options.prepend || options.before || options.append || options.after){
                     //Create element inside input-group
                     var $inputGroup = $divXXGroup('input-group', options);
@@ -666,6 +667,11 @@
                         .addClass('input-group-append')
                         ._bsAppendContent( append, options.contentContext  )
                         .appendTo( $parent );
+
+                if (options.lineAfter)
+                    $('<hr/>')
+                        .addClass('after')
+                        .appendTo( $originalParent );
 
 
                 return this;

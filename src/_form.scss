@@ -47,12 +47,18 @@ The default bootstrap structure used for elements in a form is
     }
 
     hr {
-        margin-top   : 0;
-        margin-bottom: $input-padding-y;
-        &.above-label {
-            margin-bottom: 3 * $input-padding-y;
-        }
         border-color : $card-border-color;
+        &.before {
+            margin-top   : 0;
+            margin-bottom: $input-padding-y;
+            &.above-label {
+                margin-bottom: 3 * $input-padding-y;
+            }
+        }
+        &.after {
+            margin-top   : $input-padding-y;
+            margin-bottom: 0;
+        }
     }
 }
 
