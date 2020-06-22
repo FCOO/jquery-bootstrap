@@ -1239,14 +1239,25 @@ width: 543,
                                     icon: 'fa-globe',
                                     title:{da:'En test', en:'A test'},
                                     content: [
-
+/*
                                         {
                                             id: 'hemmeligt',
                                             type: 'hidden'
                                         },
+*/
                                         {
                                             type: 'textbox', label: 'TextBox',
                                             text: 'Davs med dig<br>Ny linie'
+                                        },
+                                        {
+                                            label: {text:'Header'},
+                                            type: 'inputgroup',
+                                            _noValidation: true,
+                                            content:{
+                                                type: 'button',
+                                                icon: 'fa-home',
+                                                text: 'Davs',
+                                            },
                                         },
                                         {
                                             type: 'textarea', label: 'TextArea',
