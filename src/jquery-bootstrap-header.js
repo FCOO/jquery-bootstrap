@@ -37,6 +37,8 @@
 
         new     : ['far fa-window-maximize fa-inside-circle2', 'far fa-circle'],
 
+        help    : 'far fa-question-circle',
+
         close   : ['fas fa-circle back', 'far fa-times-circle middle', 'far fa-circle front']
     };
 
@@ -89,7 +91,7 @@
                         .appendTo( this );
 
             //Add icons
-            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'close'], function( index, id ){
+            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'help', 'close'], function( index, id ){
                 var iconOptions = options.icons[id],
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
 

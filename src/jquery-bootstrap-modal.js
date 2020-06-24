@@ -547,6 +547,7 @@
                 extend  : { className: iconExtendClassName,     onClick: multiSize ? modalExtend   : null, altEvents:'swipeup'   },
                 diminish: { className: iconDiminishClassName,   onClick: multiSize ? modalDiminish : null, altEvents:'swipedown' },
                 new     : { className: '',                      onClick: options.onNew ? $.proxy(options.onNew, this) : null },
+                help    : { className: '',                      onClick: options.onHelp ? $.proxy(options.onHelp, this) : null },
             }
         }, options );
 

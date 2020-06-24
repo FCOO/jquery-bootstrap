@@ -1413,9 +1413,13 @@ width: 543,
 
         var long_content = $.bsModal({
 
-            onNew: function(){ console.log('NEW:  DONT close header'); return false},
-            onPin: function(){ console.log('PIN: Close header'); return true},
-            icons: { back:{onClick: function(){ console.log('BACK: DONT close header'); return false}}},
+            onNew : function(){ console.log('NEW:  DONT close header'); return false},
+            onPin : function(){ console.log('PIN: Close header'); return true},
+            onHelp: function(){ console.log('HELP: DONT Close header'); return false},
+
+            icons: {
+                back:{onClick: function(){ console.log('BACK: DONT close header'); return false}}
+            },
 
             closeButton: false,
             _noHeader: true,
