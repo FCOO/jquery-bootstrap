@@ -918,7 +918,6 @@
 
         if (options.show)
             $result.show();
-
         return $result;
     };
 

@@ -878,7 +878,7 @@
                 case 'text'             : result = ' ';                    break;
                 case 'hidden'           : result = $elem.val();            break;
             }
-            return result ===null ? this.getResetValue() : result;
+            return result === null ? this.getResetValue() : result;
         },
 
         /*******************************************************
@@ -976,7 +976,7 @@
         //this.input = simple object with all input-elements. Also convert element-id to unique id for input-element
         this.inputs = {};
 
-        var types = ['input', 'select', 'selectlist', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden'];
+        var types = ['input', 'select', 'selectlist', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden', 'inputgroup'];
 
         function setId( dummy, obj ){
             if ($.isPlainObject(obj) && (obj.type !== undefined) && (types.indexOf(obj.type) >= 0) && obj.id){
@@ -1351,6 +1351,8 @@
 
         new     : ['far fa-window-maximize fa-inside-circle2', 'far fa-circle'],
 
+        help    : 'far fa-question-circle',
+
         close   : ['fas fa-circle back', 'far fa-times-circle middle', 'far fa-circle front']
     };
 
@@ -1403,7 +1405,7 @@
                         .appendTo( this );
 
             //Add icons
-            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'close'], function( index, id ){
+            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'help', 'close'], function( index, id ){
                 var iconOptions = options.icons[id],
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
 
@@ -2818,6 +2820,7 @@ jquery-bootstrap-modal-promise.js
                 extend  : { className: iconExtendClassName,     onClick: multiSize ? modalExtend   : null, altEvents:'swipeup'   },
                 diminish: { className: iconDiminishClassName,   onClick: multiSize ? modalDiminish : null, altEvents:'swipedown' },
                 new     : { className: '',                      onClick: options.onNew ? $.proxy(options.onNew, this) : null },
+                help    : { className: '',                      onClick: options.onHelp ? $.proxy(options.onHelp, this) : null },
             }
         }, options );
 
@@ -3188,7 +3191,6 @@ jquery-bootstrap-modal-promise.js
 
         if (options.show)
             $result.show();
-
         return $result;
     };
 
@@ -5685,6 +5687,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             function buildInputGroup( options, $parent ){
                 return $parent
+                           .attr('id', options.id)
                            .addClass('flex-column')
                            ._bsAppendContent(options.content);
             }

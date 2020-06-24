@@ -1294,7 +1294,10 @@ width: 543,
                                             id:'mySelection', type:'checkbox', text: 'Vælg mig'
                                         },
                                         {
-                                            type: 'inputGroup', label: 'Dette er en input-group',
+                                            type: 'inputgroup', label: 'Dette er en input-group',
+                                            id: 'Dette_Er_En_Test',
+                                            showWhen: {'mySelection': false },
+
                                             content: [
                                                 {id:'mySelection2', type:'checkbox', text: 'Vælg mig #2', noValidation: true, smallBottomPadding: true},
                                                 {id:'mySelection3', type:'checkbox', text: 'Vælg mig #3', noValidation: true, smallBottomPadding: true},
@@ -1371,6 +1374,8 @@ width: 543,
                         } //end of content
                     } //end of extended
                 });
+
+console.log(testModalForm.$bsModal.find('.BSACCORDION').find('.card').first().hide() );
 
                 //TEST console.log('mySlider=', testModalForm.getInput('mySlider') );
                 testModalForm.edit(myData);

@@ -546,6 +546,7 @@
 
             function buildInputGroup( options, $parent ){
                 return $parent
+                           .attr('id', options.id)
                            .addClass('flex-column')
                            ._bsAppendContent(options.content);
             }
