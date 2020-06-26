@@ -326,7 +326,7 @@
         if (options.addOnClick && options.onClick)
             result.on('click', $.proxy( result._bsButtonOnClick, result ) );
 
-        result._bsAddHtml( options, false, true );
+        result._bsAddHtml( options, false, true, options.allowContent );
 
         if (options.radioGroup)
             options.radioGroup.addElement( result, options );
