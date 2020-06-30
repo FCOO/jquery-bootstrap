@@ -888,15 +888,39 @@ longTableContent[i].stargazers_count = i;
 //$accordion.bsOpenCard(3);
 
         function openModal( modalNumber ){
+            setTimeout( $.workingOn, 3000);
+            setTimeout( $.workingOff, 6000);
+
             if (multi_modals[modalNumber])
                 multi_modals[modalNumber].show();
             else {
-                var content = 'Modal # = ' + modalNumber;
+                var content = [
+                        {type: 'text', text: 'Modal # = ' + modalNumber},
+                        {
+                            id:'theSelectBox', type: 'select', placeholder:"Placeholder", label:'theSelectBox',
+                            items:[
+                                {id:'theSelectBox0', icon:'fa-home', text: '0:Davs'},
+                                {id:'theSelectBox1',  text:'1: Item 1'},
+                                {                   text:'En overskrift'},
+                                {id:'theSelectBox2',  text:'2: Item 2 DEFAULT'},
+                                {id:'theSelectBox3',  text:'3: Item 3'},
+                                {id:'theSelectBox4',  text:'4: Item 4'},
+                                {id:'theSelectBox5',  text:'5: Item 5'},
+                                {id:'theSelectBox6',  text:'6: Item 6'},
+                                {id:'theSelectBox7',  text:'7: Item 7'},
+                                {id:'theSelectBox8',  text:'8: Item 8'},
+                                {id:'theSelectBox9',  text:'9: Item 9'},
+                                {id:'theSelectBox10', text:'10: Item 10'},
+                                {id:'theSelectBox11', text:'11: Item 11'}
+                            ],
+                        }
+                    ];
                 var extendedContent = 'Modal # = ' + modalNumber;
+
                 var typeList = ['success', 'error', 'alert', 'info', 'warning'];
                 var type = typeList[ modalNumber % typeList.length];
-                for (var i=0; i<2; i++ )
-                    content += '<br>' + i;
+//HER                for (var i=0; i<2; i++ )
+//HER                    content += '<br>' + i;
                 for (var i=0; i<20-modalNumber; i++ )
                     extendedContent += '<br>' + i;
                 multi_modals[ modalNumber ] =

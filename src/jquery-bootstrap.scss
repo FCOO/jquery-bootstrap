@@ -30,6 +30,9 @@ SET AND ADJUST BOOTSTRAP DEFAULT VALUES
 ************************************************/
 @import "bootstrap-variables";
 
+//Set z-index for working...
+$zindex-working: 99999;
+
 /***********************************************
 IMPORT BOOTSTRAP SCSS
 ************************************************/
@@ -38,6 +41,8 @@ IMPORT BOOTSTRAP SCSS
 /***********************************************
 IMPORT BOOTSTRAP-SELECT SCSS
 ************************************************/
+$zindex-select-dropdown: $zindex-working - 1;// must be higher than working background
+
 @import "../bower_components/bootstrap-select/sass/bootstrap-select";
 
 /***********************************************

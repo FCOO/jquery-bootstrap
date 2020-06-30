@@ -25,7 +25,7 @@
     Set the z-index of this to the current level
     If a className is given => use it, else
     If delta === true the z-index is set to zindexAllwaysOnTop (9999), else
-    increase currwent z-index by 10
+    increase current z-index by 10
     ******************************************************/
     $.fn._setModalBackdropZIndex = function( delta, className ){
         if (className)

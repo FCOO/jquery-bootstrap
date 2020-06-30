@@ -134,7 +134,7 @@
 
     $.fn._bsModalCloseElements = function(){
         var _this = this;
-        //'Close' alle elements (eg. select-box
+        //'Close' alle elements (eg. select-box)
         $.each($._bsModal_closeMethods, function(index, options){
             _this.find(options.selector).each(function(){
                 options.method($(this));
@@ -142,13 +142,22 @@
         });
     };
 
+    var currentModal = null;
     //******************************************************
     //show_bs_modal - called when a modal is opening
     function show_bs_modal( /*event*/ ) {
         //Close all popover
         $('.popover.show').popover('hide');
 
+
+        //Close elements
+        if (currentModal)
+            currentModal._bsModalCloseElements();
+
+
         openModals++;
+        this.previousModal = currentModal;
+        currentModal = this;
 
         //Move up the backdrop
         $._addModalBackdropLevel();
@@ -186,6 +195,8 @@
     //******************************************************
     //hide_bs_modal - called when a modal is closing
     function hide_bs_modal() {
+        currentModal = this.previousModal;
+
         //Close elements
         this._bsModalCloseElements();
 

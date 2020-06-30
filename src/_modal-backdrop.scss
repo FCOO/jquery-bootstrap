@@ -39,7 +39,7 @@ MODAL-BACKDROP
         color    : white;
       }
     &.working {
-        z-index: 99999 !important;
+        z-index: $zindex-working !important;
         i { display: block; }
     }
 }

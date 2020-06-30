@@ -1888,7 +1888,7 @@ options
     Set the z-index of this to the current level
     If a className is given => use it, else
     If delta === true the z-index is set to zindexAllwaysOnTop (9999), else
-    increase currwent z-index by 10
+    increase current z-index by 10
     ******************************************************/
     $.fn._setModalBackdropZIndex = function( delta, className ){
         if (className)
@@ -2407,7 +2407,7 @@ jquery-bootstrap-modal-promise.js
 
     $.fn._bsModalCloseElements = function(){
         var _this = this;
-        //'Close' alle elements (eg. select-box
+        //'Close' alle elements (eg. select-box)
         $.each($._bsModal_closeMethods, function(index, options){
             _this.find(options.selector).each(function(){
                 options.method($(this));
@@ -2415,13 +2415,22 @@ jquery-bootstrap-modal-promise.js
         });
     };
 
+    var currentModal = null;
     //******************************************************
     //show_bs_modal - called when a modal is opening
     function show_bs_modal( /*event*/ ) {
         //Close all popover
         $('.popover.show').popover('hide');
 
+
+        //Close elements
+        if (currentModal)
+            currentModal._bsModalCloseElements();
+
+
         openModals++;
+        this.previousModal = currentModal;
+        currentModal = this;
 
         //Move up the backdrop
         $._addModalBackdropLevel();
@@ -2459,6 +2468,8 @@ jquery-bootstrap-modal-promise.js
     //******************************************************
     //hide_bs_modal - called when a modal is closing
     function hide_bs_modal() {
+        currentModal = this.previousModal;
+
         //Close elements
         this._bsModalCloseElements();
 
