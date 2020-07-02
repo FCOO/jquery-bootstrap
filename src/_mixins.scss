@@ -129,11 +129,17 @@ All control elements get same border-color when normal, hover, active and error
 
 
     //:active
-    &:active,  &.active     {   border-color: darken($border-color, $darken-active-percent);    }
+    &:active,  &.active{
+        border-color: darken($border-color, $darken-active-percent);
+    }
     //:focus
-    &:focus, &.focus        {   border-color: $input-focus-border-color;                        }
+    &:focus, &.focus{
+        border-color: $input-focus-border-color;
+    }
     //:disabled - Disabled comes last to overwrite active and focus
-    &.disabled,  &:disabled {   border-color: $border-color;                                    }
+    &.disabled:not(.show-as-normal),  &:disabled:not(.show-as-normal) {
+        border-color: $border-color;
+    }
 
 
     @if $border-color-hover != false {
@@ -227,7 +233,8 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
 
     // Disabled comes last to overwrite active and focus
     //Overwrite bootstrap defalut opacity on element and replace it with opacity on text-color
-    &.disabled,  &:disabled {
+    //If class=display-as-normal the control will not apear disabled
+    &.disabled:not(.show-as-normal),  &:disabled:not(.show-as-normal) {
         opacity: 1 !important;
         color  : rgba($color, $btn-disabled-opacity);
         @if ($incl-bg){

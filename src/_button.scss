@@ -63,6 +63,12 @@ div.btn, div.list-group-item {
         vertical-align: top;
     }
 
+
+    //Overwrite Bootstrap default opacity for disabled buttons when class .show-as-normal is added
+    &.disabled.show-as-normal, &.show-as-normal:disabled {
+        opacity: 1;
+    }
+
     /************************************************************
     Special version to have transparent button
     Default is light color on dark background

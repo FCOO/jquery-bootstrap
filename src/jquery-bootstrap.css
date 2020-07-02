@@ -8387,7 +8387,7 @@ div.btn, div.list-group-item {
     border-color: #b8c1ca; }
   .btn.btn-standard:focus, .btn.btn-standard.focus {
     border-color: #80bdff; }
-  .btn.btn-standard.disabled, .btn.btn-standard:disabled {
+  .btn.btn-standard.disabled:not(.show-as-normal), .btn.btn-standard:disabled:not(.show-as-normal) {
     border-color: #ced4da; }
   .btn.btn-standard.focus:not(:disabled):not(.disabled):not(.no-hover), .btn.btn-standard:focus:not(:disabled):not(.disabled):not(.no-hover),
   .mouse-hover .btn.btn-standard:hover:not(:disabled):not(.disabled):not(.no-hover) {
@@ -8410,11 +8410,11 @@ div.btn, div.list-group-item {
     .btn.btn-standard.active:active {
       color: #ececec;
       background: #0069d9 linear-gradient(180deg, #267fde, #0069d9) repeat-x; }
-    .btn.btn-standard.active.disabled, .btn.btn-standard.active:disabled {
+    .btn.btn-standard.active.disabled:not(.show-as-normal), .btn.btn-standard.active:disabled:not(.show-as-normal) {
       opacity: 1 !important;
       color: rgba(255, 255, 255, 0.65);
       background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x; }
-  .btn.btn-standard.disabled, .btn.btn-standard:disabled {
+  .btn.btn-standard.disabled:not(.show-as-normal), .btn.btn-standard:disabled:not(.show-as-normal) {
     opacity: 1 !important;
     color: rgba(81, 89, 97, 0.65);
     background: #f8f9fa linear-gradient(180deg, #f9fafb, #f8f9fa) repeat-x; }
@@ -8432,7 +8432,7 @@ div.btn, div.list-group-item {
       border-color: #0069d9; }
     .btn.btn-standard.primary:focus, .btn.btn-standard.primary.focus {
       border-color: #80bdff; }
-    .btn.btn-standard.primary.disabled, .btn.btn-standard.primary:disabled {
+    .btn.btn-standard.primary.disabled:not(.show-as-normal), .btn.btn-standard.primary:disabled:not(.show-as-normal) {
       border-color: #007bff; }
     .btn.btn-standard.primary.focus:not(:disabled):not(.disabled):not(.no-hover), .btn.btn-standard.primary:focus:not(:disabled):not(.disabled):not(.no-hover),
     .mouse-hover .btn.btn-standard.primary:hover:not(:disabled):not(.disabled):not(.no-hover) {
@@ -8440,7 +8440,7 @@ div.btn, div.list-group-item {
       z-index: 4; }
     .mouse-hover .btn.btn-standard.primary:hover:not(:focus):not(:disabled):not(.disabled):not(.no-hover) {
       border-color: #0056b3; }
-    .btn.btn-standard.primary.disabled, .btn.btn-standard.primary:disabled {
+    .btn.btn-standard.primary.disabled:not(.show-as-normal), .btn.btn-standard.primary:disabled:not(.show-as-normal) {
       opacity: 1 !important;
       color: rgba(0, 123, 255, 0.65); }
   .btn.btn-standard > i.fa {
@@ -8453,6 +8453,8 @@ div.btn, div.list-group-item {
     height: 1em;
     line-height: 1.21875rem;
     vertical-align: top; }
+  .btn.btn-standard.disabled.show-as-normal, .btn.btn-standard.show-as-normal:disabled {
+    opacity: 1; }
   .btn.btn-standard.transparent {
     background: none;
     color: #D4D4D4;
@@ -8471,7 +8473,7 @@ div.btn, div.list-group-item {
       border-color: rgba(0, 0, 0, 0.1); }
     .btn.btn-standard.transparent:focus, .btn.btn-standard.transparent.focus {
       border-color: #80bdff; }
-    .btn.btn-standard.transparent.disabled, .btn.btn-standard.transparent:disabled {
+    .btn.btn-standard.transparent.disabled:not(.show-as-normal), .btn.btn-standard.transparent:disabled:not(.show-as-normal) {
       border-color: rgba(0, 0, 0, 0.1); }
     .btn.btn-standard.transparent.focus:not(:disabled):not(.disabled):not(.no-hover), .btn.btn-standard.transparent:focus:not(:disabled):not(.disabled):not(.no-hover),
     .mouse-hover .btn.btn-standard.transparent:hover:not(:disabled):not(.disabled):not(.no-hover) {
@@ -8490,11 +8492,11 @@ div.btn, div.list-group-item {
       .btn.btn-standard.transparent.active:active {
         color: #ececec;
         background: #0069d9 linear-gradient(180deg, #267fde, #0069d9) repeat-x; }
-      .btn.btn-standard.transparent.active.disabled, .btn.btn-standard.transparent.active:disabled {
+      .btn.btn-standard.transparent.active.disabled:not(.show-as-normal), .btn.btn-standard.transparent.active:disabled:not(.show-as-normal) {
         opacity: 1 !important;
         color: rgba(255, 255, 255, 0.65);
         background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x; }
-    .btn.btn-standard.transparent.disabled, .btn.btn-standard.transparent:disabled {
+    .btn.btn-standard.transparent.disabled:not(.show-as-normal), .btn.btn-standard.transparent:disabled:not(.show-as-normal) {
       opacity: 1 !important;
       color: rgba(212, 212, 212, 0.65);
       background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
@@ -8521,11 +8523,11 @@ div.btn, div.list-group-item {
       .btn.btn-standard.semi-transparent.active:active {
         color: #ececec;
         background: #0069d9 linear-gradient(180deg, #267fde, #0069d9) repeat-x; }
-      .btn.btn-standard.semi-transparent.active.disabled, .btn.btn-standard.semi-transparent.active:disabled {
+      .btn.btn-standard.semi-transparent.active.disabled:not(.show-as-normal), .btn.btn-standard.semi-transparent.active:disabled:not(.show-as-normal) {
         opacity: 1 !important;
         color: rgba(255, 255, 255, 0.65);
         background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x; }
-    .btn.btn-standard.semi-transparent.disabled, .btn.btn-standard.semi-transparent:disabled {
+    .btn.btn-standard.semi-transparent.disabled:not(.show-as-normal), .btn.btn-standard.semi-transparent:disabled:not(.show-as-normal) {
       opacity: 1 !important;
       color: rgba(81, 89, 97, 0.65);
       background: rgba(248, 249, 250, 0.5); }
@@ -9177,11 +9179,11 @@ bsSelectList
       .dropdown-menu .dropdown-item.active:active, .selectList .dropdown-item.active:active {
         color: #ececec;
         background: #0069d9 linear-gradient(180deg, #267fde, #0069d9) repeat-x; }
-      .dropdown-menu .dropdown-item.active.disabled, .dropdown-menu .dropdown-item.active:disabled, .selectList .dropdown-item.active.disabled, .selectList .dropdown-item.active:disabled {
+      .dropdown-menu .dropdown-item.active.disabled:not(.show-as-normal), .dropdown-menu .dropdown-item.active:disabled:not(.show-as-normal), .selectList .dropdown-item.active.disabled:not(.show-as-normal), .selectList .dropdown-item.active:disabled:not(.show-as-normal) {
         opacity: 1 !important;
         color: rgba(255, 255, 255, 0.65);
         background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x; }
-    .dropdown-menu .dropdown-item.disabled, .dropdown-menu .dropdown-item:disabled, .selectList .dropdown-item.disabled, .selectList .dropdown-item:disabled {
+    .dropdown-menu .dropdown-item.disabled:not(.show-as-normal), .dropdown-menu .dropdown-item:disabled:not(.show-as-normal), .selectList .dropdown-item.disabled:not(.show-as-normal), .selectList .dropdown-item:disabled:not(.show-as-normal) {
       opacity: 1 !important;
       color: rgba(81, 89, 97, 0.65);
       background: #f8f9fa linear-gradient(180deg, #f9fafb, #f8f9fa) repeat-x; }
@@ -9908,7 +9910,7 @@ form.form-validation .form-group {
     border-color: #b8c1ca; }
   .form-control:focus, .form-control.focus {
     border-color: #80bdff; }
-  .form-control.disabled, .form-control:disabled {
+  .form-control.disabled:not(.show-as-normal), .form-control:disabled:not(.show-as-normal) {
     border-color: #ced4da; }
   .form-control.focus:not(:disabled):not(.disabled):not(.no-hover), .form-control:focus:not(:disabled):not(.disabled):not(.no-hover),
   .mouse-hover .form-control:hover:not(:disabled):not(.disabled):not(.no-hover) {
@@ -10208,11 +10210,11 @@ Adjustmernt to Bootstrap table
       .table.table-selectable tbody tr.active:active {
         color: #ececec;
         background: #0069d9 linear-gradient(180deg, #267fde, #0069d9) repeat-x; }
-      .table.table-selectable tbody tr.active.disabled, .table.table-selectable tbody tr.active:disabled {
+      .table.table-selectable tbody tr.active.disabled:not(.show-as-normal), .table.table-selectable tbody tr.active:disabled:not(.show-as-normal) {
         opacity: 1 !important;
         color: rgba(255, 255, 255, 0.65);
         background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x; }
-    .table.table-selectable tbody tr.disabled, .table.table-selectable tbody tr:disabled {
+    .table.table-selectable tbody tr.disabled:not(.show-as-normal), .table.table-selectable tbody tr:disabled:not(.show-as-normal) {
       opacity: 1 !important;
       color: rgba(81, 89, 97, 0.65);
       background: #f8f9fa linear-gradient(180deg, #f9fafb, #f8f9fa) repeat-x; }
@@ -10804,7 +10806,7 @@ Adjustment to Bootstrap tabs
       border-color: #b8c1ca; }
     .nav-tabs a.nav-item.nav-link:focus, .nav-tabs a.nav-item.nav-link.focus {
       border-color: #80bdff; }
-    .nav-tabs a.nav-item.nav-link.disabled, .nav-tabs a.nav-item.nav-link:disabled {
+    .nav-tabs a.nav-item.nav-link.disabled:not(.show-as-normal), .nav-tabs a.nav-item.nav-link:disabled:not(.show-as-normal) {
       border-color: #ced4da; }
     .nav-tabs a.nav-item.nav-link.focus:not(:disabled):not(.disabled):not(.no-hover), .nav-tabs a.nav-item.nav-link:focus:not(:disabled):not(.disabled):not(.no-hover),
     .mouse-hover .nav-tabs a.nav-item.nav-link:hover:not(:disabled):not(.disabled):not(.no-hover) {
@@ -10823,11 +10825,11 @@ Adjustment to Bootstrap tabs
       .nav-tabs a.nav-item.nav-link.active:active {
         color: #40464c;
         background: #ececec linear-gradient(180deg, #efefef, #ececec) repeat-x; }
-      .nav-tabs a.nav-item.nav-link.active.disabled, .nav-tabs a.nav-item.nav-link.active:disabled {
+      .nav-tabs a.nav-item.nav-link.active.disabled:not(.show-as-normal), .nav-tabs a.nav-item.nav-link.active:disabled:not(.show-as-normal) {
         opacity: 1 !important;
         color: rgba(81, 89, 97, 0.65);
         background: #fff linear-gradient(180deg, white, #fff) repeat-x; }
-    .nav-tabs a.nav-item.nav-link.disabled, .nav-tabs a.nav-item.nav-link:disabled {
+    .nav-tabs a.nav-item.nav-link.disabled:not(.show-as-normal), .nav-tabs a.nav-item.nav-link:disabled:not(.show-as-normal) {
       opacity: 1 !important;
       color: rgba(81, 89, 97, 0.65);
       background: #f8f9fa linear-gradient(180deg, #f9fafb, #f8f9fa) repeat-x; }

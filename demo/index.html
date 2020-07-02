@@ -188,6 +188,8 @@ $('body').on('wheel', function(e){
 
         $.bsButton({text: 'Normal', icon: 'fa fa-home'}).appendTo( $body );
         $.bsButton({text: 'Primary', icon: 'fa-home', primary: true}).appendTo( $body );
+        $.bsButton({text: 'Disabled', icon: 'fa-home'}).addClass('disabled').appendTo( $body );
+        $.bsButton({text: 'Disabled (show as normal)', icon: 'fa-home'}).addClass('disabled show-as-normal').appendTo( $body );
         $.bsButton({text: 'Small', icon: 'fa-home', small:true}).appendTo( $body );
         $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'far fa-check-square'}).appendTo( $body );
         $.bsButton({icon: 'fa-home', square: true}).appendTo( $body );
