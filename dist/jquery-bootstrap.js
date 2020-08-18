@@ -4343,7 +4343,7 @@ jquery-bootstrap-modal-promise.js
 
 ****************************************************************************/
 
-(function ($/*, window, document, undefined*/) {
+(function ($, i18next/*, window, document, undefined*/) {
 	"use strict";
 
     // Create $.BSASMODAL - See src/jquery-bootstrap.js for details
@@ -4366,12 +4366,17 @@ options
 TODO:   truncate     : false. If true the column will be truncated. Normally only one column get truncate: true
         fixedWidth   : false. If true the column will not change width when the tables width is changed
 
-        sortable     :  [boolean] false
-        sortBy       : [string or function(e1, e2): int] "string". Possible values: "int" (sort as float), "moment", "moment_date", "moment_time" (sort as moment-obj) or function(e1, e2) return int
-        sortIndex    : [int] null. When sorting and to values are equal the values from an other column is used.
-                                   The default order of the other columns to test is given by the its index in options.columns. Default sortIndex is (column-index+1)*100 (first column = 100). sortIndex can be set to alter the order.
-        sortDefault  : [string or boolean]. false. Possible values = false, true, "asc" or "desc". true => "asc"
-        sortHeader   : [boolean] false. If true a header-row is added every time the sorted value changes
+        createContent : function(content, $td, sortBy) Create the content inside $td. Optional
+
+        sortable           :  [boolean] false
+        sortBy             : [string or function(e1, e2): int] "string". Possible values: "int" (sort as float), "moment", "moment_date", "moment_time" (sort as moment-obj) or function(e1, e2) return int
+        sortIndex          : [int] null. When sorting and to values are equal the values from an other column is used.
+                             The default order of the other columns to test is given by the its index in options.columns. Default sortIndex is (column-index+1)*100 (first column = 100). sortIndex can be set to alter the order.
+        sortDefault        : [string or boolean]. false. Possible values = false, true, "asc" or "desc". true => "asc"
+        updateAfterSorting : [boolean] false. If true and createContent is given the content of the coumun is updated after the tabel has been sorted
+        getSortContent     : function(content) return the part of content to be used when sorting. optional
+        sortHeader         : [boolean] false. If true a header-row is added every time the sorted value changes
+        createHeaderContent: function(content, $span, sortBy) Create the content of a sort-group-heade insider $span. Optional
 
         filter       : function(rawValue, colunmOptions) null. Return true if row is included based on single value
 
@@ -4406,7 +4411,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 *******************************************************************/
 
     /********************************************************************
-    Different sort-functions for moment-objects: (a,b) return a-b
+    Add different sort-functions for moment-objects: (a,b) return a-b and extend
+    string-sort to accept content-object = {da,en} or {text:{da,en}}
     ********************************************************************/
     function momentSort(m1, m2, startOf){
         var moment1 = moment(m1),
@@ -4419,19 +4425,41 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         return moment1 - moment2;
     }
 
-    //momentDateSort - sort by date despide the time
-    function momentDateSort(m1, m2){
-        return momentSort(m1, m2, 'day');
-    }
+    $.extend( $.fn.stupidtable.default_sort_fns, {
+        //'moment' = sort by moment
+        'moment'     : momentSort,
 
-    //momentTimeSort - sort by time despide ther date
-    function momentTimeSort(m1, m2){
-        return momentSort(
-            moment(m1).date(1).month(0).year(2000),
-            moment(m2).date(1).month(0).year(2000)
-        );
-    }
+        //'moment_date' - sort by date despide the time
+        'moment_date': function (m1, m2){
+            return momentSort(m1, m2, 'day');
+        },
 
+        //'moment_time' - sort by time despide ther date
+        'moment_time': function (m1, m2){
+            return momentSort(
+                moment(m1).date(1).month(0).year(2000),
+                moment(m2).date(1).month(0).year(2000)
+            );
+        },
+
+        //Extend string-sort to include content-obj
+        "string": function(a, b) {
+            //Convert a and b to {text:...} and get only text-part
+            a = $._bsAdjustIconAndText( a ).text;
+            b = $._bsAdjustIconAndText( b ).text;
+
+            //Translate a and b if they are {da,en}
+            a = $.isPlainObject(a) ? i18next.sentence( a ) : a;
+            b = $.isPlainObject(b) ? i18next.sentence( b ) : b;
+
+            return a.toString().localeCompare(b.toString());
+        },    });
+
+
+    //Adjust default stupidtable-options (if any)
+    $.extend( $.fn.stupidtable.default_settings, {
+
+    });
 
 
     var defaultOptions = {
@@ -4448,12 +4476,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             defaultColunmOptions: {},
             rowClassName        : [],
 
-
-            stupidtable: {
-                'moment'     : momentSort,
-                'moment_date': momentDateSort,
-                'moment_time': momentTimeSort
-            }
+            stupidtable         : {}
         },
 
         defaultColunmOptions = {
@@ -4467,7 +4490,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         },
 
         dataTableId = 'bsTable_options';
-
 
     //********************************************************************
     function adjustThOrTd( $element, columnOptions, addWidth ){
@@ -4582,6 +4604,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
+//HER            var lastSortBy = this.lastSortBy || {};
+            var _this = this;
             $.each( options.columns, function( index, columnOptions ){
                 var content = rowContent[columnOptions.id],
                     $td = $('<td/>').appendTo($tr);
@@ -4590,24 +4614,20 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 if ($.isPlainObject(content) && content.className)
                     $td.addClass(content.className);
 
+                //Save original contant as sort-by-value
+                $td.data('sort-value', columnOptions.getSortContent ?  columnOptions.getSortContent(content) : content );
+                //If raw-value and sort-value are differnt => also save raw-value
+                if (columnOptions.getSortContent)
+                    $td.data('raw-value', content );
+
                 //Build the content using the createContent-function, _bsAppendContent, or jquery-value-format
-                if (columnOptions.createContent){
-                    columnOptions.createContent( content, $td );
-                    //Save original contant as sort-by-value
-                    $td.data('sort-value', content );
-                }
-                else
-                    if (columnOptions.vfFormat)
-                        $td.vfValueFormat( content, columnOptions.vfFormat, columnOptions.vfOptions );
-                    else
-                        $td._bsAppendContent( content );
+                _this._createTdContent( content, $td, index );
             });
 
             //Add rows to radioGroup
             if (options.selectable)
                 options.radioGroup.addElement( $tr );
         },
-
 
         /**********************************************************
         _getColumn - Return the column with id or index
@@ -4616,10 +4636,41 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             return $.isNumeric(idOrIndex) ? this.columns[idOrIndex] : this.columnIds[idOrIndex];
         },
 
+        /**********************************************************
+        _createTdContent
+        **********************************************************/
+        _createTdContent: function( content, $td, columnIndex, createContent ){
+            var columnOptions = this._getColumn(columnIndex);
 
+            //Build the content using the given create-function, column.createContent-function, _bsAppendContent, or jquery-value-format
+            var sortBy = this.lastSortBy.columnIndex == columnIndex ? this.lastSortBy.direction : false;
+            if (createContent)
+                createContent( content, $td, sortBy );
+            else
+                if (columnOptions.createContent)
+                    columnOptions.createContent( content, $td, sortBy );
+                    else
+                        if (columnOptions.vfFormat)
+                            $td.vfValueFormat( content, columnOptions.vfFormat, columnOptions.vfOptions );
+                        else
+                            $td._bsAppendContent( content );
+        },
 
         /**********************************************************
-        eachRow - Call rowFunc = function($tr, $tdList, sortValueList) for all rows
+        eachRow - Call rowFunc = function(rowOptions)  for all rows
+        rowOptions = {
+            id      : Row-id
+            $tr     : tr-element
+            $tdList : [] of td-elements
+
+            valueList: [] of raw-value
+            values   : {ID} of raw-value;
+
+            sortValueList: [] of sort-value
+            sortValues   : {ID} of sort-value;
+
+            columns: All column of the table
+        }
         **********************************************************/
         eachRow: function( rowFunc ){
             var _this = this;
@@ -4629,37 +4680,42 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     id = $tr.attr('id'),
                     $tdList = [],
                     valueList = [],
-                    values = {};
+                    values = {},
+                    sortValueList = [],
+                    sortValues = {};
 
                 $tr.find('td').each(function(index, td){
                     var $td = $(td);
                     $tdList.push( $td );
                 });
 
-                //Find the "raw" content eq. before any display adjusting was made
+                //Find the "raw" content eq. before any display adjusting was made and the content used for sorting
                 $.each($tdList, function( columnIndex, $td ){
-                    var column = _this._getColumn( columnIndex ),
-                        value  = '';
+                    var column    = _this._getColumn( columnIndex ),
+                        sortValue = $td.data('sort-value'),
+                        value     = column.getSortContent ? $td.data('raw-value') : sortValue;
 
-                    //If cell-content is vfFormat-object => Get 'sort-value' from vfFormat
-                    if (column.vfFormat)
-                        value = $td.vfValue();
-                    else
-                        //If cell-content is created using the createContent-function => Get value for data-sort-value
-                        if (column.createContent)
-                            value = $td.data('sort-value');
-                        else
-                            value = $td.text();
                     valueList.push(value);
                     values[column.id] = value;
+
+                    sortValueList.push(sortValue);
+                    sortValues[column.id] = sortValue;
+
                 });
 
                 rowFunc({
                     id       : id,
                     $tr      : $tr,
                     $tdList  : $tdList,
+
                     valueList: valueList,
-                    values   : values
+                    values   : values,
+
+                    sortValueList: sortValueList,
+                    sortValues   : sortValues,
+
+                    columns: this.columns
+
                 });
             });
             return this;
@@ -4683,8 +4739,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         **********************************************************/
         beforeTableSort: function(event, sortInfo){
             var column          = this._getColumn(sortInfo.column),
-                sortMulticolumn = column.$th.attr('data-sort-multicolumn') || '',
-                _this           = this;
+                sortMulticolumn = column.$th.attr('data-sort-multicolumn') || '';
 
             //Remove all group-header-rows
             this.find('.table-sort-group-header').remove();
@@ -4692,14 +4747,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             //Convert sortMulticolumn to array
             sortMulticolumn = sortMulticolumn ? sortMulticolumn.split(',') : [];
             sortMulticolumn.push(column.index);
-
-            //Save all vfFormat-values as data-sort-value
-            this.eachRow(function(opt){
-                $.each(sortMulticolumn, function(dummy, columnIndex ){
-                    if (_this._getColumn( columnIndex ).vfFormat)
-                        opt.$tdList[columnIndex].data('sort-value', opt.valueList[columnIndex]);
-                });
-            });
         },
 
         /**********************************************************
@@ -4719,11 +4766,38 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     .addClass( $(th).attr('class') );
             });
 
+
+            //Update all cells if column.options.updateAfterSorting == true
+            var updateColumn = [],
+                updateAnyColumn = false;
+
+            $.each( this.columns, function( index, columnOptions ){
+                updateColumn[index] = !!columnOptions.updateAfterSorting && !!columnOptions.createContent;
+                updateAnyColumn = updateAnyColumn || updateColumn[index];
+            });
+
+            var _this = this;
+            if (updateAnyColumn)
+                this.eachRow( function(rowOptions){
+
+                    $.each(updateColumn, function(columnIndex){
+                        if (updateColumn[columnIndex]){
+                            var $td = rowOptions.$tdList[columnIndex];
+                            $td.empty();
+
+                            _this._getColumn(columnIndex).createContent(
+                                rowOptions.valueList[columnIndex],
+                                $td,
+                                _this.lastSortBy.columnIndex == columnIndex ? _this.lastSortBy.direction : false
+                            );
+                        }
+                    });
+                });
+
             var column = this._getColumn( sortInfo.column );
 
             //Marks first row of changed value
             if (column.sortHeader) {
-
                 //$tdBase = a <td> as $-object acting as base for all tds in header-row
                 var $tdBase =
                         $('<td/>')
@@ -4732,14 +4806,22 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 column.$th.contents().clone().appendTo( $tdBase );
                 $tdBase.append( $('<span>:</span>') );
 
-                var lastText = "Denne her text kommer sikkert ikke igen";
+                var lastHeaderContent = "Denne her text kommer sikkert ikke igen";
+
                 this.find('tbody tr:not(.filter-out) td:nth-child(' + (sortInfo.column+1) +')').each( function( index, td ){
                     var $td = $(td),
-                        nextText = $td.text();
-                    if (nextText != lastText){
+                        nextHeaderContent = column.getSortContent ? $td.data('raw-value') : $td.data('sort-value');
+
+                    if (column.getHeaderContent)
+                        nextHeaderContent = column.getHeaderContent(nextHeaderContent);
+
+                    if (!$._isEqual(nextHeaderContent, lastHeaderContent)){
+
                         //Create a clone of $tdBase and 'copy' all children from $td to $newTd
-                        var $newTd = $tdBase.clone(true);
-                        $td.contents().clone().appendTo( $newTd );
+                        var $newTd = $tdBase.clone(true),
+                            $span = $('<span/>').appendTo($newTd);
+
+                        _this._createTdContent( nextHeaderContent, $span/*$newTd*/, column.index, column.createHeaderContent );
 
                         //Create new row and insert before current row
                         $('<tr/>')
@@ -4747,7 +4829,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                             .append( $newTd )
                             .insertBefore( $td.parent() );
 
-                        lastText = nextText;
+                        lastHeaderContent = nextHeaderContent;
                     }
                 });
             }
@@ -4790,10 +4872,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 var result = true; //Included
                 if (rowFilter)
                     //Row filter always before column-filter
-                    result = rowFilter(opt.values, opt.id );
+                    result = rowFilter(opt.values, opt.id ); //<- HER: Måske nyt navn i stedet for values
                 else {
                     $.each(columnFilter, function(id, filterFunc){
-                        if (!filterFunc(opt.values[id], _this._getColumn(id))){
+                        if (!filterFunc(opt.values[id], _this._getColumn(id))){ //<- HER: Måske nyt navn i stedet for values
                             result = false;
                             return false;
                         }
@@ -4824,7 +4906,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         options = $._bsAdjustOptions( options, defaultOptions );
         options.class =
-//Removed because useTouchSize added to options            (options.small ? 'table-sm ' : '' ) +
             (options.verticalBorder && !options.noBorder ? 'table-bordered ' : '' ) +
             (options.noBorder ? 'table-no-border ' : '' ) +
             (options.hoverRow ? 'table-hover ' : '' ) +
@@ -4964,7 +5045,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             $table.addRow( rowContent );
         });
 
-
         if (sortableTable){
             $table.stupidtable( options.stupidtable )
                 .bind('beforetablesort', $.proxy( $table.beforeTableSort, $table ) )
@@ -4974,17 +5054,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 $table.sortBy(sortDefaultId, sortDefaultDir);
         }
 
-
-
-//HER        this.lastSortBy.columnIndex, this.lastSortBy.direction );
-
-
         return $table;
     };
 
-
-
-}(jQuery, this, document));
+}(jQuery, this.i18next, this, document));
 ;
 /****************************************************************************
 	jquery-bootstrap-tabs.js,
@@ -5151,17 +5224,17 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 }(jQuery, this, document));
 ;
 /****************************************************************************
-	jquery-bootstrap.js,
+    jquery-bootstrap.js,
 
-	(c) 2017, FCOO
+    (c) 2017, FCOO
 
-	https://github.com/fcoo/jquery-bootstrap
-	https://github.com/fcoo
+    https://github.com/fcoo/jquery-bootstrap
+    https://github.com/fcoo
 
 ****************************************************************************/
 
 (function ($, i18next, window, document, undefined) {
-	"use strict";
+    "use strict";
 
     /*
 
@@ -5178,7 +5251,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     */
 
     //Create namespace
-	var ns = window;
+    var ns = window;
 
     /*
     Create $.BSASMODAL = record with {className: asModal-function} where className is added to any $element that have a asModal-function
@@ -5405,6 +5478,74 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         $icon.appendTo( $appendTo );
         return $icon;
     };
+
+    /****************************************************************************************
+    $._isEqual(obj1, obj2 OR array)
+    Check if two objects or arrays are equal
+    (c) 2017 Chris Ferdinandi, MIT License, https://gomakethings.com
+    @param  {Object|Array|String}  value  The first object or array to compare
+    @param  {Object|Array|String}  other  The second object or array to compare
+    @return {Boolean}              Returns true if they're equal
+    ****************************************************************************************/
+    $._isEqual = function (value, other) {
+        // Get the value type
+        var type = Object.prototype.toString.call(value);
+
+        // If the two objects are not the same type, return false
+        if (type !== Object.prototype.toString.call(other)) return false;
+
+        // Compare the length of the length of the two items
+        var valueLen = type === '[object Array]' ? value.length : Object.keys(value).length;
+        var otherLen = type === '[object Array]' ? other.length : Object.keys(other).length;
+        if (valueLen !== otherLen) return false;
+
+        // Compare two items
+        var compare = function (item1, item2) {
+            // Get the object type
+            var itemType = Object.prototype.toString.call(item1);
+
+            // If an object or array, compare recursively
+            if (['[object Array]', '[object Object]'].indexOf(itemType) >= 0) {
+                if (!$._isEqual(item1, item2)) return false;
+            }
+            // Otherwise, do a simple comparison
+            else {
+                // If the two items are not the same type, return false
+                if (itemType !== Object.prototype.toString.call(item2)) return false;
+
+                // Else if it's a function, convert to a string and compare
+                // Otherwise, just compare
+                if (itemType === '[object Function]') {
+                    if (item1.toString() !== item2.toString())
+                        return false;
+                }
+                else {
+                    if (item1 !== item2) return false;
+                }
+            }
+        };
+
+        // Compare properties
+          if (type === '[object Array]'){
+               for (var i=0; i<valueLen; i++){
+                if (compare(value[i], other[i]) === false)
+                    return false;
+            }
+        }
+        else
+            if (type === '[object Object]'){
+                for (var key in value){
+                    if ( (value.hasOwnProperty(key)) && (compare(value[key], other[key]) === false))
+                        return false;
+                }
+            }
+            else
+                // If nothing failed, return simple comparison
+                return value == other;
+
+        return true;
+    };
+
 
 
     $.fn.extend({
