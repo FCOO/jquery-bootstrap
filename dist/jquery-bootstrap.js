@@ -3415,8 +3415,20 @@ jquery-bootstrap-modal-promise.js
         //Force no progressBar
         options.progressBar = false;
 
+        /***********************************************************
+        ************************************************************
+        ** NOTE                                                   **
+        ** There seem to be a error on Mac and some mobile device **
+        ** when using insertAdjacentHTML on elements              **
+        ** The only place this command is used is in noty when    **
+        ** options.force = false                                  **
+        ** Therefore options.force is always set to true          **
+        ************************************************************
+        ************************************************************/
+        options.force = true;
+
         //Always force when modal
-        options.force = options.force || options.modal;
+        //REMOVED options.force options.force || options.modal;
 
         //Add callbacks.onTemplate to add content (and close-icon)
         options.callbacks = options.callbacks || {};
@@ -3601,7 +3613,7 @@ jquery-bootstrap-modal-promise.js
         //Set timeout
         if ( ((options.type == 'warning') || (options.type == 'success')) && !options.buttons && (!options.timeout || (options.timeout !== false)) )
             options.timeout = options.timeout || 3000;
-        options.force = options.force || (options.timeout);
+        //REMOVED. See note in $.bsNoty. options.force = options.force || (options.timeout);
 
         //defaultHaeder
         options.defaultHeader = !options.header && (options.defaultHeader || ((options.type == 'error') && (options.defaultHeader !== false)));
