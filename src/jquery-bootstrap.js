@@ -605,7 +605,8 @@
             function buildTimeSlider(options, $parent){ buildSlider(options, 'timeSlider', $parent); }
 
             function buildTextBox( options ){
-                return $('<div/>')._bsAddHtml( options );
+                return $('<div/>')
+                        ._bsAddHtml( options );
             }
 
             function buildHidden( options ){
@@ -723,6 +724,10 @@
                     buildFunc.call( this, options, $parent );
                 else
                     buildFunc.call( this, options ).appendTo( $parent );
+
+                if (options.center)
+                    $parent.addClass('justify-content-center');
+
 
                 var prepend = options.prepend || options.before;
                 if (prepend)
