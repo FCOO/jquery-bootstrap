@@ -1948,8 +1948,8 @@ options
         }, 100);
     };
     $.workingOff = function(){
+        $._removeModalBackdropLevel(true);
         window.setTimeout(function(){
-            $._removeModalBackdropLevel(true);
             $modalBackdrop.removeClass('working');
         }, 100);
 
