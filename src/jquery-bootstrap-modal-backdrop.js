@@ -79,8 +79,8 @@
     Display/hide a bagdrop while some process is 'working'
     ******************************************************/
     $.workingOn = function(){
+        $._addModalBackdropLevel();
         window.setTimeout(function(){
-            $._addModalBackdropLevel();
             $modalBackdrop.addClass('working');
         }, 100);
     };
