@@ -1469,9 +1469,11 @@ width: 543,
 
         var long_content = $.bsModal({
 
-            onNew : function(){ console.log('NEW:  DONT close header'); return false},
-            onPin : function(){ console.log('PIN: Close header'); return true},
-            onHelp: function(){ console.log('HELP: DONT Close header'); return false},
+            onNew    : function(){ console.log('NEW:  DONT close header'); return false},
+            onPin    : function(){ console.log('PIN: Close header'); return true},
+            onInfo   : function(){ console.log('INFO: DONT Close header'); return false},
+            onWarning: function(){ console.log('WARNING: DONT Close header'); return false},
+            onHelp   : function(){ console.log('HELP: DONT Close header'); return false},
 
             icons: {
                 back:{onClick: function(){ console.log('BACK: DONT close header'); return false}}
@@ -1492,14 +1494,15 @@ width: 543,
             ],
             show: false,
             maxHeight: 300,
-            width: 220,
+            width: 320,
             content: 'max-height=300<br>Her kommer der nogle laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange ord<br>SLUT',
             clickable: true,
-            semiTransparent: true,
 
-            isMinimized: true,
+
+            _isMinimized: true,
             minimized: {
                 _showHeaderOnClick: true,
+                semiTransparent: true,
                 _height: 56,
                 width : 54,
                 content: {icon: 'fa-home'}, //, 'W=<br>54px',

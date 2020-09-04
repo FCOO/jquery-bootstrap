@@ -1351,6 +1351,11 @@
 
         new     : ['far fa-window-maximize fa-inside-circle2', 'far fa-circle'],
 
+        warning : [['fas fa-circle back text-warning', 'far fa-circle front'], 'fas fa-exclamation middle'],
+
+        info    : 'fa-info-circle',
+
+
         help    : 'far fa-question-circle',
 
         close   : ['fas fa-circle back', 'far fa-times-circle middle', 'far fa-circle front']
@@ -1358,7 +1363,8 @@
 
     //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
     var mandatoryHeaderIconClassAndTitle = {
-        close: {class:'header-icon-close', title: {da:'Luk', en:'Close'}},
+        warning: {class:'header-icon-colored-background header-icon-warning', __title: {da:'Luk', en:'Close'}},
+        close  : {class:'header-icon-colored-background header-icon-close',   title: {da:'Luk', en:'Close'}},
     };
 
     /******************************************************
@@ -1405,7 +1411,7 @@
                         .appendTo( this );
 
             //Add icons
-            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'help', 'close'], function( index, id ){
+            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'warning', 'info', 'help', 'close'], function( index, id ){
                 var iconOptions = options.icons[id],
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
 
@@ -2831,6 +2837,8 @@ jquery-bootstrap-modal-promise.js
                 extend  : { className: iconExtendClassName,     onClick: multiSize ? modalExtend   : null, altEvents:'swipeup'   },
                 diminish: { className: iconDiminishClassName,   onClick: multiSize ? modalDiminish : null, altEvents:'swipedown' },
                 new     : { className: '',                      onClick: options.onNew ? $.proxy(options.onNew, this) : null },
+                info    : { className: '',                      onClick: options.onInfo ? $.proxy(options.onInfo, this) : null },
+                warning : { className: '',                      onClick: options.onWarning ? $.proxy(options.onWarning, this) : null },
                 help    : { className: '',                      onClick: options.onHelp ? $.proxy(options.onHelp, this) : null },
             }
         }, options );
