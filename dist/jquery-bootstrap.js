@@ -5971,7 +5971,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     buildFunc.call( this, options ).appendTo( $parent );
 
                 if (options.center)
-                    $parent.addClass('justify-content-center');
+                    $parent.addClass('justify-content-center text-center');
 
 
                 var prepend = options.prepend || options.before;
