@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "1.83.1",
+  "version": "1.83.2",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "authors": [
     "NielsHolt"
@@ -30,7 +30,7 @@
     "noty": "^3.1.3",
     "jquery-base-slider": "fcoo/jquery-base-slider#^5.0.0",
     "jquery-time-slider": "fcoo/jquery-time-slider#^6.0.0",
-    "pdfobject": "fcoo/PDFObject",
+    "pdfobject": "pipwerks/PDFObject",
     "js-url": "websanova/js-url#^2.5.3",
     "jquery-stupid-table": "^1.1.3",
     "bind-first": "private-face/jquery.bind-first#^0.2.3",
