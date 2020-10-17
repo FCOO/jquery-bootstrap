@@ -41,6 +41,7 @@
         megaWidth
         noVerticalPadding
         noHorizontalPadding
+        noShadow
         content
         scroll: boolean | 'vertical' | 'horizontal'
         minimized,
@@ -498,6 +499,7 @@
                 $('<div/>')
                     .addClass('modal-content')
                     .addClass(options.modalContentClassName)
+                    .toggleClass('no-shadow', !!options.noShadow)
                     .modernizrOff('modal-pinned')
                     .appendTo( this );
 

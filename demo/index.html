@@ -1433,6 +1433,7 @@ width: 543,
                 testModalForm.edit(myData);
             });
 
+        //************************************************************************************
         var no_header_or_footer = $accordion4.asModal({
             flexWidth: false,
             scroll: true,
@@ -1449,6 +1450,7 @@ width: 543,
             .appendTo( $body)
             .on('click', function(){ no_header_or_footer.show(); });
 
+        //************************************************************************************
         var no_content = $.bsModal({
             closeButton: true,
             header:{icon: 'fa-home', text:{da:'Intet indhold',en:'No content'}},
@@ -1468,6 +1470,7 @@ width: 543,
             .appendTo( $body)
             .on('click', function(){ no_content.show(); });
 
+        //************************************************************************************
         var long_content = $.bsModal({
 
             onNew    : function(){ console.log('NEW:  DONT close header'); return false},
@@ -1534,6 +1537,46 @@ clickable: true,
             .appendTo( $body)
             .on('click', function(){ long_content.show(); });
 
+        //************************************************************************************
+        var modal_in_modal = $.bsModal({
+            closeButton: false,
+            _noHeader: true,
+            header:{
+                text: {da:'Modal med modal',en:'"Modal with modal'},
+            },
+            show: false,
+            minimized: {
+                content: 'Minimized'
+            },
+            //noVerticalPadding   : true,
+            //noHorizontalPadding : true,
+
+            content: function($container){
+                for (var i=0; i<5; i++)
+                    $('<div/>').appendTo($container)._bsModalContent({
+                        header: {
+                            icon: i % 2 ? 'fa-fw fas fa-spinner fa-spin' : 'fa-fw fas fa-eye-slash',
+                            text: 'Davs'
+                        },
+                        content: '',
+                        noShadow: true,
+                        extended: {
+                            content: 'Extended'
+                        },
+                        closeButton: false
+                    });
+            },
+            _extended: {
+                content: 'Extended'
+            },
+
+
+        });
+        $('<button>modal-content in modal</button>')
+            .appendTo( $body)
+            .on('click', function(){ modal_in_modal.show(); });
+
+        //************************************************************************************
 
         function newNumberModal( _number ){
             function number(){ return _number + ' '+Math.round( Math.random()*100000); }

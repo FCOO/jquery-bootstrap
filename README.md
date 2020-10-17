@@ -490,6 +490,7 @@ Eq.
 | `noHeader` | `boolean` | `false` | Prevent header even if `options.header` is set |
 | `noVerticalPadding` | `boolean` | `false` | If `true` the vertical padding around all contents is zero |
 | `noHorizontalPadding` | `boolean` | `false` | If `true` the horizontal padding around all contents is zero |
+| `noShadow` | `boolean` | `false` | If `true` the modal gets no shadow |
 | `show` | `boolean` |  `true` | The modal is shown after creation |
 | `static` | `boolean` |  `false` | If `true` the modal can only be closed on top-right (x) or a button|
 | `closeButton` | `boolean` | `true` | If `true` a close button is added. See `closeText` and `closeIcon` below |
