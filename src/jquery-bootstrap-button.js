@@ -174,7 +174,6 @@
             });
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
-
         var result = $('<'+ options.tagName + '/>')
                         ._bsAddIdAndName( options )
                         ._bsAddBaseClassAndSize( options );

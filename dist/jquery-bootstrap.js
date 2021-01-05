@@ -418,7 +418,6 @@
             });
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
-
         var result = $('<'+ options.tagName + '/>')
                         ._bsAddIdAndName( options )
                         ._bsAddBaseClassAndSize( options );
@@ -1767,6 +1766,9 @@ options
         //Append the items
         $.each(list, function(index, itemOptions){
             var $item = null, radioGroup = null;
+
+            itemOptions.small = options.small;
+
             switch (itemOptions.type){
                 case 'button':
                     $item = $.bsButton($.extend(itemOptions, {returnFromClick: true}));

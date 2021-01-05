@@ -1833,7 +1833,7 @@ _small: true,
 
     header('bsMenupopover');
 
-    var buttonWithPopoverMenu1 = $.bsButton({text:'1: Klik mig (klik på cykel lukker ikke!)'})
+    var buttonWithPopoverMenu1 = $.bsButton({text:'1: Klik mig (Normal popup og klik på cykel lukker ikke!)'})
         .appendTo($body)
         .bsMenuPopover({
             closeOnClick: true,
@@ -1849,11 +1849,11 @@ _small: true,
 
 
 
-    $.bsButton({text:'2: Klik mig (klik på cykel lukker!)', small:true})
+    $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', small:true})
         .appendTo($body)
         .bsMenuPopover({
             closeOnClick: true,
-            //small: true,
+            small: true,
             placement: 'top',
             list: list2
          });
