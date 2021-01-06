@@ -24224,7 +24224,7 @@ if (typeof define === 'function' && define.amd) {
   }
   function deepExtend(target, source, overwrite) {
     for (var prop in source) {
-      if (prop !== '__proto__') {
+      if (prop !== '__proto__' && prop !== 'constructor') {
         if (prop in target) {
           if (typeof target[prop] === 'string' || target[prop] instanceof String || typeof source[prop] === 'string' || source[prop] instanceof String) {
             if (overwrite) target[prop] = source[prop];
@@ -33248,13 +33248,15 @@ if (typeof define === 'function' && define.amd) {
         /***********************************************************
         $.fn.checkbox( options )
         options:
-            id         (default: id of element or auto-created)
-            prop       (default '')     Property set when the eleemnt is selected
-            className  (default: '')    Class-name set when the eleemnt is selected
-            selector   (default: null)  Selector for child-element to be updated with prop and/or className
-            modernizr  (default; false) If true the element get "no-"+className when unselected
-            selected   (default: false)
-            onChange = function( id, selected, $checkbox )
+            id              (default: id of element or auto-created)
+            prop            (default '')     Property set when the element is selected
+            className       (default: '')    Class-name set when the element is selected
+            className_semi  (default: '')    Class-name set when the element is semi-selected
+            selector        (default: null)  Selector for child-element to be updated with prop and/or className
+            modernizr       (default; false) If true the element get "no-"+className when unselected
+            selected        (default: false)
+            semiSelected    (default: false) If true the checkbox appear with className_semi and selected. Will be removed the first time the input is clicked
+            onChange        = function( id, selected, $checkbox )
         ***********************************************************/
         checkbox: function( options ){
             return this.each(function() {
@@ -33269,7 +33271,15 @@ if (typeof define === 'function' && define.amd) {
                         onChange : function(){}
                     }, options);
                 $this.data('cbx_options', _options );
+
+
+                if (options.className_semi && options.semiSelected){
+                    _options.selected = true;
+                    $this.addClass(options.className_semi);
+                }
+
                 $this._cbxSet( _options.selected, true );
+
                 $this.on('click', $.proxy( $this._cbxOnClick, $this ));
                 if (options.onDblClick)
                     $this.on('dblclick', $.proxy($this._cbxCallDblClick, $this));
@@ -33301,8 +33311,10 @@ if (typeof define === 'function' && define.amd) {
 
             });
 
-            if (!dontCallOnChange)
+            if (!dontCallOnChange){
+                this.removeClass(options.className_semi);
                 this._cbxCallOnChange();
+            }
             return this;
         },
 
@@ -50052,7 +50064,7 @@ return index;
 }).call(this);
 ;
 //! moment-timezone.js
-//! version : 0.5.31
+//! version : 0.5.32
 //! Copyright (c) JS Foundation and other contributors
 //! license : MIT
 //! github.com/moment/moment-timezone
@@ -50082,7 +50094,7 @@ return index;
 	// 	return moment;
 	// }
 
-	var VERSION = "0.5.31",
+	var VERSION = "0.5.32",
 		zones = {},
 		links = {},
 		countries = {},

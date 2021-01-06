@@ -16,6 +16,12 @@
     **********************************************************/
     $.bsCheckbox = function( options ){
         options.type = options.type || 'checkbox';
+
+        if (options.semiSelected){
+            options.className_semi = 'semi-selected';
+            options.selected = true;
+        }
+
         options =
             $._bsAdjustOptions( options, {
                 useTouchSize: true,
