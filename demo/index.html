@@ -1233,7 +1233,7 @@ width: 543,
             'mySlider': 20,
             'mySlider2': 10,
             'formId2': 'Skide godt do',
-            'mySelection': false,
+            'theCheckBox': 'true',
             'theSelectList': 'item3',
             'hemmeligt': 'Dette er super hemmeligt',
             'theSelectBox': 'theSelectBox3',
@@ -1346,12 +1346,12 @@ width: 543,
                                             XXonChanging: function( obj ){ console.log( obj.value ); }
                                         },
                                         {
-                                            id:'mySelection', type:'checkbox', text: 'Vælg mig'
+                                            id:'theCheckBox', type:'checkbox', text: 'Vælg mig (theCheckBox)'
                                         },
                                         {
                                             type: 'inputgroup', label: 'Dette er en input-group',
                                             id: 'Dette_Er_En_Test',
-                                            showWhen: {'mySelection': false },
+                                            showWhen: {'theCheckBox': false },
 
                                             content: [
                                                 {id:'mySelection2', type:'checkbox', text: 'Vælg mig #2', noValidation: true, smallBottomPadding: true},
@@ -1383,7 +1383,7 @@ width: 543,
                                                 {id:'theSelectBox10', text:'10: Item 10'},
                                                 {id:'theSelectBox11', text:'11: Item 11'}
                                             ],
-                                            showWhen: {'mySelection': false },
+                                            showWhen: {'theCheckBox': false },
                                             freeSpaceWhenHidden: false
                                         },
 
@@ -1394,7 +1394,7 @@ width: 543,
                                                 {id:'radiogroup2', text:'Item 2'},
                                                 {id:'radiogroup3', text:'Item 3'}
                                             ],
-                                            showWhen: {'mySelection': true },
+                                            showWhen: {'theCheckBox': true },
                                         },
 
                                         {

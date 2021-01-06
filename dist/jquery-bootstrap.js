@@ -817,7 +817,20 @@
             switch (this.options.type || 'input'){
                 case 'input'            : $elem.val( value );                      break;
                 case 'select'           : $elem.selectpicker('val', value );       break;
-                case 'checkbox'         : $elem.prop('checked', !!value );         break;
+                case 'checkbox'         :
+                    //Special case: If value is a string => the checkbox get semi-selected mode (yellow background)
+                    var isSemiSelected = (typeof value == 'string');
+                    $elem.toggleClass('semi-selected', isSemiSelected);
+
+                    //Update options for the checkbox
+                    var options = $elem.data('cbx_options');
+                    options.className_semi = isSemiSelected ? 'semi-selected' : '';
+                    options.semiSelectedValue = isSemiSelected ? value : '';
+                    $elem.data('cbx_options', options );
+
+                    $elem.prop('checked', /*!!*/value );
+                    break;
+
                 case 'selectlist'       : this.getRadioGroup().setSelected(value); break;
                 case 'radiobuttongroup' : this.getRadioGroup().setSelected(value); break;
 
@@ -875,7 +888,16 @@
             switch (this.options.type || 'input'){
                 case 'input'            : result = $elem.val();               break;
                 case 'select'           : result = $elem.selectpicker('val'); break;
-                case 'checkbox'         : result = !!$elem.prop('checked');   break;
+                case 'checkbox'         :
+                    result = !!$elem.prop('checked');
+
+                    //Special case: If $elem is semi-selected: return special value from option
+                    var options = $elem.data('cbx_options');
+                    if (result && options.semiSelectedValue && options.className_semi && $elem.hasClass(options.className_semi))
+                        result = options.semiSelectedValue;
+
+                    break;
+
                 case 'selectlist'       : result = this.getRadioGroup().getSelected(); break;
                 case 'radiobuttongroup' : result = this.getRadioGroup().getSelected(); break;
                 case 'slider'           :
