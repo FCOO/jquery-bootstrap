@@ -98,7 +98,7 @@
                     options.semiSelectedValue = isSemiSelected ? value : '';
                     $elem.data('cbx_options', options );
 
-                    $elem.prop('checked', /*!!*/value );
+                    $elem.prop('checked', value );
                     break;
 
                 case 'selectlist'       : this.getRadioGroup().setSelected(value); break;

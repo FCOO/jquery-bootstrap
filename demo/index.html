@@ -462,6 +462,14 @@ semiSelected: true,
         }).appendTo($body);
 
         $.bsStandardCheckboxButton({
+            text: {da:'Radio #2', en:'Radio #2'},
+            selected: true,
+            type    : 'radio',
+            onChange: function(id, selected){
+                console.log('radio#2',id,selected);
+            }
+        }).appendTo($body);
+        $.bsStandardCheckboxButton({
             text: {da:'Vælg mig #2', en:'Select me #2'},
             selected: false,
             onChange: function(id, selected){
@@ -1257,8 +1265,12 @@ width: 543,
                     buttons: [
                         {text:'Set=2', onClick: function(){ testModalForm.setValue('theSelectBox', 'theSelectBox1');} }
                     ],
-                    onSubmit: function( data ){ console.log( 'SUBMIT=', data ); myData = data; },
-                    onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
+                    onSubmit: function( data ){ 
+                        console.log( 'SUBMIT=', data.theCheckBox ); 
+                        myData = data; 
+                        myData.theCheckBox = false;
+                    },
+                    onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; myData.theCheckBox = false},
                     useExtended: true,
                     isExtended: true,
                     scroll: true,
@@ -1432,6 +1444,7 @@ width: 543,
 
                 //TEST console.log('mySlider=', testModalForm.getInput('mySlider') );
                 testModalForm.edit(myData);
+                myData.theCheckBox = false;
             });
 
         //************************************************************************************

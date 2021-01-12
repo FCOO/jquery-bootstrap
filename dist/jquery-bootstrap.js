@@ -381,11 +381,19 @@
         options = $.extend({}, options, {
             class    : 'allow-zero-selected',
             modernizr: true,
-            icon: [[
-                'fas fa-square text-checked      icon-show-for-checked', //"Blue" background
-                'far fa-check-square text-white  icon-show-for-checked', //Check marker
-                'far fa-square'                                          //Border
-            ]]
+            icon: options.type == 'radio' ?
+                    //Radio-button icons
+                    [[
+                        'fas fa-circle text-checked   icon-show-for-checked', //"Blue" background
+                        'far fa-dot-circle text-white icon-show-for-checked', //Dot marker
+                        'far fa-circle'                                       //Border
+                    ]] :
+                    //Checkbox-button icons
+                    [[
+                        'fas fa-square text-checked      icon-show-for-checked', //"Blue" background
+                        'far fa-check-square text-white  icon-show-for-checked', //Check marker
+                        'far fa-square'                                          //Border
+                    ]]
         });
 
         //Bug fix: To avoid bsButton to add class 'active', selected is set to false in options for bsButton
@@ -828,7 +836,7 @@
                     options.semiSelectedValue = isSemiSelected ? value : '';
                     $elem.data('cbx_options', options );
 
-                    $elem.prop('checked', /*!!*/value );
+                    $elem.prop('checked', value );
                     break;
 
                 case 'selectlist'       : this.getRadioGroup().setSelected(value); break;
