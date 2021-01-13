@@ -575,8 +575,10 @@
                         .appendTo( $result );
 
         //Add <i> with check-icon if it is a checkbox
-        if (options.type == 'checkbox')
-            $('<i class="fas fa-check"/>').appendTo( $label );
+        $('<i/>')
+            .addClass('fas')
+            .addClass(options.type == 'checkbox' ? 'fa-check' : 'fa-circle')
+            .appendTo( $label );
 
         if (options.text)
             $('<span/>').i18n( options.text ).appendTo( $label );

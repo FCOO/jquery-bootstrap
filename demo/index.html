@@ -436,8 +436,9 @@ return;
         .appendTo( $body );
 
         $.bsCheckbox({
-            checked: true,
             type: 'radio',
+            semiSelected: true,
+            disabled: true,
             text: {da:'Vælg mig (radio)', en:'Check me (radio)'},
             onChange: function(id, selected, $buttonGroup){
                         console.log('bsCheckbox as radio', id, selected)

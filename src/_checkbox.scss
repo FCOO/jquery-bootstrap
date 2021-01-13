@@ -24,8 +24,7 @@ div.checkbox, div.radio {
 
     @include modal-element-margin-bottom();
 
-    input[type="checkbox"],
-    input[type="radio"] {
+    input {
         opacity: 0;
         z-index: 1;
         //'hide' the checkbox
@@ -40,7 +39,7 @@ div.checkbox, div.radio {
             padding      : 0;
             margin-bottom: 0; //Standard margin-bottom only on outer-div
 
-            &::before, &::after{
+            &::before {
                 display   : inline-block;
                 position  : absolute;
                 left      : 0;
@@ -55,11 +54,6 @@ div.checkbox, div.radio {
 
                 @include transition(border 0.15s ease-in-out, color 0.15s ease-in-out);
             }
-
-            //::after = icon
-            &::after{
-            }
-
         } // & + label
 
         //When checkbox has focus
@@ -83,23 +77,17 @@ div.checkbox, div.radio {
         &:checked + label::before {
             background-color: $control-active-bg-color;
         }
-        &:checked + label::after {
-            color: $control-active-color;
-        }
 
-        //hover on checked - only on checkbox
-        &[type="checkbox"]:checked:hover + label::before {
+        //hover on checked
+        &:checked:hover + label::before {
             background-color: darken($control-active-bg-color, $darken-hover-percent);
         }
 
-        //When semi-selected - used when a checkbox is for a group and not all children is selected. Only for checkbox
-        &[type="checkbox"].semi-selected:checked {
+        //When semi-selected - used when a checkbox/radiobox is for a group and not all children is selected.
+        &.semi-selected:checked {
 
             & + label::before {
                 background-color: $semi-selected-bg-color;
-            }
-            & + label::after {
-                color: $control-active-color;
             }
 
             //hover on checked
@@ -107,8 +95,6 @@ div.checkbox, div.radio {
                 background-color: darken($semi-selected-bg-color, $darken-hover-percent);
             }
         }
-
-
 
 
         //disabled = disabled item-list
@@ -120,20 +106,9 @@ div.checkbox, div.radio {
                 background-color: $list-group-disabled-bg !important;
                 cursor          : not-allowed !important;
             }
-            &::after{
-                color : $list-group-disabled-color !important;
-                cursor: not-allowed !important;
-            }
         }
-    }//input[type="checkbox"], ...
-} //div.checkbox, div.radio
 
-/* Special styles for div.checkbox */
-div.checkbox {
-    input[type="checkbox"],
-    input[type="radio"]{
-
-        //<i> = icon
+        // Styles for <i> icon with check or dot
         & + label i {
             line-height: 1;
             text-align: center;
@@ -141,44 +116,22 @@ div.checkbox {
 
             position  : absolute;
             left      : 0px;
-
-
-
-
         }
-        &:not(:checked):not(:disabled):not(:focus):hover + label i {
+        &:not(:checked):not(:disabled):hover + label i {
             color: $control-no-active-color-hover;
         }
         &:checked + label i  {
             color: $control-active-color;
         }
-    }
+
+    }//input
+} //div.checkbox, div.radio
+
+//div.radio gets round shape
+div.radio input + label::before {
+    border-radius: 50%;
 }
 
-/* Special styles for div.radio */
-div.radio {
-    input[type="checkbox"],
-    input[type="radio"]{
-        //::before = border and background
-        & + label::before {
-            border-radius: 50%;
-        }
-
-        //::after = icon
-        & + label::after {
-            border-radius  : 50%;
-            border-style   : solid;
-            border-color   : transparent;
-            background-clip: padding-box;
-        }
-        &:not(:checked):not(:disabled):not(:focus):hover + label::after {
-            background-color: $control-no-active-color-hover;
-        }
-        &:checked + label::after {
-            background-color: $control-active-color;
-        }
-    }
-}
 
 /***************************************************************************
 @mixin checkbox-radio-size-variant
@@ -202,12 +155,9 @@ div.radio {
     div.checkbox#{$class-postfix}, div.radio#{$class-postfix} {
         height   : $height;
         font-size: $font-size;
-
-        input[type="checkbox"],
-        input[type="radio"] {
+        input{
             //Standard style
             & + label {
-
                 padding-left  : $label-padding-left;
                 padding-top   : $padding-vertical;
                 padding-bottom: $padding-vertical;
@@ -221,14 +171,7 @@ div.radio {
                     height    : $box-dim;
                 }
 
-                //::after = icon for radio
-                &::after{
-                    margin-top: $box-margin-top;
-                    width     : $box-dim;
-                    height    : $box-dim;
-                }
-
-                //label i = icon for checkbox
+                //label i = icon for with check/dot
                 & i {
                     $icon-dim: 0.8*$font-size;
                     font-size  : $icon-dim;
@@ -237,68 +180,28 @@ div.radio {
                     margin-top : $box-margin-top + ($box-dim - $icon-dim)/2;
                     margin-left: ($box-dim - $icon-dim)/2;
                 }
-
-            } // & + label
-
-        }//input[type="checkbox"], ...
-    } //div.checkbox, div.radio
-
-    /* Special styles for div.checkbox */
-    div.checkbox#{$class-postfix} {
-        input[type="checkbox"],
-        input[type="radio"]{
-            //::before = border and background
-            & + label::before {
-                border-radius: $border-radius;
-            }
-
-            //::after = icon
-            & + label::after{
-                font-size  : $icon-font-size;
-                line-height: $box-dim / $icon-font-size; //Using line-height to vertical center
             }
         }
     }
 
-    /* Special styles for div.radio */
-    div.radio#{$class-postfix} {
-        input[type="checkbox"],
-        input[type="radio"]{
-            //::before = border and background
-            & + label::before{
-            }
 
-            //::after = icon
-            & + label::after{
-                border-width: $icon-radio-border-width;
-            }
-        }
+    //Adjust border for checkbox
+    div.checkbox#{$class-postfix} input label::before {
+        border-radius: $border-radius;
+    }
+
+    //Adjust icon for radio
+    div.radio#{$class-postfix} input + label i {
+        $icon-dim-radio: 0.4*$font-size;
+        font-size  : $icon-dim-radio;
+        margin-top : $box-margin-top + ($box-dim - $icon-dim-radio)/2;
     }
 } //end of mixin
 
 
 //Creating different size variations. Using vertical-padding from smaller button
-
-//Standard
 @include checkbox-radio-size-variant($class-postfix: '',    $font-size: $font-size-base, $border-radius: $btn-border-radius,    $padding-vertical: $btn-padding-y-sm );
 @include checkbox-radio-size-variant($class-postfix: '-sm', $font-size: $font-size-sm,   $border-radius: $btn-border-radius-sm, $padding-vertical: $btn-padding-y-xs );
-
-/***************************************************************************
-checkbox-group(-sm | -lg) and radio-group(-sm | -lg)
-***************************************************************************/
-/*REMOVED - Only ONE size
-.checkbox-group-sm > .checkbox,
-.radio-group-sm > .checkbox { @extend .checkbox-sm; }
-
-.checkbox-group-lg > .checkbox,
-.radio-group-lg > .checkbox { @extend .checkbox-lg; }
-
-.checkbox-group-sm > .radio,
-.radio-group-sm > .radio { @extend .radio-sm; }
-
-.checkbox-group-lg > .radio,
-.radio-group-lg > .radio { @extend .radio-lg; }
-*/
 
 /***************************************************************************
 checkbox-inline, radio-inline,
