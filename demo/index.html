@@ -416,7 +416,7 @@ return;
         });
 
 
-        header('Checkbox and checkbox-button');
+        header('Checkbox, Radiobox, and checkbox-button');
         $.bsCheckbox({
             checked: true,
             text: {da:'Vælg mig', en:'Check me'},
@@ -427,9 +427,7 @@ return;
         .appendTo( $body );
 
         $.bsCheckbox({
-//HER            className: 'semi-selected',
-semiSelected: true,
-//HER            checked: true,
+            semiSelected: true,
             text: {da:'Vælg mig (semi)', en:'Check me (semi)'},
             onChange: function(id, selected, $buttonGroup){
 //HER                        console.log('9: bsSelectListPopover', id, selected)
@@ -437,6 +435,15 @@ semiSelected: true,
         })
         .appendTo( $body );
 
+        $.bsCheckbox({
+            checked: true,
+            type: 'radio',
+            text: {da:'Vælg mig (radio)', en:'Check me (radio)'},
+            onChange: function(id, selected, $buttonGroup){
+                        console.log('bsCheckbox as radio', id, selected)
+                      },
+        })
+        .appendTo( $body );
 
         //semiTransparent and square and multi icon
         $.bsCheckboxButton({
