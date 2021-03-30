@@ -82,7 +82,6 @@ body.modal-open .modal {
     .modal-content {
         $border-radius: calc( #{$border-radius-lg} - #{$modal-content-border-width} );
 
-
         //No shadow mode
         &.no-shadow {
             box-shadow: none;
@@ -282,19 +281,17 @@ body.modal-open .modal {
     }
 
     //hover-style for modal-content when content is clickable
-    .mouse-hover & .modal-content {
+    .mouse-hover & .modal-content:hover {
         //.modal-content.modal-SIZE.modal-SIZE-clickable .modal-body[-fixed]: background = button:hover-background on hover
         &.modal-minimized.modal-minimized-clickable,
         &.modal-normal.modal-normal-clickable,
         &.modal-extended.modal-extended-clickable {
             .modal-body, .modal-body-fixed {
-                &:hover, &.hover {
-                    cursor: default;
-                    //hover background = hover background for buttons
-                    @include gradient-bg( darken($control-bg-color, $darken-hover-percent) );
-                    &.modal-body-semi-transparent {
-                        background: $modal-content-bg-semi-transparent-hover;
-                    }
+                cursor: default;
+                //hover background = hover background for buttons
+                @include gradient-bg( darken($control-bg-color, $darken-hover-percent) );
+                &.modal-body-semi-transparent {
+                    background: $modal-content-bg-semi-transparent-hover;
                 }
             }
         }

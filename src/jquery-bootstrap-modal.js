@@ -435,9 +435,12 @@
 
         //Add onClick to all elements - if nedded
         if (options.onClick){
+            this.addClass('modal-' + size + '-clickable');
+            if (options.fixedContent)
+                $modalFixedContent.on('click', options.onClick);
+
             $modalContent.on('click', options.onClick);
         }
-
         return this;
     };
 
