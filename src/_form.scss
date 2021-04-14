@@ -168,6 +168,9 @@ form.form-validation {
     border: $input-border-width solid $input-border-color;
     @include border-radius($input-border-radius);
 
+    &.input-group-border-dark {
+        border-color: black;
+    }
 
     &.input-group-sm, &.input-group-xs  {
         padding: $input-padding-y-sm $input-padding-x-sm;

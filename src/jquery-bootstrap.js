@@ -708,6 +708,10 @@
                     if (addBorder && !options.noBorder){
                         //Add border and label (if any)
                         $inputGroup.addClass('input-group-border');
+
+                        if (options.darkBorderlabel)
+                            $inputGroup.addClass('input-group-border-dark');
+
                         if (options.label){
                             $inputGroup.addClass('input-group-border-with-label');
                             $('<span/>')
