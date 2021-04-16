@@ -798,7 +798,14 @@
     $.fn._bsModalSetSize = function(size){
         this._bsModalSetSizeClass(size);
         this._bsModalSetHeightAndWidth();
-        return false; //Prevent onclick-event on header
+        /*
+        NOTE: 2021-04-16
+        Original this methods returns false to prevent onclick-event on the header.
+        That prevented other more general events to be fired. Eg. in fcoo/leaflet-bootstrap
+        where the focus of a popup window was set when the window was clicked
+        It appear not to have any other effect when removed.
+        */
+        //return false; //Prevent onclick-event on header
     };
 
     //hid/show header for size = minimized
