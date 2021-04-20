@@ -1531,7 +1531,10 @@ width: 543,
                 semiTransparent: true,
                 _height: 56,
                 width : 54,
-                content: {icon: 'fa-home'}, //, 'W=<br>54px',
+                dynamic: true,
+                content: function($body){
+                    $body.html( moment().format("hh:mm:ss"));
+                },
                 noVerticalPadding: true,
                 noHorizontalPadding: true,
 
