@@ -5913,7 +5913,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             </div>
         </div>
         ****************************************************************************************/
-        _bsAppendContent: function( options, context ){
+        _bsAppendContent: function( options, context, arg ){
 
             //Internal functions to create baseSlider and timeSlider
             function buildSlider(options, constructorName, $parent){
@@ -5957,9 +5957,11 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 return this;
             }
 
-            //Function
+            //Function: Include arg (if any) in call to method (=options)
             if ($.isFunction( options )){
-                options.call( context, this );
+                arg = arg || [];
+                arg.unshift(this);
+                options.apply( context, arg );
                 return this;
             }
 
