@@ -2634,10 +2634,10 @@ jquery-bootstrap-modal-promise.js
         update: function( options ){
             var _this = this;
             //***********************************************************
-            function updateElement($element, newOptions, methodName, param ){
+            function updateElement($element, newOptions, methodName, param, param2 ){
                 if ($element && newOptions){
                     $element.empty();
-                    $element[methodName](newOptions, param);
+                    $element[methodName](newOptions, param, param2);
                 }
             }
             //***********************************************************
@@ -2655,8 +2655,8 @@ jquery-bootstrap-modal-promise.js
                     contentOptions = id ? options[id]       : options;
 
                 if (containers && contentOptions){
-                    updateElement(containers.$fixedContent, contentOptions.fixedContent, '_bsAppendContent', contentOptions.fixedContentContext );
-                    updateElement(containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext );
+                    updateElement(containers.$fixedContent, contentOptions.fixedContent, '_bsAppendContent', contentOptions.fixedContentContext, contentOptions.fixedContentArg );
+                    updateElement(containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext,      contentOptions.contentArg      );
                     updateElement(containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
             });
@@ -2741,6 +2741,7 @@ jquery-bootstrap-modal-promise.js
         if (options.dynamic && (typeof options.content == 'function') && (size != initSize)){
             parts.dynamicContent        = options.content;
             parts.dynamicContentContext = options.contentContext;
+            parts.dynamicContentArg     = options.contentArg;
         }
         else
             $modalContent._bsAppendContent( options.content, options.contentContext );
@@ -3126,10 +3127,11 @@ jquery-bootstrap-modal-promise.js
         var parts = this.bsModal[ modalSizeName[size] ] || this.bsModal;
 
         if (parts && parts.dynamicContent){
-            parts.$content._bsAppendContent( parts.dynamicContent, parts.dynamicContentContext );
+            parts.$content._bsAppendContent( parts.dynamicContent, parts.dynamicContentContext, parts.dynamicContentArg );
 
             parts.dynamicContent        = null;
             parts.dynamicContentContext = null;
+            parts.dynamicContentArg     = null;
         }
 
         this._bsModalSetSizeClass(size);
