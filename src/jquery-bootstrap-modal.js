@@ -425,7 +425,7 @@
             parts.dynamicContentArg     = options.contentArg;
         }
         else
-            $modalContent._bsAppendContent( options.content, options.contentContext );
+            $modalContent._bsAppendContent( options.content, options.contentContext, options.contentArg );
 
         //Add scroll-event to close any bootstrapopen -select
         if (hasScroll)
