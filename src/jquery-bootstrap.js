@@ -567,7 +567,7 @@
         },
 
         /****************************************************************************************
-        _bsAppendContent( options, context )
+        _bsAppendContent( options, context, arg )
         Create and append any content to this.
         options can be $-element, function, json-object or array of same
 
@@ -635,7 +635,7 @@
 
             //Function: Include arg (if any) in call to method (=options)
             if ($.isFunction( options )){
-                arg = arg || [];
+                arg = arg ? $.isArray(arg) ? arg : [arg] : [];
                 arg.unshift(this);
                 options.apply( context, arg );
                 return this;
