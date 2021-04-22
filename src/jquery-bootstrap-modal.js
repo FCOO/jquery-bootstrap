@@ -804,7 +804,8 @@
     //Set new size of modal-window
     $.fn._bsModalSetSize = function(size){
         //Check to see if the content of the new size need to be created dynamically
-        var parts = this.bsModal[ modalSizeName[size] ];
+        var parts = this.bsModal[ modalSizeName[size] ] || this.bsModal;
+
         if (parts && parts.dynamicContent){
             parts.$content._bsAppendContent( parts.dynamicContent, parts.dynamicContentContext );
 

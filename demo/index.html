@@ -1521,11 +1521,18 @@ width: 543,
             show: false,
             maxHeight: 300,
             width: 320,
-            content: 'max-height=300<br>Her kommer der nogle laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange ord<br>SLUT',
+            _content: 'max-height=300<br>Her kommer der nogle laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange ord<br>SLUT',
+            dynamic: true,
+            content: function($body){
+                $body.html( moment().format("hh:mm:ss") + '<br>max-height=300<br>Her kommer der nogle laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange ord<br>SLUT');
+            },
+
+
             clickable: true,
 
 
-            _isMinimized: true,
+
+            isMinimized: true,
             minimized: {
                 _showHeaderOnClick: true,
                 semiTransparent: true,
@@ -1549,12 +1556,17 @@ width: 543,
                 flexWidth: true,
 buttons: false,
 clickable: true,
-                content: 'max-height=300 flex-width <br>Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord'+
+                dynamic: true,
+                content: function($body){
+                    $body.html(moment().format("hh:mm:ss") + '<br>' + 
+                        'max-height=300 flex-width <br>Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord'+
                             'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +
                             'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +
                             'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +
                             'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +
-                            'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord',
+                            'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord'
+                    );
+                }
             }
 
         });
