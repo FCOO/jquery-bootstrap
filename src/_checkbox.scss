@@ -177,8 +177,8 @@ div.radio input + label::before {
                     font-size  : $icon-dim;
                     width      : $icon-dim;
                     height     : $icon-dim;
-                    margin-top : $box-margin-top + ($box-dim - $icon-dim)/2;
-                    margin-left: ($box-dim - $icon-dim)/2;
+                    margin-top : $box-margin-top + ($box-dim - $icon-dim)/2 !important;
+                    margin-left: ($box-dim - $icon-dim)/2 !important;
                 }
             }
         }

@@ -5553,8 +5553,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         if (!iconfontPrefixRegExp){
             var prefixes = $.isArray($.ICONFONT_PREFIXES) ? $.ICONFONT_PREFIXES : [$.ICONFONT_PREFIXES];
             iconfontPrefixRegExp = new window.RegExp('(\\s|^)(' + prefixes.join('|') + ')(\\s|$)', 'g');
-        };
-
+        }
 
         var $icon;
 
