@@ -8985,7 +8985,7 @@ div.checkbox input label::before {
 
 div.radio input + label i {
   font-size: 0.4rem;
-  margin-top: 0.55rem; }
+  margin-top: 0.55rem !important; }
 
 div.checkbox-sm, div.radio-sm {
   height: 1.46875rem;
@@ -9011,7 +9011,7 @@ div.checkbox-sm input label::before {
 
 div.radio-sm input + label i {
   font-size: 0.325rem;
-  margin-top: 0.446875rem; }
+  margin-top: 0.446875rem !important; }
 
 /***************************************************************************
 checkbox-inline, radio-inline,

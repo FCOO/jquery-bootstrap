@@ -194,7 +194,7 @@ div.radio input + label::before {
     div.radio#{$class-postfix} input + label i {
         $icon-dim-radio: 0.4*$font-size;
         font-size  : $icon-dim-radio;
-        margin-top : $box-margin-top + ($box-dim - $icon-dim-radio)/2;
+        margin-top : $box-margin-top + ($box-dim - $icon-dim-radio)/2 !important;
     }
 } //end of mixin
 
