@@ -2,7 +2,6 @@
 VARIABLES
 ************************************************************/
 
-
 /***********************************************
 DEFINE BOOTSTRAP BUTTON STYLE
 $btn-style-name MUST correspond with ns.bsButtonClass
@@ -15,23 +14,23 @@ $btn-style-name: standard;
 Variables bassed on bootstrop variables
 ************************************************************/
 //Modal size in rem
-$modal-sm-rem: $modal-sm*1rem/16px;
-$modal-md-rem: $modal-md*1rem/16px;
-$modal-lg-rem: $modal-lg*1rem/16px;
+$modal-sm-rem: rem($modal-sm);
+$modal-md-rem: rem($modal-md);
+$modal-lg-rem: rem($modal-lg);
 
 //Extra-large-modal
-$modal-xl: 1200px;
-$modal-xl-rem: $modal-xl*1rem/16px;
+$modal-xl    : 1200px;
+$modal-xl-rem: rem($modal-xl);
 
 //Extra-extra-small font-size
-$font-size-xxs: .65625rem; //=10.5px
+$font-size-xxs: .65625rem; //=10.5px <= TODO MANGLER. Skal måske rettes til 10px eller 11px
 
 /************************************************************
 HEADER
 Font-sizes for headers are one 'size' smaller than normal font
 $font-size-lg  : 1.25rem    20px
 $font-size-base: 1rem       16px
-$font-size-sm  : .8125rem   13px
+$font-size-sm  : .875rem;   14px
 $font-size-xs  : .75rem     12px
 ************************************************************/
 $font-size-header   : $font-size-sm;
@@ -58,8 +57,8 @@ $modal-content-bg-semi-transparent-hover: rgba($modal-content-bg, $semi-transpar
 SQUARE BUTTONS
 Dimentions for square buttons with only icons
 ************************************************************/
-$button-square-dimension   : 2 * $input-btn-padding-y + $font-size-base * $input-btn-line-height + 2 * $border-width / 16px * 1rem;
-$button-square-dimension-sm: 2 * $input-btn-padding-y-sm + $font-size-sm * $line-height-sm + 2 * $border-width / 16px * 1rem;
+$button-square-dimension   : 2 * $input-btn-padding-y    + $font-size-base * $input-btn-line-height + 2 * rem($border-width);
+$button-square-dimension-sm: 2 * $input-btn-padding-y-sm + $font-size-sm   * $line-height-sm        + 2 * rem($border-width);
 
 
 /************************************************************

@@ -1,6 +1,3 @@
----
-title: jquery-bootstrap
----
 # jquery-bootstrap
 >
 [jquery-value-format]:https://github.com/fcoo/jquery-value-format
@@ -8,6 +5,14 @@ title: jquery-bootstrap
 
 ## Description
 This plugin contains jQuery methods to create different types of elements e.q. buttons, list, select, tables, modal windows etc. displayed in a adjusted version of Bootstrap 4 default theme
+
+## Version 2
+In version 1.x the "dimensions of things" was given in `rem` to allow scaling by changing the `font-size` of the page.
+This led to a lot of no-integer number (eq. `margin-top: 0.446875rem` computed by the browser to `margin-top 7.15px`
+The different browsers did not always display `7.15px` the same way.
+
+To avoid this version 2 only uses fixed dimensions `px`
+     
 
 ## Contents
 

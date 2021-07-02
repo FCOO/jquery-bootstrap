@@ -127,7 +127,7 @@ div.btn, div.list-group-item {
 
         //.big-icon = Extra big icons
         @mixin big-icon-font-size( $original-font-size ){
-            font-size: round($original-font-size/1rem*1.6*16px) / 16px * 1rem;
+            font-size: roundRem($original-font-size * 1.6); //round($original-font-size/1rem*1.6*16px) / 16px * 1rem;
         }
         &.big-icon          { @include big-icon-font-size( $font-size-base ); }
         &.btn-sm.big-icon   { @include big-icon-font-size( $font-size-sm   ); }

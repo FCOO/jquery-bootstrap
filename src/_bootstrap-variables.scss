@@ -9,6 +9,22 @@ BOOTSTRAP-VARIABLES
             );
 }
 
+
+/***********************************************
+FUNCTIONS TO CONVETRT FROM PX TO REM
+To make it easier to design and calculate dimensions
+the function rem defined
+************************************************/
+//rem - ruturn the rim value of a px-value
+@function rem($px) {
+    @return $px * 1rem / 16px;
+}
+
+//roundRem - Return the rounded rem value of a rem-value to ensure a integer px reprecentation
+@function roundRem($rem){
+    @return round($rem*16) / 16;
+}
+
 /***********************************************
 ADJUST BOOTSTRAP DEFAULT VALUES
 ************************************************/
@@ -19,6 +35,20 @@ $enable-transitions:        true ; //true !default;
 $enable-hover-media-query:  false; //false !default;
 $enable-grid-classes:       true ; //true !default;
 $enable-print-styles:       true ; //true !default;
+
+
+
+/***********************************************
+Adjust bootstrap-variables to only have dimensions
+in integer px from rem
+************************************************/
+$border-radius-lg       : 0.3125rem;    //=>  5px - Original .3rem =>  4.8px;
+$table-cell-padding-sm  : 0.3125rem;    //=>  5px - Original .3rem =>  4.8px;
+$tooltip-arrow-width    : 0.8125rem;    //=> 13px - Original .8rem => 12.8px;
+$tooltip-arrow-height   : 0.375rem;     //=>  6px - Original .4rem =>  6.4px;
+$kbd-padding-y          : 0.1875rem;    //=>  3px - Original .2rem => 3.2px;
+$kbd-padding-x          : 0.375rem;     //=>  6px - Original .4rem =>  6.4px;
+
 
 //Default border-width as rem
 //TODO $border-width: 1rem/16; //= 1px as rem
@@ -39,31 +69,42 @@ $custom-select-padding-y: $input-btn-padding-y;
 $custom-select-padding-x: $input-btn-padding-y;
 
 //SMALL
-//$font-size-sm = .875rem
-$font-size-sm: .8125rem;
+/* VERSION 1.x
+//$font-size-sm = .875rem; // = 14px
+$font-size-sm: rem(13px); //<= TODO MANGLER. Skal muligvis sættes til 14px og så skal padding for buttons rettes tilsvarrende
 
-$input-btn-padding-y-sm: .25rem;
+$input-btn-padding-y-sm: rem(4px);
 $input-btn-padding-x-sm: $input-btn-padding-y-sm;
-$border-radius-sm      : .1875rem;
+*/
+
+$font-size-sm: rem(14px);
+
+$input-btn-padding-y-sm: rem(3px);
+$input-btn-padding-x-sm: rem(4px);
+
+
+$border-radius-sm      : rem(3px);
+
+
 
 /************************************************************
 Including "size" xs as in Bootstrap 3
 ************************************************************/
-$font-size-xs      : .75rem;
+$font-size-xs      : rem(12px);
 
-$btn-padding-y-xs  : .125rem;
+$btn-padding-y-xs  : rem(2px);
 $btn-padding-x-xs  : $btn-padding-y-xs;
 
 $input-padding-x-xs: $btn-padding-x-xs;
 $input-padding-y-xs: $btn-padding-y-xs;
 
-$border-radius-xs      : .125rem;
+$border-radius-xs      : rem(2px);
 $btn-border-radius-xs  : $border-radius-xs;
 $input-border-radius-xs: $border-radius-xs;
 
 
 //Adjust font-sixe for tool-tips to match Google Maps etc.
-$tooltip-font-size: 0.7rem;
+$tooltip-font-size: rem(11px);
 
 
 //Set lighter color for placeholder

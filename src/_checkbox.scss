@@ -7,7 +7,6 @@ https://github.com/flatlogic/awesome-bootstrap-checkbox
 **************************************************/
 
 $line-height : $input-btn-line-height;
-$icon-dim-factor: 0.8;
 
 //$control-no-active-color-hover = 'Fade' color for the check/radio-icon when hover over unselected control
 $control-no-active-color-hover: darken($control-active-color, 20%);
@@ -111,11 +110,11 @@ div.checkbox, div.radio {
         // Styles for <i> icon with check or dot
         & + label i {
             line-height: 1;
-            text-align: center;
-            color     : transparent;
+            text-align : center;
+            color      : transparent;
 
-            position  : absolute;
-            left      : 0px;
+            position   : absolute;
+            left       : 0px;
         }
         &:not(:checked):not(:disabled):hover + label i {
             color: $control-no-active-color-hover;
@@ -136,21 +135,20 @@ div.radio input + label::before {
 /***************************************************************************
 @mixin checkbox-radio-size-variant
 ***************************************************************************/
+//calcSize($size, $factor) return $size*$factor adjusted so that the different between $size and $size*$factor are even
+@function calcSize($size, $factor){
+    $diff: round( 16 * $size*(1 - $factor) / 2) * 2 / 16;
+    @return $size - $diff;
+}
+
 @mixin checkbox-radio-size-variant( $class-postfix, $font-size, $border-radius, $padding-vertical ){
 
     $height: $font-size * $line-height  + 2 * $padding-vertical;
 
-    //$box-dim = dimentions of checkbox and radio(-box)
-    $box-dim: 1.2 * $font-size;
-
-    $label-padding-left: $box-dim + $border-radius; //Using border-radius as padding
+    //$box-dim = dimentions of checkbox and radio(-box) 1.15 = result of micro adjustment :-)
+    $box-dim: roundRem($font-size*1.15);
 
     $box-margin-top: ($height - $box-dim)/2 - $padding-vertical;
-
-    $icon-dim      : $icon-dim-factor*$box-dim;
-    $icon-font-size: $icon-dim;
-
-    $icon-radio-border-width: $box-dim / 4; //Add a transparent border to make radio-icon = 50% of box
 
     div.checkbox#{$class-postfix}, div.radio#{$class-postfix} {
         height   : $height;
@@ -158,7 +156,7 @@ div.radio input + label::before {
         input{
             //Standard style
             & + label {
-                padding-left  : $label-padding-left;
+                padding-left  : $box-dim + $border-radius; //Using border-radius as padding
                 padding-top   : $padding-vertical;
                 padding-bottom: $padding-vertical;
 
@@ -173,12 +171,13 @@ div.radio input + label::before {
 
                 //label i = icon for with check/dot
                 & i {
-                    $icon-dim: 0.8*$font-size;
+                    $icon-dim  : calcSize($box-dim, .8);
+                    $half-diff : ($box-dim - $icon-dim)/2;
                     font-size  : $icon-dim;
                     width      : $icon-dim;
                     height     : $icon-dim;
-                    margin-top : $box-margin-top + ($box-dim - $icon-dim)/2 !important;
-                    margin-left: ($box-dim - $icon-dim)/2 !important;
+                    margin-top : $box-margin-top + $half-diff !important;
+                    margin-left: $half-diff !important;
                 }
             }
         }
@@ -192,16 +191,24 @@ div.radio input + label::before {
 
     //Adjust icon for radio
     div.radio#{$class-postfix} input + label i {
-        $icon-dim-radio: 0.4*$font-size;
-        font-size  : $icon-dim-radio;
-        margin-top : $box-margin-top + ($box-dim - $icon-dim-radio)/2 !important;
+        $icon-dim  : calcSize($box-dim, .4);
+        $half-diff : ($box-dim - $icon-dim)/2;
+        font-size  : $icon-dim;
+        width      : $icon-dim;
+        height     : $icon-dim;
+        margin-top : $box-margin-top + $half-diff !important;
+        margin-left: $half-diff !important;
     }
+
 } //end of mixin
 
 
 //Creating different size variations. Using vertical-padding from smaller button
-@include checkbox-radio-size-variant($class-postfix: '',    $font-size: $font-size-base, $border-radius: $btn-border-radius,    $padding-vertical: $btn-padding-y-sm );
-@include checkbox-radio-size-variant($class-postfix: '-sm', $font-size: $font-size-sm,   $border-radius: $btn-border-radius-sm, $padding-vertical: $btn-padding-y-xs );
+@include checkbox-radio-size-variant($class-postfix: '',    $font-size: $font-size-base, $border-radius: $btn-border-radius,    $padding-vertical: $btn-padding-y /* $btn-padding-y-sm */ );
+@include checkbox-radio-size-variant($class-postfix: '-sm', $font-size: $font-size-sm,   $border-radius: $btn-border-radius-sm, $padding-vertical: $btn-padding-y-sm /* $btn-padding-y-xs */);
+
+//$button-square-dimension   : 2 * $input-btn-padding-y    + $font-size-base * $input-btn-line-height + 2 * rem($border-width);
+//$button-square-dimension-sm: 2 * $input-btn-padding-y-sm + $font-size-sm   * $line-height-sm        + 2 * rem($border-width);
 
 /***************************************************************************
 checkbox-inline, radio-inline,

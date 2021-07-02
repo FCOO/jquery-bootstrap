@@ -36,7 +36,8 @@ Bootstrap allready have the following classes
     & > a:not(:last-child),
     & > .container-stacked-icons:not(:last-child):not(.fa-no-margin),
     & > i:not(:last-child):not(.fa-no-margin) {
-        margin-right: .4em;
+        //margin-right: .4em; version 1
+        margin-right: 5px; //Version 2 Fixed value
     }
 
     & > span.inline-block,
