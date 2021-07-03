@@ -191,7 +191,7 @@ div.radio input + label::before {
 
     //Adjust icon for radio
     div.radio#{$class-postfix} input + label i {
-        $icon-dim  : calcSize($box-dim, .4);
+        $icon-dim  : calcSize($box-dim, .35);
         $half-diff : ($box-dim - $icon-dim)/2;
         font-size  : $icon-dim;
         width      : $icon-dim;

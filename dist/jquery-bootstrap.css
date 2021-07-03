@@ -9001,11 +9001,11 @@ div.checkbox input label::before {
   border-radius: 0.25rem; }
 
 div.radio input + label i {
-  font-size: 0.5rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  margin-top: 0.5rem !important;
-  margin-left: 0.3125rem !important; }
+  font-size: 0.375rem;
+  width: 0.375rem;
+  height: 0.375rem;
+  margin-top: 0.5625rem !important;
+  margin-left: 0.375rem !important; }
 
 div.checkbox-sm, div.radio-sm {
   height: 1.6875rem;
