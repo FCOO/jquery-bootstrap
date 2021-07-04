@@ -31,6 +31,8 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [FileView](#fileview)
 - [Noty](#noty)
 - [input](#input)
+- [SCSS](#scss)
+
 
 ## Installation
 ### bower
@@ -639,6 +641,15 @@ See [RobinHerbots/Inputmask](https://github.com/RobinHerbots/Inputmask) for deta
 
 ### Example
         {id:'id#N', type:'input', inputmask:{"mask": "(999) 999-9999"}, label: 'Label (with inputmask)'}
+
+
+<a name="scss"></a>
+## SCSS
+To include all the Bootstrap and jquery-bootstrap SCSS-variable in another packages include `_include-jquery-bootstrap-variables.scss` in the scss-file
+    
+    @import "../bower_components/jquery-bootstrap/src/include-jquery-bootstrap-variables";
+
+
 
 
 <!--    
