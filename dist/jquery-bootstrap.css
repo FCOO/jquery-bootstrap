@@ -8405,8 +8405,8 @@ div.btn, div.list-group-item {
   outline: none !important;
   /************************************************************
     Special version to have transparent button
-    Default is light color on dark background
-    TODO: Add transparent-on-light to have dark color og light background
+    transparent = normal/dark color og light background
+    transparent-on-dark = Light color on dark background
     ************************************************************/
   /************************************************************
     Special version to have square buttons (with only icon)
@@ -8497,19 +8497,21 @@ div.btn, div.list-group-item {
     vertical-align: top; }
   .btn.btn-standard.disabled.show-as-normal, .btn.btn-standard.show-as-normal:disabled {
     opacity: 1; }
+  .btn.btn-standard.no-border {
+    border-color: transparent; }
   .btn.btn-standard.transparent {
     background: none;
-    color: #D4D4D4;
+    color: #515961;
     background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x;
     border: 1px solid rgba(0, 0, 0, 0.1);
     outline: none !important; }
     .mouse-hover .hover .btn.btn-standard.transparent:not(:active):not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.transparent.hover:not(:active):not(:disabled):not(.disabled),
     .mouse-hover .btn.btn-standard.transparent:hover:not(:active):not(:disabled):not(.disabled) {
-      color: #e1e1e1;
+      color: #454c53;
       background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
     .btn.btn-standard.transparent:active {
-      color: #e7e7e7;
+      color: #40464c;
       background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
     .btn.btn-standard.transparent:active, .btn.btn-standard.transparent.active {
       border-color: rgba(0, 0, 0, 0.1); }
@@ -8539,6 +8541,51 @@ div.btn, div.list-group-item {
         color: rgba(255, 255, 255, 0.65);
         background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x; }
     .btn.btn-standard.transparent.disabled:not(.show-as-normal), .btn.btn-standard.transparent:disabled:not(.show-as-normal) {
+      opacity: 1 !important;
+      color: rgba(81, 89, 97, 0.65);
+      background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
+  .btn.btn-standard.transparent-on-dark {
+    background: none;
+    color: #D4D4D4;
+    background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    outline: none !important; }
+    .mouse-hover .hover .btn.btn-standard.transparent-on-dark:not(:active):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.transparent-on-dark.hover:not(:active):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.transparent-on-dark:hover:not(:active):not(:disabled):not(.disabled) {
+      color: #e1e1e1;
+      background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
+    .btn.btn-standard.transparent-on-dark:active {
+      color: #e7e7e7;
+      background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
+    .btn.btn-standard.transparent-on-dark:active, .btn.btn-standard.transparent-on-dark.active {
+      border-color: rgba(0, 0, 0, 0.1); }
+    .btn.btn-standard.transparent-on-dark:focus, .btn.btn-standard.transparent-on-dark.focus {
+      border-color: #80bdff; }
+    .btn.btn-standard.transparent-on-dark.disabled:not(.show-as-normal), .btn.btn-standard.transparent-on-dark:disabled:not(.show-as-normal) {
+      border-color: rgba(0, 0, 0, 0.1); }
+    .btn.btn-standard.transparent-on-dark.focus:not(:disabled):not(.disabled):not(.no-hover), .btn.btn-standard.transparent-on-dark:focus:not(:disabled):not(.disabled):not(.no-hover),
+    .mouse-hover .btn.btn-standard.transparent-on-dark:hover:not(:disabled):not(.disabled):not(.no-hover) {
+      position: relative;
+      z-index: 4; }
+    .mouse-hover .btn.btn-standard.transparent-on-dark:hover:not(:focus):not(:disabled):not(.disabled):not(.no-hover) {
+      border-color: rgba(0, 0, 0, 0.15); }
+    .btn.btn-standard.transparent-on-dark.active {
+      color: #fff;
+      background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x; }
+      .mouse-hover .hover .btn.btn-standard.transparent-on-dark.active:not(:active):not(:disabled):not(.disabled),
+      .mouse-hover .btn.btn-standard.transparent-on-dark.active.hover:not(:active):not(:disabled):not(.disabled),
+      .mouse-hover .btn.btn-standard.transparent-on-dark.active:hover:not(:active):not(:disabled):not(.disabled) {
+        color: #f2f2f2;
+        background: #006fe6 linear-gradient(180deg, #2684e9, #006fe6) repeat-x; }
+      .btn.btn-standard.transparent-on-dark.active:active {
+        color: #ececec;
+        background: #0069d9 linear-gradient(180deg, #267fde, #0069d9) repeat-x; }
+      .btn.btn-standard.transparent-on-dark.active.disabled:not(.show-as-normal), .btn.btn-standard.transparent-on-dark.active:disabled:not(.show-as-normal) {
+        opacity: 1 !important;
+        color: rgba(255, 255, 255, 0.65);
+        background: #007bff linear-gradient(180deg, #268fff, #007bff) repeat-x; }
+    .btn.btn-standard.transparent-on-dark.disabled:not(.show-as-normal), .btn.btn-standard.transparent-on-dark:disabled:not(.show-as-normal) {
       opacity: 1 !important;
       color: rgba(212, 212, 212, 0.65);
       background: rgba(0, 0, 0, 0) linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(0, 0, 0, 0)) repeat-x; }
@@ -8730,6 +8777,25 @@ MENU (BUTTON-GROUP)
 
 .bs-menu-container hr.first.before, .bs-menu-container hr.last.after, .bs-menu-container hr + hr {
   display: none; }
+
+/************************************************************
+btn-shadow and btn-shadow-sm
+classes to create "shadow-buttons"
+************************************************************/
+.btn-shadow, .btn-shadow-sm {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  visibility: hidden; }
+
+.btn-shadow {
+  width: 2.25rem;
+  height: 2.25rem; }
+
+.btn-shadow-sm {
+  width: 1.8125rem;
+  height: 1.8125rem; }
 
 /************************************************************
 POPOVER

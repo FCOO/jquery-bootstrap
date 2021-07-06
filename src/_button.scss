@@ -69,14 +69,28 @@ div.btn, div.list-group-item {
         opacity: 1;
     }
 
+    &.no-border {
+        border-color: transparent;
+    }
+
     /************************************************************
     Special version to have transparent button
-    Default is light color on dark background
-    TODO: Add transparent-on-light to have dark color og light background
+    transparent = normal/dark color og light background
+    transparent-on-dark = Light color on dark background
     ************************************************************/
     &.transparent {
         background: none;
+        @include control-colors(
+            $incl-active : true,
+            $bg-color    : rgba(0,0,0,0),
 
+            $border-color      : rgba(0,0,0, .1),
+            $border-color-hover: rgba(0,0,0,.15)
+        );
+    }
+
+    &.transparent-on-dark {
+        background: none;
         $color-transparent: #D4D4D4;
         @include control-colors(
             $incl-active : true,
@@ -285,4 +299,26 @@ MENU (BUTTON-GROUP)
     hr.first.before, hr.last.after, hr + hr {
         display: none;
     }
+}
+
+
+/************************************************************
+btn-shadow and btn-shadow-sm
+classes to create "shadow-buttons"
+************************************************************/
+.btn-shadow, .btn-shadow-sm {
+    display   : inline-block;
+    margin    : 0;
+    padding   : 0;
+    border    : none;
+    visibility: hidden;
+}
+.btn-shadow {
+    width : $button-square-dimension;
+    height: $button-square-dimension;
+}
+
+.btn-shadow-sm {
+    width : $button-square-dimension-sm;
+    height: $button-square-dimension-sm;
 }

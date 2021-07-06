@@ -163,7 +163,8 @@ Return options to create a marker-icon = icon with inner color given as color in
 | `square` | `boolean` | `false` | If `true` the button get equal `height` and `min-width` (used primarily for icon-buttons) |
 | `bigIcon` | `boolean` | `false` | If `true` the button get a almost 100% height icon (used primarily for icon-buttons) |
 | `extraLargeIcon` | `boolean` | `false` | If `true` the icon (and text) in the button get font-size 2rem |
-| `transparent` | `boolean` | `false` | If `true` the button get transparent and light text-color (assuming dark background) |
+| `transparent` | `boolean` | `false` | If `true` the button get transparent |
+| `transparentOnDark` | `boolean` | `false` | If `true` the button get transparent and light text-color (assuming dark background) |
 | `semiTransparent` | `boolean` | `false` | If `true` the button get semi-transparent |
 | `attr` | `object` | `null` | |
 | `prop` | `object` | `null` | |
@@ -184,6 +185,12 @@ See `src/jquery-bootstrap-button.js` for description
 #### Standard checkbox-button
 
     var myStandardCheckboxButton = $.bsStandardCheckboxButton( options );
+
+See `src/jquery-bootstrap-button.js` for description
+
+#### Icon checkbox-button
+
+    var myIconCheckboxButton = $.bsIconCheckboxButton( options );
 
 See `src/jquery-bootstrap-button.js` for description
 
