@@ -8498,7 +8498,7 @@ div.btn, div.list-group-item {
   .btn.btn-standard.disabled.show-as-normal, .btn.btn-standard.show-as-normal:disabled {
     opacity: 1; }
   .btn.btn-standard.no-border {
-    border-color: transparent; }
+    border-color: transparent !important; }
   .btn.btn-standard.transparent {
     background: none;
     color: #515961;
