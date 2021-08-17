@@ -8979,64 +8979,59 @@ div.checkbox, div.radio {
   margin-bottom: 0; }
   div.checkbox:not(:last-child), div.radio:not(:last-child) {
     margin-bottom: 0.5rem; }
-  div.checkbox input, div.radio input {
-    opacity: 0;
-    z-index: 1;
-    position: absolute;
-    left: -100px; }
-    div.checkbox input + label, div.radio input + label {
-      position: relative;
-      display: inline;
-      height: 100%;
-      padding: 0;
-      margin-bottom: 0; }
-      div.checkbox input + label::before, div.radio input + label::before {
-        display: inline-block;
-        position: absolute;
-        left: 0;
-        text-align: center;
-        content: ""; }
-      div.checkbox input + label::before, div.radio input + label::before {
-        border: 1px solid #ced4da;
-        background-color: #f8f9fa;
-        transition: border 0.15s ease-in-out, color 0.15s ease-in-out; }
-        @media (prefers-reduced-motion: reduce) {
-          div.checkbox input + label::before, div.radio input + label::before {
-            transition: none; } }
-    div.checkbox input:focus + label::before, div.radio input:focus + label::before {
-      border-color: #80bdff !important;
-      outline: none !important; }
-    div.checkbox input:not(:checked) + label::before, div.radio input:not(:checked) + label::before {
-      background-color: #f8f9fa; }
-    div.checkbox input:not(:checked):not(:disabled):hover + label::before, div.radio input:not(:checked):not(:disabled):hover + label::before {
-      text-decoration: none;
-      background-color: #e9ecef;
-      border-color: #8C959D; }
-    div.checkbox input:checked + label::before, div.radio input:checked + label::before {
-      background-color: #007bff; }
-    div.checkbox input:checked:hover + label::before, div.radio input:checked:hover + label::before {
-      background-color: #006fe6; }
-    div.checkbox input.semi-selected:checked + label::before, div.radio input.semi-selected:checked + label::before {
-      background-color: #fd7e14; }
-    div.checkbox input.semi-selected:checked:hover + label::before, div.radio input.semi-selected:checked:hover + label::before {
-      background-color: #f57102; }
-    div.checkbox input:disabled + label, div.radio input:disabled + label {
-      color: #6c757d !important;
-      cursor: not-allowed !important;
-      background-color: #fff !important; }
-      div.checkbox input:disabled + label::before, div.radio input:disabled + label::before {
-        background-color: #fff !important;
-        cursor: not-allowed !important; }
-    div.checkbox input + label i, div.radio input + label i {
-      line-height: 1;
-      text-align: center;
-      color: transparent;
+  div.checkbox input + label, div.radio input + label {
+    position: relative;
+    display: inline;
+    height: 100%;
+    padding: 0;
+    margin-bottom: 0; }
+    div.checkbox input + label::before, div.radio input + label::before {
+      display: inline-block;
       position: absolute;
-      left: 0px; }
-    div.checkbox input:not(:checked):not(:disabled):hover + label i, div.radio input:not(:checked):not(:disabled):hover + label i {
-      color: #cccccc; }
-    div.checkbox input:checked + label i, div.radio input:checked + label i {
-      color: #fff; }
+      left: 0;
+      text-align: center;
+      content: ""; }
+    div.checkbox input + label::before, div.radio input + label::before {
+      border: 1px solid #ced4da;
+      background-color: #f8f9fa;
+      transition: border 0.15s ease-in-out, color 0.15s ease-in-out; }
+      @media (prefers-reduced-motion: reduce) {
+        div.checkbox input + label::before, div.radio input + label::before {
+          transition: none; } }
+  div.checkbox input:focus + label::before, div.radio input:focus + label::before {
+    border-color: #80bdff !important;
+    outline: none !important; }
+  div.checkbox input:not(:checked) + label::before, div.radio input:not(:checked) + label::before {
+    background-color: #f8f9fa; }
+  div.checkbox input:not(:checked):not(:disabled):hover + label::before, div.radio input:not(:checked):not(:disabled):hover + label::before {
+    text-decoration: none;
+    background-color: #e9ecef;
+    border-color: #8C959D; }
+  div.checkbox input:checked + label::before, div.radio input:checked + label::before {
+    background-color: #007bff; }
+  div.checkbox input:checked:hover + label::before, div.radio input:checked:hover + label::before {
+    background-color: #006fe6; }
+  div.checkbox input.semi-selected:checked + label::before, div.radio input.semi-selected:checked + label::before {
+    background-color: #fd7e14; }
+  div.checkbox input.semi-selected:checked:hover + label::before, div.radio input.semi-selected:checked:hover + label::before {
+    background-color: #f57102; }
+  div.checkbox input:disabled + label, div.radio input:disabled + label {
+    color: #6c757d !important;
+    cursor: not-allowed !important;
+    background-color: #fff !important; }
+    div.checkbox input:disabled + label::before, div.radio input:disabled + label::before {
+      background-color: #fff !important;
+      cursor: not-allowed !important; }
+  div.checkbox input + label i, div.radio input + label i {
+    line-height: 1;
+    text-align: center;
+    color: transparent;
+    position: absolute;
+    left: 0px; }
+  div.checkbox input:not(:checked):not(:disabled):hover + label i, div.radio input:not(:checked):not(:disabled):hover + label i {
+    color: #cccccc; }
+  div.checkbox input:checked + label i, div.radio input:checked + label i {
+    color: #fff; }
 
 div.radio input + label::before {
   border-radius: 50%; }
@@ -9045,8 +9040,9 @@ div.radio input + label::before {
 @mixin checkbox-radio-size-variant
 ***************************************************************************/
 div.checkbox, div.radio {
-  height: 2.125rem;
   font-size: 1rem; }
+  div.checkbox:not(.multi-lines), div.radio:not(.multi-lines) {
+    height: 2.125rem; }
   div.checkbox input + label, div.radio input + label {
     padding-left: 1.375rem;
     padding-top: 0.3125rem;
@@ -9074,8 +9070,9 @@ div.radio input + label i {
   margin-left: 0.375rem !important; }
 
 div.checkbox-sm, div.radio-sm {
-  height: 1.6875rem;
   font-size: 0.875rem; }
+  div.checkbox-sm:not(.multi-lines), div.radio-sm:not(.multi-lines) {
+    height: 1.6875rem; }
   div.checkbox-sm input + label, div.radio-sm input + label {
     padding-left: 1.1875rem;
     padding-top: 0.1875rem;

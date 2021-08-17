@@ -439,7 +439,6 @@ return;
 
         $.bsCheckbox({
             type: 'radio',
-            semiSelected: true,
             disabled: true,
             text: {da:'Vælg mig (radio)', en:'Check me (radio)'},
             onChange: function(id, selected, $buttonGroup){
@@ -448,6 +447,25 @@ return;
         })
         .appendTo( $body );
 
+        var cb = 
+            $.bsCheckbox({
+                content: {da:'Dette er content med flere linier<br>Dette er linie #2', en:'This is content with multi lines<br>This is line #2'},
+                selected: false,
+                //semiSelected: true,
+                multiLines: true,
+                onClick: function(id, state, checkbox){
+                    checkbox.cbxSetState(confirm('Set as SELECTED?'));
+                },                    
+                onChange: function(id, selected, $buttonGroup){
+                    console.log('ONCHANGE >>>>>>>>>>>>>>>>>>>>>> checkbox multiline', id, selected)
+                },
+            })
+            .appendTo( $body );
+
+//HER        cb.cbxSetSemiSelected();
+        cb.cbxSetSelected();
+//HER        cb.cbxSetUnselected();
+        
         //semiTransparent and square and multi icon
         $.bsCheckboxButton({
             semiTransparent: true,

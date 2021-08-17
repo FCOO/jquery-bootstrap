@@ -24,11 +24,11 @@ div.checkbox, div.radio {
     @include modal-element-margin-bottom();
 
     input {
-        opacity: 0;
-        z-index: 1;
-        //'hide' the checkbox
-        position: absolute;
-        left: -100px;
+//HER        opacity: 0;
+//HER        z-index: 1;
+//HER        //'hide' the checkbox
+//HER        position: absolute;
+//HER        left: -100px;
 
         //Standard style
         & + label {
@@ -151,7 +151,9 @@ div.radio input + label::before {
     $box-margin-top: ($height - $box-dim)/2 - $padding-vertical;
 
     div.checkbox#{$class-postfix}, div.radio#{$class-postfix} {
-        height   : $height;
+        &:not(.multi-lines){
+            height   : $height;
+        }
         font-size: $font-size;
         input{
             //Standard style
