@@ -24,11 +24,11 @@ div.checkbox, div.radio {
     @include modal-element-margin-bottom();
 
     input {
-//HER        opacity: 0;
-//HER        z-index: 1;
-//HER        //'hide' the checkbox
-//HER        position: absolute;
-//HER        left: -100px;
+        opacity: 0;
+        z-index: 1;
+        //'hide' the checkbox
+        position: absolute;
+        left: -100px;
 
         //Standard style
         & + label {
