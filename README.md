@@ -262,6 +262,7 @@ As for Selectbox without `placeholder`
 | :--: | :--: | :-----: | --- |
 | `checked` or `selected` | `boolean` | `false` | See above |
 | `content` | `content` or `[] of content` | `null` | See above |
+| `icon,text,..` | `content` | `""` | See above |
 | `onChange` | `function(id, selected, $buttonGroup)` | `null` | Called when (de-)checked |
 | `type` | `string` | `"checkbox"` | If `type:"radio"` the checkbox is displayed as a radio |
 
