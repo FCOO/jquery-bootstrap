@@ -421,6 +421,7 @@ return;
         header('Checkbox, Radiobox, and checkbox-button');
         $.bsCheckbox({
             checked: true,
+            type: 'radio',
             icon: ['far fa-map', 'fa fa-home'],
             text: {da:'Vælg mig', en:'Check me'},
             onChange: function(id, selected, $buttonGroup){
@@ -431,6 +432,7 @@ return;
 
         $.bsCheckbox({
             semiSelected: true,
+            icon: ['far fa-map', 'fa fa-home'],
             text: {da:'Vælg mig (semi)', en:'Check me (semi)'},
             onChange: function(id, selected, $buttonGroup){
 //HER                        console.log('9: bsSelectListPopover', id, selected)
