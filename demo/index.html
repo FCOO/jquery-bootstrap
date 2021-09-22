@@ -41,6 +41,7 @@
     <div id="lang"></div>
 
     <script src="bower_components.js"></script>
+    <script src="../src/bootstrap-popover-extensions.js"></script>
     <script src="../src/jquery-bootstrap-menu.js"></script>
     <script src="../src/jquery-bootstrap-select.js"></script>
     <script src="../src/jquery-bootstrap-fontawesome.js"></script>
@@ -1926,7 +1927,7 @@ _small: true,
 
 
 
-    $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', small:true})
+var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', small:true})
         .appendTo($body)
         .bsMenuPopover({
             closeOnClick: true,
@@ -1935,6 +1936,8 @@ _small: true,
             list: list2
          });
 
+b.popover('disable');
+//this.$popupElements.popover('disable');
 
 //    setTimeout($.workingOn, 2000);
 //    setTimeout($.workingOff, 10000);
