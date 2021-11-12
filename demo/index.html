@@ -1514,11 +1514,14 @@ width: 543,
         //************************************************************************************
         var no_content = $.bsModal({
             closeButton: true,
+            icons: {
+                close: {
+                    icon: 'fa-home'
+                }
+            },
             header:{icon: 'fa-home', text:{da:'Intet indhold',en:'No content'}},
             _footer: 'footer',
-            buttons: [
-            {icon: 'fa-home', text: 'Davs'}
-            ],
+            buttons: [{icon: 'fa-home', text: 'Davs'}],
             show: false,
             content: '',
             extended: {

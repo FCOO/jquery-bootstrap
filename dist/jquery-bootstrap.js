@@ -1638,7 +1638,7 @@
 
                 if (iconOptions && iconOptions.onClick){
                     $._bsCreateIcon(
-                        $.bsHeaderIcons[id],
+                        iconOptions.icon || $.bsHeaderIcons[id],
                         $iconContainer,
                         iconOptions.title || classAndTitle.title || '',
                         (iconOptions.className || '') + ' header-icon ' + (classAndTitle.class || '')
@@ -3431,7 +3431,7 @@ jquery-bootstrap-modal-promise.js
 
         //Add close-icon and create modal content
         options.icons = options.icons || {};
-        options.icons.close = { onClick: $.proxy( bsModal_prototype.close, $result) };
+        options.icons.close = $.extend(true, options.icons.close, { onClick: $.proxy( bsModal_prototype.close, $result) } );
 
         //Add backward- and forward-icons and update-function if modal is connected to a historyList
         if (options.historyList){

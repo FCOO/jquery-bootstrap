@@ -103,7 +103,7 @@
 
                 if (iconOptions && iconOptions.onClick){
                     $._bsCreateIcon(
-                        $.bsHeaderIcons[id],
+                        iconOptions.icon || $.bsHeaderIcons[id],
                         $iconContainer,
                         iconOptions.title || classAndTitle.title || '',
                         (iconOptions.className || '') + ' header-icon ' + (classAndTitle.class || '')
