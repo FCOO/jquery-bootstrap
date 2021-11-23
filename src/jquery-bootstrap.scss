@@ -71,9 +71,15 @@ ADDITIONS AND ADJUSTMENTS TO FONTAWESOME
 
 
 /************************************************
-STYLE FOR DIFFERENT ELEMENTS
+BASE STYLE
 *************************************************/
 @import "animate";
+
+@import "common";
+
+/************************************************
+STYLE FOR DIFFERENT ELEMENTS
+*************************************************/
 
 @import "text";
 
