@@ -97,9 +97,6 @@ $font-size-xs           : rem(12px);
 $input-btn-font-size-xs : $font-size-xs;
 $input-font-size-xs     : $input-btn-font-size-xs;
 
-
-
-
 $btn-padding-y-xs  : $input-btn-padding-y-sm;   //Original rem(2px)
 $btn-padding-x-xs  : $input-btn-padding-x-sm;   //Original $btn-padding-y-xs;
 
@@ -118,10 +115,10 @@ $line-height-xs          : 1.5;
 $input-btn-line-height-xs: $line-height-xs;
 $input-line-height-xs    : $input-btn-line-height-xs;
 
-/***********************************************
-IMPORT BOOTSTRAP SCSS
-************************************************/
-@import "../bower_components/bootstrap/scss/bootstrap";
+//HER/***********************************************
+//HERIMPORT BOOTSTRAP SCSS
+//HER************************************************/
+//HER@import "../bower_components/bootstrap/scss/bootstrap";
 
 /************************************************************
 Re-calc heights of input and add -xs version to have same format
@@ -136,14 +133,12 @@ $input-height-sm: input-height($input-line-height-sm, $input-padding-y-sm); //De
 $input-height-xs: input-height($input-line-height-xs, $input-padding-y-xs);
 
 
-/***********************************************
-IMPORT BOOTSTRAP SCSS
-************************************************/
-@import "../bower_components/bootstrap/scss/bootstrap";
+//HER/***********************************************
+//HERIMPORT BOOTSTRAP SCSS
+//HER************************************************/
+//HER@import "../bower_components/bootstrap/scss/bootstrap";
 
-
-
-//Adjust font-sixe for tool-tips to match Google Maps etc.
+//Adjust font-size for tool-tips to match Google Maps etc.
 $tooltip-font-size: rem(11px);
 
 //Set lighter color for placeholder

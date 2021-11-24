@@ -5,16 +5,16 @@ TO HAVE ACCESS TO ALL BOOTSTRAP AND FCOO/JQUERY-BOOTSTRAP SCSS-VARIABLES
 ************************************************************/
 
 /***********************************************
-JQUERY-BOOTSTRAP: Set and adjust bootstrap default values
-************************************************/
-@import "../../jquery-bootstrap/src/bootstrap-variables";
-
-/***********************************************
 BOOTSTRAP: scss variables
 ************************************************/
 @import "../../bootstrap/scss/functions";
 @import "../../bootstrap/scss/variables";
 @import "../../bootstrap/scss/mixins";
+
+/***********************************************
+JQUERY-BOOTSTRAP: Set and adjust bootstrap default values
+************************************************/
+@import "../../jquery-bootstrap/src/bootstrap-variables";
 
 
 /***********************************************
