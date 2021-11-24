@@ -68,9 +68,8 @@
             $lastItem.addClass('last');
     }
 
-    $.bsMenu = function( options ){
+    $.bsMenu = function( options = {}){
         //Adjust options.list
-        options = $.extend({}, options || {});
         var list = options.list = options.list || [];
         $.each(list, function(index, itemOptions){
 

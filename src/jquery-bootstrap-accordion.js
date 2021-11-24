@@ -188,7 +188,7 @@
 
             //Add content: string, element, function or children (=accordion)
             if (opt.content)
-                $contentContainer._bsAppendContent( opt.content, opt.contentContext );
+                $contentContainer._bsAppendContent( opt.content, opt.contentContext, null, options );
 
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))

@@ -390,11 +390,8 @@
     window.notyDefault
     Noty with default options as descried above
     ****************************************************************/
-    function notyDefault( type, text, options ){
-        options = options || {};
-
-        options.type = type;
-
+    function notyDefault( type, text, options = {}){
+        options.type    = type;
         options.content = $._bsAdjustIconAndText( text );
 
         //Set killer
@@ -423,11 +420,11 @@
     window.notySuccess / $.bsNotySuccess / window.notyOk / $.bsNotyOk
     Simple centered noty with centered text
     ****************************************************************/
-    window.notySuccess = $.bsNotySuccess = window.notyOk = $.bsNotyOk = function( text, options ){
+    window.notySuccess = $.bsNotySuccess = window.notyOk = $.bsNotyOk = function( text, options = {}){
         return  notyDefault(
                     'success',
                     {icon: $.bsNotyIcon['success'], text: text},
-                    $.extend( options || {}, {layout: 'center'})
+                    $.extend( options, {layout: 'center'})
                 );
     };
 

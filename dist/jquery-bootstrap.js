@@ -260,7 +260,7 @@
 
             //Add content: string, element, function or children (=accordion)
             if (opt.content)
-                $contentContainer._bsAppendContent( opt.content, opt.contentContext );
+                $contentContainer._bsAppendContent( opt.content, opt.contentContext, null, options );
 
             //If opt.list exists => create a accordion inside $contentContainer
             if ($.isArray(opt.list))
@@ -333,7 +333,7 @@
     bsButton( options ) - create a Bootstrap-button
     Is also used to create list-items for select-lists
     **********************************************************/
-    $.bsButton = function( options ){
+    $.bsButton = function( options = {} ){
         var optionToClassName = {
                 primary             : 'primary',
                 transparent         : 'transparent',
@@ -346,8 +346,6 @@
                 noBorder            : 'no-border',
                 focus               : 'init_focus'
             };
-
-        options = options || {};
 
         //Add class-name corresponding to options
         var newClass = [options.class || ''];
@@ -450,9 +448,7 @@
     bsStandardCheckboxButton( options ) - create a standard
     Bootstrap-button as a checkbox with check-icon in blue box
     **********************************************************/
-    $.bsStandardCheckboxButton = function( options ){
-        options = options || {};
-
+    $.bsStandardCheckboxButton = function( options = {}){
         if (!options.icon)
             options.icon =
                 options.type == 'radio' ?
@@ -814,8 +810,7 @@
 
     /**********************************************************
     **********************************************************/
-    $.bsFileView = $.bsFileview = function( options ){
-        options = options || {};
+    $.bsFileView = $.bsFileview = function( options = {}){
         var fileName    = $._bsAdjustText(options.fileName),
             theFileName = i18next.sentence(fileName),
             fileNameExt = window.url('fileext', theFileName),
@@ -895,12 +890,12 @@
         extraClassName: string or string[]. Extra class-name added
         partOfList : true if the icon is part of a list => return [icon-name] instead of [[icon-name]]
     ********************************************/
-    $.bsMarkerAsIcon = function(colorClassName, borderColorClassName, options){
+    $.bsMarkerAsIcon = function(colorClassName, borderColorClassName, options = {}){
         options = $.extend({
             faClassName   : 'fa-circle',
             extraClassName: '',
             partOfList    : false
-        }, options || {});
+        }, options);
 
         colorClassName       = colorClassName || 'text-white';
         borderColorClassName = borderColorClassName || 'text-black';
@@ -1241,11 +1236,11 @@
         //Create the form
         this.$form = $('<form/>');
         if (this.options.extended && this.options.useExtended){
-            this.$form._bsAppendContent( this.options.extended.content, this.options.contentContext );
+            this.$form._bsAppendContent( this.options.extended.content, this.options.contentContext, null, this.options );
             this.options.extended.content = this.$form;
         }
         else {
-            this.$form._bsAppendContent( this.options.content, this.options.contentContext );
+            this.$form._bsAppendContent( this.options.content, this.options.contentContext, null, this.options );
             this.options.content = this.$form;
         }
 
@@ -1933,9 +1928,8 @@ options
             $lastItem.addClass('last');
     }
 
-    $.bsMenu = function( options ){
+    $.bsMenu = function( options = {}){
         //Adjust options.list
-        options = $.extend({}, options || {});
         var list = options.list = options.list || [];
         $.each(list, function(index, itemOptions){
 
@@ -2265,8 +2259,7 @@ options
     /**********************************************************
     bsModalFile( fileName, options )
     **********************************************************/
-    $.bsModalFile = function( fileName, options ){
-        options = options || {};
+    $.bsModalFile = function( fileName, options = {} ){
         fileName = $._bsAdjustText(fileName);
         var theFileName = i18next.sentence(fileName),
             fileNameExt = window.url('fileext', theFileName),
@@ -2545,6 +2538,8 @@ jquery-bootstrap-modal-promise.js
         noVerticalPadding
         noHorizontalPadding
         noShadow
+        small: BOOLEAN if true the content gets extra small
+        smallButtons: BOOLEAN If true the modal gents extra small buttons
         content
         scroll: boolean | 'vertical' | 'horizontal'
         minimized,
@@ -2818,10 +2813,10 @@ jquery-bootstrap-modal-promise.js
         update: function( options ){
             var _this = this;
             //***********************************************************
-            function updateElement($element, newOptions, methodName, param, param2 ){
+            function updateElement($element, newOptions, methodName, param, param2, param3 ){
                 if ($element && newOptions){
                     $element.empty();
-                    $element[methodName](newOptions, param, param2);
+                    $element[methodName](newOptions, param, param2, param3);
                 }
             }
             //***********************************************************
@@ -2839,8 +2834,8 @@ jquery-bootstrap-modal-promise.js
                     contentOptions = id ? options[id]       : options;
 
                 if (containers && contentOptions){
-                    updateElement(containers.$fixedContent, contentOptions.fixedContent, '_bsAppendContent', contentOptions.fixedContentContext, contentOptions.fixedContentArg );
-                    updateElement(containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext,      contentOptions.contentArg      );
+                    updateElement(containers.$fixedContent, contentOptions.fixedContent, '_bsAppendContent', contentOptions.fixedContentContext, contentOptions.fixedContentArg, options );
+                    updateElement(containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext,      contentOptions.contentArg,      options );
                     updateElement(containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
             });
@@ -2862,7 +2857,6 @@ jquery-bootstrap-modal-promise.js
     of a modal inside this. Created elements are saved in parts
     ******************************************************/
     $.fn._bsModalBodyAndFooter = function(size, options, parts, className, initSize){
-
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
             isTabs          = !!(options && options.content && (options.content.type == 'tabs')),
@@ -2893,7 +2887,7 @@ jquery-bootstrap-modal-promise.js
                     .appendTo( this );
 
         if (options.fixedContent)
-            $modalFixedContent._bsAppendContent( options.fixedContent, options.fixedContentContext );
+            $modalFixedContent._bsAppendContent( options.fixedContent, options.fixedContentContext, null, options );
 
         //Append body and content
         var $modalBody = parts.$body =
@@ -2928,7 +2922,7 @@ jquery-bootstrap-modal-promise.js
             parts.dynamicContentArg     = options.contentArg;
         }
         else
-            $modalContent._bsAppendContent( options.content, options.contentContext, options.contentArg );
+            $modalContent._bsAppendContent( options.content, options.contentContext, options.contentArg, options  );
 
         //Add scroll-event to close any bootstrapopen -select
         if (hasScroll)
@@ -2961,9 +2955,7 @@ jquery-bootstrap-modal-promise.js
     Create the content of a modal inside this
     Sets object with all parts of the result in this.bsModal
     ******************************************************/
-    $.fn._bsModalContent = function( options ){
-        options = options || {};
-
+    $.fn._bsModalContent = function( options = {}){
         //this.bsModal contains all created elements
         this.bsModal = {};
         this.bsModal.onChange = options.onChange || null;
@@ -3079,6 +3071,15 @@ jquery-bootstrap-modal-promise.js
                 help    : { className: '',                      onClick: options.onHelp ? $.proxy(options.onHelp, this) : null },
             }
         }, options );
+
+
+        //Save parentOptions for dynamic update
+        var parentOptions = this.bsModal.parentOptions = {};
+        $.each($.parentOptionsToInherit, function(index, id){
+            if (options.hasOwnProperty(id))
+                parentOptions[id] = options[id];
+            });
+
 
         //Adjust for options.buttons: null
         options.buttons = options.buttons || [];
@@ -3311,7 +3312,7 @@ jquery-bootstrap-modal-promise.js
         var parts = this.bsModal[ modalSizeName[size] ] || this.bsModal;
 
         if (parts && parts.dynamicContent){
-            parts.$content._bsAppendContent( parts.dynamicContent, parts.dynamicContentContext, parts.dynamicContentArg );
+            parts.$content._bsAppendContent( parts.dynamicContent, parts.dynamicContentContext, parts.dynamicContentArg, this.bsModal.parentOptions );
 
             parts.dynamicContent        = null;
             parts.dynamicContentContext = null;
@@ -3872,11 +3873,8 @@ jquery-bootstrap-modal-promise.js
     window.notyDefault
     Noty with default options as descried above
     ****************************************************************/
-    function notyDefault( type, text, options ){
-        options = options || {};
-
-        options.type = type;
-
+    function notyDefault( type, text, options = {}){
+        options.type    = type;
         options.content = $._bsAdjustIconAndText( text );
 
         //Set killer
@@ -3905,11 +3903,11 @@ jquery-bootstrap-modal-promise.js
     window.notySuccess / $.bsNotySuccess / window.notyOk / $.bsNotyOk
     Simple centered noty with centered text
     ****************************************************************/
-    window.notySuccess = $.bsNotySuccess = window.notyOk = $.bsNotyOk = function( text, options ){
+    window.notySuccess = $.bsNotySuccess = window.notyOk = $.bsNotyOk = function( text, options = {}){
         return  notyDefault(
                     'success',
                     {icon: $.bsNotyIcon['success'], text: text},
-                    $.extend( options || {}, {layout: 'center'})
+                    $.extend( options, {layout: 'center'})
                 );
     };
 
@@ -4799,7 +4797,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     /**********************************************************
     asModal - display the table in a modal-window with fixed header and scrolling content
     **********************************************************/
-    $.BSASMODAL.BSTABLE = function( modalOptions ){
+    $.BSASMODAL.BSTABLE = function( modalOptions = {}){
         var showHeader = this.find('.no-header').length == 0,
             _this      = this,
             $tableWithHeader,
@@ -4825,7 +4823,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         }
 
         $result = $.bsModal(
-                        $.extend( modalOptions || {}, {
+                        $.extend( modalOptions, {
                             flexWidth        : true,
                             noVerticalPadding: true,
                             content          : this,
@@ -5486,7 +5484,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             //Add content: string, element, function, setup-json-object, or children (=accordion)
             if (opt.content)
-                $content._bsAppendContent( opt.content, opt.contentContext );
+                $content._bsAppendContent( opt.content, opt.contentContext, null, options );
 
         });
         $result._$tabs = $tabs;
@@ -5840,6 +5838,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     };
 
 
+    //$.parentOptionsToInherit = []ID = id of options that modal-content can inherit from the modal itself
+    $.parentOptionsToInherit = ['small'];
 
     $.fn.extend({
         //_bsAddIdAndName
@@ -5888,9 +5888,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             "left right center lowercase uppercase capitalize normal bold italic" or
             {left: true, right: true, center: true, lowercase: true, uppercase: true, capitalize: true, normal: true, bold: true, italic: true}
         ****************************************************************************************/
-        _bsAddStyleClasses: function( options ){
-            options = options || {};
-
+        _bsAddStyleClasses: function( options = {}){
             var _this = this,
 
                 bsStyleClass = {
@@ -6085,9 +6083,12 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         },
 
         /****************************************************************************************
-        _bsAppendContent( options, context, arg )
+        _bsAppendContent( options, context, arg, parentOptions )
         Create and append any content to this.
         options can be $-element, function, json-object or array of same
+
+        If parentOptions is given => some options from parentOptions is used if they are not given in options
+
 
         The default bootstrap structure used for elements in a form is
         <div class="form-group">
@@ -6107,7 +6108,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             </div>
         </div>
         ****************************************************************************************/
-        _bsAppendContent: function( options, context, arg ){
+        _bsAppendContent: function( options, context, arg, parentOptions = {} ){
 
             //Internal functions to create baseSlider and timeSlider
             function buildSlider(options, constructorName, $parent){
@@ -6135,7 +6136,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 return $parent
                            .attr('id', options.id)
                            .addClass('flex-column')
-                           ._bsAppendContent(options.content);
+                           ._bsAppendContent(options.content, null, null, options);
             }
 
 
@@ -6146,7 +6147,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if ($.isArray( options )){
                 var _this = this;
                 $.each(options, function( index, opt){
-                    _this._bsAppendContent(opt, context );
+                    _this._bsAppendContent(opt, context, null, parentOptions );
                 });
                 return this;
             }
@@ -6159,126 +6160,131 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 return this;
             }
 
-            //json-object with options to create bs-elements
-            if ($.isPlainObject(options)){
-                var buildFunc = $.fn._bsAddHtml,
-                    insideFormGroup   = false,
-                    addBorder         = false,
-                    buildInsideParent = false,
-                    noValidation      = false;
-
-                if (options.type){
-                    var type = options.type.toLowerCase();
-                    switch (type){
-                        case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
-                        case 'button'           :   buildFunc = $.bsButton;             break;
-                        case 'buttongroup'      :   buildFunc = $.bsButtonGroup;        break;
-                        case 'menu'             :   buildFunc = $.bsMenu;               break;
-                        case 'select'           :   buildFunc = $.bsSelectBox;          insideFormGroup = true; break;
-                        case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
-                        case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
-                        case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; break;
-                        case 'tabs'             :   buildFunc = $.bsTabs;               break;
-                        case 'table'            :   buildFunc = $.bsTable;              break;
-                        case 'list'             :   buildFunc = $.bsList;               break;
-                        case 'accordion'        :   buildFunc = $.bsAccordion;          break;
-                        case 'slider'           :   buildFunc = buildBaseSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
-                        case 'timeslider'       :   buildFunc = buildTimeSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
-                        case 'text'             :   buildFunc = $.bsText;               insideFormGroup = true; break;
-                        case 'textarea'         :   buildFunc = $.bsTextArea;           insideFormGroup = true; break;
-                        case 'textbox'          :   buildFunc = buildTextBox;           insideFormGroup = true; addBorder = true; noValidation = true; break;
-                        case 'fileview'         :   buildFunc = $.bsFileView;           break;
-                        case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
-                        case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
-//                        case 'xx'               :   buildFunc = $.bsXx;               break;
-
-                        default                 :   buildFunc = $.fn._bsAddHtml;        buildInsideParent = true;
-
-                    }
-                }
-
-                //Overwrite insideFormGroup if value given in options
-                if ( $.type( options.insideFormGroup ) == "boolean")
-                    insideFormGroup = options.insideFormGroup;
-
-                //Set the parent-element where to append to created element(s)
-                var $parent = this,
-                    insideInputGroup = false;
-
-                if (insideFormGroup){
-                    //Create outer form-group
-                    insideInputGroup = true;
-                    $parent = $divXXGroup('form-group', options).appendTo( $parent );
-                    if (options.smallBottomPadding)
-                        $parent.addClass('small-bottom-padding');
-
-                    if (options.lineBefore)
-                        $('<hr/>')
-                            .addClass('before')
-                            .toggleClass('above-label', !!options.label)
-                            .appendTo( $parent );
-
-                    if (noValidation || options.noValidation)
-                        $parent.addClass('no-validation');
-                }
-                var $originalParent = $parent;
-                if (insideInputGroup || options.prepend || options.before || options.append || options.after){
-                    //Create element inside input-group
-                    var $inputGroup = $divXXGroup('input-group', options);
-                    if (addBorder && !options.noBorder){
-                        //Add border and label (if any)
-                        $inputGroup.addClass('input-group-border');
-
-                        if (options.darkBorderlabel)
-                            $inputGroup.addClass('input-group-border-dark');
-
-                        if (options.label){
-                            $inputGroup.addClass('input-group-border-with-label');
-                            $('<span/>')
-                                .addClass('has-fixed-label')
-                                ._bsAddHtml( options.label )
-                                .appendTo( $inputGroup );
-                        }
-                    }
-                    $parent = $inputGroup.appendTo( $parent );
-                }
-
-                //Build the element. Build inside $parent or add to $parent after
-                if (buildInsideParent)
-                    buildFunc.call( this, options, $parent );
-                else
-                    buildFunc.call( this, options ).appendTo( $parent );
-
-                if (options.center)
-                    $parent.addClass('justify-content-center text-center');
-
-
-                var prepend = options.prepend || options.before;
-                if (prepend)
-                    $('<div/>')
-                        .addClass('input-group-prepend')
-                        ._bsAppendContent( prepend, options.contentContext  )
-                        .prependTo( $parent );
-                var append = options.append || options.after;
-                if (append)
-                    $('<div/>')
-                        .addClass('input-group-append')
-                        ._bsAppendContent( append, options.contentContext  )
-                        .appendTo( $parent );
-
-                if (options.lineAfter)
-                    $('<hr/>')
-                        .addClass('after')
-                        .appendTo( $originalParent );
-
-
+            if (!$.isPlainObject(options)){
+                //Assume it is a $-element or other object that can be appended directly
+                this.append( options );
                 return this;
             }
 
-            //Assume it is a $-element or other object that can be appended directly
-            this.append( options );
+            //json-object with options to create bs-elements
+            var buildFunc = $.fn._bsAddHtml,
+                insideFormGroup   = false,
+                addBorder         = false,
+                buildInsideParent = false,
+                noValidation      = false;
+
+
+            //Set values fro parentOptions into options
+            $.each($.parentOptionsToInherit, function(index, id){
+                if (parentOptions.hasOwnProperty(id) && !options.hasOwnProperty(id))
+                    options[id] = parentOptions[id];
+            });
+
+
+            if (options.type){
+                var type = options.type.toLowerCase();
+                switch (type){
+                    case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
+                    case 'button'           :   buildFunc = $.bsButton;             break;
+                    case 'buttongroup'      :   buildFunc = $.bsButtonGroup;        break;
+                    case 'menu'             :   buildFunc = $.bsMenu;               break;
+                    case 'select'           :   buildFunc = $.bsSelectBox;          insideFormGroup = true; break;
+                    case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
+                    case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
+                    case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; break;
+                    case 'tabs'             :   buildFunc = $.bsTabs;               break;
+                    case 'table'            :   buildFunc = $.bsTable;              break;
+                    case 'list'             :   buildFunc = $.bsList;               break;
+                    case 'accordion'        :   buildFunc = $.bsAccordion;          break;
+                    case 'slider'           :   buildFunc = buildBaseSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
+                    case 'timeslider'       :   buildFunc = buildTimeSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
+                    case 'text'             :   buildFunc = $.bsText;               insideFormGroup = true; break;
+                    case 'textarea'         :   buildFunc = $.bsTextArea;           insideFormGroup = true; break;
+                    case 'textbox'          :   buildFunc = buildTextBox;           insideFormGroup = true; addBorder = true; noValidation = true; break;
+                    case 'fileview'         :   buildFunc = $.bsFileView;           break;
+                    case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
+                    case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
+//                    case 'xx'               :   buildFunc = $.bsXx;               break;
+
+                    default                 :   buildFunc = $.fn._bsAddHtml;        buildInsideParent = true;
+                }
+            }
+
+            //Overwrite insideFormGroup if value given in options
+            if ( $.type( options.insideFormGroup ) == "boolean")
+                insideFormGroup = options.insideFormGroup;
+
+            //Set the parent-element where to append to created element(s)
+            var $parent = this,
+                insideInputGroup = false;
+
+            if (insideFormGroup){
+                //Create outer form-group
+                insideInputGroup = true;
+                $parent = $divXXGroup('form-group', options).appendTo( $parent );
+                if (options.smallBottomPadding)
+                    $parent.addClass('small-bottom-padding');
+
+                if (options.lineBefore)
+                    $('<hr/>')
+                        .addClass('before')
+                        .toggleClass('above-label', !!options.label)
+                        .appendTo( $parent );
+
+                if (noValidation || options.noValidation)
+                    $parent.addClass('no-validation');
+            }
+            var $originalParent = $parent;
+            if (insideInputGroup || options.prepend || options.before || options.append || options.after){
+                //Create element inside input-group
+                var $inputGroup = $divXXGroup('input-group', options);
+                if (addBorder && !options.noBorder){
+                    //Add border and label (if any)
+                    $inputGroup.addClass('input-group-border');
+
+                    if (options.darkBorderlabel)
+                        $inputGroup.addClass('input-group-border-dark');
+
+                    if (options.label){
+                        $inputGroup.addClass('input-group-border-with-label');
+                        $('<span/>')
+                            .addClass('has-fixed-label')
+                            ._bsAddHtml( options.label )
+                            .appendTo( $inputGroup );
+                    }
+                }
+                $parent = $inputGroup.appendTo( $parent );
+            }
+
+            //Build the element. Build inside $parent or add to $parent after
+            if (buildInsideParent)
+                buildFunc.call( this, options, $parent );
+            else
+                buildFunc.call( this, options ).appendTo( $parent );
+
+            if (options.center)
+                $parent.addClass('justify-content-center text-center');
+
+            var prepend = options.prepend || options.before;
+            if (prepend)
+                $('<div/>')
+                    .addClass('input-group-prepend')
+                    ._bsAppendContent( prepend, options.contentContext, null, options  )
+                    .prependTo( $parent );
+            var append = options.append || options.after;
+            if (append)
+                $('<div/>')
+                    .addClass('input-group-append')
+                    ._bsAppendContent( append, options.contentContext, null, options  )
+                    .appendTo( $parent );
+
+            if (options.lineAfter)
+                $('<hr/>')
+                    .addClass('after')
+                    .appendTo( $originalParent );
+
             return this;
-        }
+        }   //end of _bsAppendContent
     }); //$.fn.extend
 
 

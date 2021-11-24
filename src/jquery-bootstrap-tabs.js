@@ -140,7 +140,7 @@
 
             //Add content: string, element, function, setup-json-object, or children (=accordion)
             if (opt.content)
-                $content._bsAppendContent( opt.content, opt.contentContext );
+                $content._bsAppendContent( opt.content, opt.contentContext, null, options );
 
         });
         $result._$tabs = $tabs;

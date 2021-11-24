@@ -21,12 +21,12 @@
         extraClassName: string or string[]. Extra class-name added
         partOfList : true if the icon is part of a list => return [icon-name] instead of [[icon-name]]
     ********************************************/
-    $.bsMarkerAsIcon = function(colorClassName, borderColorClassName, options){
+    $.bsMarkerAsIcon = function(colorClassName, borderColorClassName, options = {}){
         options = $.extend({
             faClassName   : 'fa-circle',
             extraClassName: '',
             partOfList    : false
-        }, options || {});
+        }, options);
 
         colorClassName       = colorClassName || 'text-white';
         borderColorClassName = borderColorClassName || 'text-black';

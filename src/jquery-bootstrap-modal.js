@@ -42,6 +42,8 @@
         noVerticalPadding
         noHorizontalPadding
         noShadow
+        small: BOOLEAN if true the content gets extra small
+        smallButtons: BOOLEAN If true the modal gents extra small buttons
         content
         scroll: boolean | 'vertical' | 'horizontal'
         minimized,
@@ -315,10 +317,10 @@
         update: function( options ){
             var _this = this;
             //***********************************************************
-            function updateElement($element, newOptions, methodName, param, param2 ){
+            function updateElement($element, newOptions, methodName, param, param2, param3 ){
                 if ($element && newOptions){
                     $element.empty();
-                    $element[methodName](newOptions, param, param2);
+                    $element[methodName](newOptions, param, param2, param3);
                 }
             }
             //***********************************************************
@@ -336,8 +338,8 @@
                     contentOptions = id ? options[id]       : options;
 
                 if (containers && contentOptions){
-                    updateElement(containers.$fixedContent, contentOptions.fixedContent, '_bsAppendContent', contentOptions.fixedContentContext, contentOptions.fixedContentArg );
-                    updateElement(containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext,      contentOptions.contentArg      );
+                    updateElement(containers.$fixedContent, contentOptions.fixedContent, '_bsAppendContent', contentOptions.fixedContentContext, contentOptions.fixedContentArg, options );
+                    updateElement(containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext,      contentOptions.contentArg,      options );
                     updateElement(containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
             });
@@ -359,7 +361,6 @@
     of a modal inside this. Created elements are saved in parts
     ******************************************************/
     $.fn._bsModalBodyAndFooter = function(size, options, parts, className, initSize){
-
         //Set variables used to set scroll-bar (if any)
         var hasScroll       = !!options.scroll,
             isTabs          = !!(options && options.content && (options.content.type == 'tabs')),
@@ -390,7 +391,7 @@
                     .appendTo( this );
 
         if (options.fixedContent)
-            $modalFixedContent._bsAppendContent( options.fixedContent, options.fixedContentContext );
+            $modalFixedContent._bsAppendContent( options.fixedContent, options.fixedContentContext, null, options );
 
         //Append body and content
         var $modalBody = parts.$body =
@@ -425,7 +426,7 @@
             parts.dynamicContentArg     = options.contentArg;
         }
         else
-            $modalContent._bsAppendContent( options.content, options.contentContext, options.contentArg );
+            $modalContent._bsAppendContent( options.content, options.contentContext, options.contentArg, options  );
 
         //Add scroll-event to close any bootstrapopen -select
         if (hasScroll)
@@ -458,9 +459,7 @@
     Create the content of a modal inside this
     Sets object with all parts of the result in this.bsModal
     ******************************************************/
-    $.fn._bsModalContent = function( options ){
-        options = options || {};
-
+    $.fn._bsModalContent = function( options = {}){
         //this.bsModal contains all created elements
         this.bsModal = {};
         this.bsModal.onChange = options.onChange || null;
@@ -576,6 +575,15 @@
                 help    : { className: '',                      onClick: options.onHelp ? $.proxy(options.onHelp, this) : null },
             }
         }, options );
+
+
+        //Save parentOptions for dynamic update
+        var parentOptions = this.bsModal.parentOptions = {};
+        $.each($.parentOptionsToInherit, function(index, id){
+            if (options.hasOwnProperty(id))
+                parentOptions[id] = options[id];
+            });
+
 
         //Adjust for options.buttons: null
         options.buttons = options.buttons || [];
@@ -808,7 +816,7 @@
         var parts = this.bsModal[ modalSizeName[size] ] || this.bsModal;
 
         if (parts && parts.dynamicContent){
-            parts.$content._bsAppendContent( parts.dynamicContent, parts.dynamicContentContext, parts.dynamicContentArg );
+            parts.$content._bsAppendContent( parts.dynamicContent, parts.dynamicContentContext, parts.dynamicContentArg, this.bsModal.parentOptions );
 
             parts.dynamicContent        = null;
             parts.dynamicContentContext = null;

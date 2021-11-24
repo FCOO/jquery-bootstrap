@@ -317,11 +317,11 @@
         //Create the form
         this.$form = $('<form/>');
         if (this.options.extended && this.options.useExtended){
-            this.$form._bsAppendContent( this.options.extended.content, this.options.contentContext );
+            this.$form._bsAppendContent( this.options.extended.content, this.options.contentContext, null, this.options );
             this.options.extended.content = this.$form;
         }
         else {
-            this.$form._bsAppendContent( this.options.content, this.options.contentContext );
+            this.$form._bsAppendContent( this.options.content, this.options.contentContext, null, this.options );
             this.options.content = this.$form;
         }
 

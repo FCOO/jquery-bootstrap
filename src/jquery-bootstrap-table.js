@@ -179,7 +179,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     /**********************************************************
     asModal - display the table in a modal-window with fixed header and scrolling content
     **********************************************************/
-    $.BSASMODAL.BSTABLE = function( modalOptions ){
+    $.BSASMODAL.BSTABLE = function( modalOptions = {}){
         var showHeader = this.find('.no-header').length == 0,
             _this      = this,
             $tableWithHeader,
@@ -205,7 +205,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         }
 
         $result = $.bsModal(
-                        $.extend( modalOptions || {}, {
+                        $.extend( modalOptions, {
                             flexWidth        : true,
                             noVerticalPadding: true,
                             content          : this,

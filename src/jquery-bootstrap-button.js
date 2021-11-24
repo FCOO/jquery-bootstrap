@@ -17,7 +17,7 @@
     bsButton( options ) - create a Bootstrap-button
     Is also used to create list-items for select-lists
     **********************************************************/
-    $.bsButton = function( options ){
+    $.bsButton = function( options = {} ){
         var optionToClassName = {
                 primary             : 'primary',
                 transparent         : 'transparent',
@@ -30,8 +30,6 @@
                 noBorder            : 'no-border',
                 focus               : 'init_focus'
             };
-
-        options = options || {};
 
         //Add class-name corresponding to options
         var newClass = [options.class || ''];
@@ -134,9 +132,7 @@
     bsStandardCheckboxButton( options ) - create a standard
     Bootstrap-button as a checkbox with check-icon in blue box
     **********************************************************/
-    $.bsStandardCheckboxButton = function( options ){
-        options = options || {};
-
+    $.bsStandardCheckboxButton = function( options = {}){
         if (!options.icon)
             options.icon =
                 options.type == 'radio' ?

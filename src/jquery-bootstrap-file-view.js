@@ -39,8 +39,7 @@
 
     /**********************************************************
     **********************************************************/
-    $.bsFileView = $.bsFileview = function( options ){
-        options = options || {};
+    $.bsFileView = $.bsFileview = function( options = {}){
         var fileName    = $._bsAdjustText(options.fileName),
             theFileName = i18next.sentence(fileName),
             fileNameExt = window.url('fileext', theFileName),

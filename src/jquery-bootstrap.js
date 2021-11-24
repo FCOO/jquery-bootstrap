@@ -330,6 +330,8 @@
     };
 
 
+    //$.parentOptionsToInherit = []ID = id of options that modal-content can inherit from the modal itself
+    $.parentOptionsToInherit = ['small'];
 
     $.fn.extend({
         //_bsAddIdAndName
@@ -378,9 +380,7 @@
             "left right center lowercase uppercase capitalize normal bold italic" or
             {left: true, right: true, center: true, lowercase: true, uppercase: true, capitalize: true, normal: true, bold: true, italic: true}
         ****************************************************************************************/
-        _bsAddStyleClasses: function( options ){
-            options = options || {};
-
+        _bsAddStyleClasses: function( options = {}){
             var _this = this,
 
                 bsStyleClass = {
@@ -575,9 +575,12 @@
         },
 
         /****************************************************************************************
-        _bsAppendContent( options, context, arg )
+        _bsAppendContent( options, context, arg, parentOptions )
         Create and append any content to this.
         options can be $-element, function, json-object or array of same
+
+        If parentOptions is given => some options from parentOptions is used if they are not given in options
+
 
         The default bootstrap structure used for elements in a form is
         <div class="form-group">
@@ -597,7 +600,7 @@
             </div>
         </div>
         ****************************************************************************************/
-        _bsAppendContent: function( options, context, arg ){
+        _bsAppendContent: function( options, context, arg, parentOptions = {} ){
 
             //Internal functions to create baseSlider and timeSlider
             function buildSlider(options, constructorName, $parent){
@@ -625,7 +628,7 @@
                 return $parent
                            .attr('id', options.id)
                            .addClass('flex-column')
-                           ._bsAppendContent(options.content);
+                           ._bsAppendContent(options.content, null, null, options);
             }
 
 
@@ -636,7 +639,7 @@
             if ($.isArray( options )){
                 var _this = this;
                 $.each(options, function( index, opt){
-                    _this._bsAppendContent(opt, context );
+                    _this._bsAppendContent(opt, context, null, parentOptions );
                 });
                 return this;
             }
@@ -649,126 +652,131 @@
                 return this;
             }
 
-            //json-object with options to create bs-elements
-            if ($.isPlainObject(options)){
-                var buildFunc = $.fn._bsAddHtml,
-                    insideFormGroup   = false,
-                    addBorder         = false,
-                    buildInsideParent = false,
-                    noValidation      = false;
-
-                if (options.type){
-                    var type = options.type.toLowerCase();
-                    switch (type){
-                        case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
-                        case 'button'           :   buildFunc = $.bsButton;             break;
-                        case 'buttongroup'      :   buildFunc = $.bsButtonGroup;        break;
-                        case 'menu'             :   buildFunc = $.bsMenu;               break;
-                        case 'select'           :   buildFunc = $.bsSelectBox;          insideFormGroup = true; break;
-                        case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
-                        case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
-                        case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; break;
-                        case 'tabs'             :   buildFunc = $.bsTabs;               break;
-                        case 'table'            :   buildFunc = $.bsTable;              break;
-                        case 'list'             :   buildFunc = $.bsList;               break;
-                        case 'accordion'        :   buildFunc = $.bsAccordion;          break;
-                        case 'slider'           :   buildFunc = buildBaseSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
-                        case 'timeslider'       :   buildFunc = buildTimeSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
-                        case 'text'             :   buildFunc = $.bsText;               insideFormGroup = true; break;
-                        case 'textarea'         :   buildFunc = $.bsTextArea;           insideFormGroup = true; break;
-                        case 'textbox'          :   buildFunc = buildTextBox;           insideFormGroup = true; addBorder = true; noValidation = true; break;
-                        case 'fileview'         :   buildFunc = $.bsFileView;           break;
-                        case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
-                        case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
-//                        case 'xx'               :   buildFunc = $.bsXx;               break;
-
-                        default                 :   buildFunc = $.fn._bsAddHtml;        buildInsideParent = true;
-
-                    }
-                }
-
-                //Overwrite insideFormGroup if value given in options
-                if ( $.type( options.insideFormGroup ) == "boolean")
-                    insideFormGroup = options.insideFormGroup;
-
-                //Set the parent-element where to append to created element(s)
-                var $parent = this,
-                    insideInputGroup = false;
-
-                if (insideFormGroup){
-                    //Create outer form-group
-                    insideInputGroup = true;
-                    $parent = $divXXGroup('form-group', options).appendTo( $parent );
-                    if (options.smallBottomPadding)
-                        $parent.addClass('small-bottom-padding');
-
-                    if (options.lineBefore)
-                        $('<hr/>')
-                            .addClass('before')
-                            .toggleClass('above-label', !!options.label)
-                            .appendTo( $parent );
-
-                    if (noValidation || options.noValidation)
-                        $parent.addClass('no-validation');
-                }
-                var $originalParent = $parent;
-                if (insideInputGroup || options.prepend || options.before || options.append || options.after){
-                    //Create element inside input-group
-                    var $inputGroup = $divXXGroup('input-group', options);
-                    if (addBorder && !options.noBorder){
-                        //Add border and label (if any)
-                        $inputGroup.addClass('input-group-border');
-
-                        if (options.darkBorderlabel)
-                            $inputGroup.addClass('input-group-border-dark');
-
-                        if (options.label){
-                            $inputGroup.addClass('input-group-border-with-label');
-                            $('<span/>')
-                                .addClass('has-fixed-label')
-                                ._bsAddHtml( options.label )
-                                .appendTo( $inputGroup );
-                        }
-                    }
-                    $parent = $inputGroup.appendTo( $parent );
-                }
-
-                //Build the element. Build inside $parent or add to $parent after
-                if (buildInsideParent)
-                    buildFunc.call( this, options, $parent );
-                else
-                    buildFunc.call( this, options ).appendTo( $parent );
-
-                if (options.center)
-                    $parent.addClass('justify-content-center text-center');
-
-
-                var prepend = options.prepend || options.before;
-                if (prepend)
-                    $('<div/>')
-                        .addClass('input-group-prepend')
-                        ._bsAppendContent( prepend, options.contentContext  )
-                        .prependTo( $parent );
-                var append = options.append || options.after;
-                if (append)
-                    $('<div/>')
-                        .addClass('input-group-append')
-                        ._bsAppendContent( append, options.contentContext  )
-                        .appendTo( $parent );
-
-                if (options.lineAfter)
-                    $('<hr/>')
-                        .addClass('after')
-                        .appendTo( $originalParent );
-
-
+            if (!$.isPlainObject(options)){
+                //Assume it is a $-element or other object that can be appended directly
+                this.append( options );
                 return this;
             }
 
-            //Assume it is a $-element or other object that can be appended directly
-            this.append( options );
+            //json-object with options to create bs-elements
+            var buildFunc = $.fn._bsAddHtml,
+                insideFormGroup   = false,
+                addBorder         = false,
+                buildInsideParent = false,
+                noValidation      = false;
+
+
+            //Set values fro parentOptions into options
+            $.each($.parentOptionsToInherit, function(index, id){
+                if (parentOptions.hasOwnProperty(id) && !options.hasOwnProperty(id))
+                    options[id] = parentOptions[id];
+            });
+
+
+            if (options.type){
+                var type = options.type.toLowerCase();
+                switch (type){
+                    case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
+                    case 'button'           :   buildFunc = $.bsButton;             break;
+                    case 'buttongroup'      :   buildFunc = $.bsButtonGroup;        break;
+                    case 'menu'             :   buildFunc = $.bsMenu;               break;
+                    case 'select'           :   buildFunc = $.bsSelectBox;          insideFormGroup = true; break;
+                    case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
+                    case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
+                    case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; break;
+                    case 'tabs'             :   buildFunc = $.bsTabs;               break;
+                    case 'table'            :   buildFunc = $.bsTable;              break;
+                    case 'list'             :   buildFunc = $.bsList;               break;
+                    case 'accordion'        :   buildFunc = $.bsAccordion;          break;
+                    case 'slider'           :   buildFunc = buildBaseSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
+                    case 'timeslider'       :   buildFunc = buildTimeSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
+                    case 'text'             :   buildFunc = $.bsText;               insideFormGroup = true; break;
+                    case 'textarea'         :   buildFunc = $.bsTextArea;           insideFormGroup = true; break;
+                    case 'textbox'          :   buildFunc = buildTextBox;           insideFormGroup = true; addBorder = true; noValidation = true; break;
+                    case 'fileview'         :   buildFunc = $.bsFileView;           break;
+                    case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
+                    case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
+//                    case 'xx'               :   buildFunc = $.bsXx;               break;
+
+                    default                 :   buildFunc = $.fn._bsAddHtml;        buildInsideParent = true;
+                }
+            }
+
+            //Overwrite insideFormGroup if value given in options
+            if ( $.type( options.insideFormGroup ) == "boolean")
+                insideFormGroup = options.insideFormGroup;
+
+            //Set the parent-element where to append to created element(s)
+            var $parent = this,
+                insideInputGroup = false;
+
+            if (insideFormGroup){
+                //Create outer form-group
+                insideInputGroup = true;
+                $parent = $divXXGroup('form-group', options).appendTo( $parent );
+                if (options.smallBottomPadding)
+                    $parent.addClass('small-bottom-padding');
+
+                if (options.lineBefore)
+                    $('<hr/>')
+                        .addClass('before')
+                        .toggleClass('above-label', !!options.label)
+                        .appendTo( $parent );
+
+                if (noValidation || options.noValidation)
+                    $parent.addClass('no-validation');
+            }
+            var $originalParent = $parent;
+            if (insideInputGroup || options.prepend || options.before || options.append || options.after){
+                //Create element inside input-group
+                var $inputGroup = $divXXGroup('input-group', options);
+                if (addBorder && !options.noBorder){
+                    //Add border and label (if any)
+                    $inputGroup.addClass('input-group-border');
+
+                    if (options.darkBorderlabel)
+                        $inputGroup.addClass('input-group-border-dark');
+
+                    if (options.label){
+                        $inputGroup.addClass('input-group-border-with-label');
+                        $('<span/>')
+                            .addClass('has-fixed-label')
+                            ._bsAddHtml( options.label )
+                            .appendTo( $inputGroup );
+                    }
+                }
+                $parent = $inputGroup.appendTo( $parent );
+            }
+
+            //Build the element. Build inside $parent or add to $parent after
+            if (buildInsideParent)
+                buildFunc.call( this, options, $parent );
+            else
+                buildFunc.call( this, options ).appendTo( $parent );
+
+            if (options.center)
+                $parent.addClass('justify-content-center text-center');
+
+            var prepend = options.prepend || options.before;
+            if (prepend)
+                $('<div/>')
+                    .addClass('input-group-prepend')
+                    ._bsAppendContent( prepend, options.contentContext, null, options  )
+                    .prependTo( $parent );
+            var append = options.append || options.after;
+            if (append)
+                $('<div/>')
+                    .addClass('input-group-append')
+                    ._bsAppendContent( append, options.contentContext, null, options  )
+                    .appendTo( $parent );
+
+            if (options.lineAfter)
+                $('<hr/>')
+                    .addClass('after')
+                    .appendTo( $originalParent );
+
             return this;
-        }
+        }   //end of _bsAppendContent
     }); //$.fn.extend
 
 

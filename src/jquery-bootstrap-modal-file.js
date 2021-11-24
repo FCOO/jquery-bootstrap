@@ -75,8 +75,7 @@
     /**********************************************************
     bsModalFile( fileName, options )
     **********************************************************/
-    $.bsModalFile = function( fileName, options ){
-        options = options || {};
+    $.bsModalFile = function( fileName, options = {} ){
         fileName = $._bsAdjustText(fileName);
         var theFileName = i18next.sentence(fileName),
             fileNameExt = window.url('fileext', theFileName),
