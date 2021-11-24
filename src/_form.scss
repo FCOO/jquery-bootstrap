@@ -62,7 +62,8 @@ The default bootstrap structure used for elements in a form is
     }
 }
 
-//Different size
+//Different size - Same padding for sm and xs
+.form-group.form-group-xs,
 .form-group.form-group-sm {
     padding-top   :     $input-padding-y-sm;
     padding-bottom: 2 * $input-padding-y-sm;
@@ -71,6 +72,7 @@ The default bootstrap structure used for elements in a form is
     }
     hr.above-label { margin-bottom: 3 * $input-padding-y-sm; }
 }
+/*
 .form-group.form-group-xs {
     padding-top   :     $input-padding-y-xs;
     padding-bottom: 2 * $input-padding-y-xs;
@@ -79,6 +81,7 @@ The default bootstrap structure used for elements in a form is
     }
     hr.above-label { margin-bottom: 3 * $input-padding-y-xs; }
 }
+*/
 
 /************************************************************
 Style for formValidation (via fcoo-form-validation)
@@ -145,10 +148,18 @@ form.form-validation {
     @include control-border-color();
 }
 
-//Including .form-control-xs and .input-group-xs as in Bootstrap 3
+//Including .form-control-xs and .input-group-xs as in Bootstrap 4 - See bootstrap/scss/_forms.scss
+.form-control-plaintext.form-control-xs{
+    padding-right: 0;
+    padding-left : 0;
+}
+
 .form-control-xs {
-    padding: $input-padding-y-xs $input-padding-x-xs;
-    font-size: $font-size-xs;
+    height     : $input-height-xs;
+    padding    : $input-padding-y-xs $input-padding-x-xs;
+    line-height: $input-line-height-xs;
+    @include font-size($input-font-size-xs);
+    @include border-radius($input-border-radius-xs);
 }
 
 .input-group-xs {

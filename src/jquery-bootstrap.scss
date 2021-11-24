@@ -28,6 +28,7 @@
 /***********************************************
 SET AND ADJUST BOOTSTRAP DEFAULT VALUES
 ************************************************/
+@import "../bower_components/bootstrap/scss/functions";
 @import "bootstrap-variables";
 
 //Set z-index for working...
@@ -37,6 +38,7 @@ $zindex-working: 99999;
 IMPORT BOOTSTRAP SCSS
 ************************************************/
 @import "../bower_components/bootstrap/scss/bootstrap";
+
 
 /***********************************************
 IMPORT BOOTSTRAP-SELECT SCSS
@@ -57,6 +59,7 @@ VARIABLES
 @import "../bower_components/jquery-scroll-container/src/jquery-scroll-container-variables";
 
 @import "variables";
+
 
 /***********************************************
 MIXINS

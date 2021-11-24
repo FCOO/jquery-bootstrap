@@ -1279,10 +1279,51 @@ width: 543,
             show:false,
         });
 
+       
         $('<button>Tabs modal</button>')
             .appendTo( $body)
             .on('click', function(){ tab_modal.show(); });
 
+        //************************************************************************************
+        var smallModal = null;            
+        $('<button>Modal small content</button>')
+            .appendTo( $body)
+            .on('click', function(){
+                smallModal = smallModal || $.bsModal({
+
+                    header: 'Small Modal',
+                    small : true,
+                    width: 300,
+                    show: false,
+                    content: [{
+                        type: 'text', label: {icon:'fa-map', text:'Text small:undefined'},
+                        text: 'Text - Dette er en enkel linie'
+                    },{
+                        type: 'text', label: {icon:'fa-map', text:'Text small:true'},
+                        text: 'Text - Dette er en enkel linie', small: true
+                    },{
+                        type: 'text', label: {icon:'fa-map', text:'Text small:false'},
+                        text: 'Text - Dette er en enkel linie', small: false,
+                    },{
+                        type: 'textbox', label: {icon:'fa-map', text:'TextBox small'},
+                        text: 'TextBox - Dette er en lang linie med mange ord<br>og ny linie', center: false, small: true
+                    },{
+                        type: 'textbox', label: {icon:'fa-map', text:'TextBox'},
+                        text: 'TextBox - Dette er en lang linie med mange ord<br>og ny linie', center: false
+                    },{
+                        type: 'textarea', label: {icon:'fa-map', text:'TextArea small'},
+                        text: 'TextArea - Dette er en lang linie med mange ord<br>og ny linie', center: false, small: true
+                    },{
+                        type: 'textarea', label: {icon:'fa-map', text:'TextArea'},
+                        text: 'TextArea - Dette er en lang linie med mange ord<br>og ny linie', center: false
+
+                    }]
+                });
+                smallModal.show();
+            });
+        
+        
+        //************************************************************************************
         var testModalForm = null;
         var myData = {
             'mySlider': 20,
@@ -1303,7 +1344,6 @@ width: 543,
                     show: false,
                     header: 'Davs',
                     height: '200px',
-
 //noCloseIconOnHeader: true,
 
                     onChanging: function( values ) {
@@ -1323,7 +1363,7 @@ width: 543,
                     scroll: true,
                     content: '',
                     extended: {
-                        scroll: true,
+                        scroll: true, small: true,
                         content: {
                             type: 'accordion',
                             list: [
@@ -1359,6 +1399,10 @@ width: 543,
                                             type: 'hidden'
                                         },
 */
+                                        {
+                                            type: 'text', label: 'Text',
+                                            text: 'Dette er en lang linie med mange ord', center: false
+                                        },
                                         {
                                             type: 'textbox', label: 'TextBox',
                                             text: 'Davs med dig<br>Ny linie', center: true
