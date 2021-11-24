@@ -85,10 +85,7 @@ $font-size-sm: rem(14px);
 $input-btn-padding-y-sm: rem(3px);
 $input-btn-padding-x-sm: rem(4px);
 
-
 $border-radius-sm      : rem(3px);
-
-
 
 /************************************************************
 Including "size" xs as in Bootstrap 4
@@ -114,29 +111,6 @@ Add line-heights for xs
 $line-height-xs          : 1.5;
 $input-btn-line-height-xs: $line-height-xs;
 $input-line-height-xs    : $input-btn-line-height-xs;
-
-//HER/***********************************************
-//HERIMPORT BOOTSTRAP SCSS
-//HER************************************************/
-//HER@import "../bower_components/bootstrap/scss/bootstrap";
-
-/************************************************************
-Re-calc heights of input and add -xs version to have same format
-************************************************************/
-@function input-height( $line-height, $padding-y, $border-width: $border-width){
-    @return calc(#{$line-height * 1em} + #{2 * $padding-y} + #{2 * $border-width});
-}
-
-$input-height-lg: input-height($input-line-height-lg, $input-padding-y-lg); //Default = add($input-line-height-lg * 1em, add($input-padding-y-lg * 2, $input-height-border, false)) !default;
-$input-height   : input-height($input-line-height,    $input-padding-y   ); //Default = add($input-line-height    * 1em, add($input-padding-y    * 2, $input-height-border, false)) !default;
-$input-height-sm: input-height($input-line-height-sm, $input-padding-y-sm); //Default = add($input-line-height-sm * 1em, add($input-padding-y-sm * 2, $input-height-border, false)) !default;
-$input-height-xs: input-height($input-line-height-xs, $input-padding-y-xs);
-
-
-//HER/***********************************************
-//HERIMPORT BOOTSTRAP SCSS
-//HER************************************************/
-//HER@import "../bower_components/bootstrap/scss/bootstrap";
 
 //Adjust font-size for tool-tips to match Google Maps etc.
 $tooltip-font-size: rem(11px);
