@@ -1291,9 +1291,9 @@ width: 543,
             .on('click', function(){
                 smallModal = smallModal || $.bsModal({
 
-                    header: 'Small Modal',
+                    header: 'Modal small content',
                     small : true,
-                    width: 300,
+                    width: 600,
                     show: false,
                     content: [{
                         type: 'text', label: {icon:'fa-map', text:'Text small:undefined'},
@@ -1306,18 +1306,66 @@ width: 543,
                         text: 'Text - Dette er en enkel linie', small: false,
                     },{
                         type: 'textbox', label: {icon:'fa-map', text:'TextBox small'},
-                        text: 'TextBox - Dette er en lang linie med mange ord<br>og ny linie', center: false, small: true
+                        text: 'TextBox - Dette er en lang linie med mange ord', center: false, small: true
                     },{
                         type: 'textbox', label: {icon:'fa-map', text:'TextBox'},
-                        text: 'TextBox - Dette er en lang linie med mange ord<br>og ny linie', center: false
+                        text: 'TextBox - Dette er en lang linie med mange ord', center: false
                     },{
                         type: 'textarea', label: {icon:'fa-map', text:'TextArea small'},
-                        text: 'TextArea - Dette er en lang linie med mange ord<br>og ny linie', center: false, small: true
+                        text: 'TextArea - Dette er en lang linie med mange ord', center: false, small: true
                     },{
                         type: 'textarea', label: {icon:'fa-map', text:'TextArea'},
-                        text: 'TextArea - Dette er en lang linie med mange ord<br>og ny linie', center: false
+                        text: {da:'TextArea - Dette er en lang linie med mange ord', en:'Short'}
 
-                    }]
+                    }],
+                    minimized: {
+                        content: [{
+                            type: 'text', label: {icon:'fa-map', text:'Text small:undefined'},
+                            text: 'Text - Dette er en enkel linie'
+                        },{
+                            type: 'text', label: {icon:'fa-map', text:'Text small:true'},
+                            text: 'Text - Dette er en enkel linie', small: true
+                        },{
+                            type: 'text', label: {icon:'fa-map', text:'Text small:false'},
+                            text: 'Text - Dette er en enkel linie', small: false,
+                        },{
+                            type: 'textbox', label: {icon:'fa-map', text:'TextBox small'},
+                            text: 'TextBox - Dette er en lang linie med mange ord', center: false, small: true
+                        },{
+                            type: 'textbox', label: {icon:'fa-map', text:'TextBox'},
+                            text: 'TextBox - Dette er en lang linie med mange ord', center: false
+                        },{
+                            type: 'textarea', label: {icon:'fa-map', text:'TextArea small'},
+                            text: 'TextArea - Dette er en lang linie med mange ord', center: false, small: true
+                        },{
+                            type: 'textarea', label: {icon:'fa-map', text:'TextArea'},
+                            text: {da:'TextArea - Dette er en lang linie med mange ord', en:'Short'}
+                        }]
+                    },
+                    extended: {
+                        content: [{
+                            type: 'text', label: {icon:'fa-map', text:'Text small:undefined'},
+                            text: 'Text - Dette er en enkel linie'
+                        },{
+                            type: 'text', label: {icon:'fa-map', text:'Text small:true'},
+                            text: 'Text - Dette er en enkel linie', small: true
+                        },{
+                            type: 'text', label: {icon:'fa-map', text:'Text small:false'},
+                            text: 'Text - Dette er en enkel linie', small: false,
+                        },{
+                            type: 'textbox', label: {icon:'fa-map', text:'TextBox small'},
+                            text: 'TextBox - Dette er en lang linie med mange ord', center: false, small: true
+                        },{
+                            type: 'textbox', label: {icon:'fa-map', text:'TextBox'},
+                            text: 'TextBox - Dette er en lang linie med mange ord', center: false
+                        },{
+                            type: 'textarea', label: {icon:'fa-map', text:'TextArea small'},
+                            text: 'TextArea - Dette er en lang linie med mange ord', center: false, small: true
+                        },{
+                            type: 'textarea', label: {icon:'fa-map', text:'TextArea'},
+                            text: {da:'TextArea - Dette er en lang linie med mange ord', en:'Short'}
+                        }]
+                    }
                 });
                 smallModal.show();
             });

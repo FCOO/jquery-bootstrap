@@ -362,10 +362,13 @@ body.modal-open .modal {
     .modal-dialog & {
         @include content-padding(true);
     }
+/*
+    sm and xs uses same top and bottom padding
     .modal-dialog.modal-dialog-xs &,
     .modal-dialog.modal-dialog-sm & {
         @include content-padding-sm(true);
     }
+*/
 }
 
 //no-vertical-padding: No top- or bottom-padding in modal-body and modal-body-fixed
