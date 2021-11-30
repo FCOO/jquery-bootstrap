@@ -897,6 +897,7 @@ longTableContent[i].stargazers_count = i;
             flexWidth:true,
             extraWidth: true,
             static: true,
+small: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             buttons: [
                 {text:'Filter: Stats > 30',          onClick: function(){myBsTable.filterTable(null, {'stargazers_count': function(value){ return value > 30;    }})}},

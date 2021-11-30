@@ -114,7 +114,7 @@ Adjustmernt to Bootstrap table
     Cells
     *************************************/
     tbody tr td {
-        @include content-padding-sm(); //Default = small
+        @include content-padding();
         &.no-horizontal-padding {
             padding-left : 0;
             padding-right: 0;
@@ -153,30 +153,25 @@ Adjustmernt to Bootstrap table
 } //end of .table
 
 
-//Small header-size or inside a small modal
-.modal-dialog-sm .table,
-.table.table-sm {
+/*************************************
+Adjust header and cell size when table is sm/xs or inside a sm/xs modal
+**************************************/
+//Small table or inside a small modal
+.table.table-sm,
+.modal-dialog-sm .table {
     //Header
-    thead tr th {
-        @include title-variant-sm();
-        &.sortable {
-            padding-right: 1em; //Make space for sort-direction icons
-        }
-        &.no-horizontal-padding {
-            padding-left : 0;
-            padding-right: 0;
-        }
-    }
+    thead tr th { @include title-variant-sm();   }
+
+    //Cell
+    tbody tr td { @include content-padding-sm(); }
 }
 
-//Normal cell-size when not-small and selectable
-.modal-dialog:not(.modal-dialog-sm) .table.table-selectable,
-.table.table-selectable:not(.table-sm){
-    tbody tr td {
-        @include content-padding();
-        &.no-horizontal-padding {
-            padding-left : 0;
-            padding-right: 0;
-        }
-    }
+//Extra-small table or inside a extra-small modal
+.table.table-xs,
+.modal-dialog-xs .table {
+    //Header
+    thead tr th { @include title-variant-xs();   }
+
+    //Cell
+    tbody tr td { @include content-padding-xs(); }
 }

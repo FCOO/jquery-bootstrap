@@ -326,7 +326,7 @@ body.modal-open .modal {
     &.modal-dialog-xs {
         .modal-content {
             .modal-header {
-                @include header-variant-sm($xs-padding: true);
+                @include header-variant-xs();
             }
             .modal-body,
             .modal-body-fixed {

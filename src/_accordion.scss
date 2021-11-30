@@ -120,7 +120,7 @@ Using Bootstrap Collapse to create accordion
 //Size and padding for extra-small-version
 .modal-dialog-xs .accordion, .accordion-xs {
     .card-header {
-        @include title-variant-sm($xs-padding: true);
+        @include title-variant-xs();
     }
     .card-block {
         @include content-padding-xs();

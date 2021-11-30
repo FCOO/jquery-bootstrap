@@ -72,7 +72,7 @@ bsSelectList
         );
     }
     .dropdown-header {
-        @include header-variant-sm( $incl-header: false, $font-weight: $font-weight-bold, $xs-padding: true );
+        @include header-variant-xs( $incl-header: false, $font-weight: $font-weight-bold );
     }
 }
 

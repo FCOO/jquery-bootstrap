@@ -10348,7 +10348,7 @@ Adjustmernt to Bootstrap table
     display: none; }
   .table tbody tr td {
     padding: 0.25rem 0.3125rem;
-    font-size: 0.875rem; }
+    font-size: 1rem; }
     .table tbody tr td.no-horizontal-padding {
       padding-left: 0;
       padding-right: 0; }
@@ -10359,8 +10359,11 @@ Adjustmernt to Bootstrap table
     padding-top: 0;
     padding-bottom: 0; }
 
-.modal-dialog-sm .table thead tr th,
-.table.table-sm thead tr th {
+/*************************************
+Adjust header and cell size when table is sm/xs or inside a sm/xs modal
+**************************************/
+.table.table-sm thead tr th,
+.modal-dialog-sm .table thead tr th {
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -10369,31 +10372,45 @@ Adjustmernt to Bootstrap table
   font-size: 0.875rem;
   line-height: 1.5;
   border-radius: inherit; }
-  .modal-dialog-sm .table thead tr th span,
-  .table.table-sm thead tr th span {
+  .table.table-sm thead tr th span,
+  .modal-dialog-sm .table thead tr th span {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap; }
-  .modal-dialog-sm .table thead tr th span.fixed-header,
-  .table.table-sm thead tr th span.fixed-header {
+  .table.table-sm thead tr th span.fixed-header,
+  .modal-dialog-sm .table thead tr th span.fixed-header {
     overflow: visible;
     word-break: keep-all; }
-  .modal-dialog-sm .table thead tr th.sortable,
-  .table.table-sm thead tr th.sortable {
-    padding-right: 1em; }
-  .modal-dialog-sm .table thead tr th.no-horizontal-padding,
-  .table.table-sm thead tr th.no-horizontal-padding {
-    padding-left: 0;
-    padding-right: 0; }
 
-.modal-dialog:not(.modal-dialog-sm) .table.table-selectable tbody tr td,
-.table.table-selectable:not(.table-sm) tbody tr td {
+.table.table-sm tbody tr td,
+.modal-dialog-sm .table tbody tr td {
   padding: 0.25rem 0.3125rem;
-  font-size: 1rem; }
-  .modal-dialog:not(.modal-dialog-sm) .table.table-selectable tbody tr td.no-horizontal-padding,
-  .table.table-selectable:not(.table-sm) tbody tr td.no-horizontal-padding {
-    padding-left: 0;
-    padding-right: 0; }
+  font-size: 0.875rem; }
+
+.table.table-xs thead tr th,
+.modal-dialog-xs .table thead tr th {
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  padding: 0.125rem 0.1875rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: inherit; }
+  .table.table-xs thead tr th span,
+  .modal-dialog-xs .table thead tr th span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .table.table-xs thead tr th span.fixed-header,
+  .modal-dialog-xs .table thead tr th span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
+
+.table.table-xs tbody tr td,
+.modal-dialog-xs .table tbody tr td {
+  padding: 0.25rem 0.3125rem;
+  font-size: 0.75rem; }
 
 /************************************************************
 ACCORDION
