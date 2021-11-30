@@ -9654,7 +9654,7 @@ body.modal-open .modal {
       word-break: keep-all; }
   .modal-dialog.modal-dialog-sm .modal-content .modal-body,
   .modal-dialog.modal-dialog-sm .modal-content .modal-body-fixed {
-    padding: 0.25rem 0.3125rem;
+    padding: 0.1875rem 0.25rem;
     font-size: 0.875rem; }
   .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header {
     font-weight: 400;
@@ -9701,7 +9701,7 @@ body.modal-open .modal {
       word-break: keep-all; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-body,
   .modal-dialog.modal-dialog-xs .modal-content .modal-body-fixed {
-    padding: 0.25rem 0.3125rem;
+    padding: 0.125rem 0.1875rem;
     font-size: 0.75rem; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header {
     font-weight: 400;
@@ -9795,7 +9795,7 @@ Style for elements used to display any file in a modal-window
     word-break: keep-all; }
 
 .file-view-content {
-  padding: 0.25rem 0.3125rem;
+  padding: 0.1875rem 0.25rem;
   font-size: 0.875rem; }
 
 /************************************************************
@@ -9998,17 +9998,17 @@ form.form-validation .form-group {
       padding-left: 0.25rem;
       vertical-align: top; }
   form.form-validation .form-group.form-group-xs {
-    padding-top: 0.1875rem;
-    padding-bottom: 1.125rem; }
+    padding-top: 0.125rem;
+    padding-bottom: 1rem; }
     form.form-validation .form-group.form-group-xs.has-warning {
       padding-bottom: 0px; }
     form.form-validation .form-group.form-group-xs.no-validation {
-      padding-bottom: 0.1875rem; }
+      padding-bottom: 0.125rem; }
     form.form-validation .form-group.form-group-xs .form-control-feedback {
-      height: 1.125rem;
+      height: 1rem;
       font-size: 0.75rem;
       color: #dc3545;
-      padding-left: 0.25rem;
+      padding-left: 0.1875rem;
       vertical-align: top; }
   form.form-validation .form-group.fv-do-not-validate {
     visibility: hidden; }
@@ -10049,8 +10049,8 @@ form.form-validation .form-group {
 .input-group-xs > .input-group-append > .input-group-text,
 .input-group-xs > .input-group-prepend > .btn,
 .input-group-xs > .input-group-append > .btn, .input-group-xs > label.has-float-label > .form-control {
-  height: calc(1.5em + 0.375rem + 2px);
-  padding: 0.1875rem 0.25rem;
+  height: calc(1.5em + 0.25rem + 2px);
+  padding: 0.125rem 0.1875rem;
   line-height: 1.5;
   font-size: 0.75rem;
   border-radius: 0.125rem; }
@@ -10165,12 +10165,12 @@ Only supports the html-structure
 
 .input-group-xs.input-group .has-float-label > span {
   font-size: 0.6875rem;
-  left: 0.25rem; }
+  left: 0.1875rem; }
 
 .input-group-xs.input-group .has-float-label .form-control-with-label.show-label-as-placeholder + *,
 .input-group-xs.input-group .has-float-label .form-control-with-label:placeholder-shown:not(:focus) + * {
   font-size: 0.75rem;
-  top: calc(0.1875rem + 1px); }
+  top: calc(0.125rem + 1px); }
 
 /***********************************************
 .input-group.input-group-with-fixed-label
@@ -10208,7 +10208,7 @@ Style for
 
 .input-group-xs.input-group.input-group-border .has-fixed-label {
   font-size: 0.6875rem;
-  left: 0.25rem; }
+  left: 0.1875rem; }
 
 /************************************************************
 TABLE
@@ -10384,7 +10384,7 @@ Adjust header and cell size when table is sm/xs or inside a sm/xs modal
 
 .table.table-sm tbody tr td,
 .modal-dialog-sm .table tbody tr td {
-  padding: 0.25rem 0.3125rem;
+  padding: 0.1875rem 0.25rem;
   font-size: 0.875rem; }
 
 .table.table-xs thead tr th,
@@ -10409,7 +10409,7 @@ Adjust header and cell size when table is sm/xs or inside a sm/xs modal
 
 .table.table-xs tbody tr td,
 .modal-dialog-xs .table tbody tr td {
-  padding: 0.25rem 0.3125rem;
+  padding: 0.125rem 0.1875rem;
   font-size: 0.75rem; }
 
 /************************************************************
@@ -10486,7 +10486,7 @@ Using Bootstrap Collapse to create accordion
     .accordion .card-header.collapsed .chevrolet:before {
       content: "\f054"; }
   .accordion .card-block {
-    padding: 0.25rem 0.3125rem;
+    padding: 0.1875rem 0.25rem;
     font-size: 0.875rem;
     border-radius: 0.25rem; }
   .accordion .card-footer {
@@ -10550,7 +10550,7 @@ Using Bootstrap Collapse to create accordion
     word-break: keep-all; }
 
 .modal-dialog-sm .accordion .card-block, .accordion-sm .card-block {
-  padding: 0.25rem 0.3125rem;
+  padding: 0.1875rem 0.25rem;
   font-size: 0.875rem; }
 
 .modal-dialog-sm .accordion .card-footer, .accordion-sm .card-footer {
@@ -10596,7 +10596,7 @@ Using Bootstrap Collapse to create accordion
     word-break: keep-all; }
 
 .modal-dialog-xs .accordion .card-block, .accordion-xs .card-block {
-  padding: 0.25rem 0.3125rem;
+  padding: 0.125rem 0.1875rem;
   font-size: 0.75rem; }
 
 .modal-dialog-xs .accordion .card-footer, .accordion-xs .card-footer {

@@ -62,7 +62,7 @@ Unifies padding for modal, accordion, popup etc.
         padding-top   : $padding-y;
         padding-bottom: $padding-y;
     } @else {
-        padding: $content-padding-y $content-padding-x;
+        padding: $padding-y $padding-x;
         font-size: $font-size;
     }
 }
@@ -76,7 +76,7 @@ Unifies padding for modal, accordion, popup etc.
 }
 
 @mixin content-padding-xs($only-padding-vertical: false){
-    @include any-content-padding($content-padding-y-sm, $content-padding-x-sm, $font-size-xs, $only-padding-vertical);
+    @include any-content-padding($content-padding-y-xs, $content-padding-x-xs, $font-size-xs, $only-padding-vertical);
 }
 
 /************************************************************

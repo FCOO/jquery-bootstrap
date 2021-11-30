@@ -75,18 +75,18 @@ CONTENT
 Unifies padding and font-size for content of modal, accordion, popup etc.
 Using same font-size and vertical/horizontal padding as buttons
 ************************************************************/
-$content-padding-y   : $btn-padding-y;
-$content-padding-x   : $btn-padding-x;
+$content-padding-x   : $input-padding-x;
+$content-padding-y   : $input-padding-y;
 
-$content-padding-y-sm: $btn-padding-y-sm;
-$content-padding-x-sm: $btn-padding-x-sm;
+$content-padding-x-sm: $input-padding-x-sm;
+$content-padding-y-sm: $input-padding-y-sm;
+
+$content-padding-x-xs: $input-padding-x-xs;
+$content-padding-y-xs: $input-padding-y-xs;
+
 
 /************************************************************
 MARGIN-BOTTOM
 All elements in modal-windows get same margin-bottom
 ************************************************************/
 $modal-element-margin-bottom: $modal-dialog-margin;
-
-
-
-
