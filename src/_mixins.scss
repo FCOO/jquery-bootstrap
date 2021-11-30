@@ -362,7 +362,9 @@ header-variant
 
     @include vertical-align-center();
 
-    $padding: $btn-padding-x;
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+
     $font-size: $font-size-sm;
     @if $is-title == true {
         $font-size: $font-size-base;
@@ -371,9 +373,13 @@ header-variant
     cursor: default;
 
     @if $small == true {
-        $padding: $btn-padding-x-sm;
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+
+
         @if $xs-padding == true {
-            $padding: $btn-padding-x-xs;
+            $padding-x: $input-btn-padding-x-xs;
+            $padding-y: $input-btn-padding-y-xs;
         }
         $font-size: $font-size-xs;
         @if $is-title == true {
@@ -382,8 +388,8 @@ header-variant
     }
 
     @include button-size(
-        $padding-y    : $padding,
-        $padding-x    : $padding,
+        $padding-x    : $padding-x,
+        $padding-y    : $padding-y, //ORIGINAL $padding-x
         $font-size    : $font-size,
         $line-height  : $line-height-base,
         $border-radius: inherit
@@ -403,10 +409,12 @@ header-variant
 /************************************************************
 title-variant - as header but with same font-size as siblings
 ************************************************************/
-@mixin title-variant( $small: false ) {
-    @include header-variant( $is-title: true, $incl-header: false, $small: $small );
+@mixin title-variant( $small: false, $xs-padding: false ) {
+    @include header-variant( $is-title: true, $incl-header: false, $small: $small, $xs-padding: $xs-padding );
 }
-@mixin title-variant-sm() { @include title-variant( $small: true ); }
+@mixin title-variant-sm($xs-padding: false) {
+    @include title-variant( $small: true, $xs-padding: $xs-padding );
+}
 
 
 /************************************************************

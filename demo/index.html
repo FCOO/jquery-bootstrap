@@ -957,14 +957,6 @@ longTableContent[i].stargazers_count = i;
             show: false
         }),
 
-        m_small = $accordion3.asModal({
-            flexWidth: false,
-            header:{icon: [['fas fa-slash', 'fa-long-arrow-alt-up']], text:{da:'Small Overskrift dkdfg hskdfg skdf gksdfj gksdfjsdk dsfkgsdkfgjhsdkfjgskdfj g dskfgjsd kfjgs dfkgj',en:'Small Header'}},
-            footer: footer,
-            show: false,
-            small: true
-        }),
-
         multi_modals = [];
 
 //$accordion.bsOpenCard(0);
@@ -1115,11 +1107,19 @@ longTableContent[i].stargazers_count = i;
             .on('click', function(e){
                 m_fixed.show();
         });
+        var m_small = null;
         $('<button>Small modal</button>')
             .appendTo( $body)
             .on('click', function(e){
+                m_small = m_small  || $accordion3.asModal({
+                    flexWidth: false,
+                    header:{icon: [['fas fa-slash', 'fa-long-arrow-alt-up']], text:{da:'Small Overskrift dkdfg hskdfg skdf gksdfj gksdfjsdk dsfkgsdkfgjhsdkfjgskdfj g dskfgjsd kfjgs dfkgj',en:'Small Header'}},
+                    footer: footer,
+                    show: false,
+                    small: true
+                });
                 m_small.show();
-        });
+            });
 
 
         $('<button>Multi modal</button>')
@@ -1411,9 +1411,9 @@ width: 543,
                     scroll: true,
                     content: '',
                     extended: {
-                        scroll: true, small: true,
+                        scroll: true, 
                         content: {
-                            type: 'accordion',
+                            type: 'accordion', 
                             list: [
 
                                 {
@@ -1439,7 +1439,7 @@ width: 543,
 
                                 {
                                     icon: 'fa-globe',
-                                    title:{da:'En test', en:'A test'},
+                                    //text:{da:'En test', en:'A test'},
                                     content: [
 /*
                                         {

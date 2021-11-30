@@ -103,9 +103,7 @@ Using Bootstrap Collapse to create accordion
 
 
 //Size and padding for small-version
-.modal-dialog-sm .accordion,
-.modal-dialog-xs .accordion,
-.accordion-sm {
+.modal-dialog-sm .accordion, .accordion-sm {
     .card-header {
         @include title-variant-sm();
     }
@@ -118,3 +116,17 @@ Using Bootstrap Collapse to create accordion
     }
 }
 
+
+//Size and padding for extra-small-version
+.modal-dialog-xs .accordion, .accordion-xs {
+    .card-header {
+        @include title-variant-sm($xs-padding: true);
+    }
+    .card-block {
+        @include content-padding-xs();
+    }
+    .card-footer {
+        @include footer-variant-sm( $incl-border-top: false );
+        @include border-radius($card-border-radius);
+    }
+}

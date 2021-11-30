@@ -74,7 +74,7 @@
     $.fn._bsHeaderAndIcons = function(options){
         var $this = this;
 
-        options = $.extend( true, {headerClassName: '', inclHeader: true, icons: {} }, options );
+        options = $.extend( true, {text:'DAVS MED DIG', headerClassName: '', inclHeader: true, icons: {} }, options );
         this.addClass( options.headerClassName );
 
         if (options.inclHeader){

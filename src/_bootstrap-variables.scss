@@ -60,30 +60,38 @@ $border-width: 1px;
 /*Not used. No lg-buttons
 $input-btn-padding-y-lg: .75rem;
 $input-btn-padding-x-lg: $input-btn-padding-y-lg;
+
+Syntax and relations:
+In Bootstrap
+    $input-btn-padding(-x|-y)[-sm|-lg]
+    $btn-padding(-x|-y)[-sm|-lg] = $input-btn-padding(-x|-y)[-sm|-lg]
+
+
+
+In jquery-bootstrap
+    $input-btn-padding-x-sm = 3px
+    $input-btn-padding-y-sm = 4px
+
+    xs-versions added
+    $input-btn-padding-x-xs = 2px
+    $input-btn-padding-y-xs = 3px
+
 */
 
 //NORMAL
 //$font-size-base = 1rem;
-$input-btn-padding-y: .3125rem;
-$input-btn-padding-x: $input-btn-padding-y;
-$border-radius      : .25rem;
+$input-btn-padding-x: rem(5px);
+$input-btn-padding-y: rem(4px);
+$border-radius      : rem(4px);
 
 $custom-select-padding-y: $input-btn-padding-y;
-$custom-select-padding-x: $input-btn-padding-y;
+$custom-select-padding-x: $input-btn-padding-x;
 
 //SMALL
-/* VERSION 1.x
-//$font-size-sm = .875rem; // = 14px
-$font-size-sm: rem(13px); //<= TODO MANGLER. Skal muligvis sættes til 14px og så skal padding for buttons rettes tilsvarrende
-
-$input-btn-padding-y-sm: rem(4px);
-$input-btn-padding-x-sm: $input-btn-padding-y-sm;
-*/
-
 $font-size-sm: rem(14px);
 
-$input-btn-padding-y-sm: rem(3px);
 $input-btn-padding-x-sm: rem(4px);
+$input-btn-padding-y-sm: rem(3px);
 
 $border-radius-sm      : rem(3px);
 
@@ -94,11 +102,15 @@ $font-size-xs           : rem(12px);
 $input-btn-font-size-xs : $font-size-xs;
 $input-font-size-xs     : $input-btn-font-size-xs;
 
-$btn-padding-y-xs  : $input-btn-padding-y-sm;   //Original rem(2px)
-$btn-padding-x-xs  : $input-btn-padding-x-sm;   //Original $btn-padding-y-xs;
+$input-btn-padding-x-xs : rem(3px);
+$input-btn-padding-y-xs : rem(2px);
 
-$input-padding-x-xs: $btn-padding-x-xs;
-$input-padding-y-xs: $btn-padding-y-xs;
+
+$btn-padding-x-xs  : $input-btn-padding-x-sm;   //Instead of $input-btn-padding-x-xs to make xs-buttons a bit bigger
+$btn-padding-y-xs  : $input-btn-padding-y-sm;   //Instead of $input-btn-padding-y-xs to make xs-buttons a bit bigger
+
+$input-padding-x-xs: $btn-padding-x-xs; //Not used since inputs can't be xs
+$input-padding-y-xs: $btn-padding-y-xs; //Not used since inputs can't be xs
 
 $border-radius-xs      : rem(2px);
 $btn-border-radius-xs  : $border-radius-xs;
