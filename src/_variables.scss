@@ -23,7 +23,7 @@ $modal-xl    : 1200px;
 $modal-xl-rem: rem($modal-xl);
 
 //Extra-extra-small font-size
-$font-size-xxs: .6875rem; //=11px Use to be .65625rem; =10.5px
+$font-size-xxs: rem(11px);
 
 /************************************************************
 HEADER
@@ -35,7 +35,7 @@ $font-size-xs  : .75rem     12px
 ************************************************************/
 $font-size-header   : $font-size-sm;
 $font-size-header-sm: $font-size-xs;
-$font-size-header-xs: $font-size-xs; //Same as $font-size-header-sm by design
+$font-size-header-xs: $font-size-xxs;
 
 /************************************************************
 BUTTON AND MODAL

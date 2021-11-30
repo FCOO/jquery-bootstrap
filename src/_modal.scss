@@ -333,7 +333,7 @@ body.modal-open .modal {
                 @include content-padding-xs();
             }
             .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
-                @include footer-variant-sm();
+                @include footer-variant-xs();
             }
             .modal-footer {
                 padding-top: $btn-padding-x-sm;

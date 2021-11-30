@@ -126,7 +126,7 @@ Using Bootstrap Collapse to create accordion
         @include content-padding-xs();
     }
     .card-footer {
-        @include footer-variant-sm( $incl-border-top: false );
+        @include footer-variant-xs( $incl-border-top: false );
         @include border-radius($card-border-radius);
     }
 }

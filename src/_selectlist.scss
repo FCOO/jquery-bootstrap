@@ -33,7 +33,7 @@ bsSelectList
 
     }
     .dropdown-header {
-        @include header-variant( $incl-header: false, $font-weight: $font-weight-bold );
+        @include header-variant( $incl-border: false, $font-weight: $font-weight-bold );
 
         background-color: $selectlist-bg-color;
         color: $selectlist-color;
@@ -55,7 +55,7 @@ bsSelectList
         );
     }
     .dropdown-header {
-        @include header-variant-sm( $incl-header: false, $font-weight: $font-weight-bold );
+        @include header-variant-sm( $incl-border: false, $font-weight: $font-weight-bold );
         line-height: $line-height-base * $font-size-sm / $font-size-xs; //Adjust line-height to make header and item same height
     }
 }
@@ -72,7 +72,7 @@ bsSelectList
         );
     }
     .dropdown-header {
-        @include header-variant-xs( $incl-header: false, $font-weight: $font-weight-bold );
+        @include header-variant-xs( $incl-border: false, $font-weight: $font-weight-bold );
     }
 }
 

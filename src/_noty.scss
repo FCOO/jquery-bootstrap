@@ -200,7 +200,7 @@ $corner-space: 20px;
         margin : $content-padding-y 0;
     }
     .noty-footer {
-        @include footer-variant( $small: true );
+        @include footer-variant-sm();
     }
     .noty-buttons {
         @include content-padding();

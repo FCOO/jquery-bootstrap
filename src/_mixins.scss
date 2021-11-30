@@ -350,9 +350,30 @@ Padding are set to button y-padding (moving text to the left)
 /************************************************************
 header-variant
 ************************************************************/
-@mixin header-variant( $is-title: false, $incl-header: true, $small: false, $xs-padding: false, $font-weight: $font-weight-base ) {
+@mixin header-variant( $size: "", $is-title: false, $incl-border: true, $font-weight: $font-weight-base ) {
+    $font-size: $font-size-base;
+    @if $is-title == true {
+        $font-size: $font-size-base;
+        @if $size == "sm" { $font-size: $font-size-sm; }
+        @if $size == "xs" { $font-size: $font-size-xs; }
+    }
+    @if $is-title == false {
+        $font-size: $font-size-header;
+        @if $size == "sm" { $font-size: $font-size-header-sm; }
+        @if $size == "xs" { $font-size: $font-size-header-xs; }
+    }
 
-    font-weight: $font-weight;
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+
 
     @include span-text-truncate();
     span.fixed-header {
@@ -361,75 +382,53 @@ header-variant
     }
 
     @include vertical-align-center();
-
-    $padding-x: $input-btn-padding-x;
-    $padding-y: $input-btn-padding-y;
-
-    $font-size: $font-size-sm;
-    @if $is-title == true {
-        $font-size: $font-size-base;
-    }
-
     cursor: default;
 
-    @if $small == true {
-        $padding-x: $input-btn-padding-x-sm;
-        $padding-y: $input-btn-padding-y-sm;
-
-
-        @if $xs-padding == true {
-            $padding-x: $input-btn-padding-x-xs;
-            $padding-y: $input-btn-padding-y-xs;
-        }
-        $font-size: $font-size-xs;
-        @if $is-title == true {
-            $font-size: $font-size-sm;
-        }
-    }
+    font-weight: $font-weight;
 
     @include button-size(
         $padding-x    : $padding-x,
-        $padding-y    : $padding-y, //ORIGINAL $padding-x
+        $padding-y    : $padding-y,
         $font-size    : $font-size,
         $line-height  : $line-height-base,
         $border-radius: inherit
     );
 
-    @if $incl-header == true {
+    @if $incl-border == true {
         border-bottom: $modal-header-border-width solid $modal-header-border-color;
         border-bottom-right-radius: 0;
         border-bottom-left-radius : 0;
     }
 }
 
-@mixin header-variant-sm( $incl-header: true, $font-weight: $font-weight-base ) {
-    @include header-variant( $incl-header: $incl-header, $small: true, $xs-padding: false, $font-weight: $font-weight );
+@mixin header-variant-sm( $incl-border: true, $font-weight: $font-weight-base ) {
+    @include header-variant( $size: "sm", $incl-border: $incl-border, $font-weight: $font-weight );
 }
 
-@mixin header-variant-xs( $incl-header: true, $xs-padding: false, $font-weight: $font-weight-base ) {
-    @include header-variant( $incl-header: $incl-header, $small: true, $xs-padding: true, $font-weight: $font-weight );
+@mixin header-variant-xs( $incl-border: true, $font-weight: $font-weight-base ) {
+    @include header-variant( $size: "xs", $incl-border: $incl-border, $font-weight: $font-weight );
 }
 
 
 /************************************************************
 title-variant - as header but with same font-size as siblings
 ************************************************************/
-@mixin title-variant( $small: false, $xs-padding: false ) {
-    @include header-variant( $is-title: true, $incl-header: false, $small: $small, $xs-padding: $xs-padding );
+@mixin title-variant( $size: "" ) {
+    @include header-variant( $size: $size, $is-title: true, $incl-border: false );
 }
 @mixin title-variant-sm() {
-    @include title-variant( $small: true );
+    @include title-variant( $size: "sm" );
 }
 @mixin title-variant-xs() {
-    @include title-variant( $small: true, $xs-padding: true );
+    @include title-variant( $size: "xs" );
 }
 
 
 /************************************************************
 footer-variant
 ************************************************************/
-@mixin footer-variant( $incl-border-top: true, $small: false ) {
-    @include header-variant( $incl-header: false, $small: $small );
+@mixin footer-variant( $size: "", $incl-border-top: true ) {
+    @include header-variant( $size: $size, $incl-border: false );
     @include header-colors();
 
     line-height: 1; //Decrease height
@@ -447,9 +446,12 @@ footer-variant
 }
 
 @mixin footer-variant-sm( $incl-border-top: true ) {
-    @include footer-variant( $incl-border-top: $incl-border-top, $small: true );
+    @include footer-variant( $size: "sm", $incl-border-top: $incl-border-top );
 }
 
+@mixin footer-variant-xs( $incl-border-top: true ) {
+    @include footer-variant( $size: "xs", $incl-border-top: $incl-border-top );
+}
 
 /************************************************************
 MARGIN-BOTTOM FOR ELEMENTS IN MODAL
