@@ -106,8 +106,8 @@ $input-btn-padding-x-xs : rem(3px);
 $input-btn-padding-y-xs : rem(2px);
 
 
-$btn-padding-x-xs  : $input-btn-padding-x-sm;   //Instead of $input-btn-padding-x-xs to make xs-buttons a bit bigger
-$btn-padding-y-xs  : $input-btn-padding-y-sm;   //Instead of $input-btn-padding-y-xs to make xs-buttons a bit bigger
+$btn-padding-x-xs  : $input-btn-padding-x-xs;
+$btn-padding-y-xs  : $input-btn-padding-y-xs;
 
 $input-padding-x-xs: $input-btn-padding-x-xs;
 $input-padding-y-xs: $input-btn-padding-y-xs;
