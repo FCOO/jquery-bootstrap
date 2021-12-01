@@ -56,7 +56,7 @@ $border-width: 1px;
 
 
 
-//Setting padding around buttons etc. equal in both directions
+//Setting padding around buttons etc.
 /*Not used. No lg-buttons
 $input-btn-padding-y-lg: .75rem;
 $input-btn-padding-x-lg: $input-btn-padding-y-lg;
@@ -180,6 +180,12 @@ $h4-font-size           : $header-font-size * 1.5;  //Original = $font-size-base
 $h5-font-size           : $header-font-size * 1.25; //Original = $font-size-base * 1.25 !default;
 $h6-font-size           : $header-font-size;        //Original = $font-size-base !default;
 
+
+
+/************************************************************
+Set margin for buttons in block
+************************************************************/
+$btn-block-spacing-y: 0 !important;
 
 /************************************************************
 Adjust dropdown-menu

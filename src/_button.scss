@@ -288,6 +288,14 @@ BUTTON-GROUP
 
 
 /************************************************************
+BLOCK BUTTONS (from Bootstrap)
+Extend to also include margin-bottom
+************************************************************/
+.btn-block + .btn-block {
+    margin-bottom: $btn-block-spacing-y;
+}
+
+/************************************************************
 MENU (BUTTON-GROUP)
 ************************************************************/
 .bs-menu-container {

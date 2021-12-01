@@ -64,6 +64,9 @@ $font-size-base         : 1rem !default;
 $spacer                 : 1rem !default;
 */
 /************************************************************
+Set margin for buttons in block
+************************************************************/
+/************************************************************
 Adjust dropdown-menu
 ************************************************************/
 /************************************************************
@@ -2295,7 +2298,7 @@ fieldset:disabled a.btn {
   display: block;
   width: 100%; }
   .btn-block + .btn-block {
-    margin-top: 0.5rem; }
+    margin-top: 0 !important; }
 
 input[type="submit"].btn-block,
 input[type="reset"].btn-block,
@@ -8746,7 +8749,7 @@ Modernizr-test for elements with class="active" when selected
 Including .btn-xs and btn-group-xs as in Bootstrap 3
 ************************************************************/
 .btn-xs, .btn-group-xs > .btn {
-  padding: 0.1875rem 0.25rem;
+  padding: 0.125rem 0.1875rem;
   font-size: 0.75rem;
   line-height: 1.5;
   border-radius: 0.125rem; }
@@ -8839,7 +8842,7 @@ BUTTON-GROUP
     overflow: visible;
     word-break: keep-all; }
   .btn-group-vertical.btn-group-xs .btn-group-header ~ .btn {
-    padding-left: 0.5rem; }
+    padding-left: 0.375rem; }
 
 .btn-group-vertical + .btn-group-vertical {
   margin-top: 0.25rem; }
@@ -8847,6 +8850,13 @@ BUTTON-GROUP
     margin-top: 0.1875rem; }
   .btn-group-vertical + .btn-group-vertical.btn-group-xs {
     margin-top: 0.1875rem; }
+
+/************************************************************
+BLOCK BUTTONS (from Bootstrap)
+Extend to also include margin-bottom
+************************************************************/
+.btn-block + .btn-block {
+  margin-bottom: 0 !important; }
 
 /************************************************************
 MENU (BUTTON-GROUP)
@@ -9311,7 +9321,7 @@ bsSelectList
     word-break: keep-all; }
 
 .selectList.selectList-xs .dropdown-item, .dropdown-menu.dropdown-menu-xs .dropdown-item {
-  padding: 0.1875rem 0.25rem;
+  padding: 0.125rem 0.1875rem;
   font-size: 0.75rem;
   line-height: 1.5;
   border-radius: 0.125rem; }
@@ -9615,15 +9625,17 @@ body.modal-open .modal {
     padding: 0.3125rem; }
     .modal-dialog .modal-content .modal-footer:empty, .modal-dialog .modal-content .modal-footer.modal-footer-vertical:empty {
       display: none !important; }
-    .modal-dialog .modal-content .modal-footer.modal-footer-vertical {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center; }
-      .modal-dialog .modal-content .modal-footer.modal-footer-vertical > * {
-        margin: 0; }
-      .modal-dialog .modal-content .modal-footer.modal-footer-vertical > *:not(:first-child) {
-        margin-top: .25rem; }
+  .modal-dialog .modal-content .modal-footer.vertical-buttons,
+  .modal-dialog .modal-content.modal-normal .modal-footer.vertical-buttons-for-normal,
+  .modal-dialog .modal-content.modal-extended .modal-footer.vertical-buttons-for-extended {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center; }
+    .modal-dialog .modal-content .modal-footer.vertical-buttons > .btn,
+    .modal-dialog .modal-content.modal-normal .modal-footer.vertical-buttons-for-normal > .btn,
+    .modal-dialog .modal-content.modal-extended .modal-footer.vertical-buttons-for-extended > .btn {
+      margin: 1px; }
   .modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent, .modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent, .modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent {
     background: none; }
     .modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-body, .modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-body-fixed, .modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-footer, .modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-body, .modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-body-fixed, .modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-footer, .modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-body, .modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-body-fixed, .modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-footer {
@@ -11052,18 +11064,18 @@ Adjustment to Bootstrap tabs
       width: 0.5rem;
       right: -0.375rem; }
   .nav-tabs.nav-tabs-xs a.nav-item.nav-link {
-    padding: 0.1875rem 0.25rem;
+    padding: 0.125rem 0.1875rem;
     font-size: 0.75rem;
     line-height: 1.5;
     border-radius: 0.125rem;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px; }
     .nav-tabs.nav-tabs-xs a.nav-item.nav-link {
-      margin-right: 0.375rem; }
+      margin-right: 0.28125rem; }
     .nav-tabs.nav-tabs-xs a.nav-item.nav-link:after {
-      border-top-right-radius: 0.5rem;
-      width: 0.5rem;
-      right: -0.375rem; }
+      border-top-right-radius: 0.375rem;
+      width: 0.375rem;
+      right: -0.25rem; }
 
 .tab-content .tab-pane.active {
   display: flex;

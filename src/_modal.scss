@@ -255,16 +255,21 @@ body.modal-open .modal {
             &.modal-footer-vertical:empty {
                 display: none !important;
             }
+        } //end of .modal-footer
 
-            &.modal-footer-vertical {
-                display         : flex;
-                flex-direction  : column;
-                align-items     : center;
-                justify-content : center;
-                > * { margin: 0;}
-                > *:not(:first-child) { margin-top: .25rem; }
+
+        //Special version of footer with vertical aligned buttons.
+        .modal-footer.vertical-buttons,
+        &.modal-normal .modal-footer.vertical-buttons-for-normal,
+        &.modal-extended .modal-footer.vertical-buttons-for-extended {
+            display         : flex;
+            flex-direction  : column;
+            align-items     : stretch;
+            justify-content : center;
+            > .btn { margin: 1px;
             }
         }
+
     } //end of .modal-content
 
     //Semi-transparent background when options.semiTransparent is set

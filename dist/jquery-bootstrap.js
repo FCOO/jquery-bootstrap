@@ -2541,6 +2541,7 @@ jquery-bootstrap-modal-promise.js
         small: BOOLEAN if true the content gets extra small
         smallButtons: BOOLEAN If true the modal gents extra small buttons
         content
+        verticalButtons: BOOLEAN, default = false, if true the buttons are vertical stacked and has width = 100%
         scroll: boolean | 'vertical' | 'horizontal'
         minimized,
         extended: {
@@ -2551,6 +2552,7 @@ jquery-bootstrap-modal-promise.js
             noHorizontalPadding
             alwaysMaxHeight
             content
+            verticalButtons: BOOLEAN, default = options.verticalButtons, if true the buttons are vertical stacked and has width = 100%. If false and options.verticalButtons = true only normal gets vertival buttons
             scroll: boolean | 'vertical' | 'horizontal'
             footer
         }
@@ -3178,17 +3180,31 @@ jquery-bootstrap-modal-promise.js
         var $outer = $('<div/>').appendTo( $modalContent ),
             $modalButtonContainer = this.bsModal.$buttonContainer =
                 $('<div/>')
-                    .addClass('modal-footer')
-                    .toggleClass('modal-footer-vertical', !!options.verticalButtons)
+                    .addClass('modal-footer niels-for-extended')
                     .appendTo( $outer ),
             $modalButtons = this.bsModal.$buttons = [],
 
             buttons = options.buttons || [],
-            defaultButtonClass = options.verticalButtons ? 'btn-block' : '',
             defaultButtonOptions = {
                 addOnClick  : true,
                 small       : options.smallButtons
             };
+
+        //Detect if the buttons need to be a block (width: 100%) and if it is for all size or not
+        if (options.verticalButtons || (options.extended && options.extended.verticalButtons)){
+            var verticalButtonsClass = 'vertical-buttons';
+            if (options.extended){
+                if (options.verticalButtons && (options.extended.verticalButtons === false))
+                    //Only vertical buttons in mode = normal
+                    verticalButtonsClass = 'vertical-buttons-for-normal';
+
+                if (!options.verticalButtons && options.extended.verticalButtons)
+                    //Only vertical buttons in mode = extended
+                    verticalButtonsClass = 'vertical-buttons-for-extended';
+            }
+
+            $modalButtonContainer.addClass( verticalButtonsClass );
+        }
 
         //If extende-content and extended.buttons = false => no buttons in extended
         if (options.extended && (options.extended.buttons === false))
@@ -3208,7 +3224,7 @@ jquery-bootstrap-modal-promise.js
             if (buttonOptions.closeOnClick)
                 buttonOptions.equalIconId = (buttonOptions.equalIconId || '') + ' close';
 
-            buttonOptions.class = defaultButtonClass + ' ' + (buttonOptions.className || '');
+            buttonOptions.class = buttonOptions.class || buttonOptions.className || '';
 
             var $button =
                 $.bsButton( $.extend({}, defaultButtonOptions, buttonOptions ) )
