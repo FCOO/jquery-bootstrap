@@ -719,29 +719,34 @@
         //If no button is given focus by options.focus: true => Last button gets focus
         var focusAdded = false;
         $.each( buttons, function( index, buttonOptions ){
+            if (buttonOptions instanceof $){
+                buttonOptions.appendTo( $modalButtonContainer );
+                $modalButtons.push( buttonOptions );
+            }
+            else {
+                focusAdded = focusAdded || buttonOptions.focus;
+                if (!focusAdded && (index+1 == buttons.length ) )
+                    buttonOptions.focus = true;
 
-            focusAdded = focusAdded || buttonOptions.focus;
-            if (!focusAdded && (index+1 == buttons.length ) )
-                buttonOptions.focus = true;
+                //Add same onClick as close-icon if closeOnClick: true
+                if (buttonOptions.closeOnClick)
+                    buttonOptions.equalIconId = (buttonOptions.equalIconId || '') + ' close';
 
-            //Add same onClick as close-icon if closeOnClick: true
-            if (buttonOptions.closeOnClick)
-                buttonOptions.equalIconId = (buttonOptions.equalIconId || '') + ' close';
+                buttonOptions.class = buttonOptions.class || buttonOptions.className || '';
 
-            buttonOptions.class = buttonOptions.class || buttonOptions.className || '';
+                var $button =
+                    $.bsButton( $.extend({}, defaultButtonOptions, buttonOptions ) )
+                        .appendTo( $modalButtonContainer );
 
-            var $button =
-                $.bsButton( $.extend({}, defaultButtonOptions, buttonOptions ) )
-                    .appendTo( $modalButtonContainer );
+                //Add onClick from icons (if any)
+                buttonOptions.equalIconId = buttonOptions.equalIconId || '';
+                $.each( buttonOptions.equalIconId.split(' '), function( index, iconId ){
+                    if (iconId && options.icons[iconId] && options.icons[iconId].onClick)
+                        $button.on('click', options.icons[iconId].onClick);
+                });
 
-            //Add onClick from icons (if any)
-            buttonOptions.equalIconId = buttonOptions.equalIconId || '';
-            $.each( buttonOptions.equalIconId.split(' '), function( index, iconId ){
-                if (iconId && options.icons[iconId] && options.icons[iconId].onClick)
-                    $button.on('click', options.icons[iconId].onClick);
-            });
-
-            $modalButtons.push( $button );
+                $modalButtons.push( $button );
+            }
         });
         return this;
     };

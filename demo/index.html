@@ -488,8 +488,8 @@ return;
             text: {da:'Vælg mig', en:'Select me'},
             icon: ['fa-thumbs-down', 'fa-thumbs-up'],
             selected: false,
-            onChange: function(id, selected){
-                console.log('3: bsCheckboxButton',id,selected);
+            onChange: function(id, selected, _this){
+                console.log('3: bsCheckboxButton',id,selected, _this);
             }
         }).appendTo($body);
 
@@ -1006,6 +1006,12 @@ small: true,
                         header: 'Nr '+modalNumber+' type='+type,
                         type: type,
                         buttons: [
+                            $.bsStandardCheckboxButton({
+                                id:'popup_radion_button', type:'radio', text: {da:'Vælg mig', en:'Select me'}, selected: true,
+                                onChange: function(id, selected, _this, map){ 
+                                    console.log('bsStandardCheckboxButton', id,selected, _this, map); 
+                                }
+                            }) , 
                         {
                             text: 'Noty',
                             onClick: function(){
