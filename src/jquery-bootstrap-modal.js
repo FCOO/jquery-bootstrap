@@ -684,7 +684,7 @@
         var $outer = $('<div/>').appendTo( $modalContent ),
             $modalButtonContainer = this.bsModal.$buttonContainer =
                 $('<div/>')
-                    .addClass('modal-footer niels-for-extended')
+                    .addClass('modal-footer')
                     .appendTo( $outer ),
             $modalButtons = this.bsModal.$buttons = [],
 

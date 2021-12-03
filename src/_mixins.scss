@@ -347,6 +347,32 @@ Padding are set to button y-padding (moving text to the left)
     span { @include text-truncate(); }
 }
 
+@function header-padding-x($size: "") {
+    $padding-x: $input-btn-padding-x;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+    }
+    @return $padding-x;
+}
+
+@function header-padding-y($size: "") {
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-y: $input-btn-padding-y-xs;
+    }
+    @return $padding-y;
+}
+
+@mixin header-padding($size: ""){
+    padding: header-padding-y($size) header-padding-x($size);
+}
+
 /************************************************************
 header-variant
 ************************************************************/
@@ -363,6 +389,7 @@ header-variant
         @if $size == "xs" { $font-size: $font-size-header-xs; }
     }
 
+/*
     $padding-x: $input-btn-padding-x;
     $padding-y: $input-btn-padding-y;
     @if $size == "sm" {
@@ -373,7 +400,7 @@ header-variant
         $padding-x: $input-btn-padding-x-xs;
         $padding-y: $input-btn-padding-y-xs;
     }
-
+*/
 
     @include span-text-truncate();
     span.fixed-header {
@@ -387,8 +414,8 @@ header-variant
     font-weight: $font-weight;
 
     @include button-size(
-        $padding-x    : $padding-x,
-        $padding-y    : $padding-y,
+        $padding-x    : header-padding-x($size), //$padding-x,
+        $padding-y    : header-padding-y($size), //$padding-y,
         $font-size    : $font-size,
         $line-height  : $line-height-base,
         $border-radius: inherit

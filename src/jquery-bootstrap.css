@@ -8782,6 +8782,18 @@ BUTTON-GROUP
   padding-top: 3px; }
 
 .btn-group-vertical .btn-group-header {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -8805,6 +8817,18 @@ BUTTON-GROUP
     padding-left: 0.625rem; }
 
 .btn-group-vertical.btn-group-sm .btn-group-header {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -8825,6 +8849,18 @@ BUTTON-GROUP
     padding-left: 0.5rem; }
 
 .btn-group-vertical.btn-group-xs .btn-group-header {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -8897,6 +8933,18 @@ POPOVER
   border-bottom: none; }
 
 .popover .popover-header-content {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -8926,6 +8974,18 @@ POPOVER
   padding: 1px !important; }
 
 .popover .popover-footer {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -8951,6 +9011,18 @@ POPOVER
     display: none !important; }
 
 .popover.popover-sm .popover-header-content {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -8971,6 +9043,18 @@ POPOVER
     word-break: keep-all; }
 
 .popover.popover-sm .popover-footer {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -9277,6 +9361,18 @@ bsSelectList
       color: rgba(81, 89, 97, 0.65);
       background: #f8f9fa linear-gradient(180deg, #f9fafb, #f8f9fa) repeat-x; }
   .dropdown-menu .dropdown-header, .selectList .dropdown-header {
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -9303,6 +9399,18 @@ bsSelectList
   border-radius: 0.1875rem; }
 
 .selectList.selectList-sm .dropdown-header, .dropdown-menu.dropdown-menu-sm .dropdown-header {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -9327,6 +9435,18 @@ bsSelectList
   border-radius: 0.125rem; }
 
 .selectList.selectList-xs .dropdown-header, .dropdown-menu.dropdown-menu-xs .dropdown-header {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -9523,6 +9643,18 @@ body.modal-open .modal {
   .modal-dialog .modal-content .modal-header {
     flex-shrink: 0;
     flex-grow: 0;
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -9594,6 +9726,18 @@ body.modal-open .modal {
   .modal-dialog .modal-content .modal-footer-header {
     flex-shrink: 0;
     flex-grow: 0;
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -9622,7 +9766,7 @@ body.modal-open .modal {
   .modal-dialog .modal-content .modal-footer {
     flex-shrink: 0;
     flex-grow: 0;
-    padding: 0.3125rem; }
+    padding: 0.25rem 0.3125rem; }
     .modal-dialog .modal-content .modal-footer:empty, .modal-dialog .modal-content .modal-footer.modal-footer-vertical:empty {
       display: none !important; }
   .modal-dialog .modal-content .modal-footer.vertical-buttons,
@@ -9646,6 +9790,18 @@ body.modal-open .modal {
     .mouse-hover .modal-dialog .modal-content:hover.modal-minimized.modal-minimized-clickable .modal-body.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content:hover.modal-minimized.modal-minimized-clickable .modal-body-fixed.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content:hover.modal-normal.modal-normal-clickable .modal-body.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content:hover.modal-normal.modal-normal-clickable .modal-body-fixed.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content:hover.modal-extended.modal-extended-clickable .modal-body.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content:hover.modal-extended.modal-extended-clickable .modal-body-fixed.modal-body-semi-transparent {
       background: rgba(255, 255, 255, 0.75); }
   .modal-dialog.modal-dialog-sm .modal-content .modal-header {
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -9669,6 +9825,18 @@ body.modal-open .modal {
     padding: 0.1875rem 0.25rem;
     font-size: 0.875rem; }
   .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header {
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -9692,7 +9860,21 @@ body.modal-open .modal {
       word-break: keep-all; }
     .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header:empty {
       display: none !important; }
+  .modal-dialog.modal-dialog-sm .modal-content .modal-footer {
+    padding: 0.1875rem 0.25rem; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-header {
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -9716,6 +9898,18 @@ body.modal-open .modal {
     padding: 0.125rem 0.1875rem;
     font-size: 0.75rem; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header {
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -9740,8 +9934,7 @@ body.modal-open .modal {
     .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header:empty {
       display: none !important; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-footer {
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem; }
+    padding: 0.125rem 0.1875rem; }
 
 .modal-dialog .modal-body-fixed.scrollbar-vertical,
 .modal-dialog .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body-fixed.scrollbar-vertical,
@@ -9787,6 +9980,18 @@ Style for elements used to display any file in a modal-window
   border: 0; }
 
 .file-view-header {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -10271,6 +10476,18 @@ Adjustmernt to Bootstrap table
     width: inherit !important; }
   .table thead tr th {
     display: table-cell !important;
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -10376,6 +10593,18 @@ Adjust header and cell size when table is sm/xs or inside a sm/xs modal
 **************************************/
 .table.table-sm thead tr th,
 .modal-dialog-sm .table thead tr th {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -10401,6 +10630,18 @@ Adjust header and cell size when table is sm/xs or inside a sm/xs modal
 
 .table.table-xs thead tr th,
 .modal-dialog-xs .table thead tr th {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -10450,6 +10691,18 @@ Using Bootstrap Collapse to create accordion
   .accordion .card.show {
     border-color: #6c757d !important; }
   .accordion .card-header {
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -10502,6 +10755,18 @@ Using Bootstrap Collapse to create accordion
     font-size: 0.875rem;
     border-radius: 0.25rem; }
   .accordion .card-footer {
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -10545,6 +10810,18 @@ Using Bootstrap Collapse to create accordion
       border-top-right-radius: 0; }
 
 .modal-dialog-sm .accordion .card-header, .accordion-sm .card-header {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -10566,6 +10843,18 @@ Using Bootstrap Collapse to create accordion
   font-size: 0.875rem; }
 
 .modal-dialog-sm .accordion .card-footer, .accordion-sm .card-footer {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -10591,6 +10880,18 @@ Using Bootstrap Collapse to create accordion
     display: none !important; }
 
 .modal-dialog-xs .accordion .card-header, .accordion-xs .card-header {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -10612,6 +10913,18 @@ Using Bootstrap Collapse to create accordion
   font-size: 0.75rem; }
 
 .modal-dialog-xs .accordion .card-footer, .accordion-xs .card-footer {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
@@ -10755,6 +11068,18 @@ for noty is copyed and modified
   .noty_bar .noty-header {
     color: #495057;
     background-color: #f2f2f2;
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -10774,6 +11099,18 @@ for noty is copyed and modified
       overflow: visible;
       word-break: keep-all; }
     .noty_bar .noty-header.noty-header-sm {
+      /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
       display: flex;
       align-items: center;
       cursor: default;
@@ -10798,6 +11135,18 @@ for noty is copyed and modified
     padding: 0;
     margin: 0.25rem 0; }
   .noty_bar .noty-footer {
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -11096,6 +11445,18 @@ Adjustment to Bootstrap tabs
   .tab-content .tab-pane.active .tab-footer {
     flex-shrink: 0;
     flex-grow: 0;
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
     display: flex;
     align-items: center;
     cursor: default;
@@ -11123,6 +11484,18 @@ Adjustment to Bootstrap tabs
       display: none; }
 
 .tab-content.tab-content-sm .tab-pane .tab-footer {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
   display: flex;
   align-items: center;
   cursor: default;
