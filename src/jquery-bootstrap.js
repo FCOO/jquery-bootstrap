@@ -49,8 +49,8 @@
         return asModal ? $.proxy(asModal, this)( options ) : null;
     };
 
-
-    ns.bsIsTouch = true;
+    //Allow test-pages to set bsIsTouch to fixed value
+    ns.bsIsTouch = typeof ns.bsIsTouch == "boolean" ? ns.bsIsTouch : true;
 
     $.EMPTY_TEXT = '___***EMPTY***___';
 

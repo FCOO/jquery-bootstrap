@@ -9517,7 +9517,7 @@ body.modal-open .modal {
     word-break: break-word;
     word-wrap: break-word; }
   .modal-dialog:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
-    width: calc( 100% - 2*1px - 2*0.625rem);
+    width: calc( 100% - 2*1px - 2*10px);
     margin-left: auto;
     margin-right: auto; }
   .modal-dialog.modal-flex-width .modal-content .modal-body > .jquery-scroll-container {
@@ -9940,11 +9940,11 @@ body.modal-open .modal {
 .modal-dialog .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body-fixed.scrollbar-vertical,
 .modal-dialog.modal-dialog-sm .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-xs .modal-body-fixed.scrollbar-vertical,
 .modal-dialog.modal-dialog-xs .modal-body.scrollbar-vertical {
-  padding-left: 0.625rem;
-  padding-right: 0.625rem; }
+  padding-left: 10px;
+  padding-right: 10px; }
 
 .modal-dialog .modal-body.scrollbar-horizontal, .modal-dialog.modal-dialog-sm .modal-body.scrollbar-horizontal, .modal-dialog.modal-dialog-xs .modal-body.scrollbar-horizontal {
-  padding-bottom: 0.625rem; }
+  padding-bottom: 10px; }
 
 .modal-body-with-vertical-padding {
   /*
@@ -11300,10 +11300,10 @@ Adjustment to Bootstrap tabs
 ************************************************************/
 .nav-tabs {
   margin-top: 0.1875rem;
-  padding-left: 0.625rem;
+  padding-left: 10px;
   border-bottom-color: #6c757d; }
   .tab-inner-content .nav-tabs {
-    margin: 0 -0.625rem; }
+    margin: 0 -10px; }
   .nav-tabs a.nav-item.nav-link {
     position: relative;
     cursor: default;
@@ -11438,8 +11438,8 @@ Adjustment to Bootstrap tabs
     padding: 0.25rem 0.3125rem;
     font-size: 1rem;
     font-size: 0.875rem;
-    padding-left: 0.625rem;
-    padding-right: 0.625rem; }
+    padding-left: 10px;
+    padding-right: 10px; }
     .tab-content .tab-pane.active .tab-inner-content.scrollbar-vertical, .tab-content .tab-content .tab-pane.active .tab-inner-content {
       padding: 0; }
   .tab-content .tab-pane.active .tab-footer {

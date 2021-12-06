@@ -13,14 +13,14 @@
 
     //Adjusting default options and methods for jquery-scroll-container
     $.extend(window.JqueryScrollContainer.scrollbarOptions, {
-        defaultScrollbarOnTouch: false,
+        defaultScrollbarOnTouch: true, //Always use default scrollbar for mobile/touch devices
 
         //If touch-mode AND scrollbar-width > 0 => let jquery-scroll-container auto-adjust padding-right
         adjustPadding : function(){ return window.bsIsTouch && window.getScrollbarWidth() ? 'scroll' : 'none'; },
 
         hasTouchEvents: function(){ return window.bsIsTouch; }
     });
-
+    window.JqueryScrollContainer.update('modal isTouch='+window.bsIsTouch);
 
     /**********************************************************
     bsModal( options ) - create a Bootstrap-modal

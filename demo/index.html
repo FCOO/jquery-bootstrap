@@ -40,6 +40,10 @@
 
     <div id="lang"></div>
 
+    <script>
+        window.bsIsTouch = false;
+        window.bsIsTouch = (window.location.search =='?touch');
+    </script>
     <script src="bower_components.js"></script>
     <script src="../src/bootstrap-popover-extensions.js"></script>
     <script src="../src/jquery-bootstrap-menu.js"></script>
@@ -96,8 +100,8 @@ $('body').on('wheel', function(e){
 });
 */
 
-        window.bsIsTouch = false;
-        window.bsIsTouch = (window.location.search =='?touch');
+//        window.bsIsTouch = false;
+//        window.bsIsTouch = (window.location.search =='?touch');
 
         i18next.init();
         i18next.changeLanguage('da');
