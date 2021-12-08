@@ -358,10 +358,11 @@ body.modal-open .modal {
     .modal-body-fixed.scrollbar-vertical,
     .modal-body.scrollbar-vertical {
         padding-left : $scroll-size;
-        padding-right: $scroll-size;
+        padding-right: 0;
     }
     .modal-body.scrollbar-horizontal {
-        padding-bottom: $scroll-size;
+        padding-top   : 0;
+        padding-bottom: 0;
     }
 }
 

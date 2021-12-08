@@ -17871,11 +17871,11 @@ return jQuery;
 	var minor = parseInt(splitVersion[1]);
 
 	var JQ_LT_17 = (major < 1) || (major == 1 && minor < 7);
-	
+
 	function eventsData($el) {
 		return JQ_LT_17 ? $el.data('events') : $._data($el[0]).events;
 	}
-	
+
 	function moveHandlerToTop($el, eventName, isDelegated) {
 		var data = eventsData($el);
 		var events = data[eventName];
@@ -17893,7 +17893,7 @@ return jQuery;
 			events.unshift(events.pop());
 		}
 	}
-	
+
 	function moveEventHandlers($elems, eventsString, isDelegate) {
 		var events = eventsString.split(/\s+/);
 		$elems.each(function() {
@@ -17903,7 +17903,7 @@ return jQuery;
 			}
 		});
 	}
-	
+
 	function makeMethod(methodName) {
 		$.fn[methodName + 'First'] = function() {
 			var args = $.makeArray(arguments);
@@ -17928,7 +17928,7 @@ return jQuery;
 	$.fn.delegateFirst = function() {
 		var args = $.makeArray(arguments);
 		var eventsString = args[1];
-		
+
 		if (eventsString) {
 			args.splice(0, 2);
 			$.fn.delegate.apply(this, arguments);
@@ -17948,7 +17948,7 @@ return jQuery;
 
 		return this;
 	};
-	
+
 	// on (jquery >= 1.7)
 	if (!JQ_LT_17) {
 		$.fn.onFirst = function(types, selector) {
@@ -24873,11 +24873,13 @@ if (typeof define === 'function' && define.amd) {
               lngs.push(options.lng || this.language);
             }
 
-            var send = function send(l, k, fallbackValue) {
+            var send = function send(l, k, specificDefaultValue) {
+              var defaultForMissing = hasDefaultValue && specificDefaultValue !== res ? specificDefaultValue : resForMissing;
+
               if (_this2.options.missingKeyHandler) {
-                _this2.options.missingKeyHandler(l, namespace, k, updateMissing ? fallbackValue : resForMissing, updateMissing, options);
+                _this2.options.missingKeyHandler(l, namespace, k, defaultForMissing, updateMissing, options);
               } else if (_this2.backendConnector && _this2.backendConnector.saveMissing) {
-                _this2.backendConnector.saveMissing(l, namespace, k, updateMissing ? fallbackValue : resForMissing, updateMissing, options);
+                _this2.backendConnector.saveMissing(l, namespace, k, defaultForMissing, updateMissing, options);
               }
 
               _this2.emit('missingKey', l, namespace, k, res);
@@ -24916,7 +24918,7 @@ if (typeof define === 'function' && define.amd) {
           if (options.interpolation) this.interpolator.init(_objectSpread$2(_objectSpread$2({}, options), {
             interpolation: _objectSpread$2(_objectSpread$2({}, this.options.interpolation), options.interpolation)
           }));
-          var skipOnVariables = options.interpolation && options.interpolation.skipOnVariables || this.options.interpolation.skipOnVariables;
+          var skipOnVariables = typeof res === 'string' && (options.interpolation && options.interpolation.skipOnVariables || this.options.interpolation.skipOnVariables);
           var nestBef;
 
           if (skipOnVariables) {
@@ -24983,6 +24985,9 @@ if (typeof define === 'function' && define.amd) {
           var namespaces = extracted.namespaces;
           if (_this4.options.fallbackNS) namespaces = namespaces.concat(_this4.options.fallbackNS);
           var needsPluralHandling = options.count !== undefined && typeof options.count !== 'string';
+
+          var needsZeroSuffixLookup = needsPluralHandling && !options.ordinal && options.count === 0 && _this4.pluralResolver.shouldUseIntlApi();
+
           var needsContextHandling = options.context !== undefined && (typeof options.context === 'string' || typeof options.context === 'number') && options.context !== '';
           var codes = options.lngs ? options.lngs : _this4.languageUtils.toResolveHierarchy(options.lng || _this4.language, options.fallbackLng);
           namespaces.forEach(function (ns) {
@@ -24998,17 +25003,35 @@ if (typeof define === 'function' && define.amd) {
             codes.forEach(function (code) {
               if (_this4.isValidLookup(found)) return;
               usedLng = code;
-              var finalKey = key;
-              var finalKeys = [finalKey];
+              var finalKeys = [key];
 
               if (_this4.i18nFormat && _this4.i18nFormat.addLookupKeys) {
                 _this4.i18nFormat.addLookupKeys(finalKeys, key, code, ns, options);
               } else {
                 var pluralSuffix;
                 if (needsPluralHandling) pluralSuffix = _this4.pluralResolver.getSuffix(code, options.count, options);
-                if (needsPluralHandling && needsContextHandling) finalKeys.push(finalKey + pluralSuffix);
-                if (needsContextHandling) finalKeys.push(finalKey += "".concat(_this4.options.contextSeparator).concat(options.context));
-                if (needsPluralHandling) finalKeys.push(finalKey += pluralSuffix);
+                var zeroSuffix = '_zero';
+
+                if (needsPluralHandling) {
+                  finalKeys.push(key + pluralSuffix);
+
+                  if (needsZeroSuffixLookup) {
+                    finalKeys.push(key + zeroSuffix);
+                  }
+                }
+
+                if (needsContextHandling) {
+                  var contextKey = "".concat(key).concat(_this4.options.contextSeparator).concat(options.context);
+                  finalKeys.push(contextKey);
+
+                  if (needsPluralHandling) {
+                    finalKeys.push(contextKey + pluralSuffix);
+
+                    if (needsZeroSuffixLookup) {
+                      finalKeys.push(contextKey + zeroSuffix);
+                    }
+                  }
+                }
               }
 
               var possibleKey;
@@ -26961,8 +26984,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -27056,8 +27079,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(3), __webpack_require__(5) ], 
-            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(3), __webpack_require__(5) ],
+            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($, window, undefined) {
@@ -28570,7 +28593,7 @@ if (typeof define === 'function' && define.amd) {
             function seekPrevious(pos, newBlock) {
                 var position = pos, tests;
                 if (position <= 0) return 0;
-                while (--position > 0 && (newBlock === true && getTest(position).match.newBlockMarker !== true || newBlock !== true && !isMask(position) && (tests = getTests(position), 
+                while (--position > 0 && (newBlock === true && getTest(position).match.newBlockMarker !== true || newBlock !== true && !isMask(position) && (tests = getTests(position),
                 tests.length < 2 || tests.length === 2 && tests[1].match.def === ""))) {}
                 return position;
             }
@@ -29807,8 +29830,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($) {
@@ -29837,8 +29860,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -30089,8 +30112,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -30640,8 +30663,8 @@ if (typeof define === 'function' && define.amd) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4), __webpack_require__(2) ], 
-            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4), __webpack_require__(2) ],
+            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($, Inputmask) {
@@ -31295,7 +31318,7 @@ if (typeof define === 'function' && define.amd) {
 
 ;
 /****************************************************************************
-	modernizr-javascript.js, 
+	modernizr-javascript.js,
 
 	(c) 2016, FCOO
 
@@ -31306,20 +31329,20 @@ if (typeof define === 'function' && define.amd) {
 
 (function ($, window, document, undefined) {
 	"use strict";
-	
+
 	var ns = window;
 
     //Extend the jQuery prototype
     $.fn.extend({
-        modernizrOn : function( test ){ 
-            return this.modernizrToggle( test, true ); 
+        modernizrOn : function( test ){
+            return this.modernizrToggle( test, true );
         },
 
-        modernizrOff: function( test ){ 
-            return this.modernizrToggle( test, false ); 
+        modernizrOff: function( test ){
+            return this.modernizrToggle( test, false );
         },
-        
-        modernizrToggle: function( test, on ){ 
+
+        modernizrToggle: function( test, on ){
 		if ( on === undefined )
             return this.modernizrToggle( test, !this.hasClass( test ) );
 
@@ -34213,19 +34236,19 @@ if (typeof define === 'function' && define.amd) {
 ;
 /* @preserve
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) 2013-2018 Petka Antonov
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -34233,7 +34256,7 @@ if (typeof define === 'function' && define.amd) {
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- * 
+ *
  */
 /**
  * bluebird build version 3.7.2
@@ -37825,28 +37848,28 @@ _dereq_('./using.js')(Promise, apiRejection, tryConvertToPromise, createContext,
 _dereq_('./any.js')(Promise);
 _dereq_('./each.js')(Promise, INTERNAL);
 _dereq_('./filter.js')(Promise, INTERNAL);
-                                                         
-    util.toFastProperties(Promise);                                          
-    util.toFastProperties(Promise.prototype);                                
-    function fillTypes(value) {                                              
-        var p = new Promise(INTERNAL);                                       
-        p._fulfillmentHandler0 = value;                                      
-        p._rejectionHandler0 = value;                                        
-        p._promise0 = value;                                                 
-        p._receiver0 = value;                                                
-    }                                                                        
-    // Complete slack tracking, opt out of field-type tracking and           
-    // stabilize map                                                         
-    fillTypes({a: 1});                                                       
-    fillTypes({b: 2});                                                       
-    fillTypes({c: 3});                                                       
-    fillTypes(1);                                                            
-    fillTypes(function(){});                                                 
-    fillTypes(undefined);                                                    
-    fillTypes(false);                                                        
-    fillTypes(new Promise(INTERNAL));                                        
-    debug.setBounds(Async.firstLineError, util.lastLineError);               
-    return Promise;                                                          
+
+    util.toFastProperties(Promise);
+    util.toFastProperties(Promise.prototype);
+    function fillTypes(value) {
+        var p = new Promise(INTERNAL);
+        p._fulfillmentHandler0 = value;
+        p._rejectionHandler0 = value;
+        p._promise0 = value;
+        p._receiver0 = value;
+    }
+    // Complete slack tracking, opt out of field-type tracking and
+    // stabilize map
+    fillTypes({a: 1});
+    fillTypes({b: 2});
+    fillTypes({c: 3});
+    fillTypes(1);
+    fillTypes(function(){});
+    fillTypes(undefined);
+    fillTypes(false);
+    fillTypes(new Promise(INTERNAL));
+    debug.setBounds(Async.firstLineError, util.lastLineError);
+    return Promise;
 
 };
 
@@ -41261,1365 +41284,6 @@ return index;
 
 }(jQuery, this.i18next, this, document));
 ;
-/*!
- * perfect-scrollbar v1.5.3
- * Copyright 2021 Hyunje Jun, MDBootstrap and Contributors
- * Licensed under MIT
- */
-
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.PerfectScrollbar = factory());
-}(this, (function () { 'use strict';
-
-  function get(element) {
-    return getComputedStyle(element);
-  }
-
-  function set(element, obj) {
-    for (var key in obj) {
-      var val = obj[key];
-      if (typeof val === 'number') {
-        val = val + "px";
-      }
-      element.style[key] = val;
-    }
-    return element;
-  }
-
-  function div(className) {
-    var div = document.createElement('div');
-    div.className = className;
-    return div;
-  }
-
-  var elMatches =
-    typeof Element !== 'undefined' &&
-    (Element.prototype.matches ||
-      Element.prototype.webkitMatchesSelector ||
-      Element.prototype.mozMatchesSelector ||
-      Element.prototype.msMatchesSelector);
-
-  function matches(element, query) {
-    if (!elMatches) {
-      throw new Error('No element matching method supported');
-    }
-
-    return elMatches.call(element, query);
-  }
-
-  function remove(element) {
-    if (element.remove) {
-      element.remove();
-    } else {
-      if (element.parentNode) {
-        element.parentNode.removeChild(element);
-      }
-    }
-  }
-
-  function queryChildren(element, selector) {
-    return Array.prototype.filter.call(element.children, function (child) { return matches(child, selector); }
-    );
-  }
-
-  var cls = {
-    main: 'ps',
-    rtl: 'ps__rtl',
-    element: {
-      thumb: function (x) { return ("ps__thumb-" + x); },
-      rail: function (x) { return ("ps__rail-" + x); },
-      consuming: 'ps__child--consume',
-    },
-    state: {
-      focus: 'ps--focus',
-      clicking: 'ps--clicking',
-      active: function (x) { return ("ps--active-" + x); },
-      scrolling: function (x) { return ("ps--scrolling-" + x); },
-    },
-  };
-
-  /*
-   * Helper methods
-   */
-  var scrollingClassTimeout = { x: null, y: null };
-
-  function addScrollingClass(i, x) {
-    var classList = i.element.classList;
-    var className = cls.state.scrolling(x);
-
-    if (classList.contains(className)) {
-      clearTimeout(scrollingClassTimeout[x]);
-    } else {
-      classList.add(className);
-    }
-  }
-
-  function removeScrollingClass(i, x) {
-    scrollingClassTimeout[x] = setTimeout(
-      function () { return i.isAlive && i.element.classList.remove(cls.state.scrolling(x)); },
-      i.settings.scrollingThreshold
-    );
-  }
-
-  function setScrollingClassInstantly(i, x) {
-    addScrollingClass(i, x);
-    removeScrollingClass(i, x);
-  }
-
-  var EventElement = function EventElement(element) {
-    this.element = element;
-    this.handlers = {};
-  };
-
-  var prototypeAccessors = { isEmpty: { configurable: true } };
-
-  EventElement.prototype.bind = function bind (eventName, handler) {
-    if (typeof this.handlers[eventName] === 'undefined') {
-      this.handlers[eventName] = [];
-    }
-    this.handlers[eventName].push(handler);
-    this.element.addEventListener(eventName, handler, false);
-  };
-
-  EventElement.prototype.unbind = function unbind (eventName, target) {
-      var this$1 = this;
-
-    this.handlers[eventName] = this.handlers[eventName].filter(function (handler) {
-      if (target && handler !== target) {
-        return true;
-      }
-      this$1.element.removeEventListener(eventName, handler, false);
-      return false;
-    });
-  };
-
-  EventElement.prototype.unbindAll = function unbindAll () {
-    for (var name in this.handlers) {
-      this.unbind(name);
-    }
-  };
-
-  prototypeAccessors.isEmpty.get = function () {
-      var this$1 = this;
-
-    return Object.keys(this.handlers).every(
-      function (key) { return this$1.handlers[key].length === 0; }
-    );
-  };
-
-  Object.defineProperties( EventElement.prototype, prototypeAccessors );
-
-  var EventManager = function EventManager() {
-    this.eventElements = [];
-  };
-
-  EventManager.prototype.eventElement = function eventElement (element) {
-    var ee = this.eventElements.filter(function (ee) { return ee.element === element; })[0];
-    if (!ee) {
-      ee = new EventElement(element);
-      this.eventElements.push(ee);
-    }
-    return ee;
-  };
-
-  EventManager.prototype.bind = function bind (element, eventName, handler) {
-    this.eventElement(element).bind(eventName, handler);
-  };
-
-  EventManager.prototype.unbind = function unbind (element, eventName, handler) {
-    var ee = this.eventElement(element);
-    ee.unbind(eventName, handler);
-
-    if (ee.isEmpty) {
-      // remove
-      this.eventElements.splice(this.eventElements.indexOf(ee), 1);
-    }
-  };
-
-  EventManager.prototype.unbindAll = function unbindAll () {
-    this.eventElements.forEach(function (e) { return e.unbindAll(); });
-    this.eventElements = [];
-  };
-
-  EventManager.prototype.once = function once (element, eventName, handler) {
-    var ee = this.eventElement(element);
-    var onceHandler = function (evt) {
-      ee.unbind(eventName, onceHandler);
-      handler(evt);
-    };
-    ee.bind(eventName, onceHandler);
-  };
-
-  function createEvent(name) {
-    if (typeof window.CustomEvent === 'function') {
-      return new CustomEvent(name);
-    } else {
-      var evt = document.createEvent('CustomEvent');
-      evt.initCustomEvent(name, false, false, undefined);
-      return evt;
-    }
-  }
-
-  function processScrollDiff(
-    i,
-    axis,
-    diff,
-    useScrollingClass,
-    forceFireReachEvent
-  ) {
-    if ( useScrollingClass === void 0 ) useScrollingClass = true;
-    if ( forceFireReachEvent === void 0 ) forceFireReachEvent = false;
-
-    var fields;
-    if (axis === 'top') {
-      fields = [
-        'contentHeight',
-        'containerHeight',
-        'scrollTop',
-        'y',
-        'up',
-        'down' ];
-    } else if (axis === 'left') {
-      fields = [
-        'contentWidth',
-        'containerWidth',
-        'scrollLeft',
-        'x',
-        'left',
-        'right' ];
-    } else {
-      throw new Error('A proper axis should be provided');
-    }
-
-    processScrollDiff$1(i, diff, fields, useScrollingClass, forceFireReachEvent);
-  }
-
-  function processScrollDiff$1(
-    i,
-    diff,
-    ref,
-    useScrollingClass,
-    forceFireReachEvent
-  ) {
-    var contentHeight = ref[0];
-    var containerHeight = ref[1];
-    var scrollTop = ref[2];
-    var y = ref[3];
-    var up = ref[4];
-    var down = ref[5];
-    if ( useScrollingClass === void 0 ) useScrollingClass = true;
-    if ( forceFireReachEvent === void 0 ) forceFireReachEvent = false;
-
-    var element = i.element;
-
-    // reset reach
-    i.reach[y] = null;
-
-    // 1 for subpixel rounding
-    if (element[scrollTop] < 1) {
-      i.reach[y] = 'start';
-    }
-
-    // 1 for subpixel rounding
-    if (element[scrollTop] > i[contentHeight] - i[containerHeight] - 1) {
-      i.reach[y] = 'end';
-    }
-
-    if (diff) {
-      element.dispatchEvent(createEvent(("ps-scroll-" + y)));
-
-      if (diff < 0) {
-        element.dispatchEvent(createEvent(("ps-scroll-" + up)));
-      } else if (diff > 0) {
-        element.dispatchEvent(createEvent(("ps-scroll-" + down)));
-      }
-
-      if (useScrollingClass) {
-        setScrollingClassInstantly(i, y);
-      }
-    }
-
-    if (i.reach[y] && (diff || forceFireReachEvent)) {
-      element.dispatchEvent(createEvent(("ps-" + y + "-reach-" + (i.reach[y]))));
-    }
-  }
-
-  function toInt(x) {
-    return parseInt(x, 10) || 0;
-  }
-
-  function isEditable(el) {
-    return (
-      matches(el, 'input,[contenteditable]') ||
-      matches(el, 'select,[contenteditable]') ||
-      matches(el, 'textarea,[contenteditable]') ||
-      matches(el, 'button,[contenteditable]')
-    );
-  }
-
-  function outerWidth(element) {
-    var styles = get(element);
-    return (
-      toInt(styles.width) +
-      toInt(styles.paddingLeft) +
-      toInt(styles.paddingRight) +
-      toInt(styles.borderLeftWidth) +
-      toInt(styles.borderRightWidth)
-    );
-  }
-
-  var env = {
-    isWebKit:
-      typeof document !== 'undefined' &&
-      'WebkitAppearance' in document.documentElement.style,
-    supportsTouch:
-      typeof window !== 'undefined' &&
-      ('ontouchstart' in window ||
-        ('maxTouchPoints' in window.navigator &&
-          window.navigator.maxTouchPoints > 0) ||
-        (window.DocumentTouch && document instanceof window.DocumentTouch)),
-    supportsIePointer:
-      typeof navigator !== 'undefined' && navigator.msMaxTouchPoints,
-    isChrome:
-      typeof navigator !== 'undefined' &&
-      /Chrome/i.test(navigator && navigator.userAgent),
-  };
-
-  function updateGeometry(i) {
-    var element = i.element;
-    var roundedScrollTop = Math.floor(element.scrollTop);
-    var rect = element.getBoundingClientRect();
-
-    i.containerWidth = Math.round(rect.width);
-    i.containerHeight = Math.round(rect.height);
-
-    i.contentWidth = element.scrollWidth;
-    i.contentHeight = element.scrollHeight;
-
-    if (!element.contains(i.scrollbarXRail)) {
-      // clean up and append
-      queryChildren(element, cls.element.rail('x')).forEach(function (el) { return remove(el); }
-      );
-      element.appendChild(i.scrollbarXRail);
-    }
-    if (!element.contains(i.scrollbarYRail)) {
-      // clean up and append
-      queryChildren(element, cls.element.rail('y')).forEach(function (el) { return remove(el); }
-      );
-      element.appendChild(i.scrollbarYRail);
-    }
-
-    if (
-      !i.settings.suppressScrollX &&
-      i.containerWidth + i.settings.scrollXMarginOffset < i.contentWidth
-    ) {
-      i.scrollbarXActive = true;
-      i.railXWidth = i.containerWidth - i.railXMarginWidth;
-      i.railXRatio = i.containerWidth / i.railXWidth;
-      i.scrollbarXWidth = getThumbSize(
-        i,
-        toInt((i.railXWidth * i.containerWidth) / i.contentWidth)
-      );
-      i.scrollbarXLeft = toInt(
-        ((i.negativeScrollAdjustment + element.scrollLeft) *
-          (i.railXWidth - i.scrollbarXWidth)) /
-          (i.contentWidth - i.containerWidth)
-      );
-    } else {
-      i.scrollbarXActive = false;
-    }
-
-    if (
-      !i.settings.suppressScrollY &&
-      i.containerHeight + i.settings.scrollYMarginOffset < i.contentHeight
-    ) {
-      i.scrollbarYActive = true;
-      i.railYHeight = i.containerHeight - i.railYMarginHeight;
-      i.railYRatio = i.containerHeight / i.railYHeight;
-      i.scrollbarYHeight = getThumbSize(
-        i,
-        toInt((i.railYHeight * i.containerHeight) / i.contentHeight)
-      );
-      i.scrollbarYTop = toInt(
-        (roundedScrollTop * (i.railYHeight - i.scrollbarYHeight)) /
-          (i.contentHeight - i.containerHeight)
-      );
-    } else {
-      i.scrollbarYActive = false;
-    }
-
-    if (i.scrollbarXLeft >= i.railXWidth - i.scrollbarXWidth) {
-      i.scrollbarXLeft = i.railXWidth - i.scrollbarXWidth;
-    }
-    if (i.scrollbarYTop >= i.railYHeight - i.scrollbarYHeight) {
-      i.scrollbarYTop = i.railYHeight - i.scrollbarYHeight;
-    }
-
-    updateCss(element, i);
-
-    if (i.scrollbarXActive) {
-      element.classList.add(cls.state.active('x'));
-    } else {
-      element.classList.remove(cls.state.active('x'));
-      i.scrollbarXWidth = 0;
-      i.scrollbarXLeft = 0;
-      element.scrollLeft = i.isRtl === true ? i.contentWidth : 0;
-    }
-    if (i.scrollbarYActive) {
-      element.classList.add(cls.state.active('y'));
-    } else {
-      element.classList.remove(cls.state.active('y'));
-      i.scrollbarYHeight = 0;
-      i.scrollbarYTop = 0;
-      element.scrollTop = 0;
-    }
-  }
-
-  function getThumbSize(i, thumbSize) {
-    if (i.settings.minScrollbarLength) {
-      thumbSize = Math.max(thumbSize, i.settings.minScrollbarLength);
-    }
-    if (i.settings.maxScrollbarLength) {
-      thumbSize = Math.min(thumbSize, i.settings.maxScrollbarLength);
-    }
-    return thumbSize;
-  }
-
-  function updateCss(element, i) {
-    var xRailOffset = { width: i.railXWidth };
-    var roundedScrollTop = Math.floor(element.scrollTop);
-
-    if (i.isRtl) {
-      xRailOffset.left =
-        i.negativeScrollAdjustment +
-        element.scrollLeft +
-        i.containerWidth -
-        i.contentWidth;
-    } else {
-      xRailOffset.left = element.scrollLeft;
-    }
-    if (i.isScrollbarXUsingBottom) {
-      xRailOffset.bottom = i.scrollbarXBottom - roundedScrollTop;
-    } else {
-      xRailOffset.top = i.scrollbarXTop + roundedScrollTop;
-    }
-    set(i.scrollbarXRail, xRailOffset);
-
-    var yRailOffset = { top: roundedScrollTop, height: i.railYHeight };
-    if (i.isScrollbarYUsingRight) {
-      if (i.isRtl) {
-        yRailOffset.right =
-          i.contentWidth -
-          (i.negativeScrollAdjustment + element.scrollLeft) -
-          i.scrollbarYRight -
-          i.scrollbarYOuterWidth -
-          9;
-      } else {
-        yRailOffset.right = i.scrollbarYRight - element.scrollLeft;
-      }
-    } else {
-      if (i.isRtl) {
-        yRailOffset.left =
-          i.negativeScrollAdjustment +
-          element.scrollLeft +
-          i.containerWidth * 2 -
-          i.contentWidth -
-          i.scrollbarYLeft -
-          i.scrollbarYOuterWidth;
-      } else {
-        yRailOffset.left = i.scrollbarYLeft + element.scrollLeft;
-      }
-    }
-    set(i.scrollbarYRail, yRailOffset);
-
-    set(i.scrollbarX, {
-      left: i.scrollbarXLeft,
-      width: i.scrollbarXWidth - i.railBorderXWidth,
-    });
-    set(i.scrollbarY, {
-      top: i.scrollbarYTop,
-      height: i.scrollbarYHeight - i.railBorderYWidth,
-    });
-  }
-
-  function clickRail(i) {
-    var element = i.element;
-
-    i.event.bind(i.scrollbarY, 'mousedown', function (e) { return e.stopPropagation(); });
-    i.event.bind(i.scrollbarYRail, 'mousedown', function (e) {
-      var positionTop =
-        e.pageY -
-        window.pageYOffset -
-        i.scrollbarYRail.getBoundingClientRect().top;
-      var direction = positionTop > i.scrollbarYTop ? 1 : -1;
-
-      i.element.scrollTop += direction * i.containerHeight;
-      updateGeometry(i);
-
-      e.stopPropagation();
-    });
-
-    i.event.bind(i.scrollbarX, 'mousedown', function (e) { return e.stopPropagation(); });
-    i.event.bind(i.scrollbarXRail, 'mousedown', function (e) {
-      var positionLeft =
-        e.pageX -
-        window.pageXOffset -
-        i.scrollbarXRail.getBoundingClientRect().left;
-      var direction = positionLeft > i.scrollbarXLeft ? 1 : -1;
-
-      i.element.scrollLeft += direction * i.containerWidth;
-      updateGeometry(i);
-
-      e.stopPropagation();
-    });
-  }
-
-  function dragThumb(i) {
-    bindMouseScrollHandler(i, [
-      'containerWidth',
-      'contentWidth',
-      'pageX',
-      'railXWidth',
-      'scrollbarX',
-      'scrollbarXWidth',
-      'scrollLeft',
-      'x',
-      'scrollbarXRail' ]);
-    bindMouseScrollHandler(i, [
-      'containerHeight',
-      'contentHeight',
-      'pageY',
-      'railYHeight',
-      'scrollbarY',
-      'scrollbarYHeight',
-      'scrollTop',
-      'y',
-      'scrollbarYRail' ]);
-  }
-
-  function bindMouseScrollHandler(
-    i,
-    ref
-  ) {
-    var containerHeight = ref[0];
-    var contentHeight = ref[1];
-    var pageY = ref[2];
-    var railYHeight = ref[3];
-    var scrollbarY = ref[4];
-    var scrollbarYHeight = ref[5];
-    var scrollTop = ref[6];
-    var y = ref[7];
-    var scrollbarYRail = ref[8];
-
-    var element = i.element;
-
-    var startingScrollTop = null;
-    var startingMousePageY = null;
-    var scrollBy = null;
-
-    function mouseMoveHandler(e) {
-      if (e.touches && e.touches[0]) {
-        e[pageY] = e.touches[0].pageY;
-      }
-      element[scrollTop] =
-        startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
-      addScrollingClass(i, y);
-      updateGeometry(i);
-
-      e.stopPropagation();
-      if (e.type.startsWith('touch') && e.changedTouches.length > 1) {
-        e.preventDefault();
-      }
-    }
-
-    function mouseUpHandler() {
-      removeScrollingClass(i, y);
-      i[scrollbarYRail].classList.remove(cls.state.clicking);
-      i.event.unbind(i.ownerDocument, 'mousemove', mouseMoveHandler);
-    }
-
-    function bindMoves(e, touchMode) {
-      startingScrollTop = element[scrollTop];
-      if (touchMode && e.touches) {
-        e[pageY] = e.touches[0].pageY;
-      }
-      startingMousePageY = e[pageY];
-      scrollBy =
-        (i[contentHeight] - i[containerHeight]) /
-        (i[railYHeight] - i[scrollbarYHeight]);
-      if (!touchMode) {
-        i.event.bind(i.ownerDocument, 'mousemove', mouseMoveHandler);
-        i.event.once(i.ownerDocument, 'mouseup', mouseUpHandler);
-        e.preventDefault();
-      } else {
-        i.event.bind(i.ownerDocument, 'touchmove', mouseMoveHandler);
-      }
-
-      i[scrollbarYRail].classList.add(cls.state.clicking);
-
-      e.stopPropagation();
-    }
-
-    i.event.bind(i[scrollbarY], 'mousedown', function (e) {
-      bindMoves(e);
-    });
-    i.event.bind(i[scrollbarY], 'touchstart', function (e) {
-      bindMoves(e, true);
-    });
-  }
-
-  function keyboard(i) {
-    var element = i.element;
-
-    var elementHovered = function () { return matches(element, ':hover'); };
-    var scrollbarFocused = function () { return matches(i.scrollbarX, ':focus') || matches(i.scrollbarY, ':focus'); };
-
-    function shouldPreventDefault(deltaX, deltaY) {
-      var scrollTop = Math.floor(element.scrollTop);
-      if (deltaX === 0) {
-        if (!i.scrollbarYActive) {
-          return false;
-        }
-        if (
-          (scrollTop === 0 && deltaY > 0) ||
-          (scrollTop >= i.contentHeight - i.containerHeight && deltaY < 0)
-        ) {
-          return !i.settings.wheelPropagation;
-        }
-      }
-
-      var scrollLeft = element.scrollLeft;
-      if (deltaY === 0) {
-        if (!i.scrollbarXActive) {
-          return false;
-        }
-        if (
-          (scrollLeft === 0 && deltaX < 0) ||
-          (scrollLeft >= i.contentWidth - i.containerWidth && deltaX > 0)
-        ) {
-          return !i.settings.wheelPropagation;
-        }
-      }
-      return true;
-    }
-
-    i.event.bind(i.ownerDocument, 'keydown', function (e) {
-      if (
-        (e.isDefaultPrevented && e.isDefaultPrevented()) ||
-        e.defaultPrevented
-      ) {
-        return;
-      }
-
-      if (!elementHovered() && !scrollbarFocused()) {
-        return;
-      }
-
-      var activeElement = document.activeElement
-        ? document.activeElement
-        : i.ownerDocument.activeElement;
-      if (activeElement) {
-        if (activeElement.tagName === 'IFRAME') {
-          activeElement = activeElement.contentDocument.activeElement;
-        } else {
-          // go deeper if element is a webcomponent
-          while (activeElement.shadowRoot) {
-            activeElement = activeElement.shadowRoot.activeElement;
-          }
-        }
-        if (isEditable(activeElement)) {
-          return;
-        }
-      }
-
-      var deltaX = 0;
-      var deltaY = 0;
-
-      switch (e.which) {
-        case 37: // left
-          if (e.metaKey) {
-            deltaX = -i.contentWidth;
-          } else if (e.altKey) {
-            deltaX = -i.containerWidth;
-          } else {
-            deltaX = -30;
-          }
-          break;
-        case 38: // up
-          if (e.metaKey) {
-            deltaY = i.contentHeight;
-          } else if (e.altKey) {
-            deltaY = i.containerHeight;
-          } else {
-            deltaY = 30;
-          }
-          break;
-        case 39: // right
-          if (e.metaKey) {
-            deltaX = i.contentWidth;
-          } else if (e.altKey) {
-            deltaX = i.containerWidth;
-          } else {
-            deltaX = 30;
-          }
-          break;
-        case 40: // down
-          if (e.metaKey) {
-            deltaY = -i.contentHeight;
-          } else if (e.altKey) {
-            deltaY = -i.containerHeight;
-          } else {
-            deltaY = -30;
-          }
-          break;
-        case 32: // space bar
-          if (e.shiftKey) {
-            deltaY = i.containerHeight;
-          } else {
-            deltaY = -i.containerHeight;
-          }
-          break;
-        case 33: // page up
-          deltaY = i.containerHeight;
-          break;
-        case 34: // page down
-          deltaY = -i.containerHeight;
-          break;
-        case 36: // home
-          deltaY = i.contentHeight;
-          break;
-        case 35: // end
-          deltaY = -i.contentHeight;
-          break;
-        default:
-          return;
-      }
-
-      if (i.settings.suppressScrollX && deltaX !== 0) {
-        return;
-      }
-      if (i.settings.suppressScrollY && deltaY !== 0) {
-        return;
-      }
-
-      element.scrollTop -= deltaY;
-      element.scrollLeft += deltaX;
-      updateGeometry(i);
-
-      if (shouldPreventDefault(deltaX, deltaY)) {
-        e.preventDefault();
-      }
-    });
-  }
-
-  function wheel(i) {
-    var element = i.element;
-
-    function shouldPreventDefault(deltaX, deltaY) {
-      var roundedScrollTop = Math.floor(element.scrollTop);
-      var isTop = element.scrollTop === 0;
-      var isBottom =
-        roundedScrollTop + element.offsetHeight === element.scrollHeight;
-      var isLeft = element.scrollLeft === 0;
-      var isRight =
-        element.scrollLeft + element.offsetWidth === element.scrollWidth;
-
-      var hitsBound;
-
-      // pick axis with primary direction
-      if (Math.abs(deltaY) > Math.abs(deltaX)) {
-        hitsBound = isTop || isBottom;
-      } else {
-        hitsBound = isLeft || isRight;
-      }
-
-      return hitsBound ? !i.settings.wheelPropagation : true;
-    }
-
-    function getDeltaFromEvent(e) {
-      var deltaX = e.deltaX;
-      var deltaY = -1 * e.deltaY;
-
-      if (typeof deltaX === 'undefined' || typeof deltaY === 'undefined') {
-        // OS X Safari
-        deltaX = (-1 * e.wheelDeltaX) / 6;
-        deltaY = e.wheelDeltaY / 6;
-      }
-
-      if (e.deltaMode && e.deltaMode === 1) {
-        // Firefox in deltaMode 1: Line scrolling
-        deltaX *= 10;
-        deltaY *= 10;
-      }
-
-      if (deltaX !== deltaX && deltaY !== deltaY /* NaN checks */) {
-        // IE in some mouse drivers
-        deltaX = 0;
-        deltaY = e.wheelDelta;
-      }
-
-      if (e.shiftKey) {
-        // reverse axis with shift key
-        return [-deltaY, -deltaX];
-      }
-      return [deltaX, deltaY];
-    }
-
-    function shouldBeConsumedByChild(target, deltaX, deltaY) {
-      // FIXME: this is a workaround for <select> issue in FF and IE #571
-      if (!env.isWebKit && element.querySelector('select:focus')) {
-        return true;
-      }
-
-      if (!element.contains(target)) {
-        return false;
-      }
-
-      var cursor = target;
-
-      while (cursor && cursor !== element) {
-        if (cursor.classList.contains(cls.element.consuming)) {
-          return true;
-        }
-
-        var style = get(cursor);
-
-        // if deltaY && vertical scrollable
-        if (deltaY && style.overflowY.match(/(scroll|auto)/)) {
-          var maxScrollTop = cursor.scrollHeight - cursor.clientHeight;
-          if (maxScrollTop > 0) {
-            if (
-              (cursor.scrollTop > 0 && deltaY < 0) ||
-              (cursor.scrollTop < maxScrollTop && deltaY > 0)
-            ) {
-              return true;
-            }
-          }
-        }
-        // if deltaX && horizontal scrollable
-        if (deltaX && style.overflowX.match(/(scroll|auto)/)) {
-          var maxScrollLeft = cursor.scrollWidth - cursor.clientWidth;
-          if (maxScrollLeft > 0) {
-            if (
-              (cursor.scrollLeft > 0 && deltaX < 0) ||
-              (cursor.scrollLeft < maxScrollLeft && deltaX > 0)
-            ) {
-              return true;
-            }
-          }
-        }
-
-        cursor = cursor.parentNode;
-      }
-
-      return false;
-    }
-
-    function mousewheelHandler(e) {
-      var ref = getDeltaFromEvent(e);
-      var deltaX = ref[0];
-      var deltaY = ref[1];
-
-      if (shouldBeConsumedByChild(e.target, deltaX, deltaY)) {
-        return;
-      }
-
-      var shouldPrevent = false;
-      if (!i.settings.useBothWheelAxes) {
-        // deltaX will only be used for horizontal scrolling and deltaY will
-        // only be used for vertical scrolling - this is the default
-        element.scrollTop -= deltaY * i.settings.wheelSpeed;
-        element.scrollLeft += deltaX * i.settings.wheelSpeed;
-      } else if (i.scrollbarYActive && !i.scrollbarXActive) {
-        // only vertical scrollbar is active and useBothWheelAxes option is
-        // active, so let's scroll vertical bar using both mouse wheel axes
-        if (deltaY) {
-          element.scrollTop -= deltaY * i.settings.wheelSpeed;
-        } else {
-          element.scrollTop += deltaX * i.settings.wheelSpeed;
-        }
-        shouldPrevent = true;
-      } else if (i.scrollbarXActive && !i.scrollbarYActive) {
-        // useBothWheelAxes and only horizontal bar is active, so use both
-        // wheel axes for horizontal bar
-        if (deltaX) {
-          element.scrollLeft += deltaX * i.settings.wheelSpeed;
-        } else {
-          element.scrollLeft -= deltaY * i.settings.wheelSpeed;
-        }
-        shouldPrevent = true;
-      }
-
-      updateGeometry(i);
-
-      shouldPrevent = shouldPrevent || shouldPreventDefault(deltaX, deltaY);
-      if (shouldPrevent && !e.ctrlKey) {
-        e.stopPropagation();
-        e.preventDefault();
-      }
-    }
-
-    if (typeof window.onwheel !== 'undefined') {
-      i.event.bind(element, 'wheel', mousewheelHandler);
-    } else if (typeof window.onmousewheel !== 'undefined') {
-      i.event.bind(element, 'mousewheel', mousewheelHandler);
-    }
-  }
-
-  function touch(i) {
-    if (!env.supportsTouch && !env.supportsIePointer) {
-      return;
-    }
-
-    var element = i.element;
-
-    function shouldPrevent(deltaX, deltaY) {
-      var scrollTop = Math.floor(element.scrollTop);
-      var scrollLeft = element.scrollLeft;
-      var magnitudeX = Math.abs(deltaX);
-      var magnitudeY = Math.abs(deltaY);
-
-      if (magnitudeY > magnitudeX) {
-        // user is perhaps trying to swipe up/down the page
-
-        if (
-          (deltaY < 0 && scrollTop === i.contentHeight - i.containerHeight) ||
-          (deltaY > 0 && scrollTop === 0)
-        ) {
-          // set prevent for mobile Chrome refresh
-          return window.scrollY === 0 && deltaY > 0 && env.isChrome;
-        }
-      } else if (magnitudeX > magnitudeY) {
-        // user is perhaps trying to swipe left/right across the page
-
-        if (
-          (deltaX < 0 && scrollLeft === i.contentWidth - i.containerWidth) ||
-          (deltaX > 0 && scrollLeft === 0)
-        ) {
-          return true;
-        }
-      }
-
-      return true;
-    }
-
-    function applyTouchMove(differenceX, differenceY) {
-      element.scrollTop -= differenceY;
-      element.scrollLeft -= differenceX;
-
-      updateGeometry(i);
-    }
-
-    var startOffset = {};
-    var startTime = 0;
-    var speed = {};
-    var easingLoop = null;
-
-    function getTouch(e) {
-      if (e.targetTouches) {
-        return e.targetTouches[0];
-      } else {
-        // Maybe IE pointer
-        return e;
-      }
-    }
-
-    function shouldHandle(e) {
-      if (e.pointerType && e.pointerType === 'pen' && e.buttons === 0) {
-        return false;
-      }
-      if (e.targetTouches && e.targetTouches.length === 1) {
-        return true;
-      }
-      if (
-        e.pointerType &&
-        e.pointerType !== 'mouse' &&
-        e.pointerType !== e.MSPOINTER_TYPE_MOUSE
-      ) {
-        return true;
-      }
-      return false;
-    }
-
-    function touchStart(e) {
-      if (!shouldHandle(e)) {
-        return;
-      }
-
-      var touch = getTouch(e);
-
-      startOffset.pageX = touch.pageX;
-      startOffset.pageY = touch.pageY;
-
-      startTime = new Date().getTime();
-
-      if (easingLoop !== null) {
-        clearInterval(easingLoop);
-      }
-    }
-
-    function shouldBeConsumedByChild(target, deltaX, deltaY) {
-      if (!element.contains(target)) {
-        return false;
-      }
-
-      var cursor = target;
-
-      while (cursor && cursor !== element) {
-        if (cursor.classList.contains(cls.element.consuming)) {
-          return true;
-        }
-
-        var style = get(cursor);
-
-        // if deltaY && vertical scrollable
-        if (deltaY && style.overflowY.match(/(scroll|auto)/)) {
-          var maxScrollTop = cursor.scrollHeight - cursor.clientHeight;
-          if (maxScrollTop > 0) {
-            if (
-              (cursor.scrollTop > 0 && deltaY < 0) ||
-              (cursor.scrollTop < maxScrollTop && deltaY > 0)
-            ) {
-              return true;
-            }
-          }
-        }
-        // if deltaX && horizontal scrollable
-        if (deltaX && style.overflowX.match(/(scroll|auto)/)) {
-          var maxScrollLeft = cursor.scrollWidth - cursor.clientWidth;
-          if (maxScrollLeft > 0) {
-            if (
-              (cursor.scrollLeft > 0 && deltaX < 0) ||
-              (cursor.scrollLeft < maxScrollLeft && deltaX > 0)
-            ) {
-              return true;
-            }
-          }
-        }
-
-        cursor = cursor.parentNode;
-      }
-
-      return false;
-    }
-
-    function touchMove(e) {
-      if (shouldHandle(e)) {
-        var touch = getTouch(e);
-
-        var currentOffset = { pageX: touch.pageX, pageY: touch.pageY };
-
-        var differenceX = currentOffset.pageX - startOffset.pageX;
-        var differenceY = currentOffset.pageY - startOffset.pageY;
-
-        if (shouldBeConsumedByChild(e.target, differenceX, differenceY)) {
-          return;
-        }
-
-        applyTouchMove(differenceX, differenceY);
-        startOffset = currentOffset;
-
-        var currentTime = new Date().getTime();
-
-        var timeGap = currentTime - startTime;
-        if (timeGap > 0) {
-          speed.x = differenceX / timeGap;
-          speed.y = differenceY / timeGap;
-          startTime = currentTime;
-        }
-
-        if (shouldPrevent(differenceX, differenceY)) {
-          e.preventDefault();
-        }
-      }
-    }
-    function touchEnd() {
-      if (i.settings.swipeEasing) {
-        clearInterval(easingLoop);
-        easingLoop = setInterval(function() {
-          if (i.isInitialized) {
-            clearInterval(easingLoop);
-            return;
-          }
-
-          if (!speed.x && !speed.y) {
-            clearInterval(easingLoop);
-            return;
-          }
-
-          if (Math.abs(speed.x) < 0.01 && Math.abs(speed.y) < 0.01) {
-            clearInterval(easingLoop);
-            return;
-          }
-
-          if (!i.element) {
-            clearInterval(easingLoop);
-            return;
-          }
-
-          applyTouchMove(speed.x * 30, speed.y * 30);
-
-          speed.x *= 0.8;
-          speed.y *= 0.8;
-        }, 10);
-      }
-    }
-
-    if (env.supportsTouch) {
-      i.event.bind(element, 'touchstart', touchStart);
-      i.event.bind(element, 'touchmove', touchMove);
-      i.event.bind(element, 'touchend', touchEnd);
-    } else if (env.supportsIePointer) {
-      if (window.PointerEvent) {
-        i.event.bind(element, 'pointerdown', touchStart);
-        i.event.bind(element, 'pointermove', touchMove);
-        i.event.bind(element, 'pointerup', touchEnd);
-      } else if (window.MSPointerEvent) {
-        i.event.bind(element, 'MSPointerDown', touchStart);
-        i.event.bind(element, 'MSPointerMove', touchMove);
-        i.event.bind(element, 'MSPointerUp', touchEnd);
-      }
-    }
-  }
-
-  var defaultSettings = function () { return ({
-    handlers: ['click-rail', 'drag-thumb', 'keyboard', 'wheel', 'touch'],
-    maxScrollbarLength: null,
-    minScrollbarLength: null,
-    scrollingThreshold: 1000,
-    scrollXMarginOffset: 0,
-    scrollYMarginOffset: 0,
-    suppressScrollX: false,
-    suppressScrollY: false,
-    swipeEasing: true,
-    useBothWheelAxes: false,
-    wheelPropagation: true,
-    wheelSpeed: 1,
-  }); };
-
-  var handlers = {
-    'click-rail': clickRail,
-    'drag-thumb': dragThumb,
-    keyboard: keyboard,
-    wheel: wheel,
-    touch: touch,
-  };
-
-  var PerfectScrollbar = function PerfectScrollbar(element, userSettings) {
-    var this$1 = this;
-    if ( userSettings === void 0 ) userSettings = {};
-
-    if (typeof element === 'string') {
-      element = document.querySelector(element);
-    }
-
-    if (!element || !element.nodeName) {
-      throw new Error('no element is specified to initialize PerfectScrollbar');
-    }
-
-    this.element = element;
-
-    element.classList.add(cls.main);
-
-    this.settings = defaultSettings();
-    for (var key in userSettings) {
-      this.settings[key] = userSettings[key];
-    }
-
-    this.containerWidth = null;
-    this.containerHeight = null;
-    this.contentWidth = null;
-    this.contentHeight = null;
-
-    var focus = function () { return element.classList.add(cls.state.focus); };
-    var blur = function () { return element.classList.remove(cls.state.focus); };
-
-    this.isRtl = get(element).direction === 'rtl';
-    if (this.isRtl === true) {
-      element.classList.add(cls.rtl);
-    }
-    this.isNegativeScroll = (function () {
-      var originalScrollLeft = element.scrollLeft;
-      var result = null;
-      element.scrollLeft = -1;
-      result = element.scrollLeft < 0;
-      element.scrollLeft = originalScrollLeft;
-      return result;
-    })();
-    this.negativeScrollAdjustment = this.isNegativeScroll
-      ? element.scrollWidth - element.clientWidth
-      : 0;
-    this.event = new EventManager();
-    this.ownerDocument = element.ownerDocument || document;
-
-    this.scrollbarXRail = div(cls.element.rail('x'));
-    element.appendChild(this.scrollbarXRail);
-    this.scrollbarX = div(cls.element.thumb('x'));
-    this.scrollbarXRail.appendChild(this.scrollbarX);
-    this.scrollbarX.setAttribute('tabindex', 0);
-    this.event.bind(this.scrollbarX, 'focus', focus);
-    this.event.bind(this.scrollbarX, 'blur', blur);
-    this.scrollbarXActive = null;
-    this.scrollbarXWidth = null;
-    this.scrollbarXLeft = null;
-    var railXStyle = get(this.scrollbarXRail);
-    this.scrollbarXBottom = parseInt(railXStyle.bottom, 10);
-    if (isNaN(this.scrollbarXBottom)) {
-      this.isScrollbarXUsingBottom = false;
-      this.scrollbarXTop = toInt(railXStyle.top);
-    } else {
-      this.isScrollbarXUsingBottom = true;
-    }
-    this.railBorderXWidth =
-      toInt(railXStyle.borderLeftWidth) + toInt(railXStyle.borderRightWidth);
-    // Set rail to display:block to calculate margins
-    set(this.scrollbarXRail, { display: 'block' });
-    this.railXMarginWidth =
-      toInt(railXStyle.marginLeft) + toInt(railXStyle.marginRight);
-    set(this.scrollbarXRail, { display: '' });
-    this.railXWidth = null;
-    this.railXRatio = null;
-
-    this.scrollbarYRail = div(cls.element.rail('y'));
-    element.appendChild(this.scrollbarYRail);
-    this.scrollbarY = div(cls.element.thumb('y'));
-    this.scrollbarYRail.appendChild(this.scrollbarY);
-    this.scrollbarY.setAttribute('tabindex', 0);
-    this.event.bind(this.scrollbarY, 'focus', focus);
-    this.event.bind(this.scrollbarY, 'blur', blur);
-    this.scrollbarYActive = null;
-    this.scrollbarYHeight = null;
-    this.scrollbarYTop = null;
-    var railYStyle = get(this.scrollbarYRail);
-    this.scrollbarYRight = parseInt(railYStyle.right, 10);
-    if (isNaN(this.scrollbarYRight)) {
-      this.isScrollbarYUsingRight = false;
-      this.scrollbarYLeft = toInt(railYStyle.left);
-    } else {
-      this.isScrollbarYUsingRight = true;
-    }
-    this.scrollbarYOuterWidth = this.isRtl ? outerWidth(this.scrollbarY) : null;
-    this.railBorderYWidth =
-      toInt(railYStyle.borderTopWidth) + toInt(railYStyle.borderBottomWidth);
-    set(this.scrollbarYRail, { display: 'block' });
-    this.railYMarginHeight =
-      toInt(railYStyle.marginTop) + toInt(railYStyle.marginBottom);
-    set(this.scrollbarYRail, { display: '' });
-    this.railYHeight = null;
-    this.railYRatio = null;
-
-    this.reach = {
-      x:
-        element.scrollLeft <= 0
-          ? 'start'
-          : element.scrollLeft >= this.contentWidth - this.containerWidth
-          ? 'end'
-          : null,
-      y:
-        element.scrollTop <= 0
-          ? 'start'
-          : element.scrollTop >= this.contentHeight - this.containerHeight
-          ? 'end'
-          : null,
-    };
-
-    this.isAlive = true;
-
-    this.settings.handlers.forEach(function (handlerName) { return handlers[handlerName](this$1); });
-
-    this.lastScrollTop = Math.floor(element.scrollTop); // for onScroll only
-    this.lastScrollLeft = element.scrollLeft; // for onScroll only
-    this.event.bind(this.element, 'scroll', function (e) { return this$1.onScroll(e); });
-    updateGeometry(this);
-  };
-
-  PerfectScrollbar.prototype.update = function update () {
-    if (!this.isAlive) {
-      return;
-    }
-
-    // Recalcuate negative scrollLeft adjustment
-    this.negativeScrollAdjustment = this.isNegativeScroll
-      ? this.element.scrollWidth - this.element.clientWidth
-      : 0;
-
-    // Recalculate rail margins
-    set(this.scrollbarXRail, { display: 'block' });
-    set(this.scrollbarYRail, { display: 'block' });
-    this.railXMarginWidth =
-      toInt(get(this.scrollbarXRail).marginLeft) +
-      toInt(get(this.scrollbarXRail).marginRight);
-    this.railYMarginHeight =
-      toInt(get(this.scrollbarYRail).marginTop) +
-      toInt(get(this.scrollbarYRail).marginBottom);
-
-    // Hide scrollbars not to affect scrollWidth and scrollHeight
-    set(this.scrollbarXRail, { display: 'none' });
-    set(this.scrollbarYRail, { display: 'none' });
-
-    updateGeometry(this);
-
-    processScrollDiff(this, 'top', 0, false, true);
-    processScrollDiff(this, 'left', 0, false, true);
-
-    set(this.scrollbarXRail, { display: '' });
-    set(this.scrollbarYRail, { display: '' });
-  };
-
-  PerfectScrollbar.prototype.onScroll = function onScroll (e) {
-    if (!this.isAlive) {
-      return;
-    }
-
-    updateGeometry(this);
-    processScrollDiff(this, 'top', this.element.scrollTop - this.lastScrollTop);
-    processScrollDiff(
-      this,
-      'left',
-      this.element.scrollLeft - this.lastScrollLeft
-    );
-
-    this.lastScrollTop = Math.floor(this.element.scrollTop);
-    this.lastScrollLeft = this.element.scrollLeft;
-  };
-
-  PerfectScrollbar.prototype.destroy = function destroy () {
-    if (!this.isAlive) {
-      return;
-    }
-
-    this.event.unbindAll();
-    remove(this.scrollbarX);
-    remove(this.scrollbarY);
-    remove(this.scrollbarXRail);
-    remove(this.scrollbarYRail);
-    this.removePsClasses();
-
-    // unset elements
-    this.element = null;
-    this.scrollbarX = null;
-    this.scrollbarY = null;
-    this.scrollbarXRail = null;
-    this.scrollbarYRail = null;
-
-    this.isAlive = false;
-  };
-
-  PerfectScrollbar.prototype.removePsClasses = function removePsClasses () {
-    this.element.className = this.element.className
-      .split(' ')
-      .filter(function (name) { return !name.match(/^ps([-_].+|)$/); })
-      .join(' ');
-  };
-
-  return PerfectScrollbar;
-
-})));
-//# sourceMappingURL=perfect-scrollbar.js.map
-
-;
 /****************************************************************************
     jquery-scroll-container.js,
 
@@ -42633,8 +41297,6 @@ return index;
 (function ($, window, document/*, undefined*/) {
     "use strict";
 
-    var isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
-
     if ( $('html').hasClass('touchevents') || $('html').hasClass('no-touchevents') )
         ;    //Modernizr (or someone else) has set the correct class
     else
@@ -42644,77 +41306,27 @@ return index;
     //Create namespace
     var ns = window.JqueryScrollContainer = window.JqueryScrollContainer || {};
 
-    //Get the width of default scrollbar
-    function getAnyScrollbarWidth(className){
-        if (typeof document === 'undefined')
-            return 0;
-
-        var body = document.body,
-            box = document.createElement('div'),
-            boxStyle = box.style;
-
-        box.className = className;
-        boxStyle.position = 'fixed';
-        boxStyle.left = 0;
-        boxStyle.visibility = 'hidden';
-        boxStyle.overflowY = 'scroll';
-        body.appendChild(box);
-        var result = box.getBoundingClientRect().right;
-        body.removeChild(box);
-
-        return result;
-    }
-
-
     var scrollbarWidth = null;
     window.getScrollbarWidth = function() {
         if (scrollbarWidth === null){
             if (typeof document === 'undefined')
                 return 0;
-            scrollbarWidth = getAnyScrollbarWidth('jq-scroll-default');
+
+            var body = document.body,
+                box = document.createElement('div'),
+                boxStyle = box.style;
+
+            box.className       = 'jq-scroll-default';
+            boxStyle.position   = 'fixed';
+            boxStyle.left       = 0;
+            boxStyle.visibility = 'hidden';
+            boxStyle.overflowY  = 'scroll';
+            body.appendChild(box);
+            scrollbarWidth = box.getBoundingClientRect().right;
+            body.removeChild(box);
         }
         return scrollbarWidth;
     };
-
-
-    /**************************************************
-    Extend PerfectScrollbar.prototype with two methods
-    .lock(): Lock the scroll and prevents (allmost) all scroll
-    .unlock(): Unlock
-    Also overwrite onScroll to handle lock
-    **************************************************/
-    $.extend(window.PerfectScrollbar.prototype, {
-
-        lock: function(){
-            if (this.isLocked)
-                return;
-            this.isLocked = true;
-            this.lockedScrollTop = this.element.scrollTop;
-            this.lockedScrollLeft = this.element.scrollLeft;
-        },
-
-        unlock: function(){
-            if (!this.isLocked)
-                return;
-            this.element.scrollTop = this.lockedScrollTop;
-            this.element.scrollLeft = this.lockedScrollLeft;
-            this.update();
-            this.isLocked = false;
-        },
-    });
-
-    window.PerfectScrollbar.prototype.onScroll = function (onScroll) {
-		return function () {
-            if (this.isLocked){
-                this.element.scrollTop = this.lockedScrollTop;
-                this.element.scrollLeft = this.lockedScrollLeft;
-            }
-            //Original function/method
-            return onScroll.apply(this, arguments);
-		};
-	} (window.PerfectScrollbar.prototype.onScroll);
-
-
 
     //Extend $.fn with scrollIntoView
     $.fn.extend({
@@ -42725,139 +41337,64 @@ return index;
     });
 
     ns.scrollbarOptions = {
-        //handlers              //It is a list of handlers to use to scroll the element. Default: ['click-rail', 'drag-scrollbar', 'keyboard', 'wheel', 'touch'] Disabled by default: 'selection'
-        //wheelSpeed            //The scroll speed applied to mousewheel event. Default: 1
-        //wheelPropagation      //If this option is true, when the scroll reaches the end of the side, mousewheel event will be propagated to parent element. Default: false
-        //swipeEasing           //If this option is true, swipe scrolling will be eased. Default: true
-        //minScrollbarLength    //When set to an integer value, the thumb part of the scrollbar will not shrink below that number of pixels. Default: null
-        //maxScrollbarLength    //When set to an integer value, the thumb part of the scrollbar will not expand over that number of pixels. Default: null
-        //scrollingThreshold    //This sets threashold for ps--scrolling-x and ps--scrolling-y classes to remain. In the default CSS, they make scrollbars shown regardless of hover state. The unit is millisecond. Default: 1000
-        //useBothWheelAxes      //When set to true, and only one (vertical or horizontal) scrollbar is visible then both vertical and horizontal scrolling will affect the scrollbar. Default: false
-        //suppressScrollX       //When set to true, the scroll bar in X axis will not be available, regardless of the content width. Default: false
-        //suppressScrollY       //When set to true, the scroll bar in Y axis will not be available, regardless of the content height. Default: false
-        //scrollXMarginOffset   //The number of pixels the content width can surpass the container width without enabling the X axis scroll bar. Allows some "wiggle room" or "offset break", so that X axis scroll bar is not enabled just because of a few pixels. Default: 0
-        //scrollYMarginOffset   //The number of pixels the content height can surpass the container height without enabling the Y axis scroll bar. Allows some "wiggle room" or "offset break", so that Y axis scroll bar is not enabled just because of a few pixels.Default: 0
-
-
-        minScrollbarLength : 16,
-        scrollingThreshold: 0,  //Using css transition to do the job
-
-        useBothWheelAxes   : true, //=> Mousewheel works in both horizontal and vertical scroll
-        scrollXMarginOffset: 1,    //IE11 apears to work betten when == 1. TODO: Should only be 1 for Edge and IE11
-        scrollYMarginOffset: 1,    //                --||--
-
-        direction       : 'vertical', //["vertical"|"horizontal"|"both"] (default: "vertical")
-        contentClassName: '',         //Class-name added to the inner content-container
-
-        defaultScrollbarOnTouch: false,      //If true and the browser support touchevents => use simple version using the browsers default scrollbar
-        forceDefaultScrollbar  : false,      //If true => use simple version using the browsers default scrollbar (regardless of defaultScrollbarOnTouch and touchevents-support)
-
-        adjustPadding          : 'scroll',   //['scroll', 'left', 'both', none']. Defines witch 'side(s)' that will have padding adjusted:
-                                             //  'left'  : Only for direction: 'vertical': The paddingLeft of the container is set equal to the width of the scrollbar
-                                             //  'scroll': Only when using browser default scrollbar: If the width of the default scrollbar > 0 => always have padding == scrollbar-width (also when no scrollbar is present)
-                                             //  'both'  : As 'left' and 'scroll'
-                                             //  'none'  : No adjustment beside the scrollbar when using perfect-scrollbar
-        //hasTouchEvents: `true` if the browser supports touch-events and the scroll should use default scroll
-        hasTouchEvents: function(){ return $('html').hasClass('touchevents'); }
+        direction       : 'vertical',   //["vertical"|"horizontal"|"both"] (default: "vertical")
+        contentClassName: '',           //Class-name added to the inner content-container
+        paddingLeft     : true          //Only for direction:'vertical'. If true the container gets padding-left equal the width of the scrollbar to center content
     };
 
-
-    //ns.update = Test if the browser supports css for scrollbars and sets the class-name for html to use jquery-scroll-container it needed
-    ns.update = function(){
-        if (getAnyScrollbarWidth('jq-scroll-test-123') != 123) return;
-
-        var addScrollbarClassName,
-            isTouch = $.isFunction(ns.scrollbarOptions.hasTouchEvents) ? ns.scrollbarOptions.hasTouchEvents() : ns.scrollbarOptions.hasTouchEvents;
-
-        if (isTouch)
-            //Use scrollbar-classes if touch and not use browser default scrollbar on touch devices
-            addScrollbarClassName = !ns.scrollbarOptions.defaultScrollbarOnTouch;
-        else {
-            //Always use default scrollbar and scrollbar-classes on desktop (no-touch)
-            addScrollbarClassName = true;
-            ns.scrollbarOptions.forceDefaultScrollbar = true;
-        }
-        $('html').toggleClass('jq-scroll-default-css', !!addScrollbarClassName);
+    ns.update = function( isTouch ){
+        $('html').toggleClass('jq-scroll-default-css', !isTouch);
     };
 
-    ns.update();
-
+    ns.update( $('html').hasClass('touchevents') );
 
 
     //_jscUpdateScrollShadowClass: update the classNames setting the scroll-shadow
     $.fn._jscUpdateScrollShadowClass = function( isVertical ){
         var elem = this.get(0),
-            hasScroll, position;
-
+            noScroll, position;
 
         if (isVertical){
-            hasScroll = elem.scrollHeight > (elem.clientHeight + this._jscScrollOffset);
+            noScroll = elem.scrollHeight <= elem.clientHeight;
             position = elem.scrollTop <= 0 ? 'start' :
                        elem.scrollTop >= elem.scrollHeight - elem.clientHeight ? 'end' :
                        null;
         }
         else {
-            hasScroll = elem.scrollWidth >= (elem.clientWidth + this._jscScrollOffset);
+            noScroll = elem.scrollWidth < elem.clientWidth;
             position = elem.scrollLeft <= 0 ? 'start' :
                        elem.scrollLeft >= elem.scrollWidth - elem.clientWidth ? 'end' :
                        null;
         }
 
         this
-            .modernizrToggle('scroll-at-start', (position == 'start') || !hasScroll)
-            .modernizrToggle('scroll-at-end', (position == 'end') || !hasScroll);
+            .modernizrToggle('jq-scroll-none' , noScroll)
+            .modernizrToggle('scroll-at-start', (position == 'start') || noScroll)
+            .modernizrToggle('scroll-at-end'  , (position == 'end')   || noScroll);
     };
 
     /**************************************************
-    Extend jQuery-element with tree new methods
+    Extend jQuery-element with new method
     .addScrollbar( direction or options )
-    .lockScrollbar()
-    .unlockScrollbar()
     **************************************************/
-
-    //addScrollbar( direction ) or addScrollbar( options )
-    $.fn.addScrollbar = function( options ){
+    $.fn.addScrollbar = function( options = {}){
         var _this = this;
-        if ($.type( options ) == "string")
-            options = {
-                direction: options
-            };
+        options = $.extend( {},  ns.scrollbarOptions, typeof options == "string" ? {direction: options} : options );
 
-        //Update options
-        options = $.extend( {},  ns.scrollbarOptions, options || {} );
-
-        //Get return-values if options[id] is a function
-        $.each(options, function(id, value){
-            if ($.isFunction(value))
-                options[id] = value();
-        });
-
-        var observer,
-            isVertical   = (options.direction == 'vertical'),
+        var isVertical   = (options.direction == 'vertical'),
             isHorizontal = (options.direction == 'horizontal'),
             isBoth       = (options.direction == 'both'),
             directionClassName = isHorizontal ? 'jq-scroll-container-horizontal' :
                                  isVertical   ? 'jq-scroll-container-vertical' :
                                  isBoth       ? 'jq-scroll-container-both' :
-                                                '',
-            adjustPaddingLeft   = isVertical && ($.inArray(options.adjustPadding, ['left', 'both']) >= 0),
-            adjustPaddingScroll = $.inArray(options.adjustPadding, ['scroll', 'both']) >= 0;
-
-        options.suppressScrollX = isVertical;
-        options.suppressScrollY = isHorizontal;
-
-        this._jscScrollOffset = isVertical ? options.scrollYMarginOffset :
-                                isVertical ? options.scrollXMarginOffset :
-                                0;
-
+                                                '';
         function updateScrollClass(){
             _this._jscUpdateScrollShadowClass(isVertical);
         }
 
         //Add element to display scroll-shadow
         //TODO: Not working for horizontal scroll
-//        if (!isBoth && !isIE11){
-        if (isVertical && !isIE11){
+        if (isVertical){
             this.addClass('jq-scroll-container-shadow');
             $('<div/>')
                 .addClass('jq-scroll-shadow top-left')
@@ -42877,82 +41414,25 @@ return index;
                 .addClass(options.contentClassName)
                 .appendTo( this );
 
-        var scrollEventName = '',
-            onResizeFunc = null;
+        this.addClass('jq-scroll-default');
 
-        if (options.forceDefaultScrollbar || (options.defaultScrollbarOnTouch && options.hasTouchEvents )) {
-            //Use default browser scrollbar
-            scrollbarWidth = scrollbarWidth || window.getScrollbarWidth();
-            this.addClass('jq-scroll-default');
-
-            if (adjustPaddingLeft)
-                this.css('padding-left', scrollbarWidth+'px' );
-            if (adjustPaddingScroll)
-                this
-                    .toggleClass('jq-scroll-adjust-padding', !!scrollbarWidth)
-                    .css(isVertical ? 'padding-right' : 'padding-bottom', scrollbarWidth+'px');
-
-            scrollEventName = 'scroll';
-            onResizeFunc = updateScrollClass;
-        }
-        else {
-            //no-touch browser OR force using perfect-scroll => use perfect.scrollbar
-            this
-                .toggleClass('jq-scroll-adjust-padding-left', adjustPaddingLeft)
-                .modernizrToggle('touch', !!options.hasTouchEvents);
-
-            //Create perfect.scrollbar
-            this.perfectScrollbar = new window.PerfectScrollbar(this.get(0), options );
-
-            //Add class ps__rail to both x- and y-rail
-            $(this.perfectScrollbar.scrollbarXRail).addClass('ps__rail');
-            $(this.perfectScrollbar.scrollbarYRail).addClass('ps__rail');
-
-            //Add class ps__thumb to both x- and y-thumb
-            $(this.perfectScrollbar.scrollbarX).addClass('ps__thumb');
-            $(this.perfectScrollbar.scrollbarY).addClass('ps__thumb');
-
-            scrollEventName = 'ps-scroll-'+(isVertical ? 'y' : 'x');
-            onResizeFunc = function(){
-                _this.perfectScrollbar.update();
-                updateScrollClass();
-            };
-
-            //Save perfectScrollbar as data('perfectScrollbar') for both this and container
-            this.data('perfectScrollbar', this.perfectScrollbar );
-            this.scrollbarContainer.data('perfectScrollbar', this.perfectScrollbar );
-        }
+        if (isVertical && options.paddingLeft)
+            this.css('padding-left', window.getScrollbarWidth()+'px' );
 
         //Update scroll-shadow when scrolling
         if (!isBoth)
-            this.on(scrollEventName, updateScrollClass );
+            this.on('scroll', updateScrollClass );
 
         //Update scrollbar when container or content change size or elements are added to/removed from the content-container
-        this.resize( onResizeFunc );
-        this.scrollbarContainer.resize( onResizeFunc );
+        this.resize( updateScrollClass );
+        this.scrollbarContainer.resize( updateScrollClass );
 
-        observer = new window.MutationObserver( onResizeFunc );
+        var observer = new window.MutationObserver( updateScrollClass );
         observer.observe(this.scrollbarContainer.get(0), { attributes: true, childList: true, subtree: true });
 
         this.get(0).scrollTop = 0;
 
         return this.scrollbarContainer;
-    };
-
-    //$.fn.lockScrollbar
-    $.fn.lockScrollbar = function(){
-        var ps = this.data('perfectScrollbar');
-        if (ps)
-            ps.lock();
-        return this;
-    };
-
-    //$.fn.unlockScrollbar
-    $.fn.unlockScrollbar = function(){
-        var ps = this.data('perfectScrollbar');
-        if (ps)
-            ps.unlock();
-        return this;
     };
 
 }(jQuery, this, document));
@@ -50662,7 +49142,7 @@ return index;
 
     var keys = ['Hours', 'Minutes', 'Seconds', 'Milliseconds'];
     var maxValues = [24, 60, 60, 1000];
-    
+
     // Capitalize first letter
     key = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
 
@@ -53274,12 +51754,12 @@ options:
 /*! @websanova/url - v2.6.3 - 2020-01-25 */
 !function(){function t(t,r){var a,o={};if("tld?"!==t){if(r=r||window.location.toString(),!t)return r;if(t=t.toString(),a=r.match(/^mailto:([^\/].+)/))o.protocol="mailto",o.email=a[1];else{if((a=r.match(/(.*?)\/#\!(.*)/))&&(r=a[1]+a[2]),(a=r.match(/(.*?)#(.*)/))&&(o.hash=a[2],r=a[1]),o.hash&&t.match(/^#/))return h(t,o.hash);if((a=r.match(/(.*?)\?(.*)/))&&(o.query=a[2],r=a[1]),o.query&&t.match(/^\?/))return h(t,o.query);if((a=r.match(/(.*?)\:?\/\/(.*)/))&&(o.protocol=a[1].toLowerCase(),r=a[2]),(a=r.match(/(.*?)(\/.*)/))&&(o.path=a[2],r=a[1]),o.path=(o.path||"").replace(/^([^\/])/,"/$1"),t.match(/^[\-0-9]+$/)&&(t=t.replace(/^([^\/])/,"/$1")),t.match(/^\//))return e(t,o.path.substring(1));if((a=(a=e("/-1",o.path.substring(1)))&&a.match(/(.*?)\.([^.]+)$/))&&(o.file=a[0],o.filename=a[1],o.fileext=a[2]),(a=r.match(/(.*)\:([0-9]+)$/))&&(o.port=a[2],r=a[1]),(a=r.match(/(.*?)@(.*)/))&&(o.auth=a[1],r=a[2]),o.auth&&(a=o.auth.match(/(.*)\:(.*)/),o.user=a?a[1]:o.auth,o.pass=a?a[2]:void 0),o.hostname=r.toLowerCase(),"."===t.charAt(0))return e(t,o.hostname);o.port=o.port||("https"===o.protocol?"443":"80"),o.protocol=o.protocol||("443"===o.port?"https":"http")}return t in o?o[t]:"{}"===t?o:void 0}}function e(t,r){var a=t.charAt(0),o=r.split(a);return a===t?o:o[(t=parseInt(t.substring(1),10))<0?o.length+t:t-1]}function h(t,r){for(var a,o=t.charAt(0),e=r.split("&"),h=[],n={},c=[],i=t.substring(1),p=0,u=e.length;p<u;p++)if(""!==(h=(h=e[p].match(/(.*?)=(.*)/))||[e[p],e[p],""])[1].replace(/\s/g,"")){if(h[2]=(a=h[2]||"",decodeURIComponent(a.replace(/\+/g," "))),i===h[1])return h[2];(c=h[1].match(/(.*)\[([0-9]+)\]/))?(n[c[1]]=n[c[1]]||[],n[c[1]][c[2]]=h[2]):n[h[1]]=h[2]}return o===t?n:n[i]}window.url=t}();
 ;
-/* 
-  @package NOTY - Dependency-free notification library 
-  @version version: 3.1.4 
-  @contributors https://github.com/needim/noty/graphs/contributors 
-  @documentation Examples and Documentation - http://needim.github.com/noty 
-  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php 
+/*
+  @package NOTY - Dependency-free notification library
+  @version version: 3.1.4
+  @contributors https://github.com/needim/noty/graphs/contributors
+  @documentation Examples and Documentation - http://needim.github.com/noty
+  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php
 */
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -55312,7 +53792,7 @@ Promise$2.prototype = {
     The primary way of interacting with a promise is through its `then` method,
     which registers callbacks to receive either a promise's eventual value or the
     reason why the promise cannot be fulfilled.
-  
+
     ```js
     findUser().then(function(user){
       // user is available
@@ -55320,14 +53800,14 @@ Promise$2.prototype = {
       // user is unavailable, and you are given the reason why
     });
     ```
-  
+
     Chaining
     --------
-  
+
     The return value of `then` is itself a promise.  This second, 'downstream'
     promise is resolved with the return value of the first promise's fulfillment
     or rejection handler, or rejected if the handler throws an exception.
-  
+
     ```js
     findUser().then(function (user) {
       return user.name;
@@ -55337,7 +53817,7 @@ Promise$2.prototype = {
       // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
       // will be `'default name'`
     });
-  
+
     findUser().then(function (user) {
       throw new Error('Found user, but still unhappy');
     }, function (reason) {
@@ -55350,7 +53830,7 @@ Promise$2.prototype = {
     });
     ```
     If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
-  
+
     ```js
     findUser().then(function (user) {
       throw new PedagogicalException('Upstream error');
@@ -55362,15 +53842,15 @@ Promise$2.prototype = {
       // The `PedgagocialException` is propagated all the way down to here
     });
     ```
-  
+
     Assimilation
     ------------
-  
+
     Sometimes the value you want to propagate to a downstream promise can only be
     retrieved asynchronously. This can be achieved by returning a promise in the
     fulfillment or rejection handler. The downstream promise will then be pending
     until the returned promise is settled. This is called *assimilation*.
-  
+
     ```js
     findUser().then(function (user) {
       return findCommentsByAuthor(user);
@@ -55378,9 +53858,9 @@ Promise$2.prototype = {
       // The user's comments are now available
     });
     ```
-  
+
     If the assimliated promise rejects, then the downstream promise will also reject.
-  
+
     ```js
     findUser().then(function (user) {
       return findCommentsByAuthor(user);
@@ -55390,15 +53870,15 @@ Promise$2.prototype = {
       // If `findCommentsByAuthor` rejects, we'll have the reason here
     });
     ```
-  
+
     Simple Example
     --------------
-  
+
     Synchronous Example
-  
+
     ```javascript
     let result;
-  
+
     try {
       result = findResult();
       // success
@@ -55406,9 +53886,9 @@ Promise$2.prototype = {
       // failure
     }
     ```
-  
+
     Errback Example
-  
+
     ```js
     findResult(function(result, err){
       if (err) {
@@ -55418,9 +53898,9 @@ Promise$2.prototype = {
       }
     });
     ```
-  
+
     Promise Example;
-  
+
     ```javascript
     findResult().then(function(result){
       // success
@@ -55428,15 +53908,15 @@ Promise$2.prototype = {
       // failure
     });
     ```
-  
+
     Advanced Example
     --------------
-  
+
     Synchronous Example
-  
+
     ```javascript
     let author, books;
-  
+
     try {
       author = findAuthor();
       books  = findBooksByAuthor(author);
@@ -55445,19 +53925,19 @@ Promise$2.prototype = {
       // failure
     }
     ```
-  
+
     Errback Example
-  
+
     ```js
-  
+
     function foundBooks(books) {
-  
+
     }
-  
+
     function failure(reason) {
-  
+
     }
-  
+
     findAuthor(function(author, err){
       if (err) {
         failure(err);
@@ -55482,9 +53962,9 @@ Promise$2.prototype = {
       }
     });
     ```
-  
+
     Promise Example;
-  
+
     ```javascript
     findAuthor().
       then(findBooksByAuthor).
@@ -55494,7 +53974,7 @@ Promise$2.prototype = {
       // something went wrong
     });
     ```
-  
+
     @method then
     @param {Function} onFulfilled
     @param {Function} onRejected
@@ -55506,25 +53986,25 @@ Promise$2.prototype = {
   /**
     `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
     as the catch block of a try/catch statement.
-  
+
     ```js
     function findAuthor(){
       throw new Error('couldn't find that author');
     }
-  
+
     // synchronous
     try {
       findAuthor();
     } catch(reason) {
       // something went wrong
     }
-  
+
     // async with promises
     findAuthor().catch(function(reason){
       // something went wrong
     });
     ```
-  
+
     @method catch
     @param {Function} onRejection
     Useful for tooling.
@@ -56382,10 +54862,10 @@ module.exports = g;
     //Will choke on undefined navigator and window vars when run on server
     //Return boolean false and exit function when running server-side
 
-    if( typeof window === "undefined" || 
-        window.navigator === undefined || 
-        window.navigator.userAgent === undefined || 
-        window.navigator.mimeTypes === undefined){ 
+    if( typeof window === "undefined" ||
+        window.navigator === undefined ||
+        window.navigator.userAgent === undefined ||
+        window.navigator.mimeTypes === undefined){
             return false;
     }
 
@@ -56396,8 +54876,8 @@ module.exports = g;
     //Time to jump through hoops -- browser vendors do not make it easy to detect PDF support.
 
     /*
-        IE11 still uses ActiveX for Adobe Reader, but IE 11 doesn't expose window.ActiveXObject the same way 
-        previous versions of IE did. window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject" 
+        IE11 still uses ActiveX for Adobe Reader, but IE 11 doesn't expose window.ActiveXObject the same way
+        previous versions of IE did. window.ActiveXObject will evaluate to false in IE 11, but "ActiveXObject"
         in window evaluates to true.
 
         MS Edge does not support ActiveX so this test will evaluate false
@@ -56415,20 +54895,20 @@ module.exports = g;
     let supportsPdfMimeType = (nav.mimeTypes["application/pdf"] !== undefined);
 
     //Safari on iPadOS doesn't report as 'mobile' when requesting desktop site, yet still fails to embed PDFs
-    let isSafariIOSDesktopMode = (  nav.platform !== undefined && 
-                                    nav.platform === "MacIntel" && 
-                                    nav.maxTouchPoints !== undefined && 
+    let isSafariIOSDesktopMode = (  nav.platform !== undefined &&
+                                    nav.platform === "MacIntel" &&
+                                    nav.maxTouchPoints !== undefined &&
                                     nav.maxTouchPoints > 1 );
 
     //Quick test for mobile devices.
     let isMobileDevice = (isSafariIOSDesktopMode || /Mobi|Tablet|Android|iPad|iPhone/.test(ua));
 
-    //Safari desktop requires special handling 
-    let isSafariDesktop = ( !isMobileDevice && 
-                            nav.vendor !== undefined && 
-                            /Apple/.test(nav.vendor) && 
+    //Safari desktop requires special handling
+    let isSafariDesktop = ( !isMobileDevice &&
+                            nav.vendor !== undefined &&
+                            /Apple/.test(nav.vendor) &&
                             /Safari/.test(ua) );
-    
+
     //Firefox started shipping PDF.js in Firefox 19. If this is Firefox 19 or greater, assume PDF.js is available
     let isFirefoxWithPDFJS = (!isMobileDevice && /irefox/.test(ua) && ua.split("rv:").length > 1) ? (parseInt(ua.split("rv:")[1].split(".")[0], 10) > 18) : false;
 
@@ -56546,14 +55026,14 @@ module.exports = g;
         let fullURL = PDFJS_URL + "?file=" + encodeURIComponent(url) + pdfOpenFragment;
         let div = document.createElement("div");
         let iframe = document.createElement("iframe");
-        
+
         iframe.src = fullURL;
         iframe.className = "pdfobject";
         iframe.type = "application/pdf";
         iframe.frameborder = "0";
         iframe.allow = "fullscreen";
         iframe.title = title;
-        
+
         if(id){
             iframe.id = id;
         }
@@ -56562,13 +55042,13 @@ module.exports = g;
             div.style.cssText = "position: absolute; top: 0; right: 0; bottom: 0; left: 0;";
             iframe.style.cssText = "border: none; width: 100%; height: 100%;";
             targetNode.style.position = "relative";
-            targetNode.style.overflow = "auto";        
+            targetNode.style.overflow = "auto";
         }
 
         div.appendChild(iframe);
         targetNode.appendChild(div);
         targetNode.classList.add("pdfobject-container");
-        
+
         return targetNode.getElementsByTagName("iframe")[0];
 
     };
@@ -56602,7 +55082,7 @@ module.exports = g;
                 style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
             }
 
-            embed.style.cssText = style; 
+            embed.style.cssText = style;
 
         }
 
@@ -56660,32 +55140,32 @@ module.exports = g;
         if(forcePDFJS && PDFJS_URL){
             return generatePDFJSMarkup(targetNode, url, pdfOpenFragment, PDFJS_URL, id, title, omitInlineStyles);
         }
- 
+
         // --== Embed attempt #2 ==--
 
         //Embed PDF if traditional support is provided, or if this developer is willing to roll with assumption
-        //that modern desktop (not mobile) browsers natively support PDFs 
+        //that modern desktop (not mobile) browsers natively support PDFs
         if(supportsPDFs || (assumptionMode && !isMobileDevice)){
-            
-            //Should we use <embed> or <iframe>? In most cases <embed>. 
+
+            //Should we use <embed> or <iframe>? In most cases <embed>.
             //Allow developer to force <iframe>, if desired
             //There is an edge case where Safari does not respect 302 redirect requests for PDF files when using <embed> element.
             //Redirect appears to work fine when using <iframe> instead of <embed> (Addresses issue #210)
             //Forcing Safari desktop to use iframe due to freezing bug in macOS 11 (Big Sur)
             let embedtype = (forceIframe || supportRedirect || isSafariDesktop) ? "iframe" : "embed";
-            
+
             return generatePDFObjectMarkup(embedtype, targetNode, targetSelector, url, pdfOpenFragment, width, height, id, title, omitInlineStyles);
 
         }
-        
+
         // --== Embed attempt #3 ==--
-        
+
         //If everything else has failed and a PDFJS fallback is provided, try to use it
         if(PDFJS_URL){
             return generatePDFJSMarkup(targetNode, url, pdfOpenFragment, PDFJS_URL, id, title, omitInlineStyles);
         }
-        
-        // --== PDF embed not supported! Use fallback ==-- 
+
+        // --== PDF embed not supported! Use fallback ==--
 
         //Display the fallback link if available
         if(fallbackLink){

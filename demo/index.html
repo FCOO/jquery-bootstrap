@@ -894,6 +894,8 @@ longTableContent[i].stargazers_count = i;
             'name': function(value){return (value != "Dansk!!!");}
         });
 
+console.log('window.getScrollbarWidth()', window.getScrollbarWidth());
+
         m_table = myBsTable.asModal({
             header:'En stor tabel med "allowZeroSelected: true"',
             closeIcon: 'fa-globe',
@@ -901,7 +903,12 @@ longTableContent[i].stargazers_count = i;
             flexWidth:true,
             extraWidth: true,
             static: true,
-small: true,
+
+//maxHeight: 400,
+//relativeHeight: 0.65,
+//relativeHeightOffset: function(){ return 0},
+
+            small: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             buttons: [
                 {text:'Filter: Stats > 30',          onClick: function(){myBsTable.filterTable(null, {'stargazers_count': function(value){ return value > 30;    }})}},
@@ -1133,7 +1140,6 @@ small: true,
                     show: false,
                     small: true,
                     smallButtons: true,
-
                 });
                 m_small.show();
             });
@@ -1671,7 +1677,6 @@ width: 543,
                 {icon: 'fa-home', text: 'Davs'}
             ],
             show: false,
-            maxHeight: 300,
             width: 320,
             _content: 'max-height=300<br>Her kommer der nogle laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange ord<br>SLUT',
             dynamic: true,

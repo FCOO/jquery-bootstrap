@@ -11,16 +11,9 @@
 (function ($, window, document, undefined) {
 	"use strict";
 
-    //Adjusting default options and methods for jquery-scroll-container
-    $.extend(window.JqueryScrollContainer.scrollbarOptions, {
-        defaultScrollbarOnTouch: true, //Always use default scrollbar for mobile/touch devices
-
-        //If touch-mode AND scrollbar-width > 0 => let jquery-scroll-container auto-adjust padding-right
-        adjustPadding : function(){ return window.bsIsTouch && window.getScrollbarWidth() ? 'scroll' : 'none'; },
-
-        hasTouchEvents: function(){ return window.bsIsTouch; }
-    });
-    window.JqueryScrollContainer.update('modal isTouch='+window.bsIsTouch);
+    //Adjusting default options jquery-scroll-container
+    window.JqueryScrollContainer.scrollbarOptions.paddingLeft = true;
+    window.JqueryScrollContainer.update(window.bsIsTouch);
 
     /**********************************************************
     bsModal( options ) - create a Bootstrap-modal
@@ -35,7 +28,18 @@
 }       type //"", "alert", "success", "warning", "error", "info"
         fixedContent
 
-        alwaysMaxHeight
+        //The height of the modal can be one of the following four ways:
+        height   : NUMBER - The fixed height
+
+        maxHeight: NUMBER - The max height
+
+        relativeHeight       : NUMBER of FUNCTION. Must be/return a number <= 1 witch is the relative height compared with the parent container of the modal. Default = 1
+        relativeHeightOffset : NUMBER or FUNCTION. Must be/return a number the is deducted from parent-container-height * relativeHeight. Default = 2 * modalVerticalMargin
+        parentContainerHeight: NUMBER or FUNCTION. Is/return the height of the parent container. Default = window.innerHeight
+
+        alwaysMaxHeight: BOOLEAN - If true the modal is always the full height of it parent
+
+
         flexWidth
         extraWidth
         megaWidth
@@ -83,6 +87,14 @@
         modalSizeName[MODAL_SIZE_MINIMIZED] = 'minimized';
         modalSizeName[MODAL_SIZE_EXTENDED ] = 'extended';
 
+    var modalSizeClassName = {};
+        modalSizeClassName[MODAL_SIZE_NORMAL]    = 'modal-normal';
+        modalSizeClassName[MODAL_SIZE_MINIMIZED] = 'modal-minimized';
+        modalSizeClassName[MODAL_SIZE_EXTENDED]  = 'modal-extended';
+
+
+
+
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
     Due to an intended design in Safari it is not possible to
@@ -93,11 +105,34 @@
     Sets both max-height and height to allow always-max-heigth options
     **********************************************************/
     function adjustModalMaxHeight( $modalContent ){
-        $modalContent = $modalContent || $('.modal-content.modal-flex-height');
-        var maxHeight = parseInt(window.innerHeight) - 2*modalVerticalMargin;
-        $modalContent.css({
-            'max-height': maxHeight+'px',
-            'height'    : maxHeight+'px'
+        var $modalContents = $modalContent || $('.modal-content.modal-flex-height');
+
+        //For each $modalContent: Get the current data with options on relative size and set the height and max-height
+        $modalContents.each(function(index, elem){
+            var $modalContent = $(elem);
+            $.each(modalSizeClassName, function(size, className){
+                if ($modalContent.hasClass(className)){
+                    //The current percent/offset info is in .data('relativeHeightOptions')[size];
+                    var relativeOptions =
+                            $.extend({
+                                relativeHeight       : 1,
+                                relativeHeightOffset : 2 * modalVerticalMargin,
+                                parentContainerHeight: parseInt(window.innerHeight)
+                            },
+                                ($modalContent.data('relativeHeightOptions') || {})[size]
+                            );
+
+                    $.each(relativeOptions, function(id, value){
+                        relativeOptions[id] = $.isFunction(value) ? value($modalContent) : value;
+                    });
+
+                    var maxHeight = relativeOptions.relativeHeight * relativeOptions.parentContainerHeight - relativeOptions.relativeHeightOffset;
+                    $modalContent.css({
+                        'max-height': maxHeight+'px',
+                        'height'    : maxHeight+'px'
+                    });
+                }
+            });
         });
     }
 
@@ -474,20 +509,51 @@
         this.bsModal.cssWidth  = {};
         this.bsModal.sizes = MODAL_SIZE_NORMAL;
 
+        /*
+        If the modal have flex-height ie. the height is a percent of the parent containers height
+        relativeHeightOptions = {size}{relativeHeight, relativeHeightOffset, parentContainerHeight} - See above
+        */
+        var relativeHeightOptions = null;
+        function setRelativeHeightOptions(size, options){
+            var relativeOptions = null;
+            if (!getHeightFromOptions(options)){
+                //Save only options differnet from default
+                $.each(['relativeHeight', 'relativeHeightOffset', 'parentContainerHeight'], function(index, id){
+                    var value = options[id];
+                    if (value || (value === 0)){
+                        relativeOptions = relativeOptions || {};
+                        relativeOptions[id] = value;
+                    }
+                });
+
+                if (relativeOptions){
+                    relativeHeightOptions = relativeHeightOptions || {};
+                    relativeHeightOptions[size] = relativeOptions;
+                }
+            }
+        }
+
         //Set bsModal.cssHeight
         this.bsModal.cssHeight[MODAL_SIZE_NORMAL] = getHeightFromOptions( options );
+        setRelativeHeightOptions(MODAL_SIZE_NORMAL, options);
+
 
         if (options.minimized){
             this.bsModal.sizes += MODAL_SIZE_MINIMIZED;
             this.bsModal.cssHeight[MODAL_SIZE_MINIMIZED] = getHeightFromOptions(options.minimized);
+            setRelativeHeightOptions(MODAL_SIZE_MINIMIZED, options.minimized);
         }
 
         if (options.extended){
             this.bsModal.sizes += MODAL_SIZE_EXTENDED;
-            if (options.extended.height == true)
+            if (options.extended.height == true){
                 this.bsModal.cssHeight[MODAL_SIZE_EXTENDED] = this.bsModal.cssHeight[MODAL_SIZE_NORMAL];
-            else
+                setRelativeHeightOptions(MODAL_SIZE_EXTENDED, options);
+            }
+            else {
                 this.bsModal.cssHeight[MODAL_SIZE_EXTENDED] = getHeightFromOptions( options.extended );
+                setRelativeHeightOptions(MODAL_SIZE_EXTENDED, options.extended);
+            }
         }
 
         //Set bsModal.cssWidth
@@ -531,6 +597,10 @@
         setStateClass('clickable', 'clickable');
         //Add class to make content semi-transparent
         setStateClass('semi-transparent', 'semiTransparent');
+
+        //Save info on relative height
+        if (relativeHeightOptions)
+            $modalContent.data('relativeHeightOptions', relativeHeightOptions);
 
         var initSize =  options.minimized && options.isMinimized ?
                             MODAL_SIZE_MINIMIZED :
@@ -767,16 +837,16 @@
     ******************************************************/
     $.fn._bsModalSetSizeClass = function(size){
         return get$modalContent(this)
-                   .modernizrToggle('modal-minimized', size == MODAL_SIZE_MINIMIZED )
-                   .modernizrToggle('modal-normal',    size == MODAL_SIZE_NORMAL)
-                   .modernizrToggle('modal-extended',  size == MODAL_SIZE_EXTENDED );
+                   .modernizrToggle(modalSizeClassName[MODAL_SIZE_MINIMIZED], size == MODAL_SIZE_MINIMIZED )
+                   .modernizrToggle(modalSizeClassName[MODAL_SIZE_NORMAL],    size == MODAL_SIZE_NORMAL)
+                   .modernizrToggle(modalSizeClassName[MODAL_SIZE_EXTENDED],  size == MODAL_SIZE_EXTENDED );
     };
 
     $.fn._bsModalGetSize = function(){
         var $modalContent = get$modalContent(this);
-        return $modalContent.hasClass('modal-minimized') ?
+        return $modalContent.hasClass(modalSizeClassName[MODAL_SIZE_MINIMIZED]) ?
                    MODAL_SIZE_MINIMIZED :
-               $modalContent.hasClass('modal-normal') ?
+               $modalContent.hasClass(modalSizeClassName[MODAL_SIZE_NORMAL]) ?
                    MODAL_SIZE_NORMAL :
                    MODAL_SIZE_EXTENDED;
     };
@@ -785,6 +855,7 @@
     _bsModalSetHeightAndWidth - Set the height and width according to current cssHeight and cssWidth
     ******************************************************/
     $.fn._bsModalSetHeightAndWidth = function(){
+
         var bsModal = this.bsModal,
             $modalContent = get$modalContent(this),
             $modalDialog = $modalContent.parent(),
@@ -872,7 +943,7 @@
             oldHeight = $this.outerHeight(),
             newHeight;
 
-        $this.modernizrToggle('modal-extended');
+        $this.modernizrToggle(modalSizeClassName[MODAL_SIZE_EXTENDED]);
 
         newHeight = $this.outerHeight();
         $this.height(oldHeight);

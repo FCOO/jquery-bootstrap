@@ -519,27 +519,46 @@ The following options can be set for the tree different content:
 
 - minimized: `options.minimimized`
 - normal: `options`
-- extended: `options.extended`. Id marked with (*): If `options.extended.ID: true` => inherited the value from `options.ID`
+- extended: `options.extended`.<br>If `options.extended.width = true` all `options.extended.ID` regarding `width` are inherited the from `options.ID`<br>If `options.extended.height = true` all `options.extended.ID` regarding `height` are inherited the from `options.ID`
+
+The height of the modal can be one of the following four ways (see description below)
+        
+        //Fixed height
+        options.height: NUMBER
+
+        //Max-height
+        options.maxHeight: NUMBER
+
+        //Relative to the height of the height of the parent container of the modal
+        relativeHeight       : NUMBER of FUNCTION
+        relativeHeightOffset : NUMBER or FUNCTION
+        parentContainerHeight: NUMBER or FUNCTION
+
+        //Always maximum height
+        alwaysMaxHeight: BOOLEAN
 
 
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
 | `type` | `string` | `""` | Sets `background-color` and `color` to match the [Noty](#noty) types<br> Possible value=`"alert"`, `"success"`, `"warning"`, `"error"`, `"info"`  |
-| `width` (*) | `number` | `null` | The width of the modal. Default width is 300px. |
+| `width` | `number` | `null` | The width of the modal. Default width is 300px. |
 | `flexWidth` | `boolean` | `false` | The default width of a modal is 300px. If `true` the width of the modal will adjust to the width of the browser up to 500px |
 | `extraWidth` | `boolean` | `false` | Only when `flexWidth` is set: If `true` the width of the modal will adjust to the width of the browser up to 800px |
-| `height` (*) | `number`| `null` | The fixed height of the modal. If neither `maxHeight` or `height` is set the max-height is adjusted to window-height  |
 | `megaWidth` | `boolean` | `false` | Only when `flexWidth` is set: If `true` the width of the modal will adjust to the width of the browser up to 1200px |
-| `maxHeight` | `number`| `null` | The max-height of the modal |
+| `height` | `number`| `null` | The fixed height of the modal. If neither `maxHeight` or `height` is set the max-height is adjusted to window-height  |
+| `maxHeight` | `number` | `null` | The max-height of the modal |
+| `relativeHeight` | `NUMBER of FUNCTION` | `1` |  Must be/return a number <= 1 witch is the relative height compared with the parent container of the modal |
+| `relativeHeightOffset` | `NUMBER or FUNCTION` | `2 * modalVerticalMargin` |  Must be/return a number the is deducted from parent-container-height * relativeHeight |
+| `parentContainerHeight` | `NUMBER or FUNCTION` | `window.innerHeight` |  Is/return the height of the parent container |
 | `alwaysMaxHeight` | `boolean` | `false` | If `true` the modal is always maximum height regardless of content |
 | `scroll` | `string` or `boolean`  | `true` | `true` or `"vertical"`: Vertical scrollbar<br>`"horizontal"`: Horizontal scroll-bar<br>`false` or `""`: No scrollbar  |
 | `noVerticalPadding` | `boolean` | `false` | If `true` the vertical padding around the contents is zero |
 | `noHorizontalPadding` | `boolean` | `false` | If `true` the horizontal padding around th contents is zero |
-| `fixedContent` (*) |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
+| `fixedContent` |  |  | The contents of the fixed (no scroll-bar) part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `fixedContentOptions` |  |  | Options different from content for fixed-content |
 | `content` |  |  | The contents of the scrolling part of the modal. Can be `DOM-element`, `jQuery-element`, `function( $container )` |
 | `contentContext` |  | `null` | The context for `content` (only `function`) |
-| `footer` (*) | `content` or `[] of content` | `""` | See above |
+| `footer` | `content` or `[] of content` | `""` | See above |
 | `fixedClassName` | `string` | `""` | Extra class-name(s) for `<div>` containing `options.fixedContent`  |
 | `className` | `string` | `""` | Extra class-name(s) for `<div>` containing `options.content`  |
 | `semiTransparent` | `boolean` | `false` | If `true` the background of the content gets semi-transparent |
