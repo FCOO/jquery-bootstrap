@@ -37,7 +37,7 @@
                 ' ';
         var result = [
             'fas ' + className + colorClassName,
-            'far ' + className + borderColorClassName
+            $.FONTAWESOME_PREFIX_BUTTON + ' ' + className + borderColorClassName
         ];
 
         return options.partOfList ? result : [result];

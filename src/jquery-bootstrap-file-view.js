@@ -76,8 +76,8 @@
             //*********************************************
             default:
                 $container._bsAddHtml({ text: {
-                    da: 'Klik på <i class="far fa-window-maximize"/> for at se dokumentet i et nyt vindue<br>Klik på <i class="fas ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
-                    en: 'Click on <i class="far fa-window-maximize"/> to see the document in a new window<br>Click on <i class="fas ' + $.bsExternalLinkIcon + '"/> to see the document in a new Tab Page'
+                    da: 'Klik på <i class="'+$.FONTAWESOME_PREFIX + ' fa-window-maximize"/> for at se dokumentet i et nyt vindue<br>Klik på <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
+                    en: 'Click on <i class="'+$.FONTAWESOME_PREFIX + ' fa-window-maximize"/> to see the document in a new window<br>Click on <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> to see the document in a new Tab Page'
                 }});
         }
 
@@ -86,7 +86,7 @@
             .addClass('modal-footer')
             .css('justify-content',  'center')
             ._bsAppendContent([
-                $.bsButton( {icon:'far fa-window-maximize',  text: {da:'Vis',  en:'Show'},   onClick: function(){ showFileInModal( fileName, options.header ); } } ),
+                $.bsButton( {icon: $.FONTAWESOME_PREFIX_BUTTON + ' fa-window-maximize',  text: {da:'Vis',  en:'Show'},   onClick: function(){ showFileInModal( fileName, options.header ); } } ),
                 $.bsButton( {icon: $.bsExternalLinkIcon, text: {da: 'Åbne', en: 'Open'}, link: fileName } )
             ])
             .appendTo($result);

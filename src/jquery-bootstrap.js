@@ -57,6 +57,12 @@
     //FONTAWESOME_PREFIX = the classname-prefix used when non is given. Fontawesome 4.X: 'fa', Fontawesome 5: Free: 'fas' Pro: 'far' or 'fal'
     $.FONTAWESOME_PREFIX = $.FONTAWESOME_PREFIX || 'fa';
 
+
+    //FONTAWESOME_PREFIX_BUTTON = the classname-prefix used for buttons in jquery-bootstrap-buttons. Fontawesome 5: Free: 'far'
+    $.FONTAWESOME_PREFIX_BUTTON = $.FONTAWESOME_PREFIX_BUTTON || 'far';
+
+
+
     //ICONFONT_PREFIXES = STRING or []STRING with regexp to match class-name setting font-icon class-name. Fontawesome 5: 'fa.?' accepts 'fas', 'far', etc. as class-names => will not add $.FONTAWESOME_PREFIX
     $.ICONFONT_PREFIXES = 'fa.?';
 

@@ -29,22 +29,22 @@
         back    : 'fa-chevron-left',
         forward : 'fa-chevron-right',
 
-        pin     : ['fas fa-thumbtack fa-inside-circle', 'far fa-circle'],
+        pin     : ['fas fa-thumbtack fa-inside-circle', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'],
         unpin   : 'fa-thumbtack',
 
         extend  : 'fa-chevron-up',
         diminish: 'fa-chevron-down',
 
-        new     : ['far fa-window-maximize fa-inside-circle2', 'far fa-circle'],
+        new     : [$.FONTAWESOME_PREFIX_BUTTON + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'],
 
-        warning : [['fas fa-circle back text-warning', 'far fa-circle front'], 'fas fa-exclamation middle'],
+        warning : [['fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle front'], 'fas fa-exclamation middle'],
 
-        info    : 'fa-info-circle',
+        info    : $.FONTAWESOME_PREFIX_BUTTON + ' fa-info-circle',
 
 
-        help    : 'far fa-question-circle',
+        help    : $.FONTAWESOME_PREFIX_BUTTON + ' fa-question-circle',
 
-        close   : ['fas fa-circle back', 'far fa-times-circle middle', 'far fa-circle front']
+        close   : ['fas fa-circle back', $.FONTAWESOME_PREFIX_BUTTON + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle front']
     };
 
     //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header

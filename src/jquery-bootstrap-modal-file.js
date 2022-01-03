@@ -81,8 +81,8 @@
             fileNameExt = window.url('fileext', theFileName),
             $content,
             footer = {
-                da: 'Hvis filen ikke kan vises, klik på <i class="fas ' + $.bsExternalLinkIcon + '"></i> for at se dokumentet i en ny fane',
-                en: 'If the file doesn\'t show correctly click on <i class="fas ' + $.bsExternalLinkIcon + '"></i> to see the document in a new Tab Page'
+                da: 'Hvis filen ikke kan vises, klik på <i class="' +           $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"></i> for at se dokumentet i en ny fane',
+                en: 'If the file doesn\'t show correctly click on <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"></i> to see the document in a new Tab Page'
             },
             fullWidth       = true,
             noPadding       = true,
@@ -97,8 +97,8 @@
                 $('<div/>')
                     .addClass('text-center')
                     ._bsAddHtml({text: {
-                        da: 'Denne browser understøtter ikke visning<br>af pdf-filer i popup-vinduer<br>Klik på <i class="fas ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
-                        en: 'This browser does not support<br>pdf-files in popup windows<br>Click on <i class="fas ' + $.bsExternalLinkIcon + '"/> to see the document<br>in a new Tab page'
+                        da: 'Denne browser understøtter ikke visning<br>af pdf-filer i popup-vinduer<br>Klik på <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
+                        en: 'This browser does not support<br>pdf-files in popup windows<br>Click on <i class="' +            $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> to see the document<br>in a new Tab page'
                     }});
             fullWidth       = false;
             footer          = null;
@@ -139,11 +139,29 @@
 
                     //Add the images to the iframe when the iframe is loaded into the DOM
                     setTimeout( function(){
-                        var $iFrameBody = $iframe.contents().find('body');
-                        $iFrameBody.on('mousewheel', $.proxy( zoomControl.mousewheel, zoomControl ) );
-                        $iFrameBody.append($img);
-                    }, 200);
+                        var contents = $iframe.contents(),
+                            $iframeBody = contents.find('body')/*,
+                            $iframeHead = contents.find('head')*/;
 
+                        $iframeBody.on('mousewheel', $.proxy( zoomControl.mousewheel, zoomControl ) );
+                        $iframeBody.append($img);
+
+                        /* Try to adjust style of iframe - Not working
+                        var style = document.createElement('style');
+                        style.type = 'text/css';
+                        style.innerHTML =
+                            'body { scrollbar-width: thin; scrollbar-color: #cdcdcd white;; }; ' +
+                            'html ::-webkit-scrollbar-thumb {background-color: #cdcdcd; border-radius: 6px; border: 1px solid white; box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5); }';
+                        $iframeHead.append(style);
+
+                        //Or by css-file
+                        var cssLink = document.createElement("link");
+                        cssLink.href = "style.css";
+                        cssLink.rel = "stylesheet";
+                        cssLink.type = "text/css";
+                        $iframeHead.append(cssLink);
+                        */
+                    }, 200);
 
                     $content = [
                         $iframe,

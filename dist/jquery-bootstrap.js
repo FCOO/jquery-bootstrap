@@ -455,14 +455,14 @@
                     //Radio-button icons
                     [[
                         'fas fa-circle text-checked   icon-show-for-checked', //"Blue" background
-                        'far fa-dot-circle text-white icon-show-for-checked', //Dot marker
-                        'far fa-circle'                                       //Border
+                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-dot-circle text-white icon-show-for-checked', //Dot marker
+                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'                                       //Border
                     ]] :
                     //Checkbox-button icons
                     [[
                         'fas fa-square text-checked      icon-show-for-checked', //"Blue" background
-                        'far fa-check-square text-white  icon-show-for-checked', //Check marker
-                        'far fa-square'                                          //Border
+                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-check-square text-white  icon-show-for-checked', //Check marker
+                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-square'                                          //Border
                     ]];
 
 
@@ -847,8 +847,8 @@
             //*********************************************
             default:
                 $container._bsAddHtml({ text: {
-                    da: 'Klik på <i class="far fa-window-maximize"/> for at se dokumentet i et nyt vindue<br>Klik på <i class="fas ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
-                    en: 'Click on <i class="far fa-window-maximize"/> to see the document in a new window<br>Click on <i class="fas ' + $.bsExternalLinkIcon + '"/> to see the document in a new Tab Page'
+                    da: 'Klik på <i class="'+$.FONTAWESOME_PREFIX + ' fa-window-maximize"/> for at se dokumentet i et nyt vindue<br>Klik på <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
+                    en: 'Click on <i class="'+$.FONTAWESOME_PREFIX + ' fa-window-maximize"/> to see the document in a new window<br>Click on <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> to see the document in a new Tab Page'
                 }});
         }
 
@@ -857,7 +857,7 @@
             .addClass('modal-footer')
             .css('justify-content',  'center')
             ._bsAppendContent([
-                $.bsButton( {icon:'far fa-window-maximize',  text: {da:'Vis',  en:'Show'},   onClick: function(){ showFileInModal( fileName, options.header ); } } ),
+                $.bsButton( {icon: $.FONTAWESOME_PREFIX_BUTTON + ' fa-window-maximize',  text: {da:'Vis',  en:'Show'},   onClick: function(){ showFileInModal( fileName, options.header ); } } ),
                 $.bsButton( {icon: $.bsExternalLinkIcon, text: {da: 'Åbne', en: 'Open'}, link: fileName } )
             ])
             .appendTo($result);
@@ -906,7 +906,7 @@
                 ' ';
         var result = [
             'fas ' + className + colorClassName,
-            'far ' + className + borderColorClassName
+            $.FONTAWESOME_PREFIX_BUTTON + ' ' + className + borderColorClassName
         ];
 
         return options.partOfList ? result : [result];
@@ -1559,22 +1559,22 @@
         back    : 'fa-chevron-left',
         forward : 'fa-chevron-right',
 
-        pin     : ['fas fa-thumbtack fa-inside-circle', 'far fa-circle'],
+        pin     : ['fas fa-thumbtack fa-inside-circle', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'],
         unpin   : 'fa-thumbtack',
 
         extend  : 'fa-chevron-up',
         diminish: 'fa-chevron-down',
 
-        new     : ['far fa-window-maximize fa-inside-circle2', 'far fa-circle'],
+        new     : [$.FONTAWESOME_PREFIX_BUTTON + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'],
 
-        warning : [['fas fa-circle back text-warning', 'far fa-circle front'], 'fas fa-exclamation middle'],
+        warning : [['fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle front'], 'fas fa-exclamation middle'],
 
-        info    : 'fa-info-circle',
+        info    : $.FONTAWESOME_PREFIX_BUTTON + ' fa-info-circle',
 
 
-        help    : 'far fa-question-circle',
+        help    : $.FONTAWESOME_PREFIX_BUTTON + ' fa-question-circle',
 
-        close   : ['fas fa-circle back', 'far fa-times-circle middle', 'far fa-circle front']
+        close   : ['fas fa-circle back', $.FONTAWESOME_PREFIX_BUTTON + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle front']
     };
 
     //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
@@ -2265,8 +2265,8 @@ options
             fileNameExt = window.url('fileext', theFileName),
             $content,
             footer = {
-                da: 'Hvis filen ikke kan vises, klik på <i class="fas ' + $.bsExternalLinkIcon + '"></i> for at se dokumentet i en ny fane',
-                en: 'If the file doesn\'t show correctly click on <i class="fas ' + $.bsExternalLinkIcon + '"></i> to see the document in a new Tab Page'
+                da: 'Hvis filen ikke kan vises, klik på <i class="' +           $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"></i> for at se dokumentet i en ny fane',
+                en: 'If the file doesn\'t show correctly click on <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"></i> to see the document in a new Tab Page'
             },
             fullWidth       = true,
             noPadding       = true,
@@ -2281,8 +2281,8 @@ options
                 $('<div/>')
                     .addClass('text-center')
                     ._bsAddHtml({text: {
-                        da: 'Denne browser understøtter ikke visning<br>af pdf-filer i popup-vinduer<br>Klik på <i class="fas ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
-                        en: 'This browser does not support<br>pdf-files in popup windows<br>Click on <i class="fas ' + $.bsExternalLinkIcon + '"/> to see the document<br>in a new Tab page'
+                        da: 'Denne browser understøtter ikke visning<br>af pdf-filer i popup-vinduer<br>Klik på <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
+                        en: 'This browser does not support<br>pdf-files in popup windows<br>Click on <i class="' +            $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> to see the document<br>in a new Tab page'
                     }});
             fullWidth       = false;
             footer          = null;
@@ -2323,11 +2323,29 @@ options
 
                     //Add the images to the iframe when the iframe is loaded into the DOM
                     setTimeout( function(){
-                        var $iFrameBody = $iframe.contents().find('body');
-                        $iFrameBody.on('mousewheel', $.proxy( zoomControl.mousewheel, zoomControl ) );
-                        $iFrameBody.append($img);
-                    }, 200);
+                        var contents = $iframe.contents(),
+                            $iframeBody = contents.find('body')/*,
+                            $iframeHead = contents.find('head')*/;
 
+                        $iframeBody.on('mousewheel', $.proxy( zoomControl.mousewheel, zoomControl ) );
+                        $iframeBody.append($img);
+
+                        /* Try to adjust style of iframe - Not working
+                        var style = document.createElement('style');
+                        style.type = 'text/css';
+                        style.innerHTML =
+                            'body { scrollbar-width: thin; scrollbar-color: #cdcdcd white;; }; ' +
+                            'html ::-webkit-scrollbar-thumb {background-color: #cdcdcd; border-radius: 6px; border: 1px solid white; box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5); }';
+                        $iframeHead.append(style);
+
+                        //Or by css-file
+                        var cssLink = document.createElement("link");
+                        cssLink.href = "style.css";
+                        cssLink.rel = "stylesheet";
+                        cssLink.type = "text/css";
+                        $iframeHead.append(cssLink);
+                        */
+                    }, 200);
 
                     $content = [
                         $iframe,
@@ -5659,6 +5677,12 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
     //FONTAWESOME_PREFIX = the classname-prefix used when non is given. Fontawesome 4.X: 'fa', Fontawesome 5: Free: 'fas' Pro: 'far' or 'fal'
     $.FONTAWESOME_PREFIX = $.FONTAWESOME_PREFIX || 'fa';
+
+
+    //FONTAWESOME_PREFIX_BUTTON = the classname-prefix used for buttons in jquery-bootstrap-buttons. Fontawesome 5: Free: 'far'
+    $.FONTAWESOME_PREFIX_BUTTON = $.FONTAWESOME_PREFIX_BUTTON || 'far';
+
+
 
     //ICONFONT_PREFIXES = STRING or []STRING with regexp to match class-name setting font-icon class-name. Fontawesome 5: 'fa.?' accepts 'fas', 'far', etc. as class-names => will not add $.FONTAWESOME_PREFIX
     $.ICONFONT_PREFIXES = 'fa.?';
