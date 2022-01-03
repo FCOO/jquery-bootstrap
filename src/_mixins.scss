@@ -203,7 +203,7 @@ Sets all color for text, background, border for normal, :hover, :focus,  :active
     .mouse-hover &:hover:not(:active):not(:disabled):not(.disabled) {
         color: $color-hover;
         @if ($incl-bg){
-        @include _bg-color($bg-color-hover, $no-gradians);
+            @include _bg-color($bg-color-hover, $no-gradians);
         }
     }
 

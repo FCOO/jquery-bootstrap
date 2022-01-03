@@ -28,37 +28,25 @@ Icons for modal header inside a container
         line-height: 1em;
     }
 
+
     .header-icon {
         //Common style
         width      : 1em;
         text-align : center;
-        color      : $close-color;
-        text-shadow: $close-text-shadow;
-        opacity    : .5;
         cursor     : default;
 
-        &.disabled { opacity: .25;  }
         &.hidden   { display: none; }
 
-
-        &:not(.disabled):hover {
-            color: $close-color;
-            text-decoration: none;
-            opacity: .75;
-
-            &:active { opacity: .9; }
-        }
+        @include control-colors(
+            $color      : $gray-600,
+            $incl-active: true,
+            $incl-border: false,
+            $incl-bg    : false,
+            $incl-error : false
+        );
 
         //Special version for icons with colored background (normal or hover)
-        &.header-icon-colored-background {
-            * { text-shadow: none; }
-            .back { color: transparent; }
-
-            &:not(.disabled):hover {
-                opacity: .9;
-                &:active { opacity: 1; }
-            }
-        }
+        &.header-icon-colored-background .back { color: transparent; }
 
         //Special version for close-icon: red background on hover
         &.header-icon-close {
