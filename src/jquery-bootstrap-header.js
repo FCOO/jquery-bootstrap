@@ -24,28 +24,32 @@
 
     */
 
-    //$.bsHeaderIcons = class-names for the different icons on the header
-    $.bsHeaderIcons = {
-        back    : 'fa-chevron-left',
-        forward : 'fa-chevron-right',
+    //$.bsHeaderIcons = class-names for the different icons on the header. Set by function to allow updating $.FONTAWESOME_PREFIX_??
+    $.bsHeaderIcons = {};
+    $._set_bsHeaderIcons = function( forceOptions = {}){
 
-        pin     : ['fas fa-thumbtack fa-inside-circle', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'],
-        unpin   : 'fa-thumbtack',
+        $.bsHeaderIcons = $.extend( $.bsHeaderIcons, {
+            back    : 'fa-chevron-left',
+            forward : 'fa-chevron-right',
 
-        extend  : 'fa-chevron-up',
-        diminish: 'fa-chevron-down',
+            pin     : ['fas fa-thumbtack fa-inside-circle', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'],
+            unpin   : 'fa-thumbtack',
 
-        new     : [$.FONTAWESOME_PREFIX_BUTTON + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'],
+            extend  : 'fa-chevron-up',
+            diminish: 'fa-chevron-down',
 
-        warning : [['fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle front'], 'fas fa-exclamation middle'],
+            new     : [$.FONTAWESOME_PREFIX_BUTTON + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'],
 
-        info    : $.FONTAWESOME_PREFIX_BUTTON + ' fa-info-circle',
+            warning : [['fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle front'], 'fas fa-exclamation middle'],
 
+            info    : /*$.FONTAWESOME_PREFIX_BUTTON + */'fas fa-info-circle', //fas-info-circle is not part of FA v5 free regulare
 
-        help    : $.FONTAWESOME_PREFIX_BUTTON + ' fa-question-circle',
+            help    : $.FONTAWESOME_PREFIX_BUTTON + ' fa-question-circle',
 
-        close   : ['fas fa-circle back', $.FONTAWESOME_PREFIX_BUTTON + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle front']
+            close   : ['fas fa-circle back', $.FONTAWESOME_PREFIX_BUTTON + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle front']
+        }, forceOptions );
     };
+    $._set_bsHeaderIcons();
 
     //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
     var mandatoryHeaderIconClassAndTitle = {
