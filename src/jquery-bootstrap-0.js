@@ -58,9 +58,8 @@
     $.FONTAWESOME_PREFIX = $.FONTAWESOME_PREFIX || 'fa';
 
 
-    //FONTAWESOME_PREFIX_BUTTON = the classname-prefix used for buttons in jquery-bootstrap-buttons. Fontawesome 5: Free: 'far'
-    $.FONTAWESOME_PREFIX_BUTTON = $.FONTAWESOME_PREFIX_BUTTON || 'far';
-
+    //FONTAWESOME_PREFIX_STANDARD = the classname-prefix used for buttons in standard radio/checkbox-buttons and icons in modal header. Fontawesome 5: Free: 'far'
+    $.FONTAWESOME_PREFIX_STANDARD = $.FONTAWESOME_PREFIX_STANDARD || 'far';
 
 
     //ICONFONT_PREFIXES = STRING or []STRING with regexp to match class-name setting font-icon class-name. Fontawesome 5: 'fa.?' accepts 'fas', 'far', etc. as class-names => will not add $.FONTAWESOME_PREFIX

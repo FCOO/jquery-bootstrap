@@ -139,14 +139,14 @@
                     //Radio-button icons
                     [[
                         'fas fa-circle text-checked   icon-show-for-checked', //"Blue" background
-                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-dot-circle text-white icon-show-for-checked', //Dot marker
-                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'                                       //Border
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-dot-circle text-white icon-show-for-checked', //Dot marker
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'                                       //Border
                     ]] :
                     //Checkbox-button icons
                     [[
                         'fas fa-square text-checked      icon-show-for-checked', //"Blue" background
-                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-check-square text-white  icon-show-for-checked', //Check marker
-                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-square'                                          //Border
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-check-square text-white  icon-show-for-checked', //Check marker
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-square'                                          //Border
                     ]];
 
 

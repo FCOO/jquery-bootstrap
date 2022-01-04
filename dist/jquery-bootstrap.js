@@ -130,9 +130,8 @@
     $.FONTAWESOME_PREFIX = $.FONTAWESOME_PREFIX || 'fa';
 
 
-    //FONTAWESOME_PREFIX_BUTTON = the classname-prefix used for buttons in jquery-bootstrap-buttons. Fontawesome 5: Free: 'far'
-    $.FONTAWESOME_PREFIX_BUTTON = $.FONTAWESOME_PREFIX_BUTTON || 'far';
-
+    //FONTAWESOME_PREFIX_STANDARD = the classname-prefix used for buttons in standard radio/checkbox-buttons and icons in modal header. Fontawesome 5: Free: 'far'
+    $.FONTAWESOME_PREFIX_STANDARD = $.FONTAWESOME_PREFIX_STANDARD || 'far';
 
 
     //ICONFONT_PREFIXES = STRING or []STRING with regexp to match class-name setting font-icon class-name. Fontawesome 5: 'fa.?' accepts 'fas', 'far', etc. as class-names => will not add $.FONTAWESOME_PREFIX
@@ -1245,14 +1244,14 @@
                     //Radio-button icons
                     [[
                         'fas fa-circle text-checked   icon-show-for-checked', //"Blue" background
-                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-dot-circle text-white icon-show-for-checked', //Dot marker
-                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'                                       //Border
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-dot-circle text-white icon-show-for-checked', //Dot marker
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'                                       //Border
                     ]] :
                     //Checkbox-button icons
                     [[
                         'fas fa-square text-checked      icon-show-for-checked', //"Blue" background
-                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-check-square text-white  icon-show-for-checked', //Check marker
-                        $.FONTAWESOME_PREFIX_BUTTON + ' fa-square'                                          //Border
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-check-square text-white  icon-show-for-checked', //Check marker
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-square'                                          //Border
                     ]];
 
 
@@ -1647,7 +1646,7 @@
             .addClass('modal-footer')
             .css('justify-content',  'center')
             ._bsAppendContent([
-                $.bsButton( {icon: $.FONTAWESOME_PREFIX_BUTTON + ' fa-window-maximize',  text: {da:'Vis',  en:'Show'},   onClick: function(){ showFileInModal( fileName, options.header ); } } ),
+                $.bsButton( {icon: $.FONTAWESOME_PREFIX + ' fa-window-maximize',  text: {da:'Vis',  en:'Show'},   onClick: function(){ showFileInModal( fileName, options.header ); } } ),
                 $.bsButton( {icon: $.bsExternalLinkIcon, text: {da: 'Åbne', en: 'Open'}, link: fileName } )
             ])
             .appendTo($result);
@@ -1696,7 +1695,7 @@
                 ' ';
         var result = [
             'fas ' + className + colorClassName,
-            $.FONTAWESOME_PREFIX_BUTTON + ' ' + className + borderColorClassName
+            $.FONTAWESOME_PREFIX + ' ' + className + borderColorClassName
         ];
 
         return options.partOfList ? result : [result];
@@ -2352,21 +2351,21 @@
             back    : 'fa-chevron-left',
             forward : 'fa-chevron-right',
 
-            pin     : ['fas fa-thumbtack fa-inside-circle', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'],
+            pin     : ['fas fa-thumbtack fa-inside-circle', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
             unpin   : 'fa-thumbtack',
 
             extend  : 'fa-chevron-up',
             diminish: 'fa-chevron-down',
 
-            new     : [$.FONTAWESOME_PREFIX_BUTTON + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle'],
+            new     : [$.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
 
-            warning : [['fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle front'], 'fas fa-exclamation middle'],
+            warning : [['fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle front'], 'fas fa-exclamation middle'],
 
-            info    : /*$.FONTAWESOME_PREFIX_BUTTON + */'fas fa-info-circle', //fas-info-circle is not part of FA v5 free regulare
+            info    : /*$.FONTAWESOME_PREFIX_STANDARD + */'fas fa-info-circle', //fas-info-circle is not part of FA v5 free regulare
 
-            help    : $.FONTAWESOME_PREFIX_BUTTON + ' fa-question-circle',
+            help    : $.FONTAWESOME_PREFIX_STANDARD + ' fa-question-circle',
 
-            close   : ['fas fa-circle back', $.FONTAWESOME_PREFIX_BUTTON + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_BUTTON + ' fa-circle front']
+            close   : ['fas fa-circle back', $.FONTAWESOME_PREFIX_STANDARD + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle front']
         }, forceOptions );
     };
     $._set_bsHeaderIcons();
