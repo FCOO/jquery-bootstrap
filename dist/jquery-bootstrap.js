@@ -1129,6 +1129,7 @@
                 transparentOnDark   : 'transparent-on-dark',
                 semiTransparent     : 'semi-transparent',
                 square              : 'square',
+                bigSquare           : 'square big-square',
                 bigIcon             : 'big-icon',
                 extraLargeIcon      : 'extra-large-icon',
                 selected            : 'active',

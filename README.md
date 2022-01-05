@@ -161,6 +161,7 @@ Return options to create a marker-icon = icon with inner color given as color in
 | `focus` | `boolean` | `false` | If `true` the button get focus |
 | `primary` | `boolean` | `false` | If `true` the button get primary-class (blue) |
 | `square` | `boolean` | `false` | If `true` the button get equal `height` and `min-width` (used primarily for icon-buttons) |
+| `bigSquare` | `boolean` | `false` | Same as `square` but extra large size (appx. x 1.6) |
 | `bigIcon` | `boolean` | `false` | If `true` the button get a almost 100% height icon (used primarily for icon-buttons) |
 | `extraLargeIcon` | `boolean` | `false` | If `true` the icon (and text) in the button get font-size 2rem |
 | `transparent` | `boolean` | `false` | If `true` the button get transparent |

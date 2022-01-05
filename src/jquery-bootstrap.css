@@ -8710,12 +8710,19 @@ div.btn, div.list-group-item {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0 !important;
-    height: 2.125rem;
-    width: 2.125rem; }
-    .btn.btn-standard.square.btn-sm, .btn-group-sm > .btn.btn-standard.square {
-      height: 1.8125rem;
-      width: 1.8125rem; }
+    padding: 0 !important; }
+    .btn.btn-standard.square:not(.big-square) {
+      height: 2.125rem;
+      width: 2.125rem; }
+      .btn.btn-standard.square:not(.big-square).btn-sm, .btn-group-sm > .btn.btn-standard.square:not(.big-square) {
+        height: 1.8125rem;
+        width: 1.8125rem; }
+    .btn.btn-standard.square.big-square {
+      height: 3rem;
+      width: 3rem; }
+      .btn.btn-standard.square.big-square.btn-sm, .btn-group-sm > .btn.btn-standard.square.big-square {
+        height: 2.625rem;
+        width: 2.625rem; }
     .btn.btn-standard.square.big-icon {
       font-size: 1.625rem; }
     .btn.btn-standard.square.btn-sm.big-icon, .btn-group-sm > .btn.btn-standard.square.big-icon {

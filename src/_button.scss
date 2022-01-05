@@ -131,20 +131,36 @@ div.btn, div.list-group-item {
 
         padding: 0 !important;
 
-        height: $button-square-dimension;
-        width : $button-square-dimension;
 
-        &.btn-sm {
-            height: $button-square-dimension-sm;
-            width : $button-square-dimension-sm;
+        &:not(.big-square){
+            height: $button-square-dimension;
+            width : $button-square-dimension;
+
+            &.btn-sm {
+                height: $button-square-dimension-sm;
+                width : $button-square-dimension-sm;
+            }
+        }
+
+        &.big-square {
+            height: $button-big-square-dimension;
+            width : $button-big-square-dimension;
+
+            &.btn-sm {
+                height: $button-big-square-dimension-sm;
+                width : $button-big-square-dimension-sm;
+            }
         }
 
         //.big-icon = Extra big icons
-        @mixin big-icon-font-size( $original-font-size ){
-            font-size: roundRem($original-font-size * 1.6); //round($original-font-size/1rem*1.6*16px) / 16px * 1rem;
+        @mixin big-icon-font-size( $original-font-size, $font-size-scale: $button-big-scale ){
+            font-size: roundRem($original-font-size * $font-size-scale); //round($original-font-size/1rem*1.6*16px) / 16px * 1rem;
         }
         &.big-icon          { @include big-icon-font-size( $font-size-base ); }
         &.btn-sm.big-icon   { @include big-icon-font-size( $font-size-sm   ); }
+
+
+
 
         //Center icon and make space for icons with width > height
         & > i.fa {
