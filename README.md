@@ -167,6 +167,8 @@ Return options to create a marker-icon = icon with inner color given as color in
 | `transparent` | `boolean` | `false` | If `true` the button get transparent |
 | `transparentOnDark` | `boolean` | `false` | If `true` the button get transparent and light text-color (assuming dark background) |
 | `semiTransparent` | `boolean` | `false` | If `true` the button get semi-transparent |
+| `noBorder` | `boolean` | `false` | If `true` the button will have no borders |
+| `noShadow` | `boolean` | `false` | If `true` the button will have no shadow |
 | `attr` | `object` | `null` | |
 | `prop` | `object` | `null` | |
 | `onClick` | `function()` | `null` | function to be called on-click |

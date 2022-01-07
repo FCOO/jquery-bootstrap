@@ -1134,6 +1134,7 @@
                 extraLargeIcon      : 'extra-large-icon',
                 selected            : 'active',
                 noBorder            : 'no-border',
+                noShadow            : 'no-shadow',
                 focus               : 'init_focus'
             };
 

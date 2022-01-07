@@ -73,6 +73,11 @@ div.btn, div.list-group-item {
         border-color: transparent !important;
     }
 
+    &.no-shadow {
+        @include box-shadow(none !important);
+    }
+
+
     /************************************************************
     Special version to have transparent button
     transparent = normal/dark color og light background
@@ -90,7 +95,7 @@ div.btn, div.list-group-item {
     }
 
     &.transparent-on-dark {
-        background: none;
+        background: none !important;
         $color-transparent: #D4D4D4;
         @include control-colors(
             $incl-active : true,
@@ -108,7 +113,7 @@ div.btn, div.list-group-item {
     }
 
     &.semi-transparent {
-        background: none;
+        background: none !important;
         @include control-colors(
             $incl-active    : true,
             $incl-border    : false,
