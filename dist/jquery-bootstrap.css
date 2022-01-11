@@ -7782,7 +7782,16 @@ Font-sizes for labels are same siae as header but incl a xxs-size
 CONTENT
 Unifies padding and font-size for content of modal, accordion, popup etc.
 Using same font-size and vertical/horizontal padding as buttons
+NOTE: For sm and xs y-padding = x-padding
 ************************************************************/
+.NIELS-HOLT {
+  normalX: 0.3125rem;
+  normalY: 0.25rem;
+  smX: 0.25rem;
+  smY: 0.25rem;
+  xsX: 0.1875rem;
+  xsY: 0.1875rem; }
+
 /************************************************************
 MARGIN-BOTTOM
 All elements in modal-windows get same margin-bottom
@@ -8895,9 +8904,9 @@ BUTTON-GROUP
 .btn-group-vertical + .btn-group-vertical {
   margin-top: 0.25rem; }
   .btn-group-vertical + .btn-group-vertical.btn-group-sm {
-    margin-top: 0.1875rem; }
+    margin-top: 0.25rem; }
   .btn-group-vertical + .btn-group-vertical.btn-group-xs {
-    margin-top: 0.1875rem; }
+    margin-top: 0.25rem; }
 
 /************************************************************
 BLOCK BUTTONS (from Bootstrap)
@@ -9842,7 +9851,7 @@ body.modal-open .modal {
       word-break: keep-all; }
   .modal-dialog.modal-dialog-sm .modal-content .modal-body,
   .modal-dialog.modal-dialog-sm .modal-content .modal-body-fixed {
-    padding: 0.1875rem 0.25rem;
+    padding: 0.25rem 0.25rem;
     font-size: 0.875rem; }
   .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header {
     /*
@@ -9915,7 +9924,7 @@ body.modal-open .modal {
       word-break: keep-all; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-body,
   .modal-dialog.modal-dialog-xs .modal-content .modal-body-fixed {
-    padding: 0.125rem 0.1875rem;
+    padding: 0.1875rem 0.1875rem;
     font-size: 0.75rem; }
   .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header {
     /*
@@ -9968,17 +9977,17 @@ body.modal-open .modal {
   padding-top: 0;
   padding-bottom: 0; }
 
-.modal-body-with-vertical-padding {
-  /*
-    sm and xs uses same top and bottom padding
-    .modal-dialog.modal-dialog-xs &,
-    .modal-dialog.modal-dialog-sm & {
-        @include content-padding-sm(true);
-    }
-*/ }
-  .modal-dialog .modal-body-with-vertical-padding {
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem; }
+.modal-dialog .modal-body-with-vertical-padding {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem; }
+
+.modal-dialog.modal-dialog-sm .modal-body-with-vertical-padding {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem; }
+
+.modal-dialog.modal-dialog-xs .modal-body-with-vertical-padding {
+  padding-top: 0.1875rem;
+  padding-bottom: 0.1875rem; }
 
 .modal-content .modal-body-fixed.no-vertical-padding,
 .modal-content .modal-body.no-vertical-padding {
@@ -10034,7 +10043,7 @@ Style for elements used to display any file in a modal-window
     word-break: keep-all; }
 
 .file-view-content {
-  padding: 0.1875rem 0.25rem;
+  padding: 0.25rem 0.25rem;
   font-size: 0.875rem; }
 
 /************************************************************
@@ -10647,7 +10656,7 @@ Adjust header and cell size when table is sm/xs or inside a sm/xs modal
 
 .table.table-sm tbody tr td,
 .modal-dialog-sm .table tbody tr td {
-  padding: 0.1875rem 0.25rem;
+  padding: 0.25rem 0.25rem;
   font-size: 0.875rem; }
 
 .table.table-xs thead tr th,
@@ -10684,7 +10693,7 @@ Adjust header and cell size when table is sm/xs or inside a sm/xs modal
 
 .table.table-xs tbody tr td,
 .modal-dialog-xs .table tbody tr td {
-  padding: 0.125rem 0.1875rem;
+  padding: 0.1875rem 0.1875rem;
   font-size: 0.75rem; }
 
 /************************************************************
@@ -10773,7 +10782,7 @@ Using Bootstrap Collapse to create accordion
     .accordion .card-header.collapsed .chevrolet:before {
       content: "\f054"; }
   .accordion .card-block {
-    padding: 0.1875rem 0.25rem;
+    padding: 0.25rem 0.25rem;
     font-size: 0.875rem;
     border-radius: 0.25rem; }
   .accordion .card-footer {
@@ -10861,7 +10870,7 @@ Using Bootstrap Collapse to create accordion
     word-break: keep-all; }
 
 .modal-dialog-sm .accordion .card-block, .accordion-sm .card-block {
-  padding: 0.1875rem 0.25rem;
+  padding: 0.25rem 0.25rem;
   font-size: 0.875rem; }
 
 .modal-dialog-sm .accordion .card-footer, .accordion-sm .card-footer {
@@ -10931,7 +10940,7 @@ Using Bootstrap Collapse to create accordion
     word-break: keep-all; }
 
 .modal-dialog-xs .accordion .card-block, .accordion-xs .card-block {
-  padding: 0.125rem 0.1875rem;
+  padding: 0.1875rem 0.1875rem;
   font-size: 0.75rem; }
 
 .modal-dialog-xs .accordion .card-footer, .accordion-xs .card-footer {

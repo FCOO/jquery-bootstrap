@@ -80,15 +80,27 @@ $font-size-label-xs: $font-size-xxs;
 CONTENT
 Unifies padding and font-size for content of modal, accordion, popup etc.
 Using same font-size and vertical/horizontal padding as buttons
+NOTE: For sm and xs y-padding = x-padding
 ************************************************************/
 $content-padding-x   : $input-padding-x;
 $content-padding-y   : $input-padding-y;
 
 $content-padding-x-sm: $input-padding-x-sm;
-$content-padding-y-sm: $input-padding-y-sm;
+$content-padding-y-sm: $input-padding-x-sm; //$input-padding-y-sm;
 
 $content-padding-x-xs: $input-padding-x-xs;
-$content-padding-y-xs: $input-padding-y-xs;
+$content-padding-y-xs: $input-padding-x-xs; //$input-padding-y-xs;
+
+.NIELS-HOLT {
+    normalX: $content-padding-x;
+    normalY: $content-padding-y;
+
+    smX: $content-padding-x-sm;
+    smY: $content-padding-y-sm;
+
+    xsX: $content-padding-x-xs;
+    xsY: $content-padding-y-xs;
+}
 
 
 /************************************************************

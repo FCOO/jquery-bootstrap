@@ -226,14 +226,8 @@ body.modal-open .modal {
             flex-grow  : 1; //Only .modal-body is growing
             @include content-padding();
             @include border-radius( $border-radius );
-
-//HER            //Background-color and color for modal-type-NAME, NAME=alert, success, warning, error, info
-//HER            @each $type in $type-list {
-//HER                &.modal-type-#{$type} {
-//HER                    @include type-colors( $type );
-//HER                }
-//HER            }
         }
+
         //Background-color and color for modal-type-NAME, NAME=alert, success, warning, error, info
         .modal-body-fixed, .modal-body {
             @each $type in $type-list {
@@ -355,8 +349,6 @@ body.modal-open .modal {
             }
             .modal-footer {
                 @include header-padding("xs");
-//HER                padding-top: $btn-padding-x-sm;
-//HER                padding-bottom: $btn-padding-x-sm;
             }
         }
     }
@@ -385,13 +377,12 @@ body.modal-open .modal {
     .modal-dialog & {
         @include content-padding(true);
     }
-/*
-    sm and xs uses same top and bottom padding
-    .modal-dialog.modal-dialog-xs &,
     .modal-dialog.modal-dialog-sm & {
         @include content-padding-sm(true);
     }
-*/
+    .modal-dialog.modal-dialog-xs & {
+        @include content-padding-xs(true);
+    }
 }
 
 //no-vertical-padding: No top- or bottom-padding in modal-body and modal-body-fixed
