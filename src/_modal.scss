@@ -227,13 +227,24 @@ body.modal-open .modal {
             @include content-padding();
             @include border-radius( $border-radius );
 
-            //Background-color and color for modal-type-NAME, NAME=alert, success, warning, error, info
+//HER            //Background-color and color for modal-type-NAME, NAME=alert, success, warning, error, info
+//HER            @each $type in $type-list {
+//HER                &.modal-type-#{$type} {
+//HER                    @include type-colors( $type );
+//HER                }
+//HER            }
+        }
+        //Background-color and color for modal-type-NAME, NAME=alert, success, warning, error, info
+        .modal-body-fixed, .modal-body {
             @each $type in $type-list {
                 &.modal-type-#{$type} {
                     @include type-colors( $type );
                 }
             }
         }
+
+
+
 
         //FOOTER-HEADER AND FOOTER
         .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
@@ -355,7 +366,10 @@ body.modal-open .modal {
 
 //Adjust padding-left and padding-right if the body is a scroll
 .modal-dialog, .modal-dialog.modal-dialog-sm, .modal-dialog.modal-dialog-xs {
-    .modal-body-fixed.scrollbar-vertical,
+    .modal-body-fixed.scrollbar-vertical  {
+        padding-left : $scroll-size;
+        padding-right: $scroll-size;
+    }
     .modal-body.scrollbar-vertical {
         padding-left : $scroll-size;
         padding-right: 0;

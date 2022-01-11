@@ -9725,24 +9725,24 @@ body.modal-open .modal {
     padding: 0.25rem 0.3125rem;
     font-size: 1rem;
     border-radius: calc( 0.3125rem - 1px); }
-    .modal-dialog .modal-content .modal-body.modal-type-alert {
-      background-color: #cce5ff;
-      color: #004085; }
-    .modal-dialog .modal-content .modal-body.modal-type-success {
-      background-color: #d4edda;
-      color: #155724; }
-    .modal-dialog .modal-content .modal-body.modal-type-warning {
-      background-color: #fff3cd;
-      color: #856404; }
-    .modal-dialog .modal-content .modal-body.modal-type-error {
-      background-color: #f8d7da;
-      color: #721c24; }
-    .modal-dialog .modal-content .modal-body.modal-type-info {
-      background-color: #d1ecf1;
-      color: #0c5460; }
-    .modal-dialog .modal-content .modal-body.modal-type-help {
-      background-color: #fefefe;
-      color: #818182; }
+  .modal-dialog .modal-content .modal-body-fixed.modal-type-alert, .modal-dialog .modal-content .modal-body.modal-type-alert {
+    background-color: #cce5ff;
+    color: #004085; }
+  .modal-dialog .modal-content .modal-body-fixed.modal-type-success, .modal-dialog .modal-content .modal-body.modal-type-success {
+    background-color: #d4edda;
+    color: #155724; }
+  .modal-dialog .modal-content .modal-body-fixed.modal-type-warning, .modal-dialog .modal-content .modal-body.modal-type-warning {
+    background-color: #fff3cd;
+    color: #856404; }
+  .modal-dialog .modal-content .modal-body-fixed.modal-type-error, .modal-dialog .modal-content .modal-body.modal-type-error {
+    background-color: #f8d7da;
+    color: #721c24; }
+  .modal-dialog .modal-content .modal-body-fixed.modal-type-info, .modal-dialog .modal-content .modal-body.modal-type-info {
+    background-color: #d1ecf1;
+    color: #0c5460; }
+  .modal-dialog .modal-content .modal-body-fixed.modal-type-help, .modal-dialog .modal-content .modal-body.modal-type-help {
+    background-color: #fefefe;
+    color: #818182; }
   .modal-dialog .modal-content .modal-footer-header {
     flex-shrink: 0;
     flex-grow: 0;
@@ -9956,10 +9956,11 @@ body.modal-open .modal {
   .modal-dialog.modal-dialog-xs .modal-content .modal-footer {
     padding: 0.125rem 0.1875rem; }
 
-.modal-dialog .modal-body-fixed.scrollbar-vertical,
-.modal-dialog .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body-fixed.scrollbar-vertical,
-.modal-dialog.modal-dialog-sm .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-xs .modal-body-fixed.scrollbar-vertical,
-.modal-dialog.modal-dialog-xs .modal-body.scrollbar-vertical {
+.modal-dialog .modal-body-fixed.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body-fixed.scrollbar-vertical, .modal-dialog.modal-dialog-xs .modal-body-fixed.scrollbar-vertical {
+  padding-left: 8px;
+  padding-right: 8px; }
+
+.modal-dialog .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body.scrollbar-vertical, .modal-dialog.modal-dialog-xs .modal-body.scrollbar-vertical {
   padding-left: 8px;
   padding-right: 0; }
 
