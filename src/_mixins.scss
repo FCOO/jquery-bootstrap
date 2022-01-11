@@ -458,7 +458,7 @@ footer-variant
     @include header-variant( $size: $size, $incl-border: false );
     @include header-colors();
 
-    line-height: 1; //Decrease height
+    line-height: 1.25; //Decrease height
 
     @if $incl-border-top == true {
         border-top: $modal-footer-border-width solid $modal-footer-border-color;

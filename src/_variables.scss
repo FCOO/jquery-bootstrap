@@ -91,18 +91,6 @@ $content-padding-y-sm: $input-padding-x-sm; //$input-padding-y-sm;
 $content-padding-x-xs: $input-padding-x-xs;
 $content-padding-y-xs: $input-padding-x-xs; //$input-padding-y-xs;
 
-.NIELS-HOLT {
-    normalX: $content-padding-x;
-    normalY: $content-padding-y;
-
-    smX: $content-padding-x-sm;
-    smY: $content-padding-y-sm;
-
-    xsX: $content-padding-x-xs;
-    xsY: $content-padding-y-xs;
-}
-
-
 /************************************************************
 MARGIN-BOTTOM
 All elements in modal-windows get same margin-bottom

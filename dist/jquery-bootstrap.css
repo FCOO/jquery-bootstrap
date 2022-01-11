@@ -7784,14 +7784,6 @@ Unifies padding and font-size for content of modal, accordion, popup etc.
 Using same font-size and vertical/horizontal padding as buttons
 NOTE: For sm and xs y-padding = x-padding
 ************************************************************/
-.NIELS-HOLT {
-  normalX: 0.3125rem;
-  normalY: 0.25rem;
-  smX: 0.25rem;
-  smY: 0.25rem;
-  xsX: 0.1875rem;
-  xsY: 0.1875rem; }
-
 /************************************************************
 MARGIN-BOTTOM
 All elements in modal-windows get same margin-bottom
@@ -9017,7 +9009,7 @@ POPOVER
   border-radius: inherit;
   color: #495057;
   background-color: #f2f2f2;
-  line-height: 1;
+  line-height: 1.25;
   border-top: 1px solid #9aa1a8;
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important; }
@@ -9086,7 +9078,7 @@ POPOVER
   border-radius: inherit;
   color: #495057;
   background-color: #f2f2f2;
-  line-height: 1;
+  line-height: 1.25;
   border-top: 1px solid #9aa1a8;
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important; }
@@ -9777,7 +9769,7 @@ body.modal-open .modal {
     border-radius: inherit;
     color: #495057;
     background-color: #f2f2f2;
-    line-height: 1;
+    line-height: 1.25;
     border-top: 1px solid #9aa1a8;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important; }
@@ -9876,7 +9868,7 @@ body.modal-open .modal {
     border-radius: inherit;
     color: #495057;
     background-color: #f2f2f2;
-    line-height: 1;
+    line-height: 1.25;
     border-top: 1px solid #9aa1a8;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important; }
@@ -9949,7 +9941,7 @@ body.modal-open .modal {
     border-radius: inherit;
     color: #495057;
     background-color: #f2f2f2;
-    line-height: 1;
+    line-height: 1.25;
     border-top: 1px solid #9aa1a8;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important; }
@@ -10808,7 +10800,7 @@ Using Bootstrap Collapse to create accordion
     border-radius: inherit;
     color: #495057;
     background-color: #f2f2f2;
-    line-height: 1;
+    line-height: 1.25;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
     border-radius: 0.25rem; }
@@ -10896,7 +10888,7 @@ Using Bootstrap Collapse to create accordion
   border-radius: inherit;
   color: #495057;
   background-color: #f2f2f2;
-  line-height: 1;
+  line-height: 1.25;
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
   border-radius: 0.25rem; }
@@ -10966,7 +10958,7 @@ Using Bootstrap Collapse to create accordion
   border-radius: inherit;
   color: #495057;
   background-color: #f2f2f2;
-  line-height: 1;
+  line-height: 1.25;
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
   border-radius: 0.25rem; }
@@ -11188,7 +11180,7 @@ for noty is copyed and modified
     border-radius: inherit;
     color: #495057;
     background-color: #f2f2f2;
-    line-height: 1;
+    line-height: 1.25;
     border-top: 1px solid #9aa1a8;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important; }
@@ -11498,7 +11490,7 @@ Adjustment to Bootstrap tabs
     border-radius: inherit;
     color: #495057;
     background-color: #f2f2f2;
-    line-height: 1;
+    line-height: 1.25;
     border-top: 1px solid #9aa1a8;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important; }
