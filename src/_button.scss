@@ -84,7 +84,7 @@ div.btn, div.list-group-item {
     transparent-on-dark = Light color on dark background
     ************************************************************/
     &.transparent {
-        background: none;
+        background: none !important;;
         @include control-colors(
             $incl-active : true,
             $bg-color    : rgba(0,0,0,0),
@@ -113,7 +113,7 @@ div.btn, div.list-group-item {
     }
 
     &.semi-transparent {
-        background: none !important;
+        //background: none; // !important;
         @include control-colors(
             $incl-active    : true,
             $incl-border    : false,
