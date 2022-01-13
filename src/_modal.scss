@@ -376,14 +376,30 @@ body.modal-open .modal {
 .modal-body-with-vertical-padding {
     .modal-dialog & {
         @include content-padding(true);
+        &.modal-body-with-horizontal-padding {
+            @include content-padding-horizontal();
+        }
     }
     .modal-dialog.modal-dialog-sm & {
         @include content-padding-sm(true);
+        &.modal-body-with-horizontal-padding {
+            @include content-padding-horizontal-sm();
+        }
     }
     .modal-dialog.modal-dialog-xs & {
         @include content-padding-xs(true);
+        &.modal-body-with-horizontal-padding {
+            @include content-padding-horizontal-xs();
+        }
     }
 }
+
+/*
+@include content-padding-horizontal();
+@include content-padding-horizontal-sm();
+@include content-padding-horizontal-xs();
+*/
+
 
 //no-vertical-padding: No top- or bottom-padding in modal-body and modal-body-fixed
 //no-horizontal-padding: No left- or rightpadding in modal-body and modal-body-fixed

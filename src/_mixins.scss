@@ -79,6 +79,27 @@ Unifies padding for modal, accordion, popup etc.
     @include any-content-padding($content-padding-y-xs, $content-padding-x-xs, $font-size-xs, $only-padding-vertical);
 }
 
+
+@mixin any-content-padding-horizontal($padding-y){
+    padding-left : $padding-y;
+    padding-right: $padding-y;
+}
+
+@mixin content-padding-horizontal(){
+    @include any-content-padding-horizontal($content-padding-y);
+}
+
+@mixin content-padding-horizontal-sm(){
+    @include any-content-padding-horizontal($content-padding-y-sm);
+}
+
+@mixin content-padding-horizontal-xs(){
+    @include any-content-padding-horizontal($content-padding-y-xs);
+}
+
+
+
+
 /************************************************************
 CONTROL-CONTAINER
 Style for div with controls inside modal.
