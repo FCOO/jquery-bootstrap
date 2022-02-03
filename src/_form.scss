@@ -40,8 +40,9 @@ The default bootstrap structure used for elements in a form is
     line-height   : 1;
     margin-bottom : 0;
 
-    padding-top   :     $input-padding-y;
+    padding-top   : $input-padding-y;
     padding-bottom: 2 * $input-padding-y;
+
     &.small-bottom-padding {
         padding-bottom: $input-padding-y;
     }
@@ -67,6 +68,7 @@ The default bootstrap structure used for elements in a form is
 .form-group.form-group-sm {
     padding-top   :     $input-padding-y-sm;
     padding-bottom: 2 * $input-padding-y-sm;
+
     &.small-bottom-padding {
         padding-bottom: $input-padding-y-sm;
     }

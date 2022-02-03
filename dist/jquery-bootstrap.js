@@ -790,6 +790,7 @@
                 //Create outer form-group
                 insideInputGroup = true;
                 $parent = $divXXGroup('form-group', options).appendTo( $parent );
+
                 if (options.smallBottomPadding)
                     $parent.addClass('small-bottom-padding');
 
