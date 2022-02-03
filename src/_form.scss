@@ -150,7 +150,7 @@ form.form-validation {
 
 //Including .form-control-xs and .input-group-xs as in Bootstrap 4 - See bootstrap/scss/_forms.scss
 
-//$input-height-xs = Height of extra small inout. Calculated same way as heihgt for -lg, -sm and normal input height. See bootstrap/scss/_variables.scss
+//$input-height-xs = Height of extra small inout. Calculated same way as height for -lg, -sm and normal input height. See bootstrap/scss/_variables.scss
 $input-height-xs: add($input-line-height-xs * 1em, add($input-padding-y-xs * 2, $input-height-border, false));
 
 .form-control-plaintext.form-control-xs{
@@ -176,6 +176,14 @@ $input-height-xs: add($input-line-height-xs * 1em, add($input-padding-y-xs * 2, 
     }
 }
 
+
+.input-group-with-float-label {
+    padding-top: $input-padding-y;
+
+    &.input-group-sm, &.input-group-xs  {
+        padding-top: $input-padding-y-sm;
+    }
+}
 
 .input-group-border {
     padding: $input-padding-y $input-padding-x;

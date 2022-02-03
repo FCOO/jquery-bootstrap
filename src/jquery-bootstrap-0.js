@@ -589,7 +589,7 @@
 
         The default bootstrap structure used for elements in a form is
         <div class="form-group">
-            <div class="input-group">
+            <div class="input-group input-group-with-float-label">
                 <div class="input-group-prepend">               //optional
                     <button class="btn btn-standard">..</buton> //optional 1-N times
                 </div>                                          //optional
@@ -677,7 +677,6 @@
                     options[id] = parentOptions[id];
             });
 
-
             if (options.type){
                 var type = options.type.toLowerCase();
                 switch (type){
@@ -731,8 +730,12 @@
                 if (noValidation || options.noValidation)
                     $parent.addClass('no-validation');
             }
-            var $originalParent = $parent;
+            var $originalParent = $parent,
+                isInputGroupWithFloatLabel = !!options.label;
+
             if (insideInputGroup || options.prepend || options.before || options.append || options.after){
+
+
                 //Create element inside input-group
                 var $inputGroup = $divXXGroup('input-group', options);
                 if (addBorder && !options.noBorder){
@@ -743,6 +746,7 @@
                         $inputGroup.addClass('input-group-border-dark');
 
                     if (options.label){
+                        isInputGroupWithFloatLabel = false; //Correct padding is set via input-group-border-with-label
                         $inputGroup.addClass('input-group-border-with-label');
                         $('<span/>')
                             .addClass('has-fixed-label')
@@ -750,6 +754,10 @@
                             .appendTo( $inputGroup );
                     }
                 }
+
+                if (isInputGroupWithFloatLabel)
+                    $inputGroup.addClass('input-group-with-float-label');
+
                 $parent = $inputGroup.appendTo( $parent );
             }
 
