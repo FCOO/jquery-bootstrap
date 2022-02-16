@@ -112,7 +112,7 @@
     $.bsCheckboxButton = function( options ){
         //Clone options to avoid reflux
         options = $.extend({}, options);
-        options.class = 'allow-zero-selected';
+        options.class = 'allow-zero-selected' + (options.class ? ' '+options.class : '');
 
         //Use modernizr-mode and classes if icon and/or text containe two values
         if ($.isArray(options.icon) && (options.icon.length == 2)){
