@@ -806,7 +806,7 @@
                 buttonOptions.class = buttonOptions.class || buttonOptions.className || '';
 
                 var $button =
-                    $.bsButton( $.extend({}, defaultButtonOptions, buttonOptions ) )
+                    $._anyBsButton( $.extend({}, defaultButtonOptions, buttonOptions ) )
                         .appendTo( $modalButtonContainer );
 
                 //Add onClick from icons (if any)

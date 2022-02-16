@@ -752,14 +752,18 @@
             if (options.type){
                 var type = options.type.toLowerCase();
                 switch (type){
-                    case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
-                    case 'button'           :   buildFunc = $.bsButton;             break;
-                    case 'buttongroup'      :   buildFunc = $.bsButtonGroup;        break;
+                    case 'button'                : buildFunc = $.bsButton;                  break;
+                    case 'checkboxbutton'        : buildFunc = $.bsCheckboxButton;          break;
+                    case 'standardcheckboxbutton': buildFunc = $.bsStandardCheckboxButton;  break;
+                    case 'iconcheckboxbutton'    : buildFunc = $.bsIconCheckboxButton;      break;
+                    case 'buttongroup'           : buildFunc = $.bsButtonGroup;             break;
+
                     case 'menu'             :   buildFunc = $.bsMenu;               break;
                     case 'select'           :   buildFunc = $.bsSelectBox;          insideFormGroup = true; break;
                     case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
                     case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
                     case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; break;
+
                     case 'tabs'             :   buildFunc = $.bsTabs;               break;
                     case 'table'            :   buildFunc = $.bsTable;              break;
                     case 'list'             :   buildFunc = $.bsList;               break;
@@ -771,6 +775,8 @@
                     case 'textbox'          :   buildFunc = buildTextBox;           insideFormGroup = true; addBorder = true; noValidation = true; break;
                     case 'fileview'         :   buildFunc = $.bsFileView;           break;
                     case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
+
+                    case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
                     case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
 //                    case 'xx'               :   buildFunc = $.bsXx;               break;
 
@@ -1297,6 +1303,28 @@
         return $.bsStandardCheckboxButton( $.extend({}, options, {square: true, icon: [icon]}) );
     };
 
+
+
+
+    /**********************************************************
+    _anyBsButton( options )
+    Create a specific variant of bs-buttons based on options.type
+    **********************************************************/
+    $._anyBsButton = function( options ){
+        var type = options.type || 'button',
+            constructor;
+
+        switch (type.toLowerCase()){
+            case 'button'                : constructor = $.bsButton; break;
+            case 'checkboxbutton'        : constructor = $.bsCheckboxButton; break;
+            case 'standardcheckboxbutton': constructor = $.bsStandardCheckboxButton; break;
+            case 'iconcheckboxbutton'    : constructor = $.bsIconCheckboxButton; break;
+            default                      : constructor = $.bsButton;
+        }
+        return constructor(options);
+    },
+
+
     /**********************************************************
     bsButtonGroup( options ) - create a Bootstrap-buttonGroup
     **********************************************************/
@@ -1352,7 +1380,7 @@
 
         $.each( options.list, function(index, buttonOptions ){
             if (buttonOptions.id)
-                $.bsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
+                $._anyBsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
                     .appendTo( result );
             else
                 $('<div/>')
@@ -4124,7 +4152,7 @@ jquery-bootstrap-modal-promise.js
                 buttonOptions.class = buttonOptions.class || buttonOptions.className || '';
 
                 var $button =
-                    $.bsButton( $.extend({}, defaultButtonOptions, buttonOptions ) )
+                    $._anyBsButton( $.extend({}, defaultButtonOptions, buttonOptions ) )
                         .appendTo( $modalButtonContainer );
 
                 //Add onClick from icons (if any)

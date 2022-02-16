@@ -183,6 +183,28 @@
         return $.bsStandardCheckboxButton( $.extend({}, options, {square: true, icon: [icon]}) );
     };
 
+
+
+
+    /**********************************************************
+    _anyBsButton( options )
+    Create a specific variant of bs-buttons based on options.type
+    **********************************************************/
+    $._anyBsButton = function( options ){
+        var type = options.type || 'button',
+            constructor;
+
+        switch (type.toLowerCase()){
+            case 'button'                : constructor = $.bsButton; break;
+            case 'checkboxbutton'        : constructor = $.bsCheckboxButton; break;
+            case 'standardcheckboxbutton': constructor = $.bsStandardCheckboxButton; break;
+            case 'iconcheckboxbutton'    : constructor = $.bsIconCheckboxButton; break;
+            default                      : constructor = $.bsButton;
+        }
+        return constructor(options);
+    },
+
+
     /**********************************************************
     bsButtonGroup( options ) - create a Bootstrap-buttonGroup
     **********************************************************/
@@ -238,7 +260,7 @@
 
         $.each( options.list, function(index, buttonOptions ){
             if (buttonOptions.id)
-                $.bsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
+                $._anyBsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
                     .appendTo( result );
             else
                 $('<div/>')
