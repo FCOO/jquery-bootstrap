@@ -154,7 +154,7 @@
 
         //Clone options to avoid reflux
         options = $.extend({}, options, {
-            class    : 'allow-zero-selected',
+            class    : 'allow-zero-selected' + (options.class ? ' '+options.class : ''),
             modernizr: true,
         });
 
