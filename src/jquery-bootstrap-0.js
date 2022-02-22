@@ -715,7 +715,8 @@
 
                     case 'text'             ://REMOVED                        buildFunc = $.bsText;               insideFormGroup = true; break;
                     case 'textarea'         ://REMOVED                        buildFunc = $.bsTextArea;           insideFormGroup = true; break;
-                    case 'textbox'          :   options.text = options.text || $.EMPTY_TEXT;
+                    case 'textbox'          :   if (!options.vfFormat)
+                                                    options.text = options.text || $.EMPTY_TEXT;
                                                 if (hasPreOrPost){
                                                     buildFunc = buildInlineTextBox; insideFormGroup = true; break;
                                                 }
