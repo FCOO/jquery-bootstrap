@@ -213,3 +213,17 @@ $input-height-xs: add($input-line-height-xs * 1em, add($input-padding-y-xs * 2, 
 .input-group-xs > label.has-float-label > .form-control { @extend .form-control-xs; }
 
 
+
+//input with multi-line text
+.input-group-with-text {
+    cursor    : default;
+    min-height: 1em;
+}
+
+
+
+/*
+Only for test: red labels
+.has-float-label > span:last-child > span{ background-color: red; }
+.has-fixed-label > span:last-child { background-color: red; }
+*/

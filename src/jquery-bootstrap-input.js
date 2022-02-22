@@ -49,23 +49,25 @@
         $.bsText( options )
         Create a <div> with text inside a <label>
         ******************************************************/
+/* REMOVED. ALL TEXT-INPUTS ARE CREATED IN _bsAppendContent
         bsText: function( options ){
             return $('<div/>')
                        ._bsAddHtml( options )
                        .addClass('form-control-border form-control no-hover')
                        ._wrapLabel(options);
         },
-
+//*/
         /******************************************************
         $.bsTextArea( options )
         Create a <div> with text inside a <label>
         ******************************************************/
+/* REMOVED. ALL TEXT-INPUTS ARE CREATED IN _bsAppendContent
         bsTextArea: function( options ){
             var $result = $.bsText( options );
             $result.children('.form-control').css('height', 'auto');
             return $result;
         }
-
+//*/
     });
 
 

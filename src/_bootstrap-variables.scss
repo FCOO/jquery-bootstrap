@@ -63,7 +63,7 @@ $input-btn-padding-x-lg: $input-btn-padding-y-lg;
 
 Syntax and relations:
 In Bootstrap
-    $input-btn-padding(-x|-y)[-sm|-lg]
+    $input-btn-padding(-x|-y)[-sm|-lg] = A Value
     $btn-padding(-x|-y)[-sm|-lg] = $input-btn-padding(-x|-y)[-sm|-lg]
 
 
@@ -95,6 +95,9 @@ $input-btn-padding-y-sm: rem(3px);
 
 $border-radius-sm      : rem(3px);
 
+
+
+
 /************************************************************
 Including "size" xs as in Bootstrap 4
 ************************************************************/
@@ -115,7 +118,6 @@ $input-padding-y-xs: $input-btn-padding-y-xs;
 $border-radius-xs      : rem(2px);
 $btn-border-radius-xs  : $border-radius-xs;
 $input-border-radius-xs: $border-radius-xs;
-
 
 /************************************************************
 Add line-heights for xs
