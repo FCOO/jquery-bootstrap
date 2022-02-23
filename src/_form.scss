@@ -218,6 +218,8 @@ $input-height-xs: add($input-line-height-xs * 1em, add($input-padding-y-xs * 2, 
 .input-group-with-text {
     cursor    : default;
     min-height: 1em;
+
+    background-color: red;
 }
 
 
