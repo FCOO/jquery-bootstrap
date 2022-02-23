@@ -168,6 +168,17 @@ $input-height-xs: add($input-line-height-xs * 1em, add($input-padding-y-xs * 2, 
     @include border-radius($input-border-radius-xs);
 }
 
+
+
+.input-group {
+    @include font-size($input-font-size);
+}
+
+.input-group-sm {
+    @include font-size($input-font-size-sm);
+
+}
+
 .input-group-xs {
     & > .form-control,
     & > .input-group-prepend > .input-group-text,
@@ -176,16 +187,24 @@ $input-height-xs: add($input-line-height-xs * 1em, add($input-padding-y-xs * 2, 
     & > .input-group-append > .btn {
         @extend .form-control-xs;
     }
+
+    @include font-size($input-font-size-xs);
 }
+
 
 
 .input-group-with-float-label {
     padding-top: $input-padding-y;
 
-    &.input-group-sm, &.input-group-xs  {
+    &.input-group-sm  {
         padding-top: $input-padding-y-sm;
     }
+
+    &.input-group-xs  {
+        padding-top: $input-padding-y-xs;
+    }
 }
+
 
 .input-group-border {
     padding: $input-padding-y $input-padding-x;
@@ -197,9 +216,14 @@ $input-height-xs: add($input-line-height-xs * 1em, add($input-padding-y-xs * 2, 
         border-color: black;
     }
 
-    &.input-group-sm, &.input-group-xs  {
+    &.input-group-sm {
         padding: $input-padding-y-sm $input-padding-x-sm;
         @include border-radius($input-border-radius-sm);
+    }
+
+    &.input-group-xs  {
+        padding: $input-padding-y-xs $input-padding-x-xs;
+        @include border-radius($input-border-radius-xs);
     }
 
     &.input-group-border-with-label {
@@ -218,6 +242,7 @@ $input-height-xs: add($input-line-height-xs * 1em, add($input-padding-y-xs * 2, 
 .input-group-with-text {
     cursor    : default;
     min-height: 1em;
+    margin    : 0.25em 0; //To compensate for line-height = 1 instead of 1.5
 }
 
 

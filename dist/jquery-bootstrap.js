@@ -693,10 +693,19 @@
 
             //buildTextBox - Simple multi-line text-box
             function buildTextBox( options ){
-//HERoptions.text = {da:''};
+
+//HERreturn $('<div/>')
+//HER        ._bsAddHtml( options )
+//HER        .addClass('form-control-border form-control no-hover')
+//HER        ._wrapLabel(options);
+
+
                 return $('<div/>')
                         ._bsAddHtml( options )
                         .addClass('input-group-with-text');
+
+
+
             }
 
             //buildInlineTextBox - Inline (pre/post) with single line text
