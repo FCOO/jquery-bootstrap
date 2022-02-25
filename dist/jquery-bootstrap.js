@@ -691,6 +691,31 @@
             function buildBaseSlider(options, $parent){ buildSlider(options, 'baseSlider', $parent); }
             function buildTimeSlider(options, $parent){ buildSlider(options, 'timeSlider', $parent); }
 
+
+            //buildCompactText - Compact box with label-icon to the left
+            function buildCompactText( options ){
+                var $result = $();
+                options.title = options.title || (options.label ? options.label.text : null);
+                $result = $result.add(
+                    $._bsCreateIcon(
+                        {icon: options.label ? options.label.icon : 'fas fa_'},
+                        null,
+                        options.title,
+                        'part-of-compact-text fa-fw text-center flex-grow-0 align-self-center'
+                    )
+                );
+
+                var $content = $('<div/>')
+                        ._bsAddHtml( options )
+                        .addClass('_input-group-with-text flex-grow-1');
+
+                if (options.title)
+                    $content.i18n(options.title, 'title');
+
+                return $result.add( $content );
+            }
+
+
             //buildTextBox - Simple multi-line text-box
             function buildTextBox( options ){
                 return $('<div/>')
@@ -786,6 +811,12 @@
                     case 'slider'           :   buildFunc = buildBaseSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
                     case 'timeslider'       :   buildFunc = buildTimeSlider;        insideFormGroup = true; addBorder = true; buildInsideParent = true; break;
 
+
+                    case 'compact'          :
+                    case 'conpacttext'      :   buildFunc = buildCompactText;
+                                                options.noLabel = true; options.noVerticalPadding = true;
+                                                insideFormGroup = true; addBorder = true; noValidation = true; break;
+
                     case 'text'             ://REMOVED                        buildFunc = $.bsText;               insideFormGroup = true; break;
                     case 'textarea'         ://REMOVED                        buildFunc = $.bsTextArea;           insideFormGroup = true; break;
                     case 'textbox'          :   if (!options.vfFormat)
@@ -794,8 +825,14 @@
                                                     buildFunc = buildInlineTextBox; insideFormGroup = true; break;
                                                 }
                                                 else {
-                                                    buildFunc = buildTextBox;       insideFormGroup = true; addBorder = true; noValidation = true;
-
+                                                    if (options.compact){
+                                                        //Same as type="compacttext" but with outer padding
+                                                        buildFunc = buildCompactText;
+                                                        options.noLabel = true;
+                                                    }
+                                                    else
+                                                        buildFunc = buildTextBox;
+                                                    insideFormGroup = true; addBorder = true; noValidation = true;
                                                 }
                                                 break;
 
@@ -826,6 +863,10 @@
                 if (options.smallBottomPadding)
                     $parent.addClass('small-bottom-padding');
 
+                if (options.noVerticalPadding)
+                    $parent.addClass('no-vertical-padding');
+
+
                 if (options.lineBefore)
                     $('<hr/>')
                         .addClass('before')
@@ -848,7 +889,7 @@
                     if (options.darkBorderlabel)
                         $inputGroup.addClass('input-group-border-dark');
 
-                    if (options.label){
+                    if (options.label && !options.noLabel){
                         isInputGroupWithFloatLabel = false; //Correct padding is set via input-group-border-with-label
                         $inputGroup.addClass('input-group-border-with-label');
                         $('<span/>')

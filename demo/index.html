@@ -1349,31 +1349,33 @@ width: 543,
                     },{
                         type: 'textarea', label: {icon:'fa-map', text:'TextArea'},
                         text: {da:'TextArea - Dette er en lang linie med mange ord<br>Anden linie', en:'Short'},
-                        small: false
+                        small: false, compact: true
 
                     }],
+                    isMinimized: true,                        
                     minimized: {
                         content: [{
-                            type: 'text', label: {icon:'fa-map', text:'Text small:undefined'},
-                            text: 'Text - Dette er en enkel linie'
+                            type: 'compact', label: {icon:'fa-map', text:'Text small:undefined'},
+                            text: 'Compact - Dette er en enkel linie',
+                            center: true                                
                         },{
-                            type: 'text', label: {icon:'fa-map', text:'Text small:true'},
-                            text: 'Text - Dette er en enkel linie', small: true
+                            type: 'compact', label: {icon:'fa-map', text:'Text small:true'},
+                            text: 'Compact - Dette er en enkel linie', small: true
                         },{
-                            type: 'text', label: {icon:'fa-map', text:'Text small:false'},
-                            text: 'Text - Dette er en enkel linie', small: false,
+                            type: 'compact', label: {icon:'fa-map', text:'Text small:false'},
+                            text: 'Compact - Dette er en enkel linie', small: false,
                         },{
-                            type: 'textbox', label: {icon:'fa-map', text:'TextBox small'},
-                            text: 'TextBox - Dette er en lang linie med mange ord', center: false, small: true
+                            type: 'compact', label: {icon:'fa-map', text:'TextBox small'},
+                            text: 'Compact - Dette er en lang linie med mange ord', center: false, small: true
                         },{
-                            type: 'textbox', label: {icon:'fa-map', text:'TextBox'},
-                            text: 'TextBox - Dette er en lang linie med mange ord', center: false
+                            type: 'compact', label: {icon:'fa-map', text:'TextBox'},
+                            text: 'Compact - Dette er en lang linie med mange ord', center: false
                         },{
-                            type: 'textarea', label: {icon:'fa-map', text:'TextArea small'},
-                            text: 'TextArea - Dette er en lang linie med mange ord', center: false, small: true
+                            type: 'compact', label: {icon:'fa-map', text:'TextArea small'},
+                            text: 'Compact - Dette er en lang linie med mange ord', center: false, small: true
                         },{
-                            type: 'textarea', label: {icon:'fa-map', text:'TextArea'},
-                            text: {da:'TextArea - Dette er en lang linie med mange ord', en:'Short'}
+                            type: 'compact', label: {icon:'fa-map', text:'TextArea'},
+                            text: {da:'Compact - Dette er en lang linie med mange ord<br>og flere linier<br>og endnu flere linier', en:'Short'}
                         }]
                     },
                     extended: {

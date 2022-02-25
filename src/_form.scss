@@ -63,8 +63,7 @@ The default bootstrap structure used for elements in a form is
     }
 }
 
-//Different size - Same padding for sm and xs
-.form-group.form-group-xs,
+//Different size
 .form-group.form-group-sm {
     padding-top   :     $input-padding-y-sm;
     padding-bottom: 2 * $input-padding-y-sm;
@@ -74,7 +73,7 @@ The default bootstrap structure used for elements in a form is
     }
     hr.above-label { margin-bottom: 3 * $input-padding-y-sm; }
 }
-/*
+
 .form-group.form-group-xs {
     padding-top   :     $input-padding-y-xs;
     padding-bottom: 2 * $input-padding-y-xs;
@@ -83,7 +82,14 @@ The default bootstrap structure used for elements in a form is
     }
     hr.above-label { margin-bottom: 3 * $input-padding-y-xs; }
 }
-*/
+
+
+//no-vertical-padding
+.form-group.no-vertical-padding {
+    padding-top   : 0;
+    padding-bottom: 0;
+}
+
 
 /************************************************************
 Style for formValidation (via fcoo-form-validation)
@@ -245,6 +251,20 @@ $input-height-xs: add($input-line-height-xs * 1em, add($input-padding-y-xs * 2, 
     margin    : 0.25em 0; //To compensate for line-height = 1 instead of 1.5
 }
 
+//input-group with compact content: Icon to the left and <div class="container-icon-and-text">
+
+i.part-of-compact-text {
+    font-size       : 1.25em;
+    width           : 1.50em;
+    padding-right   : inherit;
+
+    & + .container-icon-and-text {
+        cursor     : default;
+        min-height : 1em;
+        padding-left: inherit;
+        border-left: $border-width solid $control-border-color;
+    }
+}
 
 
 /*
