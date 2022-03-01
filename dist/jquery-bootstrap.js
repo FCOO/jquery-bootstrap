@@ -609,6 +609,8 @@
                     tagName = 'div';
 
                 var $text = $._bsCreateElement( tagName, linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index], textDataArray[index] );
+                $text.appendTo( _this );
+
                 if ($.isFunction( text ))
                     text( $text );
                 else
@@ -626,7 +628,6 @@
                 if (index < textClassArray.length)
                     $text.addClass( textClassArray[index] );
 
-                $text.appendTo( _this );
             });
 
             //Add value-format content
