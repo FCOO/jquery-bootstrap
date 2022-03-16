@@ -761,7 +761,7 @@
 
             //Function: Include arg (if any) in call to method (=options)
             if ($.isFunction( options )){
-                arg = arg ? $.isArray(arg) ? arg : [arg] : [];
+                arg = arg ? ($.isArray(arg) ? arg.slice() : [arg]) : [];
                 arg.unshift(this);
                 options.apply( context, arg );
                 return this;
@@ -3516,7 +3516,7 @@ jquery-bootstrap-modal-promise.js
     as expected/needed
     Instead a resize-event is added to update the max-height of
     elements with the current value of window.innerHeight
-    Sets both max-height and height to allow always-max-heigth options
+    Sets both max-height and height to allow always-max-height options
     **********************************************************/
     function adjustModalMaxHeight( $modalContent ){
         var $modalContents = $modalContent || $('.modal-content.modal-flex-height');

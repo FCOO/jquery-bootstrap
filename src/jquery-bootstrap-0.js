@@ -689,7 +689,7 @@
 
             //Function: Include arg (if any) in call to method (=options)
             if ($.isFunction( options )){
-                arg = arg ? $.isArray(arg) ? arg : [arg] : [];
+                arg = arg ? ($.isArray(arg) ? arg.slice() : [arg]) : [];
                 arg.unshift(this);
                 options.apply( context, arg );
                 return this;
