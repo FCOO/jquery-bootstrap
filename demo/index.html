@@ -1421,7 +1421,12 @@ width: 543,
         
         //************************************************************************************
         var testModalForm = null;
+        var testValue = 'semi';
         var myData = {
+            'checkboxbutton': testValue,
+            'standardcheckboxbutton': testValue,
+            'iconcheckboxbutton': true,
+
             'mySlider': 20,
             'mySlider2': 10,
             'formId2': 'Skide godt do',
@@ -1449,11 +1454,10 @@ width: 543,
                         {text:'Set=2', onClick: function(){ testModalForm.setValue('theSelectBox', 'theSelectBox1');} }
                     ],
                     onSubmit: function( data ){ 
-                        console.log( 'SUBMIT=', data.theCheckBox ); 
+                        console.log( 'SUBMIT=', data.theCheckBox, data ); 
                         myData = data; 
-                        myData.theCheckBox = false;
                     },
-                    onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; myData.theCheckBox = false},
+                    onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
                     useExtended: true,
                     isExtended: true,
                     scroll: true,
@@ -1495,6 +1499,12 @@ width: 543,
                                             type: 'hidden'
                                         },
 */
+                                        {id: 'checkboxbutton',          type: 'checkboxbutton',         icon: 'fa-home', text: 'Checkboxbutton', class:'w-100'},
+                                        {id: 'standardcheckboxbutton',  type: 'standardcheckboxbutton', icon: 'fa-home', text: 'Standardcheckboxbutton'},
+                                        {id: 'iconcheckboxbutton',      type: 'iconcheckboxbutton',     icon: ['', 'fas fa-star  text-checked', 'far fa-star']},
+
+                                        
+                                        
                                         {
                                             type: 'text', label: 'Text',
                                             text: 'Dette er en lang linie med mange ord', center: false

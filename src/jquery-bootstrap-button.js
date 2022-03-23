@@ -113,12 +113,11 @@
         //Clone options to avoid reflux
         options = $.extend({}, options);
 
-        if (options.semiSelected){
+        if (options.semiSelected)
             options.selected = true;
-            options.className_semi = 'semi-selected';
-        }
 
         options.class = 'allow-zero-selected' + (options.class ? ' '+options.class : '');
+        options.className_semi = 'semi-selected';
 
         //Use modernizr-mode and classes if icon and/or text containe two values
         if ($.isArray(options.icon) && (options.icon.length == 2)){
@@ -145,13 +144,13 @@
                 options.type == 'radio' ?
                     //Radio-button icons
                     [
-                        'fas fa-circle _text-checked standard-checkbox-checked-color  icon-show-for-checked', //"Blue"/"Semi-selected-orange" background
-                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-dot-circle text-white icon-show-for-checked', //Dot marker
-                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'                                       //Border
+                        'fas fa-circle standard-checkbox-checked-color icon-show-for-checked',              //"Blue"/"Semi-selected-orange" background
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-dot-circle text-white icon-show-for-checked',  //Dot marker
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'                                        //Border
                     ] :
                     //Checkbox-button icons
                     [
-                        'fas fa-square text-checked      icon-show-for-checked', //"Blue" background
+                        'fas fa-square standard-checkbox-checked-color icon-show-for-checked',                //"Blue"/"Semi-selected-orange" background
                         $.FONTAWESOME_PREFIX_STANDARD + ' fa-check-square text-white  icon-show-for-checked', //Check marker
                         $.FONTAWESOME_PREFIX_STANDARD + ' fa-square'                                          //Border
                     ]
@@ -160,7 +159,7 @@
         if (options.icon)
             icon.push(options.icon);
 
-        options.icon = icon;
+        options.icon = options.forceIcon || icon;
 
         //Clone options to avoid reflux
         options = $.extend({}, options, {
@@ -168,14 +167,11 @@
             modernizr: true,
         });
 
-        if (options.semiSelected){
+        if (options.semiSelected)
             options.selected = true;
-            options.class = options.class + ' standard-checkbox';
-            options.className_semi = 'semi-selected';
-        }
 
-
-
+        options.class = options.class + ' standard-checkbox';
+        options.className_semi = 'semi-selected';
 
         //Bug fix: To avoid bsButton to add class 'active', selected is set to false in options for bsButton
         var bsButtonOptions = $.extend({}, options);
@@ -199,7 +195,7 @@
         if (options.icon.length > 2)
             icon.push( options.icon[2] );
 
-        return $.bsStandardCheckboxButton( $.extend({}, options, {square: true, icon: [icon]}) );
+        return $.bsStandardCheckboxButton( $.extend({}, options, {square: true, forceIcon: [icon]}) );
     };
 
 

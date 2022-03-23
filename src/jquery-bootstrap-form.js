@@ -84,30 +84,36 @@
         *******************************************************/
         setValue: function(value, validate){
             var $elem = this.getElement();
+
+            //Special case: If it is a element with possible semi-selected value and vaule is a string => the element get semi-selected mode (yellow background)
+            if (this.canBeSemiSelected){
+                var isSemiSelected = (typeof value == 'string');
+                $elem.toggleClass('semi-selected', isSemiSelected);
+
+                //Update options for the checkbox
+                var options = $elem.data('cbx_options');
+                options.className_semi = isSemiSelected ? 'semi-selected' : '';
+                options.semiSelectedValue = isSemiSelected ? value : '';
+                $elem.data('cbx_options', options );
+            }
+
             switch (this.options.type || 'input'){
-                case 'input'            : $elem.val( value );                      break;
-                case 'select'           : $elem.selectpicker('val', value );       break;
-                case 'checkbox'         :
-                    //Special case: If value is a string => the checkbox get semi-selected mode (yellow background)
-                    var isSemiSelected = (typeof value == 'string');
-                    $elem.toggleClass('semi-selected', isSemiSelected);
+                case 'input'   : $elem.val( value );                break;
+                case 'select'  : $elem.selectpicker('val', value ); break;
 
-                    //Update options for the checkbox
-                    var options = $elem.data('cbx_options');
-                    options.className_semi = isSemiSelected ? 'semi-selected' : '';
-                    options.semiSelectedValue = isSemiSelected ? value : '';
-                    $elem.data('cbx_options', options );
+                case 'checkbox': $elem.prop('checked', value );     break;
 
-                    $elem.prop('checked', value );
-                    break;
+                case 'checkboxbutton'        :
+                case 'standardcheckboxbutton':
+                case 'iconcheckboxbutton'    : $elem._cbxSet(value, true);  break;
 
-                case 'selectlist'       : this.getRadioGroup().setSelected(value); break;
-                case 'radiobuttongroup' : this.getRadioGroup().setSelected(value); break;
+                case 'selectlist'      : this.getRadioGroup().setSelected(value); break;
+                case 'radiobuttongroup': this.getRadioGroup().setSelected(value); break;
 
-                case 'slider'           :
-                case 'timeslider'       : this.getSlider().setValue( value );      break;
-                case 'text'             :                                          break;
-                case 'hidden'           : $elem.val( value );                      break;
+                case 'slider'    :
+                case 'timeslider': this.getSlider().setValue( value );  break;
+                case 'text'      :                                      break;
+                case 'hidden'    : $elem.val( value );                  break;
             }
             this.onChanging();
             return validate ? this.validate() : this;
@@ -117,7 +123,10 @@
         getResetValue: function(){
         *******************************************************/
         getResetValue: function(){
-            var result = null;
+            if (this.canBeSemiSelected)
+                return false;
+
+            var result;
             switch (this.options.type || 'input'){
                 case 'input'            : result = '';    break;
                 case 'select'           : result = null;  break;
@@ -129,6 +138,7 @@
                 case 'timeslider'       : result = this.getSlider().result.min; break;
                 case 'text'             : result = '';                          break;
                 case 'hidden'           : result = '';                          break;
+                default                 : result = false;
             }
             return result;
         },
@@ -155,26 +165,37 @@
         getValue: function(){
             var $elem = this.getElement(),
                 result = null;
+
+
             switch (this.options.type || 'input'){
-                case 'input'            : result = $elem.val();               break;
-                case 'select'           : result = $elem.selectpicker('val'); break;
-                case 'checkbox'         :
-                    result = !!$elem.prop('checked');
+                case 'input'   : result = $elem.val();                    break;
+                case 'select'  : result = $elem.selectpicker('val');      break;
 
-                    //Special case: If $elem is semi-selected: return special value from option
-                    var options = $elem.data('cbx_options');
-                    if (result && options.semiSelectedValue && options.className_semi && $elem.hasClass(options.className_semi))
-                        result = options.semiSelectedValue;
+                case 'checkbox': result = !!$elem.prop('checked');        break;
 
-                    break;
+                case 'checkboxbutton'        :
+                case 'standardcheckboxbutton':
+                case 'iconcheckboxbutton'    : result = !!$elem._cbxGet();              break;
 
-                case 'selectlist'       : result = this.getRadioGroup().getSelected(); break;
-                case 'radiobuttongroup' : result = this.getRadioGroup().getSelected(); break;
-                case 'slider'           :
-                case 'timeslider'       : result = this._getSliderValue(); break;
-                case 'text'             : result = ' ';                    break;
-                case 'hidden'           : result = $elem.val();            break;
+                case 'selectlist'       : result = this.getRadioGroup().getSelected();  break;
+                case 'radiobuttongroup' : result = this.getRadioGroup().getSelected();  break;
+
+                case 'slider'    :
+                case 'timeslider': result = this._getSliderValue();              break;
+
+                case 'text'      : result = ' ';                                 break;
+                case 'hidden'    : result = $elem.val();                         break;
             }
+
+
+            //Special case: If $elem is semi-selected: return special value from option
+            if (this.canBeSemiSelected){
+                var options = $elem.data('cbx_options');
+                if (result && options.semiSelectedValue && options.className_semi && $elem.hasClass(options.className_semi))
+                    result = options.semiSelectedValue;
+            }
+
+
             return result === null ? this.getResetValue() : result;
         },
 
@@ -273,12 +294,20 @@
         //this.input = simple object with all input-elements. Also convert element-id to unique id for input-element
         this.inputs = {};
 
-        var types = ['button', 'input', 'select', 'selectlist', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden', 'inputgroup'];
+        var typeList = ['button', 'checkboxbutton', 'standardcheckboxbutton', 'iconcheckboxbutton',
+                        'input', 'select', 'selectlist', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden', 'inputgroup'],
+
+            //semiSelectedTypeList = []TYPE_Id that can have a semi-selected state/value
+            semiSelectedTypeList = ['checkboxbutton', 'standardcheckboxbutton', 'checkbox'];
+
+
 
         function setId( dummy, obj ){
-            if ($.isPlainObject(obj) && (obj.type !== undefined) && (types.indexOf(obj.type) >= 0) && obj.id){
+            if ($.isPlainObject(obj) && (obj.type !== undefined) && typeList.includes(obj.type) && obj.id){
                 var bsModalInput = new BsModalInput( obj, _this ),
                     onChangingFunc = $.proxy( bsModalInput.onChanging, bsModalInput );
+
+                bsModalInput.canBeSemiSelected = semiSelectedTypeList.includes(obj.type);
 
                 //Set options to call onChanging
                 switch (obj.type){
@@ -286,6 +315,7 @@
                     case 'timeslider': obj.onChanging = onChangingFunc; break;
                     default          : obj.onChange = onChangingFunc;
                 }
+
                 //Add element to inputs
                 _this.inputs[obj.id] = bsModalInput;
             }
