@@ -46,6 +46,31 @@ div.btn, div.list-group-item {
         );
     }
 
+    //Semi-selected - but not for standard radio/checkbox button
+    &.semi-selected:not(.standard-checkbox) {
+        @include control-colors(
+            $incl-active: false,
+            $incl-border: false,
+            $color      : $control-active-color,
+            $bg-color   : $semi-selected-bg-color
+        )
+    }
+
+
+    //Standard checkbox-button
+    &.standard-checkbox {
+        .standard-checkbox-checked-color {
+            color: $control-active-bg-color;
+        }
+    }
+
+    &.standard-checkbox.semi-selected {
+        .standard-checkbox-checked-color {
+            color: $semi-selected-bg-color;
+        }
+    }
+
+
     //Icons in buttons get equal size to allow shift of icon
     & > i.fa {
         min-width : 1em;

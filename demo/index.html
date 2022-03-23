@@ -489,18 +489,30 @@ return;
 
 
         $.bsCheckboxButton({
+            text: {da:'Vælg mig (semi)', en:'Select me (semi)'},
+            icon: 'fa-home',
+            selected: true,
+            semiSelected: true, 
+            onChange: function(id, selected, _this){
+                console.log('1: bsCheckboxButton',id,selected, _this);
+            }
+        }).appendTo($body);
+
+        $.bsCheckboxButton({
 //            text: [{da:'Uvalgt', en:'Unselected'}, {da:'Valgt', en:'Selected'}],
             text: {da:'Vælg mig', en:'Select me'},
             icon: ['fa-thumbs-down', 'fa-thumbs-up'],
             selected: false,
             onChange: function(id, selected, _this){
-                console.log('3: bsCheckboxButton',id,selected, _this);
+                console.log('2: bsCheckboxButton',id,selected, _this);
             }
         }).appendTo($body);
 
         $.bsStandardCheckboxButton({
+            icon: 'fa-map', 
             text: {da:'Radio #2', en:'Radio #2'},
             selected: true,
+            semiSelected: true, 
             type    : 'radio',
             onChange: function(id, selected){
                 console.log('radio#2',id,selected);

@@ -112,6 +112,12 @@
     $.bsCheckboxButton = function( options ){
         //Clone options to avoid reflux
         options = $.extend({}, options);
+
+        if (options.semiSelected){
+            options.selected = true;
+            options.className_semi = 'semi-selected';
+        }
+
         options.class = 'allow-zero-selected' + (options.class ? ' '+options.class : '');
 
         //Use modernizr-mode and classes if icon and/or text containe two values
@@ -135,28 +141,41 @@
     Bootstrap-button as a checkbox with check-icon in blue box
     **********************************************************/
     $.bsStandardCheckboxButton = function( options = {}){
-        if (!options.icon)
-            options.icon =
+        var icon = [
                 options.type == 'radio' ?
                     //Radio-button icons
-                    [[
-                        'fas fa-circle text-checked   icon-show-for-checked', //"Blue" background
+                    [
+                        'fas fa-circle _text-checked standard-checkbox-checked-color  icon-show-for-checked', //"Blue"/"Semi-selected-orange" background
                         $.FONTAWESOME_PREFIX_STANDARD + ' fa-dot-circle text-white icon-show-for-checked', //Dot marker
                         $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'                                       //Border
-                    ]] :
+                    ] :
                     //Checkbox-button icons
-                    [[
+                    [
                         'fas fa-square text-checked      icon-show-for-checked', //"Blue" background
                         $.FONTAWESOME_PREFIX_STANDARD + ' fa-check-square text-white  icon-show-for-checked', //Check marker
                         $.FONTAWESOME_PREFIX_STANDARD + ' fa-square'                                          //Border
-                    ]];
+                    ]
+            ];
 
+        if (options.icon)
+            icon.push(options.icon);
+
+        options.icon = icon;
 
         //Clone options to avoid reflux
         options = $.extend({}, options, {
             class    : 'allow-zero-selected' + (options.class ? ' '+options.class : ''),
             modernizr: true,
         });
+
+        if (options.semiSelected){
+            options.selected = true;
+            options.class = options.class + ' standard-checkbox';
+            options.className_semi = 'semi-selected';
+        }
+
+
+
 
         //Bug fix: To avoid bsButton to add class 'active', selected is set to false in options for bsButton
         var bsButtonOptions = $.extend({}, options);

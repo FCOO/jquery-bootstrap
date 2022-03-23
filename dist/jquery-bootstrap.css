@@ -8572,6 +8572,25 @@ div.btn, div.list-group-item {
     .btn.btn-standard.primary.disabled:not(.show-as-normal), .btn.btn-standard.primary:disabled:not(.show-as-normal) {
       opacity: 1 !important;
       color: rgba(0, 123, 255, 0.65); }
+  .btn.btn-standard.semi-selected:not(.standard-checkbox) {
+    color: #fff;
+    background: #fd7e14 linear-gradient(180deg, #fd9137, #fd7e14) repeat-x; }
+    .mouse-hover .hover .btn.btn-standard.semi-selected:not(.standard-checkbox):not(:active):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.semi-selected:not(.standard-checkbox).hover:not(:active):not(:disabled):not(.disabled),
+    .mouse-hover .btn.btn-standard.semi-selected:not(.standard-checkbox):hover:not(:active):not(:disabled):not(.disabled) {
+      color: #f2f2f2;
+      background: #f57102 linear-gradient(180deg, #f78628, #f57102) repeat-x; }
+    .btn.btn-standard.semi-selected:not(.standard-checkbox):active {
+      color: #ececec;
+      background: #e96b02 linear-gradient(180deg, #ec8128, #e96b02) repeat-x; }
+    .btn.btn-standard.semi-selected:not(.standard-checkbox).disabled:not(.show-as-normal), .btn.btn-standard.semi-selected:not(.standard-checkbox):disabled:not(.show-as-normal) {
+      opacity: 1 !important;
+      color: rgba(255, 255, 255, 0.65);
+      background: #fd7e14 linear-gradient(180deg, #fd9137, #fd7e14) repeat-x; }
+  .btn.btn-standard.standard-checkbox .standard-checkbox-checked-color {
+    color: #007bff; }
+  .btn.btn-standard.standard-checkbox.semi-selected .standard-checkbox-checked-color {
+    color: #fd7e14; }
   .btn.btn-standard > i.fa {
     min-width: 1em;
     text-align: left; }
