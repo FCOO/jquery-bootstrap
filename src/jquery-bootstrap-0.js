@@ -723,9 +723,9 @@
                 switch (type){
                     case 'button'                : buildFunc = $.bsButton;                  break;
 
-                    case 'checkboxbutton'        : buildFunc = $.bsCheckboxButton;          insideFormGroup = true; break;
-                    case 'standardcheckboxbutton': buildFunc = $.bsStandardCheckboxButton;  insideFormGroup = true; break;
-                    case 'iconcheckboxbutton'    : buildFunc = $.bsIconCheckboxButton;      insideFormGroup = true; break;
+                    case 'checkboxbutton'        : buildFunc = $.bsCheckboxButton;          break;
+                    case 'standardcheckboxbutton': buildFunc = $.bsStandardCheckboxButton;  break;
+                    case 'iconcheckboxbutton'    : buildFunc = $.bsIconCheckboxButton;      break;
 
                     case 'buttongroup'           : buildFunc = $.bsButtonGroup;             insideFormGroup = true; break;
 
