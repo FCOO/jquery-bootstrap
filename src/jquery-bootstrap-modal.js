@@ -163,7 +163,9 @@
             flexWidth : !!options.flexWidth,
             extraWidth: !!options.extraWidth,
             megaWidth : !!options.megaWidth,
-            width     : options.width ? options.width+'px' : null
+            width     : options.width ?
+                        ( (typeof options.width == 'number') ? options.width+'px' : options.width)
+                        : null
         };
     }
 

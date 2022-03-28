@@ -9828,43 +9828,10 @@ body.modal-open .modal {
     background: #e9ecef linear-gradient(180deg, #eceff2, #e9ecef) repeat-x; }
     .mouse-hover .modal-dialog .modal-content:hover.modal-minimized.modal-minimized-clickable .modal-body.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content:hover.modal-minimized.modal-minimized-clickable .modal-body-fixed.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content:hover.modal-normal.modal-normal-clickable .modal-body.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content:hover.modal-normal.modal-normal-clickable .modal-body-fixed.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content:hover.modal-extended.modal-extended-clickable .modal-body.modal-body-semi-transparent, .mouse-hover .modal-dialog .modal-content:hover.modal-extended.modal-extended-clickable .modal-body-fixed.modal-body-semi-transparent {
       background: rgba(255, 255, 255, 0.75); }
-  .modal-dialog.modal-dialog-sm .modal-content .modal-header {
-    /*
-    $padding-x: $input-btn-padding-x;
-    $padding-y: $input-btn-padding-y;
-    @if $size == "sm" {
-        $padding-x: $input-btn-padding-x-sm;
-        $padding-y: $input-btn-padding-y-sm;
-    }
-    @if $size == "xs" {
-        $padding-x: $input-btn-padding-x-xs;
-        $padding-y: $input-btn-padding-y-xs;
-    }
-*/
-    display: flex;
-    align-items: center;
-    cursor: default;
-    font-weight: 400;
-    padding: 0.1875rem 0.25rem;
-    font-size: 0.75rem;
-    line-height: 1.5;
-    border-radius: inherit;
-    border-bottom: 1px solid #9aa1a8;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0; }
-    .modal-dialog.modal-dialog-sm .modal-content .modal-header span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap; }
-    .modal-dialog.modal-dialog-sm .modal-content .modal-header span.fixed-header {
-      overflow: visible;
-      word-break: keep-all; }
-  .modal-dialog.modal-dialog-sm .modal-content .modal-body,
-  .modal-dialog.modal-dialog-sm .modal-content .modal-body-fixed {
-    padding: 0.25rem 0.25rem;
+  .modal-dialog.modal-dialog-sm {
     font-size: 0.875rem; }
-  .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header {
-    /*
+    .modal-dialog.modal-dialog-sm .modal-content .modal-header {
+      /*
     $padding-x: $input-btn-padding-x;
     $padding-y: $input-btn-padding-y;
     @if $size == "sm" {
@@ -9876,33 +9843,30 @@ body.modal-open .modal {
         $padding-y: $input-btn-padding-y-xs;
     }
 */
-    display: flex;
-    align-items: center;
-    cursor: default;
-    font-weight: 400;
-    padding: 0.1875rem 0.25rem;
-    font-size: 0.75rem;
-    line-height: 1.5;
-    border-radius: inherit;
-    color: #495057;
-    background-color: #f2f2f2;
-    line-height: 1.25;
-    border-top: 1px solid #9aa1a8;
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important; }
-    .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap; }
-    .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header span.fixed-header {
-      overflow: visible;
-      word-break: keep-all; }
-    .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header:empty {
-      display: none !important; }
-  .modal-dialog.modal-dialog-sm .modal-content .modal-footer {
-    padding: 0.1875rem 0.25rem; }
-  .modal-dialog.modal-dialog-xs .modal-content .modal-header {
-    /*
+      display: flex;
+      align-items: center;
+      cursor: default;
+      font-weight: 400;
+      padding: 0.1875rem 0.25rem;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      border-radius: inherit;
+      border-bottom: 1px solid #9aa1a8;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0; }
+      .modal-dialog.modal-dialog-sm .modal-content .modal-header span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; }
+      .modal-dialog.modal-dialog-sm .modal-content .modal-header span.fixed-header {
+        overflow: visible;
+        word-break: keep-all; }
+    .modal-dialog.modal-dialog-sm .modal-content .modal-body,
+    .modal-dialog.modal-dialog-sm .modal-content .modal-body-fixed {
+      padding: 0.25rem 0.25rem;
+      font-size: 0.875rem; }
+    .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header {
+      /*
     $padding-x: $input-btn-padding-x;
     $padding-y: $input-btn-padding-y;
     @if $size == "sm" {
@@ -9914,30 +9878,35 @@ body.modal-open .modal {
         $padding-y: $input-btn-padding-y-xs;
     }
 */
-    display: flex;
-    align-items: center;
-    cursor: default;
-    font-weight: 400;
-    padding: 0.125rem 0.1875rem;
-    font-size: 0.6875rem;
-    line-height: 1.5;
-    border-radius: inherit;
-    border-bottom: 1px solid #9aa1a8;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0; }
-    .modal-dialog.modal-dialog-xs .modal-content .modal-header span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap; }
-    .modal-dialog.modal-dialog-xs .modal-content .modal-header span.fixed-header {
-      overflow: visible;
-      word-break: keep-all; }
-  .modal-dialog.modal-dialog-xs .modal-content .modal-body,
-  .modal-dialog.modal-dialog-xs .modal-content .modal-body-fixed {
-    padding: 0.1875rem 0.1875rem;
+      display: flex;
+      align-items: center;
+      cursor: default;
+      font-weight: 400;
+      padding: 0.1875rem 0.25rem;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      border-radius: inherit;
+      color: #495057;
+      background-color: #f2f2f2;
+      line-height: 1.25;
+      border-top: 1px solid #9aa1a8;
+      border-top-left-radius: 0 !important;
+      border-top-right-radius: 0 !important; }
+      .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; }
+      .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header span.fixed-header {
+        overflow: visible;
+        word-break: keep-all; }
+      .modal-dialog.modal-dialog-sm .modal-content .modal-footer-header:empty {
+        display: none !important; }
+    .modal-dialog.modal-dialog-sm .modal-content .modal-footer {
+      padding: 0.1875rem 0.25rem; }
+  .modal-dialog.modal-dialog-xs {
     font-size: 0.75rem; }
-  .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header {
-    /*
+    .modal-dialog.modal-dialog-xs .modal-content .modal-header {
+      /*
     $padding-x: $input-btn-padding-x;
     $padding-y: $input-btn-padding-y;
     @if $size == "sm" {
@@ -9949,31 +9918,66 @@ body.modal-open .modal {
         $padding-y: $input-btn-padding-y-xs;
     }
 */
-    display: flex;
-    align-items: center;
-    cursor: default;
-    font-weight: 400;
-    padding: 0.125rem 0.1875rem;
-    font-size: 0.6875rem;
-    line-height: 1.5;
-    border-radius: inherit;
-    color: #495057;
-    background-color: #f2f2f2;
-    line-height: 1.25;
-    border-top: 1px solid #9aa1a8;
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important; }
-    .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap; }
-    .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header span.fixed-header {
-      overflow: visible;
-      word-break: keep-all; }
-    .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header:empty {
-      display: none !important; }
-  .modal-dialog.modal-dialog-xs .modal-content .modal-footer {
-    padding: 0.125rem 0.1875rem; }
+      display: flex;
+      align-items: center;
+      cursor: default;
+      font-weight: 400;
+      padding: 0.125rem 0.1875rem;
+      font-size: 0.6875rem;
+      line-height: 1.5;
+      border-radius: inherit;
+      border-bottom: 1px solid #9aa1a8;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0; }
+      .modal-dialog.modal-dialog-xs .modal-content .modal-header span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; }
+      .modal-dialog.modal-dialog-xs .modal-content .modal-header span.fixed-header {
+        overflow: visible;
+        word-break: keep-all; }
+    .modal-dialog.modal-dialog-xs .modal-content .modal-body,
+    .modal-dialog.modal-dialog-xs .modal-content .modal-body-fixed {
+      padding: 0.1875rem 0.1875rem;
+      font-size: 0.75rem; }
+    .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header {
+      /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
+      display: flex;
+      align-items: center;
+      cursor: default;
+      font-weight: 400;
+      padding: 0.125rem 0.1875rem;
+      font-size: 0.6875rem;
+      line-height: 1.5;
+      border-radius: inherit;
+      color: #495057;
+      background-color: #f2f2f2;
+      line-height: 1.25;
+      border-top: 1px solid #9aa1a8;
+      border-top-left-radius: 0 !important;
+      border-top-right-radius: 0 !important; }
+      .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; }
+      .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header span.fixed-header {
+        overflow: visible;
+        word-break: keep-all; }
+      .modal-dialog.modal-dialog-xs .modal-content .modal-footer-header:empty {
+        display: none !important; }
+    .modal-dialog.modal-dialog-xs .modal-content .modal-footer {
+      padding: 0.125rem 0.1875rem; }
 
 .modal-dialog .modal-body-fixed.scrollbar-vertical, .modal-dialog.modal-dialog-sm .modal-body-fixed.scrollbar-vertical, .modal-dialog.modal-dialog-xs .modal-body-fixed.scrollbar-vertical {
   padding-left: 8px;
