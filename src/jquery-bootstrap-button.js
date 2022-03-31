@@ -30,7 +30,9 @@
                 selected            : 'active',
                 noBorder            : 'no-border',
                 noShadow            : 'no-shadow',
-                focus               : 'init_focus'
+                focus               : 'init_focus',
+                fullWidth           : 'w-100'
+
             };
 
         //Add class-name corresponding to options
@@ -274,6 +276,7 @@
             result.attr( options.attr );
 
         $.each( options.list, function(index, buttonOptions ){
+
             if (buttonOptions.id)
                 $._anyBsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
                     .appendTo( result );
@@ -295,7 +298,6 @@
 	    allowZeroSelected: boolean. If true it is allowed to des-select a selected radio-button.
 	                       If allowZeroSelected=true onChange will also be called on the un-selected radio-input
         buttons          : as bsButtonGroup
-
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){
         //Set options for RadioGroup
@@ -312,7 +314,8 @@
                     $.extend({}, options, {
                         radioGroupId     : options.id,
                         className        : 'active',
-                        allowZeroSelected: false
+                        className_semi   : 'semi-selected',
+                        allowZeroSelected: false,
                     })
                 );
 

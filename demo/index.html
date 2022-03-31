@@ -512,7 +512,7 @@ return;
             icon: 'fa-map', 
             text: {da:'Radio #2', en:'Radio #2'},
             selected: true,
-            semiSelected: true, 
+            //semiSelected: true, 
             type    : 'radio',
             onChange: function(id, selected){
                 console.log('radio#2',id,selected);
@@ -1430,11 +1430,13 @@ width: 543,
             'mySlider': 20,
             'mySlider2': 10,
             'formId2': 'Skide godt do',
-            'theCheckBox': 'true',
+            'theCheckBox': true,
             'theSelectList': 'item3',
             'hemmeligt': 'Dette er super hemmeligt',
             'theSelectBox': 'theSelectBox3',
-            'formId2-1': 'radiogroup2',
+
+            'formId2-1': ['radiogroup3', 'Den rigtige semi'],
+//            'formId2-1': 'radiogroup3',
         }
 
         $('<button>Form</button>')
@@ -1454,7 +1456,7 @@ width: 543,
                         {text:'Set=2', onClick: function(){ testModalForm.setValue('theSelectBox', 'theSelectBox1');} }
                     ],
                     onSubmit: function( data ){ 
-                        console.log( 'SUBMIT=', data.theCheckBox, data ); 
+                        console.log( 'SUBMIT=', data['formId2-1'], data ); 
                         myData = data; 
                     },
                     onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
@@ -1499,7 +1501,7 @@ width: 543,
                                             type: 'hidden'
                                         },
 */
-                                        {id: 'checkboxbutton',          type: 'checkboxbutton',         icon: 'fa-home', text: 'Checkboxbutton', class:'w-100'},
+                                        {id: 'checkboxbutton',          type: 'checkboxbutton',         icon: 'fa-home', text: 'Checkboxbutton', fullWidth: true},
                                         {id: 'standardcheckboxbutton',  type: 'standardcheckboxbutton', icon: 'fa-home', text: 'Standardcheckboxbutton'},
                                         {id: 'iconcheckboxbutton',      type: 'iconcheckboxbutton',     icon: ['', 'fas fa-star  text-checked', 'far fa-star']},
 
