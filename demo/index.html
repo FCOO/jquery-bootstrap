@@ -1614,11 +1614,11 @@ width: 543,
                                         },
 
                                         {
-                                            id:'formId2-1', type: 'radiobuttongroup', label:'Label', centerInParent: false,
+                                            id:'formId2-1', type: 'radiobuttongroup', label:'Label', centerInParent: false, fullWidth: true, vertical: true,
                                             items:[
-                                                {id:'radiogroup1', icon:'fa-home', text: 'Davs'},
-                                                {id:'radiogroup2', text:'Item 2'},
-                                                {id:'radiogroup3', text:'Item 3'}
+                                                {id:'radiogroup1', icon:'fa-home',   text: 'Item 1'},
+                                                {id:'radiogroup2', icon: 'fa-map',   text: 'Item 2'},
+                                                {id:'radiogroup3', icon: 'fa-check', text: 'Item 3'}
                                             ]
                                         },
                                         {
@@ -2033,9 +2033,9 @@ type: 'checkbox',
             {id: 'checkbox2', type:'checkbox', selected: false, text:{da:'En checkbox#2 (lukker ikke)', en:'A checkbox#2 (dont close)'}, closeOnClick: false},
             {id: 'checkbox3', type:'checkbox', selected: false, text:'Dette er kun på dansk'},
             {radioGroupId: 'radio1', type:'radio', lineBefore: true, lineAfter: true, _hidden: true, list: [
-                    {id:'slow',   icon: 'fa-bicycle',   text:'Cykel', closeOnClick: false},
-                    {id:'medium', icon: 'fa-car', text:'Bil', selected: true},
-                    {id:'fast',   icon: 'fa-fighter-jet',   text:'Jetjaver'}
+                    {id:'slow',   icon: 'fa-fw fa-bicycle',   text:'Cykel', closeOnClick: false},
+                    {id:'medium', icon: 'fa-fw fa-car', text:'Bil', selected: true},
+                    {id:'fast',   icon: 'fa-fw fa-fighter-jet',   text:'Jetjaver'}
                 ],
                 onChange: function(selectedId){
                     console.log('onChange-radio1', selectedId);
@@ -2045,15 +2045,15 @@ type: 'checkbox',
         ];
 
     var list2 = [
-            {type:'content', content: $('<div class="w-100">Davs</div>'), closeOnClick: false },
+           // {type:'content', content: $('<div class="w-100">Davs</div>'), closeOnClick: false },
             {text:{da:'En overskrift', en:'A header'}},
             {id: 'button1', icon: 'fa-home', text:{da:'En knap', en:'A button'}, onClick: function(){console.log('onClick button1', arguments)}},
             {id: 'checkbox1', type:'checkbox', selected: true,  text:{da:'En checkbox#1', en:'A checkbox#1'}},
             {id: 'checkbox2', type:'checkbox', selected: false, text:{da:'En checkbox#2', en:'A checkbox#2'}},
             {radioGroupId: 'radio1', type:'radio', lineBefore: true, lineAfter: true, _hidden: true, closeOnClick: false, list: [
-                    {id:'slow2',   icon: 'fa-bicycle',   text:'Cykel', closeOnClick: true},
-                    {id:'medium2', icon: 'fa-car', text:'Bil', selected: true},
-                    {id:'fast2',   icon: 'fa-fighter-jet',   text:'Jetjaver'}
+                    {id:'slow2',   icon: 'fa-fw fa-bicycle',   text:'Cykel', closeOnClick: true},
+                    {id:'medium2', icon: 'fa-fw fa-car', text:'Bil', selected: true},
+                    {id:'fast2',   icon: 'fa-fw fa-fighter-jet',   text:'Jetjaver'}
             ]}
         ];
 
@@ -2095,8 +2095,7 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
             list: list2
          });
 
-b.popover('disable');
-//this.$popupElements.popover('disable');
+//b.popover('disable');
 
 //    setTimeout($.workingOn, 2000);
 //    setTimeout($.workingOff, 10000);
