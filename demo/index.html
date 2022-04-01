@@ -558,7 +558,25 @@ return;
 
 
         header('Button-group');
+        $.bsButtonGroup({
+            small: true, square: true,
+            list: [
+                {id:'slow',   icon: 'fa-bicycle',       _text:'Cykel', title:'Dette er en lang titel, der gerne skal vises'},
+                {id:'medium', icon: 'fa-car',           _text:'Bil'},
+                {id:'fast',   icon: 'fa-fighter-jet',   _text:'Jet'}
+            ]
+        }).appendTo($body);
+
+       $body.append('<br>');
         $.bsRadioButtonGroup({
+            small: true, square: true,
+            list: [
+                {id:'slow',   icon: 'fa-bicycle',       _text:'Cykel', title:'Dette er en lang titel, der gerne skal vises'},
+                {id:'medium', icon: 'fa-car',           _text:'Bil'},
+                {id:'fast',   icon: 'fa-fighter-jet',   _text:'Jet'}
+            ]
+       }).appendTo($body);
+         $.bsRadioButtonGroup({
             fullWidth: true,
             selectedId: 'fast',
             list: [

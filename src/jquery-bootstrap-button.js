@@ -248,6 +248,13 @@
                         ._bsAddIdAndName( options )
                         ._bsAddBaseClassAndSize( options );
 
+        //Transfere generel button-options to buttonOptions
+        $.each(['square', 'bigSquare', 'bigIcon', 'extraLargeIcon'], function(index, id){
+            if ((options[id] !== undefined) && (options.buttonOptions[id] === undefined))
+                options.buttonOptions[id] = options[id];
+        });
+
+
         if (options.center)
             result.addClass( options.centerClass );
         else
