@@ -170,6 +170,11 @@ div.btn, div.list-group-item {
                 height: $button-square-dimension-sm;
                 width : $button-square-dimension-sm;
             }
+
+            &.btn-xs {
+                height: $button-square-dimension-xs;
+                width : $button-square-dimension-xs;
+            }
         }
 
         &.big-square {
@@ -180,6 +185,11 @@ div.btn, div.list-group-item {
                 height: $button-big-square-dimension-sm;
                 width : $button-big-square-dimension-sm;
             }
+
+            &.btn-xs {
+                height: $button-big-square-dimension-xs;
+                width : $button-big-square-dimension-xs;
+            }
         }
 
         //.big-icon = Extra big icons
@@ -188,6 +198,7 @@ div.btn, div.list-group-item {
         }
         &.big-icon          { @include big-icon-font-size( $font-size-base ); }
         &.btn-sm.big-icon   { @include big-icon-font-size( $font-size-sm   ); }
+        &.btn-xs.big-icon   { @include big-icon-font-size( $font-size-xs   ); }
 
 
 

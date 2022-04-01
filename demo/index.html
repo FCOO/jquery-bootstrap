@@ -184,8 +184,12 @@ $('body').on('wheel', function(e){
         }).appendTo( $body );
 
         header('Buttons');
-        $.bsButton({icon: 'fa-home', square: true                     }).appendTo( $body );
-        $.bsButton({icon: 'fa-home', square: true, bigIcon: true      }).appendTo( $body );
+        $.bsButton({icon: 'fa-home', square: true, small: true  }).appendTo( $body );
+        $.bsButton({icon: 'fa-home', square: true               }).appendTo( $body );
+
+        $.bsButton({icon: 'fa-home', square: true, bigIcon: true, small: true   }).appendTo( $body );
+        $.bsButton({icon: 'fa-home', square: true, bigIcon: true                }).appendTo( $body );
+        
         $.bsButton({icon: 'fa-home', square: true, extraLargeIcon: true, bigSquare: true }).appendTo( $body );
         $.bsButton({icon: 'fa-home', square: true, extraLargeIcon: true, bigSquare: true, noShadow: true, noBorder: true, transparent:true }).appendTo( $body );
 

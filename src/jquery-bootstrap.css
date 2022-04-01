@@ -11723,6 +11723,10 @@ div.btn, div.list-group-item {
   height: 1.8125rem;
   width: 1.8125rem;
 }
+.btn.btn-standard.square:not(.big-square).btn-xs, .btn-group-xs > .btn.btn-standard.square:not(.big-square) {
+  height: 1.5rem;
+  width: 1.5rem;
+}
 .btn.btn-standard.square.big-square {
   height: 3rem;
   width: 3rem;
@@ -11731,11 +11735,18 @@ div.btn, div.list-group-item {
   height: 2.625rem;
   width: 2.625rem;
 }
+.btn.btn-standard.square.big-square.btn-xs, .btn-group-xs > .btn.btn-standard.square.big-square {
+  height: 2.1875rem;
+  width: 2.1875rem;
+}
 .btn.btn-standard.square.big-icon {
   font-size: 1.625rem;
 }
 .btn.btn-standard.square.btn-sm.big-icon, .btn-group-sm > .btn.btn-standard.square.big-icon {
   font-size: 1.375rem;
+}
+.btn.btn-standard.square.btn-xs.big-icon, .btn-group-xs > .btn.btn-standard.square.big-icon {
+  font-size: 1.1875rem;
 }
 .btn.btn-standard.square > i.fa {
   width: 1.25em;
