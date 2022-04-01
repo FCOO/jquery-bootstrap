@@ -124,6 +124,7 @@
             var $item = null, radioGroup = null;
 
             itemOptions.small = options.small;
+itemOptions.useTouchSize = false;
 
             switch (itemOptions.type){
                 case 'button':

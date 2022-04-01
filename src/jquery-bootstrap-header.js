@@ -46,14 +46,15 @@
 
             help    : $.FONTAWESOME_PREFIX_STANDARD + ' fa-question-circle',
 
-            close   : ['fas fa-circle back', $.FONTAWESOME_PREFIX_STANDARD + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle front']
+            _close   : ['fas fa-circle back', $.FONTAWESOME_PREFIX_STANDARD + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle front'],
+            close   : ['fas fa-circle-xmark', $.FONTAWESOME_PREFIX_STANDARD + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle front']
         }, forceOptions );
     };
     $._set_bsHeaderIcons();
 
     //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
     var mandatoryHeaderIconClassAndTitle = {
-        warning: {class:'header-icon-colored-background header-icon-warning', __title: {da:'Luk', en:'Close'}},
+        warning: {class:'XXheader-icon-colored-background header-icon-warning', __title: {da:'Luk', en:'Close'}},
         close  : {class:'header-icon-colored-background header-icon-close',   title: {da:'Luk', en:'Close'}},
     };
 
