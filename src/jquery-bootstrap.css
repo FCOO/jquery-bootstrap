@@ -10647,7 +10647,7 @@ ADDITIONS AND ADJUSTMENTS TO FONTAWESOME
 /************************************************************
 FONTAWESOME
 
-Additions and adjustments to Fontawesome 5 (when included)
+Additions and adjustments to Fontawesome 6 (when included)
 ************************************************************/
 .fa-inside-circle {
   position: relative;
@@ -10659,10 +10659,32 @@ Additions and adjustments to Fontawesome 5 (when included)
 
 .fa-inside-circle2 {
   position: relative;
-  top: -0.2em;
+  top: -0.15em;
 }
 .fa-inside-circle2:before {
   font-size: 0.55em;
+}
+
+.fa-inside-circle-xmark {
+  position: relative;
+  top: calc(-.5em /3);
+  left: calc(-0.75em / 3);
+  font-size: calc(2em/3);
+}
+
+.show-for-hover {
+  opacity: 0;
+}
+.container-stacked-icons:hover .show-for-hover:not(.disabled), .show-for-hover:not(.disabled):hover {
+  opacity: initial;
+}
+
+.container-stacked-icons:hover .fa-hover-color-red:not(.disabled), .fa-hover-color-red:not(.disabled):hover {
+  color: #dc3545;
+}
+
+.container-stacked-icons:hover .fa-hover-color-white:not(.disabled), .fa-hover-color-white:not(.disabled):hover {
+  color: white;
 }
 
 /************************************************
@@ -12158,6 +12180,19 @@ Icons for modal header inside a container
   text-align: center;
   cursor: default;
   color: #6c757d;
+  /*
+          //Special version for icons with colored background (normal or hover)
+          &.header-icon-colored-background .back { color: transparent; }
+
+          //Special version for close-icon: red background on hover
+          &.header-icon-close {
+              &:not(.disabled):hover {
+                  .back    { color: $red; }
+                  .middle  { color: white; }
+                  .front   { color: $red; }
+              }
+          }
+  */
 }
 .header-icon-container .header-icon.hidden {
   display: none;
@@ -12188,18 +12223,6 @@ Icons for modal header inside a container
 .header-icon-container .header-icon.disabled:not(.show-as-normal), .header-icon-container .header-icon:disabled:not(.show-as-normal) {
   opacity: 1 !important;
   color: rgba(108, 117, 125, 0.65);
-}
-.header-icon-container .header-icon.header-icon-colored-background .back {
-  color: transparent;
-}
-.header-icon-container .header-icon.header-icon-close:not(.disabled):hover .back {
-  color: #dc3545;
-}
-.header-icon-container .header-icon.header-icon-close:not(.disabled):hover .middle {
-  color: white;
-}
-.header-icon-container .header-icon.header-icon-close:not(.disabled):hover .front {
-  color: #dc3545;
 }
 .header-icon-container .header-icon.header-icon-warning .middle {
   font-size: 0.6em;

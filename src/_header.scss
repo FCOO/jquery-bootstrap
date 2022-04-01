@@ -28,7 +28,6 @@ Icons for modal header inside a container
         line-height: 1em;
     }
 
-
     .header-icon {
         //Common style
         width      : 1em;
@@ -45,6 +44,7 @@ Icons for modal header inside a container
             $incl-error : false
         );
 
+/*
         //Special version for icons with colored background (normal or hover)
         &.header-icon-colored-background .back { color: transparent; }
 
@@ -56,6 +56,7 @@ Icons for modal header inside a container
                 .front   { color: $red; }
             }
         }
+*/
 
         //Special version for warning-icon: yellow background white exclamation
         &.header-icon-warning {

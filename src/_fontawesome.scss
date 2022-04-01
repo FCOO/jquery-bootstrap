@@ -1,25 +1,56 @@
 /************************************************************
 FONTAWESOME
 
-Additions and adjustments to Fontawesome 5 (when included)
+Additions and adjustments to Fontawesome 6 (when included)
 ************************************************************/
 
 //fa-inside-circle used to adjust icon on top of circle to fit 'inside'. Maybe there need to more versions
+
+
+//.fa-inside-circle = Adjusted to fa-thumbtack
 .fa-inside-circle {
     position: relative;
     top: -.1em;
     &:before {
-        font-size: .65em; //Adjusted to fa-thumbtack
+        font-size: .65em;
     }
 }
 
+//.fa-inside-circle2 = Adjusted to fa-window-maximize
 .fa-inside-circle2 {
     position: relative;
-    top: -.2em;
+    top: -.15em;
     &:before {
-        font-size: .55em; //Adjusted to fa-window-maximize
+        font-size: .55em;
     }
 }
 
+//.fa-inside-circle-xmark = Adjusted to fa-xmark and other header-icons
+.fa-inside-circle-xmark {
+    position: relative;
+    top: calc(-.5em /3);
+    left: calc(-0.75em / 3);
+    font-size: calc(2em/3);
+}
 
 
+.show-for-hover {
+    opacity: 0;
+    .container-stacked-icons:hover &:not(.disabled),
+    &:not(.disabled):hover {
+        opacity: initial;
+    }
+}
+.fa-hover-color-red {
+    .container-stacked-icons:hover &:not(.disabled),
+    &:not(.disabled):hover {
+        color: $red;
+    }
+}
+
+.fa-hover-color-white {
+    .container-stacked-icons:hover &:not(.disabled),
+    &:not(.disabled):hover {
+        color: white;
+    }
+}

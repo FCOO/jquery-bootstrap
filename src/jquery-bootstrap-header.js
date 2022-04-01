@@ -29,33 +29,37 @@
     $._set_bsHeaderIcons = function( forceOptions = {}){
 
         $.bsHeaderIcons = $.extend( $.bsHeaderIcons, {
-            back    : 'fa-chevron-left',
-            forward : 'fa-chevron-right',
+            back    : 'fa-circle-chevron-left',
+            forward : 'fa-circle-chevron-right',
 
             pin     : ['fas fa-thumbtack fa-inside-circle', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
             unpin   : 'fa-thumbtack',
 
-            extend  : 'fa-chevron-up',
-            diminish: 'fa-chevron-down',
+            extend  : 'fa-chevron-circle-up',
+            diminish: 'fa-chevron-circle-down',
 
-            new     : [$.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
 
-            warning : [['fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle front'], 'fas fa-exclamation middle'],
+            new     : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2',
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'  ],
 
-            info    : /*$.FONTAWESOME_PREFIX_STANDARD + */'fas fa-info-circle', //fas-info-circle is not part of FA v5 free regulare
+            warning : [ 'fas fa-circle back text-warning',
+                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle',
+                        'fas fa-exclamation fa-inside-circle-xmark'   ],
 
-            help    : $.FONTAWESOME_PREFIX_STANDARD + ' fa-question-circle',
+            info    : 'fa-circle-info',
+            help    : 'fa-circle-question',
 
-            _close   : ['fas fa-circle back', $.FONTAWESOME_PREFIX_STANDARD + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle front'],
-            close   : ['fas fa-circle-xmark', $.FONTAWESOME_PREFIX_STANDARD + ' fa-times-circle middle', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle front']
+            close   : [ 'fas fa-circle show-for-hover fa-hover-color-red',
+                        'fa-xmark fa-inside-circle-xmark fa-hover-color-white',
+                        $.FONTAWESOME_PREFIX_STANDARD+' fa-circle' ]
+
         }, forceOptions );
     };
     $._set_bsHeaderIcons();
 
     //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
     var mandatoryHeaderIconClassAndTitle = {
-        warning: {class:'XXheader-icon-colored-background header-icon-warning', __title: {da:'Luk', en:'Close'}},
-        close  : {class:'header-icon-colored-background header-icon-close',   title: {da:'Luk', en:'Close'}},
+        close  : {/*class:'',*/ title: {da:'Luk', en:'Close'}},
     };
 
     /******************************************************

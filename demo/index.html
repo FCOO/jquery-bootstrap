@@ -1701,7 +1701,8 @@ width: 543,
             onHelp   : function(){ console.log('HELP: DONT Close header'); return false},
 
             icons: {
-                back:{onClick: function(){ console.log('BACK: DONT close header'); return false}}
+                back    : {onClick: function(){ console.log('BACK: DONT close header'); return false}},
+                forward : {onClick: function(){ console.log('FORWARD: DONT close header'); return false}}
             },
 
             closeButton: false,
@@ -1730,7 +1731,7 @@ width: 543,
 
 
 
-            isMinimized: true,
+//HER            isMinimized: true,
             minimized: {
                 _showHeaderOnClick: true,
                 semiTransparent: true,
