@@ -66,7 +66,7 @@
                     var $child = $(elemList[index]).children().first();
                     if ($child.length){
                         $child.empty();
-                        $child._bsAddHtml(options.items[itemIndex]);
+                        $child._bsAddHtml(options.list[itemIndex]);
                     }
 
                     itemIndex++;
@@ -138,6 +138,10 @@
     **********************************************************/
     var selectboxId = 0;
     $.bsSelectBox = $.bsSelectbox = function( options ){
+
+        options.items = options.items || options.list;
+        options.list = options.list || options.items;
+
         //Add size-class to button-class
         var buttonSizeClass = $._bsGetSizeClass({
                 baseClass   : 'btn',
@@ -178,12 +182,12 @@
                 $('<div class="form-control-with-label"></div>')
                     .append( $select );
 
-        //Convert options.items to select-option
+        //Convert options.list to select-option
         var selectedId = null,
             $currentParent = $select,
             itemOptionsList = [{}]; //{} = dummy for the title
 
-        $.each( options.items, function( index, itemOptions ){
+        $.each( options.list, function( index, itemOptions ){
             if (itemOptions.id){
                 itemOptionsList.push(itemOptions);
 

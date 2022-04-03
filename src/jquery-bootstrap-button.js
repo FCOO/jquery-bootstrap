@@ -307,6 +307,9 @@
         buttons          : as bsButtonGroup
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){
+        options.items = options.items || options.list;
+        options.list = options.list || options.items;
+
         //Set options for RadioGroup
         $.each( options.list, function(index, buttonOptions ){
             buttonOptions = $._bsAdjustOptions( buttonOptions );

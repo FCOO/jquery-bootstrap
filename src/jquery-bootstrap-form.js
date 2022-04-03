@@ -30,6 +30,9 @@
 
     //BsModalinput = internal object representing an input-element in the form
     function BsModalInput( options, modalForm ){
+        options.items = options.items || options.list;
+        options.list = options.list || options.items;
+
         this.options = options;
         this.modalForm = modalForm;
         this.options.userId = this.options.id;
@@ -136,7 +139,7 @@
                 case 'iconcheckboxbutton'    : result = false; break;
 
                 case 'selectlist'       :
-                case 'radiobuttongroup' : result = this.getRadioGroup().options.items[0].id; break;
+                case 'radiobuttongroup' : result = this.getRadioGroup().options.list[0].id; break;
 
                 case 'slider'           :
                 case 'timeslider'       : result = this.getSlider().result.min; break;

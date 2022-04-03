@@ -1495,6 +1495,9 @@
         buttons          : as bsButtonGroup
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){
+        options.items = options.items || options.list;
+        options.list = options.list || options.items;
+
         //Set options for RadioGroup
         $.each( options.list, function(index, buttonOptions ){
             buttonOptions = $._bsAdjustOptions( buttonOptions );
@@ -1870,6 +1873,9 @@
 
     //BsModalinput = internal object representing an input-element in the form
     function BsModalInput( options, modalForm ){
+        options.items = options.items || options.list;
+        options.list = options.list || options.items;
+
         this.options = options;
         this.modalForm = modalForm;
         this.options.userId = this.options.id;
@@ -1976,7 +1982,7 @@
                 case 'iconcheckboxbutton'    : result = false; break;
 
                 case 'selectlist'       :
-                case 'radiobuttongroup' : result = this.getRadioGroup().options.items[0].id; break;
+                case 'radiobuttongroup' : result = this.getRadioGroup().options.list[0].id; break;
 
                 case 'slider'           :
                 case 'timeslider'       : result = this.getSlider().result.min; break;
@@ -5446,7 +5452,7 @@ jquery-bootstrap-modal-promise.js
                     var $child = $(elemList[index]).children().first();
                     if ($child.length){
                         $child.empty();
-                        $child._bsAddHtml(options.items[itemIndex]);
+                        $child._bsAddHtml(options.list[itemIndex]);
                     }
 
                     itemIndex++;
@@ -5518,6 +5524,10 @@ jquery-bootstrap-modal-promise.js
     **********************************************************/
     var selectboxId = 0;
     $.bsSelectBox = $.bsSelectbox = function( options ){
+
+        options.items = options.items || options.list;
+        options.list = options.list || options.items;
+
         //Add size-class to button-class
         var buttonSizeClass = $._bsGetSizeClass({
                 baseClass   : 'btn',
@@ -5558,12 +5568,12 @@ jquery-bootstrap-modal-promise.js
                 $('<div class="form-control-with-label"></div>')
                     .append( $select );
 
-        //Convert options.items to select-option
+        //Convert options.list to select-option
         var selectedId = null,
             $currentParent = $select,
             itemOptionsList = [{}]; //{} = dummy for the title
 
-        $.each( options.items, function( index, itemOptions ){
+        $.each( options.list, function( index, itemOptions ){
             if (itemOptions.id){
                 itemOptionsList.push(itemOptions);
 
