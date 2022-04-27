@@ -504,7 +504,7 @@
 
 
         return window.noty( options );
-    }
+    };
 
 
 }(jQuery, this.Noty, this, document));

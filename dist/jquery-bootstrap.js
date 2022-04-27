@@ -5073,7 +5073,7 @@ jquery-bootstrap-modal-promise.js
 
 
         return window.noty( options );
-    }
+    };
 
 
 }(jQuery, this.Noty, this, document));
