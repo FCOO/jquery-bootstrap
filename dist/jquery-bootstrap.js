@@ -5044,6 +5044,38 @@ jquery-bootstrap-modal-promise.js
         }, options));
     };
 
+    /********************************************************************
+    *********************************************************************
+    notyConfirm( text, onOk) or notyConfirm( options ) = Noty-variation of window.confirm = a Noty with OK and Cancel-buttons
+    options = {
+        type  : STRING, default = 'alert'
+        header: OBJECT, default = ícon and name from $.bsNotyIcon and $.bsNotyName
+        text  : The text shown
+        onOk  : FUNCTION - called when the Ok-button is clicked
+    }
+    *********************************************************************
+    *********************************************************************/
+    window.notyConfirm = $.bsConfirm = function(){
+        var options = arguments.length == 1 ? arguments[0] : {text: arguments[0], onOk: arguments[1]};
+
+        options = $.extend({
+            type         : 'info',
+            defaultHeader: true,
+            textAlign    : 'center',
+            layout       : 'center',
+            modal        : true,
+            closeWith    : ['button'],
+            buttons      : [
+                {icon:'fa-times', text: {da:'Annullér', en:'Cancel'},          onClick: options.onCancel },
+                {icon:'fa-check', text: {da:'Ok', en:'Ok'}, class:'min-width', onClick: options.onOk     }
+            ]
+        }, options);
+
+
+        return window.noty( options );
+    }
+
+
 }(jQuery, this.Noty, this, document));
 ;
 /****************************************************************************
