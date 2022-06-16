@@ -1,0 +1,521 @@
+/************************************************************
+VARIABLES-BOOTSTRAP
+Adjust Bootstrap 5 variables default values
+
+Variables should follow the `$component-state-property-size` formula for
+consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+
+All non-Bootstrap variables are prefixed with $jb-
+
+
+************************************************************/
+
+/***********************************************
+Customize Bootstrap
+See https://getbootstrap.com/docs/5.2/customize/options/ for description
+/star star/ = Differnet from default
+************************************************/
+    //Variable	                            Values	                        Description
+    $spacer	                    :   1rem;   //1rem (default), or any value > 0    Specifies the default spacer value to programmatically generate our spacer utilities.
+    $enable-rounded	            :   true;   //true (default) or false	    Enables predefined border-radius styles on various components.
+    $enable-shadows	            :   false;  //true or false (default)	    Enables predefined decorative box-shadow styles on various components. Does not affect box-shadows used for focus states.
+    $enable-gradients	        :   false;  //true or false (default)	    Enables predefined gradients via background-image styles on various components.
+    $enable-transitions	        :   true;   //true (default) or false	    Enables predefined transitions on various components.
+    $enable-reduced-motion	    :   true;   //true (default) or false	    Enables the prefers-reduced-motion media query, which suppresses certain animations/transitions based on the users’ browser/operating system preferences.
+    $enable-grid-classes	    :   true;   //true (default) or false	    Enables the generation of CSS classes for the grid system (e.g. .row, .col-md-1, etc.).
+    $enable-container-classes   :   true;   //true (default) or false	    Enables the generation of CSS classes for layout containers. (New in v5.2.0)
+    $enable-caret	            :   true;   //true (default) or false	    Enables pseudo element caret on .dropdown-toggle.
+    $enable-button-pointers	    :   true;   //true (default) or false	    Add “hand” cursor to non-disabled button elements.
+/**/$enable-rfs	                :   false;  //true (default) or false	    Globally enables RFS.
+    $enable-validation-icons	:   true;   //true (default) or false	    Enables background-image icons within textual inputs and some custom forms for validation states.
+/**/$enable-negative-margins	:   true;   //true or false (default)	    Enables the generation of negative margin utilities.
+    $enable-deprecation-messages:   true;   //true (default) or false	    Set to false to hide warnings when using any of the deprecated mixins and functions that are planned to be removed in v6.
+    $enable-important-utilities :   true;   //true (default) or false	    Enables the !important suffix in utility classes.
+    $enable-smooth-scroll       :   true;   //true (default) or false	    Applies scroll-behavior: smooth globally, except for users asking for reduced motion through prefers-reduced-motion media query
+
+
+//Default border-width as px and rem
+$border-width    : 1px; //<== TODO skal være 1px
+$border-width-rem: asRem($border-width);
+
+
+$btn-hover-bg-shade-amount:       15%;  //15%;
+$btn-hover-bg-tint-amount:        15%;  //15%;
+$btn-hover-border-shade-amount:   20%;  //20%;
+$btn-hover-border-tint-amount:    10%;  //10%;
+$btn-active-bg-shade-amount:      20%;  //20%;
+$btn-active-bg-tint-amount:       20%;  //20%;
+$btn-active-border-shade-amount:  25%;  //25%;
+$btn-active-border-tint-amount:   10%;  //10%;
+
+
+/***********************************************
+OPACITY
+************************************************/
+// Opacity for semi-transparent elements
+$jb-element-semi-transparent-opacity       : .50;
+$jb-element-semi-transparent-hover-opacity : .75;
+$jb-element-semi-transparent-active-opacity: .95;
+
+/***********************************************
+TEXT-COLOR
+************************************************/
+$jb-element-color         : $gray-900;  //$gray-900
+$jb-element-hover-color   : #{tint-color($jb-element-color, $btn-hover-border-tint-amount)};
+$jb-element-active-color  : #{tint-color($jb-element-color, $btn-active-border-tint-amount)};
+$jb-element-disabled-color: $jb-element-color;
+
+
+//$jb-icon-color = Color of icons in modal-header etc.
+$jb-icon-color         : $gray-600;
+$jb-icon-hover-color   : #{shade-color($jb-icon-color, $btn-hover-border-tint-amount)};
+$jb-icon-active-color  : #{shade-color($jb-icon-color, $btn-active-border-tint-amount)};
+
+
+//Normal
+$body-color         : $jb-element-color;
+$link-color         : $jb-element-color;
+$accordion-color    : $jb-element-color;
+$list-group-color   : $jb-element-color;
+
+//Active
+$nav-tabs-link-active-color   : $jb-element-active-color;
+$accordion-button-active-color: $jb-element-active-color;
+
+//Disabled
+//TODO
+
+//Label
+$jb-label-color     : red;  //MANGLER måske som optgroup
+
+/***********************************************
+BACKGROUND-COLOR
+************************************************/
+// Buttons - standard
+$jb-btn-standard-background-color       : $gray-100;
+$jb-btn-standard-hover-background-color : $gray-300; //or $gray-200
+$jb-btn-standard-active-background-color: $gray-400; //or $gray-300
+
+
+/***********************************************
+BORDER-COLOR
+************************************************/
+// All buttons and inputs get same border-color
+$jb-element-border-color        : $secondary;
+$jb-element-hover-border-color  : tint-color($jb-element-border-color, $btn-hover-border-tint-amount);
+$jb-element-focus-border-color  : yellow;
+$jb-element-active-border-color : tint-color($jb-element-border-color, $btn-active-border-tint-amount);
+
+$input-border-color      : $jb-element-border-color;
+$input-focus-border-color: $jb-element-focus-border-color;
+
+$form-check-input-border                : #{$border-width} solid #{$jb-element-border-color};
+$form-check-input-checked-border-color  : $jb-element-border-color;
+
+$pagination-border-color         : $jb-element-border-color;
+$pagination-hover-border-color   : $jb-element-hover-border-color;
+$pagination-active-border-color  : $jb-element-active-border-color;
+$pagination-disabled-border-color: $pagination-border-color;
+
+
+// All "Structure" (table, accordion, thumbnail, headers etc.) gets same border-color
+$jb-structure-border-color        : brown; // MANGLER //$gray-300
+$jb-structure-hover-border-color  : tint-color($jb-structure-border-color, $btn-hover-border-tint-amount);
+$jb-structure-active-border-color : tint-color($jb-structure-border-color, $btn-active-border-tint-amount);
+
+$border-color                     : $jb-structure-border-color;
+$toast-header-border-color        : $jb-structure-border-color;
+
+$list-group-border-color          : $jb-structure-border-color;
+$list-group-active-border-color   : $jb-structure-active-border-color;
+
+$nav-tabs-border-color            : $jb-structure-border-color;
+$nav-tabs-link-hover-border-color : $jb-structure-hover-border-color;
+$nav-tabs-link-active-border-color: $jb-structure-active-border-color;
+
+
+//All containers (dropdown, card, popover, popover-arrow, toast (= alerts), modal) gets same border-color
+$jb-container-border-color: lightblue; //darkgreen;   // MANGLER // rgba($black, .175) !default;
+
+$border-color-translucent: $jb-container-border-color;
+
+
+/***********************************************
+HEADER COLOR - MANGLER
+***********************************************/
+// $headings-color             :   null !default;
+// $dropdown-header-color      :   $gray-600 !default;
+// $dropdown-dark-header-color :   $gray-500 !default;
+// $popover-header-color       :   var(--#{$prefix}heading-color) !default; Bug in BS 5.21 Should be headings-color
+// $toast-header-color         :   $gray-600 !default;
+
+
+/***********************************************
+CHECKBOX, RADIO, AND SELECT
+text-color and bg-color for selected item in <select> varies for different browsers.
+text-color = rgb(255, 255, 255)   for all
+    Browser     bg-color
+    Chrome      rgb( 30, 144, 255)
+    Firefox     rgb(  0, 120, 215)
+    Safari      rgb( 30, 144, 255)
+    Edge        rgb(195, 195, 195)  = gray
+
+For checkbox and radio default Bootstrap uses:
+text-color  = $form-check-input-checked-color    = $component-active-color = $white   = rgb(255, 25, 255);
+bg-color    = $form-check-input-checked-bg-color = $component-active-bg    = $primary = rgb(13, 110, 253);
+
+** BUT JQUERY-BOOTSTRAP USES SAME COLORS AS <SELECT> IN CHROME AND SAFARI **
+************************************************/
+$form-check-input-checked-color   : rgb(255, 255, 255);
+$form-check-input-checked-bg-color: rgb( 30, 144, 255);
+
+/*
+indeterminate colors = checkbox or checkbox-button with semi-selected state
+Use $orange as bg-color and same bg-image as selected and standard border-color
+*/
+$form-check-input-indeterminate-bg-color: $orange;
+
+//Modal border width
+$modal-content-border-width: $border-width;
+
+/***********************************************
+PADDING AND FONT-SIZE
+Padding and font-size for different sizes of
+    buttons,
+    accordion-, modal-, popup-, and tooltip-header/footer
+************************************************/
+// Large
+$jb-padding-y-lg            : .5rem;    // =  8px
+$jb-padding-x-lg            : .5rem;    // =  8px
+$jb-font-size-lg            : 1.25rem;  // = 20px
+$jb-border-radius-lg        : .5rem;    // =  8px
+$jb-inner-border-radius-lg  : subtract($jb-border-radius-lg , $border-width);
+
+// Normal
+$jb-padding-y               : .375rem;  // =  6px
+$jb-padding-x               : .375rem;  // =  6px
+$jb-font-size               : 1rem;     // = 16px
+$jb-border-radius           : .375rem;  // =  6px
+$jb-inner-border-radius     :subtract($jb-border-radius    , $border-width);
+
+// Small
+$jb-padding-y-sm            : .25rem;   // =  4px
+$jb-padding-x-sm            : .25rem;   // =  4px
+$jb-font-size-sm            : .875rem;  // = 14px
+$jb-border-radius-sm        : .25rem;   // =  4px
+$jb-inner-border-radius-sm  :subtract($jb-border-radius-sm , $border-width);
+
+// Extra small
+$jb-padding-y-xs            : .125rem;  // =  2px
+$jb-padding-x-xs            : .125rem;  // =  2px
+$jb-font-size-xs            : .75rem;   // = 12px
+$jb-border-radius-xs        : .125rem;  // =  2px
+$jb-inner-border-radius-xs  : subtract($jb-border-radius-xs , $border-width);
+
+//Extra-extra-small font-size - MANGLER: Skal den bruges?
+$jb-padding-y-xxs           : .0625rem;  // =  1px
+$jb-padding-x-xxs           : .0625rem;  // =  1px
+$jb-font-size-xxs           : .6875rem;  // = 11px
+$jb-border-radius-xxs       : .0625rem;  // =  1px
+$jb-inner-border-radius-xxs : subtract($jb-border-radius-xxs , $border-width);
+
+
+//Default Bootstrap font-size plus -xs and xxs added
+$font-size-lg   :   $jb-font-size-lg;
+$font-size-base :   $jb-font-size;
+$font-size-sm   :   $jb-font-size-sm;
+$font-size-xs   :   $jb-font-size-xs;
+$font-size-xxs  :   $jb-font-size-xxs;
+
+
+//Create maps (-mp) with font-size, padding-x, padding-y, border-radius, and inner-border-radius
+$bs-maps: (
+    font-size: (
+        lg : $jb-font-size-lg,
+        nl : $jb-font-size,
+        sm : $jb-font-size-sm,
+        xs : $jb-font-size-xs,
+        xxs: $jb-font-size-xxs
+    ),
+
+    padding-x: (
+        lg : $jb-padding-x-lg,
+        nl : $jb-padding-x,
+        sm : $jb-padding-x-sm,
+        xs : $jb-padding-x-xs,
+        xxs: $jb-padding-x-xxs
+    ),
+
+    padding-y: (
+        lg : $jb-padding-y-lg,
+        nl : $jb-padding-y,
+        sm : $jb-padding-y-sm,
+        xs : $jb-padding-y-xs,
+        xxs: $jb-padding-y-xxs
+    ),
+
+    border-radius: (
+        lg : $jb-border-radius-lg,
+        nl : $jb-border-radius,
+        sm : $jb-border-radius-sm,
+        xs : $jb-border-radius-xs,
+        xxs: $jb-border-radius-xxs
+    ),
+
+    inner-border-radius: (
+        lg : $jb-inner-border-radius-lg,
+        nl : $jb-inner-border-radius,
+        sm : $jb-inner-border-radius-sm,
+        xs : $jb-inner-border-radius-xs,
+        xxs: $jb-inner-border-radius-xxs
+    ),
+
+    //Footer content is one size smaller
+    footer-content-font-size: (
+        lg : $jb-font-size,
+        nl : $jb-font-size-sm,
+        sm : $jb-font-size-xs,
+        xs : $jb-font-size-xxs,
+        xxs: $jb-font-size-xxs
+    ),
+
+);
+
+
+/************************************************************
+Modal and popover header and content
+Bootstrap default = normal size
+************************************************************/
+$jb-header-bg-color: aquamarine;    //TEST MANGLER
+$jb-footer-bg-color: orange;        //TEST MANGLER
+
+//$jb-inner-header/footer-bg-color used for inner elements with header and/or footer
+$jb-inner-header-bg-color: #{tint-color($jb-header-bg-color, 30%)};
+$jb-inner-footer-bg-color: #{tint-color($jb-footer-bg-color, 30%)};
+
+
+
+//Modal
+$modal-content-border-radius        : $jb-border-radius;
+$modal-content-inner-border-radius  : $jb-inner-border-radius;
+$modal-header-padding-y             : $jb-padding-y;
+$modal-header-padding-x             : $jb-padding-x;
+$modal-header-padding               : $modal-header-padding-y $modal-header-padding-x;
+
+$modal-inner-padding                : $jb-padding-y $jb-padding-x;
+
+$modal-footer-bg                    : $jb-footer-bg-color;
+
+//popover
+$popover-font-size          : $jb-font-size;
+$popover-border-radius      : $jb-border-radius;
+$popover-inner-border-radius: $jb-inner-border-radius;
+
+$popover-header-bg          : $jb-header-bg-color;
+
+$popover-header-font-size   : $jb-font-size;
+$popover-header-padding-y   : $jb-padding-y;
+$popover-header-padding-x   : $jb-padding-x;
+
+$popover-body-padding-y     : $jb-padding-y;
+$popover-body-padding-x     : $jb-padding-x;
+
+
+/***********************************************
+Accordion
+***********************************************/
+$accordion-padding-y            :   $jb-padding-y;
+$accordion-padding-x            :   $jb-padding-x;
+$accordion-border-radius        :   $jb-border-radius;
+$accordion-inner-border-radius  :   $jb-inner-border-radius;
+
+$accordion-icon-width           :   1em; //default = 1.25rem
+
+/***********************************************
+Card
+***********************************************/
+//TODO
+
+
+/***********************************************
+Tables
+For some (unknown) reason the padding of table cells
+are done by scss-variables instead of var(...) ???
+***********************************************/
+//Normal - MANGLER
+$table-cell-padding-y   : $jb-padding-y;
+$table-cell-padding-x   : $jb-padding-x;
+
+//Small - MANGLER
+$table-cell-padding-y-sm: $jb-padding-y-sm;
+$table-cell-padding-x-sm: $jb-padding-x-sm;
+
+//Extra-small (added)
+$table-cell-padding-y-xs: $jb-padding-y-xs;
+$table-cell-padding-x-xs: $jb-padding-x-xs;
+
+
+
+
+
+/***********************************************
+Nav, Pills and Tabs
+***********************************************/
+// Normal
+$nav-link-padding-y     : $jb-padding-y;
+$nav-link-padding-x     : $jb-padding-x;
+$nav-link-font-size     : $jb-font-size;
+$nav-tabs-border-radius : $jb-border-radius;
+$nav-pills-border-radius: $jb-border-radius;
+
+// Small
+$nav-link-padding-y-sm     : $jb-padding-y-sm;
+$nav-link-padding-x-sm     : $jb-padding-x-sm;
+$nav-link-font-size-sm     : $jb-font-size-sm;
+$nav-tabs-border-radius-sm : $jb-border-radius-sm;
+$nav-pills-border-radius-sm: $jb-border-radius-sm;
+
+// Extra-small
+$nav-link-padding-y-xs     : $jb-padding-y-xs;
+$nav-link-padding-x-xs     : $jb-padding-x-xs;
+$nav-link-font-size-xs     : $jb-font-size-xs;
+$nav-tabs-border-radius-xs : $jb-border-radius-xs;
+$nav-pills-border-radius-xs: $jb-border-radius-xs;
+
+/***********************************************
+BUTTONS
+************************************************
+SYNTAX AND RELATIONS IN BOOTSTRAP
+    $input-btn-padding-x[-sm|-lg] = A Value
+    $input-btn-padding-y[-sm|-lg] = A Value
+    $input-btn-font-size[-sm|-lg] = A Value
+    $border-radius[-sm|-lg]       = A Value
+
+Used for button:
+    $btn-padding-y[-sm|-lg]      : $input-btn-padding-y[-sm|-lg] !default;
+    $btn-padding-x[-sm|-lg]      : $input-btn-padding-x[-sm|-lg] !default;
+    $btn-font-size[-sm|-lg]      : $input-btn-font-size[-sm|-lg] !default;
+    $btn-border-radius[-sm|-lg]  : $border-radius[-sm|-lg]       !default;
+
+Used for input
+    $input-padding-y[-sm|-lg]    : $input-btn-padding-y[-sm|-lg] !default;
+    $input-padding-x[-sm|-lg]    : $input-btn-padding-x[-sm|-lg] !default;
+    $input-font-size[-sm|-lg]    : $input-btn-font-size[-sm|-lg] !default;
+    $input-border-radius[-sm|-lg]: $border-radius[-sm|-lg]       !default;
+
+BOOTSTRAP 5 DEFAULT
+    $input-btn-line-height  : 1.5
+*/
+
+    $btn-padding-x-factor: 2; //padding-x relative to padding-y. But only for buttons => (*)
+
+
+// MANGLER: Måske skal padding-x = padding-y dvs del halve af nuværende =>  $btn-padding-x-factor: 1;
+
+
+// Large
+    $input-btn-padding-y-lg : $jb-padding-y-lg;
+    $input-btn-padding-x-lg : $btn-padding-x-factor * $jb-padding-x-lg;
+    $input-btn-font-size-lg : $jb-font-size-lg;
+    $border-radius-lg       : $jb-border-radius-lg;
+    $input-padding-x-lg     : $jb-padding-x-lg; // (*)
+
+// Normal
+    $input-btn-padding-y    : $jb-padding-y;
+    $input-btn-padding-x    : $btn-padding-x-factor * $jb-padding-x;
+    $input-btn-font-size    : $jb-font-size;
+    $border-radius          : $jb-border-radius;
+    $input-padding-x        : $jb-padding-x;     // (*)
+
+// Small
+    $input-btn-padding-y-sm : $jb-padding-y-sm;
+    $input-btn-padding-x-sm : $btn-padding-x-factor * $jb-padding-x-sm;
+    $input-btn-font-size-sm : $jb-font-size-sm;
+    $border-radius-sm       : $jb-border-radius-sm;
+    $input-padding-x-sm     : $jb-padding-x-sm; // (*)
+
+// New extra-small
+    $input-btn-padding-y-xs : $jb-padding-y-xs;
+    $input-btn-padding-x-xs : $btn-padding-x-factor * $jb-padding-x-xs;
+    $input-btn-font-size-xs : $jb-font-size-xs;
+    $border-radius-xs       : $jb-border-radius-xs;
+    $input-padding-x-xs     : $jb-padding-x-xs; // (*)
+
+// New extra-extra small
+    $input-btn-font-size-xxs: $jb-font-size-xxs;
+    $input-font-size-xxs    : $input-btn-font-size-xxs;
+
+
+/************************************************************
+Including "size" xs as in Bootstrap 5
+************************************************************/
+//Used for button:
+$btn-padding-y-xs      : $input-btn-padding-y-xs;
+$btn-padding-x-xs      : $input-btn-padding-x-xs;
+$btn-font-size-xs      : $input-btn-font-size-xs;
+$btn-border-radius-xs  : $border-radius-xs;
+
+//Used for input
+$input-padding-y-xs    : $input-btn-padding-y-xs;
+$input-padding-x-xs    : $jb-padding-x-xs; // (*)
+$input-font-size-xs    : $input-btn-font-size-xs;
+$input-border-radius-xs: $border-radius-xs;
+
+/***********************************************
+Adjust bootstrap-variables to only have dimensions
+in integer px from rem
+************************************************/
+$tooltip-arrow-width    : 0.8125rem;    //=> 13px - Original .8rem => 12.8px;
+$tooltip-arrow-height   : 0.375rem;     //=>  6px - Original .4rem =>  6.4px;
+
+/************************************************************
+*************************************************************
+OTHER ADJUSTMENTS - ikke indrykket = MANGLER!
+*************************************************************
+************************************************************/
+        //Adjust shadow width for active elements (buttons, input etc)
+        $input-btn-focus-width: 1px;    //original = .25rem !default;
+
+//Adjust font-size for tool-tips to match Google Maps etc.
+$tooltip-font-size: asRem(11px);
+
+//Set lighter color for placeholder
+//$input-placeholder-color: #adb5bd; //=$gray-500. Original = $gray-600;
+
+//TODO set $popover-max-width as rem instead of px
+
+/************************************************************
+Make all font-size and margin for header (<h1>, <h2>,...<h6>)
+releative to container (rem -> em)
+Default (not changed): $font-size-base = $spacer = 1rem
+************************************************************/
+$header-font-size       : 1em;
+$headings-margin-bottom : ($header-font-size / 2);  //Original = ($spacer / 2) !default;
+$h1-font-size           : $header-font-size * 2.5;  //Original = $font-size-base * 2.5 !default;
+$h2-font-size           : $header-font-size * 2;    //Original = $font-size-base * 2 !default;
+$h3-font-size           : $header-font-size * 1.75; //Original = $font-size-base * 1.75 !default;
+$h4-font-size           : $header-font-size * 1.5;  //Original = $font-size-base * 1.5 !default;
+$h5-font-size           : $header-font-size * 1.25; //Original = $font-size-base * 1.25 !default;
+$h6-font-size           : $header-font-size;        //Original = $font-size-base !default;
+
+/************************************************************
+Set margin for buttons in block
+************************************************************/
+//BRUGES IKKE MERE. MANGLER¤: NYT NAVN i B5 $btn-block-spacing-y: 0 !important;
+
+/************************************************************
+Adjust dropdown-menu
+MANGLER - SKAL CHECKES
+************************************************************/
+$dropdown-padding-y: 0;
+$dropdown-spacer   : 0;
+
+
+/************************************************************
+Adjust modal
+************************************************************/
+//Super optimize small modals
+$modal-sm: 320px;
+
+//Remove "shake" effect for modal
+$modal-scale-transform: none; //default = scale(1.02) !default;

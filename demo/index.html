@@ -36,7 +36,7 @@
     </style>
 </head>
 
-<body style="padding: 20px; _background-color: red;">
+<body style="padding: 20px; _background-color: #214B87;">
 
     <div id="lang"></div>
 
@@ -239,13 +239,11 @@ $('body').on('wheel', function(e){
                     text: 'Davs', 
                     onOk: function(){ console.log('OK!');} 
                 });
-return;
 
 var $elem = $('<div/>').text('Dette er helt almindelig tekst');
 var $elem2 = $('<div/>').text('Dette er anden helt almindelig tekst').css('display','none');
 var flashingNoty = $.bsNoty({layout:'center', header: 'Davs', text: [$elem, $elem2], onTop: true, flash: true});
 window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
-return;
                 window.noty({text: 'window.noty(...)', type: 'error'});
                 notyOk('Opsætning gemt', {queue:'testAfNoty'});
                 notyWarning('notyWarning');
@@ -315,6 +313,7 @@ return;
                 $.bsButton({text: 'Small', icon: 'fa-home', small:true}),
                 $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'fa-check-square-o'})
             ],
+            footer: 'Dette er en test',
             onPin: function(pinned){ console.log('onPin', pinned); }
 
         });
@@ -450,10 +449,10 @@ return;
         $.bsCheckbox({
             semiSelected: true,
             icon: ['far fa-map', 'fa fa-home'],
-            text: {da:'Vælg mig (semi)', en:'Check me (semi)'},
+            text: {da:'1: Vælg mig (semi)', en:'1: Check me (semi)'},
             onChange: function(id, selected, $buttonGroup){
-//HER                        console.log('9: bsSelectListPopover', id, selected)
-                      },
+                console.log('1: bsCheckbox', id, selected, arguments)
+            },
         })
         .appendTo( $body );
 
@@ -471,8 +470,7 @@ return;
             $.bsCheckbox({
                 content: {da:'Dette er content med flere linier<br>Dette er linie #2', en:'This is content with multi lines<br>This is line #2'},
                 selected: false,
-                //semiSelected: true,
-                multiLines: true,
+                semiSelected: true,
                 onClick: function(id, state, checkbox){
                     checkbox.cbxSetState(confirm('Set as SELECTED?'));
                 },                    
@@ -511,7 +509,7 @@ return;
 
         $.bsCheckboxButton({
 //            text: [{da:'Uvalgt', en:'Unselected'}, {da:'Valgt', en:'Selected'}],
-            text: {da:'Vælg mig', en:'Select me'},
+            text: [{da:'Vælg mig', en:'Select me'}, {da:'Fravælg mig', en:'Unselect me'}],
             icon: ['fa-thumbs-down', 'fa-thumbs-up'],
             selected: false,
             onChange: function(id, selected, _this){
@@ -593,7 +591,7 @@ return;
             ]
         }).appendTo($body);
 
-        header('Popover (click on buttons)');
+       header('Popover (click on buttons)');
         var titles = ['Small', 'Normal'];
 
         for (var i=0; i<titles.length; i++ )
@@ -608,7 +606,7 @@ return;
 //HER                    console.log('COMMON 6: bsButtonGroupPopover', id, selected)
                 },
                 vertical: true,
-                placement: i ? "right" : 'top',
+                placement: i ? 'top' : 'right',
                 closeOnClick: false,
                 small: !i,
                 header: {icon:'fa-home', text:titles[i]},
@@ -647,7 +645,7 @@ return;
                 ]
             })
 
-        $.bsButton()
+        $.bsButton({})
             .appendTo( $body )
             .bsSelectListPopover({
                 onChange: function(id, selected, $buttonGroup){
@@ -880,7 +878,7 @@ longTableContent[i].stargazers_count = i;
 
         myBsTable = $.bsTable({
             //showHeader: false,
-            //verticalBorder: false,
+            verticalBorder: false,
             selectable: true,
             noBorder: false,
             noPadding: false,
@@ -932,9 +930,12 @@ longTableContent[i].stargazers_count = i;
             content: longTableContent,
             rowClassName: ['dette-er-en-test']
         })
-        .filterTable(null, {
-            'name': function(value){return (value != "Dansk!!!");}
-        });
+// HER>         .filterTable(null, {
+// HER>             'name': function(value){
+// HER>                 return (value.da != "Dansk!!!");
+// HER>             }
+// HER>         });
+
 
         m_table = myBsTable.asModal({
             header:'En stor tabel med "allowZeroSelected: true"',
@@ -948,12 +949,12 @@ longTableContent[i].stargazers_count = i;
 //relativeHeight: 0.65,
 //relativeHeightOffset: function(){ return 0},
 
-            small: true,
+//            small: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             buttons: [
                 {text:'Filter: Stats > 30',          onClick: function(){myBsTable.filterTable(null, {'stargazers_count': function(value){ return value > 30;    }})}},
                 {text:'Filter: Stats odd',           onClick: function() {myBsTable.filterTable(null, {'stargazers_count': function(value){ return !!(value % 2); }})}},
-                {text:'Filter: Navn <> "Dansk!!!"',  onClick: function() {myBsTable.filterTable(null, {'name': function(value){return (value != "Dansk!!!"); }})}},
+                {text:'Filter: Navn <> "Dansk!!!"',  onClick: function() {myBsTable.filterTable(null, {'name': function(value){return !value || (value.da != "Dansk!!!"); }})}},
                 {text:'Reset',                       onClick: function() {myBsTable.resetFilterTable();}},
             ],
             show: false
@@ -1028,9 +1029,9 @@ longTableContent[i].stargazers_count = i;
                         {
                             id:'theSelectBox', type: 'select', placeholder:"Placeholder", label:'theSelectBox',
                             items:[
-                                {id:'theSelectBox0', icon:'fa-home', text: '0:Davs'},
+                                {id:'theSelectBox0',  text: {da: '0:Davs', en:'0:Hello'}},
                                 {id:'theSelectBox1',  text:'1: Item 1'},
-                                {                   text:'En overskrift'},
+                                {                     text:'En overskrift'},
                                 {id:'theSelectBox2',  text:'2: Item 2 DEFAULT'},
                                 {id:'theSelectBox3',  text:'3: Item 3'},
                                 {id:'theSelectBox4',  text:'4: Item 4'},
@@ -1139,7 +1140,8 @@ longTableContent[i].stargazers_count = i;
                             { type: 'fileView', fileName:'https://www.soefartsstyrelsen.dk/Documents/Publikationer/DANSKFYRLISTE2018.pdf', header:{icon:'fa-home', text:'Header'}},
                             { type: 'fileView', fileName:'http://nautiskinformation.soefartsstyrelsen.dk/index.html#/messages/details'},
                             { type: 'fileView', fileName:'https://www.danskehavnelods.dk/'},
-                            { type: 'fileView', fileName:'https://niord.dma.dk/rest/repo/file/messages/5/55/555306e4-0b0d-4d62-9a55-36ec64539aa4/2/Inmarsat-C.jpg'}
+                            { type: 'fileView', fileName:'https://niord.dma.dk/rest/repo/file/messages/5/55/555306e4-0b0d-4d62-9a55-36ec64539aa4/2/Inmarsat-C.jpg'},
+                            { type: 'fileView', fileName:'https://niord.dma.dk/rest/repo/file/messages/5/55/555306e4-0b0d-4d62-9a55-36ec64539aa4/2/Inmarsat-C.jpg', header:{icon:'fa-home', text:'Header'}}
                         ],
                         flexWidth: true,
                         extraWidth: true,
@@ -1388,7 +1390,7 @@ width: 543,
                         center: false, 
                         small: true
                     },{
-                        type: 'textarea', label: {icon:'fa-map', text:'TextArea'},
+                        type: 'textarea', _label: {icon:'fa-map', text:'TextArea'},
                         text: {da:'TextArea - Dette er en lang linie med mange ord<br>Anden linie', en:'Short'},
                         small: false, compact: true
 
@@ -1507,7 +1509,8 @@ width: 543,
                                         type: 'selectlist', label: 'En select-list',
                                         id: 'theSelectList',
                                         items     : [
-                                            {id: 'item0', text:{da:'Emne#0', en: 'Item#0'} },
+                                            {             icon: 'fa-home', text:{da:'Overskrift', en: 'Header'} },
+                                            {id: 'item0', icon: 'fa-home', text:{da:'Emne#0', en: 'Item#0'} },
                                             {id: 'item1', text:{da:'Emne#1', en: 'Item#1'} },
                                             {id: 'item2', text:{da:'Emne#2', en: 'Item#2'} },
                                             {id: 'item3', text:{da:'Emne#3', en: 'Item#3'} },
@@ -1542,11 +1545,11 @@ width: 543,
                                         },
                                         {
                                             type: 'text',
-                                            text: 'Uden label - Dette er en lang linie med mange ord', center: false
+                                            text: 'Uden label - Dette er en lang linie med mange ord', center: false, lineBefore: true
                                         },
                                         {
-                                            type: 'textbox', label: 'TextBox',
-                                            text: 'Davs med dig<br>Ny linie', center: true
+                                            type: 'textbox', label: 'Small TextBox',
+                                            text: 'Davs med dig<br>Ny linie', center: true, small: true, lineBefore: true
                                         },
                                         {
                                             label: {text:'Header'},
@@ -1591,7 +1594,7 @@ width: 543,
                                             XXonChanging: function( obj ){ console.log( obj.value ); }
                                         },
                                         {
-                                            id:'theCheckBox', type:'checkbox', text: 'Vælg mig (theCheckBox)'
+                                            id:'theCheckBox', type:'checkbox', text: 'Vælg mig (theCheckBox)', lineBefore: true, lineAfter: true
                                         },
                                         {
                                             type: 'inputgroup', label: 'Dette er en input-group',
@@ -1604,17 +1607,18 @@ width: 543,
                                                 {id:'mySelection4', type:'checkbox', text: 'Vælg mig #4', noValidation: true},
                                                 {
                                                     id:'formId2', validators: 'notEmpty _MYvalidatorName', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)',
-                                                    after : {type:'button', text:{da:'kr.', en:'£'}}, before:    {type:'button', icon:'fa-calculator'}
+                                                    after : {type:'button', square: true, text:{da:'kr.', en:'£'}}, before:    {type:'button', icon:'fa-calculator', square: true}
                                                 },
                                             ]
                                         },
 
                                         {
-                                            id:'theSelectBox', type: 'select', validators: 'notEmpty', placeholder:"Placeholder", label:'theSelectBox',
+                                            id:'theSelectBox', type: 'select', validators: 'notEmpty', placeholder:"Placeholder", 
+                                            label:'theSelectBox',
                                             before:    {type:'button', icon:'fa-calculator'},
                                             after : {type:'button', text:{da:'kr.', en:'£'}},
                                             items:[
-                                                {id:'theSelectBox0', icon:'fa-home', text: '0:Davs'},
+                                                {id:'theSelectBox0', icon:'fa-home', text: {da: '0:Davs', en:'0:Hello'}},
                                                 {id:'theSelectBox1',  text:'1: Item 1'},
                                                 {                   text:'En overskrift'},
                                                 {id:'theSelectBox2',  text:'2: Item 2 DEFAULT', icon:'fa-folder'},
@@ -1633,7 +1637,7 @@ width: 543,
                                         },
 
                                         {
-                                            id:'formId2-1TEST', type: 'selectlist', label:'Label',
+                                            id:'formId2-1TEST', type: 'selectlist', label:'Label', small: true,
                                             items:[
                                                 {id:'radiogroup1', icon:'fa-home', text: 'Davs'},
                                                 {id:'radiogroup2', text:'Item 2'},
@@ -1766,7 +1770,7 @@ width: 543,
                 _showHeaderOnClick: true,
                 semiTransparent: true,
                 _height: 56,
-                width : 54,
+                width : 62,
                 dynamic: true,
                 content: function($body){
                     $body.html( moment().format("hh:mm:ss"));
@@ -1892,56 +1896,31 @@ showHeaderOnClick: true,
         }}).appendTo( $body);
 
 
-var $test =
-    $.bsTabs({
-        height:'100px',scroll: false,
-        //small: true,
-        list: [
-            {id: 'NIELS', icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'},
-            {icon: 'fa-globe', title:{da:'Tidszone', en:'Time zone'}, content: 'SECOND'},
-            {icon: 'fa-calendar', title:{da:'Dato og tid', en:'Date and time'}, content: 'THIRD',_selected: true}
-        ]
-    }).appendTo($body );
+    var myBsTabs =
+        $.bsTabs({
+// HER>             height:'100px',scroll: false,
 
-$test.bsSelectTab('NIELS');
+            list: [
+                {id: 'NIELS', icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'},
+                {icon: 'fa-globe', title:{da:'Tidszone', en:'Time zone'}, content: 'SECOND'},
+                {icon: 'fa-calendar', title:{da:'Dato og tid', en:'Date and time'}, content: 'THIRD', selected: true}
+            ]
+        });
+    var m_tabs = myBsTabs.asModal({
+            header:'Demo af tabs',
+// HER>             flexWidth:true,
+// HER>             extraWidth: true,
+// HER>             static: true
+    });
+
+    m_tabs.assignTo(
+        $('<button>Tabs</button>').appendTo($body)
+    );
+
+
+//MANGLER $test.bsSelectTab('NIELS');
 
     </script>
-
-
-<h4>Normal</h4>
-<form id="formTest">
-    <div class="form-group">
-        <div class="input-group">
-            <label class="has-float-label">
-                <input name="TEST_NAME" class="form-control-border form-control form-control-with-label" type="text" placeholder="First Name"/>
-                <span>First</span>
-            </label>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
-                <button class="btn btn-standard" disabled type="button">:disabled</button>
-            </div>
-            <label class="has-float-label">
-                <input name="TEST_DATE" type="text" class="form-control-border form-control form-control-with-label" placeholder="Dato dd-mm-yyyy" required/>
-                <span>Dato</span>
-            </label>
-            <label class="has-float-label">
-                <input name="TEST_DATE2" type="text" class="form-control-border form-control form-control-with-label" placeholder="dd-mm-yyyy" required/>
-                <span>Dato2</span>
-            </label>
-            <div class="input-group-append">
-                <button class="btn btn-standard" type="button"><i class="fa fa-home"></i></button>
-                <button class="btn btn-standard primary" disabled type="button">:disabled</button>
-            </div>
-        </div>
-    </div>
-    <button class="btn btn-standard primary" type="submit">Submit form</button>
-    <a class="disabled"></a>
-</form>
 
 
 
@@ -1958,7 +1937,7 @@ small: true,
         placeholder: {icon:'fa fa-home', text: {da:'Dansk PH...', en:'English...'}},
         onChange  : function(id, selected, $buttonGroup){console.log('bsSelectbox', id, selected)},
     });//.appendTo( $body );
-*/
+/
 /*
     $.bsSelectbox({
         id: 'TEST_SELECT',
@@ -2134,8 +2113,145 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
 
 
 </script>
-
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<h4>CHECKBOX</h4>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckDefault">
+    Default checkbox
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+  <label class="form-check-label" for="flexCheckChecked">
+    Checked checkbox
+  </label>
+</div>
+
+<h4>SELECT</h4>
+<select class="form-select form-select-sm" aria-label=".form-select-sm example">
+  <option selected>Open this select menu</option>
+  <option value="1">One</option>
+  <option value="2">Two</option>
+  <option value="3">Three</option>
+</select>
+
+<h4>SELECT-LIST</h4>
+<select class="form-select form-select-sm" size="3" aria-label="size 3 select example">
+  <option selected>Open this select menu</option>
+  <option value="1">One</option>
+  <option value="2">Two</option>
+  <option value="3">Three</option>
+</select>
+
+
+<h4>TABS</h4>
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Home</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">...</div>
+  <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
+  <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
+  <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+</div>
+
+<h4>LIST GROUP</h4>
+<ul class="list-group">
+  <a href="#" class="list-group-item list-group-item-action active" aria-current="true">The current link item</a>
+  <li class="list-group-item">An item</li>
+  <li class="list-group-item">A second item</li>
+  <li class="list-group-item">A third item</li>
+  <li class="list-group-item">A fourth item</li>
+  <li class="list-group-item">And a fifth one</li>
+</ul>
+
+<h4>PAGINATION</h4>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
+
+
+<h4>ACCORDION</h4>
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Accordion Item #1
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingTwo">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        Accordion Item #2
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingThree">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        Accordion Item #3
+      </button>
+    </h2>
+    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<select id="NIELS">
+    <optgroup label = "Choose One">
+    <option value ="sydney">Sydney</option>
+    <option value ="melbourne">Melbourne</option>
+    <option value ="cromwell">Cromwell</option>
+    <option value ="queenstown">Queenstown</option>
+    </optgroup>
+</select>
+
+<script>
+    var options = $('#NIELS').find('option');
+
+options[0].innerHTML = '';
+$(options[0])._bsAddHtml({
+    icon: 'fa-home', text: {da: 'Dansk', en: 'Eng'}
+});
+console.log(options);
+
+</script>
 
 </body>
 </html>

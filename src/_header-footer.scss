@@ -1,0 +1,141 @@
+/************************************************************
+HEADER-FOOTER
+Style for text and icons in headers and footers for
+modal, popover, accordion, noty etc.
+************************************************************/
+
+/************************
+HEADER-CONTENT
+.header-content = Inner content
+.header-content-container = outer class  with padding. used when no parent clsass gives padding
+************************/
+.header-content-container {
+    padding: var(--bs-modal-header-padding);
+}
+
+.header-content {
+    display         : flex;
+    align-items     : center;
+    justify-content : left;
+
+    flex-shrink: 0;
+    flex-grow  : 0;
+
+    background-color: $jb-header-bg-color;
+
+    cursor: default;
+    &.clickable {
+        cursor: pointer;
+    }
+
+
+    //header-content-small = Smal,ler font-size and padding for inner headers
+    &.header-content-smaller {
+        font-size: var(--#{$prefix}footer-font-size);
+        padding  : var(--#{$prefix}footer-padding-y) var(--#{$prefix}footer-padding-x);
+
+        background-color: tint-color($jb-header-bg-color, 30%);
+    }
+
+    //<span> with the text: Truncated to keep one line
+    span {
+        @include text-truncate();
+
+        //Fixed header = Part of the header always visible
+        &.fixed-header {
+            overflow  : visible;
+            word-break: keep-all;
+        }
+    }
+
+    /****************************************************
+    List of icons inside a header are placed inside a container
+    <div class="header-icon-container>
+        <i class="header-icon fa-XX [hidden][disabled]"/>
+        <i class="header-icon fa-YY [hidden][disabled]"/>
+    </div>
+    ****************************************************/
+    .header-icon-container {
+        display        : flex;
+        align-items    : baseline;
+
+        flex-shrink    : 0;
+        justify-content: space-between;
+        margin-left    : auto;
+        margin-right   : 0;
+
+        font-size : calc(4em / 3);
+
+        > * { margin-left: .2em; }
+
+        .fa-stack {
+            //Make stacked icon same size as single icons
+            height     : 1em;
+            width      : 1em;
+            line-height: 1em;
+        }
+
+        .header-icon {
+            //Common style
+            width      : 1em;
+            text-align : center;
+            cursor     : pointer;
+
+            &.hidden   { display: none; }
+
+            color: $jb-icon-color;
+            &:hover  { color: $jb-icon-hover-color;  }
+            &:active { color: $jb-icon-active-color; }
+
+            //Special version for warning-icon: yellow background white exclamation
+            &.header-icon-warning {
+                .middle  {
+                    //Fine tuning to place "!" in center of circle
+                    font-size: .6em;
+                    position : relative;
+                    top      : -0.25em;
+                    left     : -.3em;
+                }
+            }
+        } //end of .header-icon {
+    } //end of .header-icon-container {
+} //end of .header-content
+
+
+/************************
+FOOTER-CONTENT
+************************/
+:root {
+    --#{$prefix}footer-font-size: #{$jb-font-size-sm};
+
+    --#{$prefix}footer-padding-y: #{$jb-padding-y};
+    --#{$prefix}footer-padding-x: #{$jb-padding-x};
+}
+
+.footer-content {
+    line-height : 1.25; //Decrease height
+    font-size   : var(--#{$prefix}footer-font-size);
+
+    display         : flex;
+    align-items     : center;
+    justify-content : left;
+
+    flex-shrink: 0;
+    flex-grow  : 0;
+
+    padding: var(--bs-footer-padding-y) var(--bs-footer-padding-x);
+
+    background-color: $jb-footer-bg-color;
+
+    border-top: var(--#{$prefix}modal-header-border-width) solid var(--#{$prefix}modal-header-border-color);
+    &.no-border {
+        border-top: none;
+    }
+
+    //Hide when empty
+    &:empty { display: none !important; }
+
+} // end of .footer-content
+
+
+

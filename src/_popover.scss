@@ -1,27 +1,26 @@
 /************************************************************
 POPOVER
-
 ************************************************************/
+@mixin _popover( $size ){
+    @include font-size-variant("popover",           $size);
+    @include font-size-variant("popover-header",    $size);
+
+    @include padding-variant("popover-header",      $size);
+
+    @include border-radius-variant("popover",       $size);
+    @include inner-border-radius-variant("popover", $size);
+
+    .footer-content {
+        @include footer-size-variant($size);
+    }
+}
+
 .popover {
-    //Reset padding for popover-header
-    .popover-header {
-        padding: 0 !important;
-        border-bottom: none;
-    }
-
-    //Popover-header-content
-    .popover-header-content {
-        @include header-variant();
-        @include header-colors();
-        font-weight: $btn-font-weight; //Same as buttons
-        line-height: $input-btn-line-height; //Same as buttons
-
-        @include vertical-align-center();
-    }
-
     //Popover body
     .popover-body {
-        padding: 1px !important; //TODO Perhaps change back to 0 when Bootstrap bug fix regarding popover aarrow are ready
+        //Padding = 0 for popover body
+        --#{$prefix}popover-body-padding-y: 0;
+        --#{$prefix}popover-body-padding-x: 0;
 
         //Center button-group in popover
         & > .btn-group {
@@ -29,15 +28,7 @@ POPOVER
         }
     }
 
-    //Popover footer
-    .popover-footer {
-        @include footer-variant();
-    }
-
-    //Small size
-    &.popover-sm {
-        .popover-header-content { @include header-variant-sm(); }
-        .popover-footer         { @include footer-variant-sm(); }
-    }
+    //Size small and extra-small
+    &.popover-sm {  @include _popover("sm"); }
+    &.popover-xs {  @include _popover("xs"); }
 }
-

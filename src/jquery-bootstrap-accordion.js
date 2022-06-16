@@ -59,7 +59,7 @@
 
     <div id="accordion" class="accordion accordion-sm" role="tablist" aria-multiselectable="true">
         <div class="card">
-            <div class="card-header" role="tab" id="headingOne" data-toggle="collapse" _data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <div class="card-header" role="tab" id="headingOne" data-bs-toggle="collapse" _data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                 <i class="fa fa-home"></i>&nbsp;<span>Den nye overskrift</span>
             </div>
             <div id="collapseOne" class="collapse _show" role="tabpanel" aria-labelledby="headingOne">
@@ -70,7 +70,7 @@
         </div>
 
         <div class="card">
-            <div class="card-header" role="tab" id="headingTwo" data-toggle="collapse" _data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            <div class="card-header" role="tab" id="headingTwo" data-bs-toggle="collapse" _data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fa fa-home"></i>&nbsp;<span>Den nye overskrift</span>
             </div>
         <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
@@ -78,6 +78,20 @@
                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
             </div>
         </div>
+    </div>
+
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    Accordion Item #1
+                </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+            </div>
+        </div>
+    ..another <div class="accordion-item">...</div>
     </div>
     **********************************************************/
     var accordionId = 0;
@@ -89,7 +103,6 @@
                           }, options)
                );
     };
-
 
     $.bsAccordion = function( options ){
         var id = 'bsAccordion'+ accordionId++;
@@ -112,29 +125,25 @@
                         .attr({
                             'id'      : id,
                             'tabindex': -1,
-                            'role'    : "tablist",
-                            'aria-multiselectable': true
                         });
 
         //Adding the children {icon, text, content}
         $.each( options.list, function( index, opt ){
-
-
             //Create the header
             opt = $._bsAdjustOptions( opt );
 
             var headerId   = id + 'header'+index,
                 collapseId = id + 'collapse'+index,
                 isOpen     = !!options.allOpen || !!opt.selected,
-                $card = $('<div/>')
-                            .addClass('card')
-                            .toggleClass('show', isOpen)
-                            .attr({'data-user-id': opt.id || null})
-                            .on( 'shown.bs.collapse',  card_onShown )
-                            .on( 'hidden.bs.collapse', card_onHidden )
-                            .on( 'show.bs.collapse',   options.multiOpen ? null : card_onShow_close_siblings )
-                            .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
-                            .appendTo( $result ),
+                $accordionItem = $('<div/>')
+                    .addClass('accordion-item')
+                    .toggleClass('show', isOpen)
+                    .attr({'data-user-id': opt.id || null})
+                    .on( 'shown.bs.collapse',  card_onShown )
+                    .on( 'hidden.bs.collapse', card_onHidden )
+                    .on( 'show.bs.collapse',   options.multiOpen ? null : card_onShow_close_siblings )
+                    .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
+                    .appendTo( $result ),
                 headerAttr = {
                     'id'  : headerId,
                     'role': 'tab',
@@ -143,24 +152,33 @@
             //Add header
             if (!options.neverClose)
                 $.extend(headerAttr, {
-                    'data-toggle'  : "collapse",
-                    'data-parent'  : '#'+id,
-                    'href'         : '#'+collapseId,
-                    'aria-expanded': true,
-                    'aria-controls': collapseId,
-                    'aria-target': '#'+collapseId
+                    'data-bs-toggle': "collapse",
+                    'data-parent'   : '#'+id,
+                    'href'          : '#'+collapseId,
+                    'aria-expanded' : true,
+                    'aria-controls' : collapseId,
+                    'aria-target'   : '#'+collapseId
                 });
 
-            $card.append(
-                $('<div/>')
-                    .addClass('card-header')
+            var $accordionHeader = $('<div/>')
+                    .addClass('accordion-header')
+                    .attr('id', headerId)
+                    .appendTo( $accordionItem );
+
+            var $accordionButton = $('<button type="button"/>')
+                    .addClass('accordion-button')
                     .toggleClass('collapsed', !isOpen)
-                    .toggleClass('collapsible', !options.neverClose)
-                    .attr(headerAttr)
                     ._bsAddHtml( $.extend({text:'&nbsp;'}, opt.header || opt )) //'&nbsp;' = bug fix to prevent header without text to be wronge height - not pretty :-)
-                    //Add chevrolet-icon
-                    .append( options.neverClose ? null : $('<i/>').addClass('fa chevrolet') )
-            );
+                    .toggleClass('accordion-never-close', !!options.neverClose)
+                    .appendTo( $accordionHeader );
+
+            if (!options.neverClose)
+                $.extend(headerAttr, {
+                    'data-bs-toggle': "collapse",
+                    'data-bs-target': '#'+collapseId,
+                });
+
+            $accordionButton.attr(headerAttr);
 
             //Add content-container
             var $outer =
@@ -172,17 +190,17 @@
                         'role'           : 'tabpanel',
                         'aria-labelledby': headerId
                     })
-                    .appendTo( $card ),
+                    .appendTo( $accordionItem ),
 
                 $contentContainer =
                     $('<div/>')
-                        .addClass('card-block')
+                        .addClass('accordion-body')
                         .appendTo( $outer );
 
             //Add footer
             if (opt.footer)
                 $('<div/>')
-                    .addClass('card-footer')
+                    .addClass('accordion-footer')
                     ._bsAddHtml( opt.footer )
                     .appendTo( $outer );
 
@@ -199,18 +217,16 @@
                     list: opt.list
                 } )
                     .appendTo( $contentContainer );
-        }); //End of $.each( options.list, function( index, opt ){
 
-        $result.collapse(/*options*/);
+
+        }); //End of $.each( options.list, function( index, opt ){
 
         if (options.onChange){
             $result.data('accordion_onChange', options.onChange);
             options.onChange($result, $result.bsAccordionStatus());
         }
-
         return $result;
     };
-
 
     //Extend $.fn with method to get status for an accordion open/slose status
     $.fn.bsAccordionStatus = function(){
@@ -229,14 +245,14 @@
     //Extend $.fn with method to open a card given by id (string) or index (integer)
     $.fn.bsOpenCard = function( indexOrId ){
         this.addClass('no-transition');
-        var $card =
+        var $accordionItem =
                 this.children(
                     $.type(indexOrId) == 'number' ?
                     'div.card:nth-of-type('+(indexOrId+1)+')' :
                     'div.card[data-user-id="' + indexOrId + '"]'
                 );
-        if ($card && $card.length)
-            $card.children('.collapse').collapse('show');
+        if ($accordionItem && $accordionItem.length)
+            $accordionItem.children('.collapse').collapse('show');
         this.removeClass('no-transition');
     };
 

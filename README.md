@@ -13,7 +13,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Button](#button)
 - [Button-group](#buttongroup)
 - [Radio-button-group](#radiobuttongroup)
-- [Selectbox](#selectbox)
+- [Select](#select)
 - [SelectList](#selectlist)
 - [Radio and Checkbox](#radioandcheckbox)
 - [Menu](#menu)
@@ -226,10 +226,10 @@ Same as for Button-group plus
 | `onChange` | `function(id, selected, $buttonGroup)` | `null` | Called when a button is selected |
 
 
-<a name="selectbox"></a>
-## Selectbox
+<a name="select"></a>
+## Select
 
-    var mySelectbox = $.bsSelectbox( options );
+    var mySelect = $.bsSelect( options );
 
 ### options
 | Id | Type | Default | Description |
@@ -238,14 +238,13 @@ Same as for Button-group plus
 | `placeholder` | `content` or `[] of content` | `""` | See above |
 | `fullWidth` | `boolean` | `false`| If `true` the selectbox get full width of parent |
 | `onChange` | `function(id, selected, $buttonGroup)` | `null` | Called when item is selected |
-| `items` | `[] of itemOptions` | `[]` | The items and sub-headers |
+| `items` | `[] of itemOptions` | `[]` | The items and sub-headers  |
 
 #### itemOptions
 | Id | Type | Default | Description |
 | :--: | :--: | :-----: | --- |
 | `id` | `string` | `null` | Id of the item. If no id is given the item becomes a sub-header |
-| `icon,text,..` | `content` | `""` | See above |
-| `content` | `content` or `[] of content` | `null` | See above |
+| `text,..` | `content` | `""` | See above. . NOTE: Only *text* is supported - not *icon* or *content* |
 
 <a name="selectlist"></a>
 ## SelectList
@@ -254,7 +253,7 @@ Same as for Button-group plus
 
 ### options
 
-As for Selectbox without `placeholder`
+As for Select without `placeholder`
 
 <a name="radioandcheckbox"></a>
 ## Radio and Checkbox

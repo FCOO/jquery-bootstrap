@@ -71,9 +71,7 @@
             back, forward, ..., close: { title: [string], disabled: [boolean], className: [string], altEvents: [string], onClick: [function] },
         }
     }
-
     ******************************************************/
-
     function checkDisabled( event ){
         var $target = $(event.target);
         if ($target.hasClass('disabled') || $target.prop('disabled'))
@@ -85,6 +83,7 @@
 
         options = $.extend( true, {text:'DAVS MED DIG', headerClassName: '', inclHeader: true, icons: {} }, options );
         this.addClass( options.headerClassName );
+        this.addClass('header-content');
 
         if (options.inclHeader){
             options.header = $._bsAdjustIconAndText(options.header);

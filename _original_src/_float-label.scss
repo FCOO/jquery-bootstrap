@@ -1,0 +1,202 @@
+/************************************************************
+FLOAT-LABEL
+
+Adjusted version of tonystar/bootstrap-float-label
+https://github.com/tonystar/bootstrap-float-label
+
+Including support for form-control-with-label[-sm|| -xs]
+
+Only supports the html-structure
+<div class="... input-group">
+    <label class="has-float-label">
+        <input class="form-control" type="text" placeholder="The placeholder.."/>
+        <span>The label</span>
+    </label>
+</div>
+
+************************************************************/
+.input-group .has-float-label {
+    position       : relative;
+    display        : flex;
+    flex-grow      : 1;
+    flex-direction : column;
+    justify-content: center;
+
+    margin-bottom: 0;
+
+    //<span> with the label
+    & > span {
+        //Common for all size
+        position   : absolute;
+        left       : 0;
+        top        : -.5em;
+        cursor     : default;
+        opacity    : 1;
+        transition : all .2s, visibility 0s;
+        z-index    : 4;
+        line-height: 1;
+        color      : $title-color;
+        padding    : 0 2px;
+        margin-left: $input-border-width; //Compensates for border
+
+        //Specicial for size
+        font-size: $font-size-label;
+        left     : $input-padding-x;
+
+        &::after {
+            //The background for the label
+            display   : block;
+            position  : absolute;
+            height    : 1em;
+            top       : 0;
+            left      : -.1em;
+            right     : -.1em;
+            z-index   : -1;
+            background: $input-bg;
+            content   : " ";
+        }
+        //Hide when empty
+        &:empty {
+            display: none;
+        }
+    }
+
+    //Text-cursor for input type=text
+    & > input[type="text"] + span {
+        cursor     : text;
+    }
+
+    .form-control-with-label {
+        //Placeholder: opacity and transition
+        &::-webkit-input-placeholder,
+        &::-moz-placeholder,
+        &:-ms-input-placeholder,
+        &::placeholder {
+            opacity   : 1;
+            transition : all .2s, visibility 0s;
+        }
+
+        //Hide placeholder when not focus. (For unknown reason they need to be in separate lines...)
+        &:placeholder-shown:not(:focus)::-webkit-input-placeholder { opacity: 0; }
+        &:placeholder-shown:not(:focus)::-moz-placeholder          { opacity: 0; }
+        &:placeholder-shown:not(:focus):-ms-input-placeholder      { opacity: 0; }
+        &:placeholder-shown:not(:focus)::placeholder               { opacity: 0; }
+
+
+        //Placeholder when empty and no focus
+        &.show-label-as-placeholder + *,
+        &:placeholder-shown:not(:focus) + * {
+            font-size: $font-size-base;
+            color      : $input-placeholder-color;
+            line-height: $input-line-height;
+            top        : calc(#{$input-padding-y} + #{$input-border-width});
+            //Transparent bg when label is inside element
+            &:after {
+                background: transparent;
+            }
+        }
+    }
+}
+
+//Hide the label when outer label has class hide-float-label
+.has-float-label.hide-float-label > span.container-icon-and-text:last-child {
+    display: relative;
+    z-index: 0;
+}
+
+.input-group .has-float-label {
+    //Remove round border
+    &:not(:last-child),
+    &:not(:last-child) .form-control {
+        border-bottom-right-radius: 0;
+        border-top-right-radius   : 0;
+    }
+    &:not(:first-child),
+    &:not(:first-child) .form-control {
+        border-bottom-left-radius: 0;
+        border-top-left-radius   : 0;
+    }
+}
+
+//Different size
+.input-group-sm.input-group .has-float-label {
+    & > span {
+        font-size: $font-size-label-sm;
+        left     : $input-padding-x-sm;
+    }
+
+    .form-control-with-label {
+        //Placeholder when empty and no focus
+        &.show-label-as-placeholder + *,
+        &:placeholder-shown:not(:focus) + * {
+            font-size: $font-size-sm;
+            top      : calc(#{$input-padding-y-sm} + #{$input-border-width});
+        }
+    }
+}
+
+//Extra small
+.input-group-xs.input-group .has-float-label {
+    & > span {
+        font-size: $font-size-label-xs;
+        left     : $input-padding-x-xs;
+    }
+
+    .form-control-with-label {
+        //Placeholder when empty and no focus
+        &.show-label-as-placeholder + *,
+        &:placeholder-shown:not(:focus) + * {
+            font-size: $font-size-xs;
+            top      : calc(#{$input-padding-y-xs} + #{$input-border-width});
+        }
+    }
+}
+
+/***********************************************
+.input-group.input-group-with-fixed-label
+Style for
+<div class="input-group input-group-border">
+    <div class="has-fixed-label">...</div>
+</div>
+***********************************************/
+.input-group.input-group-border .has-fixed-label {
+    position   : absolute;
+    left       : 0;
+    top        : calc(-1 * (#{$input-border-width} + 1px + .5em));
+    cursor     : default;
+    z-index    : 4;
+    line-height: 1;
+    color      : $title-color;
+    padding    : 0;
+    margin-left: $input-border-width; //Compensates for border
+
+    //Specicial for size
+    font-size: $font-size-label;
+    left     : $input-padding-x;
+
+    &::after {
+        //The background for the label
+        display   : block;
+        position  : absolute;
+        height    : 1em;
+        top       : 0;
+        left      : -.1em;
+        right     : -.1em;
+        z-index   : -1;
+        background: $input-bg;
+        content   : " ";
+    }
+}
+
+//Different size
+//Small
+.input-group-sm.input-group.input-group-border .has-fixed-label {
+    font-size: $font-size-label-sm;
+    left     : $input-padding-x-sm;
+}
+
+//Extra small
+.input-group-xs.input-group.input-group-border .has-fixed-label {
+    font-size: $font-size-label-xs;
+    left     : $input-padding-x-xs;
+}

@@ -1,0 +1,420 @@
+/************************************************************
+MODAL
+
+Adjusting size etc. to have modal in normal and small size
+and jusing standard header, buttons and sizes
+
+************************************************************/
+
+//All padding in modal-body equal scrollbar-size = $scroll-size from jquery-scroll-container.
+
+//Overwrite default overflow
+body.modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    padding: 0 !important;
+}
+
+//Fading opacity
+.modal {
+    .modal-dialog {
+        opacity   : 0;
+        transition: opacity .3s linear;
+    }
+    &.show .modal-dialog { opacity: 1; }
+}
+
+
+/****************************************************
+.MODEL-DIALOG
+****************************************************/
+.modal-dialog {
+    display        : flex;
+    flex-direction : column;
+    justify-content: center;
+
+    font-size: $font-size-base; //To avoid overwrite from other container
+
+    margin    : 0 auto;
+
+    min-height: 100%;
+    max-width : 100vw; //calc(100vw - #{2*$modal-dialog-margin});
+    width     : $modal-sm-rem;
+
+    //Estra width for flexWidth and extraWidth
+    &.modal-flex-width {
+        width: $modal-md-rem;
+
+        &.modal-extra-width  { width: $modal-lg-rem; }
+        &.modal-mega-width   { width: $modal-xl-rem; }
+    }
+
+    //No box-shadow on modal-content when inside a modal-dialog-inline
+    &.modal-dialog-inline .modal-content {
+        box-shadow: none;
+        max-height: inherit;
+    }
+
+    .modal-content {
+        min-height: 100%;           //Bug fix for IE11
+
+        -ms-word-break: break-word;  //Fallback for IE11
+        word-break: break-word;
+        word-wrap : break-word;
+    }
+
+    //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
+    &:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
+        width: calc( 100% - 2*#{$modal-content-border-width} - 2*#{$scroll-size} );
+        margin-left : auto;
+        margin-right: auto;
+    }
+
+    &.modal-flex-width .modal-content .modal-body > .jquery-scroll-container {
+        width: auto;
+    }
+
+
+    /****************************************************
+    .MODAL-CONTENT
+    AND ITS COMPONENTS (HEADER, FIXED-BODY, BODY AND FOOTER)
+    ****************************************************/
+    .modal-content {
+        $border-radius: calc( #{$border-radius-lg} - #{$modal-content-border-width} );
+
+        //No shadow mode
+        &.no-shadow {
+            box-shadow: none;
+        }
+
+
+        //Create class show-for-modal-SIZE and hide-for-modal-SIZE
+        //         and show-for-modal-pinned and hide-for-modal-pined
+        @each $size in minimized, normal, extended {
+            @include show-and-hide-for-modernizr-test(
+                $modernizr-test      : unquote("modal-#{$size}"),
+                $parent-element-type : '&',
+                $incl-no-selector    : true,
+                $incl-table-display  : false,
+            );
+            //Special version for direct child to avoid problems with extended content in ex. popup inside a normal modal
+            @include show-and-hide-for-modernizr-test(
+                $modernizr-test      : unquote("modal-#{$size}"),
+                $parent-element-type : '&',
+                $incl-no-selector    : false,
+                $incl-table-display  : false,
+                $only-direct-children: true,
+                $display-value       : 'initial !important'
+            );
+
+            //Special version for modal-header to avoid problems with extended content in ex. popup inside a normal modal
+            @include show-and-hide-for-modernizr-test(
+                $modernizr-test      : unquote("modal-#{$size}"),
+                $parent-element-type : '&',
+                $incl-no-selector    : false,
+                $incl-table-display  : false,
+                $only-direct-children: false,
+                $postfix             : ' > .modal-header ',
+                $display-value       : 'initial !important'
+            );
+
+            //Special version for direct child when always-max-height to force display:flex (not so pitty :-))
+            @include show-and-hide-for-modernizr-test(
+                $modernizr-test      : unquote("modal-#{$size}"),
+                $parent-element-type : unquote("&.modal-#{$size}-always-max-height"),
+                $incl-no-selector    : false,
+                $incl-table-display  : false,
+                $only-direct-children: true,
+                $display-value       : 'flex !important'
+            );
+        }
+
+        //Create class show-for-modal-pinned and hide-for-modal-pined
+        @include show-and-hide-for-modernizr-test(
+            $modernizr-test     : modal-pinned,
+            $parent-element-type: '&',
+            $incl-no-selector   : false,
+            $incl-table-display : false
+        );
+
+
+        //When not fixed-height and not normal and/or extended contents always max-height => height adjust to content
+        &:not(.modal-fixed-height) {
+            &.modal-minimized:not(.modal-minimized-always-max-height),
+            &.modal-normal:not(.modal-normal-always-max-height),
+            &.modal-extended:not(.modal-extended-always-max-height){
+                height: auto !important;
+            }
+        }
+
+        .modal-body {
+            //Adjust default style inside a modal-body
+            p { margin: 0; }
+            ol, ul, dl { margin: 0; padding-left: 2em;}
+
+
+
+            //When modal-body is empty: Hide modal-body and remove top-border from footer
+            &.modal-body-no-content {
+                display: none !important;
+            }
+
+            //When content always is max height => body.height = 100%
+            &.modal-body-always-max-height {
+                display       : flex;
+                flex-direction: column;
+                height        : fit-content;
+            }
+
+        }
+        &:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
+        &.modal-extended       .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
+            border-top: none;
+        }
+
+
+        //HEADER
+        .modal-header {
+            flex-shrink: 0; //Only .modal-body is shrink
+            flex-grow  : 0; //Only .modal-body is growing
+            @include header-variant();
+            @include header-colors();
+
+            &.clickable {
+                cursor: default;
+                &:hover {
+                    background-color: darken($header-bg-color, $darken-hover-percent);
+                }
+            }
+        }
+
+        //Special header version for minimized modal windows
+        &.modal-minimized {
+            &.modal-minimized-hide-header .modal-header { display: none; }
+            .modal-header {
+
+                .header-icon-container {
+                    //Allow wrap of icons and let icons fill hole header
+                    flex-wrap: wrap;
+                    flex-shrink: initial;
+                    flex-grow  : 1;
+
+                    //Add vertical sspacing using margin-top and margin-left is not needed when flex-grow  : 1;
+                    margin-top: -.2em;
+                    > * {
+                        margin-top: .2em;
+                        margin-left: 0;
+                    }
+                }
+
+                //Hide all text
+                > :not(.header-icon-container){ display: none; }
+            }
+        }
+
+        //BODY
+        .modal-body-fixed {
+            flex-shrink: 0; //Only .modal-body is shrink
+            flex-grow  : 0; //Only .modal-body is growing
+            overflow   : hidden;
+            @include content-padding();
+
+            &:empty { display: none !important; }
+        }
+        .modal-body {
+            flex-shrink: 1; //Only .modal-body is shrink
+            flex-grow  : 1; //Only .modal-body is growing
+            @include content-padding();
+            @include border-radius( $border-radius );
+        }
+
+        //Background-color and color for modal-type-NAME, NAME=alert, success, warning, error, info
+        .modal-body-fixed, .modal-body {
+            @each $type in $type-list {
+                &.modal-type-#{$type} {
+                    @include type-colors( $type );
+                }
+            }
+        }
+
+
+
+
+        //FOOTER-HEADER AND FOOTER
+        .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
+            flex-shrink: 0; //Only .modal-body is shrink
+            flex-grow  : 0; //Only .modal-body is growing
+            @include footer-variant();
+
+            //Remove top-border to modal-footer it modal-footer-header isn't empty
+            &:not(:empty) + .modal-footer {
+                border-top: none;
+            }
+        }
+        .modal-footer {
+            flex-shrink: 0; //Only .modal-body is shrink
+            flex-grow  : 0; //Only .modal-body is growing
+            @include header-padding();
+
+            &:empty,
+            &.modal-footer-vertical:empty {
+                display: none !important;
+            }
+        } //end of .modal-footer
+
+
+        //Special version of footer with vertical aligned buttons.
+        .modal-footer.vertical-buttons,
+        &.modal-normal .modal-footer.vertical-buttons-for-normal,
+        &.modal-extended .modal-footer.vertical-buttons-for-extended {
+            display         : flex;
+            flex-direction  : column;
+            align-items     : stretch;
+            justify-content : center;
+            > .btn { margin: 1px;
+            }
+        }
+
+    } //end of .modal-content
+
+    //Semi-transparent background when options.semiTransparent is set
+    //To have correct hover-effect on modal-body the bg of modal-content is set to none and the bg of modal-body and modal-footer is set
+    .modal-content {
+        &.modal-minimized.modal-minimized-semi-transparent,
+        &.modal-normal.modal-normal-semi-transparent,
+        &.modal-extended.modal-extended-semi-transparent {
+            background: none;
+            .modal-body, .modal-body-fixed, .modal-footer {
+                background: $modal-content-bg-semi-transparent;;
+            }
+        }
+    }
+
+    //hover-style for modal-content when content is clickable
+    .mouse-hover & .modal-content:hover {
+        //.modal-content.modal-SIZE.modal-SIZE-clickable .modal-body[-fixed]: background = button:hover-background on hover
+        &.modal-minimized.modal-minimized-clickable,
+        &.modal-normal.modal-normal-clickable,
+        &.modal-extended.modal-extended-clickable {
+            .modal-body, .modal-body-fixed {
+                cursor: default;
+                //hover background = hover background for buttons
+                @include gradient-bg( darken($control-bg-color, $darken-hover-percent) );
+                &.modal-body-semi-transparent {
+                    background: $modal-content-bg-semi-transparent-hover;
+                }
+            }
+        }
+    }
+
+
+    /****************************************************
+    DIFFERENT SIZES
+    .MODAL-DIALOG-SM AND .MODAL-DIALOG-XS
+    ****************************************************/
+    //size='small'
+    &.modal-dialog-sm {
+        font-size: $font-size-sm;
+        .modal-content {
+            .modal-header {
+                @include header-variant-sm();
+            }
+            .modal-body,
+            .modal-body-fixed {
+                @include content-padding-sm();
+            }
+
+            .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
+                @include footer-variant-sm();
+            }
+            .modal-footer {
+                @include header-padding("sm");
+            }
+        }
+    }
+
+    //size='extra small'
+    &.modal-dialog-xs {
+        font-size: $font-size-xs;
+        .modal-content {
+            .modal-header {
+                @include header-variant-xs();
+            }
+            .modal-body,
+            .modal-body-fixed {
+                @include content-padding-xs();
+            }
+            .modal-footer-header { //Named modal-footer-header since Bootstrap uses modal-footer for the div with buttons
+                @include footer-variant-xs();
+            }
+            .modal-footer {
+                @include header-padding("xs");
+            }
+        }
+    }
+
+} //end of .modal-dialog
+
+
+//Adjust padding-left and padding-right if the body is a scroll
+.modal-dialog, .modal-dialog.modal-dialog-sm, .modal-dialog.modal-dialog-xs {
+    .modal-body-fixed.scrollbar-vertical  {
+        padding-left : $scroll-size;
+        padding-right: $scroll-size;
+    }
+    .modal-body.scrollbar-vertical {
+        padding-left : $scroll-size;
+        padding-right: 0;
+    }
+    .modal-body.scrollbar-horizontal {
+        padding-top   : 0;
+        padding-bottom: 0;
+    }
+}
+
+//Adjust padding-top and padding-bottom if the body is a scroll without no-vertical-padding
+.modal-body-with-vertical-padding {
+    .modal-dialog & {
+        @include content-padding(true);
+        &.modal-body-with-horizontal-padding {
+            @include content-padding-horizontal();
+        }
+    }
+    .modal-dialog.modal-dialog-sm & {
+        @include content-padding-sm(true);
+        &.modal-body-with-horizontal-padding {
+            @include content-padding-horizontal-sm();
+        }
+    }
+    .modal-dialog.modal-dialog-xs & {
+        @include content-padding-xs(true);
+        &.modal-body-with-horizontal-padding {
+            @include content-padding-horizontal-xs();
+        }
+    }
+}
+
+/*
+@include content-padding-horizontal();
+@include content-padding-horizontal-sm();
+@include content-padding-horizontal-xs();
+*/
+
+
+//no-vertical-padding: No top- or bottom-padding in modal-body and modal-body-fixed
+//no-horizontal-padding: No left- or rightpadding in modal-body and modal-body-fixed
+.modal-content {
+    .modal-body-fixed.no-vertical-padding,
+    .modal-body.no-vertical-padding {
+        padding-top   : 0 !important;
+        padding-bottom: 0 !important;
+    }
+}
+
+.modal-content {
+    .modal-body-fixed.no-horizontal-padding,
+    .modal-body.no-horizontal-padding {
+        padding-left : 0 !important;
+        padding-right: 0 !important;
+    }
+}

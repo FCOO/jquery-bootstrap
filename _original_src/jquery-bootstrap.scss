@@ -1,0 +1,210 @@
+/***********************************************
+	jquery-bootstrap.scss,
+
+	(c) 2017, FCOO
+
+	https://github.com/fcoo/jquery-bootstrap
+	https://github.com/fcoo
+
+
+************************************************/
+
+//BOURBON - http://bourbon.io/ - version 5
+@import "../bower_components/bourbon/core/bourbon";
+
+//MODERNIZR-MIXIN - https://github.com/danielguillan/modernizr-mixin
+@import "../bower_components/modernizr-mixin/stylesheets/modernizr";
+
+//MATHSASS - https://github.com/terkel/mathsass
+@import "../bower_components/mathsass/dist/math";
+
+//MODERNIZR-SCSS - https://github.com/fcoo/modernizr-scss
+@import "../bower_components/modernizr-scss/dist/modernizr-scss";
+
+//FONT-AWESOME - Import varaibles and mixins to include correct content
+@import "../bower_components/font-awesome/scss/functions";
+@import "../bower_components/font-awesome/scss/variables";
+@import "../bower_components/font-awesome/scss/mixins";
+
+
+/***********************************************
+See https://getbootstrap.com/docs/5.2/customize/sass/
+for description on how to adjust Bootstrap variables
+***********************************************/
+
+//1. Bootstrap and jquery-bootstrap Functions - Required
+@import "../bower_components/bootstrap/scss/functions";
+@import "functions";
+
+//2. Copy of all Bootstrap colors
+@import "bootstrap-colors";
+
+
+//2. Adjust Bootstrap variables default values
+// @import "bootstrap-variables";
+@import "variables-bootstrap";
+
+//3. Bootstrap and jquery-bootstrap variables
+@import "../bower_components/bootstrap/scss/variables";
+
+@import "color";
+
+//Using $scroll-size from jquery-scroll-container.
+@import "../bower_components/jquery-scroll-container/src/jquery-scroll-container-variables";
+
+@import "variables";
+
+
+
+
+
+
+
+// 4. Default map overrides
+
+// Create your own map
+$custom-colors: (
+  "custom-color": brown,
+
+
+);
+
+
+
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+
+// 5. Include remainder of required parts
+@import "../bower_components/bootstrap/scss/maps";
+@import "../bower_components/bootstrap/scss/mixins";
+@import "../bower_components/bootstrap/scss/utilities";
+
+// Layout & components
+@import "../bower_components/bootstrap/scss/root";
+@import "../bower_components/bootstrap/scss/reboot";
+@import "../bower_components/bootstrap/scss/type";
+@import "../bower_components/bootstrap/scss/images";
+@import "../bower_components/bootstrap/scss/containers";
+@import "../bower_components/bootstrap/scss/grid";
+@import "../bower_components/bootstrap/scss/tables";
+@import "../bower_components/bootstrap/scss/forms";
+@import "../bower_components/bootstrap/scss/buttons";
+@import "../bower_components/bootstrap/scss/transitions";
+@import "../bower_components/bootstrap/scss/dropdown";
+@import "../bower_components/bootstrap/scss/button-group";
+@import "../bower_components/bootstrap/scss/nav";
+@import "../bower_components/bootstrap/scss/navbar";
+@import "../bower_components/bootstrap/scss/card";
+@import "../bower_components/bootstrap/scss/accordion";
+@import "../bower_components/bootstrap/scss/breadcrumb";
+@import "../bower_components/bootstrap/scss/pagination";
+@import "../bower_components/bootstrap/scss/badge";
+@import "../bower_components/bootstrap/scss/alert";
+@import "../bower_components/bootstrap/scss/progress";
+@import "../bower_components/bootstrap/scss/list-group";
+@import "../bower_components/bootstrap/scss/close";
+@import "../bower_components/bootstrap/scss/toasts";
+@import "../bower_components/bootstrap/scss/modal";
+@import "../bower_components/bootstrap/scss/tooltip";
+@import "../bower_components/bootstrap/scss/popover";
+@import "../bower_components/bootstrap/scss/carousel";
+@import "../bower_components/bootstrap/scss/spinners";
+@import "../bower_components/bootstrap/scss/offcanvas";
+@import "../bower_components/bootstrap/scss/placeholders";
+
+// Helpers
+@import "../bower_components/bootstrap/scss/helpers";
+
+// Utilities
+@import "../bower_components/bootstrap/scss/utilities/api";
+// scss-docs-end import-stack
+
+
+
+
+
+
+/***********************************************
+IMPORT BOOTSTRAP SCSS
+************************************************/
+// @import "../bower_components/bootstrap/scss/bootstrap";
+
+
+/***********************************************
+IMPORT BOOTSTRAP-SELECT SCSS
+************************************************/
+// $zindex-select-dropdown: $zindex-working - 1;// must be higher than working background
+
+// @import "../bower_components/bootstrap-select/sass/bootstrap-select";
+
+//HER=> /***********************************************
+//HER=> BACKGROUND-COLOR AND TEXT COLOR
+//HER=> ************************************************/
+//HER=> @import "color";
+//HER=>
+//HER=> /***********************************************
+//HER=> VARIABLES
+//HER=> ************************************************/
+//HER=> //Using $scroll-size from jquery-scroll-container.
+//HER=> @import "../bower_components/jquery-scroll-container/src/jquery-scroll-container-variables";
+//HER=>
+//HER=> @import "variables";
+
+
+/***********************************************
+MIXINS
+************************************************/
+@import "mixins";
+
+
+/************************************************
+ADDITIONS AND ADJUSTMENTS TO FONTAWESOME
+*************************************************/
+@import "fontawesome";
+
+
+/************************************************
+BASE STYLE
+*************************************************/
+@import "animate";
+
+@import "common";
+
+/************************************************
+STYLE FOR DIFFERENT ELEMENTS
+*************************************************/
+
+@import "text";
+
+@import "button";
+
+@import "popover";
+
+@import "header";
+
+@import "checkbox";
+
+@import "selectlist";
+
+@import "modal";
+
+@import "modal-file";
+
+@import "modal-backdrop";
+
+@import "bootstrap-select";
+
+@import "form";
+
+@import "float-label";
+
+@import "table";
+
+@import "accordion";
+
+@import "noty";
+
+@import "tabs";
+

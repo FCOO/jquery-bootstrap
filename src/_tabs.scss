@@ -4,205 +4,37 @@ TABS
 Adjustment to Bootstrap tabs
 ************************************************************/
 
-$selected-margin: 2*$nav-tabs-border-width;
-
-@mixin tab-size-and-position( $padding-y, $padding-x, $font-size, $line-height ){
-
-    $border-width-rem: 1rem * $nav-tabs-border-width / 16px;
-    $width           : 2*$padding-x;
-
-    & {
-        margin-right: 1.5 * $padding-x;
-    }
-    &:after {
-        border-top-right-radius: $width;
-        width: $width;
-        right: 2*$border-width-rem - $width;
-    }
-}
-
-
-
+//Remove buttom-border on active tabs - looks nicer :-)
 .nav-tabs {
-    //Add extra top-margin and padding to edge
-    margin-top  : $btn-padding-y-sm;
-    padding-left: $scroll-size;
-
-    border-bottom-color: $card-show-border-color;
-
-    //Tabs inside tabs: no padding, adjust horizontal margin to fit to border
-    .tab-inner-content & {
-        margin: 0 -1 * $scroll-size;
-    }
-
-    a.nav-item.nav-link {
-        position: relative;
-        cursor: default;
-
-        @include button-size          (
-            $padding-y    : $btn-padding-y,
-            $padding-x    : $btn-padding-x,
-            $font-size    : $font-size-base,
-            $line-height  : $input-btn-line-height,
-            $border-radius: $btn-border-radius
-        );
-        @include tab-size-and-position(
-            $padding-y  : $btn-padding-y,
-            $padding-x  : $btn-padding-x,
-            $font-size  : $font-size-base,
-            $line-height: $input-btn-line-height
-        );
-
-        border-bottom-left-radius: 0px;
-        border-bottom-right-radius: 0px;
-        outline: none !important;
-
-        @include box-shadow(inset 0 1px 0 rgba($input-bg, .15)); //Only top, left and right
-
-        @include control-colors(
-            $active-color   : $control-color,
-            $active-bg-color: $input-bg
-        );
-
-
-        //Adjust to :after with right side
-        border-right : none;
-        padding-right: 2*$nav-tabs-border-width !important;
-
-        &:after {
-            display : inline-block;
-            position: absolute;
-            z-index : 1;
-            top: -1 * $nav-tabs-border-width;
-
-            content   : ' ';
-            background: inherit;
-
-            padding    : 0;
-            margin     : 0;
-            line-height: inherit;
-            font-size  : inherit;
-
-            border      : inherit;
-            border-left : none;
-            border-right-width: $nav-tabs-border-width;
-            border-right-style: solid;
-            border-right-color: $control-border-color;
-
-            height: calc(100% + 2*#{$nav-tabs-border-width});
-        }
-
-        //Disabled
-        &.disabled {
-            color: $control-border-color;
-        }
-
-        //Not selected
-        &:not(.active){
-            margin-top: $selected-margin;
-            border-bottom-color: $card-show-border-color !important;
-
-            .mouse-hover &:not(:disabled):not(.disabled){
-                &:hover:after {
-                    border-color: $control-border-color-hover;
-                    border-bottom-color: $card-show-border-color !important;
-                }
-            }
-        }
-
-        //Active (selected)
-        &.active {
-            border-color       : $card-show-border-color;
-            border-bottom-color: $input-bg !important;
-            &:after { border-color: inherit; }
-        }
-    }
-
-    //Special style: Hide text when tab is not selected
-    &.hide-not-selected-text a.nav-item.nav-link:not(.active) span:last-child:not(:first-child) {
-        display: none;
-    }
-
-    //Adjust size when -sm
-    &.nav-tabs-sm  a.nav-item.nav-link {
-        @include button-size          (
-            $padding-y    : $btn-padding-y-sm,
-            $padding-x    : $btn-padding-x-sm,
-            $font-size    : $font-size-sm,
-            $line-height  : $btn-line-height-sm,
-            $border-radius: $btn-border-radius-sm
-        );
-        @include tab-size-and-position(
-            $padding-y  : $btn-padding-y-sm,
-            $padding-x  : $btn-padding-x-sm,
-            $font-size  : $font-size-sm,
-            $line-height: $btn-line-height-sm
-        );
-        border-bottom-left-radius: 0px;
-        border-bottom-right-radius: 0px;
-    }
-    //Adjust size when -xs
-    &.nav-tabs-xs  a.nav-item.nav-link {
-        @include button-size          (
-            $padding-y    : $btn-padding-y-xs,
-            $padding-x    : $btn-padding-x-xs,
-            $font-size    : $font-size-xs,
-            $line-height  : $input-btn-line-height-sm,
-            $border-radius: $btn-border-radius-xs
-        );
-        @include tab-size-and-position(
-            $padding-y  : $btn-padding-y-xs,
-            $padding-x  : $btn-padding-x-xs,
-            $font-size  : $font-size-xs,
-            $line-height: $input-btn-line-height-sm
-        );
-        border-bottom-left-radius: 0px;
-        border-bottom-right-radius: 0px;
+    .nav-link.active, .nav-item.show .nav-link {
+        border-bottom-color: transparent;
     }
 }
 
-//Padding and background-color for content-container
-.tab-content .tab-pane.active {
-    display        : flex;
-    flex-direction : column;
-    justify-content: center;
-    max-height     : 100%;
 
-    .tab-inner-content {
-        flex-shrink: 1;
-        flex-grow  : 1;
-        background-color: $input-bg;
+//Add size = sm and xs
+.nav.nav-sm {
+    //On the .nav base class:
+    --#{$prefix}nav-link-padding-x: #{$nav-link-padding-x-sm};
+    --#{$prefix}nav-link-padding-y: #{$nav-link-padding-y-sm};
+    @include rfs($nav-link-font-size-sm, --#{$prefix}nav-link-font-size);
 
-        @include content-padding();
-        font-size: $font-size-sm;
+    //On the .nav-tabs modifier class:
+  --#{$prefix}nav-tabs-border-radius: #{$nav-tabs-border-radius-sm};
 
-        padding-left : $scroll-size;
-        padding-right: $scroll-size;
-
-        //No padding when inside scrollbar or when inside another tabs
-        &.scrollbar-vertical, .tab-content & {
-            padding: 0;
-        }
-    }
-
-    .tab-footer {
-        flex-shrink: 0;
-        flex-grow  : 0;
-        @include footer-variant();
-        &:empty {
-            display: none;
-        }
-    }
+    //On the .nav-pills modifier class:
+  --#{$prefix}nav-pills-border-radius: #{$nav-pills-border-radius-sm};
 }
 
-.tab-content.tab-content-sm .tab-pane {
-    .tab-footer {
-        @include header-variant-sm();
-    }
-}
+.nav.nav-xs {
+    //On the .nav base class:
+    --#{$prefix}nav-link-padding-x: #{$nav-link-padding-x-xs};
+    --#{$prefix}nav-link-padding-y: #{$nav-link-padding-y-xs};
+    @include rfs($nav-link-font-size-xs, --#{$prefix}nav-link-font-size);
 
-//No padding when inside a modal-window
-.modal-dialog .tab-content .tab-pane {
-    min-height: 100%;
-    max-height: 100%;
+    //On the .nav-tabs modifier class:
+  --#{$prefix}nav-tabs-border-radius: #{$nav-tabs-border-radius-xs};
+
+    //On the .nav-pills modifier class:
+  --#{$prefix}nav-pills-border-radius: #{$nav-pills-border-radius-xs};
 }

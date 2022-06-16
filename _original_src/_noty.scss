@@ -1,0 +1,241 @@
+/************************************************************
+NOTY
+
+Additional and changed style for Noty
+************************************************************/
+
+//Overwrite noty to have faster animation
+.animated {
+    animation-duration: .3s; //Noty default = 1s
+}
+
+
+/*****************************************
+Create theme jquery-bootstrap
+To be able to control z-index of noty the complete scss
+for noty is copyed and modified
+*****************************************/
+$noty-theme-name: jquery-bootstrap;
+
+
+$deltaToCenter      : calc(-50% - #{$modal-content-border-width}/2);
+$deltaToCenterIE11  : -50%;
+$translateZ         : translateZ(0);
+$scale              : scale(1.0, 1.0);
+
+$translateToCenter      : translate($deltaToCenter) $translateZ $scale;
+$translateToCenterIE11  : translate($deltaToCenterIE11) $translateZ $scale;
+
+$translateToMiddle      : translate(0, $deltaToCenter) $translateZ $scale;
+$translateToMiddleIE11  : translate(0, $deltaToCenterIE11) $translateZ $scale;
+
+$translateToCenterMiddle    : translate($deltaToCenter, $deltaToCenter) $translateZ $scale;
+$translateToCenterMiddleIE11: translate($deltaToCenterIE11, $deltaToCenterIE11) $translateZ $scale;
+
+$corner-space: 20px;
+
+//.noty_modal is hidden. noty-layer-backdrop is used instead
+.noty_modal {
+    display : none;
+}
+
+/*******************************************
+.noty-layer
+*******************************************/
+.noty-layer {
+    position: fixed;
+    z-index : $zindex-modal-backdrop;
+
+    .noty-layer-backdrop {
+        position : fixed;
+        z-index  : inherit;
+        width   : 100%;
+        height  : 100%;
+        left    : 0;
+        top     : 0;
+        background-color: $modal-backdrop-bg;
+        opacity         : $modal-backdrop-opacity;
+    }
+}
+
+
+/*******************************************
+.noty-container and .noty-container-LAYOUT
+*******************************************/
+.noty-container {
+    //Default style
+    position : fixed;
+    z-index  : inherit;
+
+    margin   : 0;
+    padding  : 0;
+
+    transform: $translateZ $scale;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
+    filter   : blur(0);
+    width    : 325px;
+    max-width: 90%;
+
+    //Adjust width and left for full-width layout
+    &.noty-container-top,
+    &.noty-container-bottom {
+        left : 5%;
+        width: 90%;
+    }
+
+    //top or button position
+    &.noty-container-top {
+        top: 0;
+    }
+    &.noty-container-topLeft, &.noty-container-topCenter, &.noty-container-topRight {
+        top: $corner-space;
+    }
+    &.noty-container-center, &.noty-container-centerLeft, &.noty-container-centerRight {
+        top: 50%;
+    }
+    &.noty-container-bottomLeft, &.noty-container-bottomCenter, &.noty-container-bottomRight {
+        bottom: $corner-space;
+    }
+    &.noty-container-bottom {
+        bottom: 0;
+    }
+
+    //left or right position
+    &.noty-container-topLeft, &.noty-container-centerLeft, &.noty-container-bottomLeft {
+        left: $corner-space;
+    }
+    &.noty-container-topCenter, &.noty-container-center, &.noty-container-bottomCenter {
+        left: 50%;
+    }
+    &.noty-container-topRight, &.noty-container-centerRight, &.noty-container-bottomRight {
+        right: $corner-space;
+    }
+
+    //Transform
+    &.noty-container-topCenter, &.noty-container-bottomCenter {
+        transform: $translateToCenterIE11;
+        transform: $translateToCenter;
+    }
+    &.noty-container-center {
+        transform: $translateToCenterMiddleIE11;
+        transform: $translateToCenterMiddle;
+    }
+    &.noty-container-centerLeft, &.noty-container-centerRight {
+        transform: $translateToMiddle;
+    }
+} //end of .noty-container
+
+
+//Noty-bar ghost
+@keyframes noty_anim_height { 100% { height: 0; } }
+.noty_fix_effects_height {
+    animation: noty_anim_height 75ms ease-out;
+}
+
+
+/*******************************************
+.noty-bar, the theme and different types
+*******************************************/
+.noty_bar {
+
+    transform: $translateZ $scale;
+    -webkit-font-smoothing: subpixel-antialiased;
+    overflow: hidden;
+
+    &.noty_theme__#{$noty-theme-name} {
+        cursor: default;
+        margin: 4px 0;
+        overflow: hidden;
+        position: relative;
+
+        font-size: $font-size-sm;
+
+        border: $modal-content-border-width solid $modal-content-border-color;
+        @include border-radius($border-radius-lg);
+        @include box-shadow($modal-content-box-shadow-xs);
+
+
+        .noty_body {
+            @include content-padding();
+            font-size: $font-size-sm;
+            * {
+                white-space: pre-wrap;
+
+                -ms-word-break: break-word;  //Fallback for IE11
+                word-break: break-word;
+                word-wrap : break-word;
+            }
+        }
+
+        //Container for close-icon moves to top right corner when no header
+        &.no-header .header-icon-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin-top  : $btn-padding-y;
+            margin-right: $btn-padding-x;
+            &.header-icon-container-sm {
+                margin-top  : $btn-padding-y-sm;
+                margin-right: $btn-padding-x-sm;
+            }
+        }
+    }
+
+    //<hr>, footer, and button-container
+    .noty-header {
+        @include header-colors();
+        @include header-variant( );
+        &.noty-header-sm {
+            @include header-variant-sm();
+        }
+    }
+
+    &.noty_close_with_click:hover .noty-header {
+        background-color: darken($header-bg-color, $darken-hover-percent); //Same as modal-header
+    }
+
+    hr {
+        padding: 0;
+        margin : $content-padding-y 0;
+    }
+    .noty-footer {
+        @include footer-variant-sm();
+    }
+    .noty-buttons {
+        @include content-padding();
+        background-color: $modal-content-bg;
+        text-align: right;
+
+    }
+
+    //Remove top-border to noty-buttons it there are  footer
+    .noty-footer + .noty-buttons {
+        border-top: none;
+    }
+
+
+}
+
+
+
+/*The five different bg-colors for the different type*/
+@each $type in $type-list {
+    $keyframes-name: noty_keyframes__#{$type};
+    @keyframes #{$keyframes-name} {
+        from, 50%, to { @include type-colors( $type: $type  ) }
+        25%, 75%      { @include type-colors( $type: $type, $darken: 20 ) }
+    }
+
+    .noty_theme__#{$noty-theme-name}.noty_type__#{$type} {
+        @include type-colors( $type: $type, $hover-class: noty_close_with_click );
+
+        //Create darker bg-color when flashing
+        &.flash .noty_body {
+            animation-name: #{$keyframes-name};
+            animation-iteration-count: 3;
+            animation-duration: .5s;
+        }
+
+    }
+}

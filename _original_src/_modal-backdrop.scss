@@ -1,0 +1,56 @@
+/************************************************************
+MODAL-BACKDROP
+
+
+************************************************************/
+
+//Hide default bootstrap backdrop
+.modal-backdrop {
+    display: none !important;
+}
+
+.global-backdrop {
+    position: fixed;
+    z-index: inherit;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: #000;
+
+    animation: fadeOutToNone .3s ease-out;
+
+    &.hidden {
+        display: none;
+    }
+
+    &.show {
+        display        : flex;
+        justify-content: center;
+        align-items    : center;
+        opacity  : $modal-backdrop-opacity;
+        animation: fadeInFromNone .3s ease-out;
+    }
+
+    i {
+        display  : none;
+        font-size: 24px;
+        color    : white;
+      }
+    &.working {
+        z-index: $zindex-working !important;
+        i { display: block; }
+    }
+}
+
+@keyframes fadeInFromNone {
+      0% { display: none;  opacity: 0; }
+      1% { display: block; opacity: 0; }
+    100% { display: block; opacity: $modal-backdrop-opacity; }
+}
+
+@keyframes fadeOutToNone {
+      0% { display: block; opacity: $modal-backdrop-opacity; }
+     99% { display: block; opacity: 0; }
+    100% { display: none;  opacity: 0; }
+}

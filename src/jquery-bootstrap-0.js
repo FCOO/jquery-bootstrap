@@ -136,7 +136,7 @@
 
         options = $.extend( true, {}, defaultOptions || {}, options, forceOptions || {} );
 
-        $.each(['selected', 'checked', 'active', 'open', 'isOpen'], function(index, id){
+        $.each(['selected', 'checked', /*v3 'active',*/ 'open', 'isOpen'], function(index, id){
             if (options[id] !== undefined){
                 options.selected = !!options[id];
                 return false;
@@ -446,9 +446,10 @@
         ****************************************************************************************/
 
         _bsAddHtml:  function( options, htmlInDiv, ignoreLink, checkForContent ){
+
             //**************************************************
             function getArray( input ){
-                return input ? $.isArray( input ) ? input : [input] : [];
+                return input ? ($.isArray( input ) ? input : [input]) : [];
             }
             //**************************************************
             function isHtmlString( str ){
@@ -476,7 +477,6 @@
 
             if (options.content && checkForContent)
                 return this._bsAddHtml(options.content, htmlInDiv, ignoreLink);
-
 
             var _this = this;
 
@@ -587,23 +587,7 @@
         If parentOptions is given => some options from parentOptions is used if they are not given in options
 
 
-        The default bootstrap structure used for elements in a form is
-        <div class="form-group">
-            <div class="input-group input-group-with-float-label">
-                <div class="input-group-prepend">               //optional
-                    <button class="btn btn-standard">..</buton> //optional 1-N times
-                </div>                                          //optional
-
-                <label class="has-float-label">
-                    <input class="form-control form-control-with-label" type="text" placeholder="The placeholder...">
-                    <span>The label</span>
-                </label>
-
-                <div class="input-group-append">                //optional
-                    <button class="btn btn-standard">..</buton> //optional 1-N times
-                </div>                                          //optional
-            </div>
-        </div>
+        See src/_form.scss for description of the structure
         ****************************************************************************************/
         _bsAppendContent: function( options, context, arg, parentOptions = {} ){
 
@@ -636,7 +620,7 @@
 
                 var $content = $('<div/>')
                         ._bsAddHtml( options )
-                        .addClass('_input-group-with-text flex-grow-1');
+                        .addClass('flex-grow-1');
 
                 if (options.title)
                     $content.i18n(options.title, 'title');
@@ -657,7 +641,8 @@
                 var $inner =
                         $('<div/>')
                            ._bsAddHtml( options )
-                           .addClass('form-control-border form-control no-hover');
+                            ._bsAddBaseClassAndSize({baseClass: 'form-control', useTouchSize: true})
+                           .addClass('no-hover');
 
                 return options.label ? $inner._wrapLabel(options) : $inner;
             }
@@ -667,13 +652,12 @@
                 return $.bsInput( options ).css('display', 'none');
             }
 
-            function buildInputGroup( options, $parent ){
+            function buildFormControlGroup( options, $parent ){
                 return $parent
                            .attr('id', options.id)
                            .addClass('flex-column')
                            ._bsAppendContent(options.content, null, null, options);
             }
-
 
             if (!options)
                 return this;
@@ -706,6 +690,7 @@
                 insideFormGroup   = false,
                 addBorder         = false,
                 buildInsideParent = false,
+                noPadding         = false,
                 noValidation      = false;
 
 
@@ -730,10 +715,13 @@
                     case 'buttongroup'           : buildFunc = $.bsButtonGroup;             insideFormGroup = true; break;
 
                     case 'menu'             :   buildFunc = $.bsMenu;               break;
-                    case 'select'           :   buildFunc = $.bsSelectBox;          insideFormGroup = true; break;
+                    case 'selectbox'        :
+                    case 'select'           :   buildFunc = $.bsSelect;             insideFormGroup = true; break;
+
                     case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
+
                     case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
-                    case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; break;
+                    case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; noPadding = true; break;
 
                     case 'tabs'             :   buildFunc = $.bsTabs;               break;
                     case 'table'            :   buildFunc = $.bsTable;              break;
@@ -748,13 +736,13 @@
                                                 options.noLabel = true; options.noVerticalPadding = true;
                                                 insideFormGroup = true; addBorder = true; noValidation = true; break;
 
-                    case 'text'             ://REMOVED                        buildFunc = $.bsText;               insideFormGroup = true; break;
-                    case 'textarea'         ://REMOVED                        buildFunc = $.bsTextArea;           insideFormGroup = true; break;
-                    case 'textbox'          :   if (!options.vfFormat)
+                    case 'text'             :
+                    case 'textarea'         :
+                    case 'textbox'          :   insideFormGroup = true;
+                                                if (!options.vfFormat)
                                                     options.text = options.text || $.EMPTY_TEXT;
-                                                if (hasPreOrPost){
-                                                    buildFunc = buildInlineTextBox; insideFormGroup = true; break;
-                                                }
+                                                if (hasPreOrPost)
+                                                    buildFunc = buildInlineTextBox;
                                                 else {
                                                     if (options.compact){
                                                         //Same as type="compacttext" but with outer padding
@@ -763,7 +751,7 @@
                                                     }
                                                     else
                                                         buildFunc = buildTextBox;
-                                                    insideFormGroup = true; addBorder = true; noValidation = true;
+                                                    addBorder = true; noValidation = true;
                                                 }
                                                 break;
 
@@ -771,48 +759,53 @@
                     case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
 
                     case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
-                    case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
+
+                    case 'formControlGroup' :
+                    case 'inputgroup'       :   buildFunc = buildFormControlGroup;  addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
 //                    case 'xx'               :   buildFunc = $.bsXx;               break;
 
-                    default                 :   buildFunc = $.fn._bsAddHtml;        buildInsideParent = true;
+                    default                 :   buildFunc = $.fn._bsAddHtml;        noPadding = true; buildInsideParent = true;
                 }
             }
+
+            if (options.lineBefore || options.lineAfter)
+                insideFormGroup = true;
 
             //Overwrite insideFormGroup if value given in options
             if ( $.type( options.insideFormGroup ) == "boolean")
                 insideFormGroup = options.insideFormGroup;
+
+            //Overwrite noPadding if value given in options
+            if ( $.type( options.noPadding ) == "boolean")
+                noPadding = options.noPadding;
 
             //Set the parent-element where to append to created element(s)
             var $parent = this,
                 insideInputGroup = false;
 
             if (insideFormGroup){
-                //Create outer form-group
+                //Create outer input-group-container
                 insideInputGroup = true;
-                $parent = $divXXGroup('form-group', options).appendTo( $parent );
+                $parent =
+                    $divXXGroup('input-group-container', options)
+                        .toggleClass('small-bottom-padding', !!options.smallBottomPadding)
+                        .toggleClass('py-0',                 !!options.noVerticalPadding)
+                        .toggleClass('line-before',          !!options.lineBefore)
+                        .toggleClass('line-after',           !!options.lineAfter)
 
-                if (options.smallBottomPadding)
-                    $parent.addClass('small-bottom-padding');
+                        .toggleClass('no-validation',        !!(noValidation || options.noValidation))
 
-                if (options.noVerticalPadding)
-                    $parent.addClass('no-vertical-padding');
-
-
-                if (options.lineBefore)
-                    $('<hr/>')
-                        .addClass('before')
-                        .toggleClass('above-label', !!options.label)
                         .appendTo( $parent );
-
-                if (noValidation || options.noValidation)
-                    $parent.addClass('no-validation');
             }
-            var $originalParent = $parent,
-                isInputGroupWithFloatLabel = !!options.label;
+// HER>             var $originalParent = $parent;
 
             if (insideInputGroup || hasPreOrPost){
                 //Create element inside input-group
-                var $inputGroup = $divXXGroup('input-group', options);
+                var $inputGroup =
+                        $divXXGroup('input-group', options)
+                            .toggleClass('p-0', !!noPadding),
+                    hasLabel = options.label && !options.noLabel;
+
                 if (addBorder && !options.noBorder){
                     //Add border and label (if any)
                     $inputGroup.addClass('input-group-border');
@@ -820,21 +813,23 @@
                     if (options.darkBorderlabel)
                         $inputGroup.addClass('input-group-border-dark');
 
-                    if (options.label && !options.noLabel){
-                        isInputGroupWithFloatLabel = false; //Correct padding is set via input-group-border-with-label
-                        $inputGroup.addClass('input-group-border-with-label');
-                        $('<span/>')
-                            .addClass('has-fixed-label')
+                    if (hasLabel)
+                         $('<label/>')
+                            .addClass('label-outside label-content')
                             ._bsAddHtml( options.label )
                             .appendTo( $inputGroup );
-                    }
                 }
+                else
+                    //No-border => the input-group is just a container to keep vertival distance => no horizontal padding
+                    $inputGroup.addClass('px-0');
 
-                if (isInputGroupWithFloatLabel)
-                    $inputGroup.addClass('input-group-with-float-label');
+                if (hasLabel)
+                    $parent.addClass('child-with-label');
 
                 $parent = $inputGroup.appendTo( $parent );
             }
+
+            $parent._bsAppendContent( options.prepend || options.before, options.contentContext, null, options  );
 
             //Build the element. Build inside $parent or add to $parent after
             if (buildInsideParent)
@@ -845,23 +840,7 @@
             if (options.center)
                 $parent.addClass('justify-content-center text-center');
 
-            var prepend = options.prepend || options.before;
-            if (prepend)
-                $('<div/>')
-                    .addClass('input-group-prepend')
-                    ._bsAppendContent( prepend, options.contentContext, null, options  )
-                    .prependTo( $parent );
-            var append = options.append || options.after;
-            if (append)
-                $('<div/>')
-                    .addClass('input-group-append')
-                    ._bsAppendContent( append, options.contentContext, null, options  )
-                    .appendTo( $parent );
-
-            if (options.lineAfter)
-                $('<hr/>')
-                    .addClass('after')
-                    .appendTo( $originalParent );
+            $parent._bsAppendContent( options.append || options.after, options.contentContext, null, options  );
 
             return this;
         }   //end of _bsAppendContent

@@ -1,101 +1,57 @@
 /************************************************************
 VARIABLES
+
+Defines scss-variables used in jquery-bootstrap
+Some of these variables are based on Bootstrap variables
 ************************************************************/
+
+//Set z-index for working...
+$zindex-working: 99999;
 
 /***********************************************
-DEFINE BOOTSTRAP BUTTON STYLE
-$btn-style-name MUST correspond with ns.bsButtonClass
-in src/jquery-bootstrap-button.js
+CHECKBOX
 ************************************************/
-$btn-style-name: standard;
+// indeterminate colors = checkbox or checkbox-button with semi-selected state
+// Use same icon as for selected
+$form-check-input-indeterminate-bg-image: $form-check-input-checked-bg-image;
 
+/***********************************************
+BUTTON
+************************************************/
+// $btn-style-name MUST correspond with ns.bsButtonClass in src/jquery-bootstrap-button.js
+$btn-style-name: jb;
 
-/************************************************************
-Variables bassed on bootstrop variables
-************************************************************/
-//Modal size in rem
-$modal-sm-rem: rem($modal-sm);
-$modal-md-rem: rem($modal-md);
-$modal-lg-rem: rem($modal-lg);
+// Square Buttons - Dimentions for square buttons with only icons
+$two-x-border-width-rem: 2 * $border-width-rem;
 
-//Extra-large-modal
-$modal-xl    : 1200px;
-$modal-xl-rem: rem($modal-xl);
+$button-square-dimension   : 2 * $btn-padding-y    + $jb-font-size    * $btn-line-height + $two-x-border-width-rem;
+$button-square-dimension-sm: 2 * $btn-padding-y-sm + $jb-font-size-sm * $btn-line-height + $two-x-border-width-rem;
 
-//Extra-extra-small font-size
-$font-size-xxs: rem(11px);
-
-/************************************************************
-HEADER
-Font-sizes for headers are one 'size' smaller than normal font
-$font-size-lg  : 1.25rem    20px
-$font-size-base: 1rem       16px
-$font-size-sm  : .875rem;   14px
-$font-size-xs  : .75rem     12px
-************************************************************/
-$font-size-header   : $font-size-sm;
-$font-size-header-sm: $font-size-xs;
-$font-size-header-xs: $font-size-xxs;
-
-/************************************************************
-BUTTON AND MODAL
-Opacity for semi-transparent and transparent content
-************************************************************/
-$semi-transparent-opacity      : .5;
-$semi-transparent-opacity-hover: .75;
-
-//Button
-$button-bg-color-semi-transparent      : rgba($control-bg-color, $semi-transparent-opacity);
-$button-bg-color-semi-transparent-hover: rgba($control-bg-color, $semi-transparent-opacity-hover);
-
-//Modal
-$modal-content-bg-semi-transparent      : rgba($modal-content-bg, $semi-transparent-opacity);
-$modal-content-bg-semi-transparent-hover: rgba($modal-content-bg, $semi-transparent-opacity-hover);
-
-
-/************************************************************
-SQUARE BUTTONS
-Dimentions for square buttons with only icons
-************************************************************/
-$button-square-dimension   : 2 * $input-btn-padding-y    + $font-size-base * $input-btn-line-height + 2 * rem($border-width);
-$button-square-dimension-sm: 2 * $input-btn-padding-y-sm + $font-size-sm   * $line-height-sm        + 2 * rem($border-width);
-
-$button-square-dimension-xs: 2 * $input-btn-padding-y-xs + $font-size-xs   * $line-height-xs        + 2 * rem($border-width);
+$button-square-dimension-xs: 2 * $btn-padding-y-xs + $jb-font-size-xs * $btn-line-height + $two-x-border-width-rem;
 
 $button-big-scale: 1.6; //Scale for font-size and dimentions for big-size and/or big-font icons
 
-$button-big-square-dimension   : roundRem( 2 * $input-btn-padding-y    + $button-big-scale * $font-size-base * $input-btn-line-height + 2 * rem($border-width) );
-$button-big-square-dimension-sm: roundRem( 2 * $input-btn-padding-y-sm + $button-big-scale * $font-size-sm   * $line-height-sm        + 2 * rem($border-width) );
-$button-big-square-dimension-xs: roundRem( 2 * $input-btn-padding-y-xs + $button-big-scale * $font-size-xs   * $line-height-xs        + 2 * rem($border-width) );
+$button-big-square-dimension   : roundRem( 2 * $btn-padding-y    + $button-big-scale * $jb-font-size    * $btn-line-height + $two-x-border-width-rem);
+$button-big-square-dimension-sm: roundRem( 2 * $btn-padding-y-sm + $button-big-scale * $jb-font-size-sm * $btn-line-height + $two-x-border-width-rem);
+$button-big-square-dimension-xs: roundRem( 2 * $btn-padding-y-xs + $button-big-scale * $jb-font-size-xs * $btn-line-height + $two-x-border-width-rem);
 
+/***********************************************
+MODAL
+************************************************/
+//Modal size in rem
+$modal-sm-rem: asRem($modal-sm);
+$modal-md-rem: asRem($modal-md);
+$modal-lg-rem: asRem($modal-lg);
 
+//Extra-large-modal
+$modal-xl    : 1200px;
+$modal-xl-rem: asRem($modal-xl);
 
-/************************************************************
-LABEL
-Font-sizes for labels are same size as header but incl a xxs-size
-************************************************************/
-$font-size-label   : $font-size-header;
-$font-size-label-sm: $font-size-header-sm;
-$font-size-label-xs: $font-size-xxs;
+/***********************************************
+BUTTON AND MODAL
+Opacity for semi-transparent and transparent content
+************************************************/
+//Modal
+$modal-content-bg-semi-transparent      : rgba($modal-content-bg, $jb-element-semi-transparent-opacity);
+$modal-content-bg-semi-transparent-hover: rgba($modal-content-bg, $jb-element-semi-transparent-hover-opacity);
 
-
-/************************************************************
-CONTENT
-Unifies padding and font-size for content of modal, accordion, popup etc.
-Using same font-size and vertical/horizontal padding as buttons
-NOTE: For sm and xs y-padding = x-padding
-************************************************************/
-$content-padding-x   : $input-padding-x;
-$content-padding-y   : $input-padding-y;
-
-$content-padding-x-sm: $input-padding-x-sm;
-$content-padding-y-sm: $input-padding-x-sm; //$input-padding-y-sm;
-
-$content-padding-x-xs: $input-padding-x-xs;
-$content-padding-y-xs: $input-padding-x-xs; //$input-padding-y-xs;
-
-/************************************************************
-MARGIN-BOTTOM
-All elements in modal-windows get same margin-bottom
-************************************************************/
-$modal-element-margin-bottom: $modal-dialog-margin;

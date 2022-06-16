@@ -36,8 +36,7 @@ Bootstrap allready have the following classes
     & > a:not(:last-child),
     & > .container-stacked-icons:not(:last-child):not(.fa-no-margin),
     & > i:not(:last-child):not(.fa-no-margin) {
-        //margin-right: .4em; version 1
-        margin-right: 5px; //Version 2 Fixed value
+        margin-right: 5px;
     }
 
     & > span.inline-block,
@@ -70,14 +69,14 @@ Bootstrap allready have the following classes
 
 //color-classes for activr/checked icons
 .text-checked, .text-active {
-    color: $control-active-bg-color;
+    color: $form-check-input-checked-bg-color;
 }
 
 /************************************************************
 Modernizr-test for stacted icon with parent with
 class="active" or "checked" when selected
 ************************************************************/
-@each $class-name in active, checked {
+@each $class-name in selected, checked {
     .#{$class-name} .container-stacked-icons {
         i.icon-hide-for-#{$class-name} { opacity: 0;       }
         i.icon-show-for-#{$class-name} { opacity: inherit; }

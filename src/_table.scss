@@ -3,9 +3,33 @@ TABLE
 
 Adjustmernt to Bootstrap table
 ************************************************************/
+@mixin _table-variant( $size ) {
+    @include font-size-variant( 'table-cell', $size );
+    @include padding-variant  ( 'table-cell', $size );
+}
 
-.table {
-    @include modal-element-margin-bottom();
+.table.jb-table {
+    /*******************************************************
+    For some (unknown) reason the padding and font-size of
+    table cells are not set using var(...)
+    This is iomplemented here.
+    The selection of cells are copied from
+    bower_components\bootstrap\scss\_tables.scss
+    ********************************************************/
+    @include _table-variant( 'nl' );
+
+    //(Extra) Small table or inside a (extra) small modal
+    &.table-sm, .modal-dialog-sm & {
+        @include _table-variant( 'sm' );
+    }
+    &.table-xs, .modal-dialog-xs & {
+        @include _table-variant( 'xs' );
+    }
+
+    > :not(caption) > * > * {
+        font-size: var(--#{$prefix}table-cell-font-size);
+        padding  : var(--#{$prefix}table-cell-padding-y) var(--#{$prefix}table-cell-padding-x);
+    }
 
     word-break: normal;
 
@@ -17,9 +41,9 @@ Adjustmernt to Bootstrap table
         margin : 0;
     }
 
-    //Center inside its container
-    &.table-center-in-container {
-        margin: 0 auto;
+    //No vertical padding
+    &.table-no-padding {
+        --#{$prefix}table-cell-padding-y: 0;
     }
 
     //Not full width (100%)
@@ -27,32 +51,18 @@ Adjustmernt to Bootstrap table
         width: inherit !important;
     }
 
-
     /*************************************
     Header
     *************************************/
     thead {
-
         tr th {
-            display: table-cell !important; //To overwrite "display: flex;" for headers
-
-            @include title-variant();
-            @include title-color();   //Only color and background-color
-
-            &.no-horizontal-padding {
-                padding-left : 0;
-                padding-right: 0;
-            }
-
+            cursor: default;
             &.sortable {
-                @include title-color($hover: true, $selected-selector: '&.asc, &.desc');
-
-                cursor: default;
+                cursor: pointer;
 
                 background-position: right center;
                 background-repeat: no-repeat;
                 background-size: 0.8em;
-
 
                 padding-right: 1em; //Make space for sort-direction icons
                 &.text-center {
@@ -64,7 +74,7 @@ Adjustmernt to Bootstrap table
 
                 //Border-bottom-color darker when column is sorted
                 &.sorting-asc, &.sorting-desc {
-                    border-bottom-color: $title-active-bg-color;
+                    border-bottom-color: pink;
                 }
 
                 &.sorting-asc {
@@ -78,31 +88,30 @@ Adjustmernt to Bootstrap table
                 }
             }
         }
-
     }
-
 
     /*************************************
     Rows
     table-sort-group-header is used for row that are the header of a group of rows with the same 'value' in the column that the table is sorted by
     *************************************/
-    &.table-hover tbody tr:not(.table-sort-group-header):hover {
-        background-color: $header-bg-color;
-    }
-
-
-    & tbody tr.table-sort-group-header td {
-        background-color: $title-bg-color !important;
-        color           : $title-color !important;
-        font-weight     : bold;
-
-        *:last-child { margin-right: .3em; }
+    & tbody tr.table-sort-group-header {
+        --#{$prefix}table-hover-bg  : none;  //Prevent hover effect
+        & td *:last-child { margin-right: .3em; }   //martgin-right of last span inside (why?)
     }
 
     //Selectable rows
     &.table-selectable tbody tr {
-        @include control-colors($incl-border: false);
         cursor: default;
+        &.selected {
+            --#{$prefix}table-hover-color: initial; //Prevent hover effect
+            color           : $form-check-input-checked-color;
+            background-color: $form-check-input-checked-bg-color;
+        }
+    }
+
+    //No hover on selected row if options.allowZeroSelected = false
+    &:not(.allow-zero-selected) tbody tr.selected {
+        --#{$prefix}table-hover-bg: initial; //Prevent hover effect
     }
 
     //Hidden row (filtered out)
@@ -110,27 +119,6 @@ Adjustmernt to Bootstrap table
         display: none;
     }
 
-    /*************************************
-    Cells
-    *************************************/
-    tbody tr td {
-        @include content-padding();
-        &.no-horizontal-padding {
-            padding-left : 0;
-            padding-right: 0;
-        }
-    }
-    &.table-no-border tbody tr td {
-        border: none;
-    }
-
-    &.table-no-padding {
-        tbody tr td,
-        thead tr th {
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-    }
 
     /*************************************
     Truncation - TODO
@@ -151,27 +139,3 @@ Adjustmernt to Bootstrap table
     }
 */
 } //end of .table
-
-
-/*************************************
-Adjust header and cell size when table is sm/xs or inside a sm/xs modal
-**************************************/
-//Small table or inside a small modal
-.table.table-sm,
-.modal-dialog-sm .table {
-    //Header
-    thead tr th { @include title-variant-sm();   }
-
-    //Cell
-    tbody tr td { @include content-padding-sm(); }
-}
-
-//Extra-small table or inside a extra-small modal
-.table.table-xs,
-.modal-dialog-xs .table {
-    //Header
-    thead tr th { @include title-variant-xs();   }
-
-    //Cell
-    tbody tr td { @include content-padding-xs(); }
-}

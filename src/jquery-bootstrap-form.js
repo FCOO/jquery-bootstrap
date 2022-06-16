@@ -57,14 +57,6 @@
         },
 
         /*******************************************************
-        getSelectpicker
-        *******************************************************/
-        getSelectpicker: function(){
-            this.selectpicker = this.selectpicker || this.getElement().data('selectpicker').selectpicker;
-            return this.selectpicker;
-        },
-
-        /*******************************************************
         getRadioGroup
         *******************************************************/
         getRadioGroup: function(){
@@ -73,13 +65,17 @@
         },
 
         /*******************************************************
-        getFormGroup
+        getInputGroupContainer
+        getFormGroup for backward combatibility
         *******************************************************/
-        getFormGroup: function(){
-            this.$formGroup = this.$formGroup || this.getElement().parents('.form-group').first();
+        getInputGroupContainer: function(){
+             this.$formGroup = this.$formGroup || this.getElement().parents('.input-group-container').first();
             if (!this.$formGroup.length)
                 this.$formGroup = this.getElement();
             return this.$formGroup;
+        },
+        getFormGroup: function(){
+            return this.getInputGroupContainer();
         },
 
         /*******************************************************
@@ -103,8 +99,8 @@
             }
 
             switch (this.options.type || 'input'){
-                case 'input'   : $elem.val( value );                break;
-                case 'select'  : $elem.selectpicker('val', value ); break;
+                case 'input'   :
+                case 'select'  : $elem.val( value );                break;
 
                 case 'checkbox': $elem.prop('checked', value );     break;
 
@@ -176,8 +172,8 @@
                 result = null;
 
             switch (this.options.type || 'input'){
-                case 'input'   : result = $elem.val();                    break;
-                case 'select'  : result = $elem.selectpicker('val');      break;
+                case 'input'   :
+                case 'select'  : result = $elem.val();                    break;
 
                 case 'checkbox': result = !!$elem.prop('checked');        break;
 
@@ -251,13 +247,12 @@
                     this.resetValue( true );
                 }
 
-
                 if (this.options.freeSpaceWhenHidden)
                     //When the element is invisible: Use display:none
-                    this.getFormGroup().toggleClass('d-none', !show);
+                    this.getInputGroupContainer().toggleClass('d-none', !show);
                 else
                     //When the element is invisible: Use visibility:hidden to keep structure of form and it elements
-                    this.getFormGroup().css('visibility', show ? 'visible' : 'hidden');
+                    this.getInputGroupContainer().css('visibility', show ? 'visible' : 'hidden');
 
                 this.getElement().prop('disabled', !show);
 
@@ -294,7 +289,7 @@
         this.inputs = {};
 
         var typeList = ['button', 'checkboxbutton', 'standardcheckboxbutton', 'iconcheckboxbutton',
-                        'input', 'select', 'selectlist', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden', 'inputgroup'],
+                        'input', 'select', 'selectlist', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden', 'inputgroup', 'formControlGroup'],
 
             //semiSelectedValueTypes = {TYPE_ID:TYPE} TYPE_ID = the types that accept a semi-selected value. TYPE = the $.type result that detect if the value of a element is semi-selected
             semiSelectedValueTypes = {

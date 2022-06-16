@@ -7,9 +7,11 @@
 	https://github.com/FCOO
 
 ****************************************************************************/
-
-(function ($/*, window, document, undefined*/) {
+/*
+(function ($, bootstrap, window, document, undefined) {
 	"use strict";
+
+//MANGLER: Er det nødvendigt med nedenstående???
 
     //Concert from all new placement to original
     var truePlacement2placement = {
@@ -19,15 +21,15 @@
             righttop  : 'right',  right : 'right',  rightbottom: 'right'
     };
 
-    /****************************************************
-    Overwrite Popover.show to save and modify new positions
-    *****************************************************/
-    $.fn.tooltip.Constructor.prototype.show = function( _show ){
+    //****************************************************
+    //Overwrite Popover.show to save and modify new positions
+    //*****************************************************
+    bootstrap.Tooltip.prototype.show = function( _show ){
         return function(){
             //If first time: Save 'true' placement
-            if (!this.config.truePlacement){
-                this.config.truePlacement = this.config.placement;
-                this.config.placement = truePlacement2placement[this.config.truePlacement];
+            if (!this._config.truePlacement){
+                this._config.truePlacement = this._config.placement;
+                this._config.placement = truePlacement2placement[this._config.truePlacement];
             }
 
             //Original methods
@@ -42,7 +44,7 @@
 
 
 
-            switch (this.config.truePlacement){
+            switch (this._config.truePlacement){
                 case 'topright'   :
                 case 'rightbottom':
                 case 'bottomright':
@@ -62,10 +64,12 @@
                 default: offset = 0;
             }
 
+// VIRKER IKKE:
             if (this._popper)
                 this._popper.modifiers[1].offset = offset;
+
         };
+    }( bootstrap.Tooltip.prototype.show );
 
-    }( $.fn.tooltip.Constructor.prototype.show );
-
-}(jQuery, this, document));
+}(jQuery, this.bootstrap, this, document));
+*/

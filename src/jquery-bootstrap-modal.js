@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function ($, window, document, undefined) {
+(function ($, bootstrap, window, document, undefined) {
 	"use strict";
 
     //Adjusting default options jquery-scroll-container
@@ -326,8 +326,8 @@
 
         assignTo: function( $element ){
             $element.attr({
-                'data-toggle': 'modal',
-                'data-target': '#'+this.attr('id')
+                'data-bs-toggle': 'modal',
+                'data-bs-target': '#'+this.attr('id')
             });
         },
 
@@ -425,8 +425,10 @@
                     .addClass('modal-body-fixed')
                     .addClass(className || '')
                     .addClass(scrollbarClass )
-                    .toggleClass('no-vertical-padding',         !!fixedOptions.noVerticalPadding)
-                    .toggleClass('no-horizontal-padding',       !!fixedOptions.noHorizontalPadding)
+                    .toggleClass('py-0',                        !!fixedOptions.noVerticalPadding)
+                    .toggleClass('pt-0',                        !!fixedOptions.noTopPadding)
+                    .toggleClass('pb-0',                        !!fixedOptions.noBottomPadding)
+                    .toggleClass('px-0',                        !!fixedOptions.noHorizontalPadding)
                     .toggleClass('modal-body-semi-transparent', !!fixedOptions.semiTransparent)
                     .toggleClass('modal-type-' + options.type,  !!fixedOptions.type)
                     .addClass(options.fixedClassName || '')
@@ -440,8 +442,8 @@
                 $('<div/>')
                     .addClass('modal-body ' + className)
                     .toggleClass('modal-body-always-max-height', !!options.alwaysMaxHeight)
-                    .toggleClass('no-vertical-padding',          !!options.noVerticalPadding)
-                    .toggleClass('no-horizontal-padding',        !!options.noHorizontalPadding)
+                    .toggleClass('py-0',                         !!options.noVerticalPadding)
+                    .toggleClass('px-0',                         !!options.noHorizontalPadding)
                     .toggleClass('modal-body-semi-transparent',  !!options.semiTransparent)
                     .toggleClass('modal-type-' + options.type,   !!options.type)
                     .addClass(options.className || '')
@@ -481,7 +483,7 @@
         //Add footer
         parts.$footer =
                 $('<div/>')
-                    .addClass('modal-footer-header ' + className)
+                    .addClass('footer-content ' + className)
                     .appendTo( this )
                     ._bsAddHtml( options.footer );
 
@@ -1052,7 +1054,8 @@
         $result.onClose = options.onClose;
 
         //Create as modal and adds methods - only allow close by esc for non-static modal (typical a non-form)
-        $result.modal({
+// HER>         $result.modal({
+        new bootstrap.Modal($result, {
            //Name       Value                                   Type                Default Description
            backdrop :   options.static ? "static" : true,   //  boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
            keyboard :   !options.static,                    //  boolean	            true	Closes the modal when escape key is pressed
@@ -1081,4 +1084,4 @@
         return $result;
     };
 
-}(jQuery, this, document));
+}(jQuery, this.bootstrap, this, document));

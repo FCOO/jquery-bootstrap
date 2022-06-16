@@ -24,7 +24,7 @@
             var $input =
                     $('<input/>')
                         ._bsAddIdAndName( options )
-                        .addClass('form-control-border form-control')
+                        ._bsAddBaseClassAndSize({baseClass: 'form-control', useTouchSize: true})
                         .attr('type', 'text');
 
             if (options.inputmask){
@@ -44,30 +44,6 @@
             return $input._wrapLabel(options);
         },
 
-
-        /******************************************************
-        $.bsText( options )
-        Create a <div> with text inside a <label>
-        ******************************************************/
-/* REMOVED. ALL TEXT-INPUTS ARE CREATED IN _bsAppendContent
-        bsText: function( options ){
-            return $('<div/>')
-                       ._bsAddHtml( options )
-                       .addClass('form-control-border form-control no-hover')
-                       ._wrapLabel(options);
-        },
-//*/
-        /******************************************************
-        $.bsTextArea( options )
-        Create a <div> with text inside a <label>
-        ******************************************************/
-/* REMOVED. ALL TEXT-INPUTS ARE CREATED IN _bsAppendContent
-        bsTextArea: function( options ){
-            var $result = $.bsText( options );
-            $result.children('.form-control').css('height', 'auto');
-            return $result;
-        }
-//*/
     });
 
 
@@ -75,7 +51,7 @@
         /* NOT USED FOR NOW
         _onInputmaskChanged: function( inputmaskStatus ){
             var $this = $(this);
-            $(this).closest('.form-group').toggleClass('has-warning', !$this.inputmask("isComplete"));
+            $(this).closest('.input-group-container').toggleClass('has-warning', !$this.inputmask("isComplete"));
             $(this).closest('.input-group').toggleClass('has-warning', !$this.inputmask("isComplete"));
         },
         */
@@ -84,23 +60,23 @@
         _wrapLabel( options )
         Wrap the element inside a <label> and add
         options.placeholder and options.label
-            <label class="has-float-label">
+            <label class="label-inside">
                 <THIS placeholder="options.placeholder"/>
                 <span>options.label</span>
             </label>
         Return the label-element
         ******************************************************/
         _wrapLabel: function(options){
-            this.addClass('form-control-with-label');
-
-            var $label = $('<label/>').addClass('has-float-label');
-            $label.append( this );
+            var $label = $('<label/>')
+                            .addClass('label-inside')
+                            .append( this );
 
             if (options.placeholder)
                 this.i18n( options.placeholder, 'placeholder' );
 
             $('<span/>')
                 ._bsAddHtml( options.label )
+                .addClass('label-content')
                 .appendTo( $label )
                 .on('mouseenter', function(){ $label.addClass('hover');    })
                 .on('mouseleave', function(){ $label.removeClass('hover'); });

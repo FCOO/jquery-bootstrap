@@ -11,8 +11,6 @@
 (function ($/*, window/*, document, undefined*/) {
 	"use strict";
 
-
-
     var bsCheckBoxId = 0;
 
     /**********************************************************
@@ -41,6 +39,7 @@
             $input =
                 $('<input/>')
                     .addClass('cbxInput')
+                    .addClass('form-check-input')
                     .prop({
                         type   : 'checkbox',
                         checked: options.selected
@@ -51,12 +50,10 @@
         //Allow multi-lines
         $result.toggleClass('multi-lines', !!options.multiLines);
 
-
         /*
         If options.onClick = function(id, state, checkbox) exists => The control of setting
         and getting the state of the checkbox/radio is transfered to the onClick-function.
         This option prevent the default click-event for the input. The state of the input must be set using the cbxSetXXXX-methods of checkbox
-
         */
         if (options.onClick){
             $input.on('click', $.proxy($result._cbx_onClick, $result) ),
@@ -75,12 +72,6 @@
         var $label = $('<label/>')
                         .prop('for', options.id )
                         .appendTo( $result );
-
-        //Add <i> with check-icon if it is a checkbox
-        $('<i/>')
-            .addClass('checkbox-icon fas')
-            .addClass(options.type == 'checkbox' ? 'fa-check' : 'fa-circle')
-            .appendTo( $label );
 
         var content = options.content ? options.content : {icon: options.icon, text: options.text};
         $('<div/>')._bsAddHtml( content ).appendTo( $label );
@@ -147,9 +138,6 @@
 
             event.preventDefault();
         }
-
     });
 
-
 }(jQuery, this, document));
-

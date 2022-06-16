@@ -25,11 +25,11 @@ MODAL-BACKDROP
     }
 
     &.show {
-        display        : flex;
-        justify-content: center;
-        align-items    : center;
-        opacity  : $modal-backdrop-opacity;
-        animation: fadeInFromNone .3s ease-out;
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        opacity         : $modal-backdrop-opacity;
+        animation       : fadeInFromNone .3s ease-out;
     }
 
     i {

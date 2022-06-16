@@ -11,6 +11,9 @@
 (function ($, i18next,  window /*, document, undefined*/) {
 	"use strict";
 
+
+    var objectWithFileClasses = 'border-0 w-100 h-100';
+
     //$.bsHeaderIcons = class-names for the different icons on the header
     $.bsExternalLinkIcon = 'fa-external-link-alt';
 
@@ -111,7 +114,7 @@
                 //*********************************************
                 case 'pdf':
                     //passes a jQuery object (HTML node) for target
-                    $content = $('<div/>').addClass('object-with-file');
+                    $content = $('<div/>').addClass(objectWithFileClasses);
                     window.PDFObject.embed(
                         theFileName,
                         $content,
@@ -129,7 +132,7 @@
                 case 'ico':
                     var $iframe =
                             $('<iframe></iframe>')
-                                .addClass('object-with-file'),
+                                .addClass(objectWithFileClasses),
                         $img =
                             $('<img src="' + theFileName + '"/>')
                                 .css('width', '100%');
@@ -177,13 +180,13 @@
                 //*********************************************
                 case 'html':
                 case 'unknown':
-                    $content = $('<iframe src="' + theFileName + '"/>').addClass('object-with-file');
+                    $content = $('<iframe src="' + theFileName + '"/>').addClass(objectWithFileClasses);
                     break;
 
                 //*********************************************
                 default:
                     //Try default <object> to display the file
-                    $content = $('<object data="' + theFileName + '"/>').addClass('object-with-file');
+                    $content = $('<object data="' + theFileName + '"/>').addClass(objectWithFileClasses);
 
             } //end of switch (fileNameExt){...
         }

@@ -1,7 +1,48 @@
 /************************************************************
 BUTTON
-
 ************************************************************/
+
+/************************************************************
+button-text-color-variant
+button-border-color-variant
+button-background-color-variant
+Adjust text-, border-, and background-color for a button
+************************************************************/
+@mixin button-text-color-variant( $color ){
+    //Text-color
+    --#{$prefix}btn-color         : #{$color};
+    --#{$prefix}btn-hover-color   : #{tint-color($color, $btn-hover-border-tint-amount)};
+    --#{$prefix}btn-active-color  : #{tint-color($color, $btn-active-border-tint-amount)};
+    --#{$prefix}btn-disabled-color: #{$color};
+}
+@mixin button-border-color-variant( $border-color ){
+    //Border-color
+    --#{$prefix}btn-border-color        : #{$border-color};
+    --#{$prefix}btn-hover-border-color  : #{tint-color($border-color, $btn-hover-border-tint-amount)};
+    --#{$prefix}btn-active-border-color : #{tint-color($border-color, $btn-active-border-tint-amount)};
+}
+
+@mixin button-background-color-variant( $bg-color ){
+    //Background-color
+    --#{$prefix}btn-bg       : #{$bg-color};
+    --#{$prefix}btn-hover-bg : #{tint-color($bg-color, $btn-hover-bg-tint-amount)};
+    --#{$prefix}btn-active-bg: #{tint-color($bg-color, $btn-active-bg-tint-amount)};
+}
+
+
+
+/************************************************************
+Including size eXtra-Small .btn-xs and btn-group-xs as in Bootstrap 5
+************************************************************/
+.btn-xs {
+    @include button-size(
+        $padding-y    : $btn-padding-y-xs,
+        $padding-x    : $btn-padding-x-xs,
+        $font-size    : $btn-font-size-xs,
+        $border-radius: $btn-border-radius-xs
+    );
+}
+.btn-group-xs > .btn { @extend .btn-xs; }
 
 /************************************************************
 To be able to control font-family etc. 'buttons'
@@ -9,68 +50,137 @@ can be created as <div>
 cursor-style added to prevent text-cursor on buttons
 Also overwrite default bootstrap behaviour
 ************************************************************/
-a.btn, a.list-group-item,
-div.btn, div.list-group-item {
-    cursor: default;
-}
+/*
+@mixin button-variant(
+  $background,
+  $border,
+  $color: color-contrast($background),
+  $hover-background: if($color == $color-contrast-light, shade-color($background, $btn-hover-bg-shade-amount), tint-color($background, $btn-hover-bg-tint-amount)),
+  $hover-border: if($color == $color-contrast-light, shade-color($border, $btn-hover-border-shade-amount), tint-color($border, $btn-hover-border-tint-amount)),
+  $hover-color: color-contrast($hover-background),
+  $active-background: if($color == $color-contrast-light, shade-color($background, $btn-active-bg-shade-amount), tint-color($background, $btn-active-bg-tint-amount)),
+  $active-border: if($color == $color-contrast-light, shade-color($border, $btn-active-border-shade-amount), tint-color($border, $btn-active-border-tint-amount)),
+  $active-color: color-contrast($active-background),
+  $disabled-background: $background,
+  $disabled-border: $border,
+  $disabled-color: color-contrast($disabled-background)
+) {
 
-.btn:not(:disabled):not(.disabled) {
-    cursor: default !important;
-}
+*/
 
-.btn.btn-#{$btn-style-name}{
-    //min-width used for buttons with short text ("Ok")
-    &.min-width {
-        min-width: 5em;
-    }
+.btn-#{$btn-style-name}{
 
-    @include box-shadow($btn-box-shadow);
+    //Set default border-colors for buttons
+    --#{$prefix}btn-border-color        : #{$jb-element-border-color};
+    --#{$prefix}btn-hover-border-color  : #{$jb-element-hover-border-color};
+    --#{$prefix}btn-active-border-color : #{$jb-element-active-border-color};
 
-    &:active {
-        @include box-shadow($btn-active-box-shadow);
-        z-index: 2;
-    }
+    //Force all buttons to have same light blue box-shadow when in focus
+    --#{$prefix}btn-focus-shadow-rgb: #{to-rgb($component-active-bg)};
 
-    @include control-colors($incl-error: true);
+    //*********************************************************
+    //Standard color = light white
+    &.standard {
+        @include button-variant(
+            $background         : $jb-btn-standard-background-color,
+            $hover-background   : $jb-btn-standard-hover-background-color,
+            $active-background  : $jb-btn-standard-active-background-color,
 
-    &.primary {
-        $primary-color: map-get($theme-colors, primary );
-        @include control-colors(
-                $incl-active: false,
-                $incl-bg    : false,
+            $border             : $jb-element-border-color,
+            $hover-border       : $jb-element-hover-border-color,
+            $active-border      : $jb-element-active-border-color,
 
-                $color: $primary-color,
-
-                $border-color      : $primary-color,
-                $border-color-hover: darken($primary-color, $darken-border-color-hover-percent)
+            $color              : $jb-element-color,
+            $hover-color        : $jb-element-hover-color,
+            $active-color       : $jb-element-active-color,
+            $disabled-color     : $jb-element-disabled-color
         );
+
+        //Overwrite focus shadow again
+        --#{$prefix}btn-focus-shadow-rgb: #{to-rgb($component-active-bg)};
     }
 
-    //Semi-selected - but not for standard radio/checkbox button
-    &.semi-selected:not(.standard-checkbox) {
-        @include control-colors(
-            $incl-active: false,
-            $incl-border: false,
-            $color      : $control-active-color,
-            $bg-color   : $semi-selected-bg-color
-        )
+    //*********************************************************
+    //primary = border and text in primary color
+    &.primary {
+        //Text-color = primary, Border-color = primary
+        @include button-text-color-variant( $primary );
+        @include button-border-color-variant( $primary );
     }
 
+    //*********************************************************
+    //selected = background in selected-blue color
+    &.selected {
+        @include button-background-color-variant( $form-check-input-checked-bg-color );
+        @include button-text-color-variant( $form-check-input-checked-color );
+    }
 
-    //Standard checkbox-button
+    //Standard checkbox-button = Button with radio or checkbox-icon with blue color when selected (=checked)
     &.standard-checkbox {
         .standard-checkbox-checked-color {
-            color: $control-active-bg-color;
+            color: $form-check-input-checked-bg-color;
         }
     }
 
     &.standard-checkbox.semi-selected {
         .standard-checkbox-checked-color {
-            color: $semi-selected-bg-color;
+            color: $form-check-input-indeterminate-bg-color;
         }
     }
 
 
+    //Semi-selected - but not for standard radio/checkbox button
+    &.semi-selected:not(.standard-checkbox) {
+        @include button-background-color-variant( $form-check-input-indeterminate-bg-color );
+        @include button-text-color-variant( $form-check-input-checked-color );
+    }
+
+    //*********************************************************
+    //Special version to have transparent button
+    //transparent = normal/dark color on light background
+    //transparent-on-dark = Light color on dark background
+    //semi-transparent
+    &.transparent, &.transparent-on-dark {
+        --#{$prefix}btn-bg       : none;
+        --#{$prefix}btn-hover-bg : rgba( #{to-rgb($jb-btn-standard-hover-background-color)} , .10 );
+        --#{$prefix}btn-active-bg: rgba( #{to-rgb($jb-btn-standard-active-background-color)}, .15 );
+
+        --#{$prefix}btn-border-color       : #{ color-opacity( $jb-element-border-color, .10 ) };
+        --#{$prefix}btn-hover-border-color : #{ color-opacity( $jb-element-border-color, .15 ) };
+        --#{$prefix}btn-active-border-color: #{ color-opacity( $jb-element-border-color, .20 ) };
+    }
+
+    &.transparent-on-dark {
+        @include button-text-color-variant( $color-contrast-light );
+    }
+
+    &.semi-transparent:not(.selected) {
+        --#{$prefix}btn-bg       : rgba( #{to-rgb($jb-btn-standard-background-color)}       , #{$jb-element-semi-transparent-opacity}        );
+        --#{$prefix}btn-hover-bg : rgba( #{to-rgb($jb-btn-standard-hover-background-color)} , #{$jb-element-semi-transparent-hover-opacity}  );
+        --#{$prefix}btn-active-bg: rgba( #{to-rgb($jb-btn-standard-active-background-color)}, #{$jb-element-semi-transparent-active-opacity} );
+    }
+
+
+    //*********************************************************
+    //Overwrite Bootstrap default opacity for disabled buttons when class .show-as-normal is added
+    &.show-as-normal {
+        --#{$prefix}btn-disabled-opacity: 1;
+    }
+
+    &.no-border {
+        border-color: transparent !important;
+    }
+
+    &.no-shadow {
+        box-shadow: none !important;
+    }
+
+    //min-width used for buttons with short text ("Ok")
+    &.min-width {
+        min-width: 5em;
+    }
+
+    //*********************************************************
     //Icons in buttons get equal size to allow shift of icon
     & > i.fa {
         min-width : 1em;
@@ -80,171 +190,90 @@ div.btn, div.list-group-item {
         }
     }
 
-    //Container for stacked icons get same size as single icon
+    //Containers for stacked icons get same size as single icon
     & > span.fa-stack {
         width         : 1em;
         height        : 1em;
-        line-height   : 1.5 * $font-size-sm;
+        line-height   : 1.5 * $btn-font-size-sm;
         vertical-align: top;
     }
 
 
-    //Overwrite Bootstrap default opacity for disabled buttons when class .show-as-normal is added
-    &.disabled.show-as-normal, &.show-as-normal:disabled {
-        opacity: 1;
-    }
-
-    &.no-border {
-        border-color: transparent !important;
-    }
-
-    &.no-shadow {
-        @include box-shadow(none !important);
-    }
-
-
-    /************************************************************
-    Special version to have transparent button
-    transparent = normal/dark color og light background
-    transparent-on-dark = Light color on dark background
-    ************************************************************/
-    &.transparent {
-        background: none !important;;
-        @include control-colors(
-            $incl-active : true,
-            $bg-color    : rgba(0,0,0,0),
-
-            $border-color      : rgba(0,0,0, .1),
-            $border-color-hover: rgba(0,0,0,.15)
-        );
-    }
-
-    &.transparent-on-dark {
-        background: none !important;
-        $color-transparent: #D4D4D4;
-        @include control-colors(
-            $incl-active : true,
-
-            $color       : $color-transparent,
-            $color-hover : lighten($color-transparent, $darken-hover-percent),
-            $color-active: lighten($color-transparent, $darken-active-percent),
-            $color-focus : lighten($color-transparent, 40%),
-
-            $bg-color    : rgba(0,0,0,0),
-
-            $border-color      : rgba(0,0,0, .1),
-            $border-color-hover: rgba(0,0,0,.15)
-        );
-    }
-
-    &.semi-transparent {
-        //background: none; // !important;
-        @include control-colors(
-            $incl-active    : true,
-            $incl-border    : false,
-            $no-gradians    : true,
-            $bg-color       : $button-bg-color-semi-transparent,
-            $bg-color-hover : $button-bg-color-semi-transparent-hover,
-            $bg-color-active: darken($button-bg-color-semi-transparent-hover, $darken-active-percent)
-        );
-    }
-    /************************************************************
-    Special version to have square buttons (with only icon)
-    ************************************************************/
+    //************************************************************
+    //Special version to have square buttons (with only icon)
     &.square {
-        $square-icon-width: 1.25em; //Same as fa-fw
-
         //Horizontal and vertical center using flex-box
         display        : inline-flex;
         align-items    : center;
         justify-content: center;
 
-        padding: 0 !important;
+        --#{$prefix}btn-padding-y: 0;
+        --#{$prefix}btn-padding-x: 0;
 
+        height: var(--#{$prefix}btn-square-dimention);
+        width : var(--#{$prefix}btn-square-dimention);
 
         &:not(.big-square){
-            height: $button-square-dimension;
-            width : $button-square-dimension;
-
+            --#{$prefix}btn-square-dimention: #{$button-square-dimension};
             &.btn-sm {
-                height: $button-square-dimension-sm;
-                width : $button-square-dimension-sm;
+                --#{$prefix}btn-square-dimention: #{$button-square-dimension-sm};
             }
-
             &.btn-xs {
-                height: $button-square-dimension-xs;
-                width : $button-square-dimension-xs;
+                --#{$prefix}btn-square-dimention: #{$button-square-dimension-xs};
             }
         }
 
         &.big-square {
-            height: $button-big-square-dimension;
-            width : $button-big-square-dimension;
-
+            --#{$prefix}btn-square-dimention: #{$button-big-square-dimension};
             &.btn-sm {
-                height: $button-big-square-dimension-sm;
-                width : $button-big-square-dimension-sm;
+                --#{$prefix}btn-square-dimention: #{$button-big-square-dimension-sm};
             }
-
             &.btn-xs {
-                height: $button-big-square-dimension-xs;
-                width : $button-big-square-dimension-xs;
+                --#{$prefix}btn-square-dimention: #{$button-big-square-dimension-xs};
             }
         }
 
         //.big-icon = Extra big icons
-        @mixin big-icon-font-size( $original-font-size, $font-size-scale: $button-big-scale ){
-            font-size: roundRem($original-font-size * $font-size-scale); //round($original-font-size/1rem*1.6*16px) / 16px * 1rem;
+        &.big-icon          {
+            --#{$prefix}btn-font-size: #{roundRem($btn-font-size    * $button-big-scale )};
         }
-        &.big-icon          { @include big-icon-font-size( $font-size-base ); }
-        &.btn-sm.big-icon   { @include big-icon-font-size( $font-size-sm   ); }
-        &.btn-xs.big-icon   { @include big-icon-font-size( $font-size-xs   ); }
-
-
-
+        &.btn-sm.big-icon   {
+            --#{$prefix}btn-font-size: #{roundRem( $btn-font-size-sm * $button-big-scale )};
+        }
+        &.btn-xs.big-icon   {
+            --#{$prefix}btn-font-size: #{roundRem( $btn-font-size-xs * $button-big-scale )};
+        }
 
         //Center icon and make space for icons with width > height
         & > i.fa {
-            width     : $square-icon-width;
+            width     : 1.25em; //Same as fa-fw
             height    : 1em;
             text-align: center;
         }
     }
 
     //Extra-extra large icon => The button gets bigger
-    $big-icon-padding: 0.25rem;
     &.extra-large-icon {
-        line-height    : 1;
-        padding        : $big-icon-padding !important;
+        --#{$prefix}btn-line-height: 1;
+        --#{$prefix}btn-padding-y  : 0.25rem;
+        --#{$prefix}btn-padding-x  : 0.25rem;
+        --#{$prefix}btn-font-size  : 2rem;
+
         flex-direction : row;
         align-items    : center;
         justify-content: center;
-        font-size      : 2rem;
     }
 }
 
 /************************************************************
-Modernizr-test for elements with class="active" when selected
+Modernizr-test for elements with class="hide-for-selected" or "show-for-selected"
 ************************************************************/
 @include show-and-hide-for-modernizr-test(
-	$modernizr-test     : 'active',
-	$parent-element-type: '.btn',
+	$modernizr-test     : 'selected',
+	$parent-element-type: #{'.btn-'+ $btn-style-name},
     $incl-table-display : false
 );
 
-/************************************************************
-Including .btn-xs and btn-group-xs as in Bootstrap 3
-************************************************************/
-.btn-xs {
-    @include button-size(
-        $padding-y    : $btn-padding-y-xs,
-        $padding-x    : $btn-padding-x-xs,
-        $font-size    : $font-size-xs,
-        $line-height  : $input-btn-line-height-sm,
-        $border-radius: $btn-border-radius-xs
-    );
-}
-.btn-group-xs > .btn { @extend .btn-xs; }
 
 
 /************************************************************
@@ -281,7 +310,7 @@ BUTTON-GROUP
 //With border
 .btn-group, .btn-group-vertical {
     &.btn-group-border {
-        border: 1px solid $card-border-color;
+        border: 1px solid $jb-structure-border-color;
         border-radius: $btn-border-radius;
         &.btn-group-sm {
             border-radius: $btn-border-radius-sm;
@@ -292,26 +321,11 @@ BUTTON-GROUP
     }
 }
 
-
-//Add padding-top when inside a input-group with label
-.has-fixed-label ~ .btn-group {
-    padding-top: 3px;
-}
-
-//Header inside vertical button-group
+//Header inside vertical button-group MANGLER
 .btn-group-vertical {
-    .btn-group-header {
-        @include title-variant();
-        @include title-color();
-        line-height: 1.3;
+    .header-content-container {
         width: 100%;
-
-/* Removed to align all icons in groups (with and without header)
-        //Adjust padding for buttons after a header
-        & ~ .btn {
-            padding-left: 2*$btn-padding-x;
-        }
-*/
+        margin-bottom: $btn-border-width;   //To compensate for negative margin-top in .btn-group-vertical > .btn:not(:first-child)
     }
 
     //Align all icons in vertical button group to width = 1.25em
@@ -322,50 +336,25 @@ BUTTON-GROUP
         }
     }
 
-
-    //Small
-    &.btn-group-sm .btn-group-header {
-        @include title-variant-sm();
-        line-height: 1.3;
-/* Removed to align all icons in groups (with and without header)
-        & ~ .btn {
-            padding-left: 2*$btn-padding-x-sm;
-        }
-*/
-    }
-
-    //Extra small
-    &.btn-group-xs .btn-group-header {
-        @include header-variant-xs( $incl-border: false );
-        line-height: 1.3;
-/* Removed to align all icons in groups (with and without header)
-        & ~ .btn {
-            padding-left: 2*$btn-padding-x-xs;
-        }
-*/
-    }
-
     //Margin between two .btn-group-vertical
     & + .btn-group-vertical {
-        margin-top: $content-padding-y;
-        &.btn-group-sm {
-            margin-top: $content-padding-y-sm;
-        }
-        &.btn-group-xs {
-            margin-top: $content-padding-y-sm;
-        }
+        margin-top: var(--#{$prefix}modal-header-padding-y);
     }
 }
 
+//Size - small and extra-small
+@include header-content-footer-variant(".btn-group-vertical.btn-group");
 
 
 /************************************************************
 BLOCK BUTTONS (from Bootstrap)
 Extend to also include margin-bottom
 ************************************************************/
+/*MANGLER
 .btn-block + .btn-block {
     margin-bottom: $btn-block-spacing-y;
 }
+*/
 
 /************************************************************
 MENU (BUTTON-GROUP)
@@ -384,7 +373,7 @@ MENU (BUTTON-GROUP)
 
 /************************************************************
 btn-shadow and btn-shadow-sm
-classes to create "shadow-buttons"
+classes to create "shadow-buttons" = invisible square buttons for correct spacing
 ************************************************************/
 .btn-shadow, .btn-shadow-sm {
     display   : inline-block;

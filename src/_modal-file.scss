@@ -17,5 +17,5 @@ Style for elements used to display any file in a modal-window
 }
 
 .file-view-content {
-    @include content-padding-sm();
+//MANGLER - skal sættes med --var XXX            @include content-padding-sm();
 }

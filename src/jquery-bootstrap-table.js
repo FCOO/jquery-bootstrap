@@ -164,7 +164,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             ._bsAddStyleClasses( columnOptions.align )
             .toggleClass('text-nowrap', !!columnOptions.noWrap )
 //TODO            .toggleClass('text-truncate', !!columnOptions.truncate )
-            .toggleClass('no-horizontal-padding', !!columnOptions.noHorizontalPadding );
+            .toggleClass('px-0', !!columnOptions.noHorizontalPadding );  //MANGLER: Virker det?
 
         if (addWidth && columnOptions.width)
             $element.css({
@@ -490,7 +490,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
                         //Create new row and insert before current row
                         $('<tr/>')
-                            .addClass('table-sort-group-header')
+                            .addClass('table-light table-sort-group-header')
                             .append( $newTd )
                             .insertBefore( $td.parent() );
 
@@ -565,18 +565,17 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         rowId      = 0,
         sortId     = 0;
 
-
-
     $.bsTable = function( options ){
 
         options = $._bsAdjustOptions( options, defaultOptions );
         options.class =
+            'jb-table ' +
             (options.verticalBorder && !options.noBorder ? 'table-bordered ' : '' ) +
-            (options.noBorder ? 'table-no-border ' : '' ) +
+            (options.noBorder ? 'table-borderless ' : '' ) +
             (options.hoverRow ? 'table-hover ' : '' ) +
             (options.noPadding ? 'table-no-padding ' : '' ) +
             (options.notFullWidth ? 'table-not-full-width ' : '' ) +
-            (options.centerInContainer ? 'table-center-in-container ' : '' ) +
+            (options.centerInContainer ? 'my-auto mx-0 ' : '' ) +
             (options.selectable ? 'table-selectable ' : '' ) +
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' );
 
@@ -614,6 +613,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                             'id': id
                         }),
             $thead = $('<thead/>')
+                        .addClass('table-light')
                         .toggleClass('no-header', !options.showHeader )
                         .appendTo( $table ),
             $tr = $('<tr/>')
@@ -696,7 +696,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         if (options.selectable){
             var radioGroupOptions = $.extend( true, {}, options );
-            radioGroupOptions.className = 'active';
+            radioGroupOptions.className = 'selected';
             options.radioGroup = $.radioGroup( radioGroupOptions );
         }
 

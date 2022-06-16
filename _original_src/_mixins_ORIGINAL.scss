@@ -1,0 +1,307 @@
+/************************************************************
+MIXIN
+************************************************************/
+
+
+/************************************************************
+RIGHT-SIDE-ICON
+
+MANGLER: MÅSKE YT
+
+Add style to <i> to place it to the right and vertical center
+NOTE: Parent element MUST have @include vertical-align-center();
+************************************************************/
+@mixin right-side-icon( $fa-icon: $fa-var-chevron-right, $font-size: 0.8em, $hover: false, $opacity: .3, $margin-right: 0 ){
+    font-size  : $font-size;
+    color      : $btn-close-color;
+    text-shadow: 0 1px 0 $white; //B4 = $close-text-shadow; <= MANGLER skal checkes
+    cursor     : default;
+
+    line-height: 1;
+
+    margin-left : auto;
+    margin-right: $margin-right;
+
+    &:before {
+        font-size: $font-size;
+        content: fa-content($fa-icon);
+    }
+
+    @if ($hover) {
+        opacity: .5;
+        @include hover-focus {
+            color          : $btn-close-color;
+            text-decoration: none;
+            opacity        : .75;
+        }
+
+    } @else {
+        opacity: $opacity;
+    }
+}
+
+// HER> @mixin vertical-align-center() {
+// HER>     display    : flex;
+// HER>     align-items: center; // vertically center it
+// HER> }
+
+
+/************************************************************
+FOCUS
+All elements get same outline when they have focus:
+No outline
+border-color = light blue
+************************************************************/
+@mixin focus-style(){
+    border-color: $input-focus-border-color !important;
+    outline: none !important;
+}
+
+/************************************************************
+CONTENT
+Unifies padding for modal, accordion, popup etc.
+************************************************************/
+@mixin any-content-padding($padding-y, $padding-x, $font-size, $only-padding-vertical: false){
+
+background-color: pink !important;
+
+    @if $only-padding-vertical == true {
+        padding-top   : $padding-y;
+        padding-bottom: $padding-y;
+    } @else {
+        padding: $padding-y $padding-x;
+        font-size: $font-size;
+    }
+}
+
+@mixin content-padding($only-padding-vertical: false){
+    @include any-content-padding(100px, 100px, $font-size-base, $only-padding-vertical);
+}
+
+// HER> @mixin content-padding-sm($only-padding-vertical: false){
+// HER>     @include any-content-padding(80px, 80px, $jb-font-size-sm, $only-padding-vertical);
+// HER> }
+// HER>
+// HER> @mixin content-padding-xs($only-padding-vertical: false){
+// HER>     @include any-content-padding(60px, 60px, $jb-font-size-xs, $only-padding-vertical);
+// HER> }
+
+
+// HER> @mixin any-content-padding-horizontal($padding-y){
+// HER>     padding-left : $padding-y;
+// HER>     padding-right: $padding-y;
+// HER> }
+// HER>
+// HER> @mixin content-padding-horizontal(){
+// HER>     @include any-content-padding-horizontal(100px);
+// HER> }
+// HER>
+// HER> @mixin content-padding-horizontal-sm(){
+// HER>     @include any-content-padding-horizontal(80px);
+// HER> }
+// HER>
+// HER> @mixin content-padding-horizontal-xs(){
+// HER>     @include any-content-padding-horizontal(60px);
+// HER> }
+
+
+
+
+/************************************************************
+CONTROL-CONTAINER
+Style for div with controls inside modal.
+Must have tabindex:"-1" to work with focus
+************************************************************/
+@mixin control-container(){
+    .modal-dialog & {
+        border: $input-btn-border-width solid $input-border-color;
+        border-radius: $input-border-radius;
+        &-sm {
+            border-radius: $input-border-radius-sm;
+        }
+
+        @include box-shadow($input-box-shadow);
+        @include transition($input-transition);
+
+        &:focus, &:active {
+            @include focus-style();
+        }
+    }
+}
+
+/************************************************************
+CONTROL BORDER-COLOR
+All control elements get same border-color when normal, hover, active and error
+************************************************************/
+
+
+/************************************************************
+CONTROL-COLORS
+Sets all color for text, background, border for normal, :hover, :focus,  :active and .active
+************************************************************/
+@mixin _bg-color($color, $no-gradians) {    //<= MANGLER - Skal fjernes!
+    @if $no-gradians {
+        background: $color;
+    } @else {
+        @include gradient-bg($color);
+    }
+}
+@mixin control-colors(){
+background-color: pink;
+}
+
+
+
+
+
+
+
+
+/************************************************************
+HEADER AND TITLE BACKGROUND-COLOR AND COLOR
+Headers for modal, popover, popup etc.
+************************************************************/
+
+/************************************************************
+header-colors - Colors for headers
+************************************************************/
+@mixin header-colors(){
+    color: pink;
+    background-color: pink;
+}
+
+/************************************************************
+title-color - create colors for headers for table and accordion etc.
+************************************************************/
+@mixin title-color( $hover: false, $selected-selector: false, $bg: true, $invers: false ){  //<= MANGLER - Skal fjernes!
+background-color: pink;
+}
+
+/************************************************************
+HEADER, TITLE, AND FOOTER PADDING AND FONT-SIZE
+Padding are set to button y-padding (moving text to the left)
+************************************************************/
+
+/************************************************************
+header-variant
+************************************************************/
+@mixin header-variant( $size: "", $is-title: false, $incl-border: true, $font-weight: $font-weight-base ) {
+    $font-size: $font-size-base;
+    @if $is-title == true {
+        $font-size: $font-size-base;
+        @if $size == "sm" { $font-size: $jb-font-size-sm; }
+        @if $size == "xs" { $font-size: $jb-font-size-xs; }
+    }
+    @if $is-title == false {
+        $font-size: $jb-font-size;
+        @if $size == "sm" { $font-size: $jb-font-size-sm; }
+        @if $size == "xs" { $font-size: $jb-font-size-xs; }
+    }
+
+/*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
+
+// HER>     span {
+// HER>         @include text-truncate();
+// HER>     }
+
+
+    span.fixed-header {
+        overflow  : visible;
+        word-break: keep-all;
+    }
+
+// HER>     @include vertical-align-center();
+    cursor: default;
+
+    font-weight: $font-weight;
+
+    @include button-size(
+        $padding-x    : header-padding-x($size), //$padding-x,
+        $padding-y    : header-padding-y($size), //$padding-y,
+        $font-size    : $font-size,
+// HER V3         $line-height  : $line-height-base,
+        $border-radius: inherit
+    );
+
+    @if $incl-border == true {
+        border-bottom: $modal-header-border-width solid $modal-header-border-color;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius : 0;
+    }
+}
+
+@mixin header-variant-sm( $incl-border: true, $font-weight: $font-weight-base ) {
+    @include header-variant( $size: "sm", $incl-border: $incl-border, $font-weight: $font-weight );
+}
+
+@mixin header-variant-xs( $incl-border: true, $font-weight: $font-weight-base ) {
+    @include header-variant( $size: "xs", $incl-border: $incl-border, $font-weight: $font-weight );
+}
+
+
+/************************************************************
+title-variant - as header but with same font-size as siblings
+************************************************************/
+@mixin title-variant( $size: "" ) {
+    @include header-variant( $size: $size, $is-title: true, $incl-border: false );
+}
+@mixin title-variant-sm() {
+    @include title-variant( $size: "sm" );
+}
+@mixin title-variant-xs() {
+    @include title-variant( $size: "xs" );
+}
+
+
+/************************************************************
+footer-variant
+************************************************************/
+@mixin footer-variant( $size: "", $incl-border-top: true ) {
+    @include header-variant( $size: $size, $incl-border: false );
+    @include header-colors();
+
+    line-height: 1.25; //Decrease height
+
+    @if $incl-border-top == true {
+        border-top: $modal-footer-border-width solid $modal-footer-border-color;
+    }
+
+    border-top-left-radius : 0 !important;
+    border-top-right-radius: 0 !important;
+
+    //Hide when empty
+    &:empty { display: none !important; }
+
+}
+
+@mixin footer-variant-sm( $incl-border-top: true ) {
+    @include footer-variant( $size: "sm", $incl-border-top: $incl-border-top );
+}
+
+@mixin footer-variant-xs( $incl-border-top: true ) {
+    @include footer-variant( $size: "xs", $incl-border-top: $incl-border-top );
+}
+
+/************************************************************
+MARGIN-BOTTOM FOR ELEMENTS IN MODAL
+All elements in modal-windows get same margin-bottom
+************************************************************/
+@mixin modal-element-margin-bottom(){
+    //Overwrite bootstrap margin-bottom and replace if with not-last-child version
+    margin-bottom: 0;
+    &:not(:last-child){
+        margin-bottom: $modal-element-margin-bottom;
+    }
+}
+

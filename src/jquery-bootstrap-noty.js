@@ -218,10 +218,7 @@
         ************************************************************/
         options.force = true;
 
-        //Always force when modal
-        //REMOVED options.force options.force || options.modal;
-
-        //Add callbacks.onTemplate to add content (and close-icon)
+        //Add callbacks.onTemplate to add content (and close-icon) by converting the noty uinto a Bootstrap modal
         options.callbacks = options.callbacks || {};
         options.callbacks.onTemplate = function() {
             var _this           = this,
@@ -231,10 +228,26 @@
                                       event.stopPropagation();
                                       _this.close();
                                    },
-                headerClassName = 'noty-header ' + $._bsGetSizeClass({ useTouchSize: true, baseClass: 'noty-header'} ),
+                headerClassName = 'modal-header',
                 icons           = {close: { onClick: closeFunc } };
 
-            //Insert header before $body (if any)
+            //$barDom acks as .modal-dialog
+            var $modalDialog = $barDom;
+            $modalDialog.addClass('modal-dialog ' + $._bsGetSizeClass({useTouchSize: true, baseClass: 'modal-dialog'}) );
+
+            var $modalContent =
+                    $('<div/>')
+                        .addClass('modal-content')
+                        .appendTo($modalDialog);
+
+            //$body acks as modal-body
+            var $modalBody = $body;
+            $modalBody
+                .detach()
+                .addClass('modal-body')
+                .appendTo($modalContent);
+
+            //Insert header before $modalBody (if any)
             if (headerOptions)
                 $('<div/>')
                     ._bsHeaderAndIcons({
@@ -242,19 +255,21 @@
                         header         : headerOptions,
                         icons          : closeWithButton ? icons : null
                     })
-                    .insertBefore( $body );
+                    .insertBefore( $modalBody );
             else
-                $barDom.addClass('no-header');
+                $modalDialog.addClass('no-header');
+
+
 
             //Replace content with text as object {icon, txt,etc}
-            $body._bsAddHtml( options.content, true );
-            $body.addClass('text-'+options.textAlign);
+            $modalBody._bsAddHtml( options.content, true );
+            $modalBody.addClass('text-'+options.textAlign);
 
             //Add buttons (if any)
             if (buttons){
                 var $buttonContainer =
                         $('<div/>')
-                            .addClass('noty-buttons modal-footer')  //modal-footer from Bootstrap also used in modal-windows for button-container
+                            .addClass('modal-footer')
                             .insertAfter($body),
                     defaultButtonOptions = {
                         closeOnClick: true
@@ -271,7 +286,7 @@
             //Add footer (if any)
             if (options.footer){
                 $('<div/>')
-                    .addClass('noty-footer')
+                    .addClass('footer-content')
                     .addClass('text-' + (options.footer.textAlign || 'left'))
                     ._bsAddHtml( options.footer )
                     .insertAfter($body);
@@ -281,7 +296,7 @@
                 //Add same close-icon as for modal-windows
                 $('<div/>')
                     .css('display', 'contents')
-                    .appendTo( $barDom )
+                    .appendTo( $modalContent )
                     ._bsHeaderAndIcons({
                         inclHeader     : false,
                         headerClassName: headerClassName,
@@ -308,7 +323,7 @@
             $bsNotyLayerToUse = $bsNotyLayer;
         }
 
-        var classNames = '.noty-container.noty-container-'+options.layout,
+        var classNames = '.modal.noty-container.noty-container-'+options.layout,
             $container = $bsNotyLayerToUse.find(classNames);
         if (!$container.length){
             $container =

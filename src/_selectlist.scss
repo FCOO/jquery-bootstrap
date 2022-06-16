@@ -26,19 +26,19 @@ bsSelectList
             $padding-y    : $btn-padding-y,
             $padding-x    : $btn-padding-x,
             $font-size    : $font-size-base,
-            $line-height  : $line-height-base,
+// HER V3             $line-height  : $line-height-base,
             $border-radius: $btn-border-radius
         );
-        @include control-colors($incl-border: false);
+        @include control-colors(/* $incl-border: false */);
 
     }
     .dropdown-header {
         @include header-variant( $incl-border: false, $font-weight: $font-weight-bold );
 
-        background-color: $selectlist-bg-color;
-        color: $selectlist-color;
+        background-color: pink;
+        color: pink;
 
-        line-height: $line-height-base * $font-size-base / $font-size-sm; //Adjust line-height to make header and item same height
+        line-height: $line-height-base * $font-size-base / $jb-font-size-sm; //Adjust line-height to make header and item same height
     }
 }
 
@@ -50,13 +50,13 @@ bsSelectList
             $padding-y    : $btn-padding-y-sm,
             $padding-x    : $btn-padding-x-sm,
             $font-size    : $font-size-sm,
-            $line-height  : $line-height-base,
+// HER V3             $line-height  : $line-height-base,
             $border-radius: $btn-border-radius-sm
         );
     }
     .dropdown-header {
         @include header-variant-sm( $incl-border: false, $font-weight: $font-weight-bold );
-        line-height: $line-height-base * $font-size-sm / $font-size-xs; //Adjust line-height to make header and item same height
+        line-height: $line-height-base * $jb-font-size-sm / $jb-font-size-xs; //Adjust line-height to make header and item same height
     }
 }
 
@@ -66,8 +66,8 @@ bsSelectList
         @include button-size(
             $padding-y    : $btn-padding-y-xs,
             $padding-x    : $btn-padding-x-xs,
-            $font-size    : $font-size-xs,
-            $line-height  : $line-height-base,
+            $font-size    : $jb-font-size-xs,
+// HER V3             $line-height  : $line-height-base,
             $border-radius: $btn-border-radius-xs
         );
     }

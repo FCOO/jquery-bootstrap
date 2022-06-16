@@ -41,13 +41,13 @@
     bsTabs
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-home"></i>&nbsp;<span>Home</span></a>
-        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
-        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+        <a class="nav-item nav-link selected" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-home"></i>&nbsp;<span>Home</span></a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-bs-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.</div>
+    <div class="tab-pane fade show selected" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.</div>
     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">SECOND</div>
     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">THIRD</div>
 </div>
@@ -62,9 +62,9 @@
                 $('<div/>')
                     ._bsAddBaseClassAndSize(
                         $._bsAdjustOptions( options, {}, {
-                            baseClass   : 'nav-tabs',
+                            baseClass   : 'nav',
                             styleClass  : '',
-                            class       : 'nav' + (options.hideNotSelectedText ? ' hide-not-selected-text' : ''),
+                            class       : 'nav-tabs' + (options.hideNotSelectedText ? ' hide-not-selected-text' : ''),
                             useTouchSize: true
                         })
                     )
@@ -97,15 +97,16 @@
                     $('<a/>')
                         .addClass('nav-item nav-link')
                         .attr({
-                            'id'           : tabId,
-                            'role'         : 'tab',
-                            'data-toggle'  : "tab",
-                            'data-user-id' : opt.id || null,
-                            'href'         : '#'+contentId,
-                            'aria-controls': contentId
+                            'id'            : tabId,
+                            'role'          : 'tab',
+                            'data-bs-toggle': "tab",
+                            'data-user-id'  : opt.id || null,
+                            'href'          : '#'+contentId,
+                            'aria-controls' : contentId
                         })
                         ._bsAddHtml( opt.header || opt )
                         .appendTo( $tabs ),
+
                 //Create the content-container = content + footer
                 $container =
                     $('<div/>')
@@ -131,8 +132,8 @@
             if (opt.selected){
                 $tab
                     .attr('aria-selected', true)
-                    .addClass('show active');
-                $container.addClass('show active');
+                    .addClass('active');
+                $container.addClass('active show');
             }
 
             $content = options.scroll ? $content.addScrollbar('vertical') : $content;
@@ -158,6 +159,29 @@
 
         if ($tab && $tab.length)
             $tab.tab('show');
+    };
+
+
+    /**********************************************************
+    asModal - display the tabs in a modal-window with fixed header and scrolling content
+    **********************************************************/
+    $.BSASMODAL.BSTABS = function( modalOptions = {}){
+        var $result =
+                $.bsModal(
+                    $.extend( modalOptions, {
+                        //flexWidth        : true,
+                        //noVerticalPadding: true,
+                        show        : false,
+                        content     : this._$contents,
+                        fixedContent: this._$tabs,
+                        fixedContentOptions: {
+                            noBottomPadding: true
+                        }
+                    })
+                );
+
+
+        return $result;
     };
 
 }(jQuery, this, document));

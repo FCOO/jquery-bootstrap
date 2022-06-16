@@ -11,7 +11,7 @@
 (function ($/*, window, document, undefined*/) {
 	"use strict";
 
-    var bsButtonClass = 'btn-standard';  //MUST correspond with $btn-style-name in src/_variables.scss
+    var bsButtonClass = 'btn-jb';  //MUST correspond with $btn-style-name in src/_variables.scss
 
     /**********************************************************
     bsButton( options ) - create a Bootstrap-button
@@ -19,6 +19,7 @@
     **********************************************************/
     $.bsButton = function( options = {} ){
         var optionToClassName = {
+                useStandardColor    : 'standard',
                 primary             : 'primary',
                 transparent         : 'transparent',
                 transparentOnDark   : 'transparent-on-dark',
@@ -27,13 +28,20 @@
                 bigSquare           : 'square big-square',
                 bigIcon             : 'big-icon',
                 extraLargeIcon      : 'extra-large-icon',
-                selected            : 'active',
+                selected            : 'selected',
                 noBorder            : 'no-border',
-                noShadow            : 'no-shadow',
                 focus               : 'init_focus',
                 fullWidth           : 'w-100'
-
             };
+
+        //Use standard color if not primary or transparent (any kind)
+        if (options.useStandardColor === undefined){
+            options.useStandardColor = true;
+            ['primary'/*, 'transparent', 'transparentOnDark', 'semiTransparent'*/].forEach( function(id){
+                if (options[id])
+                    options.useStandardColor = false;
+            });
+        }
 
         //Add class-name corresponding to options
         var newClass = [options.class || ''];
@@ -52,6 +60,10 @@
                 addOnClick      : true,
                 returnFromClick : false
             });
+
+        //Special case for empty button
+        if (!options.icon && !options.text)
+            options.icon = 'fa';
 
         var result = $('<'+ options.tagName + ' tabindex="0"/>');
 
@@ -103,7 +115,7 @@
 
     /**********************************************************
     bsCheckboxButton( options ) - create a Bootstrap-button as a checkbox
-    with 'blue' background when selected (active) and individuel icons
+    with 'blue' background when selected and individuel icons
     options:
         icon: string or array[0-1] of string
         text: string or array[0-1] of string
@@ -124,16 +136,16 @@
         //Use modernizr-mode and classes if icon and/or text containe two values
         if ($.isArray(options.icon) && (options.icon.length == 2)){
             options.icon = [[
-                options.icon[0]+ ' icon-hide-for-active',
-                options.icon[1]+ ' icon-show-for-active'
+                options.icon[0]+ ' icon-hide-for-selected',
+                options.icon[1]+ ' icon-show-for-selected'
             ]];
             options.modernizr = true;
         }
         if ($.isArray(options.text)){
-            options.textClassName = ['hide-for-active', 'show-for-active'];
+            options.textClassName = ['hide-for-selected', 'show-for-selected'];
             options.modernizr = true;
         }
-        return $.bsButton( options ).checkbox( $.extend(options, {className: 'active'}) );
+        return $.bsButton( options ).checkbox( $.extend(options, {className: 'selected'}) );
     };
 
 
@@ -180,6 +192,8 @@
         bsButtonOptions.selected = false;
         var $result = $.bsButton( bsButtonOptions ).checkbox( $.extend(options, {className: 'checked'}) );
 
+//        var $result = $.bsButton( bsButtonOptions ).checkbox( options );
+
         return $result;
     };
 
@@ -199,8 +213,6 @@
 
         return $.bsStandardCheckboxButton( $.extend({}, options, {square: true, forceIcon: [icon]}) );
     };
-
-
 
 
     /**********************************************************
@@ -288,10 +300,11 @@
                 $._anyBsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
                     .appendTo( result );
             else
+                //Create content as header
                 $('<div/>')
-                    .addClass('btn-group-header')
+                    .addClass('header-content-container')
                     .addClass( buttonOptions.class )
-                    ._bsAddHtml( buttonOptions )
+                    ._bsHeaderAndIcons( {header: buttonOptions} )
                     .appendTo( result );
         });
         return result;
@@ -323,7 +336,7 @@
                 $.radioGroup(
                     $.extend({}, options, {
                         radioGroupId     : options.id,
-                        className        : 'active',
+                        className        : 'selected',
                         className_semi   : 'semi-selected',
                         allowZeroSelected: false,
                     })

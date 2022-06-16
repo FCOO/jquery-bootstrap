@@ -14,6 +14,8 @@
 (function ($, i18next,  window /*, document, undefined*/) {
 	"use strict";
 
+    var fileViewHeaderClasses = 'modal-header header-content header-content-smaller';
+
     //fileViewModalList = list of {fileNames, bsModal}  where bsModal is the $.bsModalFile showing the file
     var fileViewModalList = [];
     function showFileInModal( fileName, header ){
@@ -43,19 +45,25 @@
         var fileName    = $._bsAdjustText(options.fileName),
             theFileName = i18next.sentence(fileName),
             fileNameExt = window.url('fileext', theFileName),
-            $result     = $('<div/>');
+            $result     = $('<div/>')
+                            ._bsAddBaseClassAndSize( $.extend({}, options, {
+                                baseClass   : 'form-control',
+                                class       : 'p-0 mb-1',
+                                useTouchSize: true
+                            }));
+
 
         //Create the header (if any)
         if (options.header)
             $('<div/>')
-                .addClass('file-view-header')
+                .addClass(fileViewHeaderClasses)
                 ._bsAddHtml(options.header)
                 .appendTo($result);
 
         //Create the view
         var $container =
                 $('<div/>')
-                    .addClass('file-view-content text-center')
+                    .addClass('text-center p-1')
                     .appendTo($result);
 
         switch (fileNameExt){
@@ -75,10 +83,26 @@
 
             //*********************************************
             default:
-                $container._bsAddHtml({ text: {
-                    da: 'Klik på <i class="'+$.FONTAWESOME_PREFIX + ' fa-window-maximize"/> for at se dokumentet i et nyt vindue<br>Klik på <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
-                    en: 'Click on <i class="'+$.FONTAWESOME_PREFIX + ' fa-window-maximize"/> to see the document in a new window<br>Click on <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> to see the document in a new Tab Page'
-                }});
+                $container
+                    .addClass('text-center')
+                    ._bsAddHtml({text: fileName});
+
+                $('<div/>')
+                    .removeClass('text-center')
+                    .addClass('footer-content flex-column')
+                    .appendTo($result)
+                    .append(
+                        $('<div/>')._bsAddHtml([
+                            { text: {da: 'Klik på', en:'Click on'} },
+                            { icon: 'fa-window-maximize', text: {da: 'for at se dokumentet i et nyt vindue', en: 'to see the document in a new window'} },
+                        ])
+                    )
+                    .append(
+                        $('<div/>')._bsAddHtml([
+                            { text: {da: 'Klik på', en:'Click on'} },
+                            { icon: $.bsExternalLinkIcon, text: {da: 'for at se dokumentet i en ny fane', en: 'to see the document in a new Tab Page'} },
+                        ])
+                    );
         }
 
         //Create the Show and Open-buttons

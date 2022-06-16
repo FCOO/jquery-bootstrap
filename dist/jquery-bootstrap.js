@@ -8,8 +8,13 @@
 
 ****************************************************************************/
 
-(function ($/*, window, document, undefined*/) {
+(function ($, bootstrap/*, window, document, undefined*/) {
 	"use strict";
+
+
+//MANGLER: Er det nødvendigt med nedenstående???
+return;
+
 
     //Concert from all new placement to original
     var truePlacement2placement = {
@@ -22,12 +27,12 @@
     /****************************************************
     Overwrite Popover.show to save and modify new positions
     *****************************************************/
-    $.fn.tooltip.Constructor.prototype.show = function( _show ){
+    bootstrap.Tooltip.prototype.show = function( _show ){
         return function(){
             //If first time: Save 'true' placement
-            if (!this.config.truePlacement){
-                this.config.truePlacement = this.config.placement;
-                this.config.placement = truePlacement2placement[this.config.truePlacement];
+            if (!this._config.truePlacement){
+                this._config.truePlacement = this._config.placement;
+                this._config.placement = truePlacement2placement[this._config.truePlacement];
             }
 
             //Original methods
@@ -42,7 +47,7 @@
 
 
 
-            switch (this.config.truePlacement){
+            switch (this._config.truePlacement){
                 case 'topright'   :
                 case 'rightbottom':
                 case 'bottomright':
@@ -62,13 +67,14 @@
                 default: offset = 0;
             }
 
+// VIRKER IKKE:
             if (this._popper)
                 this._popper.modifiers[1].offset = offset;
+
         };
+    }( bootstrap.Tooltip.prototype.show );
 
-    }( $.fn.tooltip.Constructor.prototype.show );
-
-}(jQuery, this, document));
+}(jQuery, this.bootstrap, this, document));
 ;
 /****************************************************************************
     jquery-bootstrap.js,
@@ -208,7 +214,7 @@
 
         options = $.extend( true, {}, defaultOptions || {}, options, forceOptions || {} );
 
-        $.each(['selected', 'checked', 'active', 'open', 'isOpen'], function(index, id){
+        $.each(['selected', 'checked', /*v3 'active',*/ 'open', 'isOpen'], function(index, id){
             if (options[id] !== undefined){
                 options.selected = !!options[id];
                 return false;
@@ -659,23 +665,7 @@
         If parentOptions is given => some options from parentOptions is used if they are not given in options
 
 
-        The default bootstrap structure used for elements in a form is
-        <div class="form-group">
-            <div class="input-group input-group-with-float-label">
-                <div class="input-group-prepend">               //optional
-                    <button class="btn btn-standard">..</buton> //optional 1-N times
-                </div>                                          //optional
-
-                <label class="has-float-label">
-                    <input class="form-control form-control-with-label" type="text" placeholder="The placeholder...">
-                    <span>The label</span>
-                </label>
-
-                <div class="input-group-append">                //optional
-                    <button class="btn btn-standard">..</buton> //optional 1-N times
-                </div>                                          //optional
-            </div>
-        </div>
+        See src/_form.scss for description of the structure
         ****************************************************************************************/
         _bsAppendContent: function( options, context, arg, parentOptions = {} ){
 
@@ -708,7 +698,7 @@
 
                 var $content = $('<div/>')
                         ._bsAddHtml( options )
-                        .addClass('_input-group-with-text flex-grow-1');
+                        .addClass('flex-grow-1');
 
                 if (options.title)
                     $content.i18n(options.title, 'title');
@@ -729,7 +719,8 @@
                 var $inner =
                         $('<div/>')
                            ._bsAddHtml( options )
-                           .addClass('form-control-border form-control no-hover');
+                            ._bsAddBaseClassAndSize({baseClass: 'form-control', useTouchSize: true})
+                           .addClass('no-hover');
 
                 return options.label ? $inner._wrapLabel(options) : $inner;
             }
@@ -739,13 +730,12 @@
                 return $.bsInput( options ).css('display', 'none');
             }
 
-            function buildInputGroup( options, $parent ){
+            function buildFormControlGroup( options, $parent ){
                 return $parent
                            .attr('id', options.id)
                            .addClass('flex-column')
                            ._bsAppendContent(options.content, null, null, options);
             }
-
 
             if (!options)
                 return this;
@@ -778,6 +768,7 @@
                 insideFormGroup   = false,
                 addBorder         = false,
                 buildInsideParent = false,
+                noPadding         = false,
                 noValidation      = false;
 
 
@@ -802,10 +793,13 @@
                     case 'buttongroup'           : buildFunc = $.bsButtonGroup;             insideFormGroup = true; break;
 
                     case 'menu'             :   buildFunc = $.bsMenu;               break;
-                    case 'select'           :   buildFunc = $.bsSelectBox;          insideFormGroup = true; break;
+                    case 'selectbox'        :
+                    case 'select'           :   buildFunc = $.bsSelect;             insideFormGroup = true; break;
+
                     case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
+
                     case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
-                    case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; break;
+                    case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; noPadding = true; break;
 
                     case 'tabs'             :   buildFunc = $.bsTabs;               break;
                     case 'table'            :   buildFunc = $.bsTable;              break;
@@ -820,13 +814,13 @@
                                                 options.noLabel = true; options.noVerticalPadding = true;
                                                 insideFormGroup = true; addBorder = true; noValidation = true; break;
 
-                    case 'text'             ://REMOVED                        buildFunc = $.bsText;               insideFormGroup = true; break;
-                    case 'textarea'         ://REMOVED                        buildFunc = $.bsTextArea;           insideFormGroup = true; break;
-                    case 'textbox'          :   if (!options.vfFormat)
+                    case 'text'             :
+                    case 'textarea'         :
+                    case 'textbox'          :   insideFormGroup = true;
+                                                if (!options.vfFormat)
                                                     options.text = options.text || $.EMPTY_TEXT;
-                                                if (hasPreOrPost){
-                                                    buildFunc = buildInlineTextBox; insideFormGroup = true; break;
-                                                }
+                                                if (hasPreOrPost)
+                                                    buildFunc = buildInlineTextBox;
                                                 else {
                                                     if (options.compact){
                                                         //Same as type="compacttext" but with outer padding
@@ -835,7 +829,7 @@
                                                     }
                                                     else
                                                         buildFunc = buildTextBox;
-                                                    insideFormGroup = true; addBorder = true; noValidation = true;
+                                                    addBorder = true; noValidation = true;
                                                 }
                                                 break;
 
@@ -843,48 +837,53 @@
                     case 'hidden'           :   buildFunc = buildHidden;            noValidation = true; break;
 
                     case 'input'            :   buildFunc = $.bsInput;              insideFormGroup = true; break;
-                    case 'inputgroup'       :   buildFunc = buildInputGroup;        addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
+
+                    case 'formControlGroup' :
+                    case 'inputgroup'       :   buildFunc = buildFormControlGroup;  addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
 //                    case 'xx'               :   buildFunc = $.bsXx;               break;
 
-                    default                 :   buildFunc = $.fn._bsAddHtml;        buildInsideParent = true;
+                    default                 :   buildFunc = $.fn._bsAddHtml;        noPadding = true; buildInsideParent = true;
                 }
             }
+
+            if (options.lineBefore || options.lineAfter)
+                insideFormGroup = true;
 
             //Overwrite insideFormGroup if value given in options
             if ( $.type( options.insideFormGroup ) == "boolean")
                 insideFormGroup = options.insideFormGroup;
+
+            //Overwrite noPadding if value given in options
+            if ( $.type( options.noPadding ) == "boolean")
+                noPadding = options.noPadding;
 
             //Set the parent-element where to append to created element(s)
             var $parent = this,
                 insideInputGroup = false;
 
             if (insideFormGroup){
-                //Create outer form-group
+                //Create outer input-group-container
                 insideInputGroup = true;
-                $parent = $divXXGroup('form-group', options).appendTo( $parent );
+                $parent =
+                    $divXXGroup('input-group-container', options)
+                        .toggleClass('small-bottom-padding', !!options.smallBottomPadding)
+                        .toggleClass('py-0',                 !!options.noVerticalPadding)
+                        .toggleClass('line-before',          !!options.lineBefore)
+                        .toggleClass('line-after',           !!options.lineAfter)
 
-                if (options.smallBottomPadding)
-                    $parent.addClass('small-bottom-padding');
+                        .toggleClass('no-validation',        !!(noValidation || options.noValidation))
 
-                if (options.noVerticalPadding)
-                    $parent.addClass('no-vertical-padding');
-
-
-                if (options.lineBefore)
-                    $('<hr/>')
-                        .addClass('before')
-                        .toggleClass('above-label', !!options.label)
                         .appendTo( $parent );
-
-                if (noValidation || options.noValidation)
-                    $parent.addClass('no-validation');
             }
-            var $originalParent = $parent,
-                isInputGroupWithFloatLabel = !!options.label;
+// HER>             var $originalParent = $parent;
 
             if (insideInputGroup || hasPreOrPost){
                 //Create element inside input-group
-                var $inputGroup = $divXXGroup('input-group', options);
+                var $inputGroup =
+                        $divXXGroup('input-group', options)
+                            .toggleClass('p-0', !!noPadding),
+                    hasLabel = options.label && !options.noLabel;
+
                 if (addBorder && !options.noBorder){
                     //Add border and label (if any)
                     $inputGroup.addClass('input-group-border');
@@ -892,21 +891,23 @@
                     if (options.darkBorderlabel)
                         $inputGroup.addClass('input-group-border-dark');
 
-                    if (options.label && !options.noLabel){
-                        isInputGroupWithFloatLabel = false; //Correct padding is set via input-group-border-with-label
-                        $inputGroup.addClass('input-group-border-with-label');
-                        $('<span/>')
-                            .addClass('has-fixed-label')
+                    if (hasLabel)
+                         $('<label/>')
+                            .addClass('label-outside label-content')
                             ._bsAddHtml( options.label )
                             .appendTo( $inputGroup );
-                    }
                 }
+                else
+                    //No-border => the input-group is just a container to keep vertival distance => no horizontal padding
+                    $inputGroup.addClass('px-0');
 
-                if (isInputGroupWithFloatLabel)
-                    $inputGroup.addClass('input-group-with-float-label');
+                if (hasLabel)
+                    $parent.addClass('child-with-label');
 
                 $parent = $inputGroup.appendTo( $parent );
             }
+
+            $parent._bsAppendContent( options.prepend || options.before, options.contentContext, null, options  );
 
             //Build the element. Build inside $parent or add to $parent after
             if (buildInsideParent)
@@ -917,23 +918,7 @@
             if (options.center)
                 $parent.addClass('justify-content-center text-center');
 
-            var prepend = options.prepend || options.before;
-            if (prepend)
-                $('<div/>')
-                    .addClass('input-group-prepend')
-                    ._bsAppendContent( prepend, options.contentContext, null, options  )
-                    .prependTo( $parent );
-            var append = options.append || options.after;
-            if (append)
-                $('<div/>')
-                    .addClass('input-group-append')
-                    ._bsAppendContent( append, options.contentContext, null, options  )
-                    .appendTo( $parent );
-
-            if (options.lineAfter)
-                $('<hr/>')
-                    .addClass('after')
-                    .appendTo( $originalParent );
+            $parent._bsAppendContent( options.append || options.after, options.contentContext, null, options  );
 
             return this;
         }   //end of _bsAppendContent
@@ -941,6 +926,7 @@
 
 
 }(jQuery, this.i18next, this, document));
+
 ;
 /****************************************************************************
 	jquery-bootstrap-accordion.js,
@@ -1003,7 +989,7 @@
 
     <div id="accordion" class="accordion accordion-sm" role="tablist" aria-multiselectable="true">
         <div class="card">
-            <div class="card-header" role="tab" id="headingOne" data-toggle="collapse" _data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <div class="card-header" role="tab" id="headingOne" data-bs-toggle="collapse" _data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                 <i class="fa fa-home"></i>&nbsp;<span>Den nye overskrift</span>
             </div>
             <div id="collapseOne" class="collapse _show" role="tabpanel" aria-labelledby="headingOne">
@@ -1014,7 +1000,7 @@
         </div>
 
         <div class="card">
-            <div class="card-header" role="tab" id="headingTwo" data-toggle="collapse" _data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            <div class="card-header" role="tab" id="headingTwo" data-bs-toggle="collapse" _data-parent="#accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                 <i class="fa fa-home"></i>&nbsp;<span>Den nye overskrift</span>
             </div>
         <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
@@ -1022,6 +1008,20 @@
                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
             </div>
         </div>
+    </div>
+
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    Accordion Item #1
+                </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+            </div>
+        </div>
+    ..another <div class="accordion-item">...</div>
     </div>
     **********************************************************/
     var accordionId = 0;
@@ -1033,7 +1033,6 @@
                           }, options)
                );
     };
-
 
     $.bsAccordion = function( options ){
         var id = 'bsAccordion'+ accordionId++;
@@ -1056,29 +1055,25 @@
                         .attr({
                             'id'      : id,
                             'tabindex': -1,
-                            'role'    : "tablist",
-                            'aria-multiselectable': true
                         });
 
         //Adding the children {icon, text, content}
         $.each( options.list, function( index, opt ){
-
-
             //Create the header
             opt = $._bsAdjustOptions( opt );
 
             var headerId   = id + 'header'+index,
                 collapseId = id + 'collapse'+index,
                 isOpen     = !!options.allOpen || !!opt.selected,
-                $card = $('<div/>')
-                            .addClass('card')
-                            .toggleClass('show', isOpen)
-                            .attr({'data-user-id': opt.id || null})
-                            .on( 'shown.bs.collapse',  card_onShown )
-                            .on( 'hidden.bs.collapse', card_onHidden )
-                            .on( 'show.bs.collapse',   options.multiOpen ? null : card_onShow_close_siblings )
-                            .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
-                            .appendTo( $result ),
+                $accordionItem = $('<div/>')
+                    .addClass('accordion-item')
+                    .toggleClass('show', isOpen)
+                    .attr({'data-user-id': opt.id || null})
+                    .on( 'shown.bs.collapse',  card_onShown )
+                    .on( 'hidden.bs.collapse', card_onHidden )
+                    .on( 'show.bs.collapse',   options.multiOpen ? null : card_onShow_close_siblings )
+                    .on( 'shown.bs.collapse',  options.multiOpen ? null : card_onShown_close_siblings )
+                    .appendTo( $result ),
                 headerAttr = {
                     'id'  : headerId,
                     'role': 'tab',
@@ -1087,24 +1082,33 @@
             //Add header
             if (!options.neverClose)
                 $.extend(headerAttr, {
-                    'data-toggle'  : "collapse",
-                    'data-parent'  : '#'+id,
-                    'href'         : '#'+collapseId,
-                    'aria-expanded': true,
-                    'aria-controls': collapseId,
-                    'aria-target': '#'+collapseId
+                    'data-bs-toggle': "collapse",
+                    'data-parent'   : '#'+id,
+                    'href'          : '#'+collapseId,
+                    'aria-expanded' : true,
+                    'aria-controls' : collapseId,
+                    'aria-target'   : '#'+collapseId
                 });
 
-            $card.append(
-                $('<div/>')
-                    .addClass('card-header')
+            var $accordionHeader = $('<div/>')
+                    .addClass('accordion-header')
+                    .attr('id', headerId)
+                    .appendTo( $accordionItem );
+
+            var $accordionButton = $('<button type="button"/>')
+                    .addClass('accordion-button')
                     .toggleClass('collapsed', !isOpen)
-                    .toggleClass('collapsible', !options.neverClose)
-                    .attr(headerAttr)
                     ._bsAddHtml( $.extend({text:'&nbsp;'}, opt.header || opt )) //'&nbsp;' = bug fix to prevent header without text to be wronge height - not pretty :-)
-                    //Add chevrolet-icon
-                    .append( options.neverClose ? null : $('<i/>').addClass('fa chevrolet') )
-            );
+                    .toggleClass('accordion-never-close', !!options.neverClose)
+                    .appendTo( $accordionHeader );
+
+            if (!options.neverClose)
+                $.extend(headerAttr, {
+                    'data-bs-toggle': "collapse",
+                    'data-bs-target': '#'+collapseId,
+                });
+
+            $accordionButton.attr(headerAttr);
 
             //Add content-container
             var $outer =
@@ -1116,17 +1120,17 @@
                         'role'           : 'tabpanel',
                         'aria-labelledby': headerId
                     })
-                    .appendTo( $card ),
+                    .appendTo( $accordionItem ),
 
                 $contentContainer =
                     $('<div/>')
-                        .addClass('card-block')
+                        .addClass('accordion-body')
                         .appendTo( $outer );
 
             //Add footer
             if (opt.footer)
                 $('<div/>')
-                    .addClass('card-footer')
+                    .addClass('accordion-footer')
                     ._bsAddHtml( opt.footer )
                     .appendTo( $outer );
 
@@ -1143,18 +1147,16 @@
                     list: opt.list
                 } )
                     .appendTo( $contentContainer );
-        }); //End of $.each( options.list, function( index, opt ){
 
-        $result.collapse(/*options*/);
+
+        }); //End of $.each( options.list, function( index, opt ){
 
         if (options.onChange){
             $result.data('accordion_onChange', options.onChange);
             options.onChange($result, $result.bsAccordionStatus());
         }
-
         return $result;
     };
-
 
     //Extend $.fn with method to get status for an accordion open/slose status
     $.fn.bsAccordionStatus = function(){
@@ -1173,14 +1175,14 @@
     //Extend $.fn with method to open a card given by id (string) or index (integer)
     $.fn.bsOpenCard = function( indexOrId ){
         this.addClass('no-transition');
-        var $card =
+        var $accordionItem =
                 this.children(
                     $.type(indexOrId) == 'number' ?
                     'div.card:nth-of-type('+(indexOrId+1)+')' :
                     'div.card[data-user-id="' + indexOrId + '"]'
                 );
-        if ($card && $card.length)
-            $card.children('.collapse').collapse('show');
+        if ($accordionItem && $accordionItem.length)
+            $accordionItem.children('.collapse').collapse('show');
         this.removeClass('no-transition');
     };
 
@@ -1199,7 +1201,8 @@
 (function ($/*, window, document, undefined*/) {
 	"use strict";
 
-    var bsButtonClass = 'btn-standard';  //MUST correspond with $btn-style-name in src/_variables.scss
+//HER=>     var bsButtonClass = 'btn-standard';  //MUST correspond with $btn-style-name in src/_variables.scss
+    var bsButtonClass = 'btn-jb';  //MUST correspond with $btn-style-name in src/_variables.scss
 
     /**********************************************************
     bsButton( options ) - create a Bootstrap-button
@@ -1207,6 +1210,7 @@
     **********************************************************/
     $.bsButton = function( options = {} ){
         var optionToClassName = {
+                useStandardColor    : 'standard',
                 primary             : 'primary',
                 transparent         : 'transparent',
                 transparentOnDark   : 'transparent-on-dark',
@@ -1215,13 +1219,20 @@
                 bigSquare           : 'square big-square',
                 bigIcon             : 'big-icon',
                 extraLargeIcon      : 'extra-large-icon',
-                selected            : 'active',
+                selected            : 'selected',
                 noBorder            : 'no-border',
-                noShadow            : 'no-shadow',
                 focus               : 'init_focus',
                 fullWidth           : 'w-100'
-
             };
+
+        //Use standard color if not primary or transparent (any kind)
+        if (options.useStandardColor === undefined){
+            options.useStandardColor = true;
+            ['primary'/*, 'transparent', 'transparentOnDark', 'semiTransparent'*/].forEach( function(id){
+                if (options[id])
+                    options.useStandardColor = false;
+            });
+        }
 
         //Add class-name corresponding to options
         var newClass = [options.class || ''];
@@ -1291,7 +1302,7 @@
 
     /**********************************************************
     bsCheckboxButton( options ) - create a Bootstrap-button as a checkbox
-    with 'blue' background when selected (active) and individuel icons
+    with 'blue' background when selected and individuel icons
     options:
         icon: string or array[0-1] of string
         text: string or array[0-1] of string
@@ -1312,16 +1323,16 @@
         //Use modernizr-mode and classes if icon and/or text containe two values
         if ($.isArray(options.icon) && (options.icon.length == 2)){
             options.icon = [[
-                options.icon[0]+ ' icon-hide-for-active',
-                options.icon[1]+ ' icon-show-for-active'
+                options.icon[0]+ ' icon-hide-for-selected',
+                options.icon[1]+ ' icon-show-for-selected'
             ]];
             options.modernizr = true;
         }
         if ($.isArray(options.text)){
-            options.textClassName = ['hide-for-active', 'show-for-active'];
+            options.textClassName = ['hide-for-selected', 'show-for-selected'];
             options.modernizr = true;
         }
-        return $.bsButton( options ).checkbox( $.extend(options, {className: 'active'}) );
+        return $.bsButton( options ).checkbox( $.extend(options, {className: 'selected'}) );
     };
 
 
@@ -1368,6 +1379,8 @@
         bsButtonOptions.selected = false;
         var $result = $.bsButton( bsButtonOptions ).checkbox( $.extend(options, {className: 'checked'}) );
 
+//        var $result = $.bsButton( bsButtonOptions ).checkbox( options );
+
         return $result;
     };
 
@@ -1387,8 +1400,6 @@
 
         return $.bsStandardCheckboxButton( $.extend({}, options, {square: true, forceIcon: [icon]}) );
     };
-
-
 
 
     /**********************************************************
@@ -1476,10 +1487,11 @@
                 $._anyBsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
                     .appendTo( result );
             else
+                //Create content as header
                 $('<div/>')
-                    .addClass('btn-group-header')
+                    .addClass('header-content-container')
                     .addClass( buttonOptions.class )
-                    ._bsAddHtml( buttonOptions )
+                    ._bsHeaderAndIcons( {header: buttonOptions} )
                     .appendTo( result );
         });
         return result;
@@ -1511,7 +1523,7 @@
                 $.radioGroup(
                     $.extend({}, options, {
                         radioGroupId     : options.id,
-                        className        : 'active',
+                        className        : 'selected',
                         className_semi   : 'semi-selected',
                         allowZeroSelected: false,
                     })
@@ -1549,8 +1561,6 @@
 (function ($/*, window/*, document, undefined*/) {
 	"use strict";
 
-
-
     var bsCheckBoxId = 0;
 
     /**********************************************************
@@ -1579,6 +1589,7 @@
             $input =
                 $('<input/>')
                     .addClass('cbxInput')
+                    .addClass('form-check-input')
                     .prop({
                         type   : 'checkbox',
                         checked: options.selected
@@ -1589,12 +1600,10 @@
         //Allow multi-lines
         $result.toggleClass('multi-lines', !!options.multiLines);
 
-
         /*
         If options.onClick = function(id, state, checkbox) exists => The control of setting
         and getting the state of the checkbox/radio is transfered to the onClick-function.
         This option prevent the default click-event for the input. The state of the input must be set using the cbxSetXXXX-methods of checkbox
-
         */
         if (options.onClick){
             $input.on('click', $.proxy($result._cbx_onClick, $result) ),
@@ -1613,12 +1622,6 @@
         var $label = $('<label/>')
                         .prop('for', options.id )
                         .appendTo( $result );
-
-        //Add <i> with check-icon if it is a checkbox
-        $('<i/>')
-            .addClass('checkbox-icon fas')
-            .addClass(options.type == 'checkbox' ? 'fa-check' : 'fa-circle')
-            .appendTo( $label );
 
         var content = options.content ? options.content : {icon: options.icon, text: options.text};
         $('<div/>')._bsAddHtml( content ).appendTo( $label );
@@ -1685,13 +1688,9 @@
 
             event.preventDefault();
         }
-
     });
 
-
 }(jQuery, this, document));
-
-
 ;
 /****************************************************************************
 	jquery-bootstrap-file-view.js,
@@ -1708,6 +1707,8 @@
 
 (function ($, i18next,  window /*, document, undefined*/) {
 	"use strict";
+
+    var fileViewHeaderClasses = 'modal-header header-content header-content-smaller';
 
     //fileViewModalList = list of {fileNames, bsModal}  where bsModal is the $.bsModalFile showing the file
     var fileViewModalList = [];
@@ -1738,19 +1739,25 @@
         var fileName    = $._bsAdjustText(options.fileName),
             theFileName = i18next.sentence(fileName),
             fileNameExt = window.url('fileext', theFileName),
-            $result     = $('<div/>');
+            $result     = $('<div/>')
+                            ._bsAddBaseClassAndSize( $.extend({}, options, {
+                                baseClass   : 'form-control',
+                                class       : 'p-0 mb-1',
+                                useTouchSize: true
+                            }))
+
 
         //Create the header (if any)
         if (options.header)
             $('<div/>')
-                .addClass('file-view-header')
+                .addClass(fileViewHeaderClasses)
                 ._bsAddHtml(options.header)
                 .appendTo($result);
 
         //Create the view
         var $container =
                 $('<div/>')
-                    .addClass('file-view-content text-center')
+                    .addClass('text-center p-1')
                     .appendTo($result);
 
         switch (fileNameExt){
@@ -1770,10 +1777,26 @@
 
             //*********************************************
             default:
-                $container._bsAddHtml({ text: {
-                    da: 'Klik på <i class="'+$.FONTAWESOME_PREFIX + ' fa-window-maximize"/> for at se dokumentet i et nyt vindue<br>Klik på <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> for at se dokumentet i en ny fane',
-                    en: 'Click on <i class="'+$.FONTAWESOME_PREFIX + ' fa-window-maximize"/> to see the document in a new window<br>Click on <i class="' + $.FONTAWESOME_PREFIX + ' ' + $.bsExternalLinkIcon + '"/> to see the document in a new Tab Page'
-                }});
+                $container
+                    .addClass('text-center')
+                    ._bsAddHtml({text: fileName});
+
+                $('<div/>')
+                    .removeClass('text-center')
+                    .addClass('footer-content flex-column')
+                    .appendTo($result)
+                    .append(
+                        $('<div/>')._bsAddHtml([
+                            { text: {da: 'Klik på', en:'Click on'} },
+                            { icon: 'fa-window-maximize', text: {da: 'for at se dokumentet i et nyt vindue', en: 'to see the document in a new window'} },
+                        ])
+                    )
+                    .append(
+                        $('<div/>')._bsAddHtml([
+                            { text: {da: 'Klik på', en:'Click on'} },
+                            { icon: $.bsExternalLinkIcon, text: {da: 'for at se dokumentet i en ny fane', en: 'to see the document in a new Tab Page'} },
+                        ])
+                    );
         }
 
         //Create the Show and Open-buttons
@@ -1900,14 +1923,6 @@
         },
 
         /*******************************************************
-        getSelectpicker
-        *******************************************************/
-        getSelectpicker: function(){
-            this.selectpicker = this.selectpicker || this.getElement().data('selectpicker').selectpicker;
-            return this.selectpicker;
-        },
-
-        /*******************************************************
         getRadioGroup
         *******************************************************/
         getRadioGroup: function(){
@@ -1916,13 +1931,17 @@
         },
 
         /*******************************************************
-        getFormGroup
+        getInputGroupContainer
+        getFormGroup for backward combatibility
         *******************************************************/
-        getFormGroup: function(){
-            this.$formGroup = this.$formGroup || this.getElement().parents('.form-group').first();
+        getInputGroupContainer: function(){
+             this.$formGroup = this.$formGroup || this.getElement().parents('.input-group-container').first();
             if (!this.$formGroup.length)
                 this.$formGroup = this.getElement();
             return this.$formGroup;
+        },
+        getFormGroup: function(){
+            return this.getInputGroupContainer();
         },
 
         /*******************************************************
@@ -1946,8 +1965,8 @@
             }
 
             switch (this.options.type || 'input'){
-                case 'input'   : $elem.val( value );                break;
-                case 'select'  : $elem.selectpicker('val', value ); break;
+                case 'input'   :
+                case 'select'  : $elem.val( value );                break;
 
                 case 'checkbox': $elem.prop('checked', value );     break;
 
@@ -2019,8 +2038,8 @@
                 result = null;
 
             switch (this.options.type || 'input'){
-                case 'input'   : result = $elem.val();                    break;
-                case 'select'  : result = $elem.selectpicker('val');      break;
+                case 'input'   :
+                case 'select'  : result = $elem.val();                    break;
 
                 case 'checkbox': result = !!$elem.prop('checked');        break;
 
@@ -2094,13 +2113,12 @@
                     this.resetValue( true );
                 }
 
-
                 if (this.options.freeSpaceWhenHidden)
                     //When the element is invisible: Use display:none
-                    this.getFormGroup().toggleClass('d-none', !show);
+                    this.getInputGroupContainer().toggleClass('d-none', !show);
                 else
                     //When the element is invisible: Use visibility:hidden to keep structure of form and it elements
-                    this.getFormGroup().css('visibility', show ? 'visible' : 'hidden');
+                    this.getInputGroupContainer().css('visibility', show ? 'visible' : 'hidden');
 
                 this.getElement().prop('disabled', !show);
 
@@ -2137,7 +2155,7 @@
         this.inputs = {};
 
         var typeList = ['button', 'checkboxbutton', 'standardcheckboxbutton', 'iconcheckboxbutton',
-                        'input', 'select', 'selectlist', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden', 'inputgroup'],
+                        'input', 'select', 'selectlist', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden', 'inputgroup', 'formControlGroup'],
 
             //semiSelectedValueTypes = {TYPE_ID:TYPE} TYPE_ID = the types that accept a semi-selected value. TYPE = the $.type result that detect if the value of a element is semi-selected
             semiSelectedValueTypes = {
@@ -2560,9 +2578,7 @@
             back, forward, ..., close: { title: [string], disabled: [boolean], className: [string], altEvents: [string], onClick: [function] },
         }
     }
-
     ******************************************************/
-
     function checkDisabled( event ){
         var $target = $(event.target);
         if ($target.hasClass('disabled') || $target.prop('disabled'))
@@ -2574,6 +2590,7 @@
 
         options = $.extend( true, {text:'DAVS MED DIG', headerClassName: '', inclHeader: true, icons: {} }, options );
         this.addClass( options.headerClassName );
+        this.addClass('header-content');
 
         if (options.inclHeader){
             options.header = $._bsAdjustIconAndText(options.header);
@@ -2649,7 +2666,7 @@
             var $input =
                     $('<input/>')
                         ._bsAddIdAndName( options )
-                        .addClass('form-control-border form-control')
+                        ._bsAddBaseClassAndSize({baseClass: 'form-control', useTouchSize: true})
                         .attr('type', 'text');
 
             if (options.inputmask){
@@ -2669,30 +2686,6 @@
             return $input._wrapLabel(options);
         },
 
-
-        /******************************************************
-        $.bsText( options )
-        Create a <div> with text inside a <label>
-        ******************************************************/
-/* REMOVED. ALL TEXT-INPUTS ARE CREATED IN _bsAppendContent
-        bsText: function( options ){
-            return $('<div/>')
-                       ._bsAddHtml( options )
-                       .addClass('form-control-border form-control no-hover')
-                       ._wrapLabel(options);
-        },
-//*/
-        /******************************************************
-        $.bsTextArea( options )
-        Create a <div> with text inside a <label>
-        ******************************************************/
-/* REMOVED. ALL TEXT-INPUTS ARE CREATED IN _bsAppendContent
-        bsTextArea: function( options ){
-            var $result = $.bsText( options );
-            $result.children('.form-control').css('height', 'auto');
-            return $result;
-        }
-//*/
     });
 
 
@@ -2700,7 +2693,7 @@
         /* NOT USED FOR NOW
         _onInputmaskChanged: function( inputmaskStatus ){
             var $this = $(this);
-            $(this).closest('.form-group').toggleClass('has-warning', !$this.inputmask("isComplete"));
+            $(this).closest('.input-group-container').toggleClass('has-warning', !$this.inputmask("isComplete"));
             $(this).closest('.input-group').toggleClass('has-warning', !$this.inputmask("isComplete"));
         },
         */
@@ -2709,23 +2702,23 @@
         _wrapLabel( options )
         Wrap the element inside a <label> and add
         options.placeholder and options.label
-            <label class="has-float-label">
+            <label class="label-inside">
                 <THIS placeholder="options.placeholder"/>
                 <span>options.label</span>
             </label>
         Return the label-element
         ******************************************************/
         _wrapLabel: function(options){
-            this.addClass('form-control-with-label');
-
-            var $label = $('<label/>').addClass('has-float-label');
-            $label.append( this );
+            var $label = $('<label/>')
+                            .addClass('label-inside')
+                            .append( this );
 
             if (options.placeholder)
                 this.i18n( options.placeholder, 'placeholder' );
 
             $('<span/>')
                 ._bsAddHtml( options.label )
+                .addClass('label-content')
                 .appendTo( $label )
                 .on('mouseenter', function(){ $label.addClass('hover');    })
                 .on('mouseleave', function(){ $label.removeClass('hover'); });
@@ -2860,7 +2853,7 @@ options
 
             onChange: function(id, selected [$buttonGroup]). Not null => type = 'checkbox' (if radioGroupId == null)
             onClick: function(id). Not null => type = 'button'
-            selected/active: [BOOLEAN] or function(id [, radioGroupId]) - return true if the item is selected (both rsdio and checkbox)
+            selected: [BOOLEAN] or function(id [, radioGroupId]) - return true if the item is selected (both rsdio and checkbox)
             disabled: [BOOLEAN] or function(id [, radioGroupId]) - return true if the item is disabled
             hidden  : [BOOLEAN] or function(id [, radioGroupId]) - return true if the item is hidden
 
@@ -3165,6 +3158,9 @@ options
 (function ($, i18next,  window /*, document, undefined*/) {
 	"use strict";
 
+
+    var objectWithFileClasses = 'border-0 w-100 h-100';
+
     //$.bsHeaderIcons = class-names for the different icons on the header
     $.bsExternalLinkIcon = 'fa-external-link-alt';
 
@@ -3265,7 +3261,7 @@ options
                 //*********************************************
                 case 'pdf':
                     //passes a jQuery object (HTML node) for target
-                    $content = $('<div/>').addClass('object-with-file');
+                    $content = $('<div/>').addClass(objectWithFileClasses);
                     window.PDFObject.embed(
                         theFileName,
                         $content,
@@ -3283,7 +3279,7 @@ options
                 case 'ico':
                     var $iframe =
                             $('<iframe></iframe>')
-                                .addClass('object-with-file'),
+                                .addClass(objectWithFileClasses),
                         $img =
                             $('<img src="' + theFileName + '"/>')
                                 .css('width', '100%');
@@ -3331,13 +3327,13 @@ options
                 //*********************************************
                 case 'html':
                 case 'unknown':
-                    $content = $('<iframe src="' + theFileName + '"/>').addClass('object-with-file');
+                    $content = $('<iframe src="' + theFileName + '"/>').addClass(objectWithFileClasses);
                     break;
 
                 //*********************************************
                 default:
                     //Try default <object> to display the file
-                    $content = $('<object data="' + theFileName + '"/>').addClass('object-with-file');
+                    $content = $('<object data="' + theFileName + '"/>').addClass(objectWithFileClasses);
 
             } //end of switch (fileNameExt){...
         }
@@ -3492,7 +3488,7 @@ jquery-bootstrap-modal-promise.js
 
 ****************************************************************************/
 
-(function ($, window, document, undefined) {
+(function ($, bootstrap, window, document, undefined) {
 	"use strict";
 
     //Adjusting default options jquery-scroll-container
@@ -3810,8 +3806,8 @@ jquery-bootstrap-modal-promise.js
 
         assignTo: function( $element ){
             $element.attr({
-                'data-toggle': 'modal',
-                'data-target': '#'+this.attr('id')
+                'data-bs-toggle': 'modal',
+                'data-bs-target': '#'+this.attr('id')
             });
         },
 
@@ -3909,8 +3905,8 @@ jquery-bootstrap-modal-promise.js
                     .addClass('modal-body-fixed')
                     .addClass(className || '')
                     .addClass(scrollbarClass )
-                    .toggleClass('no-vertical-padding',         !!fixedOptions.noVerticalPadding)
-                    .toggleClass('no-horizontal-padding',       !!fixedOptions.noHorizontalPadding)
+                    .toggleClass('py-0',                        !!fixedOptions.noVerticalPadding)
+                    .toggleClass('px-0',                        !!fixedOptions.noHorizontalPadding)
                     .toggleClass('modal-body-semi-transparent', !!fixedOptions.semiTransparent)
                     .toggleClass('modal-type-' + options.type,  !!fixedOptions.type)
                     .addClass(options.fixedClassName || '')
@@ -3924,8 +3920,8 @@ jquery-bootstrap-modal-promise.js
                 $('<div/>')
                     .addClass('modal-body ' + className)
                     .toggleClass('modal-body-always-max-height', !!options.alwaysMaxHeight)
-                    .toggleClass('no-vertical-padding',          !!options.noVerticalPadding)
-                    .toggleClass('no-horizontal-padding',        !!options.noHorizontalPadding)
+                    .toggleClass('py-0',                         !!options.noVerticalPadding)
+                    .toggleClass('px-0',                         !!options.noHorizontalPadding)
                     .toggleClass('modal-body-semi-transparent',  !!options.semiTransparent)
                     .toggleClass('modal-type-' + options.type,   !!options.type)
                     .addClass(options.className || '')
@@ -3965,7 +3961,7 @@ jquery-bootstrap-modal-promise.js
         //Add footer
         parts.$footer =
                 $('<div/>')
-                    .addClass('modal-footer-header ' + className)
+                    .addClass('footer-content ' + className)
                     .appendTo( this )
                     ._bsAddHtml( options.footer );
 
@@ -4536,7 +4532,8 @@ jquery-bootstrap-modal-promise.js
         $result.onClose = options.onClose;
 
         //Create as modal and adds methods - only allow close by esc for non-static modal (typical a non-form)
-        $result.modal({
+// HER>         $result.modal({
+        new bootstrap.Modal($result, {
            //Name       Value                                   Type                Default Description
            backdrop :   options.static ? "static" : true,   //  boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
            keyboard :   !options.static,                    //  boolean	            true	Closes the modal when escape key is pressed
@@ -4565,7 +4562,7 @@ jquery-bootstrap-modal-promise.js
         return $result;
     };
 
-}(jQuery, this, document));
+}(jQuery, this.bootstrap, this, document));
 ;
 /****************************************************************************
 	jquery-bootstrap-noty.js,
@@ -4787,10 +4784,7 @@ jquery-bootstrap-modal-promise.js
         ************************************************************/
         options.force = true;
 
-        //Always force when modal
-        //REMOVED options.force options.force || options.modal;
-
-        //Add callbacks.onTemplate to add content (and close-icon)
+        //Add callbacks.onTemplate to add content (and close-icon) by converting the noty uinto a Bootstrap modal
         options.callbacks = options.callbacks || {};
         options.callbacks.onTemplate = function() {
             var _this           = this,
@@ -4800,10 +4794,26 @@ jquery-bootstrap-modal-promise.js
                                       event.stopPropagation();
                                       _this.close();
                                    },
-                headerClassName = 'noty-header ' + $._bsGetSizeClass({ useTouchSize: true, baseClass: 'noty-header'} ),
+                headerClassName = 'modal-header',
                 icons           = {close: { onClick: closeFunc } };
 
-            //Insert header before $body (if any)
+            //$barDom acks as .modal-dialog
+            var $modalDialog = $barDom;
+            $modalDialog.addClass('modal-dialog ' + $._bsGetSizeClass({useTouchSize: true, baseClass: 'modal-dialog'}) );
+
+            var $modalContent =
+                    $('<div/>')
+                        .addClass('modal-content')
+                        .appendTo($modalDialog);
+
+            //$body acks as modal-body
+            var $modalBody = $body;
+            $modalBody
+                .detach()
+                .addClass('modal-body')
+                .appendTo($modalContent);
+
+            //Insert header before $modalBody (if any)
             if (headerOptions)
                 $('<div/>')
                     ._bsHeaderAndIcons({
@@ -4811,19 +4821,21 @@ jquery-bootstrap-modal-promise.js
                         header         : headerOptions,
                         icons          : closeWithButton ? icons : null
                     })
-                    .insertBefore( $body );
+                    .insertBefore( $modalBody );
             else
-                $barDom.addClass('no-header');
+                $modalDialog.addClass('no-header');
+
+
 
             //Replace content with text as object {icon, txt,etc}
-            $body._bsAddHtml( options.content, true );
-            $body.addClass('text-'+options.textAlign);
+            $modalBody._bsAddHtml( options.content, true );
+            $modalBody.addClass('text-'+options.textAlign);
 
             //Add buttons (if any)
             if (buttons){
                 var $buttonContainer =
                         $('<div/>')
-                            .addClass('noty-buttons modal-footer')  //modal-footer from Bootstrap also used in modal-windows for button-container
+                            .addClass('modal-footer')
                             .insertAfter($body),
                     defaultButtonOptions = {
                         closeOnClick: true
@@ -4840,7 +4852,7 @@ jquery-bootstrap-modal-promise.js
             //Add footer (if any)
             if (options.footer){
                 $('<div/>')
-                    .addClass('noty-footer')
+                    .addClass('footer-content')
                     .addClass('text-' + (options.footer.textAlign || 'left'))
                     ._bsAddHtml( options.footer )
                     .insertAfter($body);
@@ -4850,7 +4862,7 @@ jquery-bootstrap-modal-promise.js
                 //Add same close-icon as for modal-windows
                 $('<div/>')
                     .css('display', 'contents')
-                    .appendTo( $barDom )
+                    .appendTo( $modalContent )
                     ._bsHeaderAndIcons({
                         inclHeader     : false,
                         headerClassName: headerClassName,
@@ -4877,7 +4889,7 @@ jquery-bootstrap-modal-promise.js
             $bsNotyLayerToUse = $bsNotyLayer;
         }
 
-        var classNames = '.noty-container.noty-container-'+options.layout,
+        var classNames = '.modal.noty-container.noty-container-'+options.layout,
             $container = $bsNotyLayerToUse.find(classNames);
         if (!$container.length){
             $container =
@@ -5088,7 +5100,7 @@ jquery-bootstrap-modal-promise.js
 
 ****************************************************************************/
 
-(function ($, window/*, document, undefined*/) {
+(function ($, bootstrap, window/*, document, undefined*/) {
 	"use strict";
 
     /**********************************************************
@@ -5098,7 +5110,6 @@ jquery-bootstrap-modal-promise.js
     var popoverClassName        = 'has-popover',
         popoverCloseOnClick     = 'popover-close-on-click',
         no_popoverCloseOnClick  = 'no-' + popoverCloseOnClick;
-
 
     $.bsPopover_closeAll = function( checkFunc ){
         $('.'+popoverClassName).each(function () {
@@ -5113,7 +5124,6 @@ jquery-bootstrap-modal-promise.js
         .on("touchstart.jbs.popover mousedown.jbs.popover", function( event ){
             $.bsPopover_closeAll( function( $this ){
                 // hide any open popover when the click is not inside the body of a popover
-//                return (!$this.is(event.target) && (!$this.has(event.target) || $this.has(event.target).length === 0) && (!$('.popover').has(event.target) || $('.popover').has(event.target).length === 0));
                 return (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0);
             });
         })
@@ -5127,24 +5137,16 @@ jquery-bootstrap-modal-promise.js
 
 
     /***********************************************************
-	Extend the $.fn.popover.Constructor.prototype.setContent to
-    also construct footer
+	Extend bootstrap.Popover.prototype._getContentForTemplate
+    to also include footer
 	***********************************************************/
-    var Selector = {
-        FOOTER: '.popover-footer'
-    };
-
-    $.fn.popover.Constructor.prototype.setContent = function (setContent) {
-		return function () {
-
-            //Add footer content
-            var $tip = $(this.getTipElement());
-            this.setElementContent($tip.find(Selector.FOOTER), this.config.footer);
-
-            //Original function/method
-            setContent.apply(this, arguments);
+    bootstrap.Popover.prototype._getContentForTemplate = function( _getContentForTemplate ){
+        return function(){
+            var result =  _getContentForTemplate.apply(this, arguments);
+            result['.popover-footer'] = this._config.footer;
+            return result;
 		};
-	} ($.fn.popover.Constructor.prototype.setContent);
+	} (bootstrap.Popover.prototype._getContentForTemplate );
 
 
     /**********************************************************
@@ -5160,7 +5162,10 @@ jquery-bootstrap-modal-promise.js
         footer      : {icon, text, link, title} or [] of {icon, text, link, title}
     **********************************************************/
     $.fn.bsPopover = function( options ){
-        options = $._bsAdjustOptions( options );
+        options =   $._bsAdjustOptions( options, {
+                        baseClass   : 'popover',
+                        useTouchSize: true,
+                    });
 
         var $this = $(this),
             $header = '',
@@ -5202,13 +5207,12 @@ jquery-bootstrap-modal-promise.js
                 html     :  true,
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
                 container:  'body',
-                template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + ' ' + (options.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick) + '" role="tooltip">'+
+                template :  '<div class="popover ' + $._bsGetSizeClass( options ) + ' ' + (options.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick) + '" role="tooltip">'+
                                 '<div class="popover-header"></div>' +
                                 '<div class="popover-body"></div>' +
-                                '<div class="popover-footer"></div>' +
-                                '<div class="arrow"></div>' +
+                                '<div class="popover-footer footer-content"></div>' +
+                                '<div class="popover-arrow"></div>' +
                             '</div>',
-
                 title    : $header,
                 content  : options.content,
                 footer   : $footer
@@ -5234,7 +5238,8 @@ jquery-bootstrap-modal-promise.js
             $this.on('hidden.bs.popover', popover_onHidden );
 
             $this.data('popover_options', options);
-            $this.popover( popoverOptions );
+
+            $this.popover = new bootstrap.Popover($this, popoverOptions);
 
             if (options.postCreate)
               options.postCreate( options.content );
@@ -5381,7 +5386,7 @@ jquery-bootstrap-modal-promise.js
 
     function selectListPopover_postCreate( content ){
         //Update this with the selected items html
-        $.proxy( selectListPopover_postOnChange, this )( content.children('.active') );
+        $.proxy( selectListPopover_postOnChange, this )( content.children('.selected') );
     }
 
     function selectListPopover_postOnChange( $item ){
@@ -5414,7 +5419,7 @@ jquery-bootstrap-modal-promise.js
     };
 
 
-}(jQuery, this, document));
+}(jQuery, this.bootstrap, this, document));
 ;
 /****************************************************************************
 	jquery-bootstrap-select.js,
@@ -5424,257 +5429,82 @@ jquery-bootstrap-modal-promise.js
 	https://github.com/fcoo/jquery-bootstrap
 	https://github.com/fcoo
 
-    $.bsSelectbox based on
-    bootstrap-select https://developer.snapappointments.com/bootstrap-select/
-
-
 ****************************************************************************/
 
-(function ($, window/*, document, undefined*/) {
+(function ($, i18next/*, window, document, undefined*/) {
 	"use strict";
 
-    //Setting defaults for bootstrap-select
-    $.fn.selectpicker.Constructor.BootstrapVersion = '4';
 
-    $.fn.selectpicker.Constructor.DEFAULTS = $.extend( $.fn.selectpicker.Constructor.DEFAULTS, {
-
-        styleBase         : 'btn',
-        style             : 'btn-standard',
-        size              : 'auto',
-        selectedTextFormat: 'values',
-
-        title           : ' ', //Must be not-empty
-        noneSelectedText: '',  //Must be empty
-
-        width       : '100%',
-        container   : 'body',
-        hideDisabled: false,
-        showSubtext : false,
-        showIcon    : true,
-        showContent : true,
-        dropupAuto  : true,
-        header      : false,
-        liveSearch  : false,
-        liveSearchPlaceholder: null,
-        liveSearchNormalize  : false,
-        liveSearchStyle      : 'contains',
-        actionsBox: false,
-        showTick  : true,
-        iconBase: $.FONTAWESOME_PREFIX,
-        tickIcon: 'fa-ok',
+    /**********************************************************
+    bsSelect
+    Create a simple <select><option/>*N</select>
+    The options can only contain text.
+    To support language the text is stored with the <option> and used to update the text
+    **********************************************************/
+    i18next.on('languageChanged', function() {
+        $('.jb-option').each( function( index, option ){
+            setOptionText( $(option) );
+        });
     });
 
-    //Sets max visible items in list to four if the screen is 'small'
-    if ( Math.min(window.screen.width, window.screen.height) < 420 )
-        $.fn.selectpicker.Constructor.DEFAULTS.size = 4;
+    function setOptionText( $option ){
+        var lang    = i18next.language,
+            text    = $option.data('jb-text') || '';
 
-    /**********************************************************
-    Extend selectpicker
-    **********************************************************/
-    var bsSelectpicker = {
-        bsOnLoaded: function(){
-            var dataList  = this.selectpicker.main.data,
-                elemList  = this.selectpicker.main.elements,
-                options   = this.bsOptions,
-                itemIndex = 0;
+        if (typeof text != 'string')
+            text = text[lang] || text['eng'] || text['da'] || '';
 
-            //Update content of all items
-            $.each( dataList, function(index, data){
-                if (data.display){
-                    var $child = $(elemList[index]).children().first();
-                    if ($child.length){
-                        $child.empty();
-                        $child._bsAddHtml(options.list[itemIndex]);
-                    }
+        if ($option.prop("tagName") == 'option')
+            $option.text( text );
+        else
+            $option.prop('label', text);
+    }
 
-                    itemIndex++;
-                }
-            });
-
-            //Set selected item (if any)
-            this.$select.selectpicker('val', this.selectedId ? this.selectedId : undefined);
-        },
-
-        bsOnRendered: function(){
-            this.bsUpdateSelectedItem();
-            this.bsUpdateLabel();
-        },
-
-        bsOnChanged: function(/*e, clickedIndex, isSelected, previousValue*/) {
-            var selectedIndex = this.$select[0].selectedIndex;
-
-            if ((selectedIndex > 0) && this.bsOptions.onChange)
-                this.bsOptions.onChange( this.itemOptionsList[selectedIndex].id, true );
-        },
-
-        bsOnShow: function(){
-            //Translate content
-            this.$menu.localize();
-
-            this.bsUpdateSelectedItem();
-            this.bsUpdateLabel( false );
-        },
-
-        bsOnHide: function(){
-            this.bsUpdateLabel();
-        },
-
-        bsUpdateSelectedItem: function(){
-            this.$inner = this.$inner || this.$select.parent().find('.filter-option-inner-inner');
-            this.$inner.empty();
-
-            var selectedIndex = this.$select[0].selectedIndex;
-            if (selectedIndex > 0)
-                this.$inner._bsAddHtml(this.itemOptionsList[selectedIndex]);
-            else
-                this.$inner.html('&nbsp;');
-        },
-
-        bsUpdateLabel: function( showLabelAsPlaceholder ){
-            if (typeof showLabelAsPlaceholder != 'boolean')
-                showLabelAsPlaceholder = !this.$select.selectpicker('val');
-            this.$formControl.toggleClass('show-label-as-placeholder', showLabelAsPlaceholder);
-        }
-    };
-
-    /**********************************************************
-    Add method to close bsSelectBox to $._bsModal_closeMethods
-    (See jquery-bootstrap.js)
-    **********************************************************/
-    $._bsModal_closeMethods = $._bsModal_closeMethods || [];
-    $._bsModal_closeMethods.push({
-        selector: '.dropdown.bootstrap-select select',
-        method  : function($selectBox){
-            var selectpicker = $selectBox.data('selectpicker');
-            if (selectpicker && selectpicker.$menu.hasClass('show'))
-                $selectBox.selectpicker('toggle');
-        }
-    });
-
-    /**********************************************************
-    bsSelectbox
-    **********************************************************/
     var selectboxId = 0;
-    $.bsSelectBox = $.bsSelectbox = function( options ){
+    $.bsSelect = $.bsSelectBox = $.bsSelectbox = function( options ){
 
         options.items = options.items || options.list;
         options.list = options.list || options.items;
 
-        //Add size-class to button-class
-        var buttonSizeClass = $._bsGetSizeClass({
-                baseClass   : 'btn',
-                small       : options.small,
-                useTouchSize: true
-            }),
-            dropdownMenuSizeClass = $._bsGetSizeClass({
-                baseClass   : 'dropdown-menu',
-                small       : options.small,
-                useTouchSize: true
-            });
-
         options =
             $._bsAdjustOptions( options, {
                 id          : '_bsSelectbox'+ selectboxId++,
-                baseClass   : 'btn',
-                class       : '',
-                style       : 'btn-standard ' + buttonSizeClass,
+                baseClass   : 'form-select',
+                class       : 'form-control',
                 useTouchSize: true,
-                data: [],
             });
 
-        //Convert placeholder (if any)
-        if (options.placeholder){
-            options.placeholder = $._bsAdjustIconAndText( options.placeholder );
-            options.placeholder = $.extend(options.placeholder, {
-                id   : -1,
-                _text: options.placeholder.text,
-                text : ''
-            });
-        }
-
-        //Create result and select-element
+        //Create select-element
         var $select =
                 $('<select/>')
-                    ._bsAddIdAndName( options ),
-            $formControl =
-                $('<div class="form-control-with-label"></div>')
-                    .append( $select );
-
-        //Convert options.list to select-option
-        var selectedId = null,
-            $currentParent = $select,
-            itemOptionsList = [{}]; //{} = dummy for the title
+                    ._bsAddBaseClassAndSize( options )
+                    ._bsAddIdAndName( options );
 
         $.each( options.list, function( index, itemOptions ){
-            if (itemOptions.id){
-                itemOptionsList.push(itemOptions);
+            var $option =
+                    itemOptions.id ?
+                    $('<option/>')
+                        .val(itemOptions.id)
+                        .prop('selected', itemOptions.id == options.selectedId) :
+                    $('<optgroup/>');
 
-                if (itemOptions.id == options.selectedId)
-                    selectedId = itemOptions.id;
+            $option
+                .addClass('jb-option')
+                .data('jb-text', itemOptions.text)
+                .appendTo($select);
 
-                $('<option/>')
-                    .text(itemOptions.id)
-                    .prop('selected', itemOptions.id == options.selectedId)
-                    .prop('title', ' ')  //Must be not-empty
-                    .appendTo($currentParent);
-            }
-            else
-                $currentParent =
-                    $('<optgroup/>')
-                        .prop('label', index)
-                        .appendTo($select);
+            setOptionText( $option );
         });
 
-        //Create selectpicker
-        var selectpicker = $select.selectpicker(options).data('selectpicker');
+        //wrap inside a label (if any)
+        var $result = options.label ? $select._wrapLabel({ label: options.label }) : $select;
 
-        $.extend(selectpicker, bsSelectpicker);
+        $result.toggleClass('w-100', !!options.fullWidth);
 
-        selectpicker.bsOptions = options;
-        selectpicker.itemOptionsList = itemOptionsList;
-        selectpicker.selectedId = selectedId;
-        selectpicker.$select = $select;
-        selectpicker.$formControl = $formControl;
-
-        $select.data('selectpicker', selectpicker);
-
-        //Set size-class for dropdown-menu
-        $select.parent().find('.dropdown-menu').addClass(dropdownMenuSizeClass);
-
-        //Replace default arrow with Chevrolet-style
-        $('<i/>')
-            .addClass('fa chevrolet')
-            .appendTo( $select.parent().find('.filter-option-inner') );
-
-        //wrap inside a label
-        var $label =
-                $formControl._wrapLabel({ label: options.label })
-                .toggleClass('w-100', !!options.fullWidth);
-
-        //Open/close select when click on the label
-        $label.on('click', function(event){
-            $select.selectpicker('toggle');
-            event.stopPropagation();
-            return false;
-        });
-
-        //Add events
-        function selectpickerEventFromSelect( methodId ){
-            return function(){
-                var selectpicker = $(this).data('selectpicker');
-                return selectpicker[methodId].apply(selectpicker, arguments);
-            };
-        }
-        $select.on('changed.bs.select',  selectpickerEventFromSelect( 'bsOnChanged'  ) );
-        $select.on('loaded.bs.select',   selectpickerEventFromSelect( 'bsOnLoaded'   ) );
-        $select.on('rendered.bs.select', selectpickerEventFromSelect( 'bsOnRendered' ) );
-        $select.on('show.bs.select',     selectpickerEventFromSelect( 'bsOnShow'     ) );
-        $select.on('hide.bs.select',     selectpickerEventFromSelect( 'bsOnHide'     ) );
-
-        return $label;
+        return $result;
     };
 
-}(jQuery, this, document));
+}(jQuery, this.i18next, this, document));
 ;
 /****************************************************************************
 	jquery-bootstrap-selectlist.js,
@@ -5698,8 +5528,8 @@ jquery-bootstrap-modal-promise.js
         options =
             $._bsAdjustOptions( options, {
                 id          : '_bsSelectlist'+ selectlistId++,
-                baseClass   : 'selectList',
-                class       : '',
+                baseClass   : 'select-list',
+                class       : 'form-control dropdown-menu',
                 useTouchSize: true
             });
 
@@ -5711,7 +5541,7 @@ jquery-bootstrap-modal-promise.js
                 $.radioGroup(
                     $.extend({}, options, {
                         radioGroupId     : options.id,
-                        className        : 'active highlighted',
+                        className        : 'active',
                         allowZeroSelected: false
                     })
                 );
@@ -5720,12 +5550,11 @@ jquery-bootstrap-modal-promise.js
 
         $.each( options.list, function( index, itemOptions ){
             var isItem = (itemOptions.id != undefined ),
-                $item = $(isItem ? '<a/>' : '<div/>');
-            $item
-                .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
-                .addClass( options.center ? 'text-center' : '')
-                .appendTo( $result )
-                ._bsAddHtml( itemOptions, false, false, true );
+                $item = $(isItem ? '<a/>' : '<div/>')
+                            .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
+                            .addClass( options.center ? 'text-center' : '')
+                            ._bsAddHtml( itemOptions, false, false, true )
+                            .appendTo( $result );
 
             if (isItem)
                 radioGroup.addElement( $item, itemOptions );
@@ -5904,7 +5733,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             ._bsAddStyleClasses( columnOptions.align )
             .toggleClass('text-nowrap', !!columnOptions.noWrap )
 //TODO            .toggleClass('text-truncate', !!columnOptions.truncate )
-            .toggleClass('no-horizontal-padding', !!columnOptions.noHorizontalPadding );
+            .toggleClass('px-0', !!columnOptions.noHorizontalPadding );  //MANGLER: Virker det?
 
         if (addWidth && columnOptions.width)
             $element.css({
@@ -6436,7 +6265,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         if (options.selectable){
             var radioGroupOptions = $.extend( true, {}, options );
-            radioGroupOptions.className = 'active';
+            radioGroupOptions.className = 'selected';
             options.radioGroup = $.radioGroup( radioGroupOptions );
         }
 
@@ -6507,13 +6336,13 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     bsTabs
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-home"></i>&nbsp;<span>Home</span></a>
-        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
-        <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+        <a class="nav-item nav-link selected" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-home"></i>&nbsp;<span>Home</span></a>
+        <a class="nav-item nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+        <a class="nav-item nav-link" id="nav-contact-tab" data-bs-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
     </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.</div>
+    <div class="tab-pane fade show selected" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.</div>
     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">SECOND</div>
     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">THIRD</div>
 </div>
@@ -6563,12 +6392,12 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     $('<a/>')
                         .addClass('nav-item nav-link')
                         .attr({
-                            'id'           : tabId,
-                            'role'         : 'tab',
-                            'data-toggle'  : "tab",
-                            'data-user-id' : opt.id || null,
-                            'href'         : '#'+contentId,
-                            'aria-controls': contentId
+                            'id'            : tabId,
+                            'role'          : 'tab',
+                            'data-bs-toggle': "tab",
+                            'data-user-id'  : opt.id || null,
+                            'href'          : '#'+contentId,
+                            'aria-controls' : contentId
                         })
                         ._bsAddHtml( opt.header || opt )
                         .appendTo( $tabs ),
@@ -6597,8 +6426,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (opt.selected){
                 $tab
                     .attr('aria-selected', true)
-                    .addClass('show active');
-                $container.addClass('show active');
+                    .addClass('show selected');
+                $container.addClass('show selected');
             }
 
             $content = options.scroll ? $content.addScrollbar('vertical') : $content;

@@ -20,8 +20,8 @@
         options =
             $._bsAdjustOptions( options, {
                 id          : '_bsSelectlist'+ selectlistId++,
-                baseClass   : 'selectList',
-                class       : '',
+                baseClass   : 'select-list',
+                class       : 'form-control dropdown-menu',
                 useTouchSize: true
             });
 
@@ -33,7 +33,7 @@
                 $.radioGroup(
                     $.extend({}, options, {
                         radioGroupId     : options.id,
-                        className        : 'active highlighted',
+                        className        : 'active',
                         allowZeroSelected: false
                     })
                 );
@@ -42,12 +42,11 @@
 
         $.each( options.list, function( index, itemOptions ){
             var isItem = (itemOptions.id != undefined ),
-                $item = $(isItem ? '<a/>' : '<div/>');
-            $item
-                .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
-                .addClass( options.center ? 'text-center' : '')
-                .appendTo( $result )
-                ._bsAddHtml( itemOptions, false, false, true );
+                $item = $(isItem ? '<a/>' : '<div/>')
+                            .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
+                            .addClass( options.center ? 'text-center' : '')
+                            ._bsAddHtml( itemOptions, false, false, true )
+                            .appendTo( $result );
 
             if (isItem)
                 radioGroup.addElement( $item, itemOptions );

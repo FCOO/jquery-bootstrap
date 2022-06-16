@@ -8,7 +8,7 @@
 
 ****************************************************************************/
 
-(function ($, window/*, document, undefined*/) {
+(function ($, bootstrap, window/*, document, undefined*/) {
 	"use strict";
 
     /**********************************************************
@@ -18,7 +18,6 @@
     var popoverClassName        = 'has-popover',
         popoverCloseOnClick     = 'popover-close-on-click',
         no_popoverCloseOnClick  = 'no-' + popoverCloseOnClick;
-
 
     $.bsPopover_closeAll = function( checkFunc ){
         $('.'+popoverClassName).each(function () {
@@ -33,7 +32,6 @@
         .on("touchstart.jbs.popover mousedown.jbs.popover", function( event ){
             $.bsPopover_closeAll( function( $this ){
                 // hide any open popover when the click is not inside the body of a popover
-//                return (!$this.is(event.target) && (!$this.has(event.target) || $this.has(event.target).length === 0) && (!$('.popover').has(event.target) || $('.popover').has(event.target).length === 0));
                 return (!$this.is(event.target) && $this.has(event.target).length === 0 && $('.popover').has(event.target).length === 0);
             });
         })
@@ -47,24 +45,16 @@
 
 
     /***********************************************************
-	Extend the $.fn.popover.Constructor.prototype.setContent to
-    also construct footer
+	Extend bootstrap.Popover.prototype._getContentForTemplate
+    to also include footer
 	***********************************************************/
-    var Selector = {
-        FOOTER: '.popover-footer'
-    };
-
-    $.fn.popover.Constructor.prototype.setContent = function (setContent) {
-		return function () {
-
-            //Add footer content
-            var $tip = $(this.getTipElement());
-            this.setElementContent($tip.find(Selector.FOOTER), this.config.footer);
-
-            //Original function/method
-            setContent.apply(this, arguments);
+    bootstrap.Popover.prototype._getContentForTemplate = function( _getContentForTemplate ){
+        return function(){
+            var result =  _getContentForTemplate.apply(this, arguments);
+            result['.popover-footer'] = this._config.footer;
+            return result;
 		};
-	} ($.fn.popover.Constructor.prototype.setContent);
+	} (bootstrap.Popover.prototype._getContentForTemplate );
 
 
     /**********************************************************
@@ -80,7 +70,10 @@
         footer      : {icon, text, link, title} or [] of {icon, text, link, title}
     **********************************************************/
     $.fn.bsPopover = function( options ){
-        options = $._bsAdjustOptions( options );
+        options =   $._bsAdjustOptions( options, {
+                        baseClass   : 'popover',
+                        useTouchSize: true,
+                    });
 
         var $this = $(this),
             $header = '',
@@ -122,13 +115,12 @@
                 html     :  true,
                 placement:  options.placement || (options.vertical ? 'top' : 'right'),
                 container:  'body',
-                template :  '<div class="popover ' + (options.small ? ' popover-sm' : '') + ' ' + (options.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick) + '" role="tooltip">'+
+                template :  '<div class="popover ' + $._bsGetSizeClass( options ) + ' ' + (options.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick) + '" role="tooltip">'+
                                 '<div class="popover-header"></div>' +
                                 '<div class="popover-body"></div>' +
-                                '<div class="popover-footer"></div>' +
-                                '<div class="arrow"></div>' +
+                                '<div class="popover-footer footer-content"></div>' +
+                                '<div class="popover-arrow"></div>' +
                             '</div>',
-
                 title    : $header,
                 content  : options.content,
                 footer   : $footer
@@ -154,7 +146,8 @@
             $this.on('hidden.bs.popover', popover_onHidden );
 
             $this.data('popover_options', options);
-            $this.popover( popoverOptions );
+
+            $this.popover = new bootstrap.Popover($this, popoverOptions);
 
             if (options.postCreate)
               options.postCreate( options.content );
@@ -301,7 +294,7 @@
 
     function selectListPopover_postCreate( content ){
         //Update this with the selected items html
-        $.proxy( selectListPopover_postOnChange, this )( content.children('.active') );
+        $.proxy( selectListPopover_postOnChange, this )( content.children('.selected') );
     }
 
     function selectListPopover_postOnChange( $item ){
@@ -334,4 +327,4 @@
     };
 
 
-}(jQuery, this, document));
+}(jQuery, this.bootstrap, this, document));

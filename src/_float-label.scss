@@ -35,7 +35,7 @@ Only supports the html-structure
         transition : all .2s, visibility 0s;
         z-index    : 4;
         line-height: 1;
-        color      : $title-color;
+        color      : pink;
         padding    : 0 2px;
         margin-left: $input-border-width; //Compensates for border
 
@@ -146,7 +146,7 @@ Only supports the html-structure
         //Placeholder when empty and no focus
         &.show-label-as-placeholder + *,
         &:placeholder-shown:not(:focus) + * {
-            font-size: $font-size-xs;
+            font-size: $jb-font-size-xs;
             top      : calc(#{$input-padding-y-xs} + #{$input-border-width});
         }
     }
@@ -166,7 +166,7 @@ Style for
     cursor     : default;
     z-index    : 4;
     line-height: 1;
-    color      : $title-color;
+    color      : pink;
     padding    : 0;
     margin-left: $input-border-width; //Compensates for border
 

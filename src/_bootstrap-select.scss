@@ -12,7 +12,7 @@ Adjustment to bootstrap-select
     .dropdown-toggle {
         .filter-option-inner {
             height: 100%;
-            @include vertical-align-center();
+// HER>             @include vertical-align-center();
             .chevrolet {
                 @include right-side-icon(
                     $fa-icon     : $fa-var-chevron-down,

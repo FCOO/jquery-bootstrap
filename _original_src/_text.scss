@@ -1,0 +1,89 @@
+/************************************************************
+TEXT
+
+Additional classes for text
+************************************************************/
+
+.text-left   { text-align: left !important; }
+.text-right  { text-align: right !important; }
+.text-center { text-align: center !important; }
+
+/*
+Bootstrap allready have the following classes
+// Transformation
+
+.text-lowercase
+.text-uppercase
+.text-capitalize
+
+// Weight and italics
+
+.font-weight-normal
+.font-weight-bold
+.font-italic
+
+*/
+
+//opacity-XX
+.opacity-0   { opacity:   0; }
+.opacity-50  { opacity:  50; }
+.opacity-100 { opacity: 100; }
+
+
+//.container-icon-and-text: used when adding icon and/or text to button, header etc.
+.container-icon-and-text:not(.fa-stack) {
+    & > span:not(:last-child),
+    & > a:not(:last-child),
+    & > .container-stacked-icons:not(:last-child):not(.fa-no-margin),
+    & > i:not(:last-child):not(.fa-no-margin) {
+        //margin-right: .4em; version 1
+        margin-right: 5px; //Version 2 Fixed value
+    }
+
+    & > span.inline-block,
+    & > span.d-block {
+        margin-right: inherit;
+    }
+
+
+    //Adjust default style inside a text-box
+    * { margin-top: 0; margin-bottom: 0}
+    ol, ul, dl { padding-left: 2em;}
+}
+
+//Stacked icons
+.container-stacked-icons {
+    $dim       : 1em;
+    text-align : center;
+    display    : inline-block;
+    flex-shrink: 0;
+    line-height: 1;
+
+    .stacked-icon {
+        width : $dim;
+        //height: $dim;
+        &:not(:first-child) {
+            margin-left: -1 * $dim;
+        }
+    }
+}
+
+//color-classes for activr/checked icons
+.text-checked, .text-active {
+    color: $control-active-bg-color;
+}
+
+/************************************************************
+Modernizr-test for stacted icon with parent with
+class="active" or "checked" when selected
+************************************************************/
+@each $class-name in active, checked {
+    .#{$class-name} .container-stacked-icons {
+        i.icon-hide-for-#{$class-name} { opacity: 0;       }
+        i.icon-show-for-#{$class-name} { opacity: inherit; }
+    }
+    .no-#{$class-name} .container-stacked-icons {
+        i.icon-hide-for-#{$class-name} { opacity: inherit; }
+        i.icon-show-for-#{$class-name} { opacity: 0;       }
+    }
+}

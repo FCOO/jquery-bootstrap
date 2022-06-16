@@ -1,6 +1,5 @@
 /************************************************************
 NOTY
-
 Additional and changed style for Noty
 ************************************************************/
 
@@ -9,34 +8,49 @@ Additional and changed style for Noty
     animation-duration: .3s; //Noty default = 1s
 }
 
-
 /*****************************************
 Create theme jquery-bootstrap
-To be able to control z-index of noty the complete scss
-for noty is copyed and modified
+To be able to control z-index of noty
+the complete scss for noty is copyed and modified
 *****************************************/
 $noty-theme-name: jquery-bootstrap;
 
+$type-2-alert-color: (
+    alert  : primary,
+    success: success,
+    warning: warning,
+    error  : danger,
+    info   : info,
+    help   : light
+);
 
 $deltaToCenter      : calc(-50% - #{$modal-content-border-width}/2);
-$deltaToCenterIE11  : -50%;
 $translateZ         : translateZ(0);
 $scale              : scale(1.0, 1.0);
 
 $translateToCenter      : translate($deltaToCenter) $translateZ $scale;
-$translateToCenterIE11  : translate($deltaToCenterIE11) $translateZ $scale;
-
 $translateToMiddle      : translate(0, $deltaToCenter) $translateZ $scale;
-$translateToMiddleIE11  : translate(0, $deltaToCenterIE11) $translateZ $scale;
-
-$translateToCenterMiddle    : translate($deltaToCenter, $deltaToCenter) $translateZ $scale;
-$translateToCenterMiddleIE11: translate($deltaToCenterIE11, $deltaToCenterIE11) $translateZ $scale;
+$translateToCenterMiddle: translate($deltaToCenter, $deltaToCenter) $translateZ $scale;
 
 $corner-space: 20px;
 
 //.noty_modal is hidden. noty-layer-backdrop is used instead
 .noty_modal {
     display : none;
+}
+
+//Use Bootstrap alert-COLOR for different types
+@each $type, $alert-color in $type-2-alert-color {
+    .noty_theme__#{$noty-theme-name}.noty_type__#{$type} {
+        @extend .alert-#{$alert-color};
+        --bs-alert-bg-flash: var(--bs-#{$alert-color});
+    }
+}
+
+//Create flash style
+@keyframes noty-flash {
+    from, 50%, to { background-color: var(--bs-alert-bg); }
+    25%, 75%      { background-color: var(--bs-alert-bg-flash); }
 }
 
 /*******************************************
@@ -61,8 +75,17 @@ $corner-space: 20px;
 
 /*******************************************
 .noty-container and .noty-container-LAYOUT
+Is a modification to Bootstrap modal-class
 *******************************************/
-.noty-container {
+.modal.noty-container {
+    //Reset styles from .modal
+    display : block;
+    height  : auto;
+    top     : inherit;
+    bottom  : inherit;
+    left    : inherit;
+    right   : inherit;
+
     //Default style
     position : fixed;
     z-index  : inherit;
@@ -114,11 +137,9 @@ $corner-space: 20px;
 
     //Transform
     &.noty-container-topCenter, &.noty-container-bottomCenter {
-        transform: $translateToCenterIE11;
         transform: $translateToCenter;
     }
     &.noty-container-center {
-        transform: $translateToCenterMiddleIE11;
         transform: $translateToCenterMiddle;
     }
     &.noty-container-centerLeft, &.noty-container-centerRight {
@@ -136,106 +157,53 @@ $corner-space: 20px;
 
 /*******************************************
 .noty-bar, the theme and different types
+Is a modification to Bootstrap modal-dialog-class
 *******************************************/
-.noty_bar {
+.modal-dialog.noty_bar.noty_theme__#{$noty-theme-name}{
+    opacity: 1;
+    width: auto;
+    max-width: auto;
 
     transform: $translateZ $scale;
     -webkit-font-smoothing: subpixel-antialiased;
     overflow: hidden;
 
-    &.noty_theme__#{$noty-theme-name} {
-        cursor: default;
-        margin: 4px 0;
-        overflow: hidden;
-        position: relative;
+    cursor: default;
+    margin: 4px 0;
+    overflow: hidden;
+    position: relative;
 
-        font-size: $font-size-sm;
+    &.flash .noty_body {
+        animation-name: noty-flash;
+        animation-iteration-count: 3;
+        animation-duration: .5s;
+    }
 
-        border: $modal-content-border-width solid $modal-content-border-color;
-        @include border-radius($border-radius-lg);
-        @include box-shadow($modal-content-box-shadow-xs);
-
-
-        .noty_body {
-            @include content-padding();
-            font-size: $font-size-sm;
-            * {
-                white-space: pre-wrap;
-
-                -ms-word-break: break-word;  //Fallback for IE11
-                word-break: break-word;
-                word-wrap : break-word;
-            }
-        }
-
-        //Container for close-icon moves to top right corner when no header
-        &.no-header .header-icon-container {
-            position: absolute;
-            top: 0;
-            right: 0;
-            margin-top  : $btn-padding-y;
-            margin-right: $btn-padding-x;
-            &.header-icon-container-sm {
-                margin-top  : $btn-padding-y-sm;
-                margin-right: $btn-padding-x-sm;
-            }
+    .modal-body.noty_body {
+        color: var(--bs-alert-color);
+        background-color: var(--bs-alert-bg);
+        * {
+            white-space: pre-wrap;
+            word-break: break-word;
+            word-wrap : break-word;
         }
     }
 
-    //<hr>, footer, and button-container
-    .noty-header {
-        @include header-colors();
-        @include header-variant( );
-        &.noty-header-sm {
-            @include header-variant-sm();
-        }
+    //Container for close-icon moves to top right corner when no header
+    &.no-header .header-icon-container {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-top  : var(--bs-modal-header-padding-y);
+        margin-right: var(--bs-modal-header-padding-x);
     }
 
-    &.noty_close_with_click:hover .noty-header {
-        background-color: darken($header-bg-color, $darken-hover-percent); //Same as modal-header
+    &.noty_close_with_click {
+        cursor: pointer;
     }
 
     hr {
         padding: 0;
-        margin : $content-padding-y 0;
-    }
-    .noty-footer {
-        @include footer-variant-sm();
-    }
-    .noty-buttons {
-        @include content-padding();
-        background-color: $modal-content-bg;
-        text-align: right;
-
-    }
-
-    //Remove top-border to noty-buttons it there are  footer
-    .noty-footer + .noty-buttons {
-        border-top: none;
-    }
-
-
-}
-
-
-
-/*The five different bg-colors for the different type*/
-@each $type in $type-list {
-    $keyframes-name: noty_keyframes__#{$type};
-    @keyframes #{$keyframes-name} {
-        from, 50%, to { @include type-colors( $type: $type  ) }
-        25%, 75%      { @include type-colors( $type: $type, $darken: 20 ) }
-    }
-
-    .noty_theme__#{$noty-theme-name}.noty_type__#{$type} {
-        @include type-colors( $type: $type, $hover-class: noty_close_with_click );
-
-        //Create darker bg-color when flashing
-        &.flash .noty_body {
-            animation-name: #{$keyframes-name};
-            animation-iteration-count: 3;
-            animation-duration: .5s;
-        }
-
+        margin : var(--bs-modal-header-padding-y) 0;
     }
 }

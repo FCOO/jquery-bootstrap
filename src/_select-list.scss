@@ -1,0 +1,55 @@
+/************************************************************
+SELECTLIST
+
+bsSelectList
+    .selectList
+        .dropdown-item or .dropdown-header
+        ...
+
+************************************************************/
+
+//Setting headers = <optgroup> in select the same as headers in dropdown
+.form-select optgroup {
+    font-weight: normal;
+    color      : #{$dropdown-dark-header-color};
+}
+
+
+//Adjust padding, font-size in dropdown-menu and items when used as a select-list
+@mixin _select-list-variant( $size ) {
+    @include font-size-variant('dropdown', $size);
+
+    @include padding-variant( 'dropdown-header', $size);
+    @include padding-variant( 'dropdown-item', $size);
+
+    @include border-radius-variant( 'dropdown', $size);
+    @include inner-border-radius-variant( 'dropdown', $size);
+}
+
+.select-list {
+    position: inherit;
+    display : block;
+    cursor  : default;
+
+    //Remove min-width set in dropdown
+    --#{$prefix}dropdown-min-width: null;
+
+
+    &:focus-within {
+        border-color: $input-focus-border-color;
+        outline     : 0;
+        box-shadow  : $input-focus-box-shadow;
+    }
+
+
+    @include _select-list-variant( 'nl' );
+
+    .modal-dialog-sm &,
+    &.select-list-sm {
+        @include _select-list-variant( 'sm' );
+    }
+    .modal-dialog-xs &,
+    &.select-list-xs {
+        @include _select-list-variant( 'xs' );
+    }
+}
