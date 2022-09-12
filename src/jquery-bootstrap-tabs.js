@@ -166,11 +166,8 @@
     asModal - display the tabs in a modal-window with fixed header and scrolling content
     **********************************************************/
     $.BSASMODAL.BSTABS = function( modalOptions = {}){
-        var $result =
-                $.bsModal(
+        return $.bsModal(
                     $.extend( modalOptions, {
-                        //flexWidth        : true,
-                        //noVerticalPadding: true,
                         show        : false,
                         content     : this._$contents,
                         fixedContent: this._$tabs,
@@ -179,9 +176,6 @@
                         }
                     })
                 );
-
-
-        return $result;
     };
 
 }(jQuery, this, document));
