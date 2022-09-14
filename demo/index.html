@@ -32,6 +32,17 @@
         }
         .red { background-color: red; }
 
+    :root-DEMO {
+        --jb-icon-color: red;
+        --jb-header-bg-color: pink;
+        --jb-header-color: brown;
+
+        --bs-modal-footer-bg: green !important;
+
+        --jb-container-border-color: red;
+
+        --jb-footer-bg-color: blue;
+    }
 
     </style>
 </head>
@@ -45,7 +56,7 @@
         window.bsIsTouch = (window.location.search =='?touch');
     </script>
     <script src="bower_components.js"></script>
-    <script src="../src/bootstrap-popover-extensions.js"></script>
+    <!-- <script src="../src/bootstrap-popover-extensions.js"></script> -->
     <script src="../src/jquery-bootstrap-0.js"></script>
     <script src="../src/jquery-bootstrap-menu.js"></script>
     <script src="../src/jquery-bootstrap-select.js"></script>
@@ -332,7 +343,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 
 
 
-/*
+
         header('Button groups');
         $.bsButtonGroup({
             vertical: false,
@@ -350,8 +361,9 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             //allowZeroSelected: true,
             onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)},
             buttons: [
-                {id:'slow',   icon: 'fa-bicycle',   text:'Slow', active: true  },
-                {id:'medium', icon: 'fa-car', text:'Normal'  },
+                {             icon: 'fa-home',       text:'Header'},
+                {id:'slow',   icon: 'fa-bicycle',       text:'Slow', selected: true },
+                {id:'medium', icon: 'fa-car',           text:'Normal'  },
                 {id: 'fast',  icon: 'fa-fighter-jet',   text:'Very fast!' },
             ]
         }).appendTo( $body );
@@ -361,13 +373,14 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             allowZeroSelected: true,
             onChange: function(id, selected, $buttonGroup){console.log('2: bsRadioButtonGroup', id, selected)},
             buttons: [
-                {id:'slow',   icon: 'fa-bicycle',   text:'Slow', active: true  },
+                {             icon: 'fa-home',       text:'Header'},
+                {id:'slow',   icon: 'fa-bicycle',   text:'Slow', selected: true  },
                 {id:'medium', icon: 'fa-car', text:'Normal'  },
                 {id: 'fast',  icon: 'fa-fighter-jet',   text:'Very fast!' },
             ]
         }).appendTo( $body );
 
-*/
+
         header('SelectList & Selectbox');
         var selectItems = [
                 {               icon: 'fa-home'  , text:{da:'En overskrift', en: 'A Header'} },

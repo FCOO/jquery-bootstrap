@@ -943,7 +943,7 @@
             get$modalContent(this).toggleClass('modal-minimized-hide-header');
     };
 
-/* TODO: animate changes in height and width
+/* TODO: animate changes in height and width - Use Bootstrtap 5 collaps
        var $this = this.bsModal.$container,
             oldHeight = $this.outerHeight(),
             newHeight;

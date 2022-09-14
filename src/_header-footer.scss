@@ -10,7 +10,7 @@ HEADER-CONTENT
 .header-content-container = outer class  with padding. used when no parent clsass gives padding
 ************************/
 .header-content-container {
-    padding: var(--bs-modal-header-padding);
+    padding: var(--#{$prefix}modal-header-padding);
 }
 
 .header-content {
@@ -21,7 +21,8 @@ HEADER-CONTENT
     flex-shrink: 0;
     flex-grow  : 0;
 
-    background-color: $jb-header-bg-color;
+    color           : var(--#{$jb-prefix}header-color);
+    background-color: var(--#{$jb-prefix}header-bg-color);
 
     cursor: default;
     &.clickable {
@@ -31,10 +32,9 @@ HEADER-CONTENT
 
     //header-content-small = Smal,ler font-size and padding for inner headers
     &.header-content-smaller {
-        font-size: var(--#{$prefix}footer-font-size);
-        padding  : var(--#{$prefix}footer-padding-y) var(--#{$prefix}footer-padding-x);
-
-        background-color: tint-color($jb-header-bg-color, 30%);
+        font-size       : var(--#{$prefix}footer-font-size);
+        padding         : var(--#{$prefix}footer-padding-y) var(--#{$prefix}footer-padding-x);
+        background-color: var(--#{$jb-prefix}smaller-header-bg-color);
     }
 
     //<span> with the text: Truncated to keep one line
@@ -83,9 +83,9 @@ HEADER-CONTENT
 
             &.hidden   { display: none; }
 
-            color: $jb-icon-color;
-            &:hover  { color: $jb-icon-hover-color;  }
-            &:active { color: $jb-icon-active-color; }
+            color: var(--#{$jb-prefix}icon-color);
+            &:hover  { color: var(--#{$jb-prefix}icon-hover-color);  }
+            &:active { color: var(--#{$jb-prefix}icon-active-color); }
 
             //Special version for warning-icon: yellow background white exclamation
             &.header-icon-warning {
@@ -105,14 +105,13 @@ HEADER-CONTENT
 /************************
 FOOTER-CONTENT
 ************************/
-:root {
-    --#{$prefix}footer-font-size: #{$jb-font-size-sm};
-
-    --#{$prefix}footer-padding-y: #{$jb-padding-y};
-    --#{$prefix}footer-padding-x: #{$jb-padding-x};
+//Overwrite bg-color with new var
+div.modal-footer {
+    background-color: var(--#{$jb-prefix}footer-bg-color);
 }
 
 .footer-content {
+
     line-height : 1.25; //Decrease height
     font-size   : var(--#{$prefix}footer-font-size);
 
@@ -123,11 +122,10 @@ FOOTER-CONTENT
     flex-shrink: 0;
     flex-grow  : 0;
 
-    padding: var(--bs-footer-padding-y) var(--bs-footer-padding-x);
+    padding         : var(--#{$prefix}footer-padding-y) var(--#{$prefix}footer-padding-x);
+    background-color: var(--#{$jb-prefix}footer-bg-color);
 
-    background-color: $jb-footer-bg-color;
-
-    border-top: var(--#{$prefix}modal-header-border-width) solid var(--#{$prefix}modal-header-border-color);
+    border-top      : var(--#{$prefix}modal-header-border-width) solid var(--#{$prefix}modal-header-border-color);
     &.no-border {
         border-top: none;
     }

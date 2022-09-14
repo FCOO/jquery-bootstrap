@@ -3,31 +3,61 @@ ROOT
 
 Contains global scss- and css-variable
 --#{$prefix}modal-zindex: #{$zindex-modal};
+
+
+
 ************************************************************/
 :root {
-    // Variables from .modal moved out to :root to be able to use them in other elements
-    --#{$prefix}modal-padding: #{$modal-inner-padding};
-    --#{$prefix}modal-margin: #{$modal-dialog-margin};
-    --#{$prefix}modal-color: #{$modal-content-color};
-    --#{$prefix}modal-bg: #{$modal-content-bg};
-    --#{$prefix}modal-border-color: #{$modal-content-border-color};
-    --#{$prefix}modal-border-width: #{$modal-content-border-width};
-    --#{$prefix}modal-border-radius: #{$modal-content-border-radius};
-    --#{$prefix}modal-box-shadow: #{$modal-content-box-shadow-xs};
-    --#{$prefix}modal-inner-border-radius: #{$modal-content-inner-border-radius};
-    --#{$prefix}modal-header-padding-x: #{$modal-header-padding-x};
-    --#{$prefix}modal-header-padding-y: #{$modal-header-padding-y};
-    --#{$prefix}modal-header-padding: #{$modal-header-padding}; // Todo in v6: Split this padding into x and y
+    // Some variables from .modal moved out to :root to be able to use them in other elements
+    --#{$prefix}modal-header-padding-x   : #{$modal-header-padding-x};
+    --#{$prefix}modal-header-padding-y   : #{$modal-header-padding-y};
+    --#{$prefix}modal-header-padding     : #{$modal-header-padding};
     --#{$prefix}modal-header-border-color: #{$modal-header-border-color};
     --#{$prefix}modal-header-border-width: #{$modal-header-border-width};
-    --#{$prefix}modal-title-line-height: #{$modal-title-line-height};
-    --#{$prefix}modal-footer-gap: #{$modal-footer-margin-between};
-    --#{$prefix}modal-footer-bg: #{$modal-footer-bg};
-    --#{$prefix}modal-footer-border-color: #{$modal-footer-border-color};
-    --#{$prefix}modal-footer-border-width: #{$modal-footer-border-width};
 
+    //$input-font-size $input-padding-[y/x]-[-lg / -sm / -xs] as css-variable
+    --#{$prefix}input-font-size      : #{$input-font-size};
+    --#{$prefix}input-padding-x      : #{$input-padding-x};
+    --#{$prefix}input-padding-y      : #{$input-padding-y};
+    --#{$prefix}input-border-radius  : #{$input-border-radius};
+    --#{$prefix}input-label-font-size: #{$input-font-size-sm};
+
+    //Header color and bg-color
+    --#{$jb-prefix}header-color     : #{$jb-header-color};
+    --#{$jb-prefix}header-bg-color  : #{$jb-header-bg-color};
+
+    //Smaller heade bg-color
+    --#{$jb-prefix}smaller-header-bg-color  : #{$jb-smaller-header-bg-color};
+
+    //--jb-inner-header/footer-bg-color used for inner elements with header and/or footer
+    --#{$jb-prefix}inner-header-bg-color  : #{$jb-inner-header-bg-color};
+    --#{$jb-prefix}inner-footer-bg-color  : #{$jb-inner-footer-bg-color};
+
+
+    //Icons in header
+    --#{$jb-prefix}icon-color       : #{$jb-icon-color};
+    --#{$jb-prefix}icon-hover-color : #{$jb-icon-hover-color};
+    --#{$jb-prefix}icon-active-color: #{$jb-icon-active-color};
+
+    //Footer
+    --#{$prefix}footer-font-size    : #{$jb-font-size-sm};
+    --#{$prefix}footer-padding-y    : #{$jb-padding-y};
+    --#{$prefix}footer-padding-x    : #{$jb-padding-x};
+    --#{$jb-prefix}footer-bg-color  : #{$jb-footer-bg-color};
+
+
+    //Border-color
+    $default-border-color: #{$gray-300}; // = default fof $border-color;
+
+    //Structure border-color (table, accordion, thumbnail, headers etc.)
+    --#{$jb-prefix}structure-border-color: #{$default-border-color};
+
+    //Container border-color (dropdown, card, popover, popover-arrow, toast (= alerts), modal)
+    --#{$jb-prefix}container-border-color: #{$default-border-color};
 
 
 
 
 }
+
+

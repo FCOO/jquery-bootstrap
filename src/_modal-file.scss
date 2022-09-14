@@ -11,11 +11,7 @@ Style for elements used to display any file in a modal-window
 }
 
 
-
 .file-view-header {
     @include header-variant-xs();
 }
 
-.file-view-content {
-//MANGLER - skal sættes med --var XXX            @include content-padding-sm();
-}

@@ -11,7 +11,7 @@ bsSelectList
 //Setting headers = <optgroup> in select the same as headers in dropdown
 .form-select optgroup {
     font-weight: normal;
-    color      : #{$dropdown-dark-header-color};
+    color      : #{$jb-label-color};
 }
 
 

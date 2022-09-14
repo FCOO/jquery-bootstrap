@@ -50,16 +50,6 @@ $label-top   : .75; //The relative posiiton of labels
 $label-top-em: -#{$label-top}em;
 
 
-/************************************************************
-$input-font-size $input-padding-[y/x]-[-lg / -sm / -xs] as css-variable
-************************************************************/
-:root {
-    --#{$prefix}input-font-size      : #{$input-font-size};
-    --#{$prefix}input-padding-x      : #{$input-padding-x};
-    --#{$prefix}input-padding-y      : #{$input-padding-y};
-    --#{$prefix}input-border-radius  : #{$input-border-radius};
-    --#{$prefix}input-label-font-size: #{$input-font-size-sm};
-}
 
 .modal {
     font-size: var(--#{$prefix}input-font-size);

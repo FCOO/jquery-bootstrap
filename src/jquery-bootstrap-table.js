@@ -164,7 +164,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             ._bsAddStyleClasses( columnOptions.align )
             .toggleClass('text-nowrap', !!columnOptions.noWrap )
 //TODO            .toggleClass('text-truncate', !!columnOptions.truncate )
-            .toggleClass('px-0', !!columnOptions.noHorizontalPadding );  //MANGLER: Virker det?
+            .toggleClass('px-0', !!columnOptions.noHorizontalPadding );
 
         if (addWidth && columnOptions.width)
             $element.css({

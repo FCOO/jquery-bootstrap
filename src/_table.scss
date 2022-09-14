@@ -74,7 +74,7 @@ Adjustmernt to Bootstrap table
 
                 //Border-bottom-color darker when column is sorted
                 &.sorting-asc, &.sorting-desc {
-                    border-bottom-color: pink;
+                    box-shadow: inset 0px calc(-#{$border-width} - 2px) 0px 0px #{$jb-structure-border-color};
                 }
 
                 &.sorting-asc {
@@ -130,7 +130,6 @@ Adjustmernt to Bootstrap table
             span {
                 display         : inline-block;
                 width           : 100%;
-                background-color: red;
                 overflow        : hidden;
                 text-overflow   : ellipsis;
                 white-space     : nowrap;

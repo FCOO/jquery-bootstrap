@@ -8,15 +8,16 @@ Some of these variables are based on Bootstrap variables
 //Set z-index for working...
 $zindex-working: 99999;
 
+
 /***********************************************
-CHECKBOX
+Checkbox
 ************************************************/
 // indeterminate colors = checkbox or checkbox-button with semi-selected state
 // Use same icon as for selected
 $form-check-input-indeterminate-bg-image: $form-check-input-checked-bg-image;
 
 /***********************************************
-BUTTON
+Button
 ************************************************/
 // $btn-style-name MUST correspond with ns.bsButtonClass in src/jquery-bootstrap-button.js
 $btn-style-name: jb;
@@ -36,7 +37,7 @@ $button-big-square-dimension-sm: roundRem( 2 * $btn-padding-y-sm + $button-big-s
 $button-big-square-dimension-xs: roundRem( 2 * $btn-padding-y-xs + $button-big-scale * $jb-font-size-xs * $btn-line-height + $two-x-border-width-rem);
 
 /***********************************************
-MODAL
+Modal
 ************************************************/
 //Modal size in rem
 $modal-sm-rem: asRem($modal-sm);
@@ -48,7 +49,7 @@ $modal-xl    : 1200px;
 $modal-xl-rem: asRem($modal-xl);
 
 /***********************************************
-BUTTON AND MODAL
+Button And Modal
 Opacity for semi-transparent and transparent content
 ************************************************/
 //Modal

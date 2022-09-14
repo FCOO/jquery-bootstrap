@@ -50,17 +50,3 @@ div.checkbox-xs, div.radio-xs {
     --#{$prefix}check-input-font-size: #{$jb-font-size-xs};
     --#{$prefix}check-input-padding-y: #{$jb-padding-y-xs};
 }
-
-/***************************************************************************
-checkbox-inline, radio-inline,
-checkbox-group-horizontal, radio-group-horizontal
-MANGLER TODO: Virker det/skal det bruges
-***************************************************************************/
-div.checkbox-inline, div.radio-inline,
-.checkbox-group-horizontal > .checkbox,
-.checkbox-group-horizontal > .radio,
-.radio-group-horizontal > .checkbox,
-.radio-group-horizontal > .radio {
-    display: inline-flex !important;
-}
-
