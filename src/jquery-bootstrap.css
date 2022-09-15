@@ -9521,6 +9521,8 @@ Font-size, padding and border-radius fro different size
     .modal-dialog .modal-content .modal-body {
       flex-shrink: 1;
       flex-grow: 1; }
+    .modal-dialog .modal-content .modal-body-fixed[class^='alert-'], .modal-dialog .modal-content .modal-body-fixed[class*=' alert-'], .modal-dialog .modal-content .modal-body[class^='alert-'], .modal-dialog .modal-content .modal-body[class*=' alert-'] {
+      background-color: var(--bs-alert-bg); }
     .modal-dialog .modal-content .footer-content:empty {
       display: none !important; }
     .modal-dialog .modal-content .modal-footer {

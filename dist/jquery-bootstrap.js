@@ -3823,6 +3823,21 @@ jquery-bootstrap-modal-promise.js
             options.noHorizontalPadding = true;
         }
 
+
+        //Find the correct alert-XX class from Bootstrap
+        function getAlertClass( options = {}){
+            var result = options.type || '';
+            switch (result){
+                case 'alert'  : result = 'primary'; break;
+                case 'success': result = 'success'; break;
+                case 'warning': result = 'warning'; break;
+                case 'error'  : result = 'danger';  break;
+                case 'info'   : result = 'info';    break;
+                case 'help'   : result = 'light';   break;
+            }
+            return result ? 'alert-'+result : '';
+        }
+
         //Append fixed content (if any)
         //options.fixedContentOptions = options different from content for fixed-content
         var fixedOptions = $.extend({}, options, options.fixedContentOptions || {}),
@@ -3836,7 +3851,7 @@ jquery-bootstrap-modal-promise.js
                     .toggleClass('pb-0',                        !!fixedOptions.noBottomPadding)
                     .toggleClass('px-0',                        !!fixedOptions.noHorizontalPadding)
                     .toggleClass('modal-body-semi-transparent', !!fixedOptions.semiTransparent)
-                    .toggleClass('modal-type-' + options.type,  !!fixedOptions.type)
+                    .addClass( getAlertClass(fixedOptions) )
                     .addClass(options.fixedClassName || '')
                     .appendTo( this );
 
@@ -3851,7 +3866,7 @@ jquery-bootstrap-modal-promise.js
                     .toggleClass('py-0',                         !!options.noVerticalPadding)
                     .toggleClass('px-0',                         !!options.noHorizontalPadding)
                     .toggleClass('modal-body-semi-transparent',  !!options.semiTransparent)
-                    .toggleClass('modal-type-' + options.type,   !!options.type)
+                    .addClass( getAlertClass(options) )
                     .addClass(options.className || '')
                     .appendTo( this );
 

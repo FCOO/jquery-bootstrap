@@ -226,6 +226,14 @@ Font-size, padding and border-radius fro different size
             flex-grow  : 1; //Only .modal-body is growing
         }
 
+
+        //Background if modal-type is set. Using Bootstrap class alert-XX.
+        .modal-body-fixed, .modal-body {
+            &[class^='alert-'], &[class*=' alert-']{
+                background-color: var(--bs-alert-bg);
+            }
+        }
+
         //FOOTER-HEADER AND FOOTER
         //footer-content: Contains text and links etc. in smaller font-size
         //modal-footer  : Contains buttons. Style is given in _header-footer.scss
