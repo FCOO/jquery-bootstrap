@@ -4,60 +4,30 @@ USED IN FOR OTHER PACKAGES TO INCLUDE ALL SCSS-FILES NEEDED
 TO HAVE ACCESS TO ALL BOOTSTRAP AND FCOO/JQUERY-BOOTSTRAP SCSS-VARIABLES
 ************************************************************/
 
-/***********************************************
-BOOTSTRAP & JQUERY-BOOTSTRAP: Functions
-************************************************/
+
+//Bootstrap & jquery-bootstrap: Functions
 @import "../../bootstrap/scss/functions";
 @import "../../jquery-bootstrap/src/functions";
 
 
-/***********************************************
-JQUERY-BOOTSTRAP: Set and adjust bootstrap default values
-************************************************/
-@import "../../jquery-bootstrap/src/variables-bootstrap";
-
-/***********************************************
-BOOTSTRAP & JQUERY-BOOTSTRAP: scss variables
-************************************************/
-@import "../../bootstrap/scss/variables";
-
-@import "../../jquery-bootstrap/src/color";
-//Using $scroll-size from jquery-scroll-container.
-@import "../../jquery-scroll-container/src/jquery-scroll-container-variables";
-@import "../../jquery-bootstrap/src/variables";
-
-
-@import "../../bootstrap/scss/maps";
-@import "../../bootstrap/scss/mixins";
-
-/***********************************************
-JQUERY-BOOTSTRAP: Background-color and text color and Variables
-************************************************/
-@import "../../jquery-bootstrap/src/mixins";
-
-//1. Bootstrap and jquery-bootstrap Functions - Required
-@import "../../bootstrap/scss/functions";
-@import "../../jquery-bootstrap/src/functions";
-
-//2. Copy of all Bootstrap colors
+//Copy of all Bootstrap colors
 @import "../../jquery-bootstrap/src/bootstrap-colors";
 
 
-//2. Adjust Bootstrap variables default values
+//jquery-bootstrap: Set and adjust bootstrap default values
 @import "../../jquery-bootstrap/src/variables-bootstrap";
 
-//3. Bootstrap and jquery-bootstrap variables
+//Bootstrap & jquery-bootstrap: scss variables
 @import "../../bootstrap/scss/variables";
 
 //Using $scroll-size from jquery-scroll-container.
 @import "../../jquery-scroll-container/src/jquery-scroll-container-variables";
-
 @import "../../jquery-bootstrap/src/variables";
 
-// 4. Default map overrides
-//Not used
-
-// 5. Include remainder of required parts
+//Bootstrap Mixins
 @import "../../bootstrap/scss/maps";
 @import "../../bootstrap/scss/mixins";
 @import "../../bootstrap/scss/utilities";
+
+//jquery-bootstrap Mixins
+@import "../../jquery-bootstrap/src/mixins";
