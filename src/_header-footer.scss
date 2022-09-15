@@ -22,7 +22,7 @@ HEADER-CONTENT
     flex-grow  : 0;
 
     color           : var(--#{$jb-prefix}header-color);
-    background-color: var(--#{$jb-prefix}header-bg-color);
+    background-color: var(--#{$jb-prefix}header-bg);
 
     cursor: default;
     &.clickable {
@@ -30,11 +30,17 @@ HEADER-CONTENT
     }
 
 
-    //header-content-small = Smal,ler font-size and padding for inner headers
+    //header-content-smaller = Smaller font-size and padding for inner headers
     &.header-content-smaller {
         font-size       : var(--#{$prefix}footer-font-size);
         padding         : var(--#{$prefix}footer-padding-y) var(--#{$prefix}footer-padding-x);
-        background-color: var(--#{$jb-prefix}smaller-header-bg-color);
+    }
+
+    //Colors for inner-header and header inside another header/content
+    &.header-content-inner,
+    .modal-body & {
+        color           : var(--#{$jb-prefix}inner-header-color);
+        background-color: var(--#{$jb-prefix}inner-header-bg);
     }
 
     //<span> with the text: Truncated to keep one line
@@ -99,7 +105,17 @@ HEADER-CONTENT
             }
         } //end of .header-icon {
     } //end of .header-icon-container {
+
+
+    //If the header is class header-content-inner or is inside a container with a header => use other color and bg
+
+
+
+
+
 } //end of .header-content
+
+
 
 
 /************************
@@ -107,7 +123,8 @@ FOOTER-CONTENT
 ************************/
 //Overwrite bg-color with new var
 div.modal-footer {
-    background-color: var(--#{$jb-prefix}footer-bg-color);
+    color           : var(--#{$jb-prefix}footer-color);
+    background-color: var(--#{$jb-prefix}footer-bg);
 }
 
 .footer-content {
@@ -123,7 +140,10 @@ div.modal-footer {
     flex-grow  : 0;
 
     padding         : var(--#{$prefix}footer-padding-y) var(--#{$prefix}footer-padding-x);
-    background-color: var(--#{$jb-prefix}footer-bg-color);
+
+    color           : var(--#{$jb-prefix}footer-color);
+    background-color: var(--#{$jb-prefix}footer-bg);
+
 
     border-top      : var(--#{$prefix}modal-header-border-width) solid var(--#{$prefix}modal-header-border-color);
     &.no-border {

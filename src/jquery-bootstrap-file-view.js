@@ -14,7 +14,7 @@
 (function ($, i18next,  window /*, document, undefined*/) {
 	"use strict";
 
-    var fileViewHeaderClasses = 'modal-header header-content header-content-smaller';
+    var fileViewHeaderClasses = 'modal-header header-content header-content-smaller header-content-inner';
 
     //fileViewModalList = list of {fileNames, bsModal}  where bsModal is the $.bsModalFile showing the file
     var fileViewModalList = [];

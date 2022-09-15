@@ -4218,7 +4218,7 @@ textarea.form-control-lg {
   --bs-modal-header-border-width: 1px;
   --bs-modal-title-line-height: 1.5;
   --bs-modal-footer-gap: 0.5rem;
-  --bs-modal-footer-bg: #e9ecef;
+  --bs-modal-footer-bg: ;
   --bs-modal-footer-border-color: var(--bs-border-color);
   --bs-modal-footer-border-width: 1px;
   position: fixed;
@@ -4545,7 +4545,7 @@ textarea.form-control-lg {
   --bs-popover-header-padding-y: 0.375rem;
   --bs-popover-header-font-size: 1rem;
   --bs-popover-header-color: ;
-  --bs-popover-header-bg: #dee2e6;
+  --bs-popover-header-bg: #e9ecef;
   --bs-popover-body-padding-x: 0.375rem;
   --bs-popover-body-padding-y: 0.375rem;
   --bs-popover-body-color: #212529;
@@ -8208,17 +8208,17 @@ Contains global scss- and css-variable
   --bs-input-border-radius: 0.375rem;
   --bs-input-label-font-size: 0.875rem;
   --jb-header-color: #212529;
-  --jb-header-bg-color: #dee2e6;
-  --jb-smaller-header-bg-color: #e8ebee;
-  --jb-inner-header-bg-color: #e8ebee;
-  --jb-inner-footer-bg-color: #f0f2f4;
+  --jb-header-bg: #e9ecef;
+  --jb-inner-header-color: #212529;
+  --jb-inner-header-bg: #f0f2f4;
+  --jb-footer-color: #212529;
+  --jb-footer-bg: #f8f9fa;
   --jb-icon-color: #6c757d;
   --jb-icon-hover-color: #616971;
   --jb-icon-active-color: #616971;
   --bs-footer-font-size: 0.875rem;
   --bs-footer-padding-y: 0.375rem;
   --bs-footer-padding-x: 0.375rem;
-  --jb-footer-bg-color: #e9ecef;
   --jb-structure-border-color: #dee2e6;
   --jb-container-border-color: #dee2e6; }
 
@@ -9092,7 +9092,7 @@ HEADER-CONTENT
   flex-shrink: 0;
   flex-grow: 0;
   color: var(--jb-header-color);
-  background-color: var(--jb-header-bg-color);
+  background-color: var(--jb-header-bg);
   cursor: default;
   /****************************************************
     List of icons inside a header are placed inside a container
@@ -9105,8 +9105,11 @@ HEADER-CONTENT
     cursor: pointer; }
   .header-content.header-content-smaller {
     font-size: var(--bs-footer-font-size);
-    padding: var(--bs-footer-padding-y) var(--bs-footer-padding-x);
-    background-color: var(--jb-smaller-header-bg-color); }
+    padding: var(--bs-footer-padding-y) var(--bs-footer-padding-x); }
+  .header-content.header-content-inner,
+  .modal-body .header-content {
+    color: var(--jb-inner-header-color);
+    background-color: var(--jb-inner-header-bg); }
   .header-content span {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -9149,7 +9152,8 @@ HEADER-CONTENT
 FOOTER-CONTENT
 ************************/
 div.modal-footer {
-  background-color: var(--jb-footer-bg-color); }
+  color: var(--jb-footer-color);
+  background-color: var(--jb-footer-bg); }
 
 .footer-content {
   line-height: 1.25;
@@ -9160,7 +9164,8 @@ div.modal-footer {
   flex-shrink: 0;
   flex-grow: 0;
   padding: var(--bs-footer-padding-y) var(--bs-footer-padding-x);
-  background-color: var(--jb-footer-bg-color);
+  color: var(--jb-footer-color);
+  background-color: var(--jb-footer-bg);
   border-top: var(--bs-modal-header-border-width) solid var(--bs-modal-header-border-color); }
   .footer-content.no-border {
     border-top: none; }
@@ -9936,7 +9941,8 @@ Using Bootstrap Collapse to create accordion
     display: flex;
     align-items: center;
     border-top: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color);
-    background-color: #f0f2f4;
+    color: var(--jb-footer-color);
+    background-color: var(--jb-footer-bg);
     line-height: 1.25;
     font-size: var(--bs-footer-font-size);
     padding: var(--bs-accordion-footer-padding); }

@@ -278,15 +278,15 @@ $bs-maps: (
 Modal and popover header and content
 Bootstrap default = normal size
 ************************************************************/
-$jb-header-color            : $body-color;
-$jb-header-bg-color         : $gray-300;
-$jb-smaller-header-bg-color : tint-color($jb-header-bg-color, 30%);
-$jb-footer-bg-color         : $gray-200;
+$jb-header-color: $body-color;
+$jb-header-bg   : $gray-200;
 
-//$jb-inner-header/footer-bg-color used for inner elements with header and/or footer
-$jb-inner-header-bg-color: #{tint-color($jb-header-bg-color, 30%)};
-$jb-inner-footer-bg-color: #{tint-color($jb-footer-bg-color, 30%)};
+//$jb-inner-header-color/bg used for inner elements with header
+$jb-inner-header-color  : $jb-header-color;
+$jb-inner-header-bg     : #{tint-color($jb-header-bg, 30%)};
 
+$jb-footer-color: $body-color;
+$jb-footer-bg   : $gray-100;
 
 
 //Modal
@@ -298,14 +298,13 @@ $modal-header-padding               : $modal-header-padding-y $modal-header-padd
 
 $modal-inner-padding                : $jb-padding-y $jb-padding-x;
 
-$modal-footer-bg                    : $jb-footer-bg-color;
 
 //popover
 $popover-font-size          : $jb-font-size;
 $popover-border-radius      : $jb-border-radius;
 $popover-inner-border-radius: $jb-inner-border-radius;
 
-$popover-header-bg          : $jb-header-bg-color;
+$popover-header-bg          : $jb-header-bg;
 
 $popover-header-font-size   : $jb-font-size;
 $popover-header-padding-y   : $jb-padding-y;

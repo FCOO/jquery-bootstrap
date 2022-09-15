@@ -11,7 +11,7 @@ Using Bootstrap Collapse to create accordion
     @include border-radius-variant( 'accordion', $size);
     @include inner-border-radius-variant( 'accordion', $size);
 
-    //Include padding and smaller font-sixe for own class accordion-footer
+    //Include padding and smaller font-size for own class accordion-footer
     @include padding-variant( 'accordion-footer', $size);
     .accordion-footer {
         @include footer-size-variant($size);
@@ -45,7 +45,8 @@ Using Bootstrap Collapse to create accordion
         align-items     : center;
 
         border-top      : var(--#{$prefix}accordion-border-width) solid var(--#{$prefix}accordion-border-color);
-        background-color: $jb-inner-footer-bg-color;
+        color           : var(--#{$jb-prefix}footer-color);
+        background-color: var(--#{$jb-prefix}footer-bg);
 
         line-height : 1.25; //Decrease height
         font-size   : var(--#{$prefix}footer-font-size);

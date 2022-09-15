@@ -1,82 +1,4 @@
 /****************************************************************************
-	bootstrap-popover-extensions.js,
-
-	(c) 2017, FCOO
-
-	https://github.com/FCOO/bootstrap-popover-extensions
-	https://github.com/FCOO
-
-****************************************************************************/
-
-(function ($, bootstrap/*, window, document, undefined*/) {
-	"use strict";
-
-
-//MANGLER: Er det nødvendigt med nedenstående???
-return;
-
-
-    //Concert from all new placement to original
-    var truePlacement2placement = {
-            topleft   : 'top',    top   : 'top',    topright   : 'top',
-            bottomleft: 'bottom', bottom: 'bottom', bottomright: 'bottom',
-            lefttop   : 'left',   left  : 'left',   leftbottom : 'left',
-            righttop  : 'right',  right : 'right',  rightbottom: 'right'
-    };
-
-    /****************************************************
-    Overwrite Popover.show to save and modify new positions
-    *****************************************************/
-    bootstrap.Tooltip.prototype.show = function( _show ){
-        return function(){
-            //If first time: Save 'true' placement
-            if (!this._config.truePlacement){
-                this._config.truePlacement = this._config.placement;
-                this._config.placement = truePlacement2placement[this._config.truePlacement];
-            }
-
-            //Original methods
-            _show.apply(this, arguments);
-
-            //Adjust popover
-            var $tip        = $(this.tip),
-                arrowDim    = $tip.find('.arrow').width() || 10,
-                arrowOffset = 6 + arrowDim,
-                offset      = 0,
-                sign        = 0;
-
-
-
-            switch (this._config.truePlacement){
-                case 'topright'   :
-                case 'rightbottom':
-                case 'bottomright':
-                case 'leftbottom' : sign = +1; break;
-
-                case 'topleft'    :
-                case 'righttop'   :
-                case 'bottomleft' :
-                case 'lefttop'    : sign = -1; break;
-
-                default           : sign = 0;
-            }
-
-            switch (sign) {
-                case +1: offset = '+50%p - ' + arrowOffset + 'px'; break;
-                case -1: offset = '-50%p + ' + arrowOffset + 'px'; break;
-                default: offset = 0;
-            }
-
-// VIRKER IKKE:
-            if (this._popper)
-                this._popper.modifiers[1].offset = offset;
-
-        };
-    }( bootstrap.Tooltip.prototype.show );
-
-}(jQuery, this.bootstrap, this, document));
-;
-/****************************************************************************
     jquery-bootstrap.js,
 
     (c) 2017, FCOO
@@ -524,9 +446,10 @@ return;
         ****************************************************************************************/
 
         _bsAddHtml:  function( options, htmlInDiv, ignoreLink, checkForContent ){
+
             //**************************************************
             function getArray( input ){
-                return input ? $.isArray( input ) ? input : [input] : [];
+                return input ? ($.isArray( input ) ? input : [input]) : [];
             }
             //**************************************************
             function isHtmlString( str ){
@@ -554,7 +477,6 @@ return;
 
             if (options.content && checkForContent)
                 return this._bsAddHtml(options.content, htmlInDiv, ignoreLink);
-
 
             var _this = this;
 
@@ -1201,7 +1123,6 @@ return;
 (function ($/*, window, document, undefined*/) {
 	"use strict";
 
-//HER=>     var bsButtonClass = 'btn-standard';  //MUST correspond with $btn-style-name in src/_variables.scss
     var bsButtonClass = 'btn-jb';  //MUST correspond with $btn-style-name in src/_variables.scss
 
     /**********************************************************
@@ -1251,6 +1172,10 @@ return;
                 addOnClick      : true,
                 returnFromClick : false
             });
+
+        //Special case for empty button
+        if (!options.icon && !options.text)
+            options.icon = 'fa';
 
         var result = $('<'+ options.tagName + ' tabindex="0"/>');
 
@@ -1443,6 +1368,7 @@ return;
             });
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
+
         var result = $('<'+ options.tagName + '/>')
                         ._bsAddIdAndName( options )
                         ._bsAddBaseClassAndSize( options );
@@ -1708,7 +1634,7 @@ return;
 (function ($, i18next,  window /*, document, undefined*/) {
 	"use strict";
 
-    var fileViewHeaderClasses = 'modal-header header-content header-content-smaller';
+    var fileViewHeaderClasses = 'modal-header header-content header-content-smaller header-content-inner';
 
     //fileViewModalList = list of {fileNames, bsModal}  where bsModal is the $.bsModalFile showing the file
     var fileViewModalList = [];
@@ -1744,7 +1670,7 @@ return;
                                 baseClass   : 'form-control',
                                 class       : 'p-0 mb-1',
                                 useTouchSize: true
-                            }))
+                            }));
 
 
         //Create the header (if any)
@@ -3906,6 +3832,8 @@ jquery-bootstrap-modal-promise.js
                     .addClass(className || '')
                     .addClass(scrollbarClass )
                     .toggleClass('py-0',                        !!fixedOptions.noVerticalPadding)
+                    .toggleClass('pt-0',                        !!fixedOptions.noTopPadding)
+                    .toggleClass('pb-0',                        !!fixedOptions.noBottomPadding)
                     .toggleClass('px-0',                        !!fixedOptions.noHorizontalPadding)
                     .toggleClass('modal-body-semi-transparent', !!fixedOptions.semiTransparent)
                     .toggleClass('modal-type-' + options.type,  !!fixedOptions.type)
@@ -4421,7 +4349,7 @@ jquery-bootstrap-modal-promise.js
             get$modalContent(this).toggleClass('modal-minimized-hide-header');
     };
 
-/* TODO: animate changes in height and width
+/* TODO: animate changes in height and width - Use Bootstrtap 5 collaps
        var $this = this.bsModal.$container,
             oldHeight = $this.outerHeight(),
             newHeight;
@@ -5733,7 +5661,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             ._bsAddStyleClasses( columnOptions.align )
             .toggleClass('text-nowrap', !!columnOptions.noWrap )
 //TODO            .toggleClass('text-truncate', !!columnOptions.truncate )
-            .toggleClass('px-0', !!columnOptions.noHorizontalPadding );  //MANGLER: Virker det?
+            .toggleClass('px-0', !!columnOptions.noHorizontalPadding );
 
         if (addWidth && columnOptions.width)
             $element.css({
@@ -6059,7 +5987,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
                         //Create new row and insert before current row
                         $('<tr/>')
-                            .addClass('table-sort-group-header')
+                            .addClass('table-light table-sort-group-header')
                             .append( $newTd )
                             .insertBefore( $td.parent() );
 
@@ -6134,18 +6062,17 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         rowId      = 0,
         sortId     = 0;
 
-
-
     $.bsTable = function( options ){
 
         options = $._bsAdjustOptions( options, defaultOptions );
         options.class =
+            'jb-table ' +
             (options.verticalBorder && !options.noBorder ? 'table-bordered ' : '' ) +
-            (options.noBorder ? 'table-no-border ' : '' ) +
+            (options.noBorder ? 'table-borderless ' : '' ) +
             (options.hoverRow ? 'table-hover ' : '' ) +
             (options.noPadding ? 'table-no-padding ' : '' ) +
             (options.notFullWidth ? 'table-not-full-width ' : '' ) +
-            (options.centerInContainer ? 'table-center-in-container ' : '' ) +
+            (options.centerInContainer ? 'my-auto mx-0 ' : '' ) +
             (options.selectable ? 'table-selectable ' : '' ) +
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' );
 
@@ -6183,6 +6110,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                             'id': id
                         }),
             $thead = $('<thead/>')
+                        .addClass('table-light')
                         .toggleClass('no-header', !options.showHeader )
                         .appendTo( $table ),
             $tr = $('<tr/>')
@@ -6357,9 +6285,9 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 $('<div/>')
                     ._bsAddBaseClassAndSize(
                         $._bsAdjustOptions( options, {}, {
-                            baseClass   : 'nav-tabs',
+                            baseClass   : 'nav',
                             styleClass  : '',
-                            class       : 'nav' + (options.hideNotSelectedText ? ' hide-not-selected-text' : ''),
+                            class       : 'nav-tabs' + (options.hideNotSelectedText ? ' hide-not-selected-text' : ''),
                             useTouchSize: true
                         })
                     )
@@ -6401,6 +6329,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                         })
                         ._bsAddHtml( opt.header || opt )
                         .appendTo( $tabs ),
+
                 //Create the content-container = content + footer
                 $container =
                     $('<div/>')
@@ -6426,8 +6355,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (opt.selected){
                 $tab
                     .attr('aria-selected', true)
-                    .addClass('show selected');
-                $container.addClass('show selected');
+                    .addClass('active');
+                $container.addClass('active show');
             }
 
             $content = options.scroll ? $content.addScrollbar('vertical') : $content;
@@ -6453,6 +6382,23 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         if ($tab && $tab.length)
             $tab.tab('show');
+    };
+
+
+    /**********************************************************
+    asModal - display the tabs in a modal-window with fixed header and scrolling content
+    **********************************************************/
+    $.BSASMODAL.BSTABS = function( modalOptions = {}){
+        return $.bsModal(
+                    $.extend( modalOptions, {
+                        show        : false,
+                        content     : this._$contents,
+                        fixedContent: this._$tabs,
+                        fixedContentOptions: {
+                            noBottomPadding: true
+                        }
+                    })
+                );
     };
 
 }(jQuery, this, document));

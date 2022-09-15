@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /***********************************************
 	jquery-bootstrap.scss,
 
@@ -12,11 +11,6 @@
 /***********************************************
 See https://getbootstrap.com/docs/5.2/customize/sass/
 for description on how to adjust Bootstrap variables
-
-MANGLER:
-$table-border-width
-$pagination-border-width
-
 ***********************************************/
 /************************************************************
 FUNCTIONS
@@ -66,9 +60,6 @@ BACKGROUND-COLOR
 BORDER-COLOR
 ************************************************/
 /***********************************************
-HEADER COLOR - MANGLER
-***********************************************/
-/***********************************************
 CHECKBOX, RADIO, AND SELECT
 text-color and bg-color for selected item in <select> varies for different browsers.
 text-color = rgb(255, 255, 255)   for all
@@ -105,7 +96,12 @@ Accordion
 Card
 ***********************************************/
 /***********************************************
+Toast
+***********************************************/
+/***********************************************
 Tables
+For some (unknown) reason the padding of table cells
+are done by scss-variables instead of var(...) ???
 ***********************************************/
 /***********************************************
 Nav, Pills and Tabs
@@ -142,9 +138,7 @@ Adjust bootstrap-variables to only have dimensions
 in integer px from rem
 ************************************************/
 /************************************************************
-*************************************************************
-OTHER ADJUSTMENTS - ikke indrykket = MANGLER!
-*************************************************************
+Other adjustments
 ************************************************************/
 /************************************************************
 Make all font-size and margin for header (<h1>, <h2>,...<h6>)
@@ -152,11 +146,7 @@ releative to container (rem -> em)
 Default (not changed): $font-size-base = $spacer = 1rem
 ************************************************************/
 /************************************************************
-Set margin for buttons in block
-************************************************************/
-/************************************************************
 Adjust dropdown-menu
-MANGLER - SKAL CHECKES
 ************************************************************/
 /************************************************************
 Adjust modal
@@ -173,22 +163,18 @@ Defines scss-variables used in jquery-bootstrap
 Some of these variables are based on Bootstrap variables
 ************************************************************/
 /***********************************************
-CHECKBOX
+Checkbox
 ************************************************/
 /***********************************************
-BUTTON
+Button
 ************************************************/
 /***********************************************
-MODAL
+Modal
 ************************************************/
 /***********************************************
-BUTTON AND MODAL
+Button And Modal
 Opacity for semi-transparent and transparent content
 ************************************************/
-/************************************************************
-MARGIN-BOTTOM
-All elements in modal-windows get same margin-bottom
-************************************************************/
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -244,8 +230,8 @@ All elements in modal-windows get same margin-bottom
   --bs-body-bg: #fff;
   --bs-border-width: 1px;
   --bs-border-style: solid;
-  --bs-border-color: brown;
-  --bs-border-color-translucent: lightblue;
+  --bs-border-color: var(--jb-structure-border-color);
+  --bs-border-color-translucent: var(--jb-container-border-color);
   --bs-border-radius: 0.375rem;
   --bs-border-radius-sm: 0.25rem;
   --bs-border-radius-lg: 0.5rem;
@@ -430,8 +416,8 @@ table {
   border-collapse: collapse; }
 
 caption {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
   color: #6c757d;
   text-align: left; }
 
@@ -1507,7 +1493,7 @@ progress {
   vertical-align: top;
   border-color: var(--bs-table-border-color); }
   .table > :not(caption) > * > * {
-    padding: 0.5rem 0.5rem;
+    padding: 0.375rem 0.375rem;
     background-color: var(--bs-table-bg);
     border-bottom-width: 1px;
     box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg); }
@@ -1734,7 +1720,7 @@ progress {
   .form-control:focus {
     color: #212529;
     background-color: #fff;
-    border-color: yellow;
+    border-color: #7b838a;
     outline: 0;
     box-shadow: 0 0 0 1px rgba(13, 110, 253, 0.25); }
   .form-control::-webkit-date-and-time-value {
@@ -1847,7 +1833,7 @@ textarea.form-control-lg {
     .form-select {
       transition: none; } }
   .form-select:focus {
-    border-color: yellow;
+    border-color: #7b838a;
     outline: 0;
     box-shadow: 0 0 0 1px rgba(13, 110, 253, 0.25); }
   .form-select[multiple], .form-select[size]:not([size="1"]) {
@@ -1910,7 +1896,7 @@ textarea.form-control-lg {
   .form-check-input:active {
     filter: brightness(90%); }
   .form-check-input:focus {
-    border-color: yellow;
+    border-color: #7b838a;
     outline: 0;
     box-shadow: 0 0 0 1px rgba(13, 110, 253, 0.25); }
   .form-check-input:checked {
@@ -1945,7 +1931,7 @@ textarea.form-control-lg {
       .form-switch .form-check-input {
         transition: none; } }
     .form-switch .form-check-input:focus {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='yellow'/%3e%3c/svg%3e"); }
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%237b838a'/%3e%3c/svg%3e"); }
     .form-switch .form-check-input:checked {
       background-position: right center;
       background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e"); }
@@ -3094,12 +3080,12 @@ textarea.form-control-lg {
 
 .nav-tabs {
   --bs-nav-tabs-border-width: 1px;
-  --bs-nav-tabs-border-color: brown;
+  --bs-nav-tabs-border-color: var(--jb-structure-border-color);
   --bs-nav-tabs-border-radius: 0.375rem;
-  --bs-nav-tabs-link-hover-border-color: #ae3f3f;
+  --bs-nav-tabs-link-hover-border-color: var(--jb-structure-border-color);
   --bs-nav-tabs-link-active-color: #373b3e;
   --bs-nav-tabs-link-active-bg: #fff;
-  --bs-nav-tabs-link-active-border-color: #ae3f3f;
+  --bs-nav-tabs-link-active-border-color: var(--jb-structure-border-color);
   border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color); }
   .nav-tabs .nav-link {
     margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width));
@@ -3671,7 +3657,7 @@ textarea.form-control-lg {
   --bs-accordion-btn-icon-transform: rotate(-180deg);
   --bs-accordion-btn-icon-transition: transform 0.2s ease-in-out;
   --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23373b3e'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-  --bs-accordion-btn-focus-border-color: yellow;
+  --bs-accordion-btn-focus-border-color: #7b838a;
   --bs-accordion-btn-focus-box-shadow: 0 0 0 1px rgba(13, 110, 253, 0.25);
   --bs-accordion-body-padding-x: 0.375rem;
   --bs-accordion-body-padding-y: 0.375rem;
@@ -3856,7 +3842,7 @@ textarea.form-control-lg {
 .list-group {
   --bs-list-group-color: #212529;
   --bs-list-group-bg: #fff;
-  --bs-list-group-border-color: brown;
+  --bs-list-group-border-color: var(--jb-structure-border-color);
   --bs-list-group-border-width: 1px;
   --bs-list-group-border-radius: 0.375rem;
   --bs-list-group-item-padding-x: 1rem;
@@ -3870,7 +3856,7 @@ textarea.form-control-lg {
   --bs-list-group-disabled-bg: #fff;
   --bs-list-group-active-color: #fff;
   --bs-list-group-active-bg: #0d6efd;
-  --bs-list-group-active-border-color: #ae3f3f;
+  --bs-list-group-active-border-color: var(--jb-structure-border-color);
   display: flex;
   flex-direction: column;
   padding-left: 0;
@@ -4170,7 +4156,7 @@ textarea.form-control-lg {
   --bs-toast-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   --bs-toast-header-color: #6c757d;
   --bs-toast-header-bg: rgba(255, 255, 255, 0.85);
-  --bs-toast-header-border-color: brown;
+  --bs-toast-header-border-color: var(--jb-structure-border-color);
   width: var(--bs-toast-max-width);
   max-width: 100%;
   font-size: var(--bs-toast-font-size);
@@ -4232,7 +4218,7 @@ textarea.form-control-lg {
   --bs-modal-header-border-width: 1px;
   --bs-modal-title-line-height: 1.5;
   --bs-modal-footer-gap: 0.5rem;
-  --bs-modal-footer-bg: orange;
+  --bs-modal-footer-bg: ;
   --bs-modal-footer-border-color: var(--bs-border-color);
   --bs-modal-footer-border-width: 1px;
   position: fixed;
@@ -4559,7 +4545,7 @@ textarea.form-control-lg {
   --bs-popover-header-padding-y: 0.375rem;
   --bs-popover-header-font-size: 1rem;
   --bs-popover-header-color: ;
-  --bs-popover-header-bg: aquamarine;
+  --bs-popover-header-bg: #e9ecef;
   --bs-popover-body-padding-x: 0.375rem;
   --bs-popover-body-padding-y: 0.375rem;
   --bs-popover-body-color: #212529;
@@ -8191,63 +8177,6 @@ MIXINS
 MIXIN
 ************************************************************/
 /************************************************************
-RIGHT-SIDE-ICON
-
-MANGLER: MÅSKE YT
-
-Add style to <i> to place it to the right and vertical center
-NOTE: Parent element MUST have @include vertical-align-center();
-************************************************************/
-/************************************************************
-FOCUS
-All elements get same outline when they have focus:
-No outline
-border-color = light blue
-************************************************************/
-/************************************************************
-CONTENT
-Unifies padding for modal, accordion, popup etc.
-************************************************************/
-/************************************************************
-CONTROL-CONTAINER
-Style for div with controls inside modal.
-Must have tabindex:"-1" to work with focus
-************************************************************/
-/************************************************************
-CONTROL BORDER-COLOR
-All control elements get same border-color when normal, hover, active and error
-************************************************************/
-/************************************************************
-CONTROL-COLORS
-Sets all color for text, background, border for normal, :hover, :focus,  :active and .active
-************************************************************/
-/************************************************************
-HEADER AND TITLE BACKGROUND-COLOR AND COLOR
-Headers for modal, popover, popup etc.
-************************************************************/
-/************************************************************
-header-colors - Colors for headers
-************************************************************/
-/************************************************************
-title-color - create colors for headers for table and accordion etc.
-************************************************************/
-/************************************************************
-HEADER, TITLE, AND FOOTER PADDING AND FONT-SIZE
-Padding are set to button y-padding (moving text to the left)
-************************************************************/
-/************************************************************
-header-variant
-************************************************************/
-/************************************************************
-title-variant - as header but with same font-size as siblings
-************************************************************/
-/************************************************************
-footer-variant
-************************************************************/
-/************************************************************
-MIXIN
-************************************************************/
-/************************************************************
 PROPERTY-VARIANT
 Varients of different properties
 ************************************************************/
@@ -8263,27 +8192,35 @@ ROOT
 
 Contains global scss- and css-variable
 --bs-modal-zindex: 1055;
+
+
+
 ************************************************************/
 :root {
-  --bs-modal-padding: 0.375rem 0.375rem;
-  --bs-modal-margin: 0.5rem;
-  --bs-modal-color: ;
-  --bs-modal-bg: #fff;
-  --bs-modal-border-color: var(--bs-border-color-translucent);
-  --bs-modal-border-width: 1px;
-  --bs-modal-border-radius: 0.375rem;
-  --bs-modal-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  --bs-modal-inner-border-radius: calc(0.375rem - 1px);
   --bs-modal-header-padding-x: 0.375rem;
   --bs-modal-header-padding-y: 0.375rem;
   --bs-modal-header-padding: 0.375rem 0.375rem;
   --bs-modal-header-border-color: var(--bs-border-color);
   --bs-modal-header-border-width: 1px;
-  --bs-modal-title-line-height: 1.5;
-  --bs-modal-footer-gap: 0.5rem;
-  --bs-modal-footer-bg: orange;
-  --bs-modal-footer-border-color: var(--bs-border-color);
-  --bs-modal-footer-border-width: 1px; }
+  --bs-input-font-size: 1rem;
+  --bs-input-padding-x: 0.375rem;
+  --bs-input-padding-y: 0.375rem;
+  --bs-input-border-radius: 0.375rem;
+  --bs-input-label-font-size: 0.875rem;
+  --jb-header-color: #212529;
+  --jb-header-bg: #e9ecef;
+  --jb-inner-header-color: #212529;
+  --jb-inner-header-bg: #f0f2f4;
+  --jb-footer-color: #212529;
+  --jb-footer-bg: #f8f9fa;
+  --jb-icon-color: #6c757d;
+  --jb-icon-hover-color: #616971;
+  --jb-icon-active-color: #616971;
+  --bs-footer-font-size: 0.875rem;
+  --bs-footer-padding-y: 0.375rem;
+  --bs-footer-padding-x: 0.375rem;
+  --jb-structure-border-color: #dee2e6;
+  --jb-container-border-color: #dee2e6; }
 
 /************************************************
 ADDITIONS AND ADJUSTMENTS TO FONTAWESOME
@@ -9055,12 +8992,16 @@ BUTTON-GROUP
   display: block; }
 
 .btn-group.btn-group-border, .btn-group-vertical.btn-group-border {
-  border: 1px solid brown;
+  border: 1px solid var(--jb-structure-border-color);
   border-radius: 0.375rem; }
   .btn-group.btn-group-border.btn-group-sm, .btn-group-vertical.btn-group-border.btn-group-sm {
     border-radius: 0.25rem; }
   .btn-group.btn-group-border.btn-group-xs, .btn-group-vertical.btn-group-border.btn-group-xs {
     border-radius: 0.125rem; }
+
+.btn-group .header-content-container,
+.btn-group-vertical .header-content-container {
+  font-size: var(--bs-modal-content-font-size); }
 
 .btn-group-vertical .header-content-container {
   width: 100%;
@@ -9101,15 +9042,6 @@ BUTTON-GROUP
     --bs-footer-padding-y: 0.125rem;
     --bs-footer-padding-x: 0.125rem; }
 
-/************************************************************
-BLOCK BUTTONS (from Bootstrap)
-Extend to also include margin-bottom
-************************************************************/
-/*MANGLER
-.btn-block + .btn-block {
-    margin-bottom: $btn-block-spacing-y;
-}
-*/
 /************************************************************
 MENU (BUTTON-GROUP)
 ************************************************************/
@@ -9159,7 +9091,8 @@ HEADER-CONTENT
   justify-content: left;
   flex-shrink: 0;
   flex-grow: 0;
-  background-color: aquamarine;
+  color: var(--jb-header-color);
+  background-color: var(--jb-header-bg);
   cursor: default;
   /****************************************************
     List of icons inside a header are placed inside a container
@@ -9172,8 +9105,11 @@ HEADER-CONTENT
     cursor: pointer; }
   .header-content.header-content-smaller {
     font-size: var(--bs-footer-font-size);
-    padding: var(--bs-footer-padding-y) var(--bs-footer-padding-x);
-    background-color: #a5ffe1; }
+    padding: var(--bs-footer-padding-y) var(--bs-footer-padding-x); }
+  .header-content.header-content-inner,
+  .modal-body .header-content {
+    color: var(--jb-inner-header-color);
+    background-color: var(--jb-inner-header-bg); }
   .header-content span {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -9199,13 +9135,13 @@ HEADER-CONTENT
       width: 1em;
       text-align: center;
       cursor: pointer;
-      color: #6c757d; }
+      color: var(--jb-icon-color); }
       .header-content .header-icon-container .header-icon.hidden {
         display: none; }
       .header-content .header-icon-container .header-icon:hover {
-        color: #616971; }
+        color: var(--jb-icon-hover-color); }
       .header-content .header-icon-container .header-icon:active {
-        color: #616971; }
+        color: var(--jb-icon-active-color); }
       .header-content .header-icon-container .header-icon.header-icon-warning .middle {
         font-size: .6em;
         position: relative;
@@ -9215,10 +9151,9 @@ HEADER-CONTENT
 /************************
 FOOTER-CONTENT
 ************************/
-:root {
-  --bs-footer-font-size: 0.875rem;
-  --bs-footer-padding-y: 0.375rem;
-  --bs-footer-padding-x: 0.375rem; }
+div.modal-footer {
+  color: var(--jb-footer-color);
+  background-color: var(--jb-footer-bg); }
 
 .footer-content {
   line-height: 1.25;
@@ -9229,7 +9164,8 @@ FOOTER-CONTENT
   flex-shrink: 0;
   flex-grow: 0;
   padding: var(--bs-footer-padding-y) var(--bs-footer-padding-x);
-  background-color: orange;
+  color: var(--jb-footer-color);
+  background-color: var(--jb-footer-bg);
   border-top: var(--bs-modal-header-border-width) solid var(--bs-modal-header-border-color); }
   .footer-content.no-border {
     border-top: none; }
@@ -9302,18 +9238,6 @@ div.checkbox-xs, div.radio-xs {
   --bs-check-input-font-size: 0.75rem;
   --bs-check-input-padding-y: 0.125rem; }
 
-/***************************************************************************
-checkbox-inline, radio-inline,
-checkbox-group-horizontal, radio-group-horizontal
-MANGLER TODO: Virker det/skal det bruges
-***************************************************************************/
-div.checkbox-inline, div.radio-inline,
-.checkbox-group-horizontal > .checkbox,
-.checkbox-group-horizontal > .radio,
-.radio-group-horizontal > .checkbox,
-.radio-group-horizontal > .radio {
-  display: inline-flex !important; }
-
 /************************************************************
 SELECTLIST
 
@@ -9325,12 +9249,13 @@ bsSelectList
 ************************************************************/
 .form-select optgroup {
   font-weight: normal;
-  color: #adb5bd; }
+  color: #343a40; }
 
 .select-list {
   position: inherit;
   display: block;
   cursor: default;
+  --bs-dropdown-min-width: null;
   --bs-dropdown-font-size: 1rem;
   --bs-dropdown-header-padding-x: 0.375rem;
   --bs-dropdown-header-padding-y: 0.375rem;
@@ -9341,7 +9266,7 @@ bsSelectList
   --bs-dropdown-border-radius: 0.375rem;
   --bs-dropdown-inner-border-radius: calc(0.375rem - 1px); }
   .select-list:focus-within {
-    border-color: yellow;
+    border-color: #7b838a;
     outline: 0;
     box-shadow: 0 0 0 1px rgba(13, 110, 253, 0.25); }
   .modal-dialog-sm .select-list, .select-list.select-list-sm {
@@ -9589,7 +9514,8 @@ Font-size, padding and border-radius fro different size
     .modal-dialog .modal-content .modal-body-fixed {
       flex-shrink: 0;
       flex-grow: 0;
-      overflow: hidden; }
+      overflow: hidden;
+      padding: var(--bs-modal-padding-y) var(--bs-modal-padding-x); }
       .modal-dialog .modal-content .modal-body-fixed:empty {
         display: none !important; }
     .modal-dialog .modal-content .modal-body {
@@ -9633,7 +9559,7 @@ Font-size, padding and border-radius fro different size
   padding-bottom: 0; }
 
 .modal-dialog .modal-body-with-vertical-padding {
-  padding-top: var(--bs-modal-padding-x);
+  padding-top: var(--bs-modal-padding-y);
   padding-bottom: var(--bs-modal-padding-y); }
   .modal-dialog .modal-body-with-vertical-padding.modal-body-with-horizontal-padding {
     padding-left: var(--bs-modal-padding-x);
@@ -9742,16 +9668,6 @@ inside : The input has pre and/or post elements (buttons) and the label is on th
     </div>
 </div>
 ************************************************************/
-/************************************************************
-$input-font-size $input-padding-[y/x]-[-lg / -sm / -xs] as css-variable
-************************************************************/
-:root {
-  --bs-input-font-size: 1rem;
-  --bs-input-padding-x: 0.375rem;
-  --bs-input-padding-y: 0.375rem;
-  --bs-input-border-radius: 0.375rem;
-  --bs-input-label-font-size: 0.875rem; }
-
 .modal {
   font-size: var(--bs-input-font-size); }
 
@@ -9777,7 +9693,7 @@ form.form-xs, .input-group-container-xs, .input-group-xs {
   margin-bottom: 0; }
   .input-group-container.line-before:not(:first-child) {
     margin-top: var(--bs-input-padding-y);
-    border-top: 1px solid brown; }
+    border-top: 1px solid var(--jb-structure-border-color); }
   .input-group-container.child-with-label {
     padding-top: calc( 0.75 * var(--bs-input-label-font-size) + var(--bs-input-padding-y)); }
   .input-group-container.small-bottom-padding + .input-group-container {
@@ -9785,7 +9701,7 @@ form.form-xs, .input-group-container-xs, .input-group-xs {
   .input-group-container.line-after:not(:last-child) {
     margin-bottom: var(--bs-input-padding-y);
     padding-bottom: var(--bs-input-padding-y);
-    border-bottom: 1px solid brown; }
+    border-bottom: 1px solid var(--jb-structure-border-color); }
 
 /************************************************************
 Style for input-group
@@ -9829,7 +9745,7 @@ See top of file for description on label inside and label outside
   cursor: default;
   z-index: 4;
   line-height: 1;
-  color: red;
+  color: #343a40;
   padding: 0 2px;
   margin-left: 1px;
   font-size: var(--bs-input-label-font-size); }
@@ -9911,13 +9827,18 @@ TABLE
 
 Adjustmernt to Bootstrap table
 ************************************************************/
-.table {
-  /*
-    margin-bottom: 0;
-    &:not(:last-child){
-        margin-bottom: $modal-element-margin-bottom;
-    }
-*/
+.table.jb-table {
+  /*******************************************************
+    For some (unknown) reason the padding and font-size of
+    table cells are not set using var(...)
+    This is iomplemented here.
+    The selection of cells are copied from
+    bower_components\bootstrap\scss\_tables.scss
+    ********************************************************/
+  --bs-table-cell-font-size: 1rem;
+  --bs-table-cell-padding-x: 0.375rem;
+  --bs-table-cell-padding-y: 0.375rem;
+  --bs-table-cell-padding: 0.375rem 0.375rem;
   word-break: normal;
   /*************************************
     Header
@@ -9925,9 +9846,6 @@ Adjustmernt to Bootstrap table
   /*************************************
     Rows
     table-sort-group-header is used for row that are the header of a group of rows with the same 'value' in the column that the table is sorted by
-    *************************************/
-  /*************************************
-    Cells
     *************************************/
   /*************************************
     Truncation - TODO
@@ -9939,7 +9857,6 @@ Adjustmernt to Bootstrap table
             span {
                 display         : inline-block;
                 width           : 100%;
-                background-color: red;
                 overflow        : hidden;
                 text-overflow   : ellipsis;
                 white-space     : nowrap;
@@ -9947,131 +9864,59 @@ Adjustmernt to Bootstrap table
         }
     }
 */ }
-  .table.table-with-header,
-  .scrollbar-vertical > .table {
+  .table.jb-table.table-sm, .modal-dialog-sm .table.jb-table {
+    --bs-table-cell-font-size: 0.875rem;
+    --bs-table-cell-padding-x: 0.25rem;
+    --bs-table-cell-padding-y: 0.25rem;
+    --bs-table-cell-padding: 0.25rem 0.25rem; }
+  .table.jb-table.table-xs, .modal-dialog-xs .table.jb-table {
+    --bs-table-cell-font-size: 0.75rem;
+    --bs-table-cell-padding-x: 0.125rem;
+    --bs-table-cell-padding-y: 0.125rem;
+    --bs-table-cell-padding: 0.125rem 0.125rem; }
+  .table.jb-table > :not(caption) > * > * {
+    font-size: var(--bs-table-cell-font-size);
+    padding: var(--bs-table-cell-padding-y) var(--bs-table-cell-padding-x); }
+  .table.jb-table.table-with-header,
+  .scrollbar-vertical > .table.jb-table {
     box-sizing: border-box;
     padding: 0;
     margin: 0; }
-  .table.table-center-in-container {
-    margin: 0 auto; }
-  .table.table-not-full-width {
+  .table.jb-table.table-no-padding {
+    --bs-table-cell-padding-y: 0; }
+  .table.jb-table.table-not-full-width {
     width: inherit !important; }
-  .table thead tr th {
-    display: table-cell !important;
-    /*
-    $padding-x: $input-btn-padding-x;
-    $padding-y: $input-btn-padding-y;
-    @if $size == "sm" {
-        $padding-x: $input-btn-padding-x-sm;
-        $padding-y: $input-btn-padding-y-sm;
-    }
-    @if $size == "xs" {
-        $padding-x: $input-btn-padding-x-xs;
-        $padding-y: $input-btn-padding-y-xs;
-    }
-*/
-    cursor: default;
-    font-weight: 400;
-    --bs-btn-padding-y: 0.375rem;
-    --bs-btn-padding-x: 0.75rem;
-    --bs-btn-font-size: 1rem;
-    --bs-btn-border-radius: inherit;
-    background-color: pink; }
-    .table thead tr th span.fixed-header {
-      overflow: visible;
-      word-break: keep-all; }
-    .table thead tr th.sortable {
-      background-color: pink;
-      cursor: default;
+  .table.jb-table thead tr th {
+    cursor: default; }
+    .table.jb-table thead tr th.sortable {
+      cursor: pointer;
       background-position: right center;
       background-repeat: no-repeat;
       background-size: 0.8em;
       padding-right: 1em;
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwRJC7Z4CQBAAACPklEQVRo3u3Zu07DMBQG4N/EiA0hwQCIoRtMPAKoKzBCC2nLG8ALMCAGXgAWZi4pDR2BNRKPwAQbAwKGIrEiEh2GMqBc7VNbpahnqpyo/1dHjexjAXb5TlSlXUAcOa1KxP0WwY//OhVu9zN5o9tcAhPwO743AgsQj++FwAD4TniGrZQLTdnQJ2gDMuOZBE1AbjyLoAXwnfAcmwU3Xcq6DkEDoBSvTVAGKMdrEhQBvvN1IaqqWIBaozU1ghJAN16HoADgxKsTCgHceFXCSP7lQIYeNx4Q1dALZA8zEMjXC1S48T/lz9TKIQtgJL6QkAkI5JtHGwbiAYiraTeLkAEwGZ9PSAWYjs8jpAAC+drEutl4AEB7ZitJSPkbvuxbiQfWX/YVZuB27OMZU1YAQGdibuWzYAbeS9bigan3UnwoAWg84s4a4K7xWAgAsCOuQcbDSVxjJzmc8R44nxOGHwR16s/Gf9SwhjWsYf2L6vurOAXgLYpDWuW3r7IE4ob23Pv4cNq24ZiWDIcDgKA1jGO5cAbO5p0HC/E/FS3EVwSJ9cDkEzrW8juTT/GhBGDlk05s5dNJfEWYuiKaPUDbSn579iA5+Bc3JjYImlsz04S8zWlmg6IcTrvwjeT72fF/u0FhhFAQX9gjKofSpRY3nVrSzY8fhDYdl2CwUckhGG7Vdgl9bVZrEey065UJmgcWI+q3ApVI1tHMvaWpFz94h1a5BNaxndYj6FYlkg3y4qPkceIH9eg2TujD4XWXYOL4/htN/xm86wMQxwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wNy0xMlQxNzozNjo0NiswMjowMGyLBscAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDctMTJUMTc6MzY6NDYrMDI6MDAd1r57AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAABJRU5ErkJggg=="); }
-      .table thead tr th.sortable.text-center {
+      .table.jb-table thead tr th.sortable.text-center {
         padding-left: .5em; }
-      .table thead tr th.sortable.sorting-asc, .table thead tr th.sortable.sorting-desc {
-        border-bottom-color: pink; }
-      .table thead tr th.sortable.sorting-asc {
+      .table.jb-table thead tr th.sortable.sorting-asc, .table.jb-table thead tr th.sortable.sorting-desc {
+        box-shadow: inset 0px calc(-1px - 2px) 0px 0px var(--jb-structure-border-color); }
+      .table.jb-table thead tr th.sortable.sorting-asc {
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPOR4W7fbLAAACBklEQVRo3u2ZvU7CUBSAz7FldcEBiYuTJiQ+goZVXS1awCcwvoATgy+gDswCRSqrs+9gYqKLYTDRgRcgtLmOEuv9Oz23MZEzNbTc70vbe3vOuQjkqInv42ekjoIc+DwKyIOnKyAXnqqAfHiaAnLiKQrIi7dXQG68rQLy4+0U0AXeRgHd4M0V0BXeVAHd4c0U0CXeRGFFffrRh5yhGwHVfz6bQ+64KdUTkgAPXqeA7vFqBSwCr1LAYvByBSwKL1NA/plvtypk1oHaGziM7OjZhWjTpUB29L/3CIoOdPMJ4kral7GMZSzjP4Rkeexv4BovSExb74YC0Q5eigPgXrkFPoiL8Onnz7+VDddi18W9FoewCnvaO9Db8l7cPfF0u/2qyQfKE5g640/LE21Csj8TXVd80d2fGWRE1Q6MnfDH1Y5xYfIZiSPmd/C+EhoWJi4UZHhlccqnIMcrsuJ6UgkhZuHHcry2QfExgCAvfr1JbFCwKGjw2sKknvihGJHn/cgP1XijNl3szQfYoOBLzSAlfo7zK5jhjVu1tgqmeItmdewlfTg2vPjOb5nhrdr1xgoWeMsNCyMFK7xlfyBI/RYMlZcM7fCETavYS3pwIsW37fCkbTupAgFPatEEqd8WUWbiRRQ8ees29ua3GC7iS6cUfI7N60UFOh7ylB+xlzbEOQBeeSMqHuALEGzMJuIB3qEAAAAASUVORK5CYII="); }
-      .table thead tr th.sortable.sorting-desc {
+      .table.jb-table thead tr th.sortable.sorting-desc {
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPNhKYw6YvAAAB9klEQVRo3u2ZP04CURCHZ2CJrQWFJBT0nsLWGkH+eQLxCtzBeAKFRdCS2G7CHaagoiFoAYmtYclaWCm7+2Zm3zOa7FQkkN/38R67y5tBUNe0uG9GNwB4W5w09toU1ON399j+eh35pSutAmbHZ1NAG/gsCqjBhw/Qinlj7PXkCmgNr1RAi3iVAgrxQ7g0fOjR60oU0DJerIDW8UIFZF94I2zyVyualDo8BXSBlyigGzxfAV3huQqF9LcDL/S1eABshn7gZViBwHsdQQOy1bTSOQtVAlbwRgVMxr/50QVYKXw6aScpoHt8ugL+Bj5NAWP3fgx1sF/PldahQsxluB44wQPU1wPGCrwcva+gDG5qc1w9/zCswLbmDA9Q3taMW9BbwNyZwLy34NyK+ziDyDo8whn02feBYRUtb0S06a4gr7zyyisv/l+yU/vPAiBkCriAJ0sU/twWuPz+cWtwuAJLp/zlf/gN3JVc4eOSEw4m1zsXeObBxI1CPD71cGpTIQlvOJ7bUkjGGxsUNhTS8MYeUXaFdDyjSZX1rkCoehraUiBjPqtRqVUgRjqzVatRIFY2u1ktVSBmsqBdL1Egdq5oYMFVIEGqcGTDUSBRpnhoZVIgYaJibJemQOI81eAySYEUacrRbZwCqbLUw+ufCqRMUgt8VyB1ziesOMqPm7tGQgAAAABJRU5ErkJggg=="); }
-  .table.table-hover tbody tr:not(.table-sort-group-header):hover {
-    background-color: pink; }
-  .table tbody tr.table-sort-group-header td {
-    background-color: pink !important;
-    color: pink !important;
-    font-weight: bold; }
-    .table tbody tr.table-sort-group-header td *:last-child {
+  .table.jb-table tbody tr.table-sort-group-header {
+    --bs-table-hover-bg: none; }
+    .table.jb-table tbody tr.table-sort-group-header td *:last-child {
       margin-right: .3em; }
-  .table.table-selectable tbody tr {
-    background-color: pink;
+  .table.jb-table.table-selectable tbody tr {
     cursor: default; }
-  .table tbody tr.filter-out {
+    .table.jb-table.table-selectable tbody tr.selected {
+      --bs-table-hover-color: initial;
+      color: white;
+      background-color: dodgerblue; }
+  .table.jb-table:not(.allow-zero-selected) tbody tr.selected {
+    --bs-table-hover-bg: initial; }
+  .table.jb-table tbody tr.filter-out {
     display: none; }
-  .table tbody tr td {
-    background-color: pink !important;
-    padding: 100px 100px;
-    font-size: 1rem; }
-  .table.table-no-border tbody tr td {
-    border: none; }
-  .table.table-no-padding tbody tr td,
-  .table.table-no-padding thead tr th {
-    padding-top: 0;
-    padding-bottom: 0; }
-
-/*************************************
-Adjust header and cell size when table is sm/xs or inside a sm/xs modal
-**************************************/
-.table.table-sm thead tr th,
-.modal-dialog-sm .table thead tr th {
-  /*
-    $padding-x: $input-btn-padding-x;
-    $padding-y: $input-btn-padding-y;
-    @if $size == "sm" {
-        $padding-x: $input-btn-padding-x-sm;
-        $padding-y: $input-btn-padding-y-sm;
-    }
-    @if $size == "xs" {
-        $padding-x: $input-btn-padding-x-xs;
-        $padding-y: $input-btn-padding-y-xs;
-    }
-*/
-  cursor: default;
-  font-weight: 400;
-  --bs-btn-padding-y: 0.25rem;
-  --bs-btn-padding-x: 0.5rem;
-  --bs-btn-font-size: 0.875rem;
-  --bs-btn-border-radius: inherit; }
-  .table.table-sm thead tr th span.fixed-header,
-  .modal-dialog-sm .table thead tr th span.fixed-header {
-    overflow: visible;
-    word-break: keep-all; }
-
-.table.table-xs thead tr th,
-.modal-dialog-xs .table thead tr th {
-  /*
-    $padding-x: $input-btn-padding-x;
-    $padding-y: $input-btn-padding-y;
-    @if $size == "sm" {
-        $padding-x: $input-btn-padding-x-sm;
-        $padding-y: $input-btn-padding-y-sm;
-    }
-    @if $size == "xs" {
-        $padding-x: $input-btn-padding-x-xs;
-        $padding-y: $input-btn-padding-y-xs;
-    }
-*/
-  cursor: default;
-  font-weight: 400;
-  --bs-btn-padding-y: 0.125rem;
-  --bs-btn-padding-x: 0.25rem;
-  --bs-btn-font-size: 0.75rem;
-  --bs-btn-border-radius: inherit; }
-  .table.table-xs thead tr th span.fixed-header,
-  .modal-dialog-xs .table thead tr th span.fixed-header {
-    overflow: visible;
-    word-break: keep-all; }
 
 /************************************************************
 ACCORDION
@@ -10096,7 +9941,8 @@ Using Bootstrap Collapse to create accordion
     display: flex;
     align-items: center;
     border-top: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color);
-    background-color: #ffc04d;
+    color: var(--jb-footer-color);
+    background-color: var(--jb-footer-bg);
     line-height: 1.25;
     font-size: var(--bs-footer-font-size);
     padding: var(--bs-accordion-footer-padding); }
@@ -10284,7 +10130,6 @@ Is a modification to Bootstrap modal-dialog-class
 
 /************************************************************
 TABS
-
 Adjustment to Bootstrap tabs
 ************************************************************/
 .nav-tabs .nav-link.active,

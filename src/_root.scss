@@ -23,15 +23,15 @@ Contains global scss- and css-variable
     --#{$prefix}input-label-font-size: #{$input-font-size-sm};
 
     //Header color and bg-color
-    --#{$jb-prefix}header-color     : #{$jb-header-color};
-    --#{$jb-prefix}header-bg-color  : #{$jb-header-bg-color};
+    --#{$jb-prefix}header-color : #{$jb-header-color};
+    --#{$jb-prefix}header-bg    : #{$jb-header-bg};
 
-    //Smaller heade bg-color
-    --#{$jb-prefix}smaller-header-bg-color  : #{$jb-smaller-header-bg-color};
+    //--jb-inner-header-bg/color used for inner elements with header and/or footer
+    --#{$jb-prefix}inner-header-color: #{$jb-inner-header-color};
+    --#{$jb-prefix}inner-header-bg   : #{$jb-inner-header-bg};
 
-    //--jb-inner-header/footer-bg-color used for inner elements with header and/or footer
-    --#{$jb-prefix}inner-header-bg-color  : #{$jb-inner-header-bg-color};
-    --#{$jb-prefix}inner-footer-bg-color  : #{$jb-inner-footer-bg-color};
+    --#{$jb-prefix}footer-color      : #{$jb-footer-color};
+    --#{$jb-prefix}footer-bg         : #{$jb-footer-bg};
 
 
     //Icons in header
@@ -43,7 +43,6 @@ Contains global scss- and css-variable
     --#{$prefix}footer-font-size    : #{$jb-font-size-sm};
     --#{$prefix}footer-padding-y    : #{$jb-padding-y};
     --#{$prefix}footer-padding-x    : #{$jb-padding-x};
-    --#{$jb-prefix}footer-bg-color  : #{$jb-footer-bg-color};
 
 
     //Border-color
