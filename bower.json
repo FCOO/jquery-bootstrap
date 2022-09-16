@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "authors": [
     "NielsHolt"
@@ -40,7 +40,6 @@
     "modernizr-mixin": "latest",
     "mathsass": "latest",
     "modernizr-scss": "FCOO/modernizr-scss#^2.1.2",
-    "bootstrap-float-label": "tonystar/bootstrap-float-label#^4.0.2",
     "font-awesome": "fontawesome#^6.0.0"
   },
   "overrides": {
