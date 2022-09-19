@@ -797,7 +797,6 @@
 
                         .appendTo( $parent );
             }
-// HER>             var $originalParent = $parent;
 
             if (insideInputGroup || hasPreOrPost){
                 //Create element inside input-group

@@ -343,6 +343,14 @@ BUTTON-GROUP
         }
     }
 
+    //First button after header and first child inside a group inside a group gets not-round top border
+    & .header-content-container + .btn,
+    & .btn-group-vertical .btn {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+
     //Margin between two .btn-group-vertical
     & + .btn-group-vertical {
         margin-top: var(--#{$prefix}modal-header-padding-y);

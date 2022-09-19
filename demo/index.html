@@ -2085,23 +2085,35 @@ type: 'checkbox',
             {id: 'button1', icon: 'fa-home', text:{da:'En knap', en:'A button'}, onClick: function(){console.log('onClick button1', arguments)}},
             {id: 'checkbox1', type:'checkbox', selected: true,  text:{da:'En checkbox#1', en:'A checkbox#1'}},
             {id: 'checkbox2', type:'checkbox', selected: false, text:{da:'En checkbox#2', en:'A checkbox#2'}},
-            {radioGroupId: 'radio1', type:'radio', lineBefore: true, lineAfter: true, _hidden: true, closeOnClick: false, list: [
+            {radioGroupId: 'radio1', type:'radio', _lineBefore: true, _lineAfter: true, _hidden: true, closeOnClick: false, list: [
                     {id:'slow2',   icon: 'fa-fw fa-bicycle',   text:'Cykel', closeOnClick: true},
                     {id:'medium2', icon: 'fa-fw fa-car', text:'Bil', selected: true},
                     {id:'fast2',   icon: 'fa-fw fa-fighter-jet',   text:'Jetjaver'}
             ]}
         ];
 
-/*
+
     $.bsMenu({
         fullWidth: true,
 _small: true,
+        border: true,
         onChange: function(id, selected, $radioGroup){
             console.log('onChange', id, selected, $radioGroup);
         },
-        list: list
+        list: list1
     }).appendTo($body);
-*/
+
+$body.append('<hr>');
+
+    $.bsMenu({
+        _fullWidth: true,
+        small: true,
+        border: true,
+        onChange: function(id, selected, $radioGroup){
+            console.log('onChange', id, selected, $radioGroup);
+        },
+        list: list2
+    }).appendTo($body);
 
     header('bsMenupopover');
 

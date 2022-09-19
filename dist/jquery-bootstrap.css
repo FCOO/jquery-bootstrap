@@ -9027,6 +9027,11 @@ BUTTON-GROUP
   width: 1.25em;
   text-align: center; }
 
+.btn-group-vertical .header-content-container + .btn,
+.btn-group-vertical .btn-group-vertical .btn {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0; }
+
 .btn-group-vertical + .btn-group-vertical {
   margin-top: var(--bs-modal-header-padding-y); }
 

@@ -135,7 +135,7 @@
                     break;
 
                 case 'radio':
-                    $item = $.bsRadioButtonGroup( $.extend({vertical: true}, itemOptions));
+                    $item = $.bsRadioButtonGroup( $.extend({vertical: true, fullWidth: true}, itemOptions));
                     radioGroup = $item.data('radioGroup');
                     break;
 
@@ -145,7 +145,7 @@
 
                 default:
                     $item = $('<div/>')
-                                .addClass('btn-group-header')
+                                .addClass('header-content-container header-content')
                                 ._bsAddHtml( itemOptions );
             }
 

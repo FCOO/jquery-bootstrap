@@ -154,6 +154,13 @@
     Bootstrap-button as a checkbox with check-icon in blue box
     **********************************************************/
     $.bsStandardCheckboxButton = function( options = {}){
+        //Clone options to avoid reflux
+        options = $.extend({}, options, {
+            class    : 'allow-zero-selected' + (options.class ? ' '+options.class : ''),
+            modernizr: true,
+        });
+
+
         var icon = [
                 options.type == 'radio' ?
                     //Radio-button icons
@@ -174,12 +181,6 @@
             icon.push(options.icon);
 
         options.icon = options.forceIcon || icon;
-
-        //Clone options to avoid reflux
-        options = $.extend({}, options, {
-            class    : 'allow-zero-selected' + (options.class ? ' '+options.class : ''),
-            modernizr: true,
-        });
 
         if (options.semiSelected)
             options.selected = true;

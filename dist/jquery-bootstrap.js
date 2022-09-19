@@ -797,7 +797,6 @@
 
                         .appendTo( $parent );
             }
-// HER>             var $originalParent = $parent;
 
             if (insideInputGroup || hasPreOrPost){
                 //Create element inside input-group
@@ -1266,6 +1265,13 @@
     Bootstrap-button as a checkbox with check-icon in blue box
     **********************************************************/
     $.bsStandardCheckboxButton = function( options = {}){
+        //Clone options to avoid reflux
+        options = $.extend({}, options, {
+            class    : 'allow-zero-selected' + (options.class ? ' '+options.class : ''),
+            modernizr: true,
+        });
+
+
         var icon = [
                 options.type == 'radio' ?
                     //Radio-button icons
@@ -1286,12 +1292,6 @@
             icon.push(options.icon);
 
         options.icon = options.forceIcon || icon;
-
-        //Clone options to avoid reflux
-        options = $.extend({}, options, {
-            class    : 'allow-zero-selected' + (options.class ? ' '+options.class : ''),
-            modernizr: true,
-        });
 
         if (options.semiSelected)
             options.selected = true;
@@ -2884,7 +2884,7 @@ options
                     break;
 
                 case 'radio':
-                    $item = $.bsRadioButtonGroup( $.extend({vertical: true}, itemOptions));
+                    $item = $.bsRadioButtonGroup( $.extend({vertical: true, fullWidth: true}, itemOptions));
                     radioGroup = $item.data('radioGroup');
                     break;
 
@@ -2894,7 +2894,7 @@ options
 
                 default:
                     $item = $('<div/>')
-                                .addClass('btn-group-header')
+                                .addClass('header-content-container header-content')
                                 ._bsAddHtml( itemOptions );
             }
 
