@@ -73,7 +73,7 @@ Also overwrite default bootstrap behaviour
     //Set default border-colors for buttons
     --#{$prefix}btn-border-color        : #{$jb-element-border-color};
     --#{$prefix}btn-hover-border-color  : #{$jb-element-hover-border-color};
-    --#{$prefix}btn-active-border-color : #{$jb-element-active-and-focus--border-color};
+    --#{$prefix}btn-active-border-color : #{$jb-element-active-and-focus-border-color};
 
     //Force all buttons to have same light blue box-shadow when in focus
     --#{$prefix}btn-focus-shadow-rgb: #{to-rgb($component-active-bg)};
@@ -88,7 +88,7 @@ Also overwrite default bootstrap behaviour
 
             $border             : $jb-element-border-color,
             $hover-border       : $jb-element-hover-border-color,
-            $active-border      : $jb-element-active-and-focus--border-color,
+            $active-border      : $jb-element-active-and-focus-border-color,
 
             $color              : $jb-element-color,
             $hover-color        : $jb-element-hover-color,

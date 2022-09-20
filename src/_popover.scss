@@ -16,7 +16,6 @@ POPOVER
 }
 
 .popover {
-    //Popover body
     .popover-body {
         //Padding = 0 for popover body
         --#{$prefix}popover-body-padding-y: 0;
@@ -26,6 +25,11 @@ POPOVER
         & > .btn-group {
             @extend .mx-auto;
         }
+    }
+
+    .popover-footer {
+        border-bottom-right-radius: var(--#{$prefix}popover-inner-border-radius);
+        border-bottom-left-radius : var(--#{$prefix}popover-inner-border-radius);
     }
 
     //Size small and extra-small

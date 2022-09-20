@@ -105,25 +105,37 @@ $jb-btn-standard-active-background-color: $gray-400; //or $gray-300
 /***********************************************
 BORDER-COLOR
 ************************************************/
-// All buttons and inputs get same border-color
-$jb-element-border-color                    : $secondary;
-$jb-element-hover-border-color              : tint-color($jb-element-border-color, $btn-hover-border-tint-amount);
-$jb-element-active-and-focus--border-color  : tint-color($jb-element-border-color, $btn-active-border-tint-amount);
+//All containers (popover, popover-arrow, toast (= alerts), modal) gets same border-color
+$jb-container-border-color: var(--#{$jb-prefix}container-border-color);
+
+// All "Structure" (table, accordion, thumbnail, headers, dropdown, card,  etc.) gets same border-color
+$jb-structure-border-color: var(--#{$jb-prefix}structure-border-color);
+
+//All elements (buttons, input etc)
+// HER> $jb-element-border-color                    : var(--#{$jb-prefix}element-border-color);
+// HER> $jb-element-hover-border-color              : var(--#{$jb-prefix}element-hover-border-color);
+// HER> $jb-element-active-and-focus-border-color  : var(--#{$jb-prefix}element-active-and-focus-border-color);
+
+$element-border-color                    : $gray-500;
+$jb-element-border-color                 : $element-border-color;
+$jb-element-hover-border-color           : tint-color($element-border-color, $btn-hover-border-tint-amount);
+$jb-element-active-and-focus-border-color: tint-color($element-border-color, $btn-active-border-tint-amount);
+
+
+
+
 
 $input-border-color      : $jb-element-border-color;
-$input-focus-border-color: $jb-element-active-and-focus--border-color;
+$input-focus-border-color: $jb-element-active-and-focus-border-color;
 
 $form-check-input-border                : #{$border-width} solid #{$jb-element-border-color};
 $form-check-input-checked-border-color  : $jb-element-border-color;
 
 $pagination-border-color         : $jb-element-border-color;
 $pagination-hover-border-color   : $jb-element-hover-border-color;
-$pagination-active-border-color  : $jb-element-active-and-focus--border-color;
+$pagination-active-border-color  : $jb-element-active-and-focus-border-color;
 $pagination-disabled-border-color: $pagination-border-color;
 
-
-// All "Structure" (table, accordion, thumbnail, headers etc.) gets same border-color
-$jb-structure-border-color        : var(--#{$jb-prefix}structure-border-color);
 
 $border-color                     : $jb-structure-border-color;
 $toast-header-border-color        : $jb-structure-border-color;
@@ -135,11 +147,11 @@ $nav-tabs-border-color            : $jb-structure-border-color;
 $nav-tabs-link-hover-border-color : $jb-structure-border-color;
 $nav-tabs-link-active-border-color: $jb-structure-border-color;
 
+$border-color-translucent: $jb-structure-border-color;
 
-//All containers (dropdown, card, popover, popover-arrow, toast (= alerts), modal) gets same border-color
-$jb-container-border-color: var(--#{$jb-prefix}container-border-color);
 
-$border-color-translucent: $jb-container-border-color;
+$modal-content-border-color : $jb-container-border-color;
+$popover-border-color       : $jb-container-border-color;
 
 
 /***********************************************

@@ -60,15 +60,11 @@ Contains global scss- and css-variable
     --#{$prefix}footer-padding-y    : #{$jb-padding-y};
     --#{$prefix}footer-padding-x    : #{$jb-padding-x};
 
+    //Structure border-color (table, accordion, thumbnail, headers, dropdown, card etc.)
+    --#{$jb-prefix}structure-border-color: #{$gray-400}; // = default for $border-color;
 
-    //Border-color
-    $default-border-color: #{$gray-300}; // = default fof $border-color;
-
-    //Structure border-color (table, accordion, thumbnail, headers etc.)
-    --#{$jb-prefix}structure-border-color: #{$default-border-color};
-
-    //Container border-color (dropdown, card, popover, popover-arrow, toast (= alerts), modal)
-    --#{$jb-prefix}container-border-color: #{$default-border-color};
+    //Container border-color (popover, popover-arrow, toast (= alerts), modal)
+    --#{$jb-prefix}container-border-color: #{$gray-900};
 
 
 
