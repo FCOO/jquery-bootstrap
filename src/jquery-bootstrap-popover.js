@@ -101,10 +101,18 @@
                     ._bsAddHtml( options.footer );
 
         //If trigger == 'context' or 'contextmenu' use 'manual' and add event
+        //In Bootstrap 5 'show' -> 'show' do not work => Need to keep track of state
         if ((options.trigger == 'context') || (options.trigger == 'contextmenu')){
             options.trigger = 'manual';
+            this.on('show.bs.popover', function(){
+                $this.popoverShown = true;
+            });
+            this.on('hide.bs.popover', function(){
+                $this.popoverShown = false;
+            });
             this.on('contextmenu.jbs.popover', function(){
-                $this.popover('show');
+                if (!$this.popoverShown)
+                    $this.popover('show');
                 return false;
             });
         }
