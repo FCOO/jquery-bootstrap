@@ -97,3 +97,31 @@ Adjust padding and font-size for header and footer
     @include _header-content-footer-variant($parent, 'xs');
 }
 
+
+/************************************************************
+BUTTON-VARIANT
+button-text-color-variant
+button-border-color-variant
+button-background-color-variant
+Adjust text-, border-, and background-color for a button
+************************************************************/
+@mixin button-text-color-variant( $color ){
+    //Text-color
+    --#{$prefix}btn-color         : #{$color};
+    --#{$prefix}btn-hover-color   : #{tint-color($color, $btn-hover-border-tint-amount)};
+    --#{$prefix}btn-active-color  : #{tint-color($color, $btn-active-border-tint-amount)};
+    --#{$prefix}btn-disabled-color: #{$color};
+}
+@mixin button-border-color-variant( $border-color ){
+    //Border-color
+    --#{$prefix}btn-border-color        : #{$border-color};
+    --#{$prefix}btn-hover-border-color  : #{tint-color($border-color, $btn-hover-border-tint-amount)};
+    --#{$prefix}btn-active-border-color : #{tint-color($border-color, $btn-active-border-tint-amount)};
+}
+
+@mixin button-background-color-variant( $bg-color ){
+    //Background-color
+    --#{$prefix}btn-bg       : #{$bg-color};
+    --#{$prefix}btn-hover-bg : #{tint-color($bg-color, $btn-hover-bg-tint-amount)};
+    --#{$prefix}btn-active-bg: #{tint-color($bg-color, $btn-active-bg-tint-amount)};
+}

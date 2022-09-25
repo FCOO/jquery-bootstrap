@@ -112,17 +112,10 @@ $jb-container-border-color: var(--#{$jb-prefix}container-border-color);
 $jb-structure-border-color: var(--#{$jb-prefix}structure-border-color);
 
 //All elements (buttons, input etc)
-// HER> $jb-element-border-color                    : var(--#{$jb-prefix}element-border-color);
-// HER> $jb-element-hover-border-color              : var(--#{$jb-prefix}element-hover-border-color);
-// HER> $jb-element-active-and-focus-border-color  : var(--#{$jb-prefix}element-active-and-focus-border-color);
-
 $element-border-color                    : $gray-500;
 $jb-element-border-color                 : $element-border-color;
 $jb-element-hover-border-color           : tint-color($element-border-color, $btn-hover-border-tint-amount);
 $jb-element-active-and-focus-border-color: tint-color($element-border-color, $btn-active-border-tint-amount);
-
-
-
 
 
 $input-border-color      : $jb-element-border-color;

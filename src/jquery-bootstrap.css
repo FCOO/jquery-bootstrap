@@ -8184,6 +8184,13 @@ Varients of different properties
 HEADER and FOOTER-VARIANT
 Adjust padding and font-size for header and footer
 ************************************************************/
+/************************************************************
+BUTTON-VARIANT
+button-text-color-variant
+button-border-color-variant
+button-background-color-variant
+Adjust text-, border-, and background-color for a button
+************************************************************/
 /***********************************************
 ROOT
 ************************************************/
@@ -8815,12 +8822,6 @@ class="active" or "checked" when selected
 
 /************************************************************
 BUTTON
-************************************************************/
-/************************************************************
-button-text-color-variant
-button-border-color-variant
-button-background-color-variant
-Adjust text-, border-, and background-color for a button
 ************************************************************/
 /************************************************************
 Including size eXtra-Small .btn-xs and btn-group-xs as in Bootstrap 5
