@@ -94,7 +94,7 @@ HEADER-CONTENT
             border-radius: 50%;
 
             &:hover, &:active {
-                box-shadow: 0px 0px 5px 0px var(--#{$jb-prefix}header-color);
+                box-shadow: 0px 0px 3px 0px var(--#{$jb-prefix}header-color);
             }
 
             //Special version for warning-icon: yellow background white exclamation

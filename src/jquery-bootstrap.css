@@ -9159,7 +9159,7 @@ HEADER-CONTENT
       .header-content .header-icon-container .header-icon.hidden {
         display: none; }
       .header-content .header-icon-container .header-icon:hover, .header-content .header-icon-container .header-icon:active {
-        box-shadow: 0px 0px 5px 0px var(--jb-header-color); }
+        box-shadow: 0px 0px 3px 0px var(--jb-header-color); }
       .header-content .header-icon-container .header-icon.header-icon-warning .middle {
         font-size: .6em;
         position: relative;
