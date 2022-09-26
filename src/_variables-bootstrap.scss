@@ -70,12 +70,6 @@ $jb-element-active-color  : #{tint-color($jb-element-color, $btn-active-border-t
 $jb-element-disabled-color: $jb-element-color;
 
 
-//$jb-icon-color = Color of icons in modal-header etc.
-$jb-icon-color         : $gray-600;
-$jb-icon-hover-color   : #{shade-color($jb-icon-color, $btn-hover-border-tint-amount)};
-$jb-icon-active-color  : #{shade-color($jb-icon-color, $btn-active-border-tint-amount)};
-
-
 //Normal
 $body-color         : $jb-element-color;
 $link-color         : $jb-element-color;

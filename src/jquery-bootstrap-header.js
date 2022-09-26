@@ -110,8 +110,11 @@
                     classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
 
                 if (iconOptions && iconOptions.onClick){
+                    var icon = iconOptions.icon || $.bsHeaderIcons[id];
+                    icon = $.isArray(icon) ? icon : [icon];
+
                     $._bsCreateIcon(
-                        iconOptions.icon || $.bsHeaderIcons[id],
+                        icon,
                         $iconContainer,
                         iconOptions.title || classAndTitle.title || '',
                         (iconOptions.className || '') + ' header-icon ' + (classAndTitle.class || '')

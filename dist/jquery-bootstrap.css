@@ -8236,9 +8236,6 @@ Contains global scss- and css-variable
   --jb-inner-header-bg: #f0f2f4;
   --jb-footer-color: #212529;
   --jb-footer-bg: #f8f9fa;
-  --jb-icon-color: #6c757d;
-  --jb-icon-hover-color: #616971;
-  --jb-icon-active-color: #616971;
   --bs-footer-font-size: 0.875rem;
   --bs-footer-padding-y: 0.375rem;
   --bs-footer-padding-x: 0.375rem;
@@ -9157,13 +9154,12 @@ HEADER-CONTENT
       width: 1em;
       text-align: center;
       cursor: pointer;
-      color: var(--jb-icon-color); }
+      color: var(--jb-header-color);
+      border-radius: 50%; }
       .header-content .header-icon-container .header-icon.hidden {
         display: none; }
-      .header-content .header-icon-container .header-icon:hover {
-        color: var(--jb-icon-hover-color); }
-      .header-content .header-icon-container .header-icon:active {
-        color: var(--jb-icon-active-color); }
+      .header-content .header-icon-container .header-icon:hover, .header-content .header-icon-container .header-icon:active {
+        box-shadow: 0px 0px 5px 0px var(--jb-header-color); }
       .header-content .header-icon-container .header-icon.header-icon-warning .middle {
         font-size: .6em;
         position: relative;

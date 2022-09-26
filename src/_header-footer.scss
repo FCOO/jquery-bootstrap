@@ -81,6 +81,7 @@ HEADER-CONTENT
             line-height: 1em;
         }
 
+
         .header-icon {
             //Common style
             width      : 1em;
@@ -89,9 +90,12 @@ HEADER-CONTENT
 
             &.hidden   { display: none; }
 
-            color: var(--#{$jb-prefix}icon-color);
-            &:hover  { color: var(--#{$jb-prefix}icon-hover-color);  }
-            &:active { color: var(--#{$jb-prefix}icon-active-color); }
+            color: var(--#{$jb-prefix}header-color);
+            border-radius: 50%;
+
+            &:hover, &:active {
+                box-shadow: 0px 0px 5px 0px var(--#{$jb-prefix}header-color);
+            }
 
             //Special version for warning-icon: yellow background white exclamation
             &.header-icon-warning {
