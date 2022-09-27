@@ -14,7 +14,7 @@
 (function ($, window/*, document, undefined*/) {
 	"use strict";
 
-    $.bsZIndexModalBackdrop = 1040; // zindexModalBackdrop = 1040, //MUST be equal to $zindex-modal-backdrop in bootstrap/scss/_variables.scss
+    $.bsZIndexModalBackdrop = 1050; //MUST be equal to $zindex-modal-backdrop in bootstrap/scss/_variables.scss
 
     var zindexAllwaysOnTop  = 9999,
         modalBackdropLevels = 0,
