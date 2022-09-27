@@ -212,9 +212,10 @@ not-first child assuming the previous sibling element
 is next to it.
 In jquery-bootstrap the previous sibling
 can be the label => still need round left corners
+The selection in Bootstrap is not pretty => not pretty here
 ***********************************************/
-.input-group > .label-outside + * {
-    margin-left              : initial !important;
+.input-group > .label-outside + *:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){
+    margin-left              : initial;
     border-top-left-radius   : var(--bs-btn-border-radius) !important;
     border-bottom-left-radius: var(--bs-btn-border-radius) !important;
 }
