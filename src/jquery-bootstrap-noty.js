@@ -103,7 +103,6 @@
         theme: 'jquery-bootstrap'
     });
 
-
     var defaultNotyOptions = {
         layout   : 'topCenter',
         type     : 'info',

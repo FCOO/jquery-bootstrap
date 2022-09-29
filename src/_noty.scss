@@ -179,9 +179,21 @@ Is a modification to Bootstrap modal-dialog-class
         animation-duration: .5s;
     }
 
+
+    .modal-content {
+        color           : var(--#{$prefix}alert-color);
+        background-color: var(--#{$prefix}alert-bg);
+    }
+
+    .header-content {
+        --#{$jb-prefix}header-bg   : rgba(0,0,0, .1);
+        --#{$jb-prefix}header-color: var(--#{$prefix}alert-color);
+    }
+
     .modal-body.noty_body {
-        color: var(--bs-alert-color);
-        background-color: var(--bs-alert-bg);
+        color           : inherit;
+        background-color: transparent;
+
         * {
             white-space: pre-wrap;
             word-break: break-word;

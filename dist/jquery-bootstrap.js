@@ -4615,7 +4615,6 @@ jquery-bootstrap-modal-promise.js
         theme: 'jquery-bootstrap'
     });
 
-
     var defaultNotyOptions = {
         layout   : 'topCenter',
         type     : 'info',
