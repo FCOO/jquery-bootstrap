@@ -77,6 +77,7 @@
     <script src="../src/jquery-bootstrap-modal-file.js"></script>
     <script src="../src/jquery-bootstrap-list.js"></script>
     <script src="../src/jquery-bootstrap-form.js"></script>
+    <script src="../src/jquery-bootstrap-form-validation.js"></script>
 	<script src="../src/jquery-bootstrap-table.js"></script>
 	<script src="../src/jquery-bootstrap-modal.js"></script>
 	<script src="../src/jquery-bootstrap-modal-backdrop.js"></script>
@@ -128,6 +129,7 @@ $('body').on('wheel', function(e){
         i18next.init();
         i18next.changeLanguage('da');
         i18next.options.fallbackLng = i18next.language == 'da' ? 'en' : 'da';
+        i18next.languages = ['da', 'en'];
 
         $.valueFormat.add({
             id: 'myNumberFormat',
@@ -1292,7 +1294,10 @@ width: 543,
                                     type:'checkbox', text: 'Vælg mig'
                                 },
                                 {
-                                    type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button', icon:'fa-calculator'}
+                                    type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', 
+
+                                    after : {type:'button', text:{da:'kr.', en:'£'}}, 
+                                    before: {type:'button', icon:'fa-calculator'}
                                 },
                                 {
                                     type: 'select', placeholder:"Placeholder", label:'Label',
@@ -1632,6 +1637,7 @@ width: 543,
                                                 {id:'mySelection4', type:'checkbox', text: 'Vælg mig #4', noValidation: true},
                                                 {
                                                     id:'formId2', validators: 'notEmpty _MYvalidatorName', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)',
+                                                    validators: 'notEmpty',  
                                                     after : {type:'button', square: true, text:{da:'kr.', en:'£'}}, before:    {type:'button', icon:'fa-calculator', square: true}
                                                 },
                                             ]
@@ -1684,7 +1690,11 @@ width: 543,
                                             id:'formId3', type:'input', inputmask:{"mask": "(999) 999-9999"}, placeholder:'Placeholder (with inputmask)', label: 'Label (with inputmask)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {           type:'button',  icon:'fa-calculator'}
                                         },
                                         {
-                                            id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {           type:'button',  icon:'fa-calculator'}
+                                            id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', 
+                                            validators: 'required',
+
+                                            after : {type:'button',  text:{da:'kr.', en:'£'}}, 
+                                            before: {type:'button',  icon:'fa-calculator'}
                                         },
 
                                     ]
@@ -1708,6 +1718,53 @@ width: 543,
                 //TEST console.log('mySlider=', testModalForm.getInput('mySlider') );
                 testModalForm.edit(myData);
                 myData.theCheckBox = false;
+            });
+
+        //************************************************************************************
+        var testModalFormValidation = null;
+        var myDataValidation = {
+
+            };
+        $('<button>Form-Validation</button>')
+            .appendTo( $body)
+            .on('click', function(){
+                testModalFormValidation = testModalFormValidation || $.bsModalForm({
+                    id: 'formId',
+                    show: false,
+                    header: 'Form - Validation',
+// HER>                     height: '200px',
+
+                    onSubmit: function( data ){ 
+                        console.log( 'SUBMIT form-validation=', data ); 
+                        myDataValidation = data; 
+                    },
+                    scroll: true,
+                    content: [
+                        {
+                            id:'value1', type:'input', 
+                            inputmask:{_mask: "(999) 999-9999"}, _placeholder:'Placeholder (with inputmask)', label: 'Label (required)', 
+                            after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button',  icon:'fa-calculator'},
+                            validators: 'required'
+                        },{
+                            id:'value2', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length=3-10)', 
+                            validators: {type: 'length', min:3, max:10},
+                        },{
+                            id:'value3', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length>=5)', 
+                            validators: {type: 'length', min:5},
+                        },{
+                            id:'value4', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length<=15)', 
+                            validators: {type: 'length', max:15},
+                        },{
+                            id:'value5', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length=7 and small)',
+                            validators: {type: 'length', min: 7, max:7},
+                        },
+
+
+
+                    ]
+                });
+
+                testModalFormValidation.edit(myDataValidation);
             });
 
         //************************************************************************************

@@ -793,7 +793,7 @@
                         .toggleClass('line-before',          !!options.lineBefore)
                         .toggleClass('line-after',           !!options.lineAfter)
 
-                        .toggleClass('no-validation',        !!(noValidation || options.noValidation))
+                        .toggleClass('no-validation',        !!(noValidation || options.noValidation))  //HER skal den bruges hvis der bruges tooltips til validation errors?
 
                         .appendTo( $parent );
             }

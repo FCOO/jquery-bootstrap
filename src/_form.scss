@@ -221,59 +221,51 @@ The selection in Bootstrap is not pretty => not pretty here
 }
 
 /************************************************************
-FORMVALIDATION
-Style for formValidation (via fcoo-form-validation)
+VALIDATION
+Adjust to css in
 input-group-container inside a <form class="form-validation"> gets special style for validation-state and messages
 ************************************************************/
-//modal-content with error in fields
-.modal-content.modal-has-warning {
-    border: 1px solid $red;
-    @include box-shadow(0 .25rem .5rem rgba($red, .5)); //As $modal-content-box-shadow-xs  with $red instead of $black
-}
-
-@include media-breakpoint-up(sm) {
-    .modal-content.modal-has-warning {
-        @include box-shadow(0 .5rem 1rem rgba($red, .5)); //as $modal-content-box-shadow-sm-up with $red instead of $black
-    }
-}
-
 form.form-validation {
-    .input-group-container {
-        .form-control-feedback {
-            line-height   : 1;
-            padding-top   : 0;
-            padding-bottom: 0;
-        }
 
-         $padding-factor: 2; //1.6;
-        --#{$prefix}form-control-feedback-height: calc( var(--#{$prefix}input-font-size) + #{$padding-factor} * var(--#{$prefix}input-padding-y) );
+    //Remove valid/invalid-icon on right side of input
+    input.form-control {
+        padding-right: var(--#{$prefix}input-padding-x) !important;
+    }
 
-        padding-top   : var(--#{$prefix}input-padding-y);
-        padding-bottom: var(--#{$prefix}form-control-feedback-height);
+    .invalid-tooltip {
+        @extend .alert-danger;
+        color           : var(--#{$prefix}alert-color);
+        background-color: var(--#{$prefix}alert-bg);
 
-        &.has-warning {
-            padding-bottom: 0px;
-        }
+        //Same font-sixe as labels
+        font-size       : var(--bs-input-label-font-size);
 
-        &.no-validation {
-            padding-bottom: var(--#{$prefix}input-padding-y);
-        }
+        --#{$jb-prefix}invalid-tooltip-padding: #{$jb-padding-x-sm} #{$jb-padding-y-sm};
+        padding: var(--#{$jb-prefix}invalid-tooltip-padding);
 
-        .form-control-feedback {
-            height        : var(--#{$prefix}form-control-feedback-height);
-            font-size     : var(--#{$prefix}input-font-size);
-            color         : $red;
-            padding-left  : var(--#{$prefix}input-padding-x);
-            vertical-align: top;
-        }
+        --#{$jb-prefix}invalid-tooltip-border-radius: #{$jb-border-radius-sm};
+        border-radius: var(--#{$jb-prefix}invalid-tooltip-border-radius);
 
-        //Bug fix ? to prevent previous error to disappear when reused
-        &.has-warning .form-control-feedback[data-fv-result="INVALID"]{
-            display: inline-block !important;
-        }
+        --#{$jb-prefix}invalid-tooltip-left: #{$jb-padding-x};
+        left: var(--#{$jb-prefix}invalid-tooltip-left);
 
-        &.fv-do-not-validate {
-            visibility: hidden;
-        }
+        top: initial;
+    }
+
+    input.form-control:focus + .invalid-tooltip {
+        display: none;
     }
 }
+
+.modal-dialog.modal-dialog-sm, form.form-sm, .input-group-container-sm, .input-group-sm {
+    --#{$jb-prefix}invalid-tooltip-padding      : #{$jb-padding-x-xs} #{$jb-padding-y-xs};
+    --#{$jb-prefix}invalid-tooltip-border-radius: #{$jb-border-radius-xs};
+    --#{$jb-prefix}invalid-tooltip-left         : #{$jb-padding-x-sm};
+}
+
+.modal-dialog.modal-dialog-sm, form.form-xs, .input-group-container-xs, .input-group-xs {
+    --#{$jb-prefix}invalid-tooltip-padding      : #{$jb-padding-x-xxs} #{$jb-padding-y-xxs};
+    --#{$jb-prefix}invalid-tooltip-border-radius: #{$jb-border-radius-xxs};
+    --#{$jb-prefix}invalid-tooltip-left         : #{$jb-padding-x-xs};
+}
+

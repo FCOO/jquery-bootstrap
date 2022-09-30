@@ -793,7 +793,7 @@
                         .toggleClass('line-before',          !!options.lineBefore)
                         .toggleClass('line-after',           !!options.lineAfter)
 
-                        .toggleClass('no-validation',        !!(noValidation || options.noValidation))
+                        .toggleClass('no-validation',        !!(noValidation || options.noValidation))  //HER skal den bruges hvis der bruges tooltips til validation errors?
 
                         .appendTo( $parent );
             }
@@ -1791,6 +1791,162 @@
 }(jQuery, this, document));
 ;
 /****************************************************************************
+jquery-bootstrap-form-validation.js
+
+Sets up default validation
+See
+https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation
+https://getbootstrap.com/docs/5.2/forms/validation/
+
+****************************************************************************/
+(function ($, i18next, window, document, undefined) {
+	"use strict";
+
+
+    /********************************************************************************
+    In the options for BsModalForm each input can have options.validators =
+        STRING or OBJ or []STRING/OBJ
+    OBJ = {type: STRING, OPTIONS}
+
+    type        OPTIONS
+    required
+    notEmpty
+
+    range       min: NUMBER, max: NUMBER //one or two given
+    length      min: NUMBER, max: NUMBER //one or two given
+    TODO: type        type: STRING
+    TODO: pattern     pattern: STRING
+
+    If a input has more than one validatior the error contains info on all validators
+    Eq. "The field is required - Must be between 1 and 10"
+
+    ********************************************************************************/
+
+    //Extend $.BsModalInput.prototype with methods to add validation to input-elements
+    $.extend($.BsModalInput.prototype, {
+        addValidation: function(){
+            var validators          = this.options.validators,
+                validatorList       = $.isArray(validators) ? validators : [validators],
+                $element            = this.getElement(),
+                $validationTooltip  = this.$validationTooltip =
+                    $('<div/>')
+                        .addClass('invalid-tooltip')
+                        .insertAfter($element);
+
+
+            var errorList   = [],
+                firstError  = {},
+                nextError   = {},
+                prop        = {},
+                attr        = {};
+
+
+            function range(validator, postfix, minText, maxText, minMaxText, exactlyText){
+                var min = validator.min,
+                    max = validator.max;
+                nextError =
+                    min === undefined ? maxText :
+                    max === undefined ? minText :
+                    min == max ? exactlyText :
+                    minMaxText;
+                i18next.languages.forEach(function(lang){
+                    nextError[lang] = nextError[lang] ? nextError[lang].replace('%min', min).replace('%max', max) : '';
+                });
+
+                if (min !== undefined){
+                    attr['min'+postfix] = min;
+                    prop.required = true;
+                }
+
+                if (max !== undefined)
+                    attr['max'+postfix] = max;
+            }
+
+            validatorList.forEach(function(validator){
+                validator = typeof validator == 'string' ? {type: validator} : validator;
+                nextError = '';
+                switch (validator.type.toUpperCase()){
+                    case 'REQUIRED':
+                    case 'NOTEMPTY' :
+                        prop.required = true;
+                        firstError = {da: "Feltet skal udfyldes", en: "The field is required"};
+                        break;
+
+                    case 'RANGE' :
+                         range(validator, '',
+                            {da: 'Skal mindst være %min',         en:'No less that %min'},              //minText
+                            {da: 'Må højest være %max',           en:'No more than %max'},              //maxText
+                            {da: 'Skal være mellem %min og %max', en:'Must be between %min and %max'},  //minMaxText
+                            {da: 'Skal være præcis %min',         en:'Must be exactly %min'}            //exactlyText
+                         );
+                        break;
+
+                    case 'LENGTH' :
+                        range(validator, 'length',
+                            {da: 'Skal mindst være %min tegn lang',         en:'No less that %min char long'},                  //minText
+                            {da: 'Må højest være %max tegn lang',           en:'No more than %max char long'},                  //maxText
+                            {da: 'Skal være mellem %min og %max tegn lang', en:'Must be between %min and %max characters long'},//minMaxText
+                            {da: 'Skal være præcis %min tegn lang',         en:'Must be exactly %mincharacters long'}           //exactlyText
+                        );
+                        break;
+                }
+                if (nextError)
+                    errorList.push(nextError);
+            });
+
+            $element.prop(prop);
+            $element.attr(attr);
+
+            if (firstError)
+                errorList.unshift(firstError);
+            var errorText = {};
+            errorList.forEach(function(error){
+                i18next.languages.forEach(function(lang){
+                    var langText = errorText[lang] || '';
+                    if (error[lang])
+                        langText = langText + (langText.length ? '&nbsp;- ' : '') + error[lang];
+                    errorText[lang] = langText;
+                });
+            });
+            $validationTooltip._bsAddHtml({text: errorText});
+        },
+    });
+
+}(jQuery, this.i18next, this, document));
+
+/*
+required                : Specifies whether a form field needs to be filled in before the form can be submitted.
+minlength and maxlength : Specifies the minimum and maximum length of textual data (strings).
+min and max             : Specifies the minimum and maximum values of numerical input types.
+type                    : Specifies whether the data needs to be a number, an email address, or some other specific preset type.
+pattern                 : Specifies a regular expression that defines a pattern the entered data needs to follow.
+
+
+The following error-messages are taken from form-validation (not used anymore)
+between     : {default: "Please enter a value between %s and %s", notInclusive: "Please enter a value between %s and %s strictly"}
+callback    : {default: "Please enter a valid value"}
+choice      : {default: "Please enter a valid value", less: "Please choose %s options at minimum", more: "Please choose %s options at maximum", between: "Please choose %s - %s options"}
+color       : {default: "Please enter a valid color"}
+creditCard  : {default: "Please enter a valid credit card number"}
+date        : {default: "Please enter a valid date", min: "Please enter a date after %s", max: "Please enter a date before %s", range: "Please enter a date in the range %s - %s"}
+different   : {default: "Please enter a different value"}
+digits      : {default: "Please enter only digits"}
+emailAddress: {default: "Please enter a valid email address"}
+file        : {default: "Please choose a valid file"}
+greaterThan : {default: "Please enter a value greater than or equal to %s", notInclusive: "Please enter a value greater than %s"}
+identical   : {default: "Please enter the same value"}
+integer     : {default: "Please enter a valid number"}
+lessThan    : {default: "Please enter a value less than or equal to %s", notInclusive: "Please enter a value less than %s"}
+notEmpty    : {default: "Please enter a value"}
+numeric     : {default: "Please enter a valid float number"}
+promise     : {default: "Please enter a valid value"}
+regexp      : {default: "Please enter a value matching the pattern"}
+remote      : {default: "Please enter a valid value"}
+stringLength: {default: "Please enter a value with valid length", less: "Please enter less than %s characters", more: "Please enter more than %s characters", between: "Please enter value between %s and %s characters long"}
+uri         : {default: "Please enter a valid URI"}
+*/
+;
+/****************************************************************************
 	jquery-bootstrap-form.js
 
 	(c) 2018, FCOO
@@ -1831,7 +1987,16 @@
         this.options.id = 'bsInputId' + inputId++;
     }
 
-    BsModalInput.prototype = {
+
+    /*******************************************************
+    Export to jQuery
+    *******************************************************/
+    $.BsModalInput = BsModalInput;
+    $.bsModalInput = function( options ){
+        return new $.BsModalInput( options );
+    };
+
+    $.BsModalInput.prototype = {
         /*******************************************************
         getElement
         *******************************************************/
@@ -1873,7 +2038,7 @@
         /*******************************************************
         setValue
         *******************************************************/
-        setValue: function(value, validate){
+        setValue: function(value){
             var $elem = this.getElement(),
                 isSemiSelected;
 
@@ -1909,7 +2074,7 @@
                 case 'hidden'    : $elem.val( value );                  break;
             }
             this.onChanging();
-            return validate ? this.validate() : this;
+            return this;
         },
 
         /*******************************************************
@@ -1944,7 +2109,6 @@
         resetValue
         *******************************************************/
         resetValue: function( onlyResetValidation ){
-            this.modalForm._resetInputValidation( this );
             if (!onlyResetValidation)
                 return this.setValue( this.getResetValue() );
         },
@@ -1984,21 +2148,6 @@
             }
 
             return result === null ? this.getResetValue() : result;
-        },
-
-        /*******************************************************
-        addValidation - Add the validations
-        *******************************************************/
-        addValidation: function(){
-            this.modalForm._addInputValidation( this );
-        },
-
-        /*******************************************************
-        validate
-        *******************************************************/
-        validate: function(){
-            this.modalForm._validateInput( this );
-            return this;
         },
 
         /*******************************************************
@@ -2047,12 +2196,11 @@
                     this.getInputGroupContainer().css('visibility', show ? 'visible' : 'hidden');
 
                 this.getElement().prop('disabled', !show);
-
-                this.modalForm._enableInputValidation( this, show );
             }
             return this;
-        },
+        }
     }; //End of BsModalInput.prototype
+
 
     /************************************************************************
     *************************************************************************
@@ -2075,6 +2223,7 @@
         this.options.id = this.options.id || 'bsModalFormId' + formId++;
 
         this.options.onClose_user = this.options.onClose || function(){};
+        this.options.onShow = $.proxy( this.onShow, this );
         this.options.onClose = $.proxy( this.onClose, this );
 
         //this.input = simple object with all input-elements. Also convert element-id to unique id for input-element
@@ -2137,24 +2286,21 @@
         this.options.show = false; //Only show using method edit(...)
 
         //Create the form
-        this.$form = $('<form/>');
+        var $form = this.$form = $('<form novalidate/>');
         if (this.options.extended && this.options.useExtended){
-            this.$form._bsAppendContent( this.options.extended.content, this.options.contentContext, null, this.options );
-            this.options.extended.content = this.$form;
+            $form._bsAppendContent( this.options.extended.content, this.options.contentContext, null, this.options );
+            this.options.extended.content = $form;
         }
         else {
-            this.$form._bsAppendContent( this.options.content, this.options.contentContext, null, this.options );
-            this.options.content = this.$form;
+            $form._bsAppendContent( this.options.content, this.options.contentContext, null, this.options );
+            this.options.content = $form;
         }
-
-        if (this.options.formValidation)
-            this.$form.addClass('form-validation');
 
         //Create the modal
         this.$bsModal = $.bsModal( this.options );
 
         //Append the hidden submit-button the the form
-        this.$form.append( $hiddenSubmitButton );
+        $form.append( $hiddenSubmitButton );
 
         //Get the button used to submit the form
         var bsModalDialog = this.$bsModal.data('bsModalDialog'),
@@ -2162,16 +2308,17 @@
 
         this.$submitButton = $buttons[$buttons.length-1];
 
-        //Add the validator
-        this._addValidation();
 
         //Add the validations
         this._eachInput( function( input ){
-            input.addValidation();
+            if (input.options.validators){
+                input.addValidation();
+                $form.addClass('needs-validation form-validation');
+            }
         });
 
         //Add onSubmit
-        this._addOnSubmit( $.proxy(this.onSubmit, this) );
+        $form.on('submit', $.proxy(this.onSubmit, this) );
 
         return this;
     }
@@ -2200,12 +2347,11 @@
             if (tabIndexOrId !== undefined)
                 this.$bsModal.bsSelectTab(tabIndexOrId);
 
-            this.setValues( values, false, true, semiSelected );
+            this.setValues( values, true, semiSelected );
             this.originalValues = this.getValues();
 
             //Reset validation
             this.$bsModal.find(':disabled').prop('disabled', false );
-            this._resetValidation();
 
             this.showOrHide( null );
             this.isCreated = true;
@@ -2228,6 +2374,13 @@
             });
 
             return result;
+        },
+
+        /*******************************************************
+        onShow
+        *******************************************************/
+        onShow: function(){
+            this.$form.removeClass('was-validated');
         },
 
         /*******************************************************
@@ -2287,50 +2440,6 @@
 
 
         /*******************************************************
-        _addOnSubmit (*)
-        *******************************************************/
-        _addOnSubmit: function( onSubmitFunc ){
-            this.$form.on('submit', onSubmitFunc );
-        },
-
-        /*******************************************************
-        _addValidation (*)
-        *******************************************************/
-        _addValidation: function(){
-        },
-
-        /*******************************************************
-        _resetValidation (*)
-        *******************************************************/
-        _resetValidation: function(){
-        },
-
-        /*******************************************************
-        _addInputValidation (*)
-        *******************************************************/
-        _addInputValidation: function( /*bsModalInput*/ ){
-        },
-
-        /*******************************************************
-        _validateInput (*)
-        *******************************************************/
-        _validateInput: function( /*bsModalInput*/ ){
-        },
-
-        /*******************************************************
-        _resetInputValidation (*)
-        *******************************************************/
-        _resetInputValidation: function( /*bsModalInput*/ ){
-        },
-
-        /*******************************************************
-        _enableInputValidation (*)
-        *******************************************************/
-        _enableInputValidation: function( /*bsModalInput, enabled*/ ){
-        },
-
-
-        /*******************************************************
         _eachInput
         *******************************************************/
         _eachInput: function( func ){
@@ -2364,11 +2473,11 @@
         /*******************************************************
         setValues
         *******************************************************/
-        setValues: function(values, validate, resetUndefined){
+        setValues: function(values, resetUndefined){
             this._eachInput( function( input ){
                 var value = values[input.options.userId];
                 if ( value != undefined)
-                    input.setValue(value, validate);
+                    input.setValue(value);
                 else
                     if (resetUndefined)
                         input.resetValue();
@@ -2417,16 +2526,23 @@
         onSubmit = called when the form is valid and submitted
         *******************************************************/
         onSubmit: function( event/*, data*/ ){
-            this.options.onSubmit ? this.options.onSubmit( this.getValues() ) : null;
+            var form = this.$form.get(0);
 
-            this.$bsModal._close();
-            this.options.onClose_user();
-
-            event.preventDefault();
+            if (form.checkValidity()) {
+                this.options.onSubmit ? this.options.onSubmit( this.getValues() ) : null;
+                this.$bsModal._close();
+                this.options.onClose_user();
+                event.preventDefault();
+            }
+            else {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            this.$form.addClass('was-validated');
             return false;
         },
 
-    };
+    };  //end of $.BsModalForm.prototype
 }(jQuery, this, document));
 
 

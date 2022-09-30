@@ -328,6 +328,20 @@ Card
 ***********************************************/
 //TODO
 
+/***********************************************
+Form
+***********************************************/
+//Form-validation: No icon on right side of input
+$form-feedback-icon-valid  : "";
+$form-feedback-icon-invalid: "";
+
+$form-feedback-tooltip-padding-y: 0px;
+$form-feedback-tooltip-padding-x: 0px;
+$form-feedback-tooltip-font-size: $jb-font-size-xxs;
+//$form-feedback-tooltip-line-height
+$form-feedback-tooltip-border-radius: $jb-border-radius-xxs;
+
+
 
 /***********************************************
 Toast

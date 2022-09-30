@@ -39,7 +39,16 @@
         this.options.id = 'bsInputId' + inputId++;
     }
 
-    BsModalInput.prototype = {
+
+    /*******************************************************
+    Export to jQuery
+    *******************************************************/
+    $.BsModalInput = BsModalInput;
+    $.bsModalInput = function( options ){
+        return new $.BsModalInput( options );
+    };
+
+    $.BsModalInput.prototype = {
         /*******************************************************
         getElement
         *******************************************************/
@@ -81,7 +90,7 @@
         /*******************************************************
         setValue
         *******************************************************/
-        setValue: function(value, validate){
+        setValue: function(value){
             var $elem = this.getElement(),
                 isSemiSelected;
 
@@ -117,7 +126,7 @@
                 case 'hidden'    : $elem.val( value );                  break;
             }
             this.onChanging();
-            return validate ? this.validate() : this;
+            return this;
         },
 
         /*******************************************************
@@ -152,7 +161,6 @@
         resetValue
         *******************************************************/
         resetValue: function( onlyResetValidation ){
-            this.modalForm._resetInputValidation( this );
             if (!onlyResetValidation)
                 return this.setValue( this.getResetValue() );
         },
@@ -192,21 +200,6 @@
             }
 
             return result === null ? this.getResetValue() : result;
-        },
-
-        /*******************************************************
-        addValidation - Add the validations
-        *******************************************************/
-        addValidation: function(){
-            this.modalForm._addInputValidation( this );
-        },
-
-        /*******************************************************
-        validate
-        *******************************************************/
-        validate: function(){
-            this.modalForm._validateInput( this );
-            return this;
         },
 
         /*******************************************************
@@ -255,12 +248,11 @@
                     this.getInputGroupContainer().css('visibility', show ? 'visible' : 'hidden');
 
                 this.getElement().prop('disabled', !show);
-
-                this.modalForm._enableInputValidation( this, show );
             }
             return this;
-        },
+        }
     }; //End of BsModalInput.prototype
+
 
     /************************************************************************
     *************************************************************************
@@ -283,6 +275,7 @@
         this.options.id = this.options.id || 'bsModalFormId' + formId++;
 
         this.options.onClose_user = this.options.onClose || function(){};
+        this.options.onShow = $.proxy( this.onShow, this );
         this.options.onClose = $.proxy( this.onClose, this );
 
         //this.input = simple object with all input-elements. Also convert element-id to unique id for input-element
@@ -345,24 +338,21 @@
         this.options.show = false; //Only show using method edit(...)
 
         //Create the form
-        this.$form = $('<form/>');
+        var $form = this.$form = $('<form novalidate/>');
         if (this.options.extended && this.options.useExtended){
-            this.$form._bsAppendContent( this.options.extended.content, this.options.contentContext, null, this.options );
-            this.options.extended.content = this.$form;
+            $form._bsAppendContent( this.options.extended.content, this.options.contentContext, null, this.options );
+            this.options.extended.content = $form;
         }
         else {
-            this.$form._bsAppendContent( this.options.content, this.options.contentContext, null, this.options );
-            this.options.content = this.$form;
+            $form._bsAppendContent( this.options.content, this.options.contentContext, null, this.options );
+            this.options.content = $form;
         }
-
-        if (this.options.formValidation)
-            this.$form.addClass('form-validation');
 
         //Create the modal
         this.$bsModal = $.bsModal( this.options );
 
         //Append the hidden submit-button the the form
-        this.$form.append( $hiddenSubmitButton );
+        $form.append( $hiddenSubmitButton );
 
         //Get the button used to submit the form
         var bsModalDialog = this.$bsModal.data('bsModalDialog'),
@@ -370,16 +360,17 @@
 
         this.$submitButton = $buttons[$buttons.length-1];
 
-        //Add the validator
-        this._addValidation();
 
         //Add the validations
         this._eachInput( function( input ){
-            input.addValidation();
+            if (input.options.validators){
+                input.addValidation();
+                $form.addClass('needs-validation form-validation');
+            }
         });
 
         //Add onSubmit
-        this._addOnSubmit( $.proxy(this.onSubmit, this) );
+        $form.on('submit', $.proxy(this.onSubmit, this) );
 
         return this;
     }
@@ -408,12 +399,11 @@
             if (tabIndexOrId !== undefined)
                 this.$bsModal.bsSelectTab(tabIndexOrId);
 
-            this.setValues( values, false, true, semiSelected );
+            this.setValues( values, true, semiSelected );
             this.originalValues = this.getValues();
 
             //Reset validation
             this.$bsModal.find(':disabled').prop('disabled', false );
-            this._resetValidation();
 
             this.showOrHide( null );
             this.isCreated = true;
@@ -436,6 +426,13 @@
             });
 
             return result;
+        },
+
+        /*******************************************************
+        onShow
+        *******************************************************/
+        onShow: function(){
+            this.$form.removeClass('was-validated');
         },
 
         /*******************************************************
@@ -495,50 +492,6 @@
 
 
         /*******************************************************
-        _addOnSubmit (*)
-        *******************************************************/
-        _addOnSubmit: function( onSubmitFunc ){
-            this.$form.on('submit', onSubmitFunc );
-        },
-
-        /*******************************************************
-        _addValidation (*)
-        *******************************************************/
-        _addValidation: function(){
-        },
-
-        /*******************************************************
-        _resetValidation (*)
-        *******************************************************/
-        _resetValidation: function(){
-        },
-
-        /*******************************************************
-        _addInputValidation (*)
-        *******************************************************/
-        _addInputValidation: function( /*bsModalInput*/ ){
-        },
-
-        /*******************************************************
-        _validateInput (*)
-        *******************************************************/
-        _validateInput: function( /*bsModalInput*/ ){
-        },
-
-        /*******************************************************
-        _resetInputValidation (*)
-        *******************************************************/
-        _resetInputValidation: function( /*bsModalInput*/ ){
-        },
-
-        /*******************************************************
-        _enableInputValidation (*)
-        *******************************************************/
-        _enableInputValidation: function( /*bsModalInput, enabled*/ ){
-        },
-
-
-        /*******************************************************
         _eachInput
         *******************************************************/
         _eachInput: function( func ){
@@ -572,11 +525,11 @@
         /*******************************************************
         setValues
         *******************************************************/
-        setValues: function(values, validate, resetUndefined){
+        setValues: function(values, resetUndefined){
             this._eachInput( function( input ){
                 var value = values[input.options.userId];
                 if ( value != undefined)
-                    input.setValue(value, validate);
+                    input.setValue(value);
                 else
                     if (resetUndefined)
                         input.resetValue();
@@ -625,15 +578,22 @@
         onSubmit = called when the form is valid and submitted
         *******************************************************/
         onSubmit: function( event/*, data*/ ){
-            this.options.onSubmit ? this.options.onSubmit( this.getValues() ) : null;
+            var form = this.$form.get(0);
 
-            this.$bsModal._close();
-            this.options.onClose_user();
-
-            event.preventDefault();
+            if (form.checkValidity()) {
+                this.options.onSubmit ? this.options.onSubmit( this.getValues() ) : null;
+                this.$bsModal._close();
+                this.options.onClose_user();
+                event.preventDefault();
+            }
+            else {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            this.$form.addClass('was-validated');
             return false;
         },
 
-    };
+    };  //end of $.BsModalForm.prototype
 }(jQuery, this, document));
 

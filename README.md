@@ -586,6 +586,7 @@ Extends `options.content` with `id` and `onSubmit: function( data )`
 method `edit( data )` where `data = { id:value*N}` and `id` match a `options.content[].id`
 
 Description NOT complete. See `src/jquery-bootstrap-form.js` for more
+Validation of input: See `src/jquery-bootstrap-form-validation.js` for more
 
 <a name="modalfile"></a>
 ## ModalFile
