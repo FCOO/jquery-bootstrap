@@ -410,9 +410,9 @@
                     "capitalize"  : "text-capitalize",
 
                     //Weight
-                    "normal"      : "font-weight-normal",
-                    "bold"        : "font-weight-bold",
-                    "italic"      : "font-italic"
+                    "normal"      : "fw-normal",
+                    "bold"        : "fw-bold",
+                    "italic"      : "fst-italic"
                 };
 
             $.each( bsStyleClass, function( style, className ){
