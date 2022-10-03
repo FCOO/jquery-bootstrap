@@ -2341,10 +2341,14 @@ textarea.form-control-lg {
   @media (prefers-reduced-motion: reduce) {
     .btn {
       transition: none; } }
-  :not(.btn-check) + .btn:hover, .btn:first-child:hover {
+  .btn:hover {
     color: var(--bs-btn-hover-color);
     background-color: var(--bs-btn-hover-bg);
     border-color: var(--bs-btn-hover-border-color); }
+  .btn-check + .btn:hover {
+    color: var(--bs-btn-color);
+    background-color: var(--bs-btn-bg);
+    border-color: var(--bs-btn-border-color); }
   .btn:focus-visible {
     color: var(--bs-btn-hover-color);
     background-color: var(--bs-btn-hover-bg);
@@ -4176,6 +4180,7 @@ textarea.form-control-lg {
     display: none; }
 
 .toast-container {
+  --bs-toast-zindex: 1090;
   position: absolute;
   z-index: var(--bs-toast-zindex);
   width: max-content;
@@ -8747,10 +8752,14 @@ Bootstrap allready have the following classes
 .text-capitalize
 
 // Weight and italics
-
-.font-weight-normal
-.font-weight-bold
-.font-italic
+.fw-bold        Bold text
+.fw-bolder      Bolder weight text (relative to the parent element)
+.fw-semibold    Semibold weight text
+.fw-normal      Normal weight text
+.fw-light       Light weight text
+.fw-lighter     Lighter weight text (relative to the parent element)
+.fst-italic     Italic text
+.fst-normal     Text with normal font style>
 
 */
 .opacity-0 {

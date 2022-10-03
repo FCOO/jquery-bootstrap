@@ -17,10 +17,14 @@ Bootstrap allready have the following classes
 .text-capitalize
 
 // Weight and italics
-
-.font-weight-normal
-.font-weight-bold
-.font-italic
+.fw-bold        Bold text
+.fw-bolder      Bolder weight text (relative to the parent element)
+.fw-semibold    Semibold weight text
+.fw-normal      Normal weight text
+.fw-light       Light weight text
+.fw-lighter     Lighter weight text (relative to the parent element)
+.fst-italic     Italic text
+.fst-normal     Text with normal font style>
 
 */
 
