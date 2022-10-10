@@ -10910,7 +10910,7 @@ return jQuery;
 
 ;
 /*!
-  * Bootstrap v5.2.0 (https://getbootstrap.com/)
+  * Bootstrap v5.2.2 (https://getbootstrap.com/)
   * Copyright 2011-2022 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
@@ -10922,7 +10922,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): util/index.js
+   * Bootstrap (v5.2.2): util/index.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -11237,7 +11237,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): dom/event-handler.js
+   * Bootstrap (v5.2.2): dom/event-handler.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -11506,7 +11506,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): dom/data.js
+   * Bootstrap (v5.2.2): dom/data.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -11558,7 +11558,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): dom/manipulator.js
+   * Bootstrap (v5.2.2): dom/manipulator.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -11628,7 +11628,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): util/config.js
+   * Bootstrap (v5.2.2): util/config.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -11689,7 +11689,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): base-component.js
+   * Bootstrap (v5.2.2): base-component.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -11697,7 +11697,7 @@ return jQuery;
    * Constants
    */
 
-  const VERSION = '5.2.0';
+  const VERSION = '5.2.2';
   /**
    * Class definition
    */
@@ -11768,7 +11768,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): util/component-functions.js
+   * Bootstrap (v5.2.2): util/component-functions.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -11794,7 +11794,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): alert.js
+   * Bootstrap (v5.2.2): alert.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -11874,7 +11874,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): button.js
+   * Bootstrap (v5.2.2): button.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -11936,7 +11936,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): dom/selector-engine.js
+   * Bootstrap (v5.2.2): dom/selector-engine.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -12007,7 +12007,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): util/swipe.js
+   * Bootstrap (v5.2.2): util/swipe.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -12143,7 +12143,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): carousel.js
+   * Bootstrap (v5.2.2): carousel.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -12591,7 +12591,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): collapse.js
+   * Bootstrap (v5.2.2): collapse.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -13039,38 +13039,57 @@ return jQuery;
   var min = Math.min;
   var round = Math.round;
 
-  function getBoundingClientRect(element, includeScale) {
+  function getUAString() {
+    var uaData = navigator.userAgentData;
+
+    if (uaData != null && uaData.brands) {
+      return uaData.brands.map(function (item) {
+        return item.brand + "/" + item.version;
+      }).join(' ');
+    }
+
+    return navigator.userAgent;
+  }
+
+  function isLayoutViewport() {
+    return !/^((?!chrome|android).)*safari/i.test(getUAString());
+  }
+
+  function getBoundingClientRect(element, includeScale, isFixedStrategy) {
     if (includeScale === void 0) {
       includeScale = false;
     }
 
-    var rect = element.getBoundingClientRect();
+    if (isFixedStrategy === void 0) {
+      isFixedStrategy = false;
+    }
+
+    var clientRect = element.getBoundingClientRect();
     var scaleX = 1;
     var scaleY = 1;
 
-    if (isHTMLElement(element) && includeScale) {
-      var offsetHeight = element.offsetHeight;
-      var offsetWidth = element.offsetWidth; // Do not attempt to divide by 0, otherwise we get `Infinity` as scale
-      // Fallback to 1 in case both values are `0`
-
-      if (offsetWidth > 0) {
-        scaleX = round(rect.width) / offsetWidth || 1;
-      }
-
-      if (offsetHeight > 0) {
-        scaleY = round(rect.height) / offsetHeight || 1;
-      }
+    if (includeScale && isHTMLElement(element)) {
+      scaleX = element.offsetWidth > 0 ? round(clientRect.width) / element.offsetWidth || 1 : 1;
+      scaleY = element.offsetHeight > 0 ? round(clientRect.height) / element.offsetHeight || 1 : 1;
     }
 
+    var _ref = isElement(element) ? getWindow(element) : window,
+        visualViewport = _ref.visualViewport;
+
+    var addVisualOffsets = !isLayoutViewport() && isFixedStrategy;
+    var x = (clientRect.left + (addVisualOffsets && visualViewport ? visualViewport.offsetLeft : 0)) / scaleX;
+    var y = (clientRect.top + (addVisualOffsets && visualViewport ? visualViewport.offsetTop : 0)) / scaleY;
+    var width = clientRect.width / scaleX;
+    var height = clientRect.height / scaleY;
     return {
-      width: rect.width / scaleX,
-      height: rect.height / scaleY,
-      top: rect.top / scaleY,
-      right: rect.right / scaleX,
-      bottom: rect.bottom / scaleY,
-      left: rect.left / scaleX,
-      x: rect.left / scaleX,
-      y: rect.top / scaleY
+      width: width,
+      height: height,
+      top: y,
+      right: x + width,
+      bottom: y + height,
+      left: x,
+      x: x,
+      y: y
     };
   }
 
@@ -13165,8 +13184,8 @@ return jQuery;
 
 
   function getContainingBlock(element) {
-    var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
-    var isIE = navigator.userAgent.indexOf('Trident') !== -1;
+    var isFirefox = /firefox/i.test(getUAString());
+    var isIE = /Trident/i.test(getUAString());
 
     if (isIE && isHTMLElement(element)) {
       // In IE 9, 10 and 11 fixed elements containing block is always established by the viewport
@@ -13587,31 +13606,21 @@ return jQuery;
     return getBoundingClientRect(getDocumentElement(element)).left + getWindowScroll(element).scrollLeft;
   }
 
-  function getViewportRect(element) {
+  function getViewportRect(element, strategy) {
     var win = getWindow(element);
     var html = getDocumentElement(element);
     var visualViewport = win.visualViewport;
     var width = html.clientWidth;
     var height = html.clientHeight;
     var x = 0;
-    var y = 0; // NB: This isn't supported on iOS <= 12. If the keyboard is open, the popper
-    // can be obscured underneath it.
-    // Also, `html.clientHeight` adds the bottom bar height in Safari iOS, even
-    // if it isn't open, so if this isn't available, the popper will be detected
-    // to overflow the bottom of the screen too early.
+    var y = 0;
 
     if (visualViewport) {
       width = visualViewport.width;
-      height = visualViewport.height; // Uses Layout Viewport (like Chrome; Safari does not currently)
-      // In Chrome, it returns a value very close to 0 (+/-) but contains rounding
-      // errors due to floating point numbers, so we need to check precision.
-      // Safari returns a number <= 0, usually < -1 when pinch-zoomed
-      // Feature detection fails in mobile emulation mode in Chrome.
-      // Math.abs(win.innerWidth / visualViewport.scale - visualViewport.width) <
-      // 0.001
-      // Fallback here: "Not Safari" userAgent
+      height = visualViewport.height;
+      var layoutViewport = isLayoutViewport();
 
-      if (!/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+      if (layoutViewport || !layoutViewport && strategy === 'fixed') {
         x = visualViewport.offsetLeft;
         y = visualViewport.offsetTop;
       }
@@ -13705,8 +13714,8 @@ return jQuery;
     });
   }
 
-  function getInnerBoundingClientRect(element) {
-    var rect = getBoundingClientRect(element);
+  function getInnerBoundingClientRect(element, strategy) {
+    var rect = getBoundingClientRect(element, false, strategy === 'fixed');
     rect.top = rect.top + element.clientTop;
     rect.left = rect.left + element.clientLeft;
     rect.bottom = rect.top + element.clientHeight;
@@ -13718,8 +13727,8 @@ return jQuery;
     return rect;
   }
 
-  function getClientRectFromMixedType(element, clippingParent) {
-    return clippingParent === viewport ? rectToClientRect(getViewportRect(element)) : isElement(clippingParent) ? getInnerBoundingClientRect(clippingParent) : rectToClientRect(getDocumentRect(getDocumentElement(element)));
+  function getClientRectFromMixedType(element, clippingParent, strategy) {
+    return clippingParent === viewport ? rectToClientRect(getViewportRect(element, strategy)) : isElement(clippingParent) ? getInnerBoundingClientRect(clippingParent, strategy) : rectToClientRect(getDocumentRect(getDocumentElement(element)));
   } // A "clipping parent" is an overflowable container with the characteristic of
   // clipping (or hiding) overflowing elements with a position different from
   // `initial`
@@ -13742,18 +13751,18 @@ return jQuery;
   // clipping parents
 
 
-  function getClippingRect(element, boundary, rootBoundary) {
+  function getClippingRect(element, boundary, rootBoundary, strategy) {
     var mainClippingParents = boundary === 'clippingParents' ? getClippingParents(element) : [].concat(boundary);
     var clippingParents = [].concat(mainClippingParents, [rootBoundary]);
     var firstClippingParent = clippingParents[0];
     var clippingRect = clippingParents.reduce(function (accRect, clippingParent) {
-      var rect = getClientRectFromMixedType(element, clippingParent);
+      var rect = getClientRectFromMixedType(element, clippingParent, strategy);
       accRect.top = max(rect.top, accRect.top);
       accRect.right = min(rect.right, accRect.right);
       accRect.bottom = min(rect.bottom, accRect.bottom);
       accRect.left = max(rect.left, accRect.left);
       return accRect;
-    }, getClientRectFromMixedType(element, firstClippingParent));
+    }, getClientRectFromMixedType(element, firstClippingParent, strategy));
     clippingRect.width = clippingRect.right - clippingRect.left;
     clippingRect.height = clippingRect.bottom - clippingRect.top;
     clippingRect.x = clippingRect.left;
@@ -13834,6 +13843,8 @@ return jQuery;
     var _options = options,
         _options$placement = _options.placement,
         placement = _options$placement === void 0 ? state.placement : _options$placement,
+        _options$strategy = _options.strategy,
+        strategy = _options$strategy === void 0 ? state.strategy : _options$strategy,
         _options$boundary = _options.boundary,
         boundary = _options$boundary === void 0 ? clippingParents : _options$boundary,
         _options$rootBoundary = _options.rootBoundary,
@@ -13848,7 +13859,7 @@ return jQuery;
     var altContext = elementContext === popper ? reference : popper;
     var popperRect = state.rects.popper;
     var element = state.elements[altBoundary ? altContext : elementContext];
-    var clippingClientRect = getClippingRect(isElement(element) ? element : element.contextElement || getDocumentElement(state.elements.popper), boundary, rootBoundary);
+    var clippingClientRect = getClippingRect(isElement(element) ? element : element.contextElement || getDocumentElement(state.elements.popper), boundary, rootBoundary, strategy);
     var referenceClientRect = getBoundingClientRect(state.elements.reference);
     var popperOffsets = computeOffsets({
       reference: referenceClientRect,
@@ -14362,7 +14373,7 @@ return jQuery;
     var isOffsetParentAnElement = isHTMLElement(offsetParent);
     var offsetParentIsScaled = isHTMLElement(offsetParent) && isElementScaled(offsetParent);
     var documentElement = getDocumentElement(offsetParent);
-    var rect = getBoundingClientRect(elementOrVirtualElement, offsetParentIsScaled);
+    var rect = getBoundingClientRect(elementOrVirtualElement, offsetParentIsScaled, isFixed);
     var scroll = {
       scrollLeft: 0,
       scrollTop: 0
@@ -14716,7 +14727,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): dropdown.js
+   * Bootstrap (v5.2.2): dropdown.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -14786,8 +14797,9 @@ return jQuery;
       super(element, config);
       this._popper = null;
       this._parent = this._element.parentNode; // dropdown wrapper
+      // todo: v6 revert #37011 & change markup https://getbootstrap.com/docs/5.2/forms/input-group/
 
-      this._menu = SelectorEngine.findOne(SELECTOR_MENU, this._parent);
+      this._menu = SelectorEngine.next(this._element, SELECTOR_MENU)[0] || SelectorEngine.prev(this._element, SELECTOR_MENU)[0] || SelectorEngine.findOne(SELECTOR_MENU, this._parent);
       this._inNavbar = this._detectNavbar();
     } // Getters
 
@@ -15103,8 +15115,9 @@ return jQuery;
         return;
       }
 
-      event.preventDefault();
-      const getToggleButton = SelectorEngine.findOne(SELECTOR_DATA_TOGGLE$3, event.delegateTarget.parentNode);
+      event.preventDefault(); // todo: v6 revert #37011 & change markup https://getbootstrap.com/docs/5.2/forms/input-group/
+
+      const getToggleButton = this.matches(SELECTOR_DATA_TOGGLE$3) ? this : SelectorEngine.prev(this, SELECTOR_DATA_TOGGLE$3)[0] || SelectorEngine.next(this, SELECTOR_DATA_TOGGLE$3)[0] || SelectorEngine.findOne(SELECTOR_DATA_TOGGLE$3, event.delegateTarget.parentNode);
       const instance = Dropdown.getOrCreateInstance(getToggleButton);
 
       if (isUpOrDownEvent) {
@@ -15146,7 +15159,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): util/scrollBar.js
+   * Bootstrap (v5.2.2): util/scrollBar.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -15265,7 +15278,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): util/backdrop.js
+   * Bootstrap (v5.2.2): util/backdrop.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -15411,7 +15424,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): util/focustrap.js
+   * Bootstrap (v5.2.2): util/focustrap.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -15520,7 +15533,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): modal.js
+   * Bootstrap (v5.2.2): modal.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -15539,6 +15552,7 @@ return jQuery;
   const EVENT_SHOW$4 = `show${EVENT_KEY$4}`;
   const EVENT_SHOWN$4 = `shown${EVENT_KEY$4}`;
   const EVENT_RESIZE$1 = `resize${EVENT_KEY$4}`;
+  const EVENT_CLICK_DISMISS = `click.dismiss${EVENT_KEY$4}`;
   const EVENT_MOUSEDOWN_DISMISS = `mousedown.dismiss${EVENT_KEY$4}`;
   const EVENT_KEYDOWN_DISMISS$1 = `keydown.dismiss${EVENT_KEY$4}`;
   const EVENT_CLICK_DATA_API$2 = `click${EVENT_KEY$4}${DATA_API_KEY$2}`;
@@ -15731,20 +15745,22 @@ return jQuery;
         }
       });
       EventHandler.on(this._element, EVENT_MOUSEDOWN_DISMISS, event => {
-        if (event.target !== event.currentTarget) {
-          // click is inside modal-dialog
-          return;
-        }
+        // a bad trick to segregate clicks that may start inside dialog but end outside, and avoid listen to scrollbar clicks
+        EventHandler.one(this._element, EVENT_CLICK_DISMISS, event2 => {
+          if (this._element !== event.target || this._element !== event2.target) {
+            return;
+          }
 
-        if (this._config.backdrop === 'static') {
-          this._triggerBackdropTransition();
+          if (this._config.backdrop === 'static') {
+            this._triggerBackdropTransition();
 
-          return;
-        }
+            return;
+          }
 
-        if (this._config.backdrop) {
-          this.hide();
-        }
+          if (this._config.backdrop) {
+            this.hide();
+          }
+        });
       });
     }
 
@@ -15893,7 +15909,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): offcanvas.js
+   * Bootstrap (v5.2.2): offcanvas.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -16167,7 +16183,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): util/sanitizer.js
+   * Bootstrap (v5.2.2): util/sanitizer.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -16272,7 +16288,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): util/template-factory.js
+   * Bootstrap (v5.2.2): util/template-factory.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -16430,7 +16446,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): tooltip.js
+   * Bootstrap (v5.2.2): tooltip.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -16519,7 +16535,7 @@ return jQuery;
 
       this._isEnabled = true;
       this._timeout = 0;
-      this._isHovered = false;
+      this._isHovered = null;
       this._activeTrigger = {};
       this._popper = null;
       this._templateFactory = null;
@@ -16528,6 +16544,10 @@ return jQuery;
       this.tip = null;
 
       this._setListeners();
+
+      if (!this._config.selector) {
+        this._fixTitle();
+      }
     } // Getters
 
 
@@ -16556,24 +16576,12 @@ return jQuery;
       this._isEnabled = !this._isEnabled;
     }
 
-    toggle(event) {
+    toggle() {
       if (!this._isEnabled) {
         return;
       }
 
-      if (event) {
-        const context = this._initializeOnDelegatedTarget(event);
-
-        context._activeTrigger.click = !context._activeTrigger.click;
-
-        if (context._isWithActiveTrigger()) {
-          context._enter();
-        } else {
-          context._leave();
-        }
-
-        return;
-      }
+      this._activeTrigger.click = !this._activeTrigger.click;
 
       if (this._isShown()) {
         this._leave();
@@ -16590,6 +16598,10 @@ return jQuery;
 
       if (this.tip) {
         this.tip.remove();
+      }
+
+      if (this._element.getAttribute('data-bs-original-title')) {
+        this._element.setAttribute('title', this._element.getAttribute('data-bs-original-title'));
       }
 
       this._disposePopper();
@@ -16652,13 +16664,13 @@ return jQuery;
       }
 
       const complete = () => {
-        const previousHoverState = this._isHovered;
-        this._isHovered = false;
         EventHandler.trigger(this._element, this.constructor.eventName(EVENT_SHOWN$2));
 
-        if (previousHoverState) {
+        if (this._isHovered === false) {
           this._leave();
         }
+
+        this._isHovered = false;
       };
 
       this._queueCallback(complete, this.tip, this._isAnimated());
@@ -16689,7 +16701,7 @@ return jQuery;
       this._activeTrigger[TRIGGER_CLICK] = false;
       this._activeTrigger[TRIGGER_FOCUS] = false;
       this._activeTrigger[TRIGGER_HOVER] = false;
-      this._isHovered = false;
+      this._isHovered = null; // it is a trick to support manual triggering
 
       const complete = () => {
         if (this._isWithActiveTrigger()) {
@@ -16782,7 +16794,7 @@ return jQuery;
     }
 
     _getTitle() {
-      return this._resolvePossibleFunction(this._config.title) || this._config.originalTitle;
+      return this._resolvePossibleFunction(this._config.title) || this._element.getAttribute('data-bs-original-title');
     } // Private
 
 
@@ -16868,7 +16880,11 @@ return jQuery;
 
       for (const trigger of triggers) {
         if (trigger === 'click') {
-          EventHandler.on(this._element, this.constructor.eventName(EVENT_CLICK$1), this._config.selector, event => this.toggle(event));
+          EventHandler.on(this._element, this.constructor.eventName(EVENT_CLICK$1), this._config.selector, event => {
+            const context = this._initializeOnDelegatedTarget(event);
+
+            context.toggle();
+          });
         } else if (trigger !== TRIGGER_MANUAL) {
           const eventIn = trigger === TRIGGER_HOVER ? this.constructor.eventName(EVENT_MOUSEENTER) : this.constructor.eventName(EVENT_FOCUSIN$1);
           const eventOut = trigger === TRIGGER_HOVER ? this.constructor.eventName(EVENT_MOUSELEAVE) : this.constructor.eventName(EVENT_FOCUSOUT$1);
@@ -16896,19 +16912,10 @@ return jQuery;
       };
 
       EventHandler.on(this._element.closest(SELECTOR_MODAL), EVENT_MODAL_HIDE, this._hideModalHandler);
-
-      if (this._config.selector) {
-        this._config = { ...this._config,
-          trigger: 'manual',
-          selector: ''
-        };
-      } else {
-        this._fixTitle();
-      }
     }
 
     _fixTitle() {
-      const title = this._config.originalTitle;
+      const title = this._element.getAttribute('title');
 
       if (!title) {
         return;
@@ -16917,6 +16924,9 @@ return jQuery;
       if (!this._element.getAttribute('aria-label') && !this._element.textContent.trim()) {
         this._element.setAttribute('aria-label', title);
       }
+
+      this._element.setAttribute('data-bs-original-title', title); // DO NOT USE IT. Is only for backwards compatibility
+
 
       this._element.removeAttribute('title');
     }
@@ -16989,8 +16999,6 @@ return jQuery;
         };
       }
 
-      config.originalTitle = this._element.getAttribute('title') || '';
-
       if (typeof config.title === 'number') {
         config.title = config.title.toString();
       }
@@ -17009,10 +17017,12 @@ return jQuery;
         if (this.constructor.Default[key] !== this._config[key]) {
           config[key] = this._config[key];
         }
-      } // In the future can be replaced with:
+      }
+
+      config.selector = false;
+      config.trigger = 'manual'; // In the future can be replaced with:
       // const keysWithDifferentValues = Object.entries(this._config).filter(entry => this.constructor.Default[entry[0]] !== this._config[entry[0]])
       // `Object.fromEntries(keysWithDifferentValues)`
-
 
       return config;
     }
@@ -17052,7 +17062,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): popover.js
+   * Bootstrap (v5.2.2): popover.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -17135,7 +17145,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): scrollspy.js
+   * Bootstrap (v5.2.2): scrollspy.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -17166,14 +17176,16 @@ return jQuery;
     // TODO: v6 @deprecated, keep it for backwards compatibility reasons
     rootMargin: '0px 0px -25%',
     smoothScroll: false,
-    target: null
+    target: null,
+    threshold: [0.1, 0.5, 1]
   };
   const DefaultType$1 = {
     offset: '(number|null)',
     // TODO v6 @deprecated, keep it for backwards compatibility reasons
     rootMargin: 'string',
     smoothScroll: 'boolean',
-    target: 'element'
+    target: 'element',
+    threshold: 'array'
   };
   /**
    * Class definition
@@ -17234,7 +17246,14 @@ return jQuery;
 
     _configAfterMerge(config) {
       // TODO: on v6 target should be given explicitly & remove the {target: 'ss-target'} case
-      config.target = getElement(config.target) || document.body;
+      config.target = getElement(config.target) || document.body; // TODO: v6 Only for backwards compatibility reasons. Use rootMargin only
+
+      config.rootMargin = config.offset ? `${config.offset}px 0px -30%` : config.rootMargin;
+
+      if (typeof config.threshold === 'string') {
+        config.threshold = config.threshold.split(',').map(value => Number.parseFloat(value));
+      }
+
       return config;
     }
 
@@ -17270,8 +17289,8 @@ return jQuery;
     _getNewObserver() {
       const options = {
         root: this._rootElement,
-        threshold: [0.1, 0.5, 1],
-        rootMargin: this._getRootMargin()
+        threshold: this._config.threshold,
+        rootMargin: this._config.rootMargin
       };
       return new IntersectionObserver(entries => this._observerCallback(entries), options);
     } // The logic of selection
@@ -17316,11 +17335,6 @@ return jQuery;
           activate(entry);
         }
       }
-    } // TODO: v6 Only for backwards compatibility reasons. Use rootMargin only
-
-
-    _getRootMargin() {
-      return this._config.offset ? `${this._config.offset}px 0px -30%` : this._config.rootMargin;
     }
 
     _initializeTargetsAndObservables() {
@@ -17422,7 +17436,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): tab.js
+   * Bootstrap (v5.2.2): tab.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -17450,7 +17464,6 @@ return jQuery;
   const CLASS_DROPDOWN = 'dropdown';
   const SELECTOR_DROPDOWN_TOGGLE = '.dropdown-toggle';
   const SELECTOR_DROPDOWN_MENU = '.dropdown-menu';
-  const SELECTOR_DROPDOWN_ITEM = '.dropdown-item';
   const NOT_SELECTOR_DROPDOWN_TOGGLE = ':not(.dropdown-toggle)';
   const SELECTOR_TAB_PANEL = '.list-group, .nav, [role="tablist"]';
   const SELECTOR_OUTER = '.nav-item, .list-group-item';
@@ -17529,7 +17542,6 @@ return jQuery;
           return;
         }
 
-        element.focus();
         element.removeAttribute('tabindex');
         element.setAttribute('aria-selected', true);
 
@@ -17585,6 +17597,9 @@ return jQuery;
       const nextActiveElement = getNextActiveElement(this._getChildren().filter(element => !isDisabled(element)), event.target, isNext, true);
 
       if (nextActiveElement) {
+        nextActiveElement.focus({
+          preventScroll: true
+        });
         Tab.getOrCreateInstance(nextActiveElement).show();
       }
     }
@@ -17660,7 +17675,6 @@ return jQuery;
 
       toggle(SELECTOR_DROPDOWN_TOGGLE, CLASS_NAME_ACTIVE);
       toggle(SELECTOR_DROPDOWN_MENU, CLASS_NAME_SHOW$1);
-      toggle(SELECTOR_DROPDOWN_ITEM, CLASS_NAME_ACTIVE);
       outerElem.setAttribute('aria-expanded', open);
     }
 
@@ -17735,7 +17749,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): toast.js
+   * Bootstrap (v5.2.2): toast.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -17886,13 +17900,17 @@ return jQuery;
       switch (event.type) {
         case 'mouseover':
         case 'mouseout':
-          this._hasMouseInteraction = isInteracting;
-          break;
+          {
+            this._hasMouseInteraction = isInteracting;
+            break;
+          }
 
         case 'focusin':
         case 'focusout':
-          this._hasKeyboardInteraction = isInteracting;
-          break;
+          {
+            this._hasKeyboardInteraction = isInteracting;
+            break;
+          }
       }
 
       if (isInteracting) {
@@ -17952,7 +17970,7 @@ return jQuery;
 
   /**
    * --------------------------------------------------------------------------
-   * Bootstrap (v5.2.0): index.umd.js
+   * Bootstrap (v5.2.2): index.umd.js
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
    * --------------------------------------------------------------------------
    */
@@ -18443,6 +18461,13 @@ return jQuery;
         return new Logger(this.logger, _objectSpread(_objectSpread({}, {
           prefix: "".concat(this.prefix, ":").concat(moduleName, ":")
         }), this.options));
+      }
+    }, {
+      key: "clone",
+      value: function clone(options) {
+        options = options || this.options;
+        options.prefix = options.prefix || this.prefix;
+        return new Logger(this.logger, options);
       }
     }]);
 
@@ -19992,7 +20017,12 @@ return jQuery;
           var optionsString = "{".concat(c[1]);
           key = c[0];
           optionsString = this.interpolate(optionsString, clonedOptions);
-          optionsString = optionsString.replace(/'/g, '"');
+          var matchedSingleQuotes = optionsString.match(/'/g);
+          var matchedDoubleQuotes = optionsString.match(/"/g);
+
+          if (matchedSingleQuotes && matchedSingleQuotes.length % 2 === 0 && !matchedDoubleQuotes || matchedDoubleQuotes.length % 2 !== 0) {
+            optionsString = optionsString.replace(/'/g, '"');
+          }
 
           try {
             clonedOptions = JSON.parse(optionsString);
@@ -20124,6 +20154,21 @@ return jQuery;
     };
   }
 
+  function createCachedFormatter(fn) {
+    var cache = {};
+    return function invokeFormatter(val, lng, options) {
+      var key = lng + JSON.stringify(options);
+      var formatter = cache[key];
+
+      if (!formatter) {
+        formatter = fn(lng, options);
+        cache[key] = formatter;
+      }
+
+      return formatter(val);
+    };
+  }
+
   var Formatter = function () {
     function Formatter() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -20133,23 +20178,38 @@ return jQuery;
       this.logger = baseLogger.create('formatter');
       this.options = options;
       this.formats = {
-        number: function number(val, lng, options) {
-          return new Intl.NumberFormat(lng, options).format(val);
-        },
-        currency: function currency(val, lng, options) {
-          return new Intl.NumberFormat(lng, _objectSpread$4(_objectSpread$4({}, options), {}, {
+        number: createCachedFormatter(function (lng, options) {
+          var formatter = new Intl.NumberFormat(lng, options);
+          return function (val) {
+            return formatter.format(val);
+          };
+        }),
+        currency: createCachedFormatter(function (lng, options) {
+          var formatter = new Intl.NumberFormat(lng, _objectSpread$4(_objectSpread$4({}, options), {}, {
             style: 'currency'
-          })).format(val);
-        },
-        datetime: function datetime(val, lng, options) {
-          return new Intl.DateTimeFormat(lng, _objectSpread$4({}, options)).format(val);
-        },
-        relativetime: function relativetime(val, lng, options) {
-          return new Intl.RelativeTimeFormat(lng, _objectSpread$4({}, options)).format(val, options.range || 'day');
-        },
-        list: function list(val, lng, options) {
-          return new Intl.ListFormat(lng, _objectSpread$4({}, options)).format(val);
-        }
+          }));
+          return function (val) {
+            return formatter.format(val);
+          };
+        }),
+        datetime: createCachedFormatter(function (lng, options) {
+          var formatter = new Intl.DateTimeFormat(lng, _objectSpread$4({}, options));
+          return function (val) {
+            return formatter.format(val);
+          };
+        }),
+        relativetime: createCachedFormatter(function (lng, options) {
+          var formatter = new Intl.RelativeTimeFormat(lng, _objectSpread$4({}, options));
+          return function (val) {
+            return formatter.format(val, options.range || 'day');
+          };
+        }),
+        list: createCachedFormatter(function (lng, options) {
+          var formatter = new Intl.ListFormat(lng, _objectSpread$4({}, options));
+          return function (val) {
+            return formatter.format(val);
+          };
+        })
       };
       this.init(options);
     }
@@ -20167,6 +20227,11 @@ return jQuery;
       key: "add",
       value: function add(name, fc) {
         this.formats[name.toLowerCase().trim()] = fc;
+      }
+    }, {
+      key: "addCached",
+      value: function addCached(name, fc) {
+        this.formats[name.toLowerCase().trim()] = createCachedFormatter(fc);
       }
     }, {
       key: "format",
@@ -21117,6 +21182,11 @@ return jQuery;
         });
 
         var clone = new I18n(mergedOptions);
+
+        if (options.debug !== undefined || options.prefix !== undefined) {
+          clone.logger = clone.logger.clone(options);
+        }
+
         var membersToCopy = ['store', 'services', 'language'];
         membersToCopy.forEach(function (m) {
           clone[m] = _this8[m];
@@ -28370,357 +28440,6 @@ if (typeof define === 'function' && define.amd) {
 }(jQuery, this, document));
 ;
 /****************************************************************************
-    jquery-base-slider-handle,
-
-    (c) 2015, FCOO
-
-    https://github.com/fcoo/jquery-base-slider
-    https://github.com/fcoo
-
-****************************************************************************/
-(function (window/*, document, undefined*/) {
-    "use strict";
-
-    //Create baseSlider-namespace
-	window._baseSlider = window._baseSlider || {};
-	var ns = window._baseSlider;
-
-    /*******************************************************************
-    elementsOverlapping
-    Return true if $element1 and $element2 is overlapping horizontal
-    *******************************************************************/
-    function elementsOverlapping( $element1, $element2 ){
-        if ($element1 && $element2){
-            var rect1 = $element1.get(0).getBoundingClientRect(),
-                rect2 = $element2.get(0).getBoundingClientRect();
-            return ((rect1.left >= rect2.left) && (rect1.left <= rect2.right)) ||
-                    ((rect2.left >= rect1.left) && (rect2.left <= rect1.right));
-        }
-        return false;
-    }
-
-    /*******************************************************************
-    SliderHandle
-    Object to reprecent a 'handle' on the slider
-    The handle don't need to have a actual DOM-handle. The min and max-value of the slider
-    is also reprecented as a SliderHandle
-    The object contains the following items:
-        value   : A SliderValue-object reprecenting the value
-        $handle : $-object = the DOM handle (optional)
-        marker  : Object containing of tree $-object: $outer and $text (optional)
-
-    options
-        marker: [string] = class-name of the marker
-    *******************************************************************/
-    var SliderHandle = function( options ){
-        this.id      = options.id;
-        this.slider  = options.slider || options.value.slider;
-        options.value.slider = this.slider;
-        this.value   = ns.sliderValue( options.value );
-        this.$handle = !!options.$handle; //Set to boolean. Created in this.append
-        this.handleClassName = options.handleClassName || '';
-        this.handleCSS = options.handleCSS || {};
-        this.appended = false,
-
-        this.markerData = options.markerData || {};
-
-        this.markerClassName = options.marker;
-        this.marker  = !!this.markerClassName;
-
-        //overlappingHandleList = list of SliderHandle. If any of the marker in overlappingHandleList[xx] is overlapping this => this is hidden
-        this.overlappingHandleList = [];
-
-        //overlapHandleList = list of SliderHandle. this is overlapping all the marker in overlapHandleList[xx]
-        this.overlapHandleList = [];
-
-
-        this.draggingClassName = options.draggingClassName; //Classname for handler when it is being dragged MANGLER
-        this.lastLeftPercent = '';
-    };
-
-    SliderHandle.prototype = {
-        //addOverlap( handle ) - Set this to overlap handle
-        addOverlap: function( handle ){
-            if (this.marker && handle && handle.marker ){
-                this.overlapHandleList.push( handle );
-                handle.overlappingHandleList.push( this );
-            }
-        },
-
-        //append() - Create and append this.$handle and $.marker
-        append: function( $container ){
-            //Append handle
-            if (this.$handle)
-                this.$handle =
-                    $('<span/>')
-                        .addClass('handle '+this.id)
-                        .addClass(this.handleClassName)
-                        .css( this.handleCSS )
-                        .appendTo( $container );
-
-            //Append marker
-            if (this.marker){
-                this.marker = {};
-                //Outer div
-                this.marker.$outer =
-                    $('<div/>')
-                        .addClass('marker-outer')
-                        .addClass(this.markerClassName)
-                        .appendTo($container);
-                //Inner div
-                this.marker.$inner =
-                        $('<div/>')
-                            .addClass('marker')
-                            .appendTo(this.marker.$outer);
-                this.marker.$text =
-                        $('<span/>')
-                            .addClass('marker-text')
-                            .attr( this.markerData )
-                            .appendTo(this.marker.$inner);
-            }
-            this.appended = true;
-            return this;
-        },
-
-        //remove
-        remove: function(){
-            if (!this.appended) return;
-            if (this.$handle){
-                this.$handle.remove();
-                this.$handle = true;
-            }
-            if (this.marker.$outer){
-                this.marker.$outer.remove();
-                this.marker = true;
-            }
-            this.appended = false;
-        },
-
-        //update()
-        //Set the position of $handle and $marker and update the content of $marker
-        update: function( force ){
-            if (!this.appended) return;
-            var leftPercent = this.getLeftPosition() + '%';
-
-            if (force || (leftPercent != this.lastLeftPercent)){
-                this.lastLeftPercent = leftPercent;
-                if (this.$handle){
-                    this.$handle.css('left', leftPercent);
-                }
-                if (this.marker){
-                    //Set marker content
-                    this.marker.$text.html( this.getMarkerText() );
-
-                    //Set marker position
-                    this.marker.$outer.css('left', leftPercent);
-
-                    //Force all handles overlapped by this to update
-                    if (!force)
-                        $.each( this.overlapHandleList, function( index, handle ){
-                            handle.update( true );
-                        });
-
-                    //Set marker visibility
-                    this.marker.$outer.css('visibility', this.markerIsHidden() ? 'hidden' : 'visible');
-                }
-            }
-            return this;
-        },
-
-        //onFocus - overwriten for individual handle-types
-        onFocus: function(){
-            if (!this.appended) return;
-            this.$handle.addClass('hover');
-            if (this.marker && this.marker.$outer)
-                this.marker.$outer.addClass('hover');
-
-        },
-
-        //onBlur - overwriten for individual handle-types
-        onBlur: function(){
-            if (!this.appended) return;
-            this.$handle.removeClass('hover');
-            if (this.marker && this.marker.$outer)
-                this.marker.$outer.removeClass('hover');
-        },
-
-        //getMarkerText
-        getLeftPosition: function(){
-            return this.value.getPercent();
-        },
-
-        //getMarkerText
-        getMarkerText: function(){
-            return this.slider.decorate( this.slider._prettify( this.value.getValue() ) );
-        },
-
-        //markerIsHidden: return true if the marker is overlapping any of the markers in YYY
-        markerIsHidden: function(){
-            var thisMarker$text = this.marker.$text,
-                result = false;
-            $.each( this.overlappingHandleList, function( index, handle ){
-                result = result || elementsOverlapping( thisMarker$text, handle.marker.$text );
-            });
-            return result;
-        }
-
-    };
-
-
-    ns.SliderHandle = SliderHandle;
-    ns.sliderHandle = function( options ){
-        return new ns.SliderHandle( options );
-    };
-
-}(this/*, document*/));
-
-;
-/****************************************************************************
-    jquery-base-slider-value,
-
-    (c) 2015, FCOO
-
-    https://github.com/fcoo/jquery-base-slider
-    https://github.com/fcoo
-
-****************************************************************************/
-(function (window/*, document, undefined*/) {
-    "use strict";
-
-    //Create baseSlider-namespace
-	window._baseSlider = window._baseSlider || {};
-	var ns = window._baseSlider;
-
-    /*******************************************************************
-    toFixed
-    Round num to 5 digits
-    *******************************************************************/
-    function toFixed( num ) {
-        return +num.toFixed(5);
-    }
-
-
-    /*******************************************************************
-    SliderValue
-    Object to store and alter "value" releated to the slider
-    The object contains the following items:
-        value   : The actual value ,
-        percent : The value as percent of the total slider width
-        rem     : The value converted to rem
-    *******************************************************************/
-    var SliderValue = function( options ){
-        this.slider = options.slider;
-        this.valueOffset = this.slider.options.min;
-        this.valueRange = this.slider.options.max - this.valueOffset;
-        this.percentOffset = 0;
-        this.percentRange = 100;
-        this.adjustToStep = !!options.adjustToStep;
-        this.fixed = !!options.fixed;
-        this.fixedValue = options.value;
-        this.value   = 0;
-        this.rem     = 0;
-        this.percent = 0;
-        this.minList = [];
-        this.maxList = [];
-
-        var _this = this;
-        $.each( options.minList || [], function( index, sliderValueMin ){ _this.addMin( sliderValueMin ); });
-        $.each( options.maxList || [], function( index, sliderValueMax ){ _this.addMax( sliderValueMax ); });
-
-        this.setValue( options.value );
-    };
-
-    SliderValue.prototype = {
-        //addMin( sliderValue, minDistance )
-        //Add sliderValue to list of SliderValue that this must allways be greater than or equal to
-        addMin: function( sliderValue, minDistance ){
-            if (sliderValue === null) return this;
-            if ($.isNumeric(sliderValue))
-                sliderValue = new SliderValue({ value: sliderValue, slider: this.slider });
-            this.minList.push( {sliderValue: sliderValue, minDistance: minDistance || 0} );
-            this.update();
-            return this;
-        },
-
-        //addMax( sliderValue, minDistance )
-        //Add sliderValue to list of SliderValue that this must allways be less than or equal to
-        addMax: function( sliderValue, minDistance ){
-            if (sliderValue === null) return this;
-            if ($.isNumeric(sliderValue))
-                sliderValue = new SliderValue({ value: sliderValue, slider: this.slider });
-            this.maxList.push( {sliderValue: sliderValue, minDistance: minDistance || 0} );
-            this.update();
-            return this;
-        },
-
-        setValue: function( newValue, isFixed ){
-            this.value = newValue;
-            if (isFixed && this.fixed)
-                this.fixedValue = newValue;
-            this.update();
-            return this;
-        },
-
-        setPercent: function( newPercent ){
-            this.setValue( this.valueRange*(newPercent - this.percentOffset)/this.percentRange + this.valueOffset );
-        },
-
-        update: function(){
-
-            if (this.fixed)
-                this.value = this.fixedValue;
-            else {
-                //Adjust this.value with respect to {sliderValue,minDistance} in this.minList
-                var _this = this;
-                $.each( this.minList, function( index, rec ){
-                    if (rec.sliderValue)
-                        _this.value = Math.max( _this.value, rec.sliderValue.value + rec.minDistance );
-                });
-                //Adjust this.value with respect to {sliderValue,minDistance} in this.maxList
-                $.each( this.maxList, function( index, rec ){
-                    if (rec.sliderValue)
-                        _this.value = Math.min( _this.value, rec.sliderValue.value - rec.minDistance );
-                });
-
-                //Adjust this.value with respect to step and stepOffset
-                if (this.adjustToStep){
-                    var offset = this.slider.options.min + this.slider.options.stepOffset;
-                    this.value -= offset;
-                    this.value = this.slider.options.step * Math.round( this.value/this.slider.options.step );
-                    this.value += offset;
-                }
-            }
-
-            //Calculate precent
-            this.percent = this.percentRange*(this.value - this.valueOffset)/this.valueRange + this.percentOffset;
-
-            return this;
-        },
-
-        getValue: function(){
-            return toFixed( this.value );
-        },
-
-        getPercent: function( inclUnit ){
-            return toFixed( this.percent ) + (inclUnit ? '%' : 0);
-        },
-
-        getRem: function( inclUnit ){
-            return toFixed( this.rem ) + (inclUnit ? 'rem' : 0);
-        }
-
-    };
-
-
-    ns.SliderValue = SliderValue;
-    ns.sliderValue = function( options ){
-        return new ns.SliderValue( options );
-    };
-
-}(this/*, document*/));
-
-;
-/****************************************************************************
     jquery-base-slider, Description from README.md
 
     (c) 2015, FCOO
@@ -28753,8 +28472,8 @@ if (typeof define === 'function' && define.amd) {
         resizable   : false,    //If true the container of the slider can be resized and the grid will automatic redraw to adjust number of ticks and labels to the new width
 
         //Dimensions (only for options.handleFixed: true)
-        width         : 0,  // The total width of the slider (in px for 1rem = 16px)
-        valueDistances: 3,  // The distance between each value on the slider (in px for 1rem = 16px). Width will be valueDistances*( max - min )
+        width         : 0,  // The total width of the slider (px)
+        valueDistances: 3,  // The distance between each value on the slider (px). Width will be valueDistances*( max - min )
 
         //Ranges and value
         min  : 0,           // Set slider minimum value
@@ -28778,6 +28497,11 @@ if (typeof define === 'function' && define.amd) {
         pinColor: 'black',          // The color of the pin. Use  setPin( value , color )  to change the color dynamical
         pinIcon : 'fa-map-marker',  // The class-name from Fontawasome setting the icon used as pin
 
+
+        //Ticks and labels
+        majorColor  : '#000000',
+        minorColor  : '#555555',
+
         //Steps
         step        : 1,    // Set sliders step. Always > 0. Could be fractional.
         stepOffset  : 0,    // When  step  > 1: Offset for the allowed values. Eq. Min=0, max=100, step=5, stepOffset=3 => allowed values=3,8,13,...,92,97 (3+N*5). Only tested for options.single: true
@@ -28797,6 +28521,24 @@ if (typeof define === 'function' && define.amd) {
         impactLineColors      : {green: "green", yellow: "yellow", red: "red"}, //The line colors used when showImpactLineColor: true
         reverseImpactLineColor: false, // The line on a double slider is colored as red-[handle]-yellow-[handle]-green. Must have showImpactLineColor: true
 
+        //Size
+        sizeFactor: 1, //Factor to re-size default sizes
+        fixedSize: {
+            borderWidth: 1,
+        },
+        size: {
+            fontSize        : 10,
+            majorTickLength : 9,
+            minorTickLength : 6,
+
+            lineHeight      : 6,
+
+
+            lineBorderRadius: 2,
+            textPadding     : 2,
+
+            labelInnerHeight: 10,
+        },
 
         //Grid (ticks and label)
         grid            : false,                      // Enables grid of values.
@@ -28810,10 +28552,9 @@ if (typeof define === 'function' && define.amd) {
         gridColors      : null, //Array of { [fromValue, ]value, color } to set colors on the line. If no fromValue is given the the previous value is used.
                                 //If value == null or < min => A triangle is added to the left indicating 'below min'.
                                 //If value > max            =>  A triangle is added to the right indicating 'above max'.
-        labelColors     : null, //Array of {value, className, color, backgroundColor} to set frame around and className, color, backgroundColor for the label and with value
+        labelColors     : null, //Array of {value, color, backgroundColor} to set frame around and color, backgroundColor for the label and with value
 
         labelClickable         : true, //Allows click on labels to select value of label. If false a click on a label is equal to a click on the line (e.q. find nearest value
-        labelClickableFullWidth: true, //If true and options.labelClickable: true and the value of the label is selectable (with respect to options.step and options.stepOffset) the clickable width of the label is expanded to half the distance to the neighbour labels
 
         //Marker above handle
         showMinMax : false,    // Show min and max markers
@@ -28838,47 +28579,7 @@ if (typeof define === 'function' && define.amd) {
         onChangeOnDragging: true, // If false onChange-function is only called when dragging the sliding is finish.
         onChangeDelay     : 500,  // If onChangeOnDragging == false the callback-function is called when the slider has been on the same tick for onChangeDelay milliseconds
 
-
-        //Buttons
-        buttons      : {value:{}, from:{}, to:{} },
-        /*
-        JSON-record with id or buttons for first, previousPage, previousShift, previous, (now,) next, nextShift, nextPage and last value
-            options.buttons = {
-                value: {buttonList},
-                from : {buttonList},
-                to   : {buttonList}
-            }
-            {buttonList} = {
-                firstBtn        : element or string,
-                previousPageBtn : element or string,
-                previousShiftBtn: element or string,
-                previousBtn     : element or string,
-                nowBtn          : element or string,
-                nextBtn         : element or string,
-                nextShiftBtn    : element or string,
-                nextPageBtn     : element or string,
-                lastBtn         : element or string
-            }
-        */
-
-
-        /****************************************
-        Internal options
-        ****************************************/
-        //The standard button-ids are firstBtn, previousBtn, nowBtn, nextBtn, lastBtn with the following steps
-        buttonOptions: {
-            'firstBtn'        : { sign: -1, delta: 99 },
-            'previousPageBtn' : { sign: -1, delta:  3 },
-            'previousShiftBtn': { sign: -1, delta:  2 },
-            'previousBtn'     : { sign: -1, delta:  1 },
-            'nowBtn'          : { sign: +1, delta:  0 },
-            'nextBtn'         : { sign: +1, delta:  1 },
-            'nextShiftBtn'    : { sign: +1, delta:  2 },
-            'nextPageBtn'     : { sign: +1, delta:  3 },
-            'lastBtn'         : { sign: +1, delta: 99 }
-        },
-
-        minDistanceRem: 4/16 //Minimum distance between ticks and between labels
+        minDistance: 4 //Minimum distance between ticks and between labels
 
     };
 
@@ -28889,68 +28590,12 @@ if (typeof define === 'function' && define.amd) {
     *******************************************************************/
 
     /*******************************************************************
-    Get font-size for the html
-    *******************************************************************/
-    var htmlFontSize = parseFloat( $('html').css('font-size') || $('body').css('font-size') || $.DEFAULT_BROWSER_FONT_SIZE || '16px' );
-
-    function onFontSizeChange( event, fontSize ){
-        htmlFontSize = parseFloat( fontSize.fontSizePx ) || htmlFontSize;
-    }
-
-    $.onFontSizeChanged( onFontSizeChange );
-
-    /*******************************************************************
     toFixed
     Round num to 5 digits
     *******************************************************************/
     function toFixed( num ) {
         return +num.toFixed(5);
     }
-
-    /*******************************************************************
-    pxToRem
-    *******************************************************************/
-    function pxToRem( valuePx, inclUnit ){
-        return valuePx / htmlFontSize + (inclUnit ? 'rem' : 0);
-    }
-
-    /*******************************************************************
-    getEventLeft
-    Return the left (= x) position of an event
-    *******************************************************************/
-    function getEventLeft( event ){
-        return  event.gesture && event.gesture.center ? event.gesture.center.x :
-                event.pageX ? event.pageX :
-                event.originalEvent && event.originalEvent.touches && event.originalEvent.touches.length ? event.originalEvent.touches[0].pageX :
-                event.touches && event.touches.length ? event.touches[0].pageX :
-                0;
-    }
-
-    /*******************************************************************
-    objectsAreDifferent
-    Return true if obj1 and obj2 are not equal
-    *******************************************************************/
-    function objectsAreDifferent( obj1, obj2 ){
-        var result = false,
-            props = Object.getOwnPropertyNames(obj1).concat( Object.getOwnPropertyNames(obj2) );
-
-        $.each( props, function( index, id ){
-            var type1 = $.type(obj1[id]),
-                type2 = $.type(obj2[id]);
-
-            result =
-                result ||
-                (   ((type1 == 'number') || (type2 == 'number')) && //One or both are number AND
-                    ((type1 != type2) || (obj1[id] != obj2[id]))    //type are different OR value are different
-                );
-        });
-        return result;
-    }
-
-    //'Global' text-element to be used by getTextWidth
-    var $outerTextElement = null,
-        textElement       = null;
-
 
     /*******************************************************************
     ********************************************************************
@@ -28964,29 +28609,9 @@ if (typeof define === 'function' && define.amd) {
         this.input          = input;
         this.pluginCount   = pluginCount;
 
-        this.htmlFontSize = htmlFontSize;
-
         this.initializing     = true;
         this.currentHandle    = null;
         this.isRepeatingClick = false;
-
-
-        //Create element outside DOM used to calc width of text-elements
-        this.$outerTextElement =
-            $outerTextElement ||
-            $('<div/>')
-                .addClass('grid')
-                .css({ position: 'absolute', top: -10000, left: -10000 })
-                .appendTo( $('body') );
-        $outerTextElement = this.$outerTextElement;
-
-        this.textElement =
-            textElement ||
-            $('<span/>')
-                .addClass('grid-label')
-                .appendTo( this.$outerTextElement )
-                .get(0);
-        textElement = this.textElement;
 
         /*******************************************************************
         Set and adjust options that can't be changed by this.update(options)
@@ -28996,7 +28621,7 @@ if (typeof define === 'function' && define.amd) {
 
         if (this.options.handleFixed){
             this.options.double = false;
-            this.options.handle = 'fixed';
+            this.options.handle = options.handle || 'fixed';
         }
 
         this.options.isSingle = !this.options.double;
@@ -29005,7 +28630,6 @@ if (typeof define === 'function' && define.amd) {
 
         this.options.singleHandleId =
             this.options.isSingle ? (this.options.handleFixed ? 'fixed' : 'single') : 'from-to';
-
 
         /*******************************************************************
         this.events contains event-functions and options
@@ -29021,8 +28645,23 @@ if (typeof define === 'function' && define.amd) {
             //Add resize-event to window
             $(window).on('resize', this.events.containerOnResize );
 
-        //Update slider when browser font-size is changed
-        $.onFontSizeChanged( this.onFontSizeChange, this );
+        /*******************************************************************
+        Adjust different sizes
+        *******************************************************************/
+        var size       = this.options.size,
+            sizeFactor = this.options.sizeFactor;
+
+        $.each(size, function(index, id){
+            if ( size[id] && $.isNumeric(size[id]) )
+                size[id] = sizeFactor * parseFloat( size[id] );
+        });
+
+        $.each(this.options.fixedSize, function(id, value){
+            size[id] = value;
+        });
+
+        //Calc sizes
+        size.labelHeight = size.borderWidth + size.textPadding + size.fontSize + size.textPadding + size.borderWidth;
 
         /*******************************************************************
         this.result = record with the current result from the slider
@@ -29052,7 +28691,6 @@ if (typeof define === 'function' && define.amd) {
         *******************************************************************/
         this.cache = {
             $input : $(this.input),
-            buttons: { value:{}, from:{}, to:{} }
         };
 
         //Hide the input
@@ -29125,9 +28763,8 @@ if (typeof define === 'function' && define.amd) {
             this.dimentions_old is the last values
             *******************************************************************/
             this.dimentions = {
-                containerWidth          :  0,   //Width of the container [px]
-                containerWidthRem       :  0,   //Width of the container [rem]
-                outerContainerWidthRem  :  0    //Width of outer container [rem]
+                containerWidth     :  0, //Width of the container [px]
+                outerContainerWidth:  0  //Width of outer container [px]
             };
 
             this.dimentions_old = $.extend({}, this.dimentions );
@@ -29380,7 +29017,7 @@ if (typeof define === 'function' && define.amd) {
                 //Sets the width of the container with full width
                 var width = this.options.width || this.options.valueDistances*(this.options.max - this.options.min);
 
-                this.cache.$fullWidthContainer.width( Math.ceil(pxToRem(width))+'rem' );
+                this.cache.$fullWidthContainer.width( width +'px' );
 
                 this.cache.$fullWidthContainer.wrap('<div/>');
                 this.cache.$outerContainer = this.cache.$fullWidthContainer.parent();
@@ -29484,14 +29121,11 @@ if (typeof define === 'function' && define.amd) {
 
 
             //Update the height of the slider
-            this.cache.$container.css('height', pxToRem( this.cache.$lineBackground.height(), true) );
+            this.cache.$container.css('height', this.cache.$lineBackground.height()+'px' );
 
             /****************************************************
             Append grid with ticks and optional labels
             ****************************************************/
-            if (this.options.grid)
-                this.cache.$grid = $span('grid', this.cache.$container);
-
             //Adjust top-position if no marker is displayed
             if (!this.options.showMinMax && !this.options.showFromTo)
                 this.cache.$container.addClass("no-marker");
@@ -29504,21 +29138,8 @@ if (typeof define === 'function' && define.amd) {
             if (this.options.hasPin)
                 this.cache.$container.addClass("has-pin");
 
-            //Append buttons
-            function getButton( id ){
-                return $.type( id ) === 'string' ? $('#' +  id ) : id;
-            }
-            this.options.buttons.value = this.options.buttons.value || {};
-            this.options.buttons.from = this.options.buttons.from || {};
-            this.options.buttons.to   = this.options.buttons.to   || {};
-            $.each( this.options.buttonOptions, function( id ){
-                _this.cache.buttons.value[ id ] = getButton( _this.options.buttons.value[ id ] );
-                _this.cache.buttons.from[ id ]  = getButton( _this.options.buttons.from[ id ] );
-                _this.cache.buttons.to[ id ]    = getButton( _this.options.buttons.to  [ id ] );
-            });
-
             //Append grid(s)
-            this.$currentGridContainer = null;
+            this.$currentGrid = null;
             if (this.options.grid)
                 this.appendGrid();
 
@@ -29545,16 +29166,6 @@ if (typeof define === 'function' && define.amd) {
         remove
         *******************************************************************/
         remove: function () {
-            var _this = this;
-            //************************************************
-            function offEvents( $elem, eventNames ){
-                if (!$elem) return;
-                $.each( eventNames.split(' '), function( index, eventName ){
-                    $elem.off( eventName + ".irs_" + _this.pluginCount );
-                });
-            }
-            //************************************************
-
             if (this.cache.$outerContainer){
                 this.cache.$outerContainer.remove();
                 this.cache.$outerContainer = null;
@@ -29565,16 +29176,561 @@ if (typeof define === 'function' && define.amd) {
             }
 
             this.eachHandle('remove');
+        },
 
-            //Unbind click on buttons
-            $.each( this.cache.buttons, function( valueOrToOrFrom, buttonRecord ){
-                $.each( buttonRecord, function( id, $btn ){
-                    offEvents( $btn, 'mousedown mouseup mouseleave click' );
-                });
-            });
+        /*******************************************************************
+        ********************************************************************
+        ADJUST ELEMENTS
+        ********************************************************************
+        *******************************************************************/
+
+        /*******************************************************************
+        setImpactLineColors
+        Sets the color of the line when line colors are impact (green-yellow-red)
+        *******************************************************************/
+        setImpactLineColors: function(){
+            this.cache.$leftLineColor.css  ( 'background-color', this.options.impactLineColors[ this.options.reverseImpactLineColor ? 'red' : 'green' ] );
+            this.cache.$centerLineColor.css( 'background-color', this.options.impactLineColors.yellow );
+            this.cache.$rightLineColor.css ( 'background-color', this.options.impactLineColors[ this.options.reverseImpactLineColor ? 'green' : 'red' ] );
+        },
+
+        /*******************************************************************
+        currentHandleBlur
+        *******************************************************************/
+        currentHandleBlur: function () {
+            if (this.currentHandle)
+                this.currentHandle.onBlur();
+            this.currentHandle = null;
         },
 
 
+        /*******************************************************************
+        updateHandlesAndLines
+        *******************************************************************/
+        updateHandlesAndLines: function () {
+            //***********************************************
+            function setLeftAndWidth( $elem, left, width ){
+                if (!$elem) return;
+                var css = {};
+                if (left !== null)
+                    css.left = toFixed(left) + (left ? '%' : '');
+                if (width !== null)
+                    css.width = toFixed(width) + (width ? '%' : '');
+                $elem.css( css );
+            }
+            //***********************************************
+
+            /*****************************************************
+            Adjust left-position and width of all lineColor-elements (if any)
+            *****************************************************/
+            if (this.options.isSingle) {
+                var singlePercent = this.handles[this.options.singleHandleId].value.getPercent();
+                setLeftAndWidth( this.cache.$leftLineColor,  null,          singlePercent       );
+                setLeftAndWidth( this.cache.$rightLineColor, singlePercent, 100 - singlePercent );
+            }
+            else {
+                var fromPercent = this.handles.from.value.getPercent(),
+                    toPercent   = this.handles.to.value.getPercent();
+                setLeftAndWidth( this.cache.$leftLineColor,   null,        fromPercent             );
+                setLeftAndWidth( this.cache.$centerLineColor, fromPercent, toPercent - fromPercent );
+                setLeftAndWidth( this.cache.$rightLineColor,  toPercent,   100 - toPercent         );
+            }
+
+            /*****************************************************
+            Set position of all handles
+            *****************************************************/
+            this.eachHandle('update');
+
+            //Special case for fixed-mode: Keep the handle centered in container
+            if (this.options.isFixed){
+                var containerLeft =
+                        -1.0 * this.dimentions.containerWidth * this.handles.fixed.value.percent/100 +
+                         0.5 * this.dimentions.outerContainerWidth;
+
+                this.cache.$container.css('left', toFixed(containerLeft) + 'px');
+            }
+
+            /*****************************************************
+            Callback and reset
+            *****************************************************/
+            this.onChanging();
+
+        },
+
+        /*******************************************************************
+        ********************************************************************
+        SERVICE METHODS
+        ********************************************************************
+        *******************************************************************/
+
+        /*******************************************************************
+        _prettify
+        *******************************************************************/
+        _prettify: function (num) {
+            return $.isFunction(this.options.prettify) ? this.options.prettify(num) : num;
+        },
+
+        /*******************************************************************
+        PrettifyLabel
+        *******************************************************************/
+        _prettifyLabel: function(text) {
+            return $.isFunction(this.options.prettifyLabel) ? this.options.prettifyLabel(text) : text;
+        },
+
+        /*******************************************************************
+        decorate
+        *******************************************************************/
+        decorate: function ( content ) {
+            return this.options.prefix + content + this.options.postfix;
+        },
+
+        /*******************************************************************
+        ********************************************************************
+        GRID
+        Use appendGridContainer to create new grids. Use appendLabel(text, left[, value]) to add a grid-label
+        ********************************************************************
+        *******************************************************************/
+
+        /*******************************************************************
+        getTextWidth
+        Get width of value as text OR max width of all values in array of value
+        *******************************************************************/
+        getTextWidth: function( value, options = {} ){
+            var _this = this,
+                ctx = this.cache.ctx,
+                ctx_font = ctx.font,
+                valueList = $.isArray( value ) ? value : [value],
+                result = 0;
+
+            if (options.italic)
+                ctx.font = 'italic ' + ctx.font;
+            if (options.bold)
+                ctx.font = 'bold ' + ctx.font;
+
+            valueList.forEach( function(txt){
+                result = Math.max( result, ctx.measureText( _this._valueToText(txt) ).width );
+            });
+
+            ctx.font = ctx_font;
+
+            return result;
+        },
+
+        /*******************************************************************
+        appendGridContainer
+        *******************************************************************/
+        appendGridContainer: function( options = {} ){
+            //options.labelBetweenTicks = true => special version where the labels are placed up and between the ticks
+            this.options.labelBetweenTicks = !!options.labelBetweenTicks;
+
+            var $newGrid = $('<span class="grid"></span>'),
+                $newCanvas =
+                    $('<canvas/>')
+                        .addClass('grid-canvas')
+                        .appendTo($newGrid),
+                size = this.options.size,
+                ctx = this.cache.ctx = $newCanvas.get(0).getContext("2d"),
+                canvasMargin = this.cache.canvasMargin = Math.ceil( this.getTextWidth([this._valueToText(this.options.min), this._valueToText(this.options.max)] ) ),
+                canvasWidth = this.dimentions.containerWidth + 2 * canvasMargin,
+                canvasHeight = this.options.labelBetweenTicks ?
+                                Math.max(size.majorTickLength, size.fontSize) :
+                                size.majorTickLength + size.labelHeight;
+
+            $newCanvas
+                .css('left', '-'+canvasMargin+'px')
+                .attr('width', canvasWidth)
+                .attr('height', canvasHeight);
+
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+            ctx.translate(0.5, 0.5);
+            ctx.lineWidth    = 1;
+            ctx.textAlign    = "center";
+            ctx.textBaseline = "top";       //"bottom" or "middle" or "alphabetic" or "hanging"
+
+            ctx.strokeStyle = this.options.majorColor;
+            ctx.font = size.fontSize + 'px Arial';
+
+            if (this.options.labelClickable && !this.options.disable && !this.options.readOnly){
+                this.canvasId = this.canvasId || 0;
+                this.canvasId++;
+                $newCanvas.data('canvasId', this.canvasId);
+                this.canvasLabels = this.canvasLabels || {};
+                this.canvasLabels[this.canvasId] = [];
+            }
+
+            if (this.$currentGrid){
+                this.nextGridTop += this.$currentGrid.height();
+                this.$currentGrid = $newGrid.insertAfter( this.$currentGrid );
+                this.$currentGrid.css('top', this.nextGridTop+'px' );
+            }
+            else {
+                this.$currentGrid = $newGrid.appendTo(this.cache.$container);
+                this.nextGridTop = this.$currentGrid.position().top;
+            }
+
+            this.cache.$grid = this.cache.$container.find(".grid");
+
+            //Special case: If the labels for the current grid shall be placed between the ticks instead of under..
+            if (this.options.labelBetweenTicks){
+                this.$currentGrid.addClass("label-between-ticks");
+            }
+        },
+
+
+        /*******************************************************************
+        appendTick
+        *******************************************************************/
+        appendTick: function( leftPercent, options ){
+            if (!this.$currentGrid) return;
+
+            options = $.extend( {minor: false, color: ''}, options );
+
+            var left = this.cache.canvasMargin + (this.dimentions.containerWidth * leftPercent / 100),
+                ctx  = this.cache.ctx,
+                size = this.options.size,
+                length = options.minor ? size.minorTickLength : size.majorTickLength;
+
+
+            ctx.beginPath();
+
+            ctx.shadowColor   = 'rgba(255, 255, 255, .75)';
+            ctx.shadowOffsetX = 1;
+            ctx.shadowOffsetY = 0;
+            ctx.lineWidth     = 1;
+            ctx.strokeStyle   = options.minor ? this.options.minorColor : this.options.majorColor;
+            ctx.moveTo(left, 0);
+            ctx.lineTo(left, length );
+            ctx.stroke();
+
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+      },
+
+        /*******************************************************************
+        _valueToText
+        *******************************************************************/
+        _valueToText: function( value ){
+            var result = this._prettifyLabel( value );
+            return this.options.decorateLabel ? this.decorate(result) : result;
+        },
+
+        /*******************************************************************
+        appendLabel
+        *******************************************************************/
+        appendLabel: function( leftPercent, value, options ){
+            if (!this.$currentGrid) return;
+
+            options = $.extend( {color: ''}, options );
+
+            //Check if the value for the label is a selectable one
+            options.labelClickable = options.labelClickable &&  ((value - this.options.stepOffset) % this.options.step) === 0;
+
+            var text = this._valueToText( value ),
+                size   = this.options.size,
+                ctx    = this.cache.ctx,
+                left   = this.cache.canvasMargin + (this.dimentions.containerWidth * leftPercent / 100),
+                textWidth = this.getTextWidth(text),
+                top, width, height, boxLeft, textTop;
+
+            if (this.options.labelBetweenTicks){
+                //Special case where the labels are placed up between the ticks
+                top     = 0;
+                textTop = 0;
+                width   = textWidth;
+                height  = size.fontSize;
+            }
+            else {
+                top     = size.majorTickLength;
+                textTop = top + size.borderWidth + size.textPadding;
+                width   = size.borderWidth + size.textPadding + textWidth + size.textPadding + size.borderWidth,
+                height  = size.labelHeight;
+            }
+            boxLeft = left - width/2;
+
+            //Find bg-color and text-color
+            var color = options.minor ? this.options.minorColor : this.options.majorColor,
+                textColor = color,
+                labelColorRec = this.options.labelColorRec[value],
+                canvasLabels = this.canvasLabels[this.canvasId];
+
+            if (labelColorRec){
+                //Label with individual background- and text-color
+                var bgColor   = labelColorRec.backgroundColor;
+                textColor = labelColorRec.color;
+
+                //Draw border and background (if any)
+                ctx.fillStyle = color;
+                ctx.fillRect(boxLeft, top, width, height);
+                ctx.fillStyle = bgColor;
+
+                ctx.beginPath();
+                ctx.fillRect(boxLeft + size.borderWidth, top + size.borderWidth, width - 2*size.borderWidth, height - 2*size.borderWidth);
+                ctx.stroke();
+            }
+
+            //ctx.fillStyle = 'pink';                     //Only test
+            //ctx.fillRect(boxLeft, top, width, height);  //Only test
+
+            if (options.labelClickable && !this.options.disable && !this.options.readOnly)
+                canvasLabels.push( {top: top, left: boxLeft, right: boxLeft+width, bottom: top+height, percent: leftPercent} );
+
+            //Draw the text
+            var ctx_font = ctx.font;
+            if (!options.minor)
+                ctx.font = 'bold ' + ctx.font;
+            if (options.italic)
+                ctx.font = 'italic ' + ctx.font;
+            ctx.fillStyle = textColor;
+
+            ctx.beginPath();
+            ctx.fillText(text, left, textTop);
+            ctx.stroke();
+
+            ctx.font = ctx_font;
+        },
+
+
+        /*******************************************************************
+        appendGrid
+        *******************************************************************/
+        appendGrid: function () {
+            if (!this.options.grid) return;
+            this.appendStandardGrid();
+        },
+
+        /*******************************************************************
+        appendStandardGrid
+        Simple call _appendStandardGrid. Can be overwriten in decending classes
+        *******************************************************************/
+        appendStandardGrid: function ( textOptions ) {
+            this._appendStandardGrid( textOptions );
+        },
+
+
+        /*******************************************************************
+        preAppendGrid and postAppendGrid
+        must be called as first and last when creating a grid - used if a new appendStandardGrid is used
+        *******************************************************************/
+        preAppendGrid: function( options = {} ){
+            this.appendGridContainer( options );
+        },
+
+        postAppendGrid: function(){
+            //Update the height of the slider
+            this.cache.$container.css('height', (this.nextGridTop + this.$currentGrid.height())+'px' );
+        },
+
+
+        /*******************************************************************
+        getGridOptions
+        Get options needed for building the grid
+        *******************************************************************/
+        getGridOptions: function(){
+            var o = this.options,
+                result = {},
+                gridDistanceIndex = 0;
+
+            result.gridContainerWidth = this.cache.$grid.outerWidth(false);
+            result.gridDistanceStep = o.gridDistances[gridDistanceIndex]; // = number of steps between each tick
+            result.stepPx = o.step * result.gridContainerWidth / o.range / o.majorTicksFactor;
+
+            //Increse grid-distance until the space between two ticks are more than 4px
+            while ( (result.stepPx*result.gridDistanceStep) <= o.minDistance){
+                gridDistanceIndex++;
+                if (gridDistanceIndex < o.gridDistances.length)
+                    result.gridDistanceStep = o.gridDistances[gridDistanceIndex];
+                else
+                    result.gridDistanceStep = result.gridDistanceStep*2;
+            }
+
+            result.tickDistanceNum = result.gridDistanceStep * o.step;          //The numerical distance between each ticks
+            result.tickDistancePx  = result.gridDistanceStep * result.stepPx;   //The px distance between each ticks
+
+            if (o.maxLabelWidth)
+                result.maxLabelWidth = o.maxLabelWidth;
+            else {
+                //Find widest label
+                var value = o.min,
+                    valueList = [],
+                    step = 1;
+
+                while (value <= o.max){
+                    //if value corrected by o.majorTicksOffset and o.majorTicksFactor is a DIV of the tick distance => calculate the width of the tick
+                    if ((value - o.majorTicksOffset)*o.majorTicksFactor % result.tickDistanceNum === 0){
+                        valueList.push( value );
+                        step = result.tickDistanceNum;
+                    }
+                    value += step;
+                }
+                result.maxLabelWidth = this.getTextWidth() + o.minDistance; //Adding min space between text/labels
+            }
+
+            //Calculate automatic distances between major ticks
+            var majorTicks = o.majorTicks;
+            if (!majorTicks){
+                //Find ticks between each major tick
+                gridDistanceIndex = 0;
+                majorTicks = o.gridDistances[gridDistanceIndex];
+                while (majorTicks * result.tickDistancePx < result.maxLabelWidth){
+                    gridDistanceIndex++;
+                    if (gridDistanceIndex < o.gridDistances.length)
+                        majorTicks = o.gridDistances[gridDistanceIndex];
+                    else
+                        majorTicks = majorTicks*2;
+                }
+            }
+
+            result.majorTickDistanceNum = result.tickDistanceNum * majorTicks;
+            result.majorTickDistancePx  = result.tickDistancePx  * majorTicks;
+
+            return result;
+        },
+
+
+        /*******************************************************************
+        _appendStandardGrid
+        *******************************************************************/
+        _appendStandardGrid: function ( textOptions, tickOptions ) {
+            this.preAppendGrid();
+
+            textOptions = $.extend( {labelClickable: this.options.labelClickable}, textOptions || {}  );
+            tickOptions = tickOptions || {};
+
+            //Get all options regarding the grid
+            this.gridOptions = this.getGridOptions();
+            $.extend( this.options, this.gridOptions );
+
+            //Add all the minor and major ticks
+            var o     = this.options,
+                value = o.min,
+                step  = 1,
+                valueP, valueOffset;
+
+            while (value <= o.max){
+                valueOffset = (value - o.majorTicksOffset)*o.majorTicksFactor;
+                if (valueOffset % o.tickDistanceNum === 0){
+                    valueP = (value-o.min)*o.percentProValue;
+                    if (valueOffset % o.majorTickDistanceNum === 0){
+                        //add major tick and text/label
+                        this.appendTick( valueP, tickOptions );
+                        this.appendLabel( valueP, value, textOptions );
+                    }
+                    else
+                        if (o.showMinorTicks)
+                            //Add minor tick
+                            this.appendTick( valueP, { minor:true } );
+                    step = o.tickDistanceNum;
+                }
+                value += step;
+            }
+
+            //Append colors on the grid
+            if (this.options.gridColors)
+                this.appendGridColors( this.options.gridColors );
+
+            this.postAppendGrid();
+        },
+
+        /*******************************************************************
+        addGridColor
+        *******************************************************************/
+        appendGridColors: function( gridColors ){
+            var fromValue,
+                toValue  = this.options.min,
+                i,
+                gridColor,
+                percentFactor = 100 / (this.options.max - this.options.min);
+
+
+            for (i=0; i<gridColors.length; i++ ){
+                gridColor = gridColors[i];
+                if ( (gridColor.value === null) || (gridColor.value < this.options.min) || (gridColor.value > this.options.max) ){
+                    //add triangle to the left or right
+                    var $span = $('<span/>')
+                                    .addClass( 'grid-color')
+                                    .appendTo( this.$currentGrid );
+                    if (gridColor.value > this.options.max)
+                        $span
+                            .addClass('gt-max')
+                            .css('border-left-color', gridColor.color);
+                    else
+                        $span
+                            .addClass('lt-min')
+                            .css('border-right-color', gridColor.color);
+                }
+                else {
+                    fromValue = gridColor.fromValue !== undefined ? gridColor.fromValue : toValue;
+                    toValue = gridColor.value;
+
+                    $('<span/>')
+                        .addClass('grid-color' + (i%2?' to':' from'))
+                        .css({
+                            'left'            : percentFactor*(fromValue - this.options.min) + '%',
+                            'width'           : percentFactor*(toValue-fromValue) + '%',
+                            'background-color': gridColor.color
+                           })
+                        .appendTo( this.$currentGrid );
+                }
+            }
+        },
+    }; //end of BaseSlider.prototype
+
+
+    $.fn.baseSlider = function (options) {
+        return this.each(function() {
+            if (!$.data(this, "baseSlider")) {
+                $.data(this, "baseSlider", new window.BaseSlider(this, options, pluginCount++));
+            }
+        });
+    };
+
+
+}(jQuery, this, document));
+
+;
+/****************************************************************************
+jquery-base-slider-events
+****************************************************************************/
+(function ($, window/*, document, undefined*/) {
+    "use strict";
+
+    /*******************************************************************
+    getEventLeft
+    Return the left (= x) position of an event
+    *******************************************************************/
+    function getEventLeft( event ){
+        return  event.gesture && event.gesture.center ? event.gesture.center.x :
+                event.pageX ? event.pageX :
+                event.originalEvent && event.originalEvent.touches && event.originalEvent.touches.length ? event.originalEvent.touches[0].pageX :
+                event.touches && event.touches.length ? event.touches[0].pageX :
+                0;
+    }
+
+
+    /*******************************************************************
+    objectsAreDifferent
+    Return true if obj1 and obj2 are not equal
+    *******************************************************************/
+    function objectsAreDifferent( obj1, obj2 ){
+        var result = false,
+            props = Object.getOwnPropertyNames(obj1).concat( Object.getOwnPropertyNames(obj2) );
+
+        $.each( props, function( index, id ){
+            var type1 = $.type(obj1[id]),
+                type2 = $.type(obj2[id]);
+
+            result =
+                result ||
+                (   ((type1 == 'number') || (type2 == 'number')) && //One or both are number AND
+                    ((type1 != type2) || (obj1[id] != obj2[id]))    //type are different OR value are different
+                );
+        });
+        return result;
+    }
+
+
+
+    $.extend(window.BaseSlider.prototype, {
         /*******************************************************************
         bindEvents
         *******************************************************************/
@@ -29633,23 +29789,6 @@ if (typeof define === 'function' && define.amd) {
 
             //Add keyboard events to the line
             addEvents( this.cache.$line, "keydown", this.key );
-
-            //Bind click on buttons
-            $.each( this.cache.buttons, function( fromOrTo, buttonRecord ){
-                $.each( buttonRecord, function( id, $btn ){
-                    var options = $.extend({handleId: fromOrTo}, _this.options.buttonOptions[id]);
-                    addEvents( $btn, 'mousedown',  _this.startRepeatingClick                         );
-                    addEvents( $btn, 'mouseup',    _this.endRepeatingClick                           );
-                    addEvents( $btn, 'mouseleave', _this.endRepeatingClick,                  true    );
-                    addEvents( $btn, 'click',      _this.moveByButtonOrKeyboardOrMouseWheel, options );
-
-                    if ( $btn && $btn.autoclickWhilePressed && options.delta && (options.delta != 99) && (!$btn.data('auto-click-when-pressed-added')) ){
-                        $btn.data('auto-click-when-pressed-added', true);
-                        $btn.autoclickWhilePressed();
-                    }
-
-                });
-            });
         },
 
 
@@ -29666,10 +29805,8 @@ if (typeof define === 'function' && define.amd) {
         containerOnResize: function(){
             if (this.initializing || !this.isBuild)
                 return;
-
             this.parentOnResize();
         },
-
 
         /*******************************************************************
         parentOnResize
@@ -29696,9 +29833,8 @@ if (typeof define === 'function' && define.amd) {
         getDimentions: function(){
             var result = {};
             result.containerWidth    = Math.max(0, this.cache.$container.innerWidth()) || this.dimentions.containerWidth;
-            result.containerWidthRem = pxToRem(result.containerWidth);
             if (this.options.isFixed)
-                result.outerContainerWidthRem = pxToRem( this.cache.$outerContainer.innerWidth() );
+                result.outerContainerWidth = this.cache.$outerContainer.innerWidth();
             return result;
         },
 
@@ -29714,25 +29850,13 @@ if (typeof define === 'function' && define.amd) {
 
             if (!this.initializing && this.isBuild){
                 //Update the slider if the width has changed
-                if (this.dimentions.containerWidthRem && objectsAreDifferent( this.dimentions, this.dimentions_old))
+                if (this.dimentions.containerWidth && objectsAreDifferent( this.dimentions, this.dimentions_old)){
                     updateSlider = true;
 
-                    //Check if the grid of a resizable slider has changed
-                    if (this.options.resizable){
-                        var _this = this,
-                            rebuild = false,
-                            newGridOptions = this.getGridOptions(),
-                            idList = ['gridDistanceStep', 'majorTickDistanceNum']; //List of options-id to compare for changes
-
-                        $.each( idList, function( index, id ){
-                            rebuild = rebuild || (newGridOptions[id] != _this.gridOptions[id]);
-                        });
-
-                        if (rebuild){
-                            this.update();
-                            return;
-                        }
-                    }
+                    //If it is a resizable slider :  Update it
+                    if (this.options.resizable)
+                        this.update();
+                }
             }
             else {
                 //Reset timeout and try to build the slider
@@ -29741,7 +29865,7 @@ if (typeof define === 'function' && define.amd) {
                     this.checkContainerDimentions_TimeoutId = null;
                 }
 
-                if (this.dimentions.containerWidthRem){
+                if (this.dimentions.containerWidth){
                     this.build();
                     updateSlider = true;
                 }
@@ -29768,39 +29892,10 @@ if (typeof define === 'function' && define.amd) {
             }
         },
 
-        /*******************************************************************
-        onFontSizeChange
-        Called when the font-size of the browser is changed
-        *******************************************************************/
-        onFontSizeChange: function( event, fontSize ){
-            onFontSizeChange( event, fontSize );
-            if (this.htmlFontSize != htmlFontSize){
-                this.htmlFontSize = htmlFontSize;
-                if (this.options.resizable)
-                    this.update();
-                else
-                    this.dimentions = this.getDimentions();
-            }
-        },
 
         /*******************************************************************
         KEY, WHEEL AND BUTTON EVENTS
         *******************************************************************/
-        /*******************************************************************
-        startRepeatingClick
-        *******************************************************************/
-        startRepeatingClick: function () {
-            this.isRepeatingClick = true;
-        },
-
-        /*******************************************************************
-        endRepeatingClick
-        *******************************************************************/
-        endRepeatingClick: function (callOnChange) {
-            this.isRepeatingClick = false;
-            if (callOnChange)
-                this.onChange();
-        },
 
         /*******************************************************************
         key
@@ -29972,9 +30067,14 @@ if (typeof define === 'function' && define.amd) {
         Called when tap and press/pressup on the slider (line and grid)
         *******************************************************************/
         onTap: function(event) {
+
+
+
             var _this = this,
                 percent = NaN, // = the percent to set this.currentHandle
                 elem    = event.gesture.target;
+
+
 
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -29996,11 +30096,22 @@ if (typeof define === 'function' && define.amd) {
                 });
 
             //If not on a handle: Test if the tap was on a label
-            if (window.isNaN(percent))
-                while (window.isNaN(percent) && !!elem && elem.getAttribute){
-                    percent = parseFloat( elem.getAttribute('data-base-slider-percent') );
-                    elem = elem.parentNode;
+            if (window.isNaN(percent)){
+                //Check if the tap was on a canvas
+                var canvasId = $(elem).data('canvasId');
+                if (canvasId){
+                    var originalEvent = event.gesture.srcEvent,
+                        canvasX       = originalEvent.offsetX,
+                        canvasY       = originalEvent.offsetY;
+
+                    $.each(_this.canvasLabels[canvasId] || [], function(index, rec){
+                        if ( (canvasX >= rec.left) && (canvasX <= rec.right) && (canvasY >= rec.top) && (canvasY <= rec.bottom) ){
+                            percent = rec.percent;
+                            return false;
+                        }
+                    });
                 }
+            }
 
             //If not on a handle and not on a label: Find percent according to mouse-position
             if (window.isNaN(percent)){
@@ -30119,134 +30230,6 @@ if (typeof define === 'function' && define.amd) {
 
         /*******************************************************************
         ********************************************************************
-        ADJUST ELEMENTS
-        ********************************************************************
-        *******************************************************************/
-
-        /*******************************************************************
-        setImpactLineColors
-        Sets the color of the line when line colors are impact (green-yellow-red)
-        *******************************************************************/
-        setImpactLineColors: function(){
-            this.cache.$leftLineColor.css  ( 'background-color', this.options.impactLineColors[ this.options.reverseImpactLineColor ? 'red' : 'green' ] );
-            this.cache.$centerLineColor.css( 'background-color', this.options.impactLineColors.yellow );
-            this.cache.$rightLineColor.css ( 'background-color', this.options.impactLineColors[ this.options.reverseImpactLineColor ? 'green' : 'red' ] );
-        },
-
-        /*******************************************************************
-        currentHandleBlur
-        *******************************************************************/
-        currentHandleBlur: function () {
-            if (this.currentHandle)
-                this.currentHandle.onBlur();
-            this.currentHandle = null;
-        },
-
-
-        /*******************************************************************
-        updateHandlesAndLines
-        *******************************************************************/
-        updateHandlesAndLines: function () {
-            //***********************************************
-            function setLeftAndWidth( $elem, left, width ){
-                if (!$elem) return;
-                var css = {};
-                if (left !== null)
-                    css.left = toFixed(left) + (left ? '%' : '');
-                if (width !== null)
-                    css.width = toFixed(width) + (width ? '%' : '');
-                $elem.css( css );
-            }
-            //***********************************************
-
-            /*****************************************************
-            Adjust left-position and width of all lineColor-elements (if any)
-            *****************************************************/
-            if (this.options.isSingle) {
-                var singlePercent = this.handles[this.options.singleHandleId].value.getPercent();
-                setLeftAndWidth( this.cache.$leftLineColor,  null,          singlePercent       );
-                setLeftAndWidth( this.cache.$rightLineColor, singlePercent, 100 - singlePercent );
-            }
-            else {
-                var fromPercent = this.handles.from.value.getPercent(),
-                    toPercent   = this.handles.to.value.getPercent();
-                setLeftAndWidth( this.cache.$leftLineColor,   null,        fromPercent             );
-                setLeftAndWidth( this.cache.$centerLineColor, fromPercent, toPercent - fromPercent );
-                setLeftAndWidth( this.cache.$rightLineColor,  toPercent,   100 - toPercent         );
-            }
-
-            /*****************************************************
-            Set position of all handles
-            *****************************************************/
-            this.eachHandle('update');
-
-            //Special case for fixed-mode: Keep the handle centered in container
-            if (this.options.isFixed){
-                var containerLeft =
-                        -1.0 * this.dimentions.containerWidthRem * this.handles.fixed.value.percent/100 +
-                         0.5 * this.dimentions.outerContainerWidthRem;
-
-                this.cache.$container.css('left', toFixed(containerLeft) + 'rem');
-            }
-
-
-            /*****************************************************
-            Callback and reset
-            *****************************************************/
-            this.onChanging();
-
-        },
-
-
-        /*******************************************************************
-        ********************************************************************
-        SET VALUES (TO, FROM, PIN ETC.)
-        ********************************************************************
-        *******************************************************************/
-
-        /*******************************************************************
-        setAnyValue
-        *******************************************************************/
-        setAnyValue: function( id, value ){
-            if (this.handles[id]){
-                this.handles[id].value.setValue( value );
-
-                this.updateHandlesAndLines();
-                this.onChange();
-            }
-        },
-
-        /*******************************************************************
-        setValue, setFromValue, setToValue
-        *******************************************************************/
-        setValue    : function( value ) {this.setAnyValue( this.options.singleHandleId, value );},
-        setFromValue: function( value ) { this.setAnyValue( 'from',   value ); },
-        setToValue  : function( value ) { this.setAnyValue( 'to',     value ); },
-
-        /*******************************************************************
-        setPin
-        *******************************************************************/
-        setPin: function( value, color, icon ) {
-            if (!this.options.hasPin) return;
-            if (value !== null)
-                this.handles.pin.value.setValue( value, true );
-
-            this.options.pinColor = color || this.options.pinColor || 'black';
-
-            var oldIcon = this.options.pinIcon || '';
-            this.options.pinIcon = icon || this.options.pinIcon || 'fa-map-marker';
-
-            this.handles.pin.$handle
-                .css('color', this.options.pinColor)
-                .removeClass( oldIcon )
-                .addClass( this.options.pinIcon );
-
-            this.updateHandlesAndLines();
-        },
-
-
-        /*******************************************************************
-        ********************************************************************
         CALLBACK
         ********************************************************************
         *******************************************************************/
@@ -30314,7 +30297,6 @@ if (typeof define === 'function' && define.amd) {
 
         /*******************************************************************
         onChanging
-
         *******************************************************************/
         onChanging: function(){
             //If it is dragging and onChangeOnDragging == false => set timeout to call onChange after XX ms if the handle hasn't moved
@@ -30337,398 +30319,273 @@ if (typeof define === 'function' && define.amd) {
         },
 
 
-        /*******************************************************************
-        ********************************************************************
-        SERVICE METHODS
-        ********************************************************************
-        *******************************************************************/
 
-        /*******************************************************************
-        _prettify
-        *******************************************************************/
-        _prettify: function (num) {
-            return $.isFunction(this.options.prettify) ? this.options.prettify(num) : num;
-        },
 
-        /*******************************************************************
-        PrettifyLabel
-        *******************************************************************/
-        _prettifyLabel: function(text) {
-            return $.isFunction(this.options.prettifyLabel) ? this.options.prettifyLabel(text) : text;
-        },
 
-        /*******************************************************************
-        decorate
-        *******************************************************************/
-        decorate: function ( content ) {
-            return this.options.prefix + content + this.options.postfix;
-        },
+    }); //end of BaseSlider.prototype
 
-        /*******************************************************************
-        ********************************************************************
-        GRID
-        Use appendGridContainer to create new grids. Use appendLabel(text, left[, value]) to add a grid-label
-        ********************************************************************
-        *******************************************************************/
+}(jQuery, this, document));
 
-        /*******************************************************************
-        appendGridContainer
-        *******************************************************************/
-        appendGridContainer: function(){
-            if (this.$currentGridContainer){
-                this.totalGridContainerTop += this.$currentGridContainer.height();
-                this.$currentGridContainer =
-                    $('<span class="grid"></span>').insertAfter( this.$currentGridContainer );
-                this.$currentGridContainer.css('top', pxToRem( this.totalGridContainerTop, true) );
+;
+/****************************************************************************
+    jquery-base-slider-handle,
+
+    (c) 2015, FCOO
+
+    https://github.com/fcoo/jquery-base-slider
+    https://github.com/fcoo
+
+****************************************************************************/
+(function (window/*, document, undefined*/) {
+    "use strict";
+
+    //Create baseSlider-namespace
+	window._baseSlider = window._baseSlider || {};
+	var ns = window._baseSlider;
+
+    /*******************************************************************
+    elementsOverlapping
+    Return true if $element1 and $element2 is overlapping horizontal
+    *******************************************************************/
+    function elementsOverlapping( $element1, $element2 ){
+        if ($element1 && $element2){
+            var rect1 = $element1.get(0).getBoundingClientRect(),
+                rect2 = $element2.get(0).getBoundingClientRect();
+            return ((rect1.left >= rect2.left) && (rect1.left <= rect2.right)) ||
+                    ((rect2.left >= rect1.left) && (rect2.left <= rect1.right));
+        }
+        return false;
+    }
+
+    /*******************************************************************
+    SliderHandle
+    Object to reprecent a 'handle' on the slider
+    The handle don't need to have a actual DOM-handle. The min and max-value of the slider
+    is also reprecented as a SliderHandle
+    The object contains the following items:
+        value   : A SliderValue-object reprecenting the value
+        $handle : $-object = the DOM handle (optional)
+        marker  : Object containing of tree $-object: $outer and $text (optional)
+
+    options
+        marker: [string] = class-name of the marker
+    *******************************************************************/
+    var SliderHandle = function( options ){
+        this.id      = options.id;
+        this.slider  = options.slider || options.value.slider;
+        options.value.slider = this.slider;
+        this.value   = ns.sliderValue( options.value );
+        this.$handle = !!options.$handle; //Set to boolean. Created in this.append
+        this.handleClassName = options.handleClassName || '';
+        this.handleCSS = options.handleCSS || {};
+        this.appended = false,
+
+        this.markerData = options.markerData || {};
+
+        this.markerClassName = options.marker;
+        this.marker  = !!this.markerClassName;
+
+        //overlappingHandleList = list of SliderHandle. If any of the marker in overlappingHandleList[xx] is overlapping this => this is hidden
+        this.overlappingHandleList = [];
+
+        //overlapHandleList = list of SliderHandle. this is overlapping all the marker in overlapHandleList[xx]
+        this.overlapHandleList = [];
+
+
+        this.draggingClassName = options.draggingClassName; //Classname for handler when it is being dragged MANGLER
+        this.lastLeftPercent = '';
+    };
+
+    SliderHandle.prototype = {
+        //addOverlap( handle ) - Set this to overlap handle
+        addOverlap: function( handle ){
+            if (this.marker && handle && handle.marker ){
+                this.overlapHandleList.push( handle );
+                handle.overlappingHandleList.push( this );
             }
-            else {
-                this.$currentGridContainer = this.cache.$grid;
-                this.totalGridContainerTop = this.$currentGridContainer.position().top;
-            }
-
-            this.cache.$grid = this.cache.$container.find(".grid");
-            return this.$currentGridContainer;
         },
 
-
-        /*******************************************************************
-        appendTick
-        *******************************************************************/
-        appendTick: function( left, options ){
-            if (!this.$currentGridContainer) return;
-
-            options = $.extend( {minor: false, color: ''}, options );
-
-            var result = document.createElement("span");
-//            result.className = "grid-pol" + (options.minor ? ' minor' : '');
-            result.className = "grid-pol" + (options.minor ? '' : ' major');
-            result.style.left = left + '%';
-
-            if (options.color)
-                result.style.backgroundColor = options.color;
-
-            this.currentGridContainer.appendChild( result );
-            return result;
-
-        },
-
-        /*******************************************************************
-        _valueToText
-        *******************************************************************/
-        _valueToText: function( value ){
-            var result = this._prettifyLabel( value );
-            return this.options.decorateLabel ? this.decorate(result) : result;
-        },
-
-        /*******************************************************************
-        appendLabel
-        *******************************************************************/
-        appendLabel: function( left, value, options ){
-            if (!this.$currentGridContainer) return;
-
-            options = $.extend( {color: ''}, options );
-
-            //Check if the value for the label is a selectable one
-            options.labelClickable = options.labelClickable &&  ((value - this.options.stepOffset) % this.options.step) === 0;
-
-            var text = this._valueToText( value ),
-                outer = document.createElement("div"),
-                result = document.createElement("div"),
-                className = 'grid-label';
-
-            outer.className = 'grid-label-outer';
-            outer.style.left  = left+'%';
-            outer.appendChild(result);
-
-            if (options.minor)
-                className += ' minor';
-            if (options.italic)
-                className += ' italic';
-            if (options.color)
-                result.style.color = options.color;
-
-            //Create inner-span with the text
-            var inner = document.createElement("span"),
-                innerClassName = 'grid-label-text';
-            inner.innerHTML = text;
-
-            if (this.options.labelColorRec[value]){
-                var textOptions = this.options.labelColorRec[value];
-
-                innerClassName += ' frame';
-                if (textOptions.className)
-                    innerClassName += ' '+textOptions.className;
-                if (textOptions.color)
-                    inner.style.color = textOptions.color;
-                if (textOptions.backgroundColor)
-                    inner.style.backgroundColor = textOptions.backgroundColor;
-            }
-
-            inner.className = innerClassName;
-            result.appendChild(inner);
-
-            if (options.labelClickable && !this.options.disable && !this.options.readOnly){
-                //Can be used later: outer.setAttribute('data-base-slider-value', value);
-                outer.setAttribute('data-base-slider-percent', outer.style.left);
-                className += ' clickable';
-                if (this.options.labelClickableFullWidth)
-                    result.style.width = this.options.majorTickDistanceRem +'rem';
-
-            }
-
-            result.className = className;
-            this.currentGridContainer.appendChild( outer );
-            return result;
-        },
-
-
-        /*******************************************************************
-        getTextWidth
-        Get width of value as text OR max width of all values in array of value
-        *******************************************************************/
-        getTextWidth: function( value, options ){
-            var _this = this;
-            if ($.isArray( value )){
-                var html = '';
-                $.each( value, function(index, oneValue ){
-                    html += _this._valueToText( oneValue ) + '<br>';
-                });
-                return this.getDecorateTextWidth( html, options );
-            }
-            else
-                return this.getDecorateTextWidth( this._valueToText( value ) , options );
-        },
-
-        /*******************************************************************
-        getDecorateTextWidth
-        *******************************************************************/
-        getDecorateTextWidth: function( html, options, factor, floor ){
-            var newClassName = 'grid-label';
-            if (options){
-                if (options.minor)
-                    newClassName += ' minor';
-                if (options.italic)
-                    newClassName += ' italic';
-            }
-            if (this.textElement.className != newClassName )
-                this.textElement.className = newClassName;
-            this.textElement.innerHTML = html;
-
-            var result = parseFloat( this.textElement.offsetWidth );
-            if (factor)
-                result = factor*result;
-            if (floor)
-                result = Math.floor(result);
-
-            return pxToRem( result );
-        },
-
-
-        /*******************************************************************
-        appendGrid
-        *******************************************************************/
-        appendGrid: function () {
-            if (!this.options.grid) return;
-            this.appendStandardGrid();
-        },
-
-        /*******************************************************************
-        appendStandardGrid
-        Simple call _appendStandardGrid. Can be overwriten in decending classes
-        *******************************************************************/
-        appendStandardGrid: function ( textOptions ) {
-            this._appendStandardGrid( textOptions );
-        },
-
-
-        /*******************************************************************
-        preAppendGrid and postAppendGrid
-        must be called as first and last when creating a grid - used if a new appendStandardGrid is used
-        *******************************************************************/
-        preAppendGrid: function(){
-            this.appendGridContainer();
-            //The DOM-version of this.$currentGridContainer
-            this.currentGridContainer = this.$currentGridContainer.get(0);
-
-            //Create the grid outside the DOM
-            //Save width in % and set in in px instead of %
-            this.currentGridContainerWidth = this.currentGridContainer.style.width;
-            this.$currentGridContainer.css('width', this.$currentGridContainer.width());
-            this.$currentGridContainer.width( this.$currentGridContainer.width() );
-            this.$currentGridContainerMarker = $('<div/>').insertAfter( this.$currentGridContainer );
-            this.$currentGridContainer.detach();
-        },
-        postAppendGrid: function(){
-            //Insert the created grid into the DOM
-            this.$currentGridContainer.insertBefore( this.$currentGridContainerMarker );
-            this.$currentGridContainer.css('width', this.currentGridContainerWidth );
-            this.$currentGridContainerMarker.remove();
-
-            //Update the height of the slider
-            this.cache.$container.css('height', pxToRem( this.totalGridContainerTop + this.$currentGridContainer.height(), true) );
-
-        },
-
-
-        /*******************************************************************
-        getGridOptions
-        Get options needed for building the grid
-        *******************************************************************/
-        getGridOptions: function(){
-            var o = this.options,
-                result = {},
-                gridDistanceIndex = 0;
-
-            result.gridContainerWidthRem = pxToRem( this.cache.$grid.outerWidth(false) );
-            result.gridDistanceStep = o.gridDistances[gridDistanceIndex]; // = number of steps between each tick
-            result.stepRem = o.step * result.gridContainerWidthRem / o.range / o.majorTicksFactor;
-
-            //Increse grid-distance until the space between two ticks are more than 4px
-            while ( (result.stepRem*result.gridDistanceStep) <= o.minDistanceRem){
-                gridDistanceIndex++;
-                if (gridDistanceIndex < o.gridDistances.length)
-                    result.gridDistanceStep = o.gridDistances[gridDistanceIndex];
-                else
-                    result.gridDistanceStep = result.gridDistanceStep*2;
-            }
-
-            result.tickDistanceNum = result.gridDistanceStep * o.step;          //The numerical distance between each ticks
-            result.tickDistanceRem = result.gridDistanceStep * result.stepRem;  //The rem distance between each ticks
-
-            if (o.maxLabelWidthRem)
-                result.maxLabelWidthRem = o.maxLabelWidthRem;
-            else {
-                //Find widest label
-                var value = o.min,
-                    valueList = [],
-                    step = 1;
-
-                while (value <= o.max){
-                    //if value corrected by o.majorTicksOffset and o.majorTicksFactor is a DIV of the tick distance => calculate the width of the tick
-                    if ((value - o.majorTicksOffset)*o.majorTicksFactor % result.tickDistanceNum === 0){
-                        valueList.push( value );
-                        step = result.tickDistanceNum;
-                    }
-                    value += step;
-                }
-                result.maxLabelWidthRem = this.getTextWidth( valueList ) + o.minDistanceRem; //Adding min space between text/labels
-            }
-
-            //Calculate automatic distances between major ticks
-            var majorTicks = o.majorTicks;
-            if (!majorTicks){
-                //Find ticks between each major tick
-                gridDistanceIndex = 0;
-                majorTicks = o.gridDistances[gridDistanceIndex];
-                while (majorTicks * result.tickDistanceRem < result.maxLabelWidthRem){
-                    gridDistanceIndex++;
-                    if (gridDistanceIndex < o.gridDistances.length)
-                        majorTicks = o.gridDistances[gridDistanceIndex];
-                    else
-                        majorTicks = majorTicks*2;
-                }
-            }
-
-            result.majorTickDistanceNum = result.tickDistanceNum*majorTicks;
-            result.majorTickDistanceRem = result.tickDistanceRem*majorTicks;
-
-            return result;
-        },
-
-
-        /*******************************************************************
-        _appendStandardGrid
-        *******************************************************************/
-        _appendStandardGrid: function ( textOptions, tickOptions ) {
-            this.preAppendGrid();
-
-            textOptions = $.extend( {labelClickable: this.options.labelClickable}, textOptions || {}  );
-            tickOptions = tickOptions || {};
-
-            //Get all options regarding the grid
-            this.gridOptions = this.getGridOptions();
-            $.extend( this.options, this.gridOptions );
-
-
-            //Add all the minor and major ticks
-            var o     = this.options,
-                value = o.min,
-                step  = 1,
-                valueP, valueOffset;
-
-            while (value <= o.max){
-                valueOffset = (value - o.majorTicksOffset)*o.majorTicksFactor;
-                if (valueOffset % o.tickDistanceNum === 0){
-                    valueP = (value-o.min)*o.percentProValue;
-                    if (valueOffset % o.majorTickDistanceNum === 0){
-                        //add major tick and text/label
-                        this.appendTick( valueP, tickOptions );
-                        this.appendLabel( valueP, value, textOptions );
-                    }
-                    else
-                        if (o.showMinorTicks)
-                            //Add minor tick
-                            this.appendTick( valueP, { minor:true } );
-                    step = o.tickDistanceNum;
-                }
-                value += step;
-            }
-
-            //Append colors on the grid
-            if (this.options.gridColors)
-                this.appendGridColors( this.options.gridColors );
-
-            this.postAppendGrid();
-        },
-
-        /*******************************************************************
-        addGridColor
-        *******************************************************************/
-        appendGridColors: function( gridColors ){
-            var fromValue,
-                toValue  = this.options.min,
-                i,
-                gridColor,
-                percentFactor = 100 / (this.options.max - this.options.min);
-
-
-            for (i=0; i<gridColors.length; i++ ){
-                gridColor = gridColors[i];
-                if ( (gridColor.value === null) || (gridColor.value < this.options.min) || (gridColor.value > this.options.max) ){
-                    //add triangle to the left or right
-                    var $span = $('<span/>')
-                                    .addClass( 'grid-color')
-                                    .appendTo( this.$currentGridContainer );
-                    if (gridColor.value > this.options.max)
-                        $span
-                            .addClass('gt-max')
-                            .css('border-left-color', gridColor.color);
-                    else
-                        $span
-                            .addClass('lt-min')
-                            .css('border-right-color', gridColor.color);
-                }
-                else {
-                    fromValue = gridColor.fromValue !== undefined ? gridColor.fromValue : toValue;
-                    toValue = gridColor.value;
-
+        //append() - Create and append this.$handle and $.marker
+        append: function( $container ){
+            //Append handle
+            if (this.$handle)
+                this.$handle =
                     $('<span/>')
-                        .addClass('grid-color' + (i%2?' to':' from'))
-                        .css({
-                            'left'            : percentFactor*(fromValue - this.options.min) + '%',
-                            'width'           : percentFactor*(toValue-fromValue) + '%',
-                            'background-color': gridColor.color
-                           })
-                        .appendTo( this.$currentGridContainer );
+                        .addClass('handle '+this.id)
+                        .addClass(this.handleClassName)
+                        .css( this.handleCSS )
+                        .appendTo( $container );
+
+            //Append marker
+            if (this.marker){
+                this.marker = {};
+                //Outer div
+                this.marker.$outer =
+                    $('<div/>')
+                        .addClass('marker-outer')
+                        .addClass(this.markerClassName)
+                        .appendTo($container);
+                //Inner div
+                this.marker.$inner =
+                        $('<div/>')
+                            .addClass('marker')
+                            .appendTo(this.marker.$outer);
+                this.marker.$text =
+                        $('<span/>')
+                            .addClass('marker-text')
+                            .attr( this.markerData )
+                            .appendTo(this.marker.$inner);
+            }
+            this.appended = true;
+            return this;
+        },
+
+        //remove
+        remove: function(){
+            if (!this.appended) return;
+            if (this.$handle){
+                this.$handle.remove();
+                this.$handle = true;
+            }
+            if (this.marker.$outer){
+                this.marker.$outer.remove();
+                this.marker = true;
+            }
+            this.appended = false;
+        },
+
+        //update()
+        //Set the position of $handle and $marker and update the content of $marker
+        update: function( force ){
+            if (!this.appended) return;
+            var leftPercent = this.getLeftPosition() + '%';
+
+            if (force || (leftPercent != this.lastLeftPercent)){
+                this.lastLeftPercent = leftPercent;
+                if (this.$handle){
+                    this.$handle.css('left', leftPercent);
                 }
+                if (this.marker){
+                    //Set marker content
+                    this.marker.$text.html( this.getMarkerText() );
+
+                    //Set marker position
+                    this.marker.$outer.css('left', leftPercent);
+
+                    //Force all handles overlapped by this to update
+                    if (!force)
+                        $.each( this.overlapHandleList, function( index, handle ){
+                            handle.update( true );
+                        });
+
+                    //Set marker visibility
+                    this.marker.$outer.css('visibility', this.markerIsHidden() ? 'hidden' : 'visible');
+                }
+            }
+            return this;
+        },
+
+        //onFocus - overwriten for individual handle-types
+        onFocus: function(){
+            if (!this.appended) return;
+            this.$handle.addClass('hover');
+            if (this.marker && this.marker.$outer)
+                this.marker.$outer.addClass('hover');
+
+        },
+
+        //onBlur - overwriten for individual handle-types
+        onBlur: function(){
+            if (!this.appended) return;
+            this.$handle.removeClass('hover');
+            if (this.marker && this.marker.$outer)
+                this.marker.$outer.removeClass('hover');
+        },
+
+        //getMarkerText
+        getLeftPosition: function(){
+            return this.value.getPercent();
+        },
+
+        //getMarkerText
+        getMarkerText: function(){
+            return this.slider.decorate( this.slider._prettify( this.value.getValue() ) );
+        },
+
+        //markerIsHidden: return true if the marker is overlapping any of the markers in YYY
+        markerIsHidden: function(){
+            var thisMarker$text = this.marker.$text,
+                result = false;
+            $.each( this.overlappingHandleList, function( index, handle ){
+                result = result || elementsOverlapping( thisMarker$text, handle.marker.$text );
+            });
+            return result;
+        }
+
+    };
+
+
+    ns.SliderHandle = SliderHandle;
+    ns.sliderHandle = function( options ){
+        return new ns.SliderHandle( options );
+    };
+
+}(this/*, document*/));
+
+;
+/****************************************************************************
+jquery-base-slider-public.js
+****************************************************************************/
+(function ($, window/*, document, undefined*/) {
+    "use strict";
+
+    $.extend(window.BaseSlider.prototype, {
+        /*******************************************************************
+        SET VALUES (TO, FROM, PIN ETC.)
+        *******************************************************************/
+
+        /*******************************************************************
+        setAnyValue
+        *******************************************************************/
+        setAnyValue: function( id, value ){
+            if (this.handles[id]){
+                this.handles[id].value.setValue( value );
+
+                this.updateHandlesAndLines();
+                this.onChange();
             }
         },
 
+        /*******************************************************************
+        setValue, setFromValue, setToValue
+        *******************************************************************/
+        setValue    : function( value ) {this.setAnyValue( this.options.singleHandleId, value );},
+        setFromValue: function( value ) { this.setAnyValue( 'from',   value ); },
+        setToValue  : function( value ) { this.setAnyValue( 'to',     value ); },
 
         /*******************************************************************
-        ********************************************************************
+        setPin
+        *******************************************************************/
+        setPin: function( value, color, icon ) {
+            if (!this.options.hasPin) return;
+            if (value !== null)
+                this.handles.pin.value.setValue( value, true );
+
+            this.options.pinColor = color || this.options.pinColor || 'black';
+
+            var oldIcon = this.options.pinIcon || '';
+            this.options.pinIcon = icon || this.options.pinIcon || 'fa-map-marker';
+
+            this.handles.pin.$handle
+                .css('color', this.options.pinColor)
+                .removeClass( oldIcon )
+                .addClass( this.options.pinIcon );
+
+            this.updateHandlesAndLines();
+        },
+
+        /*******************************************************************
         PUBLIC METHODS
-        ********************************************************************
         *******************************************************************/
 
         /*******************************************************************
@@ -30773,19 +30630,148 @@ if (typeof define === 'function' && define.amd) {
             this.input = null;
             this.options = null;
         }
-    }; //end of BaseSlider.prototype
+
+    }); //end of BaseSlider.prototype
+
+}(jQuery, this, document));
+
+;
+/****************************************************************************
+    jquery-base-slider-value,
+
+    (c) 2015, FCOO
+
+    https://github.com/fcoo/jquery-base-slider
+    https://github.com/fcoo
+
+****************************************************************************/
+(function (window/*, document, undefined*/) {
+    "use strict";
+
+    //Create baseSlider-namespace
+	window._baseSlider = window._baseSlider || {};
+	var ns = window._baseSlider;
+
+    /*******************************************************************
+    toFixed
+    Round num to 5 digits
+    *******************************************************************/
+    function toFixed( num ) {
+        return +num.toFixed(5);
+    }
 
 
-    $.fn.baseSlider = function (options) {
-        return this.each(function() {
-            if (!$.data(this, "baseSlider")) {
-                $.data(this, "baseSlider", new window.BaseSlider(this, options, pluginCount++));
+    /*******************************************************************
+    SliderValue
+    Object to store and alter "value" releated to the slider
+    The object contains the following items:
+        value   : The actual value ,
+        percent : The value as percent of the total slider width
+    *******************************************************************/
+    var SliderValue = function( options ){
+        this.slider = options.slider;
+        this.valueOffset = this.slider.options.min;
+        this.valueRange = this.slider.options.max - this.valueOffset;
+        this.percentOffset = 0;
+        this.percentRange = 100;
+        this.adjustToStep = !!options.adjustToStep;
+        this.fixed = !!options.fixed;
+        this.fixedValue = options.value;
+        this.value   = 0;
+        this.percent = 0;
+        this.minList = [];
+        this.maxList = [];
+
+        var _this = this;
+        $.each( options.minList || [], function( index, sliderValueMin ){ _this.addMin( sliderValueMin ); });
+        $.each( options.maxList || [], function( index, sliderValueMax ){ _this.addMax( sliderValueMax ); });
+
+        this.setValue( options.value );
+    };
+
+    SliderValue.prototype = {
+        //addMin( sliderValue, minDistance )
+        //Add sliderValue to list of SliderValue that this must allways be greater than or equal to
+        addMin: function( sliderValue, minDistance ){
+            if (sliderValue === null) return this;
+            if ($.isNumeric(sliderValue))
+                sliderValue = new SliderValue({ value: sliderValue, slider: this.slider });
+            this.minList.push( {sliderValue: sliderValue, minDistance: minDistance || 0} );
+            this.update();
+            return this;
+        },
+
+        //addMax( sliderValue, minDistance )
+        //Add sliderValue to list of SliderValue that this must allways be less than or equal to
+        addMax: function( sliderValue, minDistance ){
+            if (sliderValue === null) return this;
+            if ($.isNumeric(sliderValue))
+                sliderValue = new SliderValue({ value: sliderValue, slider: this.slider });
+            this.maxList.push( {sliderValue: sliderValue, minDistance: minDistance || 0} );
+            this.update();
+            return this;
+        },
+
+        setValue: function( newValue, isFixed ){
+            this.value = newValue;
+            if (isFixed && this.fixed)
+                this.fixedValue = newValue;
+            this.update();
+            return this;
+        },
+
+        setPercent: function( newPercent ){
+            this.setValue( this.valueRange*(newPercent - this.percentOffset)/this.percentRange + this.valueOffset );
+        },
+
+        update: function(){
+
+            if (this.fixed)
+                this.value = this.fixedValue;
+            else {
+                //Adjust this.value with respect to {sliderValue,minDistance} in this.minList
+                var _this = this;
+                $.each( this.minList, function( index, rec ){
+                    if (rec.sliderValue)
+                        _this.value = Math.max( _this.value, rec.sliderValue.value + rec.minDistance );
+                });
+                //Adjust this.value with respect to {sliderValue,minDistance} in this.maxList
+                $.each( this.maxList, function( index, rec ){
+                    if (rec.sliderValue)
+                        _this.value = Math.min( _this.value, rec.sliderValue.value - rec.minDistance );
+                });
+
+                //Adjust this.value with respect to step and stepOffset
+                if (this.adjustToStep){
+                    var offset = this.slider.options.min + this.slider.options.stepOffset;
+                    this.value -= offset;
+                    this.value = this.slider.options.step * Math.round( this.value/this.slider.options.step );
+                    this.value += offset;
+                }
             }
-        });
+
+            //Calculate precent
+            this.percent = this.percentRange*(this.value - this.valueOffset)/this.valueRange + this.percentOffset;
+
+            return this;
+        },
+
+        getValue: function(){
+            return toFixed( this.value );
+        },
+
+        getPercent: function( inclUnit ){
+            return toFixed( this.percent ) + (inclUnit ? '%' : 0);
+        },
     };
 
 
-}(jQuery, this, document));
+    ns.SliderValue = SliderValue;
+    ns.sliderValue = function( options ){
+        return new ns.SliderValue( options );
+    };
+
+}(this/*, document*/));
 
 ;
 /****************************************************************************
@@ -49931,14 +49917,6 @@ options:
 
     ** SAME AS IN JQUERY-BASE-SLIDER PLUS **
 
-    display:
-        value:
-            tzElement, utcElement, relativeElement  //jQuery-object or String (=search)
-        from:
-            tzElement, utcElement, relativeElement  //jQuery-object or String (=search)
-        to:
-            tzElement, utcElement, relativeElement  //jQuery-object or String (=search)
-
     format:
         showRelative: boolean; If true the grid etc show the relative time ('Now + 2h') Default = false
         showUTC     : boolean; When true a scale for utc is also shown.                 Default = false. Only if showRelative == false
@@ -49993,24 +49971,14 @@ options:
         };
 
     window.TimeSlider = function (input, options, pluginCount) {
-        var _this = this;
-
-        this.VERSION = "6.1.5";
+        this.VERSION = "7.0.2";
 
         //Setting default options
         this.options = $.extend( true, {}, defaultOptions, options );
-        this._updateOptionsFormat();
 
-        this.options.display = this.options.display || {};
-        //Convert options.display.[value | from | to] from selector-string to $-elements (if needed)
-        $.each( ['value', 'from', 'to'], function( index, id ){
-            _this.options.display[id] = _this.options.display[id] || {};
-            $.each( ['tzElement', 'utcElement', 'relativeElement'], function( index, attrId ){
-                var selector = _this.options.display[id][attrId];
-                if ($.type(selector) == 'string')
-                    _this.options.display[id][attrId] = $(selector);
-            });
-        });
+        this.useMomentDateFormat = !(options.format && options.format.date);
+
+        this._updateOptionsFormat();
 
         //Set min/minMoment, max/maxMoment, from/fromMoment, to/toMoment, and value/valueMoment
         var valMom = setValueAndMoment( this.options.min, this.options.minMoment );
@@ -50033,11 +50001,6 @@ options:
             var value = setValueAndMoment( undefined, moment( this.options.stepOffsetMoment ) ).value;
             this.options.stepOffset = (value - this.options.min) % this.options.step;
         }
-
-        //Update display-element onChanging if
-        if (!this.options.onChangeOnDragging)
-            this.preOnChanging =  $.proxy( this.updateDisplay, this );
-
 
         //Create BaseSlider - dont create grid here
         var optionsGrid = this.options.grid;
@@ -50110,7 +50073,6 @@ options:
             this.result.valueMoment = valueToMoment ( this.result.value );
         },
 
-
         /**************************************************************
         appendDateGrid
         ***************************************************************/
@@ -50118,29 +50080,25 @@ options:
             var o = this.options,
                 value,
                 valueP = 0,
-                valueRem = o.stepRem/o.step,
+                valuePx = o.stepPx/o.step,
                 midnights = 0,
                 isFirstMidnight = true,
                 firstMidnightValue = 0,
                 lastMidnightValue = 0,
-                dayRem,
+                dayPx,
                 values = [],
                 dateFormats,
                 dateFormatOk,
                 textWidth;
 
-            this.preAppendGrid();
+            this.preAppendGrid( {labelBetweenTicks: true} );
 
-            this.$currentGridContainer.addClass("label-between-ticks");
             this._prettifyLabel = this._prettifyLabelAbsoluteDate;
 
             //Setting tick at midnight
             value = o.min;
             while (value <= o.max){
-                //Old version: Force midnights tag to be on minor-tick => error on shift to/from DST (Daylight Saving Time)
-                //if ( ((value - this.options.majorTicksOffset) % o.tickDistanceNum === 0) && (this._valueToTzMoment( value, this.options.format.timezone ).hour() === 0) ){
-
-                //New version: Allow midnights tags on every hour regardless if there are a tag
+                //Allow midnights tags on every hour regardless if there are a tag
                 if (this._valueToTzMoment( value, this.options.format.timezone ).hour() === 0){
 
                     midnights++;
@@ -50156,15 +50114,15 @@ options:
                 valueP += o.percentProValue;
             }
 
-            //Find the max width (in rem) of a date-label = dayRem
-            dayRem = valueRem * (
+            //Find the max width (in Px) of a date-label = dayPx
+            dayPx = valuePx * (
                                   midnights === 0 ? o.range :
                                   midnights == 1  ? Math.max( firstMidnightValue - o.min, o.max - firstMidnightValue ) :
                                                     20  //Setting a full day to 20 hours to allow date-string on days up to 20 hours at the ends
-                                ) - this.options.minDistanceRem; // = margin
+                                ) - this.options.minDistance; // = margin
 
             if (!o.format.dateFormat){
-                //Find the format for the date, where all dates is smaller than dayRem
+                //Find the format for the date, where all dates is smaller than dayPx
                 dateFormats = moment.sfDateFormatList( function( code ){
                                 //Include all formats except full weekday or full month
                                 return (code.charAt(0) != 'F') && (code.charAt(1) != 'F');
@@ -50177,10 +50135,10 @@ options:
                     value += 24;
                 }
 
-                //Checking if all dates displayed in dayFormat are samller than the max width for a day = dayRem. Setting this._prettifyLabel will force getTextWidth to use the text directly
+                //Checking if all dates displayed in dayFormat are samller than the max width for a day = dayPx. Setting this._prettifyLabel will force getTextWidth to use the text directly
                 for (var i=0; i<dateFormats.length; i++ ){
                     o.format.dateFormat = dateFormats[i];
-                    dateFormatOk = (this.getTextWidth( values, textOptions ) <= dayRem);
+                    dateFormatOk = (this.getTextWidth( values, textOptions ) <= dayPx);
 
                     if (dateFormatOk)
                       break;
@@ -50207,17 +50165,17 @@ options:
                 else {
                     //first day - check if there are space to put a date-label
                     textWidth = this.getTextWidth( o.min, textOptions );
-                    if ( valueRem*(firstMidnightValue - o.min) >= textWidth ){
+                    if ( valuePx*(firstMidnightValue - o.min) >= textWidth ){
                         //Try to place the date-text under 12 o'clock (noon) but always keep inside the left edge
-                        var minTextValue = o.min + textWidth/2/valueRem;
+                        var minTextValue = o.min + textWidth/2/valuePx;
                         this.appendLabel( o.percentProValue * ( Math.max( minTextValue, firstMidnightValue-12 ) - o.min ), o.min, textOptions );
                     }
 
                     //last day - check if there are space to put a date-label
                     textWidth = this.getTextWidth( o.max, textOptions );
-                    if ( valueRem*(o.max - lastMidnightValue) >= textWidth ){
+                    if ( valuePx*(o.max - lastMidnightValue) >= textWidth ){
                         //Try to place the date-text under 12 o'clock (noon) but always keep inside the right edge
-                        var maxTextValue = o.max - textWidth/2/valueRem;
+                        var maxTextValue = o.max - textWidth/2/valuePx;
                         this.appendLabel( o.percentProValue * ( Math.min( maxTextValue, lastMidnightValue+12 ) - o.min ), o.max, textOptions );
                     }
 
@@ -50285,16 +50243,30 @@ options:
         /**************************************************************
         _updateOptionsFormat
         ***************************************************************/
-        _updateOptionsFormat: function( format ){
-            $.extend( true, this.options.format, format || {}  );
+        _updateOptionsFormat: function( format = {} ){
+            $.extend( true, this.options.format, format );
+
+            var forceFormat = this.useMomentDateFormat ? null : this.options.format.date;
 
             //Merge current moment.simpleFormat.options into this.options.format
             $.extend( true, this.options.format, moment.sfGetOptions() );
 
+            if (forceFormat)
+                this.options.format.date = forceFormat;
+
             //Create the format for the label over the 'dragger'
-            this.options.format.dateHourFormat =
-                (this.options.format.date == 'DMY' ? 'DD-MMM' : 'MMM-DD') + //Dec-24 / 24-Dec
-                ' ' + moment.sfGetTimeFormat();
+            var dateFormat = '';
+
+            switch (this.options.format.date + (this.options.format.showYear ? '_Y' : '')){
+                case 'DMY'  : dateFormat = 'DD. MMM';       break;
+                case 'DMY_Y': dateFormat = 'DD. MMM YYYY';  break;
+                case 'MDY'  : dateFormat = 'MMM DD';        break;
+                case 'MDY_Y': dateFormat = 'MMM DD YYYY';   break;
+                case 'YMD'  : dateFormat = 'MMM DD';        break;
+                case 'YMD_Y': dateFormat = 'YYYY MMM DD';   break;
+            }
+
+            this.options.format.dateHourFormat = dateFormat + ' ' + moment.sfGetTimeFormat();
 
             //Set dateformat = '' to make appendDateGrid find new format
             this.options.format.dateFormat = '';
@@ -50314,37 +50286,11 @@ options:
         ***************************************************************/
         setFormat: function( format ){
             //Reset label-width in case time-format is changed (12h <-> 24h)
-            this.options.maxLabelWidthRem = 0;
+            this.options.maxLabelWidth = 0;
 
             this._updateOptionsFormat( format );
             this.update();
-            this.updateDisplay();
         },
-
-        /**************************************************************
-        updateDisplay
-        Updates the elements with text versions of from-value and to-value as timezone-date, utc-date and relative time
-        ***************************************************************/
-        updateDisplay: function(){
-            var _this = this;
-            $.each( ['value', 'from', 'to'], function(index, id){
-                var value = _this.result[id],
-                    valueList = [
-                        _this._valueToFormat( value, _this.options.format.timezone ),
-                        _this._valueToFormat( value, 'utc' ),
-                        _this._valueToFormat( value )
-                    ];
-                $.each( ['tzElement', 'utcElement', 'relativeElement'], function( index, attrId ){
-                    var $elem = _this.options.display[id][attrId],
-                        text = valueList[index];
-                    if ($elem)
-                        $elem.each( function(){ $(this).text( text ); } );
-                });
-            });
-        },
-
-        preOnChange: function(){ this.updateDisplay(); }
-
     };
     window.TimeSlider.prototype = $.extend( {}, window.BaseSlider.prototype, window.TimeSlider.prototype );
 
