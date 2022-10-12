@@ -9964,6 +9964,11 @@ Using Bootstrap Collapse to create accordion
 .accordion {
   --bs-accordion-font-size: 1rem;
   font-size: var(--bs-accordion-font-size); }
+  .accordion.no-transition .collapsing {
+    transition: height 0s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      .accordion.no-transition .collapsing {
+        transition: none; } }
   .accordion .accordion-button,
   .accordion .accordion-body {
     font-size: var(--bs-accordion-font-size); }

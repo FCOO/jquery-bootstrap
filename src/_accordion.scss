@@ -19,6 +19,12 @@ Using Bootstrap Collapse to create accordion
 }
 
 .accordion {
+
+    &.no-transition .collapsing {
+        @include transition(height 0s ease);
+    }
+
+
     --#{$prefix}accordion-font-size: #{$jb-font-size};
     font-size: var(--#{$prefix}accordion-font-size);
 
