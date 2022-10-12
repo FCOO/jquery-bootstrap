@@ -1093,15 +1093,17 @@
     };
 
 
+
     //Extend $.fn with method to open a card given by id (string) or index (integer)
     $.fn.bsOpenCard = function( indexOrId ){
         this.addClass('no-transition');
         var $accordionItem =
                 this.children(
                     $.type(indexOrId) == 'number' ?
-                    'div.card:nth-of-type('+(indexOrId+1)+')' :
-                    'div.card[data-user-id="' + indexOrId + '"]'
+                    'div.accordion-item:nth-of-type('+(indexOrId+1)+')' :
+                    'div.accordion-item[data-user-id="' + indexOrId + '"]'
                 );
+
         if ($accordionItem && $accordionItem.length)
             $accordionItem.children('.collapse').collapse('show');
         this.removeClass('no-transition');

@@ -1188,7 +1188,7 @@ longTableContent[i].stargazers_count = i;
         m.assignTo(
             $('<button>Flex-width</button>')
                 .on('click', function(){
-//$accordion.bsOpenCard(0);
+$accordion.bsOpenCard(0);
 //$accordion.bsOpenCard(1);
 //$accordion.bsOpenCard(2);
 //$accordion.bsOpenCard(3);
@@ -1200,6 +1200,7 @@ longTableContent[i].stargazers_count = i;
             .appendTo( $body)
             .on('click', function(e){
                 m_fixed.show();
+                $accordion2.bsOpenCard(0);
         });
         var m_small = null;
         $('<button>Small modal</button>')
