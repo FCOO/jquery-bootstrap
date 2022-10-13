@@ -285,7 +285,7 @@
             //Add footer (if any)
             if (options.footer){
                 $('<div/>')
-                    .addClass('footer-content')
+                    .addClass('modal-footer footer-content')
                     .addClass('text-' + (options.footer.textAlign || 'left'))
                     ._bsAddHtml( options.footer )
                     .insertAfter($body);
