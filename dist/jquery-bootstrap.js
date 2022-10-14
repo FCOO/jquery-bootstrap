@@ -3054,6 +3054,9 @@ options
 
             $item.addClass(itemOptions.class);
 
+            if (isItemWithSpaceAfter)
+                $item.addClass('text-truncate');
+
             if ((itemOptions.spaceBefore || itemOptions.lineBefore || spaceAfter) && $previousItem){
                 $previousItem.addClass('space-after');
             }
