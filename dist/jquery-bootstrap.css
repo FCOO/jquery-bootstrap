@@ -9037,13 +9037,32 @@ BUTTON-GROUP
   width: 1.25em;
   text-align: center; }
 
-.btn-group-vertical .header-content-container + .btn,
-.btn-group-vertical .btn-group-vertical .btn {
+.btn-group-vertical .header-content-container + .btn:not(.after-space),
+.btn-group-vertical .btn-group-vertical .btn:not(.after-space) {
   border-top-left-radius: 0;
   border-top-right-radius: 0; }
 
-.btn-group-vertical + .btn-group-vertical {
-  margin-top: var(--bs-modal-header-padding-y); }
+/*
+To have a space between two button-groups
+the button-group before the space gets class="after-space"
+*/
+.btn-group.space-after {
+  margin-right: var(--bs-modal-header-padding-x); }
+
+.btn-group-vertical.space-after {
+  margin-bottom: var(--bs-modal-header-padding-y); }
+
+/*
+To have a space between two buttons in a (vertical) button-group
+the button before the space gets class="after-space"
+*/
+.btn-group-vertical .space-after {
+  margin-bottom: var(--bs-modal-header-padding-y);
+  border-bottom-left-radius: var(--bs-btn-border-radius) !important;
+  border-bottom-right-radius: var(--bs-btn-border-radius) !important; }
+  .btn-group-vertical .space-after + .btn {
+    border-top-left-radius: var(--bs-btn-border-radius) !important;
+    border-top-right-radius: var(--bs-btn-border-radius) !important; }
 
 .btn-group-vertical.btn-group-sm {
   --bs-modal-content-font-size: 0.875rem;

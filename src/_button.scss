@@ -314,16 +314,41 @@ BUTTON-GROUP
     }
 
     //First button after header and first child inside a group inside a group gets not-round top border
-    & .header-content-container + .btn,
-    & .btn-group-vertical .btn {
+    & .header-content-container + .btn:not(.after-space),
+    & .btn-group-vertical .btn:not(.after-space) {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
     }
+}
 
 
-    //Margin between two .btn-group-vertical
-    & + .btn-group-vertical {
-        margin-top: var(--#{$prefix}modal-header-padding-y);
+
+/*
+To have a space between two button-groups
+the button-group before the space gets class="after-space"
+*/
+.btn-group.space-after {
+    margin-right: var(--#{$prefix}modal-header-padding-x);
+}
+.btn-group-vertical.space-after {
+    margin-bottom: var(--#{$prefix}modal-header-padding-y);
+}
+
+
+/*
+To have a space between two buttons in a (vertical) button-group
+the button before the space gets class="after-space"
+*/
+.btn-group-vertical {
+    .space-after {
+        margin-bottom: var(--#{$prefix}modal-header-padding-y);
+        border-bottom-left-radius : var(--#{$prefix}btn-border-radius) !important;
+        border-bottom-right-radius: var(--#{$prefix}btn-border-radius) !important;
+
+        &  + .btn{
+            border-top-left-radius : var(--#{$prefix}btn-border-radius) !important;
+            border-top-right-radius: var(--#{$prefix}btn-border-radius) !important;
+        }
     }
 }
 

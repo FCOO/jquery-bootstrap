@@ -117,53 +117,68 @@
         });
 
         //Create bsButtonGroup, but without any buttons (for now)
-        var $result = $.bsButtonGroup( $.extend({}, options, {class:'bs-menu-container', center: false, vertical: true, list: [] }) );
+        var $result       = $.bsButtonGroup( $.extend({}, options, {class:'bs-menu-container', center: false, vertical: true, list: [] }) ),
+            firstItem     = true,
+            $previousItem = null,
+            spaceAfter    = false;
 
         //Append the items
         $.each(list, function(index, itemOptions){
-            var $item = null, radioGroup = null;
+            var $item = null,
+                isItemWithSpaceAfter = false,
+                radioGroup = null;
 
             itemOptions.small = options.small;
 
             switch (itemOptions.type){
                 case 'button':
                     $item = $.bsButton($.extend(itemOptions, {returnFromClick: true}));
+                    isItemWithSpaceAfter = true;
                     break;
 
                 case 'checkbox':
                     $item = $.bsStandardCheckboxButton(itemOptions);
+                    isItemWithSpaceAfter = true;
                     break;
 
                 case 'radio':
                     $item = $.bsRadioButtonGroup( $.extend({vertical: true, fullWidth: true}, itemOptions));
                     radioGroup = $item.data('radioGroup');
+                    isItemWithSpaceAfter = true;
                     break;
 
                 case 'content':
-                    $item = itemOptions.content;
+                    var content = itemOptions.content;
+                    if (content instanceof $)
+                        $item = content.clone(true);
+                    else
+                        $item = $('<div/>')._bsAddHtml( content );
                     break;
 
                 default:
+                    //A header
                     $item = $('<div/>')
-                                .addClass('header-content-container header-content')
+                                .addClass('btn header-content-container header-content')
+                                .toggleClass('header-content-inner', !itemOptions.mainHeader && !firstItem)
                                 ._bsAddHtml( itemOptions );
+                    itemOptions.spaceBefore = true;
             }
 
             $item.addClass(itemOptions.class);
 
-            $result.append($item);
+            if ((itemOptions.spaceBefore || itemOptions.lineBefore || spaceAfter) && $previousItem){
+                $previousItem.addClass('space-after');
+            }
+            spaceAfter = itemOptions.spaceAfter || itemOptions.lineAfter;
 
-            if (itemOptions.lineBefore)
-                $item = $item.add(
-                    $('<hr>').addClass('before').insertBefore( $item.first() )
-                );
-            if (itemOptions.lineAfter)
-                $item = $item.add(
-                    $('<hr>').addClass('after').insertAfter( $item.last() )
-                );
+            $previousItem = isItemWithSpaceAfter ? $item : null;
+
+            $result.append($item);
 
             options.list[index].$item = $item;
             options.list[index].radioGroup = radioGroup;
+
+            firstItem = false;
         });
         $result.data('bsMenu_options', options);
         var update = $.proxy(updateBsMenu, $result);

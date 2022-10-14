@@ -56,6 +56,10 @@
         --bs-accordion-active-bg: green;
     }
 
+    :root-DEMO {
+        --jb-inner-header-bg: red;
+    }
+
     </style>
 </head>
 
@@ -643,7 +647,8 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
                     {             icon: 'fa-home',   text:'Åg Header'},
                     {id:'slow',   icon: 'fa-bicycle',   text:'Close/Luk', closeOnClick: true},
                     {id:'medium', icon: 'fa-car', text:'Xx'},
-                    {id:'fast',   icon: 'fa-fighter-jet',   text:'Xxx'}
+                    {id:'fast',   icon: 'fa-fighter-jet',   text:'Xxx', spaceAfter: true},
+                    {id:'stop',   icon: 'fa-hand',   text:'Stop laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaang', spaceBefore: true}
                 ]
             })
 
@@ -2115,16 +2120,15 @@ type: 'checkbox',
     *****************************/
     header('bsMenu');
     var list1 = [
-            {type:'content', content: $('<div class="w-100">Davs</div>'), closeOnClick: false },
-            {text:{da:'En overskrift', en:'A header'}},
             {id: 'button1', icon: 'fa-home', text:{da:'En knap', en:'A button'}, onClick: function(){console.log('onClick button1', arguments);} },
             {id: 'checkbox1', type:'checkbox', selected: true,  text:{da:'En checkbox#1', en:'A checkbox#1'},
                 onChange: function(id, selected){
                     console.log('onChange-checkbox1', id, selected);
                 }
             },
-            {id: 'checkbox2', type:'checkbox', selected: false, text:{da:'En checkbox#2 (lukker ikke)', en:'A checkbox#2 (dont close)'}, closeOnClick: false},
+            {id: 'checkbox2', type:'checkbox', selected: false, text:{da:'En checkbox#2 (lukker ikke)', en:'A checkbox#2 (dont close)'}, closeOnClick: false, spaceAfter:true},
             {id: 'checkbox3', type:'checkbox', selected: false, text:'Dette er kun på dansk'},
+//            {text:{da:'En lille overskrift', en:'A small header'}},
             {radioGroupId: 'radio1', type:'radio', lineBefore: true, lineAfter: true, _hidden: true, list: [
                     {id:'slow',   icon: 'fa-fw fa-bicycle',   text:'Cykel', closeOnClick: false},
                     {id:'medium', icon: 'fa-fw fa-car', text:'Bil', selected: true},
@@ -2134,16 +2138,17 @@ type: 'checkbox',
                     console.log('onChange-radio1', selectedId);
                 }
 
-            }
+            },
+            {type:'content', content: $('<div class="w-100">Davs</div>'), closeOnClick: false },
         ];
 
     var list2 = [
            // {type:'content', content: $('<div class="w-100">Davs</div>'), closeOnClick: false },
-            {text:{da:'En overskrift', en:'A header'}},
             {id: 'button1', icon: 'fa-home', text:{da:'En knap', en:'A button'}, onClick: function(){console.log('onClick button1', arguments)}},
             {id: 'checkbox1', type:'checkbox', selected: true,  text:{da:'En checkbox#1', en:'A checkbox#1'}},
             {id: 'checkbox2', type:'checkbox', selected: false, text:{da:'En checkbox#2', en:'A checkbox#2'}},
-            {radioGroupId: 'radio1', type:'radio', _lineBefore: true, _lineAfter: true, _hidden: true, closeOnClick: false, list: [
+            {text:{da:'En lille overskrift', en:'A small header'}},
+            {radioGroupId: 'radio1', type:'radio', _hidden: true, closeOnClick: false, list: [
                     {id:'slow2',   icon: 'fa-fw fa-bicycle',   text:'Cykel', closeOnClick: true},
                     {id:'medium2', icon: 'fa-fw fa-car', text:'Bil', selected: true},
                     {id:'fast2',   icon: 'fa-fw fa-fighter-jet',   text:'Jetjaver'}
@@ -2180,6 +2185,10 @@ $body.append('<hr>');
         .bsMenuPopover({
             closeOnClick: true,
             placement: 'top',
+            header : {
+                text:{da:'En lille overskrift', en:'A small header'}
+            },
+
             list: list1
          });
 
@@ -2197,6 +2206,9 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
             closeOnClick: true,
             small: true,
             placement: 'top',
+            header : {
+                text:{da:'En lille overskrift', en:'A small header'}
+            },
             list: list2
          });
 

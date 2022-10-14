@@ -1158,6 +1158,10 @@
 
         //Add class-name corresponding to options
         var newClass = [options.class || ''];
+
+        if (options._class)
+            newClass.push(options._class);
+
         $.each( optionToClassName, function( id, className ){
             if (options[id] && (!$.isFunction(options[id]) || options[id]()))
                 newClass.push(className);
@@ -1364,8 +1368,9 @@
                 useTouchSize          : true,
                 attr                  : { role: 'group' },
                 buttonOptions         : {
-                    onClick        : options.onClick,
-                    returnFromClick: options.returnFromClick
+                    onClick         : options.onClick,
+                    returnFromClick : options.returnFromClick,
+                    _class          : 'text-truncate'
                 }
             });
 
@@ -1409,15 +1414,28 @@
         if (options.attr)
             result.attr( options.attr );
 
+        var $previousButton = null,
+            spaceAfter     = false;
         $.each( options.list, function(index, buttonOptions ){
 
+           if ((buttonOptions.spaceBefore || buttonOptions.lineBefore || spaceAfter) && $previousButton){
+                $previousButton.addClass('space-after');
+            }
+
+            spaceAfter      = buttonOptions.spaceAfter || buttonOptions.lineAfter;
+            $previousButton = null;
+
             if (buttonOptions.id)
-                $._anyBsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
-                    .appendTo( result );
+                $previousButton =
+                    $._anyBsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
+                        .appendTo( result );
             else
                 //Create content as header
                 $('<div/>')
-                    .addClass('header-content-container')
+                    .addClass('header-content-container btn header-content-container')
+                    .addClass('btn header-content-container header-content')
+                    .toggleClass('header-content-inner', !buttonOptions.mainHeader)
+
                     .addClass( buttonOptions.class )
                     ._bsHeaderAndIcons( {header: buttonOptions} )
                     .appendTo( result );
@@ -2987,53 +3005,68 @@ options
         });
 
         //Create bsButtonGroup, but without any buttons (for now)
-        var $result = $.bsButtonGroup( $.extend({}, options, {class:'bs-menu-container', center: false, vertical: true, list: [] }) );
+        var $result       = $.bsButtonGroup( $.extend({}, options, {class:'bs-menu-container', center: false, vertical: true, list: [] }) ),
+            firstItem     = true,
+            $previousItem = null,
+            spaceAfter    = false;
 
         //Append the items
         $.each(list, function(index, itemOptions){
-            var $item = null, radioGroup = null;
+            var $item = null,
+                isItemWithSpaceAfter = false,
+                radioGroup = null;
 
             itemOptions.small = options.small;
 
             switch (itemOptions.type){
                 case 'button':
                     $item = $.bsButton($.extend(itemOptions, {returnFromClick: true}));
+                    isItemWithSpaceAfter = true;
                     break;
 
                 case 'checkbox':
                     $item = $.bsStandardCheckboxButton(itemOptions);
+                    isItemWithSpaceAfter = true;
                     break;
 
                 case 'radio':
                     $item = $.bsRadioButtonGroup( $.extend({vertical: true, fullWidth: true}, itemOptions));
                     radioGroup = $item.data('radioGroup');
+                    isItemWithSpaceAfter = true;
                     break;
 
                 case 'content':
-                    $item = itemOptions.content;
+                    var content = itemOptions.content;
+                    if (content instanceof $)
+                        $item = content.clone(true);
+                    else
+                        $item = $('<div/>')._bsAddHtml( content );
                     break;
 
                 default:
+                    //A header
                     $item = $('<div/>')
-                                .addClass('header-content-container header-content')
+                                .addClass('btn header-content-container header-content')
+                                .toggleClass('header-content-inner', !itemOptions.mainHeader && !firstItem)
                                 ._bsAddHtml( itemOptions );
+                    itemOptions.spaceBefore = true;
             }
 
             $item.addClass(itemOptions.class);
 
-            $result.append($item);
+            if ((itemOptions.spaceBefore || itemOptions.lineBefore || spaceAfter) && $previousItem){
+                $previousItem.addClass('space-after');
+            }
+            spaceAfter = itemOptions.spaceAfter || itemOptions.lineAfter;
 
-            if (itemOptions.lineBefore)
-                $item = $item.add(
-                    $('<hr>').addClass('before').insertBefore( $item.first() )
-                );
-            if (itemOptions.lineAfter)
-                $item = $item.add(
-                    $('<hr>').addClass('after').insertAfter( $item.last() )
-                );
+            $previousItem = isItemWithSpaceAfter ? $item : null;
+
+            $result.append($item);
 
             options.list[index].$item = $item;
             options.list[index].radioGroup = radioGroup;
+
+            firstItem = false;
         });
         $result.data('bsMenu_options', options);
         var update = $.proxy(updateBsMenu, $result);
