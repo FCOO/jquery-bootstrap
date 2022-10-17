@@ -302,7 +302,6 @@ BUTTON-GROUP
 .btn-group-vertical {
     .header-content-container {
         width: 100%;
-        margin-bottom: $btn-border-width;   //To compensate for negative margin-top in .btn-group-vertical > .btn:not(:first-child)
     }
 
     //Align all icons in vertical button group to width = 1.25em
