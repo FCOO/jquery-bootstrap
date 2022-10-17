@@ -9030,7 +9030,10 @@ BUTTON-GROUP
   font-size: var(--bs-modal-content-font-size); }
 
 .btn-group-vertical .header-content-container {
-  width: 100%; }
+  width: 100%;
+  color: var(--jb-header-color);
+  background-color: var(--jb-header-bg);
+  cursor: default; }
 
 .btn-group-vertical .btn.container-icon-and-text > i, .btn-group-vertical .btn.container-icon-and-text > .container-stacked-icons {
   width: 1.25em;
