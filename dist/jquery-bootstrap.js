@@ -1425,16 +1425,15 @@
             spaceAfter      = buttonOptions.spaceAfter || buttonOptions.lineAfter;
             $previousButton = null;
 
-            if (buttonOptions.id)
+            if (buttonOptions.id || !options.vertical)
                 $previousButton =
                     $._anyBsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
                         .appendTo( result );
             else
-                //Create content as header
+                //Create content as header in vertical button-group
                 $('<div/>')
-                    .addClass('header-content-container btn header-content-container')
-                    .addClass('btn header-content-container header-content')
-                    .toggleClass('header-content-inner', !buttonOptions.mainHeader)
+                    .addClass('btn header-content')
+                    .toggleClass('header-main', !!buttonOptions.mainHeader)
 
                     .addClass( buttonOptions.class )
                     ._bsHeaderAndIcons( {header: buttonOptions} )
@@ -3006,7 +3005,6 @@ options
 
         //Create bsButtonGroup, but without any buttons (for now)
         var $result       = $.bsButtonGroup( $.extend({}, options, {class:'bs-menu-container', center: false, vertical: true, list: [] }) ),
-            firstItem     = true,
             $previousItem = null,
             spaceAfter    = false;
 
@@ -3046,8 +3044,8 @@ options
                 default:
                     //A header
                     $item = $('<div/>')
-                                .addClass('btn header-content-container header-content')
-                                .toggleClass('header-content-inner', !itemOptions.mainHeader && !firstItem)
+                                .addClass('btn header-content')
+                                .toggleClass('header-main', !!itemOptions.mainHeader)
                                 ._bsAddHtml( itemOptions );
                     itemOptions.spaceBefore = true;
             }
@@ -3069,7 +3067,6 @@ options
             options.list[index].$item = $item;
             options.list[index].radioGroup = radioGroup;
 
-            firstItem = false;
         });
         $result.data('bsMenu_options', options);
         var update = $.proxy(updateBsMenu, $result);

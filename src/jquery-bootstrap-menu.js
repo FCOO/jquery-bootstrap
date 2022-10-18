@@ -118,7 +118,6 @@
 
         //Create bsButtonGroup, but without any buttons (for now)
         var $result       = $.bsButtonGroup( $.extend({}, options, {class:'bs-menu-container', center: false, vertical: true, list: [] }) ),
-            firstItem     = true,
             $previousItem = null,
             spaceAfter    = false;
 
@@ -158,8 +157,8 @@
                 default:
                     //A header
                     $item = $('<div/>')
-                                .addClass('btn header-content-container header-content')
-                                .toggleClass('header-content-inner', !itemOptions.mainHeader && !firstItem)
+                                .addClass('btn header-content')
+                                .toggleClass('header-main', !!itemOptions.mainHeader)
                                 ._bsAddHtml( itemOptions );
                     itemOptions.spaceBefore = true;
             }
@@ -181,7 +180,6 @@
             options.list[index].$item = $item;
             options.list[index].radioGroup = radioGroup;
 
-            firstItem = false;
         });
         $result.data('bsMenu_options', options);
         var update = $.proxy(updateBsMenu, $result);

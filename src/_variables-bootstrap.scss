@@ -303,7 +303,8 @@ $popover-font-size          : $jb-font-size;
 $popover-border-radius      : $jb-border-radius;
 $popover-inner-border-radius: $jb-inner-border-radius;
 
-$popover-header-bg          : $jb-header-bg;
+$popover-header-color       : var(#{$jb-prefix}header-color);
+$popover-header-bg          : var(--#{$jb-prefix}header-bg);
 
 $popover-header-font-size   : $jb-font-size;
 $popover-header-padding-y   : $jb-padding-y;

@@ -24,9 +24,12 @@ HEADER-CONTENT
     color           : var(--#{$jb-prefix}header-color);
     background-color: var(--#{$jb-prefix}header-bg);
 
-    cursor: default;
+    cursor        : default;
+    pointer-events: none;
+
     &.clickable {
-        cursor: pointer;
+        cursor        : pointer;
+        pointer-events: inherit;
     }
 
 
@@ -64,6 +67,7 @@ HEADER-CONTENT
     .header-icon-container {
         display        : flex;
         align-items    : baseline;
+        pointer-events : initial;
 
         flex-shrink    : 0;
         justify-content: space-between;
@@ -109,14 +113,6 @@ HEADER-CONTENT
             }
         } //end of .header-icon {
     } //end of .header-icon-container {
-
-
-    //If the header is class header-content-inner or is inside a container with a header => use other color and bg
-
-
-
-
-
 } //end of .header-content
 
 
