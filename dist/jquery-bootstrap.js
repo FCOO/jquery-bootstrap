@@ -1369,7 +1369,7 @@
                 center                : !options.vertical, //Default: center on horizontal and left on vertical
                 useTouchSize          : true,
                 attr                  : { role: 'group' },
-inclHeader: options.vertical,   //Dedfault: Include headers (= items without onClick)
+                inclHeader            : options.vertical,   //Default: Include headers (= items without onClick)
                 buttonOptions         : {
                     onClick         : options.onClick,
                     returnFromClick : options.returnFromClick,
@@ -1430,7 +1430,7 @@ inclHeader: options.vertical,   //Dedfault: Include headers (= items without onC
             spaceAfter      = buttonOptions.spaceAfter || buttonOptions.lineAfter;
             $previousButton = null;
 
-            if (buttonOptions.id || buttonOptions.onClick)
+            if (buttonOptions.id || buttonOptions.onClick  || buttonOptions.onChange)
                 $previousButton =
                     $._anyBsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
                         .appendTo( result );
@@ -1506,9 +1506,12 @@ inclHeader: options.vertical,   //Dedfault: Include headers (= items without onC
     **********************************************************/
     $.bsButtonBar = function( options ){
         options =
-            $._bsAdjustOptions( options, {}, {
+            $._bsAdjustOptions( options, {
+                fullWidthClass  : 'w-100',
+                fullWidth       : true
+            }, {
                 baseClass   : 'btn-bar',
-                class       : 'd-flex flex-row flex-nowrap justify-content-'+(options.justify || options.align || 'center'),
+                class       : 'm-0 p-0 d-flex flex-row flex-nowrap justify-content-'+(options.justify || options.align || 'center'),
                 vertical    : false,
                 center      : true,
                 useTouchSize: true,
