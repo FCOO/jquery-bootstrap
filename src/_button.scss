@@ -3,6 +3,7 @@ BUTTON
 ************************************************************/
 /************************************************************
 Including size eXtra-Small .btn-xs and btn-group-xs as in Bootstrap 5
+Include btn-sizes when inside a btn-bar
 ************************************************************/
 .btn-xs {
     @include button-size(
@@ -13,6 +14,10 @@ Including size eXtra-Small .btn-xs and btn-group-xs as in Bootstrap 5
     );
 }
 .btn-group-xs > .btn { @extend .btn-xs; }
+
+.btn-bar-sm > .btn { @extend .btn-sm; }
+.btn-bar-xs > .btn { @extend .btn-xs; }
+
 
 /************************************************************
 To be able to control font-family etc. 'buttons'
@@ -380,6 +385,19 @@ MENU (BUTTON-GROUP)
 
 
 /************************************************************
+BUTTON-BAR
+************************************************************/
+.btn-bar {
+    .btn {
+        min-width: var(--bs-btn-square-dimention);
+        &:not(:first-child) {
+            margin-left: 2px;
+        }
+    }
+}
+
+
+/************************************************************
 btn-shadow and btn-shadow-sm
 classes to create "shadow-buttons" = invisible square buttons for correct spacing
 ************************************************************/
@@ -398,4 +416,12 @@ classes to create "shadow-buttons" = invisible square buttons for correct spacin
 .btn-shadow-sm {
     width : $button-square-dimension-sm;
     height: $button-square-dimension-sm;
+}
+
+/************************************************************
+btn-round-border
+classes to create force round border despise placement
+************************************************************/
+.btn-round-border {
+    border-radius: var(--#{$prefix}btn-border-radius) !important;
 }

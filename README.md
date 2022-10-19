@@ -13,6 +13,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Button](#button)
 - [Button-group](#buttongroup)
 - [Radio-button-group](#radiobuttongroup)
+- [Button-bar](#buttonbar)
 - [Select](#select)
 - [SelectList](#selectlist)
 - [Radio and Checkbox](#radioandcheckbox)
@@ -224,6 +225,18 @@ Same as for Button-group plus
 | `id` | `string` | `""` | id for the group Id of the item. If no id is given the item becomes a sub-header |
 | `allowZeroSelected` | `boolean` | `false` | See above |
 | `onChange` | `function(id, selected, $buttonGroup)` | `null` | Called when a button is selected |
+
+
+<a name="buttonbar"></a>
+## Button-bar
+Create horizontal bar with buttons
+
+        var myButtopnBar = $.bsButtonBar( options );
+
+### options
+Same as for Button-group plus
+
+        justify    : "start", "end", "center", "between", "around", or "evenly"
 
 
 <a name="select"></a>

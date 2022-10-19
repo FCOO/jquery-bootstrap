@@ -367,6 +367,21 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 
 
 
+        header('Button bars');
+        $.bsButtonBar({
+            //small: true,
+            //square: true,
+            justify: 'evenly',                
+            inclHeader: true,
+            buttons: [
+                {id:'very_slow', icon: 'fa-bicycle',        text: 'Bicycle', onClick: function(id, selected ){console.log('1: bsButtonGroup', id, selected)} },
+                {id:'medium',    icon: 'fa-car',            text: 'Car'},
+                {                icon: 'fa-fighter-jet',    text: 'Fighter Jet', _color:'danger'},
+            ]
+        }).appendTo( $body );
+
+
+
         header('Button groups');
         $.bsButtonGroup({
             vertical: false,
@@ -1705,7 +1720,7 @@ width: 543,
                                             id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', 
                                             validators: 'required',
 
-                                            after : {type:'button',  text:{da:'kr.', en:'£'}}, 
+                                            after : {type:'button',  text:{da:'kr.', en:'£'}, square: true}, 
                                             before: {type:'button',  icon:'fa-calculator'}
                                         },
 
