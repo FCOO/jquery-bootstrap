@@ -152,7 +152,7 @@ Also overwrite default bootstrap behaviour
 
     //min-width used for buttons with short text ("Ok")
     &.min-width {
-        min-width: 5em;
+        min-width: 5em !important;
     }
 
     //*********************************************************
