@@ -195,6 +195,8 @@
                 $contentContainer =
                     $('<div/>')
                         .addClass('accordion-body')
+                        .toggleClass('no-vertical-padding', !!opt.noVerticalPadding)
+                        .toggleClass('no-horizontal-padding', !!opt.noHorizontalPadding)
                         .appendTo( $outer );
 
             //Add footer

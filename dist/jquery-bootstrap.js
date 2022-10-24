@@ -1046,6 +1046,8 @@
                 $contentContainer =
                     $('<div/>')
                         .addClass('accordion-body')
+                        .toggleClass('no-vertical-padding', !!opt.noVerticalPadding)
+                        .toggleClass('no-horizontal-padding', !!opt.noHorizontalPadding)
                         .appendTo( $outer );
 
             //Add footer
@@ -1415,6 +1417,9 @@
 
         if (options.border)
             result.addClass('btn-group-border');
+
+        if (options.noRoundBorder)
+            result.addClass('btn-group-no-round-border');
 
         if (options.attr)
             result.attr( options.attr );

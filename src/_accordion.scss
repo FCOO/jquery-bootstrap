@@ -60,6 +60,13 @@ Using Bootstrap Collapse to create accordion
         padding: var(--#{$prefix}accordion-footer-padding);
     }
 
+    .accordion-body.no-vertical-padding {
+        --#{$prefix}accordion-body-padding-y: 0 !important;
+    }
+    .accordion-body.no-horizontal-padding {
+        --#{$prefix}accordion-body-padding-x: 0 !important;
+    }
+
     .modal-dialog-sm &,
     &.accordion-sm {
         @include _accordion-variant( 'sm' );

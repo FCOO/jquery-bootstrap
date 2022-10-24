@@ -883,7 +883,11 @@ longTableContent[i].stargazers_count = i;
                     children:[
                         {
                             header: {icon: 'fa-home', text: {da:'Overskrift#1-1', en:'Header#1-1'}},
-                            content: 'Dette er en test 1-1<br>'+testContent
+                            noVerticalPadding: true,
+                            noHorizontalPadding: true,
+                            content: {
+                                text:'No padding: Dette er en test 1-1<br>'+testContent,
+                            }
                         },
                         {
                             header: {icon: 'fa-home', text: {da:'Overskrift#1-2', en:'Header#1-2'}},
@@ -2181,6 +2185,7 @@ type: 'checkbox',
         fullWidth: true,
 _small: true,
         border: true,
+        noRoundBorder: true,
         onChange: function(id, selected, $radioGroup){
             console.log('onChange', id, selected, $radioGroup);
         },

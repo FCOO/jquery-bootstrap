@@ -265,6 +265,12 @@ BUTTON-GROUP
     @extend .w-100;
 }
 
+//Vertical button-group with no round border on buttons
+.btn-group-vertical.btn-group-no-round-border > .btn {
+    border-radius: 0;
+}
+
+
 //Horizontal button-group inside input-group or with full width gets equal width
 .input-group .btn-group,
 .btn-group:not(.btn-group-vertical).btn-group-full-width {

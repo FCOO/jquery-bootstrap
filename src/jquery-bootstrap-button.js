@@ -303,6 +303,9 @@
         if (options.border)
             result.addClass('btn-group-border');
 
+        if (options.noRoundBorder)
+            result.addClass('btn-group-no-round-border');
+
         if (options.attr)
             result.attr( options.attr );
 
