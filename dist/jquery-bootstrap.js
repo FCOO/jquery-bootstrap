@@ -5604,10 +5604,21 @@ jquery-bootstrap-modal-promise.js
             $option.prop('label', text);
     }
 
+
+    function bsSelect_onChange( event ){
+        var $select = $(event.target),
+            selectedIndex = $select.get(0).selectedIndex,
+            options = $select.data('bsOptions'),
+            selectedItem = options.optionList[selectedIndex];
+
+        if (options.onChange)
+            $.proxy(options.onChange, options.context)(selectedItem.id, true, $select);
+    }
+
     var selectboxId = 0;
     $.bsSelect = $.bsSelectBox = $.bsSelectbox = function( options ){
 
-        options.items = options.items || options.list;
+        //options.items = options.items || options.list;
         options.list = options.list || options.items;
 
         options =
@@ -5624,6 +5635,8 @@ jquery-bootstrap-modal-promise.js
                     ._bsAddBaseClassAndSize( options )
                     ._bsAddIdAndName( options );
 
+
+        options.optionList = [];
         $.each( options.list, function( index, itemOptions ){
             var $option =
                     itemOptions.id ?
@@ -5634,11 +5647,20 @@ jquery-bootstrap-modal-promise.js
 
             $option
                 .addClass('jb-option')
+                .addClass(itemOptions.textClass)
+                .toggleClass('text-center', !!itemOptions.center)
                 .data('jb-text', itemOptions.text)
                 .appendTo($select);
 
+            if (itemOptions.id)
+                options.optionList.push( itemOptions);
+
             setOptionText( $option );
         });
+
+
+        $select.data('bsOptions', options);
+        $select.on('change', bsSelect_onChange);
 
         //wrap inside a label (if any)
         var $result = options.label ? $select._wrapLabel({ label: options.label }) : $select;

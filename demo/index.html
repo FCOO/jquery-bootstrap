@@ -443,7 +443,8 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
                 {text:{da:'Overskrift', en: 'Header'} },
                 {id: 'item0', text:{da:'da-Emne#0', en: 'en-Item#0'} },
                 {id: 'item1', text:{da:'da-Emne#1', en: 'en-Item#1'} },
-                {id: 'item2', text:{da:'da-Emne#2', en: 'en-Item#2'}, center:true },
+                {id: 'item2', text:"{da:'da-Emne#2', en: 'en-Item#2'}", center:true },
+                {text:{da:'Overskrift 2', en: 'Header 2'} },
                 {id: 'item3', text:{da:'da-Emne#3', en: 'en-Item#3'} },
                 {id: 'item4', text:{da:'da-Emne#4', en: 'en-Item#4'} },
                 {id: 'item5', text:{da:'da-Emne#5', en: 'en-Item#5'} },
@@ -473,7 +474,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 
             content: $.bsSelectbox({
                         fullWidth   : true,
-                        _selectedId : 'fast',
+                        selectedId : 'item5',
                         placeholder: {da:'Vælg hastighed...', en:'Select speed...'},
                         center: true,
                         items      : selectItems3,
