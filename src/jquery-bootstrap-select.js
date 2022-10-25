@@ -57,6 +57,12 @@
                     ._bsAddBaseClassAndSize( options )
                     ._bsAddIdAndName( options );
 
+
+$select.on('change', function(){
+console.log('>>>', arguments);
+});
+
+
         $.each( options.list, function( index, itemOptions ){
             var $option =
                     itemOptions.id ?
