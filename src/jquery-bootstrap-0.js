@@ -719,6 +719,7 @@
                     case 'select'           :   buildFunc = $.bsSelect;             insideFormGroup = true; break;
 
                     case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
+                    case 'selectbutton'     :   buildFunc = $.bsSelectButton;       break;
 
                     case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
                     case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; noPadding = true; break;

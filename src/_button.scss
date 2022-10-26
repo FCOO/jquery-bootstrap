@@ -404,6 +404,26 @@ BUTTON-BAR
 
 
 /************************************************************
+BUTTON-SELECT
+************************************************************/
+.btn-select {
+    display     : flex;
+    align-items : center;
+
+    &::after {
+        background-image : #{escape-svg($accordion-button-icon)};
+        flex-shrink      : 0;
+        width            : $accordion-icon-width;
+        height           : $accordion-icon-width;
+        margin-left      : auto;
+        content          : "";
+        background-repeat: no-repeat;
+        background-size  : $accordion-icon-width;
+    }
+
+}
+
+/************************************************************
 btn-shadow and btn-shadow-sm
 classes to create "shadow-buttons" = invisible square buttons for correct spacing
 ************************************************************/

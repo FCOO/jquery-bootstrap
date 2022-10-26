@@ -16,6 +16,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Button-bar](#buttonbar)
 - [Select](#select)
 - [SelectList](#selectlist)
+- [SelectButton](#selectbutton)
 - [Radio and Checkbox](#radioandcheckbox)
 - [Menu](#menu)
 - [Popover](#popover)
@@ -266,7 +267,18 @@ Same as for Button-group plus
 
 ### options
 
-As for Select without `placeholder`
+As for Select without `placeholder` **but** with all the options for icons and text
+
+
+<a name="selectbutton"></a>
+## SelectButton
+
+    var mySelectButton = $.bsSelectButton( options );
+
+### options
+
+As for SelectList
+
 
 <a name="radioandcheckbox"></a>
 ## Radio and Checkbox

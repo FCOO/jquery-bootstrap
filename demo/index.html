@@ -91,6 +91,7 @@
 	<script src="../src/jquery-bootstrap-modal.js"></script>
 	<script src="../src/jquery-bootstrap-modal-backdrop.js"></script>
 	<script src="../src/jquery-bootstrap-checkbox.js"></script>
+	<script src="../src/jquery-bootstrap-selectbutton.js"></script>
 	<script src="../src/jquery-bootstrap-selectlist.js"></script>
 	<script src="../src/jquery-bootstrap-button.js"></script>
 	<script src="../src/jquery-bootstrap-accordion.js"></script>
@@ -485,6 +486,21 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 
             scroll: true
         });
+
+
+        header('Select-button');
+        $.bsSelectButton({
+            text: {da:'Valg et eller andet...', en:'Select something...'},
+            width: '10em',
+            list: [
+                {id:'item1', icon: 'fa-home', text: ["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:", {en: 'ES D 140 Bornholm W.', da: 'ES D 140 Bornholm W.'}] },
+                {id:'item2', icon: 'fa-map', text: ["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:", {en: 'ES D 140 Bornholm W.', da: 'ES D 140 Bornholm W.'}] },
+            ],
+            selectedId: 'item2',
+            onChange: function(id){
+                console.log('Select-button:', id);
+            }
+        }).appendTo( $body );
 
 
         header('Checkbox, Radiobox, and checkbox-button');
@@ -1624,6 +1640,28 @@ width: 543,
                                             },
                                         },
                                         {
+                                            label: {text:'Select-button'},
+                                            type: 'inputgroup',
+                                            content:{
+                                                type: 'selectbutton',
+                                                items:[
+                                                    {id:'theSelectBox0', icon:'fa-home', text: {da: '0:Davs', en:'0:Hello'}},
+                                                    {id:'theSelectBox1',  text:'1: Item 1'},
+                                                    {                   text:'En overskrift'},
+                                                    {id:'theSelectBox2',  text:'2: Item 2 DEFAULT', icon:'fa-folder'},
+                                                    {id:'theSelectBox3',  text:'3: Item 3'},
+                                                    {id:'theSelectBox4',  text:'4: Item 4'},
+                                                    {id:'theSelectBox5',  text:'5: Item 5'},
+                                                    {id:'theSelectBox6',  text:'6: Item 6'},
+                                                    {id:'theSelectBox7',  text:'7: Item 7'},
+                                                    {id:'theSelectBox8',  text:'8: Item 8'},
+                                                    {id:'theSelectBox9',  text:'9: Item 9'},
+                                                    {id:'theSelectBox10', text:'10: Item 10'},
+                                                    {id:'theSelectBox11', text:'11: Item 11'}
+                                                ],
+                                            },
+                                        },
+                                        {
                                             type: 'textarea', label: 'TextArea',
                                             text: 'Davs med dig<br>Ny linie'
                                         },
@@ -1676,10 +1714,10 @@ width: 543,
                                         },
 
                                         {
-                                            id:'theSelectBox', type: 'select', validators: 'notEmpty', placeholder:"Placeholder", 
+                                            id:'theSelectBox', type: 'selectbutton', validators: 'notEmpty', placeholder:"Placeholder", 
                                             label:'theSelectBox',
-                                            before:    {type:'button', icon:'fa-calculator'},
-                                            after : {type:'button', text:{da:'kr.', en:'£'}},
+                                            _before:    {type:'button', icon:'fa-calculator'},
+                                            _after : {type:'button', text:{da:'kr.', en:'£'}},
                                             items:[
                                                 {id:'theSelectBox0', icon:'fa-home', text: {da: '0:Davs', en:'0:Hello'}},
                                                 {id:'theSelectBox1',  text:'1: Item 1'},

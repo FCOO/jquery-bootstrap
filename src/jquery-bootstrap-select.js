@@ -86,7 +86,7 @@
                 .appendTo($select);
 
             if (itemOptions.id)
-                options.optionList.push( itemOptions);
+                options.optionList.push( itemOptions );
 
             setOptionText( $option );
         });
