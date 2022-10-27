@@ -691,6 +691,7 @@
                 addBorder         = false,
                 buildInsideParent = false,
                 noPadding         = false,
+                isButtonType      = false,
                 noValidation      = false;
 
 
@@ -699,18 +700,18 @@
                 if (parentOptions.hasOwnProperty(id) && !options.hasOwnProperty(id))
                     options[id] = parentOptions[id];
             });
-
+var niels = false;
 
             var hasPreOrPost = options.prepend || options.before || options.append || options.after;
 
             if (options.type){
                 var type = options.type.toLowerCase();
                 switch (type){
-                    case 'button'                : buildFunc = $.bsButton;                  break;
+                    case 'button'                : buildFunc = $.bsButton;                  isButtonType = true; break;
 
-                    case 'checkboxbutton'        : buildFunc = $.bsCheckboxButton;          break;
-                    case 'standardcheckboxbutton': buildFunc = $.bsStandardCheckboxButton;  break;
-                    case 'iconcheckboxbutton'    : buildFunc = $.bsIconCheckboxButton;      break;
+                    case 'checkboxbutton'        : buildFunc = $.bsCheckboxButton;          isButtonType = true; break;
+                    case 'standardcheckboxbutton': buildFunc = $.bsStandardCheckboxButton;  isButtonType = true; break;
+                    case 'iconcheckboxbutton'    : buildFunc = $.bsIconCheckboxButton;      isButtonType = true; break;
 
                     case 'buttongroup'           : buildFunc = $.bsButtonGroup;             insideFormGroup = true; break;
 
@@ -719,7 +720,7 @@
                     case 'select'           :   buildFunc = $.bsSelect;             insideFormGroup = true; break;
 
                     case 'selectlist'       :   buildFunc = $.bsSelectList;         break;
-                    case 'selectbutton'     :   buildFunc = $.bsSelectButton;       break;
+                    case 'selectbutton'     :   buildFunc = $.bsSelectButton;       isButtonType = true; break;
 
                     case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
                     case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; noPadding = true; break;
@@ -736,7 +737,6 @@
                     case 'conpacttext'      :   buildFunc = buildCompactText;
                                                 options.noLabel = true; options.noVerticalPadding = true;
                                                 insideFormGroup = true; addBorder = true; noValidation = true; break;
-
                     case 'text'             :
                     case 'textarea'         :
                     case 'textbox'          :   insideFormGroup = true;
@@ -768,6 +768,14 @@
                     default                 :   buildFunc = $.fn._bsAddHtml;        noPadding = true; buildInsideParent = true;
                 }
             }
+
+
+            //Button'ish elemnts get inside a formgroup if there are label or border
+            if (isButtonType)
+                if ((options.label && !options.noLabel) || options.border){
+                    addBorder = true;
+                    insideFormGroup = true;
+                };
 
             if (options.lineBefore || options.lineAfter)
                 insideFormGroup = true;
@@ -823,6 +831,7 @@
                     //No-border => the input-group is just a container to keep vertival distance => no horizontal padding
                     $inputGroup.addClass('px-0');
 
+i
                 if (hasLabel)
                     $parent.addClass('child-with-label');
 

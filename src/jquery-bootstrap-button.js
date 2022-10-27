@@ -31,6 +31,7 @@
                 selected            : 'selected',
                 noBorder            : 'no-border',
                 focus               : 'init_focus',
+                truncate            : 'text-truncate',
                 fullWidth           : 'w-100'
             };
 

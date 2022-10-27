@@ -117,7 +117,10 @@
                 case 'standardcheckboxbutton':
                 case 'iconcheckboxbutton'    : $elem._cbxSet(value, true, isSemiSelected, semiSelectedValue); break;
 
-                case 'selectlist'      : this.getRadioGroup().setSelected(value); break;
+                case 'selectlist'  : this.getRadioGroup().setSelected(value); break;
+
+                case 'selectbutton': $elem._bsSelectButton_setValue( value ); break;
+
                 case 'radiobuttongroup': this.getRadioGroup().setSelected(value, false, isSemiSelected, semiSelectedValue); break;
 
                 case 'slider'    :
@@ -136,7 +139,8 @@
             var result;
             switch (this.options.type || 'input'){
                 case 'input'            : result = '';    break;
-                case 'select'           : result = null;  break;
+                case 'select'           :
+                case 'selectbutton'     : result = null;  break;
 
                 case 'checkbox'              :
                 case 'checkboxbutton'        :
@@ -191,6 +195,9 @@
 
                 case 'selectlist'       : result = this.getRadioGroup().getSelected();  break;
                 case 'radiobuttongroup' : result = this.getRadioGroup().getSelected();  break;
+
+                case 'selectbutton'     : result = $elem._bsSelectButton_getValue(); break;
+
 
                 case 'slider'    :
                 case 'timeslider': result = this._getSliderValue();              break;
@@ -282,7 +289,7 @@
         this.inputs = {};
 
         var typeList = ['button', 'checkboxbutton', 'standardcheckboxbutton', 'iconcheckboxbutton',
-                        'input', 'select', 'selectlist', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden', 'inputgroup', 'formControlGroup'],
+                        'input', 'select', 'selectlist', 'selectbutton', 'radiobuttongroup', 'checkbox', 'radio', 'table', 'slider', 'timeslider', 'hidden', 'inputgroup', 'formControlGroup'],
 
             //semiSelectedValueTypes = {TYPE_ID:TYPE} TYPE_ID = the types that accept a semi-selected value. TYPE = the $.type result that detect if the value of a element is semi-selected
             semiSelectedValueTypes = {

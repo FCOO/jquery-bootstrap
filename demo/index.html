@@ -1544,6 +1544,8 @@ width: 543,
             'hemmeligt': 'Dette er super hemmeligt',
             'theSelectBox': 'theSelectBox3',
 
+            'theSelectButton': 'theSelectButton3',
+
             'formId2-1': ['radiogroup3', 'Den rigtige semi'],
 //            'formId2-1': 'radiogroup3',
         }
@@ -1611,7 +1613,7 @@ width: 543,
                                             type: 'hidden'
                                         },
 */
-                                        {id: 'checkboxbutton',          type: 'checkboxbutton',         icon: 'fa-home', text: 'Checkboxbutton', fullWidth: true},
+                                        {id: 'checkboxbutton',          type: 'checkboxbutton',         icon: 'fa-home', text: 'Checkboxbutton', fullWidth: true, label: 'Checkbobutton'},
                                         {id: 'standardcheckboxbutton',  type: 'standardcheckboxbutton', icon: 'fa-home', text: 'Standardcheckboxbutton'},
                                         {id: 'iconcheckboxbutton',      type: 'iconcheckboxbutton',     icon: ['', 'fas fa-star  text-checked', 'far fa-star']},
 
@@ -1627,7 +1629,7 @@ width: 543,
                                         },
                                         {
                                             type: 'textbox', label: 'Small TextBox',
-                                            text: 'Davs med dig<br>Ny linie', center: true, small: true, lineBefore: true
+                                            text: 'Davs med dig<br>Ny linie', center: true, small: true, lineBefore: true, 
                                         },
                                         {
                                             label: {text:'Header'},
@@ -1636,30 +1638,37 @@ width: 543,
                                             content:{
                                                 type: 'button',
                                                 icon: 'fa-home',
-                                                text: 'Davs',
+                                                text: 'Davs igen dfk  kdjf dkfgsdkfj sdkj skdj fghsdk sdjkf s kjh sdkfj gsdkfj g',
                                             },
                                         },
                                         {
-                                            label: {text:'Select-button'},
-                                            type: 'inputgroup',
-                                            content:{
-                                                type: 'selectbutton',
-                                                items:[
-                                                    {id:'theSelectBox0', icon:'fa-home', text: {da: '0:Davs', en:'0:Hello'}},
-                                                    {id:'theSelectBox1',  text:'1: Item 1'},
-                                                    {                   text:'En overskrift'},
-                                                    {id:'theSelectBox2',  text:'2: Item 2 DEFAULT', icon:'fa-folder'},
-                                                    {id:'theSelectBox3',  text:'3: Item 3'},
-                                                    {id:'theSelectBox4',  text:'4: Item 4'},
-                                                    {id:'theSelectBox5',  text:'5: Item 5'},
-                                                    {id:'theSelectBox6',  text:'6: Item 6'},
-                                                    {id:'theSelectBox7',  text:'7: Item 7'},
-                                                    {id:'theSelectBox8',  text:'8: Item 8'},
-                                                    {id:'theSelectBox9',  text:'9: Item 9'},
-                                                    {id:'theSelectBox10', text:'10: Item 10'},
-                                                    {id:'theSelectBox11', text:'11: Item 11'}
-                                                ],
-                                            },
+                                            type: 'button',
+                                            label: {text:'Header (truncate)'},
+                                            icon: 'fa-home',
+                                            truncate: true,
+                                            fullWidth: true,
+                                            text: 'Davs igen dfk  kdjf dkfgsdkfj sdkj skdj fghsdk sdjkf s kjh sdkfj gsdkfj g',
+                                        },
+                                        {
+                                            id: 'theSelectButton',                                                    
+                                            type: 'selectbutton',
+                                            label: {text:'theSelectButton'},
+                                            fullWidth: true,
+                                            items:[
+                                                {id:'theSelectButton0', icon:'fa-home', text: {da: '0:Davs', en:'0:Hello'}},
+                                                {id:'theSelectButton1',  text:'1: Item 1'},
+                                                {                        text:'En overskrift'},
+                                                {id:'theSelectButton2',  text:'2: Item 2 DEFAULT', icon:'fa-folder'},
+                                                {id:'theSelectButton3',  text:'3: Item 3'},
+                                                {id:'theSelectButton4',  text:'4: Item 4'},
+                                                {id:'theSelectButton5',  text:'5: Item 5'},
+                                                {id:'theSelectButton6',  text:'6: Item 6'},
+                                                {id:'theSelectButton7',  text:'7: Item 7'},
+                                                {id:'theSelectButton8',  text:'8: Item 8'},
+                                                {id:'theSelectButton9',  text:'9: Item 9'},
+                                                {id:'theSelectButton10', text:'10: Item 10'},
+                                                {id:'theSelectButton11', text:'11: Item 11 kde hgkd ks gks k sdfk dsghsk dksdf ksdfj gh sdkf sdkfg sdkf gksdf gksdf gksd gk'}
+                                            ],
                                         },
                                         {
                                             type: 'textarea', label: 'TextArea',

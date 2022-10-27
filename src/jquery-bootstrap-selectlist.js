@@ -44,7 +44,8 @@
             var isItem = (itemOptions.id != undefined ),
                 $item = $(isItem ? '<a/>' : '<div/>')
                             .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
-                            .addClass( options.center ? 'text-center' : '')
+                            .toggleClass( 'text-center',   !!options.center )
+                            .toggleClass( 'text-truncate', !!options.truncate )
                             ._bsAddHtml( itemOptions, false, false, true )
                             .appendTo( $result );
 

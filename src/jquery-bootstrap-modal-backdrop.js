@@ -18,7 +18,10 @@
 
     var zindexAllwaysOnTop  = 9999,
         modalBackdropLevels = 0,
-        $modalBackdrop = null;
+
+        $modalBackdrop_current = null,
+        $modalBackdrop = null,
+        $modalTransparentBackdrop = null;
 
     /******************************************************
     $.fn._setModalBackdropZIndex
@@ -39,20 +42,30 @@
     $._addModalBackdropLevel
     Move the backdrop up in z-index
     ******************************************************/
-    $._addModalBackdropLevel = function(){
+    function addAnyModalBackdropLevel( $modalBD, transparent ){
         modalBackdropLevels++;
 
-        if (!$modalBackdrop)
-            $modalBackdrop =
+        if (!$modalBD)
+            $modalBD =
                 $('<div/>')
                     .append( $('<i/>')._bsAddHtml({icon:'fa-spinner fa-spin'}) )
                     .addClass('global-backdrop')
+                    .toggleClass('transparent', !!transparent)
                     .appendTo( $('body') );
 
-        $modalBackdrop
+        $modalBD
             ._setModalBackdropZIndex( -1 )
             .removeClass('hidden')
             .addClass('show');
+
+        return $modalBD;
+    }
+
+    $._addModalBackdropLevel = function(transparent){
+        if (transparent)
+            $modalBackdrop_current = $modalTransparentBackdrop = addAnyModalBackdropLevel($modalTransparentBackdrop, true);
+        else
+            $modalBackdrop_current = $modalBackdrop = addAnyModalBackdropLevel($modalBackdrop);
     };
 
     /******************************************************
@@ -60,17 +73,23 @@
     Move the backdrop down in z-index
     ******************************************************/
     $._removeModalBackdropLevel = function( noDelay ){
+        var isTransparentBD = ($modalBackdrop_current === $modalTransparentBackdrop);
+
         modalBackdropLevels--;
 
-        $modalBackdrop._setModalBackdropZIndex( -1 );
-        if (!modalBackdropLevels){
-            $modalBackdrop
+        $modalBackdrop_current._setModalBackdropZIndex( -1 );
+        if (!modalBackdropLevels || isTransparentBD){
+            $modalBackdrop_current
                 .removeClass('show');
-            if (noDelay)
-                $modalBackdrop.addClass('hidden');
+            if (noDelay || isTransparentBD)
+                $modalBackdrop_current.addClass('hidden');
             else
-                window.setTimeout( function(){ $modalBackdrop.addClass('hidden'); }, 2000 );
+                window.setTimeout( function(){ $modalBackdrop_current.addClass('hidden'); }, 2000 );
         }
+
+        if ($modalBackdrop_current === $modalTransparentBackdrop)
+            $modalBackdrop_current = $modalBackdrop;
+
     };
 
 

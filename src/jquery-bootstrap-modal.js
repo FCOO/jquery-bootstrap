@@ -206,7 +206,7 @@
         currentModal = this;
 
         //Move up the backdrop
-        $._addModalBackdropLevel();
+        $._addModalBackdropLevel(this.bsModal.transparentBackground);
 
         //Add layer for noty on the modal
         $._bsNotyAddLayer();
@@ -523,6 +523,8 @@
         //this.bsModal contains all created elements
         this.bsModal = {};
         this.bsModal.onChange = options.onChange || null;
+
+        this.bsModal.transparentBackground = !!options.transparentBackground;
 
         //bsModal.cssHeight and bsModal.cssWidth = [size] of { width or height options}
         this.bsModal.cssHeight = {};
@@ -1069,7 +1071,6 @@
         $result.onClose = options.onClose;
 
         //Create as modal and adds methods - only allow close by esc for non-static modal (typical a non-form)
-// HER>         $result.modal({
         new bootstrap.Modal($result, {
            //Name       Value                                   Type                Default Description
            backdrop :   options.static ? "static" : true,   //  boolean or 'static' true	Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click.
