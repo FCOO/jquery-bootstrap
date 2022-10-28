@@ -700,7 +700,6 @@
                 if (parentOptions.hasOwnProperty(id) && !options.hasOwnProperty(id))
                     options[id] = parentOptions[id];
             });
-var niels = false;
 
             var hasPreOrPost = options.prepend || options.before || options.append || options.after;
 
@@ -775,7 +774,7 @@ var niels = false;
                 if ((options.label && !options.noLabel) || options.border){
                     addBorder = true;
                     insideFormGroup = true;
-                };
+                }
 
             if (options.lineBefore || options.lineAfter)
                 insideFormGroup = true;
@@ -831,7 +830,6 @@ var niels = false;
                     //No-border => the input-group is just a container to keep vertival distance => no horizontal padding
                     $inputGroup.addClass('px-0');
 
-i
                 if (hasLabel)
                     $parent.addClass('child-with-label');
 

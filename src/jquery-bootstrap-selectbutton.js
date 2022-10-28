@@ -60,14 +60,14 @@
         }
 
         return this;
-    }
+    };
 
     $.fn._bsSelectButton_getValue = function(){
         return this.data('bsButton_options').selectedId;
-    }
+    };
 
     var $selectButton_Modal = null;
-    $.fn._bsSelectButton_onClick = function( id, selected, $button ){
+    $.fn._bsSelectButton_onClick = function( /*id, selected, $button*/ ){
         var options    = this.data('bsButton_options'),
             selectedId = options.selectedId,
             list       = $.extend(true, {}, options).list;
@@ -94,7 +94,7 @@
             },
             show: true
         });
-    }
+    };
 
     /**************************************************
     **************************************************/
@@ -102,6 +102,6 @@
         this._bsSelectButton_setValue( id );
         if ($selectButton_Modal)
             $selectButton_Modal.close();
-    }
+    };
 
 }(jQuery, this, document));

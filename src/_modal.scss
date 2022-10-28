@@ -6,7 +6,7 @@ and jusing standard header, buttons and sizes
 
 ************************************************************/
 
-//All padding in modal-body equal scrollbar-size = $scroll-size from jquery-scroll-container.
+//All padding in modal-body equal scrollbar-padding = $scroll-size / $scroll-auto-padding from jquery-scroll-container.
 
 //Overwrite default overflow
 body.modal-open .modal {
@@ -86,7 +86,7 @@ Font-size, padding and border-radius fro different size
 
     //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
     &:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
-        width: calc( 100% - 2*#{$modal-content-border-width} - 2*#{$scroll-size} );
+        width: calc( 100% - 2*#{$modal-content-border-width} - 2*#{$scroll-padding} );  //HER skal det ikke være uden $scroll-padding in touch-mode???????????
         margin-left : auto;
         margin-right: auto;
     }
@@ -296,14 +296,14 @@ Font-size, padding and border-radius fro different size
 
 //Adjust padding-left and padding-right if the body is a scroll
 .modal-dialog {
+    //Fixed content has never scroll, but gets same left/right padding as main content
     .modal-body-fixed.scrollbar-vertical  {
-        padding-left : $scroll-size;
-        padding-right: $scroll-size;
+        html.no-touchevents & {
+            padding-left : $scroll-padding;
+            padding-right: $scroll-auto-padding;
+        }
     }
-    .modal-body.scrollbar-vertical {
-        padding-left : $scroll-size;
-        padding-right: 0;
-    }
+
     .modal-body.scrollbar-horizontal {
         padding-top   : 0;
         padding-bottom: 0;

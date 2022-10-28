@@ -2432,6 +2432,11 @@ $(options[0])._bsAddHtml({
 });
 console.log(options);
 
+
+    $('html')
+        .toggleClass('touchevents',     window.bsIsTouch)
+        .toggleClass('no-touchevents', !window.bsIsTouch);
+
 </script>
 
 </body>
