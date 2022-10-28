@@ -1,89 +1,89 @@
 {
-    "name": "jquery-bootstrap",
-    "version": "3.9.0",
-    "homepage": "https://github.com/fcoo/jquery-bootstrap",
-    "authors": [
-        "NielsHolt"
-    ],
-    "description": "",
-    "main": [
-        "dist/jquery-bootstrap.js",
-        "dist/jquery-bootstrap.css"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/fcoo/jquery-bootstrap.git"
+  "name": "jquery-bootstrap",
+  "version": "3.9.1",
+  "homepage": "https://github.com/fcoo/jquery-bootstrap",
+  "authors": [
+    "NielsHolt"
+  ],
+  "description": "",
+  "main": [
+    "dist/jquery-bootstrap.js",
+    "dist/jquery-bootstrap.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fcoo/jquery-bootstrap.git"
+  },
+  "dependencies": {
+    "jquery": "~3.6.0",
+    "bootstrap": "^5.2.0",
+    "i18next": "latest",
+    "jquery-i18next-phrases": "fcoo/jquery-i18next-phrases#^1.1.1",
+    "jquery-checkbox-radio-group": "fcoo/jquery-checkbox-radio-group#^1.7.0",
+    "jquery-scroll-container": "fcoo/jquery-scroll-container#^7.0.0",
+    "jquery-value-format": "fcoo/jquery-value-format#^1.6.0",
+    "modernizr-javascript": "fcoo/modernizr-javascript#latest",
+    "modernizr-mouse-events": "fcoo/modernizr-mouse-events#latest",
+    "noty": "^3.2.0-beta",
+    "jquery-base-slider": "fcoo/jquery-base-slider#^6.0.0",
+    "jquery-time-slider": "fcoo/jquery-time-slider#^7.0.0",
+    "pdfobject": "pipwerks/PDFObject",
+    "js-url": "websanova/js-url#^2.5.3",
+    "jquery-stupid-table": "^1.1.3",
+    "bind-first": "private-face/jquery.bind-first#^0.2.3",
+    "inputmask": "RobinHerbots/Inputmask#^4.0.0",
+    "history.js": "fcoo/history.js#^1.0.9"
+  },
+  "devDependencies": {
+    "animate.css": "^4.1.0",
+    "bourbon": "latest",
+    "modernizr-mixin": "latest",
+    "mathsass": "latest",
+    "modernizr-scss": "FCOO/modernizr-scss#^2.1.2",
+    "font-awesome": "fontawesome#^6.0.0"
+  },
+  "overrides": {
+    "bootstrap-select": {
+      "main": [
+        "dist/js/bootstrap-select.js"
+      ]
     },
-    "dependencies": {
-        "jquery": "~3.6.0",
-        "bootstrap": "^5.2.0",
-        "i18next": "latest",
-        "jquery-i18next-phrases": "fcoo/jquery-i18next-phrases#^1.1.1",
-        "jquery-checkbox-radio-group": "fcoo/jquery-checkbox-radio-group#^1.7.0",
-        "jquery-scroll-container": "fcoo/jquery-scroll-container#^7.0.0",
-        "jquery-value-format": "fcoo/jquery-value-format#^1.6.0",
-        "modernizr-javascript": "fcoo/modernizr-javascript#latest",
-        "modernizr-mouse-events": "fcoo/modernizr-mouse-events#latest",
-        "noty": "^3.2.0-beta",
-        "jquery-base-slider": "fcoo/jquery-base-slider#^6.0.0",
-        "jquery-time-slider": "fcoo/jquery-time-slider#^7.0.0",
-        "pdfobject": "pipwerks/PDFObject",
-        "js-url": "websanova/js-url#^2.5.3",
-        "jquery-stupid-table": "^1.1.3",
-        "bind-first": "private-face/jquery.bind-first#^0.2.3",
-        "inputmask": "RobinHerbots/Inputmask#^4.0.0",
-        "history.js": "fcoo/history.js#^1.0.9"
+    "jquery.scrollbar": {
+      "main": [
+        "jquery.scrollbar.js"
+      ]
     },
-    "devDependencies": {
-        "animate.css": "^4.1.0",
-        "bourbon": "latest",
-        "modernizr-mixin": "latest",
-        "mathsass": "latest",
-        "modernizr-scss": "FCOO/modernizr-scss#^2.1.2",
-        "font-awesome": "fontawesome#^6.0.0"
+    "bootstrap": {
+      "dependencies": {
+        "jquery": "latest"
+      },
+      "main": [
+        "dist/js/bootstrap.bundle.js"
+      ]
     },
-    "overrides": {
-        "bootstrap-select": {
-            "main": [
-                "dist/js/bootstrap-select.js"
-            ]
-        },
-        "jquery.scrollbar": {
-            "main": [
-                "jquery.scrollbar.js"
-            ]
-        },
-        "bootstrap": {
-            "dependencies": {
-                "jquery": "latest"
-            },
-            "main": [
-                "dist/js/bootstrap.bundle.js"
-            ]
-        },
-        "inputmask": {
-            "main": [
-                "dist/jquery.inputmask.bundle.js"
-            ]
-        },
-        "js-url": {
-            "main": [
-                "dist/url.min.js"
-            ]
-        }
+    "inputmask": {
+      "main": [
+        "dist/jquery.inputmask.bundle.js"
+      ]
     },
-    "license": "MIT",
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ],
-    "moduleType": [
-        "es6"
-    ],
-    "resolutions": {
-        "bootstrap": "^4.0.0"
+    "js-url": {
+      "main": [
+        "dist/url.min.js"
+      ]
     }
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "moduleType": [
+    "es6"
+  ],
+  "resolutions": {
+    "bootstrap": "^4.0.0"
+  }
 }

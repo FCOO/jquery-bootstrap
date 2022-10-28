@@ -159,6 +159,11 @@ Adjust modal
 jquery-scroll-container-variables.scss
 
 ************************************************/
+:root {
+  --jsc-scroll-size: 10px;
+  --jsc-scroll-padding: 10px;
+  --jsc-scroll-auto-padding: 10px; }
+
 /************************************************************
 VARIABLES
 
@@ -9467,7 +9472,7 @@ Font-size, padding and border-radius fro different size
     box-shadow: none;
     max-height: inherit; }
   .modal-dialog:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
-    width: calc( 100% - 2*1px - 2*8px);
+    width: calc( 100% - 2*1px - 2*var(--jsc-scroll-padding));
     margin-left: auto;
     margin-right: auto; }
   .modal-dialog.modal-flex-width .modal-content .modal-body > .jquery-scroll-container {
@@ -9642,13 +9647,9 @@ Font-size, padding and border-radius fro different size
   .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable .modal-body, .modal-dialog .modal-content.modal-minimized.modal-minimized-clickable .modal-body-fixed, .modal-dialog .modal-content.modal-normal.modal-normal-clickable .modal-body, .modal-dialog .modal-content.modal-normal.modal-normal-clickable .modal-body-fixed, .modal-dialog .modal-content.modal-extended.modal-extended-clickable .modal-body, .modal-dialog .modal-content.modal-extended.modal-extended-clickable .modal-body-fixed {
     cursor: pointer; }
 
-.modal-dialog .modal-body-fixed.scrollbar-vertical {
-  padding-left: 8px;
-  padding-right: 8px; }
-
-.modal-dialog .modal-body.scrollbar-vertical {
-  padding-left: 8px;
-  padding-right: 0; }
+html.no-touchevents .modal-dialog .modal-body-fixed.scrollbar-vertical {
+  padding-left: var(--jsc-scroll-padding);
+  padding-right: var(--jsc-scroll-auto-padding); }
 
 .modal-dialog .modal-body.scrollbar-horizontal {
   padding-top: 0;
@@ -9678,6 +9679,8 @@ MODAL-BACKDROP
   top: 0;
   background-color: #000;
   animation: fadeOutToNone .3s ease-out; }
+  .global-backdrop.transparent {
+    animation: none; }
   .global-backdrop.hidden {
     display: none; }
   .global-backdrop.show {
@@ -9686,6 +9689,9 @@ MODAL-BACKDROP
     align-items: center;
     opacity: 0.5;
     animation: fadeInFromNone .3s ease-out; }
+    .global-backdrop.show.transparent {
+      animation: none;
+      opacity: 0; }
   .global-backdrop i {
     display: none;
     font-size: 24px;
