@@ -84,6 +84,7 @@
             closeButton : false,
             clickable   : true,
             transparentBackground: true,
+            scroll      : list.length > 5,
             content: {
                 type         : 'selectlist',
                 allowReselect: true,
