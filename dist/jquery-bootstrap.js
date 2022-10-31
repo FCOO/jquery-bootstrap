@@ -5794,6 +5794,7 @@ jquery-bootstrap-modal-promise.js
             closeButton : false,
             clickable   : true,
             transparentBackground: true,
+            scroll      : list.length > 5,
             content: {
                 type         : 'selectlist',
                 allowReselect: true,
@@ -6062,8 +6063,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     $.BSASMODAL.BSTABLE = function( modalOptions = {}){
         var showHeader = this.find('.no-header').length == 0,
             _this      = this,
-            $tableWithHeader,
-            $result, $thead, count;
+            $result,
+            count;
 
         if (showHeader){
             //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
@@ -6075,12 +6076,12 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 _this.sortBy( columnIndex );
             });
 
-            $tableWithHeader =
+            this.$tableWithHeader =
                 $('<table/>')
                     ._bsAddBaseClassAndSize( this.data(dataTableId) )
                     .addClass('table-with-header')
                     .append( this.$theadClone );
-            $thead = this.find('thead');
+            this.$thead = this.find('thead');
             count  = 20;
         }
 
@@ -6089,14 +6090,14 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                             flexWidth        : true,
                             noVerticalPadding: true,
                             content          : this,
-                            fixedContent     : $tableWithHeader
+                            fixedContent     : this.$tableWithHeader
                         })
                       );
 
         if (showHeader){
             //Using timeout to wait for the browser to update DOM and get height of the header
-            var setHeaderHeight = this.setHeaderHeight = function(){
-                    var height = $tableWithHeader.outerHeight();
+            var setHeaderHeight = function(){
+                    var height = _this.$tableWithHeader.outerHeight();
                     if (height <= 0){
                         count--;
                         if (count){
@@ -6106,23 +6107,14 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                         }
                     }
 
-                    _this.css('margin-top', -height+'px');
-                    setHeaderWidth();
+                    _this.setHeaderWidthAndHeight();
 
                     //Only set header-height once
                     $result.off('shown.bs.modal.table', setHeaderHeight );
-                },
-
-                setHeaderWidth = function(){
-                    $thead.find('th').each(function( index, th ){
-                        _this.$theadClone.find('th:nth-child(' + (index+1) + ')')
-                            .width( $(th).width()+'px' );
-                    });
-                    $tableWithHeader.width( _this.width()+'px' );
                 };
 
             $result.on('shown.bs.modal.table', setHeaderHeight );
-            $thead.resize( setHeaderWidth );
+            this.$thead.resize( $.proxy(this.setHeaderWidthAndHeight, this) );
         }
 
         return $result;
@@ -6149,7 +6141,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
-//HER            var lastSortBy = this.lastSortBy || {};
             var _this = this;
             $.each( options.columns, function( index, columnOptions ){
                 var content = rowContent[columnOptions.id],
@@ -6267,6 +6258,26 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         },
 
         /**********************************************************
+        setHeaderWidthAndHeight - Set the width of headers in the cloned table and adjust margin-top
+        **********************************************************/
+        setHeaderWidthAndHeight: function(){
+            var _this   = this,
+                options = _this.data(dataTableId);
+
+            if (options.showHeader){
+                this.$thead.find('th').each(function( index, th ){
+                    _this.$theadClone.find('th:nth-child(' + (index+1) + ')')
+                        .width( $(th).width()+'px' );
+                });
+                this.$tableWithHeader.width( this.width()+'px' );
+
+                //Set the margin-top of the table to hide its own header
+                var headerHeight = _this.$tableWithHeader.outerHeight();
+                this.css('margin-top', -headerHeight + 'px');
+            }
+        },
+
+        /**********************************************************
         sortBy - Sort the table
         **********************************************************/
         sortBy: function( idOrIndex, dir ){
@@ -6378,6 +6389,10 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     }
                 });
             }
+
+            //Re-calc and update width and height of headers
+            this.setHeaderWidthAndHeight();
+
         },
 
         /**********************************************************
@@ -6387,8 +6402,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             this.find('tbody tr').removeClass('filter-out');
             if (!dontSort)
                 this._resort();
-            if (this.setHeaderHeight)
-                this.setHeaderHeight();
+            this.setHeaderWidthAndHeight();
             return this;
         },
 
@@ -6432,8 +6446,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             //Sort table again
             this._resort();
 
-            if (this.setHeaderHeight)
-                this.setHeaderHeight();
+            this.setHeaderWidthAndHeight();
+
             return this;
         }
     }; //end of bsTable_prototype = {

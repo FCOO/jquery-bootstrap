@@ -379,7 +379,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         /**********************************************************
         setHeaderWidthAndHeight - Set the width of headers in the cloned table and adjust margin-top
         **********************************************************/
-        setHeaderWidthAndHeight: function(test){
+        setHeaderWidthAndHeight: function(){
             var _this   = this,
                 options = _this.data(dataTableId);
 
