@@ -157,3 +157,20 @@ div.modal-footer {
 
 
 
+/************************
+STAND ALONE FOOTER-CONTENT
+Footer content outside modal
+************************/
+
+.jb-footer-content {
+    @extend .footer-content;
+    @include footer-size-variant( 'nl');
+
+    &.jb-footer-content-sm {
+        @include footer-size-variant( 'sm');
+    }
+
+    &.jb-footer-content-xs {
+        @include footer-size-variant( 'xs');
+    }
+}

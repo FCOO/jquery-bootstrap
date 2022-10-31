@@ -9085,7 +9085,7 @@ the button before the space gets class="after-space"
     --bs-modal-header-padding-x: 0.25rem;
     --bs-modal-header-padding-y: 0.25rem;
     --bs-modal-header-padding: 0.25rem; }
-  .btn-group-vertical.btn-group-sm .footer-content {
+  .btn-group-vertical.btn-group-sm .footer-content, .btn-group-vertical.btn-group-sm .jb-footer-content {
     --bs-footer-font-size: 0.75rem;
     --bs-footer-padding-y: 0.25rem;
     --bs-footer-padding-x: 0.25rem; }
@@ -9099,7 +9099,7 @@ the button before the space gets class="after-space"
     --bs-modal-header-padding-x: 0.125rem;
     --bs-modal-header-padding-y: 0.125rem;
     --bs-modal-header-padding: 0.125rem; }
-  .btn-group-vertical.btn-group-xs .footer-content {
+  .btn-group-vertical.btn-group-xs .footer-content, .btn-group-vertical.btn-group-xs .jb-footer-content {
     --bs-footer-font-size: 0.6875rem;
     --bs-footer-padding-y: 0.125rem;
     --bs-footer-padding-x: 0.125rem; }
@@ -9250,7 +9250,7 @@ div.modal-footer {
   color: var(--jb-footer-color);
   background-color: var(--jb-footer-bg); }
 
-.footer-content {
+.footer-content, .jb-footer-content {
   line-height: 1.25;
   font-size: var(--bs-footer-font-size);
   display: flex;
@@ -9262,10 +9262,27 @@ div.modal-footer {
   color: var(--jb-footer-color);
   background-color: var(--jb-footer-bg);
   border-top: var(--bs-modal-header-border-width) solid var(--bs-modal-header-border-color); }
-  .footer-content.no-border {
+  .footer-content.no-border, .no-border.jb-footer-content {
     border-top: none; }
-  .footer-content:empty {
+  .footer-content:empty, .jb-footer-content:empty {
     display: none !important; }
+
+/************************
+STAND ALONE FOOTER-CONTENT
+Footer content outside modal
+************************/
+.jb-footer-content {
+  --bs-footer-font-size: 0.875rem;
+  --bs-footer-padding-y: 0.375rem;
+  --bs-footer-padding-x: 0.375rem; }
+  .jb-footer-content.jb-footer-content-sm {
+    --bs-footer-font-size: 0.75rem;
+    --bs-footer-padding-y: 0.25rem;
+    --bs-footer-padding-x: 0.25rem; }
+  .jb-footer-content.jb-footer-content-xs {
+    --bs-footer-font-size: 0.6875rem;
+    --bs-footer-padding-y: 0.125rem;
+    --bs-footer-padding-x: 0.125rem; }
 
 /************************************************************
 POPOVER
@@ -9286,7 +9303,7 @@ POPOVER
   --bs-popover-header-padding: 0.25rem;
   --bs-popover-border-radius: 0.25rem;
   --bs-popover-inner-border-radius: calc(0.25rem - 1px); }
-  .popover.popover-sm .footer-content {
+  .popover.popover-sm .footer-content, .popover.popover-sm .jb-footer-content {
     --bs-footer-font-size: 0.75rem;
     --bs-footer-padding-y: 0.25rem;
     --bs-footer-padding-x: 0.25rem; }
@@ -9299,7 +9316,7 @@ POPOVER
   --bs-popover-header-padding: 0.125rem;
   --bs-popover-border-radius: 0.125rem;
   --bs-popover-inner-border-radius: calc(0.125rem - 1px); }
-  .popover.popover-xs .footer-content {
+  .popover.popover-xs .footer-content, .popover.popover-xs .jb-footer-content {
     --bs-footer-font-size: 0.6875rem;
     --bs-footer-padding-y: 0.125rem;
     --bs-footer-padding-x: 0.125rem; }
@@ -9425,7 +9442,7 @@ Font-size, padding and border-radius fro different size
       --bs-modal-header-padding-x: 0.25rem;
       --bs-modal-header-padding-y: 0.25rem;
       --bs-modal-header-padding: 0.25rem; }
-    .modal-dialog.modal-dialog-sm .footer-content, .modal-dialog.modal-dialog-sm .header-content-smaller {
+    .modal-dialog.modal-dialog-sm .footer-content, .modal-dialog.modal-dialog-sm .jb-footer-content, .modal-dialog.modal-dialog-sm .header-content-smaller {
       --bs-footer-font-size: 0.75rem;
       --bs-footer-padding-y: 0.25rem;
       --bs-footer-padding-x: 0.25rem; }
@@ -9440,7 +9457,7 @@ Font-size, padding and border-radius fro different size
       --bs-modal-header-padding-x: 0.125rem;
       --bs-modal-header-padding-y: 0.125rem;
       --bs-modal-header-padding: 0.125rem; }
-    .modal-dialog.modal-dialog-xs .footer-content, .modal-dialog.modal-dialog-xs .header-content-smaller {
+    .modal-dialog.modal-dialog-xs .footer-content, .modal-dialog.modal-dialog-xs .jb-footer-content, .modal-dialog.modal-dialog-xs .header-content-smaller {
       --bs-footer-font-size: 0.6875rem;
       --bs-footer-padding-y: 0.125rem;
       --bs-footer-padding-x: 0.125rem; }
@@ -9622,7 +9639,7 @@ Font-size, padding and border-radius fro different size
       flex-grow: 1; }
     .modal-dialog .modal-content .modal-body-fixed[class^='alert-'], .modal-dialog .modal-content .modal-body-fixed[class*=' alert-'], .modal-dialog .modal-content .modal-body[class^='alert-'], .modal-dialog .modal-content .modal-body[class*=' alert-'] {
       background-color: var(--bs-alert-bg); }
-    .modal-dialog .modal-content .footer-content:empty {
+    .modal-dialog .modal-content .footer-content:empty, .modal-dialog .modal-content .jb-footer-content:empty {
       display: none !important; }
     .modal-dialog .modal-content .modal-footer {
       flex-shrink: 0;
