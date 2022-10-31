@@ -4215,7 +4215,7 @@ textarea.form-control-lg {
 .modal {
   --bs-modal-zindex: 1055;
   --bs-modal-width: 500px;
-  --bs-modal-padding: 0.375rem 0.375rem;
+  --bs-modal-padding: 0.375rem;
   --bs-modal-margin: 0.5rem;
   --bs-modal-color: ;
   --bs-modal-bg: #fff;
@@ -4230,7 +4230,7 @@ textarea.form-control-lg {
   --bs-modal-header-border-color: var(--bs-border-color);
   --bs-modal-header-border-width: 1px;
   --bs-modal-title-line-height: 1.5;
-  --bs-modal-footer-gap: 0.5rem;
+  --bs-modal-footer-gap: 0px;
   --bs-modal-footer-bg: ;
   --bs-modal-footer-border-color: var(--bs-border-color);
   --bs-modal-footer-border-width: 1px;
@@ -8219,7 +8219,7 @@ Contains global scss- and css-variable
 :root {
   --bs-modal-zindex: 1055;
   --bs-modal-width: 500px;
-  --bs-modal-padding: 0.375rem 0.375rem;
+  --bs-modal-padding: 0.375rem;
   --bs-modal-margin: 0.5rem;
   --bs-modal-color: ;
   --bs-modal-bg: #fff;
@@ -8234,7 +8234,7 @@ Contains global scss- and css-variable
   --bs-modal-header-border-color: var(--bs-border-color);
   --bs-modal-header-border-width: 1px;
   --bs-modal-title-line-height: 1.5;
-  --bs-modal-footer-gap: 0.5rem;
+  --bs-modal-footer-gap: 0px;
   --bs-modal-footer-bg: ;
   --bs-modal-footer-border-color: var(--bs-border-color);
   --bs-modal-footer-border-width: 1px;
@@ -9080,11 +9080,11 @@ the button before the space gets class="after-space"
   --bs-modal-content-font-size: 0.875rem;
   --bs-modal-padding-x: 0.25rem;
   --bs-modal-padding-y: 0.25rem;
-  --bs-modal-padding: 0.25rem 0.25rem; }
+  --bs-modal-padding: 0.25rem; }
   .btn-group-vertical.btn-group-sm .header-content {
     --bs-modal-header-padding-x: 0.25rem;
     --bs-modal-header-padding-y: 0.25rem;
-    --bs-modal-header-padding: 0.25rem 0.25rem; }
+    --bs-modal-header-padding: 0.25rem; }
   .btn-group-vertical.btn-group-sm .footer-content {
     --bs-footer-font-size: 0.75rem;
     --bs-footer-padding-y: 0.25rem;
@@ -9094,11 +9094,11 @@ the button before the space gets class="after-space"
   --bs-modal-content-font-size: 0.75rem;
   --bs-modal-padding-x: 0.125rem;
   --bs-modal-padding-y: 0.125rem;
-  --bs-modal-padding: 0.125rem 0.125rem; }
+  --bs-modal-padding: 0.125rem; }
   .btn-group-vertical.btn-group-xs .header-content {
     --bs-modal-header-padding-x: 0.125rem;
     --bs-modal-header-padding-y: 0.125rem;
-    --bs-modal-header-padding: 0.125rem 0.125rem; }
+    --bs-modal-header-padding: 0.125rem; }
   .btn-group-vertical.btn-group-xs .footer-content {
     --bs-footer-font-size: 0.6875rem;
     --bs-footer-padding-y: 0.125rem;
@@ -9283,7 +9283,7 @@ POPOVER
   --bs-popover-header-font-size: 0.875rem;
   --bs-popover-header-padding-x: 0.25rem;
   --bs-popover-header-padding-y: 0.25rem;
-  --bs-popover-header-padding: 0.25rem 0.25rem;
+  --bs-popover-header-padding: 0.25rem;
   --bs-popover-border-radius: 0.25rem;
   --bs-popover-inner-border-radius: calc(0.25rem - 1px); }
   .popover.popover-sm .footer-content {
@@ -9296,7 +9296,7 @@ POPOVER
   --bs-popover-header-font-size: 0.75rem;
   --bs-popover-header-padding-x: 0.125rem;
   --bs-popover-header-padding-y: 0.125rem;
-  --bs-popover-header-padding: 0.125rem 0.125rem;
+  --bs-popover-header-padding: 0.125rem;
   --bs-popover-border-radius: 0.125rem;
   --bs-popover-inner-border-radius: calc(0.125rem - 1px); }
   .popover.popover-xs .footer-content {
@@ -9358,10 +9358,10 @@ bsSelectList
   --bs-dropdown-font-size: 1rem;
   --bs-dropdown-header-padding-x: 0.375rem;
   --bs-dropdown-header-padding-y: 0.375rem;
-  --bs-dropdown-header-padding: 0.375rem 0.375rem;
+  --bs-dropdown-header-padding: 0.375rem;
   --bs-dropdown-item-padding-x: 0.375rem;
   --bs-dropdown-item-padding-y: 0.375rem;
-  --bs-dropdown-item-padding: 0.375rem 0.375rem;
+  --bs-dropdown-item-padding: 0.375rem;
   --bs-dropdown-border-radius: 0.375rem;
   --bs-dropdown-inner-border-radius: calc(0.375rem - 1px); }
   .select-list:focus-within {
@@ -9372,20 +9372,20 @@ bsSelectList
     --bs-dropdown-font-size: 0.875rem;
     --bs-dropdown-header-padding-x: 0.25rem;
     --bs-dropdown-header-padding-y: 0.25rem;
-    --bs-dropdown-header-padding: 0.25rem 0.25rem;
+    --bs-dropdown-header-padding: 0.25rem;
     --bs-dropdown-item-padding-x: 0.25rem;
     --bs-dropdown-item-padding-y: 0.25rem;
-    --bs-dropdown-item-padding: 0.25rem 0.25rem;
+    --bs-dropdown-item-padding: 0.25rem;
     --bs-dropdown-border-radius: 0.25rem;
     --bs-dropdown-inner-border-radius: calc(0.25rem - 1px); }
   .modal-dialog-xs .select-list, .select-list.select-list-xs {
     --bs-dropdown-font-size: 0.75rem;
     --bs-dropdown-header-padding-x: 0.125rem;
     --bs-dropdown-header-padding-y: 0.125rem;
-    --bs-dropdown-header-padding: 0.125rem 0.125rem;
+    --bs-dropdown-header-padding: 0.125rem;
     --bs-dropdown-item-padding-x: 0.125rem;
     --bs-dropdown-item-padding-y: 0.125rem;
-    --bs-dropdown-item-padding: 0.125rem 0.125rem;
+    --bs-dropdown-item-padding: 0.125rem;
     --bs-dropdown-border-radius: 0.125rem;
     --bs-dropdown-inner-border-radius: calc(0.125rem - 1px); }
 
@@ -9420,11 +9420,11 @@ Font-size, padding and border-radius fro different size
     --bs-modal-content-font-size: 0.875rem;
     --bs-modal-padding-x: 0.25rem;
     --bs-modal-padding-y: 0.25rem;
-    --bs-modal-padding: 0.25rem 0.25rem; }
+    --bs-modal-padding: 0.25rem; }
     .modal-dialog.modal-dialog-sm .header-content {
       --bs-modal-header-padding-x: 0.25rem;
       --bs-modal-header-padding-y: 0.25rem;
-      --bs-modal-header-padding: 0.25rem 0.25rem; }
+      --bs-modal-header-padding: 0.25rem; }
     .modal-dialog.modal-dialog-sm .footer-content, .modal-dialog.modal-dialog-sm .header-content-smaller {
       --bs-footer-font-size: 0.75rem;
       --bs-footer-padding-y: 0.25rem;
@@ -9435,11 +9435,11 @@ Font-size, padding and border-radius fro different size
     --bs-modal-content-font-size: 0.75rem;
     --bs-modal-padding-x: 0.125rem;
     --bs-modal-padding-y: 0.125rem;
-    --bs-modal-padding: 0.125rem 0.125rem; }
+    --bs-modal-padding: 0.125rem; }
     .modal-dialog.modal-dialog-xs .header-content {
       --bs-modal-header-padding-x: 0.125rem;
       --bs-modal-header-padding-y: 0.125rem;
-      --bs-modal-header-padding: 0.125rem 0.125rem; }
+      --bs-modal-header-padding: 0.125rem; }
     .modal-dialog.modal-dialog-xs .footer-content, .modal-dialog.modal-dialog-xs .header-content-smaller {
       --bs-footer-font-size: 0.6875rem;
       --bs-footer-padding-y: 0.125rem;
@@ -9629,6 +9629,8 @@ Font-size, padding and border-radius fro different size
       flex-grow: 0; }
       .modal-dialog .modal-content .modal-footer:empty, .modal-dialog .modal-content .modal-footer.modal-footer-vertical:empty {
         display: none !important; }
+      .modal-dialog .modal-content .modal-footer > *:not(:first-child) {
+        margin-left: var(--bs-modal-padding); }
     .modal-dialog .modal-content .modal-footer.vertical-buttons,
     .modal-dialog .modal-content.modal-normal .modal-footer.vertical-buttons-for-normal,
     .modal-dialog .modal-content.modal-extended .modal-footer.vertical-buttons-for-extended {
@@ -9943,7 +9945,7 @@ Adjustmernt to Bootstrap table
   --bs-table-cell-font-size: 1rem;
   --bs-table-cell-padding-x: 0.375rem;
   --bs-table-cell-padding-y: 0.375rem;
-  --bs-table-cell-padding: 0.375rem 0.375rem;
+  --bs-table-cell-padding: 0.375rem;
   word-break: normal;
   /*************************************
     Header
@@ -9973,12 +9975,12 @@ Adjustmernt to Bootstrap table
     --bs-table-cell-font-size: 0.875rem;
     --bs-table-cell-padding-x: 0.25rem;
     --bs-table-cell-padding-y: 0.25rem;
-    --bs-table-cell-padding: 0.25rem 0.25rem; }
+    --bs-table-cell-padding: 0.25rem; }
   .table.jb-table.table-xs, .modal-dialog-xs .table.jb-table {
     --bs-table-cell-font-size: 0.75rem;
     --bs-table-cell-padding-x: 0.125rem;
     --bs-table-cell-padding-y: 0.125rem;
-    --bs-table-cell-padding: 0.125rem 0.125rem; }
+    --bs-table-cell-padding: 0.125rem; }
   .table.jb-table > :not(caption) > * > * {
     font-size: var(--bs-table-cell-font-size);
     padding: var(--bs-table-cell-padding-y) var(--bs-table-cell-padding-x); }
@@ -10029,7 +10031,10 @@ Using Bootstrap Collapse to create accordion
 ************************************************************/
 .accordion {
   --bs-accordion-font-size: 1rem;
-  font-size: var(--bs-accordion-font-size); }
+  font-size: var(--bs-accordion-font-size);
+  --bs-accordion-footer-padding-x: 0.375rem;
+  --bs-accordion-footer-padding-y: 0.375rem;
+  --bs-accordion-footer-padding: 0.375rem; }
   .accordion.no-transition .collapsing {
     transition: height 0s ease; }
     @media (prefers-reduced-motion: reduce) {
@@ -10048,6 +10053,10 @@ Using Bootstrap Collapse to create accordion
     .accordion .accordion-button.accordion-never-close::after {
       visibility: hidden; }
   .accordion .accordion-footer {
+    --bs-footer-font-size: 0.875rem;
+    --bs-footer-padding-y: 0.375rem;
+    --bs-footer-padding-x: 0.375rem; }
+  .accordion .accordion-footer {
     display: flex;
     align-items: center;
     border-top: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color);
@@ -10064,15 +10073,15 @@ Using Bootstrap Collapse to create accordion
     --bs-accordion-font-size: 0.875rem;
     --bs-accordion-btn-padding-x: 0.25rem;
     --bs-accordion-btn-padding-y: 0.25rem;
-    --bs-accordion-btn-padding: 0.25rem 0.25rem;
+    --bs-accordion-btn-padding: 0.25rem;
     --bs-accordion-body-padding-x: 0.25rem;
     --bs-accordion-body-padding-y: 0.25rem;
-    --bs-accordion-body-padding: 0.25rem 0.25rem;
+    --bs-accordion-body-padding: 0.25rem;
     --bs-accordion-border-radius: 0.25rem;
     --bs-accordion-inner-border-radius: calc(0.25rem - 1px);
     --bs-accordion-footer-padding-x: 0.25rem;
     --bs-accordion-footer-padding-y: 0.25rem;
-    --bs-accordion-footer-padding: 0.25rem 0.25rem; }
+    --bs-accordion-footer-padding: 0.25rem; }
     .modal-dialog-sm .accordion .accordion-footer, .accordion.accordion-sm .accordion-footer {
       --bs-footer-font-size: 0.75rem;
       --bs-footer-padding-y: 0.25rem;
@@ -10081,15 +10090,15 @@ Using Bootstrap Collapse to create accordion
     --bs-accordion-font-size: 0.75rem;
     --bs-accordion-btn-padding-x: 0.125rem;
     --bs-accordion-btn-padding-y: 0.125rem;
-    --bs-accordion-btn-padding: 0.125rem 0.125rem;
+    --bs-accordion-btn-padding: 0.125rem;
     --bs-accordion-body-padding-x: 0.125rem;
     --bs-accordion-body-padding-y: 0.125rem;
-    --bs-accordion-body-padding: 0.125rem 0.125rem;
+    --bs-accordion-body-padding: 0.125rem;
     --bs-accordion-border-radius: 0.125rem;
     --bs-accordion-inner-border-radius: calc(0.125rem - 1px);
     --bs-accordion-footer-padding-x: 0.125rem;
     --bs-accordion-footer-padding-y: 0.125rem;
-    --bs-accordion-footer-padding: 0.125rem 0.125rem; }
+    --bs-accordion-footer-padding: 0.125rem; }
     .modal-dialog-xs .accordion .accordion-footer, .accordion.accordion-xs .accordion-footer {
       --bs-footer-font-size: 0.6875rem;
       --bs-footer-padding-y: 0.125rem;
