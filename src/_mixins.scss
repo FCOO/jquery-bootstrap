@@ -38,11 +38,22 @@ Varients of different properties
 @mixin padding-variant( $component, $size){
     @include _css-variable($component, 'padding-x', $size);
     @include _css-variable($component, 'padding-y', $size);
+
+    $value-y: _get-value('padding-y', $size);
+    $value-x: _get-value('padding-x', $size);
+    $value: "ØV";
+    @if ($value-y == $value-x){
+        $value: $value-y;
+    }
+    @else {
+        $value: $value-y $value-x;
+    }
+
     @include _css-variable(
         $component  : $component,
         $property   : 'padding',
         $size       : $size,
-        $value      : _get-value('padding-y', $size ) _get-value('padding-x', $size)
+        $value      : $value
     );
 }
 

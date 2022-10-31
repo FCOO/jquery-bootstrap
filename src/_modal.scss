@@ -253,6 +253,10 @@ Font-size, padding and border-radius fro different size
             &.modal-footer-vertical:empty {
                 display: none !important;
             }
+
+            > *:not(:first-child) {
+                margin-left: var(--#{$prefix}modal-padding);
+            }
         } //end of .modal-footer
 
         //Special version of footer with vertical aligned buttons.

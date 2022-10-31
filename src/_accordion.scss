@@ -2,6 +2,14 @@
 ACCORDION
 Using Bootstrap Collapse to create accordion
 ************************************************************/
+@mixin _accordion-footer-variant( $size: "nl" ) {
+    //Include padding and smaller font-size for own class accordion-footer
+    @include padding-variant( 'accordion-footer', $size);
+    .accordion-footer {
+        @include footer-size-variant($size);
+    }
+}
+
 @mixin _accordion-variant( $size ) {
     @include font-size-variant('accordion', $size);
 
@@ -12,10 +20,7 @@ Using Bootstrap Collapse to create accordion
     @include inner-border-radius-variant( 'accordion', $size);
 
     //Include padding and smaller font-size for own class accordion-footer
-    @include padding-variant( 'accordion-footer', $size);
-    .accordion-footer {
-        @include footer-size-variant($size);
-    }
+    @include _accordion-footer-variant($size);
 }
 
 .accordion {
@@ -45,6 +50,8 @@ Using Bootstrap Collapse to create accordion
             visibility: hidden;
         }
     }
+
+    @include _accordion-footer-variant();
 
     .accordion-footer {
         display         : flex;

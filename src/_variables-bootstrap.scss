@@ -295,7 +295,9 @@ $modal-header-padding-y             : $jb-padding-y;
 $modal-header-padding-x             : $jb-padding-x;
 $modal-header-padding               : $modal-header-padding-y $modal-header-padding-x;
 
-$modal-inner-padding                : $jb-padding-y $jb-padding-x;
+$modal-inner-padding                : min($jb-padding-y, $jb-padding-x); //$jb-padding-y $jb-padding-x;
+
+$modal-footer-margin-between        : 0px; //Set to 0px to allow padding of container to be set directly
 
 
 //popover
