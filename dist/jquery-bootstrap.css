@@ -10269,6 +10269,3 @@ Adjustment to Bootstrap tabs
   --bs-nav-link-font-size: 0.75rem;
   --bs-nav-tabs-border-radius: 0.125rem;
   --bs-nav-pills-border-radius: 0.125rem; }
-
-td, th {
-  border: 1px solid red; }
