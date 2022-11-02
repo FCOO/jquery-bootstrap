@@ -167,7 +167,7 @@
 
 
         var icon = [
-                options.type == 'radio' ?
+                ((options.type == 'radio') || options.isRadio || options.radio) ?
                     //Radio-button icons
                     [
                         'fas fa-circle standard-checkbox-checked-color icon-show-for-checked',              //"Blue"/"Semi-selected-orange" background

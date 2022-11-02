@@ -1290,7 +1290,7 @@
 
 
         var icon = [
-                options.type == 'radio' ?
+                ((options.type == 'radio') || options.isRadio || options.radio) ?
                     //Radio-button icons
                     [
                         'fas fa-circle standard-checkbox-checked-color icon-show-for-checked',              //"Blue"/"Semi-selected-orange" background
@@ -3073,8 +3073,11 @@ options
             itemOptions.small = options.small;
 
             switch (itemOptions.type){
-                case 'button':
-                    $item = $.bsButton($.extend(itemOptions, {returnFromClick: true}));
+                case 'button'                :
+                case 'checkboxbutton'        :
+                case 'standardcheckboxbutton':
+                case 'iconcheckboxbutton'    :
+                    $item = $._anyBsButton($.extend(itemOptions, {returnFromClick: true}));
                     isItemWithSpaceAfter = true;
                     break;
 

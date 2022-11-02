@@ -130,8 +130,11 @@
             itemOptions.small = options.small;
 
             switch (itemOptions.type){
-                case 'button':
-                    $item = $.bsButton($.extend(itemOptions, {returnFromClick: true}));
+                case 'button'                :
+                case 'checkboxbutton'        :
+                case 'standardcheckboxbutton':
+                case 'iconcheckboxbutton'    :
+                    $item = $._anyBsButton($.extend(itemOptions, {returnFromClick: true}));
                     isItemWithSpaceAfter = true;
                     break;
 

@@ -2193,6 +2193,8 @@ type: 'checkbox',
     *****************************/
     header('bsMenu');
     var list1 = [
+            {id: 'radio1', type:'standardcheckboxbutton', isRadio: true, icon: 'fa-home', text:{da:'En radio', en:'A Radio'}, onClick: function(){console.log('onClick radio', arguments);} },
+
             {id: 'button1', icon: 'fa-home', text:{da:'En knap', en:'A button'}, onClick: function(){console.log('onClick button1', arguments);} },
             {id: 'checkbox1', type:'checkbox', selected: true,  text:{da:'En checkbox#1', en:'A checkbox#1'},
                 onChange: function(id, selected){
