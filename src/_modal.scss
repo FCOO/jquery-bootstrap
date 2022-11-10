@@ -4,6 +4,7 @@ MODAL
 Adjusting size etc. to have modal in normal and small size
 and jusing standard header, buttons and sizes
 
+Class .modal-dialog have tag-name div added to be able to include modal-dialog in other frameworks
 ************************************************************/
 
 //All padding in modal-body equal scrollbar-padding = $scroll-size / $scroll-auto-padding from jquery-scroll-container.
@@ -17,11 +18,11 @@ body.modal-open .modal {
 
 //Fading opacity
 .modal {
-    .modal-dialog {
+    div.modal-dialog {
         opacity   : 0;
         transition: opacity .3s linear;
     }
-    &.show .modal-dialog { opacity: 1; }
+    &.show div.modal-dialog { opacity: 1; }
 }
 
 /*********************************************************
@@ -45,7 +46,7 @@ Font-size, padding and border-radius fro different size
 }
 
 //Size small and extra-small
-.modal-dialog {
+div.modal-dialog {
     --#{$prefix}modal-padding-x: #{$jb-padding-x};
     --#{$prefix}modal-padding-y: #{$jb-padding-y};
 
@@ -56,7 +57,7 @@ Font-size, padding and border-radius fro different size
 /****************************************************
 .MODEL-DIALOG
 ****************************************************/
-.modal-dialog {
+div.modal-dialog {
     display        : flex;
     flex-direction : column;
     justify-content: center;
@@ -296,10 +297,10 @@ Font-size, padding and border-radius fro different size
             }
         }
     }
- } //end of .modal-dialog
+ } //end of div.modal-dialog
 
 //Adjust padding-left and padding-right if the body is a scroll
-.modal-dialog {
+div.modal-dialog {
     //Fixed content has never scroll, but gets same left/right padding as main content
     .modal-body-fixed.scrollbar-vertical  {
         html.no-touchevents & {

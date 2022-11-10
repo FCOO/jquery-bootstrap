@@ -159,7 +159,7 @@ Is a modification to Bootstrap modal-class
 .noty-bar, the theme and different types
 Is a modification to Bootstrap modal-dialog-class
 *******************************************/
-.modal-dialog.noty_bar.noty_theme__#{$noty-theme-name}{
+div.modal-dialog.noty_bar.noty_theme__#{$noty-theme-name}{
     opacity: 1;
     width: auto;
     max-width: auto;

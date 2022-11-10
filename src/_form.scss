@@ -257,13 +257,13 @@ form.form-validation {
     }
 }
 
-.modal-dialog.modal-dialog-sm, form.form-sm, .input-group-container-sm, .input-group-sm {
+div.modal-dialog.modal-dialog-sm, form.form-sm, .input-group-container-sm, .input-group-sm {
     --#{$jb-prefix}invalid-tooltip-padding      : #{$jb-padding-x-xs} #{$jb-padding-y-xs};
     --#{$jb-prefix}invalid-tooltip-border-radius: #{$jb-border-radius-xs};
     --#{$jb-prefix}invalid-tooltip-left         : #{$jb-padding-x-sm};
 }
 
-.modal-dialog.modal-dialog-sm, form.form-xs, .input-group-container-xs, .input-group-xs {
+div.modal-dialog.modal-dialog-sm, form.form-xs, .input-group-container-xs, .input-group-xs {
     --#{$jb-prefix}invalid-tooltip-padding      : #{$jb-padding-x-xxs} #{$jb-padding-y-xxs};
     --#{$jb-prefix}invalid-tooltip-border-radius: #{$jb-border-radius-xxs};
     --#{$jb-prefix}invalid-tooltip-left         : #{$jb-padding-x-xs};
