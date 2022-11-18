@@ -423,7 +423,7 @@ BOOTSTRAP 5 DEFAULT
     $input-btn-line-height  : 1.5
 */
 
-    $btn-padding-x-factor: 2;   //padding-x relative to padding-y. But only for buttons => (*)
+    $btn-padding-x-factor: 1;   //padding-x relative to padding-y. But only for buttons => (*)
                                 //TODO Perhaps padding-x = padding-y eq. half of pressent => $btn-padding-x-factor: 1;
 
 
