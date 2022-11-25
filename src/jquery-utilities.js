@@ -54,6 +54,6 @@ Utilities for manipulation JSON and other objects
         }
 
         return result;
-    }
+    };
 
 }(jQuery, this, document));

@@ -9470,7 +9470,7 @@ div.modal-dialog {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  --bs-modal-content-font-size: $jb-font-size;
+  --bs-modal-content-font-size: 1rem;
   font-size: var(--bs-modal-content-font-size);
   margin: 0 auto;
   min-height: 100%;
