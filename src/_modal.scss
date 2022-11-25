@@ -62,7 +62,7 @@ div.modal-dialog {
     flex-direction : column;
     justify-content: center;
 
-    --#{$prefix}modal-content-font-size: $jb-font-size;
+    --#{$prefix}modal-content-font-size: #{$jb-font-size};
     font-size: var(--#{$prefix}modal-content-font-size);
 
     margin    : 0 auto;
