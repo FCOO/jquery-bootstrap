@@ -209,7 +209,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                             flexWidth        : true,
                             noVerticalPadding: true,
                             content          : this,
-                            fixedContent     : this.$tableWithHeader
+                            fixedContent     : this.$tableWithHeader,
+                            _fixedContentHasScrollClass: true,      //Internal options to have scroll-bar-margin on fixed content
                         })
                       );
 

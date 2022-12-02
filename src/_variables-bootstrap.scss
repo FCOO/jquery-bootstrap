@@ -20,7 +20,7 @@ See https://getbootstrap.com/docs/5.2/customize/options/ for description
     $enable-rounded	            :   true;   //true (default) or false	    Enables predefined border-radius styles on various components.
     $enable-shadows	            :   false;  //true or false (default)	    Enables predefined decorative box-shadow styles on various components. Does not affect box-shadows used for focus states.
     $enable-gradients	        :   false;  //true or false (default)	    Enables predefined gradients via background-image styles on various components.
-    $enable-transitions	        :   true;   //true (default) or false	    Enables predefined transitions on various components.
+/**/$enable-transitions	        :   true;   //true (default) or false	    Enables predefined transitions on various components.
     $enable-reduced-motion	    :   true;   //true (default) or false	    Enables the prefers-reduced-motion media query, which suppresses certain animations/transitions based on the users’ browser/operating system preferences.
     $enable-grid-classes	    :   true;   //true (default) or false	    Enables the generation of CSS classes for the grid system (e.g. .row, .col-md-1, etc.).
     $enable-container-classes   :   true;   //true (default) or false	    Enables the generation of CSS classes for layout containers. (New in v5.2.0)
