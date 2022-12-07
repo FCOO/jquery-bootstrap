@@ -4349,7 +4349,7 @@ textarea.form-control-lg {
     margin-right: auto;
     margin-left: auto; }
   .modal-sm {
-    --bs-modal-width: 320px; } }
+    --bs-modal-width: 252px; } }
 
 @media (min-width: 992px) {
   .modal-lg,
@@ -9420,6 +9420,12 @@ body.modal-open .modal {
   overflow-y: hidden;
   padding: 0 !important; }
 
+:root {
+  --jb-modal-sm-rem: 15.75rem;
+  --jb-modal-md-rem: 31.25rem;
+  --jb-modal-lg-rem: 50rem;
+  --jb-modal-xl-rem: 75rem; }
+
 .modal div.modal-dialog {
   opacity: 0;
   transition: opacity .3s linear; }
@@ -9476,17 +9482,17 @@ div.modal-dialog {
   margin: 0 auto;
   min-height: 100%;
   max-width: 100vw;
-  width: 20rem;
+  width: var(--jb-modal-sm-rem);
   /****************************************************
     .MODAL-CONTENT
     AND ITS COMPONENTS (HEADER, FIXED-BODY, BODY AND FOOTER)
     ****************************************************/ }
   div.modal-dialog.modal-flex-width {
-    width: 31.25rem; }
+    width: var(--jb-modal-md-rem); }
     div.modal-dialog.modal-flex-width.modal-extra-width {
-      width: 50rem; }
+      width: var(--jb-modal-lg-rem); }
     div.modal-dialog.modal-flex-width.modal-mega-width {
-      width: 75rem; }
+      width: var(--jb-modal-xl-rem); }
   div.modal-dialog.modal-dialog-inline .modal-content {
     box-shadow: none;
     max-height: inherit; }

@@ -16,6 +16,20 @@ body.modal-open .modal {
     padding: 0 !important;
 }
 
+//Modal size as --var in rem
+:root {
+    --#{$jb-prefix}modal-sm-rem: #{asRem($modal-sm)};
+    --#{$jb-prefix}modal-md-rem: #{asRem($modal-md)};
+    --#{$jb-prefix}modal-lg-rem: #{asRem($modal-lg)};
+    --#{$jb-prefix}modal-xl-rem: #{asRem($modal-xl)};
+}
+
+$modal-sm-rem: var(--#{$jb-prefix}modal-sm-rem);
+$modal-md-rem: var(--#{$jb-prefix}modal-md-rem);
+$modal-lg-rem: var(--#{$jb-prefix}modal-lg-rem);
+$modal-xl-rem: var(--#{$jb-prefix}modal-xl-rem);
+
+
 //Fading opacity
 .modal {
     div.modal-dialog {
@@ -24,6 +38,7 @@ body.modal-open .modal {
     }
     &.show div.modal-dialog { opacity: 1; }
 }
+
 
 /*********************************************************
 Font-size, padding and border-radius fro different size

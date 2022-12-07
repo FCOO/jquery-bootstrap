@@ -515,7 +515,7 @@ $dropdown-spacer   : 0;
 Adjust modal
 ************************************************************/
 //Super optimize small modals
-$modal-sm: 320px;
+$modal-sm: 252px;   //= 22rem
 
 //Remove "shake" effect for modal
 $modal-scale-transform: none; //default = scale(1.02) !default;

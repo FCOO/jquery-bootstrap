@@ -39,14 +39,12 @@ $button-big-square-dimension-xs: roundRem( 2 * $btn-padding-y-xs + $button-big-s
 /***********************************************
 Modal
 ************************************************/
-//Modal size in rem
-$modal-sm-rem: asRem($modal-sm);
-$modal-md-rem: asRem($modal-md);
-$modal-lg-rem: asRem($modal-lg);
+//Modal size as --var in rem
 
 //Extra-large-modal
 $modal-xl    : 1200px;
-$modal-xl-rem: asRem($modal-xl);
+
+
 
 /***********************************************
 Button And Modal
