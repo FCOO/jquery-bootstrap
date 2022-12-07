@@ -4349,7 +4349,7 @@ textarea.form-control-lg {
     margin-right: auto;
     margin-left: auto; }
   .modal-sm {
-    --bs-modal-width: 252px; } }
+    --bs-modal-width: 352px; } }
 
 @media (min-width: 992px) {
   .modal-lg,
@@ -9421,7 +9421,7 @@ body.modal-open .modal {
   padding: 0 !important; }
 
 :root {
-  --jb-modal-sm-rem: 15.75rem;
+  --jb-modal-sm-rem: 22rem;
   --jb-modal-md-rem: 31.25rem;
   --jb-modal-lg-rem: 50rem;
   --jb-modal-xl-rem: 75rem; }
