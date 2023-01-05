@@ -637,6 +637,36 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
         }).appendTo($body);
 
 
+        header('Big Icon Button');
+        $.bsBigIconButton({
+            icon: 'fa-map',
+            text: 'TEXT',
+            subtext: [
+                {da:'Nr 1', en:'No 1'},
+                {da:'Nr 2', en:'No 2'},
+                'Altid det samme',                    
+                {da:'Nr 3', en:'No 3'}
+            ],
+            subtextSeparator:'<->',
+            onClick: function(){ console.log('big-icon-button click', arguments); }
+
+        }).appendTo($body);
+
+        $.bsBigIconButton({
+            icon: 'fa-map',
+            text: 'TEXT',
+            subtext: [
+                {da:'Nr 1', en:'No 1'},
+                {da:'Nr 2', en:'No 2'},
+                'Altid det samme',                    
+                {da:'Nr 3', en:'No 3'}
+            ],
+            subtextSeparator:'<->',
+            small: true,
+            onClick: function(){ console.log('big-icon-button click', arguments); }
+
+        }).appendTo($body);
+        
         header('Button-group');
         $.bsButtonGroup({
             small: true, square: true,

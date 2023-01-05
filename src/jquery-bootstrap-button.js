@@ -222,6 +222,68 @@
 
 
     /**********************************************************
+    bsBigIconButton( options ) - create a big button with a large icon to the left
+    and text and sub-text to the right
+    options:
+        icon   : STRING
+        text   : STRING or {LANG: STRING}
+        subtext: {LANG: STRING} or []{LANG: STRING}|STRING
+        subtextSeparator: STRING - use to join subtext if it is an array
+    **********************************************************/
+    $._bsBigIconButtonContent = function( options ){
+        var small = !!options.small,
+            separator = options.subtextSeparator || '',
+            content = [],
+            subtext;
+
+        content.push(
+            $('<div/>')
+                ._bsAddHtml({icon: options.icon})
+                .addClass((small ? '' : 'fa-2x') + ' align-self-center flex-shrink-0 text-center')
+                .width('1.75em')
+        );
+
+        //Create subtext. It can be an array of STRING or {LANG: STRING}
+        if (options.subtext){
+            var subtextArray = $.isArray(options.subtext) ? options.subtext : [options.subtext];
+            subtext = {};
+
+            $.each( subtextArray, function(index, next_subtext){
+                $.each($._bsAdjustText( next_subtext ), function(lang, text){
+                    subtext[lang] = subtext[lang] || '';
+                    if (subtext[lang] && text)
+                        subtext[lang] += separator;
+                    subtext[lang] += text;
+                });
+            });
+        }
+
+        content.push(
+            $('<div/>')
+                .addClass('flex-grow-1 no-margin-children d-flex flex-column justify-content-center')
+                .css('min-height', small ? '3em' : '5em')
+                ._bsAddHtml([
+                    {text: options.text,  textClass: 'text-center fw-bold' + (small ? '' : ' font-size-larger') },
+                    options.subtext ? {text: subtext, textClass: 'text-center text-wrap ' + (small ? ' font-size-smaller' : '')} : null
+                ])
+        );
+
+        return content;
+    };
+
+
+    $.bsBigIconButton = function( options ){
+        return $.bsButton({
+            class       : 'w-100 d-flex',
+            content     : $._bsBigIconButtonContent( options ),
+            allowContent: true,
+            onClick     : options.onClick
+        });
+
+    };
+
+
+    /**********************************************************
     _anyBsButton( options )
     Create a specific variant of bs-buttons based on options.type
     **********************************************************/
@@ -415,6 +477,8 @@
 
         return result;
     };
+
+
 
 
 }(jQuery, this, document));

@@ -238,7 +238,31 @@ Also overwrite default bootstrap behaviour
         align-items    : center;
         justify-content: center;
     }
+
+    //Smaller or larger content
+    --#{$prefix}btn-smaller-font-size: #{$input-btn-font-size-sm};
+    --#{$prefix}btn-larger-font-size : #{$input-btn-font-size-lg};
+
+    .font-size-larger {
+        font-size: var(--#{$prefix}btn-larger-font-size);
+    }
+    .font-size-smaller {
+        font-size: var(--#{$prefix}btn-smaller-font-size);
+
+    }
+
+    &.btn-lg {
+        --#{$prefix}btn-smaller-font-size: #{$input-btn-font-size};
+        --#{$prefix}btn-larger-font-size : #{$input-btn-font-size-lg};
+    }
+    &.btn-sm {
+        --#{$prefix}btn-smaller-font-size: #{$input-btn-font-size-xs};
+        --#{$prefix}btn-larger-font-size : #{$input-btn-font-size};
+    }
 }
+
+
+
 
 /************************************************************
 Modernizr-test for elements with class="hide-for-selected" or "show-for-selected"
