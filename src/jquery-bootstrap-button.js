@@ -229,11 +229,11 @@
         text   : STRING or {LANG: STRING}
         subtext: {LANG: STRING} or []{LANG: STRING}|STRING
         subtextSeparator: STRING - use to join subtext if it is an array
-        small  : BOOLEAN
+        big    : BOOLEAN
         bold   : BOOLEAN
     **********************************************************/
     $._bsBigIconButtonContent = function( options ){
-        var small = !!options.small,
+        var big = !!options.big,
             separator = options.subtextSeparator || '',
             content = [],
             subtext;
@@ -241,7 +241,7 @@
         content.push(
             $('<div/>')
                 ._bsAddHtml({icon: options.icon})
-                .addClass((small ? '' : 'fa-2x') + ' align-self-center flex-shrink-0 text-center')
+                .addClass((big ? 'fa-2x' : '') + ' align-self-center flex-shrink-0 text-center')
                 .width('1.75em')
         );
 
@@ -263,10 +263,10 @@
         content.push(
             $('<div/>')
                 .addClass('flex-grow-1 no-margin-children d-flex flex-column justify-content-center')
-                .css('min-height', small ? '3em' : '5em')
+                .css('min-height', options.minHeight ? options.minHeight : big ? '3em' : '2em')
                 ._bsAddHtml([
-                    {text: options.text,  textClass: 'text-center' + (options.bold ? ' fw-bold' : '') + (small ? '' : ' font-size-larger') },
-                    options.subtext ? {text: subtext, textClass: 'text-center text-wrap ' + (small ? ' font-size-smaller' : '')} : null
+                    {text: options.text,  textClass: 'text-center' + (options.bold ? ' fw-bold' : '') + (big ? ' font-size-larger' : '' )},
+                    options.subtext ? {text: subtext, textClass: 'text-center text-wrap '             + (big ? '' : ' font-size-smaller')} : null
                 ])
         );
 
@@ -298,6 +298,7 @@
             case 'checkboxbutton'        : constructor = $.bsCheckboxButton; break;
             case 'standardcheckboxbutton': constructor = $.bsStandardCheckboxButton; break;
             case 'iconcheckboxbutton'    : constructor = $.bsIconCheckboxButton; break;
+            case 'bigiconbutton'         : constructor = $.bsBigIconButton; break;
             default                      : constructor = $.bsButton;
         }
         return constructor(options);

@@ -668,6 +668,36 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 
         }).appendTo($body);
         
+        $.bsButtonGroup({
+            vertical : true,
+            fullWidth: true,
+
+            list: [{
+                id: 'test',
+                type: 'bigiconbutton',
+                icon: 'fa-home',                    
+                text: 'Small',
+                small: true,
+            },{                
+                id: 'test2',
+                type: 'bigiconbutton',
+                icon: 'fa-home',                    
+                text: 'Large',
+                bold: true,
+            },{                
+                id: 'test3',
+                type: 'bigiconbutton',
+                icon: 'fa-home',                    
+                text: 'Small and bold',
+                subtext: 'The subtext',                    
+                small: true,
+                bold: true,
+            }]
+        }).appendTo($body);
+                
+        
+        
+        
         header('Button-group');
         $.bsButtonGroup({
             small: true, square: true,
@@ -1654,6 +1684,8 @@ width: 543,
                                         {id: 'checkboxbutton',          type: 'checkboxbutton',         icon: 'fa-home', text: 'Checkboxbutton', fullWidth: true, label: 'Checkbobutton'},
                                         {id: 'standardcheckboxbutton',  type: 'standardcheckboxbutton', icon: 'fa-home', text: 'Standardcheckboxbutton'},
                                         {id: 'iconcheckboxbutton',      type: 'iconcheckboxbutton',     icon: ['', 'fas fa-star  text-checked', 'far fa-star']},
+                                        {id: 'bigiconbutton',           type: 'bigiconbutton',          icon: 'fa-home', text: 'Big icon Button', subtext: 'Big and Bold', big: true, bold: true, label: 'The label'},
+                                        {id: 'bigiconbutton2',          type: 'bigiconbutton',          icon: 'fa-home', text: 'Big icon Button', subtext: 'Normal', label: 'The label'},
 
                                         
                                         

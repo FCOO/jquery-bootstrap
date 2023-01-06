@@ -711,6 +711,8 @@
                     case 'checkboxbutton'        : buildFunc = $.bsCheckboxButton;          isButtonType = true; break;
                     case 'standardcheckboxbutton': buildFunc = $.bsStandardCheckboxButton;  isButtonType = true; break;
                     case 'iconcheckboxbutton'    : buildFunc = $.bsIconCheckboxButton;      isButtonType = true; break;
+                    case 'bigiconbutton'         : buildFunc = $.bsBigIconButton;           isButtonType = true; break;
+
 
                     case 'buttongroup'           : buildFunc = $.bsButtonGroup;             insideFormGroup = true; break;
 
