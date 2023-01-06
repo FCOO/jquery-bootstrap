@@ -640,7 +640,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
         header('Big Icon Button');
         $.bsBigIconButton({
             icon: 'fa-map',
-            text: 'TEXT',
+            text: 'Large and Bold',
             subtext: [
                 {da:'Nr 1', en:'No 1'},
                 {da:'Nr 2', en:'No 2'},
@@ -648,13 +648,14 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
                 {da:'Nr 3', en:'No 3'}
             ],
             subtextSeparator:'<->',
+            bold: true,                
             onClick: function(){ console.log('big-icon-button click', arguments); }
 
         }).appendTo($body);
 
         $.bsBigIconButton({
             icon: 'fa-map',
-            text: 'TEXT',
+            text: 'Small',
             subtext: [
                 {da:'Nr 1', en:'No 1'},
                 {da:'Nr 2', en:'No 2'},

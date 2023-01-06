@@ -1352,6 +1352,8 @@
         text   : STRING or {LANG: STRING}
         subtext: {LANG: STRING} or []{LANG: STRING}|STRING
         subtextSeparator: STRING - use to join subtext if it is an array
+        small  : BOOLEAN
+        bold   : BOOLEAN
     **********************************************************/
     $._bsBigIconButtonContent = function( options ){
         var small = !!options.small,
@@ -1386,7 +1388,7 @@
                 .addClass('flex-grow-1 no-margin-children d-flex flex-column justify-content-center')
                 .css('min-height', small ? '3em' : '5em')
                 ._bsAddHtml([
-                    {text: options.text,  textClass: 'text-center fw-bold' + (small ? '' : ' font-size-larger') },
+                    {text: options.text,  textClass: 'text-center' + (options.bold ? ' fw-bold' : '') + (small ? '' : ' font-size-larger') },
                     options.subtext ? {text: subtext, textClass: 'text-center text-wrap ' + (small ? ' font-size-smaller' : '')} : null
                 ])
         );
