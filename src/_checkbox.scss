@@ -14,12 +14,9 @@ div.checkbox, div.radio {
     --#{$prefix}check-input-padding-y: #{$jb-padding-y};
     padding  : var(--#{$prefix}check-input-padding-y) 0;
 
-    //Reset margin-top since div.checkbox/radio has padding + fix width
     .form-check-input {
-        margin-top : var(--#{$prefix}check-input-padding-y);
         flex-shrink: 0;
     }
-
 
     input.semi-selected {
         background-color: #{$form-check-input-indeterminate-bg-color};
