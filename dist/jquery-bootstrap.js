@@ -1363,12 +1363,13 @@
             content = [],
             subtext;
 
-        content.push(
-            $('<div/>')
-                ._bsAddHtml({icon: options.icon})
-                .addClass((big ? 'fa-2x' : '') + ' align-self-center flex-shrink-0 text-center')
-                .width('1.75em')
-        );
+        if (options.icon)
+            content.push(
+                $('<div/>')
+                    ._bsAddHtml({icon: options.icon})
+                    .addClass((big ? 'fa-2x' : '') + ' align-self-center flex-shrink-0 text-center')
+                    .width('1.75em')
+            );
 
         //Create subtext. It can be an array of STRING or {LANG: STRING}
         if (options.subtext){
@@ -1401,10 +1402,12 @@
 
     $.bsBigIconButton = function( options ){
         return $.bsButton({
+            id          : options.id,
             class       : 'w-100 d-flex',
             content     : $._bsBigIconButtonContent( options ),
             allowContent: true,
-            onClick     : options.onClick
+            radioGroup  : options.radioGroup,
+            onClick     : options.onClick,
         });
 
     };
@@ -1426,6 +1429,7 @@
             case 'bigiconbutton'         : constructor = $.bsBigIconButton; break;
             default                      : constructor = $.bsButton;
         }
+
         return constructor(options);
     },
 
@@ -1454,7 +1458,6 @@
                     _class          : 'text-truncate'
                 }
             });
-
 
         options.baseClassPostfix = options.vertical ? options.verticalClassPostfix : options.horizontalClassPostfix;
 
@@ -1513,7 +1516,7 @@
 
             if (buttonOptions.id || buttonOptions.onClick  || buttonOptions.onChange)
                 $previousButton =
-                    $._anyBsButton( $.extend({}, options.buttonOptions, buttonOptions ) )
+                    $._anyBsButton( $.extend(true, {}, options.buttonOptions, buttonOptions ) )
                         .appendTo( result );
             else
                 if (options.inclHeader)
@@ -1561,19 +1564,19 @@
                     })
                 );
 
+
         options =
             $._bsAdjustOptions( options, {}, {
                 useTouchSize: true,
                 addOnClick: false,
-                buttonOptions: {
-                    radioGroup: radioGroup
-                }
-            } );
+            });
+
+        options.buttonOptions = options.buttonOptions || {};
+        options.buttonOptions.radioGroup = radioGroup;
+        options.buttonOptions.type = options.buttonType;
 
         var result = $.bsButtonGroup( options );
-
         result.data('radioGroup', radioGroup );
-
         return result;
     };
 

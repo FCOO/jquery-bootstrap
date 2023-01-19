@@ -726,6 +726,25 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
                 {id:'fast',   icon: 'fa-fighter-jet',   text:'Jet'}
             ]
         }).appendTo($body);
+       $body.append('<br>');
+         $.bsRadioButtonGroup({
+            vertical: true,
+            fullWidth: true,
+            selectedId: 'fast',
+            onClick: function(){ console.log('bigIconButton-radioGroup', arguments); },
+            buttonType: 'bigiconbutton',
+            buttonOptions: {
+                 subtext: 'Sub-text', 
+                 bold   : true
+
+            },
+            list: [
+                {id:'slow',   icon: 'fa-bicycle',       text:'Cykel', title:'Dette er en lang titel, der gerne skal vises'},
+                {id:'medium', icon: 'fa-car',           text:'Bil'},
+                {id:'fast',   icon: 'fa-fighter-jet',   text:'Jet'}
+            ]
+        }).appendTo($body);
+
 
        header('Popover (click on buttons)');
         var titles = ['Small', 'Normal'];
@@ -1827,10 +1846,10 @@ width: 543,
                                         },
 
                                         {
-                                            id:'formId2-1', type: 'radiobuttongroup', label:'Label', centerInParent: false, 
-                                            //fullWidth: true, vertical: true,
+                                            id:'formId2-1', type: 'radiobuttongroup', label:'Label', centerInParent: false,
+                                            fullWidth: true, vertical: true, buttonType:'bigiconbutton',
                                             items:[
-                                                {id:'radiogroup1', icon:'fa-home',   text: 'Item 1'},
+                                                {id:'radiogroup1', icon:'fa-home',   text: 'Item 1', subtext:'Dette he er en lang subtext, der måske fylder mere end en linje'},
                                                 {id:'radiogroup2', icon: 'fa-map',   text: 'Item 2'},
                                                 {id:'radiogroup3', icon: 'fa-check', text: 'Item 3'}
                                             ]
