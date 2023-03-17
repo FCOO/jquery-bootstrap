@@ -1279,12 +1279,13 @@ longTableContent[i].stargazers_count = i;
             'niels': {da:'Niels DK', en:'Niels ENG'   }
         });
 
-        $('<button>4xModal-file</button>')
+        $('<button>5xModal-file</button>')
             .appendTo( $body)
             .on('click', function(e){
                 $.bsModalFile('https://www.soefartsstyrelsen.dk/Documents/Publikationer/Dansk%20Fyrliste_2018.pdf', {header: 'PDF'});
                 $.bsModalFile('https://soefartsstyrelsen.dk/Media/5/D/Dansk%20Fyrliste_2018.pdf', {header: 'PDF'});
                 $.bsModalFile('http://nautiskinformation.soefartsstyrelsen.dk/index.html#/messages/details', {header: 'UNKNOWN'});
+                $.bsModalFile('https://www.danskehavnelods.dk/Havnelodsen/harbours/printimg/48ab9ed3-dc58-4f5e-ae0b-31e10e16b3bb.html', {header: 'ANholt Havn', externalFileName: 'https://www.danskehavnelods.dk/#HID=48ab9ed3-dc58-4f5e-ae0b-31e10e16b3bb'});
                 $.bsModalFile('https://www.danskehavnelods.dk/', {header: 'Hjemmeside'});
                 $.bsModalFile('https://niord.dma.dk/rest/repo/file/messages/5/55/555306e4-0b0d-4d62-9a55-36ec64539aa4/2/Inmarsat-C.jpg', {header: ['test:niels', '=', {text:{da:'Dansk', en:'Engelsk'}}]} );
             });

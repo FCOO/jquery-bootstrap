@@ -3579,7 +3579,12 @@ options
                     noHorizontalPadding: noPadding,
                     alwaysMaxHeight    : alwaysMaxHeight,
 
-                    buttons   : [{text: {da: 'Åbne', en: 'Open'}, icon: $.bsExternalLinkIcon, link: fileName }],
+                    buttons   : [{
+                        icon: $.bsExternalLinkIcon,
+                        text: {da: 'Åbne', en: 'Open'},
+                        link: options.externalFileName || fileName
+                    }],
+
                     content   : $content,
                     footer    : footer
 

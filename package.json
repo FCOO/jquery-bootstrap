@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap",
-  "version": "3.16.0",
+  "version": "3.17.0",
   "homepage": "https://github.com/fcoo/jquery-bootstrap",
   "author": "NielsHolt nho@fcoo.dk",
   "description": "package.json is only use for building the package. see bower.json for more info",
@@ -9,7 +9,7 @@
     "url": "git://github.com/fcoo/jquery-bootstrap.git"
   },
   "devDependencies": {
-    "grunt-fcoo-grunt-plugin": "^5.0.0"
+    "grunt-fcoo-grunt-plugin": "^6.3.0"
   },
   "license": "MIT"
 }
