@@ -23,7 +23,7 @@ Button
 $btn-style-name: jb;
 
 // Square Buttons - Dimentions for square buttons with only icons
-$two-x-border-width-rem: 2 * $border-width-rem;
+$two-x-border-width-rem: calc(2 * $border-width-rem);
 
 $button-square-dimension   : 2 * $btn-padding-y    + $jb-font-size    * $btn-line-height + $two-x-border-width-rem;
 $button-square-dimension-sm: 2 * $btn-padding-y-sm + $jb-font-size-sm * $btn-line-height + $two-x-border-width-rem;

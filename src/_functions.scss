@@ -8,13 +8,15 @@ To make it easier to design and calculate dimensions
 the function rem defined
 ************************************************/
 //rem - ruturn the rem value of a px-value
+@use "sass:math";
+
 @function asRem($px) {
-    @return $px * 1rem / 16px;
+    @return calc($px * 1rem / 16px);
 }
 
 //roundRem - Return the rounded rem value of a rem-value to ensure a integer px reprecentation
 @function roundRem($rem){
-    @return round($rem * 16) / 16;
+    @return calc(round($rem * 16) / 16);
 }
 
 

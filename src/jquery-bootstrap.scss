@@ -8,6 +8,7 @@
 
 
 ************************************************/
+@use "sass:math";
 
 //BOURBON - http://bourbon.io/ - version 5
 @import "../bower_components/bourbon/core/bourbon";
@@ -87,7 +88,7 @@ for description on how to adjust Bootstrap variables
 @import "../bower_components/bootstrap/scss/modal";
 @import "../bower_components/bootstrap/scss/tooltip";
 @import "../bower_components/bootstrap/scss/popover";
-//**/ @import "../bower_components/bootstrap/scss/carousel";
+@import "../bower_components/bootstrap/scss/carousel";
 //**/ @import "../bower_components/bootstrap/scss/spinners";
 //**/ @import "../bower_components/bootstrap/scss/offcanvas";
 //**/ @import "../bower_components/bootstrap/scss/placeholders";
@@ -149,3 +150,5 @@ STYLE FOR DIFFERENT ELEMENTS
 @import "noty";
 
 @import "tabs";
+
+@import "carousel";

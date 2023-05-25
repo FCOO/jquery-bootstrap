@@ -497,7 +497,7 @@ releative to container (rem -> em)
 Default (not changed): $font-size-base = $spacer = 1rem
 ************************************************************/
 $header-font-size       : 1em;
-$headings-margin-bottom : ($header-font-size / 2);  //Original = ($spacer / 2) !default;
+$headings-margin-bottom : ($header-font-size * 0.5);  //Original = ($spacer / 2) !default;
 $h1-font-size           : $header-font-size * 2.5;  //Original = $font-size-base * 2.5 !default;
 $h2-font-size           : $header-font-size * 2;    //Original = $font-size-base * 2 !default;
 $h3-font-size           : $header-font-size * 1.75; //Original = $font-size-base * 1.75 !default;

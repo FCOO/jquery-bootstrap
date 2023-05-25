@@ -1,0 +1,44 @@
+/**************************************************
+CAROUSEL
+
+**************************************************/
+
+.carousel {
+    &.items-max-own-size {
+        .carousel-item img {
+            max-width: fit-content;
+            max-width: -moz-fit-content;
+            max-height: fit-content;
+            max-height: -moz-fit-content;
+
+            margin: auto;
+        }
+    }
+
+    //Adjust position of indicator
+    .carousel-indicators {
+        margin-bottom: 0;
+    }
+
+    .carousel-caption {
+
+        padding: 0;
+        .carousel-caption-inner {
+            .container-icon-and-text {
+                background-color: rgba(255, 255, 255, .4);
+                padding-left: 0.5em;
+                padding-right: 0.5em;
+                span { @include text-truncate(); }
+            }
+
+            font-size: var(--#{$prefix}footer-font-size);
+            @include footer-size-variant( 'nl');
+            &.caption-sm {
+                @include footer-size-variant( 'sm');
+            }
+            &.caption-xs {
+                @include footer-size-variant( 'xs');
+            }
+        }
+    }
+}

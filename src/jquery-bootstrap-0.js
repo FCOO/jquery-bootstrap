@@ -726,6 +726,8 @@
                     case 'radiobuttongroup' :   buildFunc = $.bsRadioButtonGroup;   addBorder = true; insideFormGroup = true; break;
                     case 'checkbox'         :   buildFunc = $.bsCheckbox;           insideFormGroup = true; noPadding = true; break;
 
+                    case 'carousel'         :   buildFunc = $.bsCarousel;           /*Possible: addBorder = true; insideFormGroup = true; noPadding = true; */ break;
+
                     case 'tabs'             :   buildFunc = $.bsTabs;               break;
                     case 'table'            :   buildFunc = $.bsTable;              break;
                     case 'list'             :   buildFunc = $.bsList;               break;

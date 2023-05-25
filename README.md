@@ -23,6 +23,7 @@ This plugin contains jQuery methods to create different types of elements e.q. b
 - [Button-group-popover](#buttongrouppopover)
 - [SelectList-popover](#selectlistpopover)
 - [Menu-popover](#menupopover)
+- [Carousel](#carousel)
 - [Table](#table)
 - [List](#list)
 - [Accordion](#accordion)
@@ -349,6 +350,10 @@ Same as for [Popover](#popover) plus [SelectList](#selectlist) plus
 ### options
 Same as for [Popover](#popover) plus `list` as in [Menu](#menu)
 
+<a name="carousel"></a>
+## Carousel
+
+	var myCarousel = $.bsCarousel( options );
 
 <a name="table"></a>
 ## Table

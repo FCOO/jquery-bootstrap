@@ -100,6 +100,7 @@
 	<script src="../src/jquery-bootstrap-selectlist.js"></script>
 	<script src="../src/jquery-bootstrap-button.js"></script>
 	<script src="../src/jquery-bootstrap-accordion.js"></script>
+	<script src="../src/jquery-bootstrap-carousel.js"></script>
     <script src="../src/jquery-bootstrap-popover.js"></script>
     <script src="../src/jquery-bootstrap-header.js"></script>
     <script src="../src/jquery-bootstrap-noty.js"></script>
@@ -2098,6 +2099,49 @@ clickable: true,
             .appendTo( $body)
             .on('click', function(){ modal_in_modal.show(); });
 
+        var carouselModal;
+        $('<button>Carousel in modal</button>')
+            .appendTo( $body)
+            .on('click', () =>{ 
+
+                carouselModal = carouselModal || $.bsModal({
+                    header:{
+                        text: {da:'Modal med Karousel',en:'"Modal with carousel'},
+                    },
+                    show: false,
+                    //scroll: false,
+                    flexWidth: true,
+                    extraWidth: true,
+                    content: [{
+                        type    : 'carousel',
+                        label   : {da:'En Karousel', en:'A Carousel'},
+                        
+                        list: [{
+                            text: {da:'FØRSTE', en:'First'},
+                            url: "images/image1.png"
+                        }, {            
+                            text: {da:'ANDEN', en:'Second'},
+                            url: "images/second.png"
+                        }, {            
+                            text: {da:'3. BILLEDE', en:'Third'},
+                            subText: 'Sub-text', subIcon: 'fa-home',
+                            url: "images/third.png"            
+                        }, {            
+                            text: {da:'4. BILLEDE', en:'Fourth'},
+                            subText: 'Sub-text', subIcon: 'fa-home',
+                            url: "images/fourth.png"            
+                        }],
+                        innerHeight: 345,
+                        fitHeight: true,
+                        //itemsMaxOwnSize: true
+                    }]                        
+                });
+                
+                carouselModal.show();
+            });
+
+        
+        
         //************************************************************************************
 
         function newNumberModal( _number ){
@@ -2511,6 +2555,73 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
     </div>
   </div>
 </div>
+
+
+<h4>CAROUSEL</h4>
+<div id="carouselExampleDark" class="carousel carousel-dark slide">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="10000">
+      <img src="images/image1.png" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>First slide label</h5>
+        <p>Some representative placeholder content for the first slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item" data-bs-interval="2000">
+      <img src="images/second.png" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Second slide label</h5>
+        <p>Some representative placeholder content for the second slide.</p>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <img src="images/third.png" class="d-block w-100" alt="...">
+      <div class="carousel-caption d-none d-md-block">
+        <h5>Third slide label</h5>
+        <p>Some representative placeholder content for the third slide.</p>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>
+<script>
+    $.bsCarousel({
+        list: [{
+            text: {da:'FØRSTE', en:'First'},
+            url: "images/image1.png"
+        }, {            
+            text: {da:'ANDEN', en:'Second'},
+            url: "images/second.png"
+        }, {            
+            text: {da:'3. BILLEDE', en:'Third'},
+            subText: 'Sub-text', subIcon: 'fa-home',
+            url: "images/third.png"            
+        }, {            
+            text: {da:'4. BILLEDE', en:'Fourth'},
+            subText: 'Sub-text', subIcon: 'fa-home',
+            url: "images/fourth.png"            
+        }],
+        innerHeight: 234,
+        fitHeight: true,
+        //itemsMaxOwnSize: true
+        defaultOnClick: true
+    }).appendTo($body);        
+
+</script>
+
 
 
 

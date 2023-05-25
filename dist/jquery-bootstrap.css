@@ -8,6 +8,7 @@
 
 
 ************************************************/
+@use "sass:math";
 /***********************************************
 See https://getbootstrap.com/docs/5.2/customize/sass/
 for description on how to adjust Bootstrap variables
@@ -20,6 +21,7 @@ FUNCTIONS TO CONVETRT FROM PX TO REM
 To make it easier to design and calculate dimensions
 the function rem defined
 ************************************************/
+@use "sass:math";
 /************************************************************
 HEADER, TITLE, AND FOOTER PADDING AND FONT-SIZE
 Padding are set to button y-padding (moving text to the left)
@@ -4679,6 +4681,181 @@ textarea.form-control-lg {
   padding: var(--bs-popover-body-padding-y) var(--bs-popover-body-padding-x);
   color: var(--bs-popover-body-color); }
 
+.carousel {
+  position: relative; }
+
+.carousel.pointer-event {
+  touch-action: pan-y; }
+
+.carousel-inner {
+  position: relative;
+  width: 100%;
+  overflow: hidden; }
+  .carousel-inner::after {
+    display: block;
+    clear: both;
+    content: ""; }
+
+.carousel-item {
+  position: relative;
+  display: none;
+  float: left;
+  width: 100%;
+  margin-right: -100%;
+  backface-visibility: hidden;
+  transition: transform 0.6s ease-in-out; }
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-item {
+      transition: none; } }
+
+.carousel-item.active,
+.carousel-item-next,
+.carousel-item-prev {
+  display: block; }
+
+.carousel-item-next:not(.carousel-item-start),
+.active.carousel-item-end {
+  transform: translateX(100%); }
+
+.carousel-item-prev:not(.carousel-item-end),
+.active.carousel-item-start {
+  transform: translateX(-100%); }
+
+.carousel-fade .carousel-item {
+  opacity: 0;
+  transition-property: opacity;
+  transform: none; }
+
+.carousel-fade .carousel-item.active,
+.carousel-fade .carousel-item-next.carousel-item-start,
+.carousel-fade .carousel-item-prev.carousel-item-end {
+  z-index: 1;
+  opacity: 1; }
+
+.carousel-fade .active.carousel-item-start,
+.carousel-fade .active.carousel-item-end {
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0s 0.6s; }
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-fade .active.carousel-item-start,
+    .carousel-fade .active.carousel-item-end {
+      transition: none; } }
+
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15%;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+  background: none;
+  border: 0;
+  opacity: 0.5;
+  transition: opacity 0.15s ease; }
+  @media (prefers-reduced-motion: reduce) {
+    .carousel-control-prev,
+    .carousel-control-next {
+      transition: none; } }
+  .carousel-control-prev:hover, .carousel-control-prev:focus,
+  .carousel-control-next:hover,
+  .carousel-control-next:focus {
+    color: #fff;
+    text-decoration: none;
+    outline: 0;
+    opacity: 0.9; }
+
+.carousel-control-prev {
+  left: 0; }
+
+.carousel-control-next {
+  right: 0; }
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: 100% 100%; }
+
+/* rtl:options: {
+  "autoRename": true,
+  "stringMap":[ {
+    "name"    : "prev-next",
+    "search"  : "prev",
+    "replace" : "next"
+  } ]
+} */
+.carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e"); }
+
+.carousel-control-next-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e"); }
+
+.carousel-indicators {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin-right: 15%;
+  margin-bottom: 1rem;
+  margin-left: 15%;
+  list-style: none; }
+  .carousel-indicators [data-bs-target] {
+    box-sizing: content-box;
+    flex: 0 1 auto;
+    width: 30px;
+    height: 3px;
+    padding: 0;
+    margin-right: 3px;
+    margin-left: 3px;
+    text-indent: -999px;
+    cursor: pointer;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    opacity: 0.5;
+    transition: opacity 0.6s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      .carousel-indicators [data-bs-target] {
+        transition: none; } }
+  .carousel-indicators .active {
+    opacity: 1; }
+
+.carousel-caption {
+  position: absolute;
+  right: 15%;
+  bottom: 1.25rem;
+  left: 15%;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  color: #fff;
+  text-align: center; }
+
+.carousel-dark .carousel-control-prev-icon,
+.carousel-dark .carousel-control-next-icon {
+  filter: invert(1) grayscale(100); }
+
+.carousel-dark .carousel-indicators [data-bs-target] {
+  background-color: #000; }
+
+.carousel-dark .carousel-caption {
+  color: #000; }
+
 .clearfix::after {
   display: block;
   clear: both;
@@ -9001,23 +9178,23 @@ Also overwrite default bootstrap behaviour
     height: var(--bs-btn-square-dimention);
     width: var(--bs-btn-square-dimention); }
     .btn-jb.square:not(.big-square) {
-      --bs-btn-square-dimention: 2.375rem; }
+      --bs-btn-square-dimention: 2.25remcalc(2 * $border-width-rem); }
       .btn-jb.square:not(.big-square).btn-sm, .btn-group-sm > .btn-jb.square.btn:not(.big-square), .btn-bar-sm > .btn-jb.square.btn:not(.big-square) {
-        --bs-btn-square-dimention: 1.9375rem; }
+        --bs-btn-square-dimention: 1.8125remcalc(2 * $border-width-rem); }
       .btn-jb.square:not(.big-square).btn-xs, .btn-group-xs > .btn-jb.square.btn:not(.big-square), .btn-bar-xs > .btn-jb.square.btn:not(.big-square) {
-        --bs-btn-square-dimention: 1.5rem; }
+        --bs-btn-square-dimention: 1.375remcalc(2 * $border-width-rem); }
     .btn-jb.square.big-square {
-      --bs-btn-square-dimention: 3.25rem; }
+      --bs-btn-square-dimention: calc(round($rem * 16) / 16); }
       .btn-jb.square.big-square.btn-sm, .btn-group-sm > .btn-jb.square.big-square.btn, .btn-bar-sm > .btn-jb.square.big-square.btn {
-        --bs-btn-square-dimention: 2.75rem; }
+        --bs-btn-square-dimention: calc(round($rem * 16) / 16); }
       .btn-jb.square.big-square.btn-xs, .btn-group-xs > .btn-jb.square.big-square.btn, .btn-bar-xs > .btn-jb.square.big-square.btn {
-        --bs-btn-square-dimention: 2.1875rem; }
+        --bs-btn-square-dimention: calc(round($rem * 16) / 16); }
     .btn-jb.square.big-icon {
-      --bs-btn-font-size: 1.625rem; }
+      --bs-btn-font-size: calc(round($rem * 16) / 16); }
     .btn-jb.square.btn-sm.big-icon, .btn-group-sm > .btn-jb.square.big-icon.btn, .btn-bar-sm > .btn-jb.square.big-icon.btn {
-      --bs-btn-font-size: 1.375rem; }
+      --bs-btn-font-size: calc(round($rem * 16) / 16); }
     .btn-jb.square.btn-xs.big-icon, .btn-group-xs > .btn-jb.square.big-icon.btn, .btn-bar-xs > .btn-jb.square.big-icon.btn {
-      --bs-btn-font-size: 1.1875rem; }
+      --bs-btn-font-size: calc(round($rem * 16) / 16); }
     .btn-jb.square > i.fa {
       width: 1.25em;
       height: 1em;
@@ -9200,12 +9377,12 @@ classes to create "shadow-buttons" = invisible square buttons for correct spacin
   visibility: hidden; }
 
 .btn-shadow {
-  width: 2.375rem;
-  height: 2.375rem; }
+  width: 2.25remcalc(2 * $border-width-rem);
+  height: 2.25remcalc(2 * $border-width-rem); }
 
 .btn-shadow-sm {
-  width: 1.9375rem;
-  height: 1.9375rem; }
+  width: 1.8125remcalc(2 * $border-width-rem);
+  height: 1.8125remcalc(2 * $border-width-rem); }
 
 /************************************************************
 btn-round-border
@@ -9469,10 +9646,10 @@ body.modal-open .modal {
   padding: 0 !important; }
 
 :root {
-  --jb-modal-sm-rem: 22rem;
-  --jb-modal-md-rem: 31.25rem;
-  --jb-modal-lg-rem: 50rem;
-  --jb-modal-xl-rem: 75rem; }
+  --jb-modal-sm-rem: calc($px * 1rem / 16px);
+  --jb-modal-md-rem: calc($px * 1rem / 16px);
+  --jb-modal-lg-rem: calc($px * 1rem / 16px);
+  --jb-modal-xl-rem: calc($px * 1rem / 16px); }
 
 .modal div.modal-dialog {
   opacity: 0;
@@ -10352,3 +10529,41 @@ Adjustment to Bootstrap tabs
   --bs-nav-link-font-size: 0.75rem;
   --bs-nav-tabs-border-radius: 0.125rem;
   --bs-nav-pills-border-radius: 0.125rem; }
+
+/**************************************************
+CAROUSEL
+
+**************************************************/
+.carousel.items-max-own-size .carousel-item img {
+  max-width: fit-content;
+  max-width: -moz-fit-content;
+  max-height: fit-content;
+  max-height: -moz-fit-content;
+  margin: auto; }
+
+.carousel .carousel-indicators {
+  margin-bottom: 0; }
+
+.carousel .carousel-caption {
+  padding: 0; }
+  .carousel .carousel-caption .carousel-caption-inner {
+    font-size: var(--bs-footer-font-size);
+    --bs-footer-font-size: 0.875rem;
+    --bs-footer-padding-y: 0.375rem;
+    --bs-footer-padding-x: 0.375rem; }
+    .carousel .carousel-caption .carousel-caption-inner .container-icon-and-text {
+      background-color: rgba(255, 255, 255, 0.4);
+      padding-left: 0.5em;
+      padding-right: 0.5em; }
+      .carousel .carousel-caption .carousel-caption-inner .container-icon-and-text span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap; }
+    .carousel .carousel-caption .carousel-caption-inner.caption-sm {
+      --bs-footer-font-size: 0.75rem;
+      --bs-footer-padding-y: 0.25rem;
+      --bs-footer-padding-x: 0.25rem; }
+    .carousel .carousel-caption .carousel-caption-inner.caption-xs {
+      --bs-footer-font-size: 0.6875rem;
+      --bs-footer-padding-y: 0.125rem;
+      --bs-footer-padding-x: 0.125rem; }
