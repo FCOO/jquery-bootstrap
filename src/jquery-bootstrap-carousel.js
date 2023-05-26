@@ -75,7 +75,7 @@ options
     }
 
     /**********************************************************
-    bsCheckbox( options ) - create a Bootstrap checkbox
+    bsCarousel( options ) - create a Bootstrap carousel
     **********************************************************/
     $.bsCarousel = function( options ){
         if (Array.isArray(options))

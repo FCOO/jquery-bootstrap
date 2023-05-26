@@ -101,6 +101,7 @@
 	<script src="../src/jquery-bootstrap-button.js"></script>
 	<script src="../src/jquery-bootstrap-accordion.js"></script>
 	<script src="../src/jquery-bootstrap-carousel.js"></script>
+	<script src="../src/jquery-bootstrap-progress-bar.js"></script>
     <script src="../src/jquery-bootstrap-popover.js"></script>
     <script src="../src/jquery-bootstrap-header.js"></script>
     <script src="../src/jquery-bootstrap-noty.js"></script>
@@ -2623,32 +2624,24 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
 </script>
 
 
+<h4>PROGRESS-BAR</h4>
+<div id="" class="progress" style="width:200px" >
+    <div class="progress-bar" role="progressbar" aria-label="Example with label" style="width: 5%;" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100">5%</div>
+</div>
 
 
-
-<select id="NIELS">
-    <optgroup label = "Choose One">
-    <option value ="sydney">Sydney</option>
-    <option value ="melbourne">Melbourne</option>
-    <option value ="cromwell">Cromwell</option>
-    <option value ="queenstown">Queenstown</option>
-    </optgroup>
-</select>
 
 <script>
-    var options = $('#NIELS').find('option');
-
-options[0].innerHTML = '';
-$(options[0])._bsAddHtml({
-    icon: 'fa-home', text: {da: 'Dansk', en: 'Eng'}
-});
-console.log(options);
-
-
-    $('html')
-        .toggleClass('touchevents',     window.bsIsTouch)
-        .toggleClass('no-touchevents', !window.bsIsTouch);
-
+    $.bsProgressBar({id:'pbTest', width: 200}).appendTo($body);
+    var v = 0;
+    function test(){
+        v = v + 2;
+        $('#pbTest')
+            ._pb_setValue(v)
+        if (v < 100)
+        window.setTimeout( test, 200);
+    }        
+    window.setTimeout( test, 3000);
 </script>
 
 </body>

@@ -728,6 +728,8 @@
 
                     case 'carousel'         :   buildFunc = $.bsCarousel;           /*Possible: addBorder = true; insideFormGroup = true; noPadding = true; */ break;
 
+                    case 'progressbar'      :   buildFunc = $.bsProgressBar;        /*Possible: addBorder = true; insideFormGroup = true; noPadding = true; */ break;
+
                     case 'tabs'             :   buildFunc = $.bsTabs;               break;
                     case 'table'            :   buildFunc = $.bsTable;              break;
                     case 'list'             :   buildFunc = $.bsList;               break;
