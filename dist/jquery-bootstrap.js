@@ -1701,24 +1701,22 @@ options
         if (Array.isArray(options))
             options = {list: options};
 
-        var id = options.id = options.id || 'bsCarousel_' + bsCarouselId++;
-
-
+        var id = options.id = options.id || 'bsCarousel_' + bsCarouselId++,
+            multiItems = options.list.length > 1;
         this.options = options;
 
         var $result = $('<div data-bs-theme="dark"/>')
                 .attr('id', id)
                 .addClass('carousel carousel-dark slide')
                 .toggleClass('items-max-own-size', !!(options.itemsMaxOwnSize || (options.innerHeight && options.fitHeight))),
-
-
             $indicators = $('<div/>')
-                .addClass('carousel-indicators')
-                .appendTo($result),
+                .addClass('carousel-indicators'),
             $inner = $('<div/>')
                 .addClass('carousel-inner')
                 .height(options.innerHeight)
                 .appendTo($result);
+        if (multiItems){
+            $indicators.appendTo($result);
 
             $('<button class="carousel-control-prev" type="button" data-bs-target="#' + id + '" data-bs-slide="prev">')
                 .append(
@@ -1732,16 +1730,17 @@ options
                     $('<span class="visually-hidden">Next</span>')
                 )
                 .appendTo($result);
-
+        }
 
         this.options.list.forEach( (item, index) => {
             var active = index == 0;
 
             item.index = index;
 
-            $('<button type="button" data-bs-target="#' + id + '" data-bs-slide-to="' + index + '"></button>')
-                .toggleClass('active', !!active)
-                .appendTo($indicators);
+            if (multiItems)
+                $('<button type="button" data-bs-target="#' + id + '" data-bs-slide-to="' + index + '"></button>')
+                    .toggleClass('active', !!active)
+                        .appendTo($indicators);
 
             var $item = $('<div/>')
                     .addClass('carousel-item')
