@@ -20,24 +20,27 @@ CAROUSEL
         margin-bottom: 0;
     }
 
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
     .carousel-caption {
 
         padding: 0;
         .carousel-caption-inner {
             .container-icon-and-text {
-                background-color: rgba(255, 255, 255, .4);
+                background-color: rgba(255, 255, 255, .8);
                 padding-left: 0.5em;
                 padding-right: 0.5em;
                 span { @include text-truncate(); }
             }
-
-            font-size: var(--#{$prefix}footer-font-size);
-            @include footer-size-variant( 'nl');
-            &.caption-sm {
+            .caption {
+                font-size: var(--#{$prefix}footer-font-size);
                 @include footer-size-variant( 'sm');
-            }
-            &.caption-xs {
-                @include footer-size-variant( 'xs');
+                &.caption-sm {
+                    @include footer-size-variant( 'xs');
+                }
             }
         }
     }

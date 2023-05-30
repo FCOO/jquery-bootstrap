@@ -160,16 +160,15 @@ options
                         .appendTo($caption);
 
 
-
                     if (item.icon || item.text)
                         $('<div/>')
-                            .addClass( $._bsGetSizeClass( {baseClass: 'caption', useTouchSize: true}) )
+                            .addClass('caption')
                             ._bsAddHtml({icon: item.icon, text: item.text})
                             .appendTo($innerCation);
 
                     if (item.subIcon || item.subText)
                         $('<div/>')
-                            .addClass( $._bsGetSizeClass( {baseClass: 'caption', useTouchSize: true, small: true}) )
+                            .addClass('caption caption-sm')
                             ._bsAddHtml({icon: item.subIcon, text: item.subText})
                             .appendTo($innerCation);
             }

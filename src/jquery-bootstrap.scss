@@ -46,6 +46,7 @@ for description on how to adjust Bootstrap variables
 
 //3. Bootstrap and jquery-bootstrap variables
 @import "../bower_components/bootstrap/scss/variables";
+@import "../bower_components/bootstrap/scss/variables-dark";
 
 //Using $scroll-padding-opposite from jquery-scroll-container.
 @import "../bower_components/jquery-scroll-container/src/jquery-scroll-container-variables";
