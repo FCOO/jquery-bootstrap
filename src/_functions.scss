@@ -11,12 +11,14 @@ the function rem defined
 @use "sass:math";
 
 @function asRem($px) {
-    @return calc($px * 1rem / 16px);
+    @return math.div($px * 1rem, 16px);
+    // @return calc($px * 1rem / 16px);    //ORIGINAL
 }
 
 //roundRem - Return the rounded rem value of a rem-value to ensure a integer px reprecentation
 @function roundRem($rem){
-    @return calc(round($rem * 16) / 16);
+    @return math.div(round($rem * 16), 16);
+    //@return calc(round($rem * 16) / 16);  //ORIGINAL
 }
 
 
