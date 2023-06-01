@@ -19,6 +19,8 @@ TO HAVE ACCESS TO ALL BOOTSTRAP AND FCOO/JQUERY-BOOTSTRAP SCSS-VARIABLES
 
 //Bootstrap & jquery-bootstrap: scss variables
 @import "../../bootstrap/scss/variables";
+@import "../../bootstrap/scss/variables-dark";
+
 
 //Using $scroll-padding-opposite from jquery-scroll-container.
 @import "../../jquery-scroll-container/src/jquery-scroll-container-variables";
