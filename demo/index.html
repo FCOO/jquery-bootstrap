@@ -89,6 +89,7 @@
     <script src="../src/jquery-bootstrap-fontawesome.js"></script>
     <script src="../src/jquery-bootstrap-file-view.js"></script>
     <script src="../src/jquery-bootstrap-modal-file.js"></script>
+    <script src="../src/_jquery-bootstrap-modal-image.js"></script>
     <script src="../src/jquery-bootstrap-list.js"></script>
     <script src="../src/jquery-bootstrap-form-0.js"></script>
     <script src="../src/jquery-bootstrap-form-validation.js"></script>
@@ -1281,7 +1282,7 @@ longTableContent[i].stargazers_count = i;
             'niels': {da:'Niels DK', en:'Niels ENG'   }
         });
 
-        $('<button>5xModal-file</button>')
+        $('<button>6xModal-file</button>')
             .appendTo( $body)
             .on('click', function(e){
                 $.bsModalFile('https://www.soefartsstyrelsen.dk/Documents/Publikationer/Dansk%20Fyrliste_2018.pdf', {header: 'PDF'});
@@ -2116,6 +2117,7 @@ clickable: true,
                     content: [{
                         type    : 'carousel',
                         label   : {da:'En Karousel', en:'A Carousel'},
+                        defaultOnClick: true,
                         
                         list: [{
                             text: {da:'FØRSTE', en:'First'},
@@ -2602,6 +2604,7 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
     $.bsCarousel({
         list: [{
             text: {da:'FØRSTE', en:'First'},
+            subText: {da:'Meget lang sja sdfkasd kaskdjfh askdj ask k asdkj faskdj askdfj askdfj askjfaskdjf askdfjh askfjh kasdjfk a hfaks jdfkasj dfhkasjfhkasdfhkas jfhklasjdfhkasjdfhkasjfhaskdjf haskdfj h', en:'First'},
             url: "images/image1.png"
         }, {            
             text: {da:'ANDEN', en:'Second'},
@@ -2611,8 +2614,9 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
             subText: 'Sub-text', subIcon: 'fa-home',
             url: "images/third.png"            
         }, {            
-            text: {da:'4. BILLEDE', en:'Fourth'},
-            subText: 'Sub-text', subIcon: 'fa-home',
+            icon   : 'fa-home', text   : {da:'4. BILLEDE', en:'Fourth'},
+            subIcon: 'fa-home', subText: {da:'Meget lang sja sdfkasd kaskdjfh askdj ask k asdkj faskdj askdfj askdfj askjfaskdjf askdfjh askfjh kasdjfk a hfaks jdfkasj dfhkasjfhkasdfhkas jfhklasjdfhkasjdfhkasjfhaskdjf haskdfj h', en:'First'},
+
             url: "images/fourth.png"            
         }],
         innerHeight: 234,

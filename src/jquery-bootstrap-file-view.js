@@ -16,29 +16,6 @@
 
     var fileViewHeaderClasses = 'modal-header header-content header-content-smaller header-content-inner';
 
-    //fileViewModalList = list of {fileNames, bsModal}  where bsModal is the $.bsModalFile showing the file
-    var fileViewModalList = [];
-    function showFileInModal( fileName, header ){
-        var fileViewModal = null,
-            fileNames     = fileName.da + fileName.en;
-        $.each( fileViewModalList, function( index, fileView ){
-            if (fileView.fileNames == fileNames){
-                fileViewModal = fileView;
-                return false;
-            }
-        });
-
-        if (!fileViewModal){
-            fileViewModal = {
-                fileNames: fileNames,
-                bsModal  : $.bsModalFile( fileName, {header: header, show: false})
-            };
-            fileViewModalList.push(fileViewModal);
-        }
-        fileViewModal.bsModal.show();
-    }
-
-
     /**********************************************************
     **********************************************************/
     $.bsFileView = $.bsFileview = function( options = {}){
@@ -110,7 +87,13 @@
             .addClass('modal-footer')
             .css('justify-content',  'center')
             ._bsAppendContent([
-                $.bsButton( {icon: $.FONTAWESOME_PREFIX + ' fa-window-maximize',  text: {da:'Vis',  en:'Show'},   onClick: function(){ showFileInModal( fileName, options.header ); } } ),
+                $.bsButton(
+                    {icon: $.FONTAWESOME_PREFIX + ' fa-window-maximize',
+                    text: {da:'Vis',  en:'Show'},
+                    onClick: function(){
+                        $.bsModalFile( fileName, {header: options.header} );
+                    }
+                }),
                 $.bsButton( {icon: $.bsExternalLinkIcon, text: {da: 'Åbne', en: 'Open'}, link: fileName } )
             ])
             .appendTo($result);

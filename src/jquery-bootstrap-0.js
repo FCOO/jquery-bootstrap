@@ -35,6 +35,7 @@
     var myTable = $.bsTable({...}); //Add 'BSTABLE' to class-name for  result
     myTable.asModal({...});
     */
+
     $.BSASMODAL = $.BSASMODAL || {};
     $.fn.asModal = function(options){
         var _this   = this,
@@ -48,6 +49,7 @@
         });
         return asModal ? $.proxy(asModal, this)( options ) : null;
     };
+
 
     //Allow test-pages to set bsIsTouch to fixed value
     ns.bsIsTouch = typeof ns.bsIsTouch == "boolean" ? ns.bsIsTouch : true;

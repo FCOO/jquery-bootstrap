@@ -35,6 +35,7 @@
     var myTable = $.bsTable({...}); //Add 'BSTABLE' to class-name for  result
     myTable.asModal({...});
     */
+
     $.BSASMODAL = $.BSASMODAL || {};
     $.fn.asModal = function(options){
         var _this   = this,
@@ -48,6 +49,7 @@
         });
         return asModal ? $.proxy(asModal, this)( options ) : null;
     };
+
 
     //Allow test-pages to set bsIsTouch to fixed value
     ns.bsIsTouch = typeof ns.bsIsTouch == "boolean" ? ns.bsIsTouch : true;
@@ -1681,7 +1683,10 @@ options
 
 
     function defaultOnClick(url, options){
-        $.bsModalFile(url, {header: options.text}).show();
+        if ($.bsModalImage)
+            $.bsModalImage(url, options).show();
+        else
+            $.bsModalFile(url, {header: options.text}).show();
     }
 
     function item_onClick(e){
@@ -1960,29 +1965,6 @@ options
 
     var fileViewHeaderClasses = 'modal-header header-content header-content-smaller header-content-inner';
 
-    //fileViewModalList = list of {fileNames, bsModal}  where bsModal is the $.bsModalFile showing the file
-    var fileViewModalList = [];
-    function showFileInModal( fileName, header ){
-        var fileViewModal = null,
-            fileNames     = fileName.da + fileName.en;
-        $.each( fileViewModalList, function( index, fileView ){
-            if (fileView.fileNames == fileNames){
-                fileViewModal = fileView;
-                return false;
-            }
-        });
-
-        if (!fileViewModal){
-            fileViewModal = {
-                fileNames: fileNames,
-                bsModal  : $.bsModalFile( fileName, {header: header, show: false})
-            };
-            fileViewModalList.push(fileViewModal);
-        }
-        fileViewModal.bsModal.show();
-    }
-
-
     /**********************************************************
     **********************************************************/
     $.bsFileView = $.bsFileview = function( options = {}){
@@ -2054,7 +2036,13 @@ options
             .addClass('modal-footer')
             .css('justify-content',  'center')
             ._bsAppendContent([
-                $.bsButton( {icon: $.FONTAWESOME_PREFIX + ' fa-window-maximize',  text: {da:'Vis',  en:'Show'},   onClick: function(){ showFileInModal( fileName, options.header ); } } ),
+                $.bsButton(
+                    {icon: $.FONTAWESOME_PREFIX + ' fa-window-maximize',
+                    text: {da:'Vis',  en:'Show'},
+                    onClick: function(){
+                        $.bsModalFile( fileName, {header: options.header} );
+                    }
+                }),
                 $.bsButton( {icon: $.bsExternalLinkIcon, text: {da: 'Åbne', en: 'Open'}, link: fileName } )
             ])
             .appendTo($result);
@@ -3762,7 +3750,6 @@ options
                     noVerticalPadding  : noPadding,
                     noHorizontalPadding: noPadding,
                     alwaysMaxHeight    : alwaysMaxHeight,
-
                     buttons   : [{
                         icon: $.bsExternalLinkIcon,
                         text: {da: 'Åbne', en: 'Open'},
@@ -3770,7 +3757,11 @@ options
                     }],
 
                     content   : $content,
-                    footer    : footer
+                    footer    : footer,
+
+                    remove       : options.remove,
+                    removeOnClose: options.removeOnClose,
+                    defaultRemove: true
 
                });
     };
@@ -4048,6 +4039,7 @@ jquery-bootstrap-modal-promise.js
     options.flexWidth :  If true the width of the modal will adjust to the width of the browser up to 500px
     options.extraWidth:  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
     options.megaWidth :  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
+    options.maxWidth  :  If true the width of the modal will always be 100%
     options.width     : Set if different from 300
 
     ******************************************************/
@@ -4062,6 +4054,7 @@ jquery-bootstrap-modal-promise.js
             flexWidth : !!options.flexWidth,
             extraWidth: !!options.extraWidth,
             megaWidth : !!options.megaWidth,
+            maxWidth  : !!options.maxWidth,
             width     : options.width ?
                         ( (typeof options.width == 'number') ? options.width+'px' : options.width)
                         : null
@@ -4221,6 +4214,10 @@ jquery-bootstrap-modal-promise.js
                 this._bsModalUnpin();
 
             this._close();
+
+            //Remove the modal from DOM
+            if (this.removeOnClose)
+                this.get(0).remove();
         },
 
         assignTo: function( $element ){
@@ -4398,6 +4395,8 @@ jquery-bootstrap-modal-promise.js
         parts.$footer =
                 $('<div/>')
                     .addClass('footer-content ' + className)
+                    .addClass(options.footerClass)
+                    .addClass(options.footerClassName)
                     .appendTo( this )
                     ._bsAddHtml( options.footer );
 
@@ -4409,6 +4408,7 @@ jquery-bootstrap-modal-promise.js
 
             $modalContent.on('click', options.onClick);
         }
+
         return this;
     };
 
@@ -4489,6 +4489,7 @@ jquery-bootstrap-modal-promise.js
                  ( (options.extended.flexWidth == undefined) &&
                    (options.extended.extraWidth == undefined) &&
                    (options.extended.megaWidth == undefined) &&
+                   (options.extended.maxWidth == undefined) &&
                    (options.extended.width == undefined)
                  )
               )
@@ -4794,9 +4795,10 @@ jquery-bootstrap-modal-promise.js
 
         //Set width
         $modalDialog
-            .toggleClass('modal-flex-width', cssWidth.flexWidth )
+            .toggleClass('modal-flex-width',  cssWidth.flexWidth  )
             .toggleClass('modal-extra-width', cssWidth.extraWidth )
-            .toggleClass('modal-mega-width', cssWidth.megaWidth )
+            .toggleClass('modal-mega-width',  cssWidth.megaWidth  )
+            .toggleClass('modal-max-width',   cssWidth.maxWidth   )
             .css('width', cssWidth.width ? cssWidth.width : '' );
 
         //Call onChange (if any)
@@ -4930,6 +4932,13 @@ jquery-bootstrap-modal-promise.js
                 show       : true
             });
 
+
+        //Set default removeOnClose
+        if ( (options.defaultRemoveOnClose || options.defaultRemove) &&
+             (options.remove === undefined) &&
+             (options.removeOnClose === undefined) )
+            options.remove = !!options.defaultRemoveOnClose || !!options.defaultRemove;
+
         //Create the modal
         $result =
             $('<div/>')
@@ -4978,6 +4987,8 @@ jquery-bootstrap-modal-promise.js
            show	    :   false                               //  boolean	            true	Shows the modal when initialized.
         });
         $result.bsModal = $modalDialog.bsModal;
+
+        $result.removeOnClose = options.remove || options.removeOnClose;
 
         if (options.historyList){
             //Hide back- and forward-icons
@@ -6124,9 +6135,6 @@ options
             item.selected = item.id ? item.id == selectedId : false;
         });
 
-        if ($selectButton_Modal)
-            $selectButton_Modal.remove();
-
         $selectButton_Modal = $.bsModal({
             noHeader    : true,
             closeButton : false,
@@ -6141,7 +6149,8 @@ options
                 context      : this,
                 truncate     : true
             },
-            show: true
+            show: true,
+            removeOnClose: true
         });
     };
 
@@ -6232,7 +6241,6 @@ options
 
     // Create $.BSASMODAL - See src/jquery-bootstrap.js for details
     $.BSASMODAL = $.BSASMODAL || {};
-
 
 /******************************************************************
 bsTable( options )
@@ -6995,6 +7003,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         return $result;
     };
+
 
     /******************************************************
     bsTabs

@@ -76,9 +76,6 @@
             item.selected = item.id ? item.id == selectedId : false;
         });
 
-        if ($selectButton_Modal)
-            $selectButton_Modal.remove();
-
         $selectButton_Modal = $.bsModal({
             noHeader    : true,
             closeButton : false,
@@ -93,7 +90,8 @@
                 context      : this,
                 truncate     : true
             },
-            show: true
+            show: true,
+            removeOnClose: true
         });
     };
 

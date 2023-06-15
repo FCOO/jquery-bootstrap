@@ -201,7 +201,6 @@
                     noVerticalPadding  : noPadding,
                     noHorizontalPadding: noPadding,
                     alwaysMaxHeight    : alwaysMaxHeight,
-
                     buttons   : [{
                         icon: $.bsExternalLinkIcon,
                         text: {da: 'Åbne', en: 'Open'},
@@ -209,7 +208,11 @@
                     }],
 
                     content   : $content,
-                    footer    : footer
+                    footer    : footer,
+
+                    remove       : options.remove,
+                    removeOnClose: options.removeOnClose,
+                    defaultRemove: true
 
                });
     };

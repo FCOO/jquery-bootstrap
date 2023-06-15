@@ -149,6 +149,7 @@
     options.flexWidth :  If true the width of the modal will adjust to the width of the browser up to 500px
     options.extraWidth:  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
     options.megaWidth :  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
+    options.maxWidth  :  If true the width of the modal will always be 100%
     options.width     : Set if different from 300
 
     ******************************************************/
@@ -163,6 +164,7 @@
             flexWidth : !!options.flexWidth,
             extraWidth: !!options.extraWidth,
             megaWidth : !!options.megaWidth,
+            maxWidth  : !!options.maxWidth,
             width     : options.width ?
                         ( (typeof options.width == 'number') ? options.width+'px' : options.width)
                         : null
@@ -322,6 +324,10 @@
                 this._bsModalUnpin();
 
             this._close();
+
+            //Remove the modal from DOM
+            if (this.removeOnClose)
+                this.get(0).remove();
         },
 
         assignTo: function( $element ){
@@ -499,6 +505,8 @@
         parts.$footer =
                 $('<div/>')
                     .addClass('footer-content ' + className)
+                    .addClass(options.footerClass)
+                    .addClass(options.footerClassName)
                     .appendTo( this )
                     ._bsAddHtml( options.footer );
 
@@ -510,6 +518,7 @@
 
             $modalContent.on('click', options.onClick);
         }
+
         return this;
     };
 
@@ -590,6 +599,7 @@
                  ( (options.extended.flexWidth == undefined) &&
                    (options.extended.extraWidth == undefined) &&
                    (options.extended.megaWidth == undefined) &&
+                   (options.extended.maxWidth == undefined) &&
                    (options.extended.width == undefined)
                  )
               )
@@ -895,9 +905,10 @@
 
         //Set width
         $modalDialog
-            .toggleClass('modal-flex-width', cssWidth.flexWidth )
+            .toggleClass('modal-flex-width',  cssWidth.flexWidth  )
             .toggleClass('modal-extra-width', cssWidth.extraWidth )
-            .toggleClass('modal-mega-width', cssWidth.megaWidth )
+            .toggleClass('modal-mega-width',  cssWidth.megaWidth  )
+            .toggleClass('modal-max-width',   cssWidth.maxWidth   )
             .css('width', cssWidth.width ? cssWidth.width : '' );
 
         //Call onChange (if any)
@@ -1031,6 +1042,13 @@
                 show       : true
             });
 
+
+        //Set default removeOnClose
+        if ( (options.defaultRemoveOnClose || options.defaultRemove) &&
+             (options.remove === undefined) &&
+             (options.removeOnClose === undefined) )
+            options.remove = !!options.defaultRemoveOnClose || !!options.defaultRemove;
+
         //Create the modal
         $result =
             $('<div/>')
@@ -1079,6 +1097,8 @@
            show	    :   false                               //  boolean	            true	Shows the modal when initialized.
         });
         $result.bsModal = $modalDialog.bsModal;
+
+        $result.removeOnClose = options.remove || options.removeOnClose;
 
         if (options.historyList){
             //Hide back- and forward-icons

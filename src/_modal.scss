@@ -94,6 +94,11 @@ div.modal-dialog {
         &.modal-mega-width   { width: $modal-xl-rem; }
     }
 
+    &.modal-max-width {
+        width: calc(100% - 20px);   //20px = 2 x modalVerticalMargin
+    }
+
+
     //No box-shadow on modal-content when inside a modal-dialog-inline
     &.modal-dialog-inline .modal-content {
         box-shadow: none;

@@ -14,7 +14,6 @@
     // Create $.BSASMODAL - See src/jquery-bootstrap.js for details
     $.BSASMODAL = $.BSASMODAL || {};
 
-
 /******************************************************************
 bsTable( options )
 options
