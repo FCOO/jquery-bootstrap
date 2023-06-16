@@ -4144,6 +4144,10 @@ jquery-bootstrap-modal-promise.js
 
         //Remove all noty added on the modal and move down global backdrop
         $._bsNotyRemoveLayer();
+
+        //Remove the modal from DOM
+        if (this.removeOnClose)
+            this.get(0).remove();
     }
 
     //******************************************************
@@ -4214,10 +4218,6 @@ jquery-bootstrap-modal-promise.js
                 this._bsModalUnpin();
 
             this._close();
-
-            //Remove the modal from DOM
-            if (this.removeOnClose)
-                this.get(0).remove();
         },
 
         assignTo: function( $element ){
@@ -5000,7 +5000,7 @@ jquery-bootstrap-modal-promise.js
             'show.bs.modal'  : $.proxy(show_bs_modal, $result),//show_bs_modal,
             'shown.bs.modal' : shown_bs_modal,
             'hide.bs.modal'  : $.proxy(hide_bs_modal, $result),
-            'hidden.bs.modal': hidden_bs_modal,
+            'hidden.bs.modal': hidden_bs_modal
         });
 
         $result.appendTo( $('body') );
