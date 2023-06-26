@@ -61,10 +61,7 @@ options
 
 
     function defaultOnClick(url, options){
-        if ($.bsModalImage)
-            $.bsModalImage(url, options).show();
-        else
-            $.bsModalFile(url, {header: options.text}).show();
+        $.bsModalImage(url, options).show();
     }
 
     function item_onClick(e){

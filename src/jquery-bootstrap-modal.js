@@ -43,6 +43,7 @@
         flexWidth
         extraWidth
         megaWidth
+        fullScreen
         noVerticalPadding
         noHorizontalPadding
         noShadow
@@ -107,6 +108,7 @@
     function adjustModalMaxHeight( $modalContent ){
         var $modalContents = $modalContent || $('.modal-content.modal-flex-height');
 
+
         //For each $modalContent: Get the current data with options on relative size and set the height and max-height
         $modalContents.each(function(index, elem){
             var $modalContent = $(elem);
@@ -150,6 +152,8 @@
     options.extraWidth:  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
     options.megaWidth :  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
     options.maxWidth  :  If true the width of the modal will always be 100%
+    options.fullScreen:  If true the modal will fill the hole screen without border. width = height = 100%
+
     options.width     : Set if different from 300
 
     ******************************************************/
@@ -165,6 +169,7 @@
             extraWidth: !!options.extraWidth,
             megaWidth : !!options.megaWidth,
             maxWidth  : !!options.maxWidth,
+            fullScreen: !!options.fullScreen,
             width     : options.width ?
                         ( (typeof options.width == 'number') ? options.width+'px' : options.width)
                         : null
@@ -548,7 +553,7 @@
         function setRelativeHeightOptions(size, options){
             var relativeOptions = null;
             if (!getHeightFromOptions(options)){
-                //Save only options differnet from default
+                //Save only options different from default
                 $.each(['relativeHeight', 'relativeHeightOffset', 'parentContainerHeight'], function(index, id){
                     var value = options[id];
                     if (value || (value === 0)){
@@ -600,6 +605,7 @@
                    (options.extended.extraWidth == undefined) &&
                    (options.extended.megaWidth == undefined) &&
                    (options.extended.maxWidth == undefined) &&
+                   (options.extended.fullScreen == undefined) &&
                    (options.extended.width == undefined)
                  )
               )
@@ -909,6 +915,7 @@
             .toggleClass('modal-extra-width', cssWidth.extraWidth )
             .toggleClass('modal-mega-width',  cssWidth.megaWidth  )
             .toggleClass('modal-max-width',   cssWidth.maxWidth   )
+            .toggleClass('modal-full-screen', cssWidth.fullScreen )
             .css('width', cssWidth.width ? cssWidth.width : '' );
 
         //Call onChange (if any)
@@ -1048,6 +1055,14 @@
              (options.remove === undefined) &&
              (options.removeOnClose === undefined) )
             options.remove = !!options.defaultRemoveOnClose || !!options.defaultRemove;
+
+        //Set options for full screen
+        if (options.fullScreen){
+            options.maxWidth             = true;
+            options.alwaysMaxHeight      = true;
+            options.relativeHeightOffset = 0;
+        }
+
 
         //Create the modal
         $result =
