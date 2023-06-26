@@ -111,7 +111,7 @@
             this.viewportWidth  = $content.outerWidth();
             this.viewportHeight = $content.outerHeight();
 
-            this.autoZoomScaleMode = this.imgWidth >= this.imgHeight ? 'widthOnly' : 'heightOnly';
+            this.autoZoomScaleMode = 'proportionalInside';
             this.autoZoomOn = true;
 
             //minZoom set to ensure smallest image = 80px
