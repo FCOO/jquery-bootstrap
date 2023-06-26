@@ -36,7 +36,7 @@
         if (options.subIcon || options.subText)
             footer.push(
                 $('<div/>')
-                    .addClass(footerTextClass + ' caption-sm')
+                    .addClass(footerTextClass + ' font-size-0-9em')
                     ._bsAddHtml({icon: options.subIcon, text: options.subText})
             );
 

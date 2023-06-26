@@ -12664,6 +12664,10 @@ Bootstrap allready have the following classes
   font-size: 0.75em !important;
 }
 
+.font-size-0-9em {
+  font-size: 0.9em !important;
+}
+
 .font-size-1-1em {
   font-size: 1.1em !important;
 }
