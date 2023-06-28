@@ -3873,19 +3873,15 @@ options
             var $content = this.bsModal.$content,
                 $img     = this.$img;
 
-            this.imgWidth       = $img.width();
-            this.imgHeight      = $img.height();
             this.viewportWidth  = $content.outerWidth();
             this.viewportHeight = $content.outerHeight();
 
             this.autoZoomScaleMode = 'proportionalInside';
             this.autoZoomOn = true;
 
-            //minZoom set to ensure smallest image = 80px
-            var maxDim = Math.max(this.imgWidth, this.imgHeight),
-                minZoom = window.nearest(80/maxDim, .1);
-
-            $img.width(this.imgWidth).height(this.imgHeight);
+            //minZoom set to ensure smallest image = 100px
+            var minDim = Math.min($img.width(), $img.height()),
+                minZoom = window.nearest(100/minDim, .1);
 
             $img.data('elem', 'pinchzoomer');
             $img.pinchzoomer({
