@@ -184,8 +184,11 @@
         this._$popover_element = popoverId ? $('#' + popoverId) : null;
         if (this._$popover_element){
 
-            //Translate content
+            //Translate content and update if width changes
+            var width = this._$popover_element.width();
             this._$popover_element.localize();
+            if (width != this._$popover_element.width())
+                $this.popover('update');
 
             //On click: Check if the popover needs to close.
             this._$popover_element.on('click.jbs.popover', function(event){

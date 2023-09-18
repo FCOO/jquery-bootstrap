@@ -799,7 +799,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 
                 defaultPadding: false,
                 buttons: [
-                    {id:'slow',   icon: 'fa-bicycle',   text:"ABCabc123", onClick: function(id, selected, $buttonGroup){console.log('INDIVIDUAL 6: bsButtonGroupPopover', id, selected)}},
+                    {id:'slow',   icon: 'fa-bicycle',   text:{da:"ABCabc123",en:'ABCabc123 looooooooong'}, onClick: function(id, selected, $buttonGroup){console.log('INDIVIDUAL 6: bsButtonGroupPopover', id, selected)}},
                     {id:'medium', icon: 'fa-car', text:{da:'Normalt', en: 'Normal'}},
                     {id: 'fast',  icon: 'fa-fighter-jet',   text:'XXX', color:'danger'}
                 ]
@@ -861,7 +861,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
                 small: true,
                 center: false,
                 placement: 'top',
-                delay: 1000,//{show:1000, hide:1000},
+                //delay: 1000,//{show:1000, hide:1000},
                 selectedId: 'fast',
                 header: {
                     icon: 'fa-hover',
@@ -870,7 +870,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
                 buttons: [
                     {id: 'slow',   icon: 'fa-bicycle', text:'En cykel'   },
                     {id: 'medium', icon: 'fa-car', text:'En bil' },
-                    {id: 'fast',   icon: 'fa-fighter-jet', text:'En flyver' }
+                    {id: 'fast',   icon: 'fa-fighter-jet', text:{da:'En laaaaaaang flyver', en:'A flyer'} }
                 ]
             })
 

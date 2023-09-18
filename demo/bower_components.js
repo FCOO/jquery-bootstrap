@@ -1,12 +1,12 @@
 /*!
- * jQuery JavaScript Library v3.7.0
+ * jQuery JavaScript Library v3.7.1
  * https://jquery.com/
  *
  * Copyright OpenJS Foundation and other contributors
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2023-05-11T18:29Z
+ * Date: 2023-08-28T13:37Z
  */
 ( function( global, factory ) {
 
@@ -147,7 +147,7 @@ function toType( obj ) {
 
 
 
-var version = "3.7.0",
+var version = "3.7.1",
 
 	rhtmlSuffix = /HTML$/i,
 
@@ -411,9 +411,14 @@ jQuery.extend( {
 				// Do not traverse comment nodes
 				ret += jQuery.text( node );
 			}
-		} else if ( nodeType === 1 || nodeType === 9 || nodeType === 11 ) {
+		}
+		if ( nodeType === 1 || nodeType === 11 ) {
 			return elem.textContent;
-		} else if ( nodeType === 3 || nodeType === 4 ) {
+		}
+		if ( nodeType === 9 ) {
+			return elem.documentElement.textContent;
+		}
+		if ( nodeType === 3 || nodeType === 4 ) {
 			return elem.nodeValue;
 		}
 
@@ -1126,12 +1131,17 @@ function setDocument( node ) {
 		documentElement.msMatchesSelector;
 
 	// Support: IE 9 - 11+, Edge 12 - 18+
-	// Accessing iframe documents after unload throws "permission denied" errors (see trac-13936)
-	// Support: IE 11+, Edge 17 - 18+
-	// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
-	// two documents; shallow comparisons work.
-	// eslint-disable-next-line eqeqeq
-	if ( preferredDoc != document &&
+	// Accessing iframe documents after unload throws "permission denied" errors
+	// (see trac-13936).
+	// Limit the fix to IE & Edge Legacy; despite Edge 15+ implementing `matches`,
+	// all IE 9+ and Edge Legacy versions implement `msMatchesSelector` as well.
+	if ( documentElement.msMatchesSelector &&
+
+		// Support: IE 11+, Edge 17 - 18+
+		// IE/Edge sometimes throw a "Permission denied" error when strict-comparing
+		// two documents; shallow comparisons work.
+		// eslint-disable-next-line eqeqeq
+		preferredDoc != document &&
 		( subWindow = document.defaultView ) && subWindow.top !== subWindow ) {
 
 		// Support: IE 9 - 11+, Edge 12 - 18+
@@ -2694,12 +2704,12 @@ jQuery.find = find;
 jQuery.expr[ ":" ] = jQuery.expr.pseudos;
 jQuery.unique = jQuery.uniqueSort;
 
-// These have always been private, but they used to be documented
-// as part of Sizzle so let's maintain them in the 3.x line
-// for backwards compatibility purposes.
+// These have always been private, but they used to be documented as part of
+// Sizzle so let's maintain them for now for backwards compatibility purposes.
 find.compile = compile;
 find.select = select;
 find.setDocument = setDocument;
+find.tokenize = tokenize;
 
 find.escape = jQuery.escapeSelector;
 find.getText = jQuery.text;
@@ -5913,7 +5923,7 @@ function domManip( collection, args, callback, ignored ) {
 			if ( hasScripts ) {
 				doc = scripts[ scripts.length - 1 ].ownerDocument;
 
-				// Reenable scripts
+				// Re-enable scripts
 				jQuery.map( scripts, restoreScript );
 
 				// Evaluate executable scripts on first document insertion
@@ -6370,7 +6380,7 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 				trChild = document.createElement( "div" );
 
 				table.style.cssText = "position:absolute;left:-11111px;border-collapse:separate";
-				tr.style.cssText = "border:1px solid";
+				tr.style.cssText = "box-sizing:content-box;border:1px solid";
 
 				// Support: Chrome 86+
 				// Height set through cssText does not get applied.
@@ -6382,7 +6392,7 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 				// In our bodyBackground.html iframe,
 				// display for all div elements is set to "inline",
 				// which causes a problem only in Android 8 Chrome 86.
-				// Ensuring the div is display: block
+				// Ensuring the div is `display: block`
 				// gets around this issue.
 				trChild.style.display = "block";
 
@@ -10550,7 +10560,9 @@ jQuery.fn.extend( {
 	},
 
 	hover: function( fnOver, fnOut ) {
-		return this.mouseenter( fnOver ).mouseleave( fnOut || fnOver );
+		return this
+			.on( "mouseenter", fnOver )
+			.on( "mouseleave", fnOut || fnOver );
 	}
 } );
 
@@ -10705,7 +10717,7 @@ return jQuery;
 
 ;
 /*!
-  * Bootstrap v5.3.0 (https://getbootstrap.com/)
+  * Bootstrap v5.3.2 (https://getbootstrap.com/)
   * Copyright 2011-2023 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
@@ -11354,7 +11366,7 @@ return jQuery;
    * Constants
    */
 
-  const VERSION = '5.3.0';
+  const VERSION = '5.3.2';
 
   /**
    * Class definition
@@ -11435,9 +11447,9 @@ return jQuery;
       if (hrefAttribute.includes('#') && !hrefAttribute.startsWith('#')) {
         hrefAttribute = `#${hrefAttribute.split('#')[1]}`;
       }
-      selector = hrefAttribute && hrefAttribute !== '#' ? hrefAttribute.trim() : null;
+      selector = hrefAttribute && hrefAttribute !== '#' ? parseSelector(hrefAttribute.trim()) : null;
     }
-    return parseSelector(selector);
+    return selector;
   };
   const SelectorEngine = {
     find(selector, element = document.documentElement) {
@@ -16564,13 +16576,15 @@ return jQuery;
   const ARROW_RIGHT_KEY = 'ArrowRight';
   const ARROW_UP_KEY = 'ArrowUp';
   const ARROW_DOWN_KEY = 'ArrowDown';
+  const HOME_KEY = 'Home';
+  const END_KEY = 'End';
   const CLASS_NAME_ACTIVE = 'active';
   const CLASS_NAME_FADE$1 = 'fade';
   const CLASS_NAME_SHOW$1 = 'show';
   const CLASS_DROPDOWN = 'dropdown';
   const SELECTOR_DROPDOWN_TOGGLE = '.dropdown-toggle';
   const SELECTOR_DROPDOWN_MENU = '.dropdown-menu';
-  const NOT_SELECTOR_DROPDOWN_TOGGLE = ':not(.dropdown-toggle)';
+  const NOT_SELECTOR_DROPDOWN_TOGGLE = `:not(${SELECTOR_DROPDOWN_TOGGLE})`;
   const SELECTOR_TAB_PANEL = '.list-group, .nav, [role="tablist"]';
   const SELECTOR_OUTER = '.nav-item, .list-group-item';
   const SELECTOR_INNER = `.nav-link${NOT_SELECTOR_DROPDOWN_TOGGLE}, .list-group-item${NOT_SELECTOR_DROPDOWN_TOGGLE}, [role="tab"]${NOT_SELECTOR_DROPDOWN_TOGGLE}`;
@@ -16670,13 +16684,19 @@ return jQuery;
       this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE$1));
     }
     _keydown(event) {
-      if (![ARROW_LEFT_KEY, ARROW_RIGHT_KEY, ARROW_UP_KEY, ARROW_DOWN_KEY].includes(event.key)) {
+      if (![ARROW_LEFT_KEY, ARROW_RIGHT_KEY, ARROW_UP_KEY, ARROW_DOWN_KEY, HOME_KEY, END_KEY].includes(event.key)) {
         return;
       }
       event.stopPropagation(); // stopPropagation/preventDefault both added to support up/down keys without scrolling the page
       event.preventDefault();
-      const isNext = [ARROW_RIGHT_KEY, ARROW_DOWN_KEY].includes(event.key);
-      const nextActiveElement = getNextActiveElement(this._getChildren().filter(element => !isDisabled(element)), event.target, isNext, true);
+      const children = this._getChildren().filter(element => !isDisabled(element));
+      let nextActiveElement;
+      if ([HOME_KEY, END_KEY].includes(event.key)) {
+        nextActiveElement = children[event.key === HOME_KEY ? 0 : children.length - 1];
+      } else {
+        const isNext = [ARROW_RIGHT_KEY, ARROW_DOWN_KEY].includes(event.key);
+        nextActiveElement = getNextActiveElement(children, event.target, isNext, true);
+      }
       if (nextActiveElement) {
         nextActiveElement.focus({
           preventScroll: true
@@ -17152,7 +17172,7 @@ return jQuery;
   }
 
   /*!
-   * GSAP 3.12.1
+   * GSAP 3.12.2
    * https://greensock.com
    *
    * @license Copyright 2008-2023, GreenSock. All rights reserved.
@@ -17522,7 +17542,7 @@ return jQuery;
       _postAddChecks = function _postAddChecks(timeline, child) {
     var t;
 
-    if (child._time || child._initted && !child._dur) {
+    if (child._time || !child._dur && child._initted || child._start < timeline._time && (child._dur || !child.add)) {
       t = _parentToChildTotalTime(timeline.rawTime(), child);
 
       if (!child._dur || _clamp(0, child.totalDuration(), t) - child._tTime > _tinyNum) {
@@ -18861,7 +18881,7 @@ return jQuery;
         animation = animation._dp;
       }
 
-      return !this.parent && this._sat ? this._sat.vars.immediateRender ? -1 : this._sat.globalTime(rawTime) : time;
+      return !this.parent && this._sat ? this._sat.vars.immediateRender ? -Infinity : this._sat.globalTime(rawTime) : time;
     };
 
     _proto.repeat = function repeat(value) {
@@ -19159,7 +19179,7 @@ return jQuery;
             var rewinding = yoyo && prevIteration & 1,
                 doesWrap = rewinding === (yoyo && iteration & 1);
             iteration < prevIteration && (rewinding = !rewinding);
-            prevTime = rewinding ? 0 : dur;
+            prevTime = rewinding ? 0 : tTime % dur ? dur : tTime;
             this._lock = 1;
             this.render(prevTime || (isYoyo ? 0 : _roundPrecise(iteration * cycleDuration)), suppressEvents, !dur)._lock = 0;
             this._tTime = tTime;
@@ -20832,12 +20852,12 @@ return jQuery;
             t: t
           };
         }).sort(function (a, b) {
-          return b.g - a.g || -1;
+          return b.g - a.g || -Infinity;
         }).forEach(function (o) {
           return o.t.revert(revert);
         });
         this.data.forEach(function (e) {
-          return e instanceof Timeline ? e.data !== "nested" && e.kill() : !(e instanceof Tween) && e.revert && e.revert(revert);
+          return !(e instanceof Tween) && e.revert && e.revert(revert);
         });
 
         this._r.forEach(function (f) {
@@ -21252,7 +21272,7 @@ return jQuery;
       }
     }
   }, _buildModifierPlugin("roundProps", _roundModifier), _buildModifierPlugin("modifiers"), _buildModifierPlugin("snap", snap)) || _gsap;
-  Tween.version = Timeline.version = gsap.version = "3.12.1";
+  Tween.version = Timeline.version = gsap.version = "3.12.2";
   _coreReady = 1;
   _windowExists() && _wake();
   var Power0 = _easeMap.Power0,
@@ -23493,7 +23513,7 @@ return jQuery;
         res = this.i18nFormat.parse(res, {
           ...this.options.interpolation.defaultVariables,
           ...options
-        }, resolved.usedLng, resolved.usedNS, resolved.usedKey, {
+        }, options.lng || this.language || resolved.usedLng, resolved.usedNS, resolved.usedKey, {
           resolved
         });
       } else if (!options.skipInterpolation) {
@@ -24251,7 +24271,7 @@ return jQuery;
       const key = lng + JSON.stringify(options);
       let formatter = cache[key];
       if (!formatter) {
-        formatter = fn(lng, options);
+        formatter = fn(getCleanedCode(lng), options);
         cache[key] = formatter;
       }
       return formatter(val);
@@ -24812,12 +24832,14 @@ return jQuery;
       const usedLng = typeof language === 'string' ? language : this.language;
       if (typeof language === 'function') usedCallback = language;
       if (!this.options.resources || this.options.partialBundledLanguages) {
-        if (usedLng && usedLng.toLowerCase() === 'cimode') return usedCallback();
+        if (usedLng && usedLng.toLowerCase() === 'cimode' && (!this.options.preload || this.options.preload.length === 0)) return usedCallback();
         const toLoad = [];
         const append = lng => {
           if (!lng) return;
+          if (lng === 'cimode') return;
           const lngs = this.services.languageUtils.toResolveHierarchy(lng);
           lngs.forEach(l => {
+            if (l === 'cimode') return;
             if (toLoad.indexOf(l) < 0) toLoad.push(l);
           });
         };
@@ -32614,8 +32636,9 @@ if (typeof define === 'function' && define.amd) {
         resizable   : false,    //If true the container of the slider can be resized and the grid will automatic redraw to adjust number of ticks and labels to the new width
 
         //Dimensions (only for options.handleFixed: true)
-        width         : 0,  // The total width of the slider (px)
-        valueDistances: 3,  // The distance between each value on the slider (px). Width will be valueDistances*( max - min )
+        width         : 0,      // The total width of the slider (px)
+        valueDistances: 3,      // The distance between each value on the slider (px). Width will be valueDistances*( max - min )
+        useParentWidth: false,  //If true the slider try using the width of the parent of the container. Useful if the container is hidden when the slider is created
 
         //Ranges and value
         min  : 0,           // Set slider minimum value
@@ -32654,14 +32677,16 @@ if (typeof define === 'function' && define.amd) {
         keyboardPageStepFactor : 20, //Step-factor when pressing pgUp or PgDn
 
         //Slide-line
-        lineBackgroundColor: '#d1d6e0', //The bakground color of the line
-
+        showLine           : true,  //If false the line with the handle is hidden
         showLineColor      : true,
         lineColor          : '#428BCA', //The color of the line left of the handle (single) or between the two handles (double)
+        lineBackgroundColor: '#d1d6e0', //The bakground color of the line
+        lineColors         : null, //[][{from, to, color}] Static colors for the line
 
         showImpactLineColor   : false, // The line on a double slider is coloured as green-[handle]-yellow-[handle]-red
         impactLineColors      : {green: "green", yellow: "yellow", red: "red"}, //The line colors used when showImpactLineColor: true
         reverseImpactLineColor: false, // The line on a double slider is colored as red-[handle]-yellow-[handle]-green. Must have showImpactLineColor: true
+
 
         //Size
         sizeFactor: 1, //Factor to re-size default sizes
@@ -32684,6 +32709,7 @@ if (typeof define === 'function' && define.amd) {
 
         //Grid (ticks and label)
         grid            : false,                      // Enables grid of values.
+        noTicks         : false,                      //If true no ticks are added, but the space are (used internally)
         majorTicks      : null,                       // Nummber of  step  between major ticks. Default=null=> Calculated automatic
         majorTicksOffset: 0,                          // Offset for the values where a major ticks is placed. Eq. Min=0, max=100 => major ticks on values=0,10,20,..,90,100. With  majorTicksOffset:4  the major ticks would be placed on values=4,14,24,...,84,94
         showMinorTicks  : true,                       // Show minor ticks.
@@ -33229,38 +33255,41 @@ if (typeof define === 'function' && define.amd) {
                 return result; //Only last added
             }
 
-            //1. double-handle with impact- or reverse-impact-colors
-            if (this.options.isDouble && this.options.showImpactLineColor){
-                appendLineColor( true, true, true );
-                this.setImpactLineColors();
-            }
-            else
-                //2. Add static colors given by options.lineColors
-                if (this.options.lineColors){
-                    var from = this.options.min,
-                        to = from,
-                        fromPercent,
-                        toPercent,
-                        sliderValue = ns.sliderValue({slider: this});
-                    $.each(this.options.lineColors, function( index, fromToColor ){
-                        from = fromToColor.from === undefined ? to : fromToColor.from;
-                        to = fromToColor.to === undefined ? _this.options.max : fromToColor.to;
-                        fromPercent = sliderValue.setValue( from ).getPercent();
-                        toPercent = sliderValue.setValue( to ).getPercent();
-                        $span('line-color', _this.cache.$line)
-                            .css({
-                                'left'              : fromPercent + '%',
-                                'width'             : (toPercent-fromPercent) + '%',
-                                'background-color'  : fromToColor.color
-                            });
-                    });
+            if (this.options.showLine){
+                //1. double-handle with impact- or reverse-impact-colors
+                if (this.options.isDouble && this.options.showImpactLineColor){
+                    appendLineColor( true, true, true );
+                    this.setImpactLineColors();
                 }
                 else
-                    //3. Normal line-color to the left of handle (single) or between handles (double)
-                    if (this.options.showLineColor)
-                        appendLineColor( this.options.isSingle, this.options.isDouble, false )
-                            .css('background-color', this.options.lineColor);
-
+                    //2. Add static colors given by options.lineColors
+                    if (this.options.lineColors){
+                        var from = this.options.min,
+                            to = from,
+                            fromPercent,
+                            toPercent,
+                            sliderValue = ns.sliderValue({slider: this});
+                        $.each(this.options.lineColors, function( index, fromToColor ){
+                            from = fromToColor.from === undefined ? to : fromToColor.from;
+                            to = fromToColor.to === undefined ? _this.options.max : fromToColor.to;
+                            fromPercent = sliderValue.setValue( from ).getPercent();
+                            toPercent = sliderValue.setValue( to ).getPercent();
+                            $span('line-color', _this.cache.$line)
+                                .css({
+                                    'left'              : fromPercent + '%',
+                                    'width'             : (toPercent-fromPercent) + '%',
+                                    'background-color'  : fromToColor.color
+                                });
+                        });
+                    }
+                    else
+                        //3. Normal line-color to the left of handle (single) or between handles (double)
+                        if (this.options.showLineColor)
+                            appendLineColor( this.options.isSingle, this.options.isDouble, false )
+                                .css('background-color', this.options.lineColor);
+            }
+            else
+                this.cache.$line.css("visibility", "hidden");
 
             //Update the height of the slider
             this.cache.$container.css('height', this.cache.$lineBackground.height()+'px' );
@@ -33478,6 +33507,8 @@ if (typeof define === 'function' && define.amd) {
                                 Math.max(size.majorTickLength, size.fontSize) :
                                 size.majorTickLength + size.labelHeight;
 
+            $newGrid.height(canvasHeight);
+
             $newCanvas
                 .css('left', '-'+canvasMargin+'px')
                 .attr('width', canvasWidth)
@@ -33523,7 +33554,7 @@ if (typeof define === 'function' && define.amd) {
         appendTick
         *******************************************************************/
         appendTick: function( leftPercent, options ){
-            if (!this.$currentGrid) return;
+            if (!this.$currentGrid || this.options.noTicks) return;
 
             options = $.extend( {minor: false, color: ''}, options );
 
@@ -33732,8 +33763,8 @@ if (typeof define === 'function' && define.amd) {
         /*******************************************************************
         _appendStandardGrid
         *******************************************************************/
-        _appendStandardGrid: function ( textOptions, tickOptions ) {
-            this.preAppendGrid();
+        _appendStandardGrid: function ( textOptions, tickOptions, gridContainerOptions ) {
+            this.preAppendGrid( gridContainerOptions );
 
             textOptions = $.extend( {labelClickable: this.options.labelClickable}, textOptions || {}  );
             tickOptions = tickOptions || {};
@@ -33972,9 +34003,22 @@ jquery-base-slider-events
         getDimentions
         Get width and left-position of different slider elements
         *******************************************************************/
+        _getAnyWidth: function( $elem ){
+            var width = 0;
+            while ($elem && $elem.length){
+                width = $elem.innerWidth();
+                if (width || !this.options.useParentWidth)
+                    $elem = null;
+                else
+                    $elem = $elem.parent();
+                }
+            return Math.max(0, width);
+        },
+
         getDimentions: function(){
             var result = {};
-            result.containerWidth    = Math.max(0, this.cache.$container.innerWidth()) || this.dimentions.containerWidth;
+            result.containerWidth = this._getAnyWidth(this.cache.$container) || this.dimentions.containerWidth;
+
             if (this.options.isFixed)
                 result.outerContainerWidth = this.cache.$outerContainer.innerWidth();
             return result;
@@ -54077,12 +54121,34 @@ options:
 
     ** SAME AS IN JQUERY-BASE-SLIDER PLUS **
 
-    noDateLabels    : boolean; If true no labels with the date are shown;
-    dateAtMidnight  : boolean; If true the time-LABEL for midnight is replaced with a short date-label. Normally used together noDateLabels: true
+    noDateLabels    : BOOLEAN; If true no labels with the date are shown;
+    dateAtMidnight  : BOOLEAN; If true the time-LABEL for midnight is replaced with a short date-label. Normally used together noDateLabels: true
     format:
-        showRelative    : boolean; If true the grid etc show the relative time ('Now + 2h') Default = false
-        showUTC         : boolean; When true a scale for utc is also shown.                 Default = false. Only if showRelative == false
+        showRelative        : BOOLEAN; If true the grid etc show the relative time ('Now + 2h') Default = false
+        showUTC             : BOOLEAN; When true a scale for utc is also shown, but only if the time-zone isn't utc or forceUTC is set. Default = false. Only if showRelative == false
+        forceUTC            : BOOLEAN; If true and showUTC: true the utc-scale is included
+        noGridColorsOnUTC   : BOOLEAN; If true the UTC-grid will not get any grid colors
+        noLabelColorsOnUTC  : BOOLEAN; If true the UTC-grid will not get any labels with colors
+        UTCGridClassName    : STRING; Class-name(s) for the grids use for UTC time-lime
 
+        showExtraRelative           : BOOLEAN; If true and showRelative = false => A relative scale is included
+        noGridColorsOnExtraRelative : BOOLEAN; If true the extra relative-grid will not get any grid colors
+        noLabelColorsOnExtraRelative: BOOLEAN; If true the extra relative-grid will not get any labels with colors
+
+        ExtraRelativeGridClassName : STRING; Class-name(s) for the grids use for the extra relative grid
+
+
+    showRelative        : as format.showRelative
+    showUTC             : as format.showUTC
+    forceUTC            : as format.forceUTC
+    noGridColorsOnUTC   : as format.noGridColorsOnUTC
+    noLabelColorsOnUTC  : as format.noLabelColorsOnUTC
+    UTCGridClassName    : as format.UTCGridClassName
+
+    showExtraRelative           : as format.showExtraRelative
+    noGridColorsOnExtraRelative : as format.noGridColorsOnExtraRelative
+    noLabelColorsOnExtraRelative: as format.noLabelColorsOnExtraRelative
+    ExtraRelativeGridClassName  : as format.ExtraRelativeGridClassName
 
 
     NB: Using moment-simple-format to set and get text and format for date and time
@@ -54095,17 +54161,22 @@ options:
     //roundMoment( m )
     function roundMoment( m ){ return m.startOf('hour');}
 
+    //__jbs_getNowMoment = function to get current now as moment. Can be overwritten for under test
+    window.__jbs_getNowMoment = function(){
+        return roundMoment(moment());
+    };
+
 
     //valueToMoment
     function valueToMoment ( value ){
-        var result = roundMoment(moment());
+        var result = window.__jbs_getNowMoment();
         result.add( value, 'hours' );
         return result;
     }
 
     //setValueAndMoment( value, moment )
     function setValueAndMoment( value, m ){
-        var nowMoment = roundMoment(moment());
+        var nowMoment = window.__jbs_getNowMoment();
         if (value === undefined){
             roundMoment( m );
             value = m.diff(nowMoment, 'hours');
@@ -54135,7 +54206,7 @@ options:
         };
 
     window.TimeSlider = function (input, options, pluginCount) {
-        this.VERSION = "7.1.0";
+        this.VERSION = "7.6.2";
 
         //Setting default options
         this.options = $.extend( true, {}, defaultOptions, options );
@@ -54221,7 +54292,15 @@ options:
         },
 
         _prettifyRelative     : function( value ){ return this._valueToFormat( value ); },
-        _prettifyLabelRelative: function( value ){ return value;                        },
+        _prettifyLabelRelative: function( value ){ return value; },
+
+
+        //_prettifyLabelRelative_full used for labels on extra relative grid
+        _prettifyLabelRelative_full: function( value ){
+            return value ? moment().add( value, 'hours' ).relativeFormat({ relativeFormat:{now:false, days:true, minutes:false} }) : this.options.format.text.nowUC;
+        },
+
+
 
         _prettifyAbsolute: function( value ){
             return this._valueToFormat( value, this.options.format.timezone );
@@ -54385,6 +54464,46 @@ options:
         appendStandardGrid
         ***************************************************************/
         appendStandardGrid: function(){
+            var _this = this,
+                opt = this.options,
+
+                //text and tick options for secondary grids (relative and utc for absolute scale
+                textOptions = {italic:true, minor:true},
+                tickOptions = {color:'#555555'};
+
+
+            //*****************************************************
+            function appendSpecialGrid( noGridColorId, noLabelColorsId, gridClassNameId, newLabels ){
+                var noGridColors  = opt.format[noGridColorId] || opt[noGridColorId],
+                    noLabelColors = opt.format[noGridColorId] || opt[noGridColorId],
+
+                    gridClassName = opt.format[gridClassNameId] || opt[gridClassNameId] || '',
+                    saveOptions   = $.extend(true, {}, _this.options);
+
+                    opt.size.majorTickLength = 3; //Normal = 9
+                    opt.size.minorTickLength = 2; //Normal = 6
+                    opt.showMinorTicks       = false;
+
+                //If noGridColors is set => remove grid-colors
+                if (noGridColors)
+                    opt.gridColors = null;
+
+                //If noLabelColors is set => remove label-colors
+                if (noLabelColors)
+                    opt.labelColors = null;
+
+                if (newLabels)
+                    opt.maxLabelWidth = null;   //Force recalculating label-space
+
+                _this._appendStandardGrid(textOptions, tickOptions);
+
+                _this.$currentGrid.addClass(gridClassName);
+
+                //Restore options
+                opt = _this.options = saveOptions;
+            }
+            //*****************************************************
+
             //First remove all grid-container except the first one
             this.cache.$grid = this.cache.$container.find(".grid").first();
             this.cache.$grid.siblings('.grid').remove();
@@ -54392,35 +54511,54 @@ options:
             this.$currentGridContainer = null;
 
             //Create all grid
-            if (this.options.format.showRelative){
+            if (opt.format.showRelative || opt.showRelative){
                 //Relative time: Set the prettify-functions and create the grid needed
                 this._prettify = this._prettifyRelative;
                 this._prettifyLabel = this._prettifyLabelRelative;
-                this.options.majorTicksOffset = 0;
+                opt.majorTicksOffset = 0;
                 this._appendStandardGrid();
             }
             else {
                 //Absolute time: Set the prettify-functions
-                var now = this._getNow(); //moment();
+                var now = this._getNow();
                 //Create the hour-grid and the date-grid for selected timezone
                 this._prettify = this._prettifyAbsolute;
                 this._prettifyLabel = this._prettifyLabelAbsolute;
-                this.options.majorTicksOffset = -1*now.tzMoment( this.options.format.timezone ).hours();
+                opt.majorTicksOffset = -1*now.tzMoment( opt.format.timezone ).hours();
                 this._appendStandardGrid();
                 this.appendDateGrid();
 
-                if ((this.options.format.timezone != 'utc') && this.options.format.showUTC){
+                //If opt.showExtraRelative => add extra grid with relative labels and no ticks
+                if (opt.showExtraRelative){
+                    this._prettify = this._prettifyRelative;
+                    this._prettifyLabel = this._prettifyLabelRelative_full;
+
+                    var saveMajorTicksOffset = opt.majorTicksOffset;
+                    opt.majorTicksOffset = 0;
+
+                    appendSpecialGrid( 'noGridColorsOnExtraRelative', 'noLabelColorsOnExtraRelative', 'ExtraRelativeGridClassName', true );
+
+                    opt.majorTicksOffset = saveMajorTicksOffset;
+                }
+
+
+                if (
+                    ( (opt.format.timezone != 'utc') || opt.format.forceUTC || opt.forceUTC) &&
+                    (opt.format.showUTC || opt.showUTC)
+                    ){
                     //Create the hour-grid and the date-grid for utc
-                    this.options.majorTicksOffset = -1*now.tzMoment( 'utc' ).hours();
-                    var saveTimezone = this.options.format.timezone;
-                    this.options.format.timezone = 'utc';
-                    var textOptions = {italic:true, minor:true},
-                        tickOptions = {color:'#555555'};
+                    opt.majorTicksOffset = -1*now.tzMoment( 'utc' ).hours();
+                    var saveTimezone = opt.format.timezone;
+                    opt.format.timezone = 'utc';
                     this._prettify = this._prettifyAbsolute;
                     this._prettifyLabel = this._prettifyLabelAbsolute;
-                    this._appendStandardGrid( textOptions, tickOptions );
+
+                    appendSpecialGrid( 'noGridColorsOnUTC', 'noLabelColorsOnUTC', 'UTCGridClassName');
+
                     this.appendDateGrid( textOptions, tickOptions );
-                    this.options.format.timezone = saveTimezone;
+                    this.$currentGrid.addClass(opt.format.UTCGridClassName || opt.UTCGridClassName || '');
+
+                    opt.format.timezone = saveTimezone;
                 }
             }
         },
