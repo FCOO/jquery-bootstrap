@@ -1958,6 +1958,18 @@ width: 543,
             .on('click', function(){ no_header_or_footer.show(); });
 
         //************************************************************************************
+        var semiTransparentModal = $.bsModal({
+            semiTransparent: true,
+            header:{icon: 'fa-home', text:'Semi-transparent'},
+            content: {da: 'Dette er en semi-transparent modal'},
+            show: false,
+        });
+
+        $('<button>Semi-transparent</button>')
+            .appendTo( $body)
+            .on('click', function(){ semiTransparentModal.show(); });
+
+        //************************************************************************************
         var no_content = $.bsModal({
             closeButton: true,
             icons: {

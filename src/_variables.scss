@@ -48,9 +48,9 @@ $modal-xl    : 1200px;
 
 /***********************************************
 Button And Modal
-Opacity for semi-transparent and transparent content
+Opacity for semi-transparent and transparent content using color-mix
 ************************************************/
 //Modal
-$modal-content-bg-semi-transparent      : rgba($modal-content-bg, $jb-element-semi-transparent-opacity);
-$modal-content-bg-semi-transparent-hover: rgba($modal-content-bg, $jb-element-semi-transparent-hover-opacity);
+$modal-content-bg-semi-transparent      : color-mix(in srgb, $modal-content-bg, transparent #{$jb-element-semi-transparent-opacity       * 100%});
+$modal-content-bg-semi-transparent-hover: color-mix(in srgb, $modal-content-bg, transparent #{$jb-element-semi-transparent-hover-opacity * 100%});
 

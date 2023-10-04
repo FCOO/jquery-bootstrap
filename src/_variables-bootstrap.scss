@@ -58,6 +58,7 @@ OPACITY
 ************************************************/
 // Opacity for semi-transparent elements
 $jb-element-semi-transparent-opacity       : .50;
+$jb-element-semi-transparent-opacity-procent       : $jb-element-semi-transparent-opacity * 100%;
 $jb-element-semi-transparent-hover-opacity : .75;
 $jb-element-semi-transparent-active-opacity: .95;
 
