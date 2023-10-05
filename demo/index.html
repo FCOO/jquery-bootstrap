@@ -267,9 +267,7 @@ $('body').on('wheel', function(e){
             $.bsButton({ icon: icon, bigIcon: true, _square: true }).appendTo( $body );
         });
 
-//        $.each(['fa-bars', 'fa-search'], function(index, icon){
-        $.bsButton({ icon: ['fa-bars fa-stack-1x', 'fa-search fa-stack-1x'], _bigIcon: true, _square: true })
-            .addClass('fa-stack')
+        $.bsButton({ icon: [['fa-bars', 'fa-search']], text: {da:'Søg', en:'Search'}, _bigIcon: true, _square: true })
             .appendTo( $body );
 
         $.bsButton({ icon: 'fa-external-link-alt', text:'fcoo.dk', link:{da:'http://fcoo.dk', en:'http://fcoo.dk/?s=:002ENG'}})

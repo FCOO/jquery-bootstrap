@@ -249,9 +249,11 @@
                 $._bsCreateIcon( opt, $icon, null, 'stacked-icon' );
             });
 
-            //If any of the stacked icons have class fa-no-margin => set if on the container
-            if ($icon.find('.fa-no-margin').length)
-                $icon.addClass('fa-no-margin');
+            //If any of the stacked icons have class fa-no-margin, fa-extra-width => set if on the container
+            ['fa-no-margin', 'fa-extra-width'].forEach( (className) => {
+                if ($icon.find('.'+className).length)
+                    $icon.addClass(className);
+            });
         }
         else {
             var allClassNames = options.icon || options.class || '';
