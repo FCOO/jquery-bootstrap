@@ -249,8 +249,8 @@
                 $._bsCreateIcon( opt, $icon, null, 'stacked-icon' );
             });
 
-            //If any of the stacked icons have class fa-no-margin, fa-extra-width => set if on the container
-            ['fa-no-margin', 'fa-extra-width'].forEach( (className) => {
+            //If any of the stacked icons have class fa-no-margin, width-1-Xem => set if on the container
+            ['fa-no-margin', 'width-1-1em', 'width-1-2em', 'width-1-3em', 'width-1-4em', 'width-1-5em'].forEach( (className) => {
                 if ($icon.find('.'+className).length)
                     $icon.addClass(className);
             });

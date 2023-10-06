@@ -84,10 +84,12 @@ Bootstrap allready have the following classes
     display    : inline-block;
     flex-shrink: 0;
     line-height: 1;
-    &.fa-extra-width:not(:last-child) {
-        width     : 1.5em;
-        text-align: left;
-    }
+    //Add special classes for extra widtrh if the stacked icon are widther the 1em
+    &.width-1-1em:not(:last-child) { width: 1.1em; text-align: left; }
+    &.width-1-2em:not(:last-child) { width: 1.2em; text-align: left; }
+    &.width-1-3em:not(:last-child) { width: 1.3em; text-align: left; }
+    &.width-1-4em:not(:last-child) { width: 1.4em; text-align: left; }
+    &.width-1-5em:not(:last-child) { width: 1.5em; text-align: left; }
     .stacked-icon {
         width : $dim;
         //height: $dim;
