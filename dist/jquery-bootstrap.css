@@ -12873,7 +12873,7 @@ Also overwrite default bootstrap behaviour
 .btn-jb.standard-checkbox.checkbox-at-left {
   position: relative;
 }
-.btn-jb.standard-checkbox.checkbox-at-left > .container-stacked-icons {
+.btn-jb.standard-checkbox.checkbox-at-left > .container-stacked-icons:first-child {
   position: absolute;
   left: var(--bs-btn-padding-x);
 }

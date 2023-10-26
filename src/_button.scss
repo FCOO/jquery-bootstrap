@@ -104,7 +104,7 @@ Also overwrite default bootstrap behaviour
         //Special version where the checkbox is to the left
         &.checkbox-at-left {
             position: relative;
-            & > .container-stacked-icons {
+            & > .container-stacked-icons:first-child {
                 position: absolute;
                 left    : var(--bs-btn-padding-x);
             }
