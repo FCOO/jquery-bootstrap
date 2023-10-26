@@ -45,6 +45,11 @@ Also overwrite default bootstrap behaviour
 
 .btn-#{$btn-style-name}{
 
+    //Horizontal and vertical center using flex-box
+    display        : inline-flex;
+    align-items    : center;
+    justify-content: center;
+
     //Set default border-colors for buttons
     --#{$prefix}btn-border-color        : #{$jb-element-border-color};
     --#{$prefix}btn-hover-border-color  : #{$jb-element-hover-border-color};
@@ -94,6 +99,15 @@ Also overwrite default bootstrap behaviour
     &.standard-checkbox {
         .standard-checkbox-checked-color {
             color: $form-check-input-checked-bg-color;
+        }
+
+        //Special version where the checkbox is to the left
+        &.checkbox-at-left {
+            position: relative;
+            & > .container-stacked-icons {
+                position: absolute;
+                left    : var(--bs-btn-padding-x);
+            }
         }
     }
 
@@ -177,11 +191,6 @@ Also overwrite default bootstrap behaviour
     //************************************************************
     //Special version to have square buttons (with only icon)
     &.square {
-        //Horizontal and vertical center using flex-box
-        display        : inline-flex;
-        align-items    : center;
-        justify-content: center;
-
         --#{$prefix}btn-padding-y: 0;
         --#{$prefix}btn-padding-x: 0;
 

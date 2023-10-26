@@ -12822,6 +12822,9 @@ Also overwrite default bootstrap behaviour
 
 */
 .btn-jb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   --bs-btn-border-color: #adb5bd;
   --bs-btn-hover-border-color: #b5bcc4;
   --bs-btn-active-border-color: #b5bcc4;
@@ -12866,6 +12869,13 @@ Also overwrite default bootstrap behaviour
 }
 .btn-jb.standard-checkbox .standard-checkbox-checked-color {
   color: rgb(30, 144, 255);
+}
+.btn-jb.standard-checkbox.checkbox-at-left {
+  position: relative;
+}
+.btn-jb.standard-checkbox.checkbox-at-left > .container-stacked-icons {
+  position: absolute;
+  left: var(--bs-btn-padding-x);
 }
 .btn-jb.standard-checkbox.semi-selected .standard-checkbox-checked-color {
   color: #fd7e14;
@@ -12924,9 +12934,6 @@ Also overwrite default bootstrap behaviour
   vertical-align: top;
 }
 .btn-jb.square {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   --bs-btn-padding-y: 0;
   --bs-btn-padding-x: 0;
   height: var(--bs-btn-square-dimention);

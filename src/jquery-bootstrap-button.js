@@ -29,6 +29,7 @@
                 bigIcon             : 'big-icon',
                 extraLargeIcon      : 'extra-large-icon',
                 selected            : 'selected',
+                checkboxAtLeft      : 'checkbox-at-left',
                 noBorder            : 'no-border',
                 focus               : 'init_focus',
                 truncate            : 'text-truncate',
@@ -91,6 +92,9 @@
         result._bsAddBaseClassAndSize( options );
         if (!options.radioGroup)
             result._bsAddIdAndName( options );
+
+        if (options.width)
+            result.width( options.width );
 
         if (options.attr)
             result.attr( options.attr );

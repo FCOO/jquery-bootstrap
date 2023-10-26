@@ -609,7 +609,18 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             text: {da:'Vælg mig #2', en:'Select me #2'},
             selected: false,
             onChange: function(id, selected){
-                console.log('NIELS',id,selected);
+                console.log('Vælg mig #2',id,selected);
+            }
+        }).appendTo($body);
+
+        $.bsStandardCheckboxButton({
+            icon: 'fa-map',
+            text: {da:'Vælg mig #3', en:'Select me #3'},
+            selected: false,
+            width: '20rem',
+            checkboxAtLeft: true, 
+            onChange: function(id, selected){
+                console.log('Vælg mig #3',id,selected);
             }
         }).appendTo($body);
 
