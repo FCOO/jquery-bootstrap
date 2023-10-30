@@ -93,8 +93,10 @@
         if (!options.radioGroup)
             result._bsAddIdAndName( options );
 
-        if (options.width)
-            result.width( options.width );
+        if (options._width)
+            result.width( options._width );
+        if (options.buttonWidth)
+            result.width( options.buttonWidth );
 
         if (options.attr)
             result.attr( options.attr );
