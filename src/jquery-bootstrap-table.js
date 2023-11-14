@@ -588,7 +588,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             (options.hoverRow ? 'table-hover ' : '' ) +
             (options.noPadding ? 'table-no-padding ' : '' ) +
             (options.notFullWidth ? 'table-not-full-width ' : '' ) +
-            (options.centerInContainer ? 'my-auto mx-0 ' : '' ) +
+            (options.centerInContainer ? 'mx-auto my-0 ' : '' ) +
             (options.selectable ? 'table-selectable ' : '' ) +
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' );
 
