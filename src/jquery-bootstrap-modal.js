@@ -97,6 +97,19 @@
 
 
     /**********************************************************
+    CHANGE MODAL WIDHT TO MAX-WIDTH
+    In some cases - eg. on mobil devices - it is better to have
+    modal width = max-width.
+    To allow this a global function is defined and called to
+    determine if the modal should have max-width:
+    $.MODEL_HAS_MAX_WIDTH = function(modalOptions, modal) return true/false
+    **********************************************************/
+    $.MODEL_HAS_MAX_WIDTH = function(/*modalOptions, modal*/){
+        return false;
+    };
+
+
+    /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
     Due to an intended design in Safari it is not possible to
     use style a la max-height: calc(100vh - 20px) is not working
@@ -151,7 +164,7 @@
     options.flexWidth :  If true the width of the modal will adjust to the width of the browser up to 500px
     options.extraWidth:  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
     options.megaWidth :  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
-    options.maxWidth  :  If true the width of the modal will always be 100%
+    options.maxWidth  :  If true the width of the modal will always be 100% minus some margin
     options.fullScreen:  If true the modal will fill the hole screen without border. width = height = 100%
 
     options.width     : Set if different from 300
@@ -1049,6 +1062,8 @@
                 show       : true
             });
 
+if ($.MODEL_HAS_MAX_WIDTH(options, this))
+    options.maxWidth = true;
 
         //Set default removeOnClose
         if ( (options.defaultRemoveOnClose || options.defaultRemove) &&
