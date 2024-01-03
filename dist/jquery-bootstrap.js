@@ -4259,12 +4259,13 @@ jquery-bootstrap-modal-promise.js
 
     function getWidthFromOptions( options ){
         return {
-            flexWidth   : !!options.flexWidth,
-            extraWidth  : !!options.extraWidth,
-            megaWidth   : !!options.megaWidth,
-            maxWidth    : !!options.maxWidth,
-            fullWidth   : !!options.fullWidth,
-            fullScreen  : !!options.fullScreen,
+            flexWidth           : !!options.flexWidth,
+            extraWidth          : !!options.extraWidth,
+            megaWidth           : !!options.megaWidth,
+            maxWidth            : !!options.maxWidth,
+            fullWidth           : !!options.fullWidth,
+            fullScreen          : !!options.fullScreen,
+            fullScreenWithBorder: !!options.fullScreenWithBorder,
             width       : options.width ?
                             ( (typeof options.width == 'number') ? options.width+'px' : options.width)
                             : null
@@ -4700,7 +4701,9 @@ jquery-bootstrap-modal-promise.js
                    (options.extended.extraWidth == undefined) &&
                    (options.extended.megaWidth == undefined) &&
                    (options.extended.maxWidth == undefined) &&
+                   (options.extended.fullWidth == undefined) &&
                    (options.extended.fullScreen == undefined) &&
+                   (options.extended.fullScreenWithBorder == undefined) &&
                    (options.extended.width == undefined)
                  )
               )
@@ -5006,12 +5009,13 @@ jquery-bootstrap-modal-promise.js
 
         //Set width
         $modalDialog
-            .toggleClass('modal-flex-width'         , cssWidth.flexWidth         )
-            .toggleClass('modal-extra-width'        , cssWidth.extraWidth        )
-            .toggleClass('modal-mega-width'         , cssWidth.megaWidth         )
-            .toggleClass('modal-max-width'          , cssWidth.maxWidth          )
-            .toggleClass('modal-full-width'         , cssWidth.fullWidth         )
-            .toggleClass('modal-full-screen'        , cssWidth.fullScreen        )
+            .toggleClass('modal-flex-width'             , cssWidth.flexWidth            )
+            .toggleClass('modal-extra-width'            , cssWidth.extraWidth           )
+            .toggleClass('modal-mega-width'             , cssWidth.megaWidth            )
+            .toggleClass('modal-max-width'              , cssWidth.maxWidth             )
+            .toggleClass('modal-full-width'             , cssWidth.fullWidth            )
+            .toggleClass('modal-full-screen'            , cssWidth.fullScreen           )
+            .toggleClass('modal-full-screen-with-border', cssWidth.fullScreenWithBorder )
             .css('width', cssWidth.width ? cssWidth.width : '' );
 
         //Call onChange (if any)
@@ -5158,6 +5162,10 @@ jquery-bootstrap-modal-promise.js
         if (options.fullWidth){
             options.relativeHeightOffset = 0;
         }
+
+        //Set options for full screen with border
+        if (options.fullScreenWithBorder)
+            options.fullScreen = true;
 
         //Set options for full screen
         if (options.fullScreen){

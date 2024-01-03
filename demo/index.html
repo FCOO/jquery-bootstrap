@@ -2254,6 +2254,10 @@ showHeaderOnClick: true,
                 header: 'fullWidth (100%)', flexWidth: true, fullWidth: true
             }, {
                 header: 'fullScreen (100%)', fullScreen: true
+            }, {
+                header: 'fullScreenWithBorder (100%)', fullScreenWithBorder: true
+
+        
         }].forEach( (options, index) => {
             $('<button>'+options.header+'</button>')
                 .appendTo( $body)
@@ -2267,7 +2271,7 @@ showHeaderOnClick: true,
                             megaWidth: options.megaWidth,
                             maxWidth: options.maxWidth,
                             fullWidth: options.fullWidth,
-                            fullWidthPortrait: options.fullWidthPortrait,
+                            fullScreenWithBorder: options.fullScreenWithBorder,
                             fullScreen: options.fullScreen
                         })
                     modal.show();

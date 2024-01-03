@@ -105,7 +105,7 @@ div.modal-dialog {
 
     &.modal-full-screen {
         width: 100%;
-        .modal-content {
+        &:not(.modal-full-screen-with-border) .modal-content {
             border       : none;
             border-radius: 0px;
         }
