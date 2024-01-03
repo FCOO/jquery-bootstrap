@@ -2240,6 +2240,39 @@ showHeaderOnClick: true,
 
 
 //MANGLER $test.bsSelectTab('NIELS');
+        header( 'Modal sizes');
+        var modals = [];
+        [{
+                header: 'flexWidth (500px)', flexWidth: true, extraWidth: false
+            }, {
+                header: 'extraWidth (800px)', flexWidth: true, extraWidth: true
+            }, {
+                header: 'megaWidth (1200px)', flexWidth: true, megaWidth: true
+            }, {
+                header: 'maxWidth (100% - 20px)', flexWidth: true, maxWidth: true
+            }, {
+                header: 'fullWidth (100%)', flexWidth: true, fullWidth: true
+            }, {
+                header: 'fullScreen (100%)', fullScreen: true
+        }].forEach( (options, index) => {
+            $('<button>'+options.header+'</button>')
+                .appendTo( $body)
+                .on('click', function(e){
+                    var modal = modals[index] = modals[index] ||
+                        $.bsModal({
+                            header: options.header,
+                            content: 'Dette er '+options.header +'<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17',
+                            flexWidth: options.flexWidth,
+                            extraWidth: options.extraWidth,
+                            megaWidth: options.megaWidth,
+                            maxWidth: options.maxWidth,
+                            fullWidth: options.fullWidth,
+                            fullWidthPortrait: options.fullWidthPortrait,
+                            fullScreen: options.fullScreen
+                        })
+                    modal.show();
+                });
+        });
 
     </script>
 
@@ -2321,6 +2354,7 @@ type: 'checkbox',
     })
         .prependTo( $('#formTest') );
 */
+    header( 'Button-group');
 
     $.bsButtonGroup({
         list     : [

@@ -4174,22 +4174,19 @@ jquery-bootstrap-modal-promise.js
 
 
     /**********************************************************
-    CHANGE MODAL WIDHT TO MAX-WIDTH or FULL-SCREEN
-    In some cases - eg. on mobil devices - it is better to have
+    CHANGE MODAL OPTIONS
+    In some cases an application need to adjust the default modal-options
+    given by an external packages. Eg. on mobil devices - it is better to have
     modal width = max-width or full screen
-    To allow this two global functions are defined and called to
-    determine if the modal should have max-width or full-screen:
-    $.MODEL_HAS_MAX_WIDTH        = function(modalOptions, modal) return true/false
-    $.MODEL_HAS_FULLSCREEN_WIDTH = function(modalOptions, modal) return true/false
+    To allow this a global function is defined and called to
+    allow modifications of the modal-options
 
-    By default they return false but they can be overwriten by applications/packages
+    $.MODEL_ADJUST_OPTIONS = function(modalOptions, modal) return modal-options
+
+    By default it return the original options but they can be overwriten by applications/packages
     **********************************************************/
-    $.MODEL_HAS_MAX_WIDTH = function(/*modalOptions, modal*/){
-        return false;
-    };
-
-    $.MODEL_HAS_FULLSCREEN_WIDTH = function(/*modalOptions, modal*/){
-        return false;
+    $.MODEL_ADJUST_OPTIONS = function(modalOptions/*, modal*/){
+        return modalOptions;
     };
 
     /**********************************************************
@@ -4244,11 +4241,12 @@ jquery-bootstrap-modal-promise.js
     3: fixed height. options.height
 
     The width of a modal is by default 300px.
-    options.flexWidth :  If true the width of the modal will adjust to the width of the browser up to 500px
-    options.extraWidth:  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
-    options.megaWidth :  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
-    options.maxWidth  :  If true the width of the modal will always be 100% minus some margin
-    options.fullScreen:  If true the modal will fill the hole screen without border. width = height = 100%
+    options.flexWidth : If true the width of the modal will adjust to the width of the browser up to 500px
+    options.extraWidth: Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
+    options.megaWidth : Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
+    options.maxWidth  : If true the width of the modal will always be 100% minus some margin
+    options.fullWidth : If true the width of the modal will always be 100%
+    options.fullScreen: If true the modal will fill the hole screen without border. width = height = 100%
 
     options.width     : Set if different from 300
 
@@ -4261,14 +4259,15 @@ jquery-bootstrap-modal-promise.js
 
     function getWidthFromOptions( options ){
         return {
-            flexWidth : !!options.flexWidth,
-            extraWidth: !!options.extraWidth,
-            megaWidth : !!options.megaWidth,
-            maxWidth  : !!options.maxWidth,
-            fullScreen: !!options.fullScreen,
-            width     : options.width ?
-                        ( (typeof options.width == 'number') ? options.width+'px' : options.width)
-                        : null
+            flexWidth   : !!options.flexWidth,
+            extraWidth  : !!options.extraWidth,
+            megaWidth   : !!options.megaWidth,
+            maxWidth    : !!options.maxWidth,
+            fullWidth   : !!options.fullWidth,
+            fullScreen  : !!options.fullScreen,
+            width       : options.width ?
+                            ( (typeof options.width == 'number') ? options.width+'px' : options.width)
+                            : null
         };
     }
 
@@ -5007,11 +5006,12 @@ jquery-bootstrap-modal-promise.js
 
         //Set width
         $modalDialog
-            .toggleClass('modal-flex-width',  cssWidth.flexWidth  )
-            .toggleClass('modal-extra-width', cssWidth.extraWidth )
-            .toggleClass('modal-mega-width',  cssWidth.megaWidth  )
-            .toggleClass('modal-max-width',   cssWidth.maxWidth   )
-            .toggleClass('modal-full-screen', cssWidth.fullScreen )
+            .toggleClass('modal-flex-width'         , cssWidth.flexWidth         )
+            .toggleClass('modal-extra-width'        , cssWidth.extraWidth        )
+            .toggleClass('modal-mega-width'         , cssWidth.megaWidth         )
+            .toggleClass('modal-max-width'          , cssWidth.maxWidth          )
+            .toggleClass('modal-full-width'         , cssWidth.fullWidth         )
+            .toggleClass('modal-full-screen'        , cssWidth.fullScreen        )
             .css('width', cssWidth.width ? cssWidth.width : '' );
 
         //Call onChange (if any)
@@ -5145,30 +5145,19 @@ jquery-bootstrap-modal-promise.js
                 show       : true
             });
 
-        /*
-        options.flexWidth :  If true the width of the modal will adjust to the width of the browser up to 500px
-        options.extraWidth:  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
-        options.megaWidth :  Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
-        options.maxWidth  :  If true the width of the modal will always be 100% minus some margin
-        options.fullScreen:  If true the modal will fill the hole screen without border. width = height = 100%
-        */
-
-        //If options.flexWidth (and perhaps extraWith or MegaWidth) and not already maxWidth or fullScreen => check if the modal should be maxWidth
-        if (options.flexWidth && !options.maxWidth && !options.fullScreen)
-            if ($.MODEL_HAS_MAX_WIDTH(options, this))
-                options.maxWidth = true;
-
-        //If options.flexWidth (and perhaps extraWith or MegaWidth or maxWidth) and not already fullScreen => check if the modal should be fullScreen
-        if (options.flexWidth && !options.fullScreen)
-            if ($.MODEL_HAS_FULLSCREEN_WIDTH(options, this))
-                options.fullScreen = true;
-
+        //Adjust options by MODEL_ADJUST_OPTIONS
+        options = $.MODEL_ADJUST_OPTIONS(options, this);
 
         //Set default removeOnClose
         if ( (options.defaultRemoveOnClose || options.defaultRemove) &&
              (options.remove === undefined) &&
              (options.removeOnClose === undefined) )
             options.remove = !!options.defaultRemoveOnClose || !!options.defaultRemove;
+
+        //Set options for full width
+        if (options.fullWidth){
+            options.relativeHeightOffset = 0;
+        }
 
         //Set options for full screen
         if (options.fullScreen){
