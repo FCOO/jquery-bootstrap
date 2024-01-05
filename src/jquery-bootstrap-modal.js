@@ -170,7 +170,7 @@
     options.maxWidth  : If true the width of the modal will always be 100% minus some margin
     options.fullWidth : If true the width of the modal will always be 100%
     options.fullScreen: If true the modal will fill the hole screen without border. width = height = 100%
-
+    options.fullScreenWithBorder: As fullScreen but with borders
     options.width     : Set if different from 300
 
     ******************************************************/
