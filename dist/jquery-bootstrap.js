@@ -4178,16 +4178,19 @@ jquery-bootstrap-modal-promise.js
     In some cases an application need to adjust the default modal-options
     given by an external packages. Eg. on mobil devices - it is better to have
     modal width = max-width or full screen
-    To allow this a global function is defined and called to
+    To allow this a global function and variable are defined and called/checked to
     allow modifications of the modal-options
 
     $.MODEL_ADJUST_OPTIONS = function(modalOptions, modal) return modal-options
+
+    $.MODEL_NO_VERTICAL_MARGIN = false  If true all modal have vertical margin = 0
 
     By default it return the original options but they can be overwriten by applications/packages
     **********************************************************/
     $.MODEL_ADJUST_OPTIONS = function(modalOptions/*, modal*/){
         return modalOptions;
     };
+    $.MODEL_NO_VERTICAL_MARGIN = false;
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
@@ -5158,11 +5161,6 @@ jquery-bootstrap-modal-promise.js
              (options.removeOnClose === undefined) )
             options.remove = !!options.defaultRemoveOnClose || !!options.defaultRemove;
 
-        //Set options for full width
-        if (options.fullWidth){
-            options.relativeHeightOffset = 0;
-        }
-
         //Set options for full screen with border
         if (options.fullScreenWithBorder)
             options.fullScreen = true;
@@ -5174,6 +5172,9 @@ jquery-bootstrap-modal-promise.js
             options.relativeHeightOffset = 0;
         }
 
+        //Check $.MODEL_NO_VERTICAL_MARGIN
+        if ($.MODEL_NO_VERTICAL_MARGIN)
+            options.relativeHeightOffset = 0;
 
         //Create the modal
         $result =
