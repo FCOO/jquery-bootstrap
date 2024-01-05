@@ -104,16 +104,16 @@
     To allow this a global function and variable are defined and called/checked to
     allow modifications of the modal-options
 
-    $.MODEL_ADJUST_OPTIONS = function(modalOptions, modal) return modal-options
+    $.MODAL_ADJUST_OPTIONS = function(modalOptions, modal) return modal-options
 
-    $.MODEL_NO_VERTICAL_MARGIN = false  If true all modal have vertical margin = 0
+    $.MODAL_NO_VERTICAL_MARGIN = false  If true all modal have vertical margin = 0
 
     By default it return the original options but they can be overwriten by applications/packages
     **********************************************************/
-    $.MODEL_ADJUST_OPTIONS = function(modalOptions/*, modal*/){
+    $.MODAL_ADJUST_OPTIONS = function(modalOptions/*, modal*/){
         return modalOptions;
     };
-    $.MODEL_NO_VERTICAL_MARGIN = false;
+    $.MODAL_NO_VERTICAL_MARGIN = false;
 
     /**********************************************************
     MAX-HEIGHT ISSUES ON SAFARI (AND OTHER BROWSER ON IOS)
@@ -1076,7 +1076,7 @@
             });
 
         //Adjust options by MODEL_ADJUST_OPTIONS
-        options = $.MODEL_ADJUST_OPTIONS(options, this);
+        options = $.MODAL_ADJUST_OPTIONS(options, this);
 
         //Set default removeOnClose
         if ( (options.defaultRemoveOnClose || options.defaultRemove) &&
@@ -1095,9 +1095,13 @@
             options.relativeHeightOffset = 0;
         }
 
-        //Check $.MODEL_NO_VERTICAL_MARGIN
-        if ($.MODEL_NO_VERTICAL_MARGIN)
+        //Check $.MODAL_NO_VERTICAL_MARGIN
+        if ($.MODAL_NO_VERTICAL_MARGIN){
             options.relativeHeightOffset = 0;
+            if (options.extended)
+                options.extended.relativeHeightOffset = 0;
+        }
+
 
         //Create the modal
         $result =
