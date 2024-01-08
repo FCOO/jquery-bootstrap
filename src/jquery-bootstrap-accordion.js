@@ -110,7 +110,6 @@
             $._bsAdjustOptions( options, {}, {
                 baseClass   : 'accordion',
                 styleClass  : '',
-                class       : '',
                 content     : ''
             });
 
