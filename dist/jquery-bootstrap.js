@@ -1065,6 +1065,8 @@
                         .addClass('accordion-body')
                         .toggleClass('no-vertical-padding', !!opt.noVerticalPadding)
                         .toggleClass('no-horizontal-padding', !!opt.noHorizontalPadding)
+                        .addClass(opt.class || '')
+                        .addClass(opt.className || '')
                         .appendTo( $outer );
 
             //Add footer
