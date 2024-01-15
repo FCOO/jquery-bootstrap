@@ -6617,13 +6617,15 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         },
 
         defaultColunmOptions = {
-            align        : 'left',
-            verticalAlign: 'middle',
-            noWrap       : false,
-            truncate     : false,
-            fixedWidth   : false,
-            sortBy       : 'string',
-            sortable     : false
+            align               : 'left',
+            verticalAlign       : 'middle',
+            noWrap              : false,
+            truncate            : false,
+            fixedWidth          : false,
+            sortBy              : 'string',
+            sortable            : false,
+            noHorizontalPadding : false,
+            noVerticalPadding   : false
         },
 
         dataTableId = 'bsTable_options';
@@ -6636,7 +6638,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             ._bsAddStyleClasses( columnOptions.align )
             .toggleClass('text-nowrap', !!columnOptions.noWrap )
 //TODO            .toggleClass('text-truncate', !!columnOptions.truncate )
-            .toggleClass('px-0', !!columnOptions.noHorizontalPadding );
+            .toggleClass('px-0', !!columnOptions.noHorizontalPadding )
+            .toggleClass('py-0', !!columnOptions.noVerticalPadding );
 
         if (addWidth && columnOptions.width)
             $element.css({
