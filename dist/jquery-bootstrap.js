@@ -1167,7 +1167,8 @@
                 noBorder            : 'no-border',
                 focus               : 'init_focus',
                 truncate            : 'text-truncate',
-                fullWidth           : 'w-100'
+                fullWidth           : 'w-100',
+                fullHeight          : 'h-100',
             };
 
         //Use standard color if not primary or transparent (any kind)
