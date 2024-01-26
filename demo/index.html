@@ -386,7 +386,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             buttons: [
                 {id:'very_slow', icon: 'fa-bicycle',        text: 'Bicycle', onClick: function(id, selected ){console.log('1: bsButtonGroup', id, selected)} },
                 {id:'medium',    icon: 'fa-car',            text: 'Car'},
-                {                icon: 'fa-fighter-jet',    text: 'Fighter Jet', _color:'danger'},
+                {id:'fast',      icon: 'fa-fighter-jet',    text: 'Fighter Jet', _color:'danger', class:'min-width-10em'},
             ]
         }).appendTo( $body );
 
