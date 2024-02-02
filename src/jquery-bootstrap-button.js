@@ -482,7 +482,7 @@
                 center      : true,
                 useTouchSize: true,
                 buttonOptions: {
-                    _class: 'flex-shrink-1 text-truncate ' + (options.buttonFullWidth ? '' : '')
+                    _class: 'flex-shrink-1 text-truncate ' + (options.buttonFullWidth ? 'flex-grow-1' : '')
                 }
             } );
 
