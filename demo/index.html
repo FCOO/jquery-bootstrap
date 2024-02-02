@@ -378,6 +378,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 
 
         header('Button bars');
+        
         $.bsButtonBar({
             //small: true,
             //square: true,
@@ -390,6 +391,19 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             ]
         }).appendTo( $body );
 
+        $.bsButtonBar({
+            small: true,
+            buttonFullWidth: true,
+            //square: true,
+            
+            justify: 'evenly',                
+            inclHeader: true,
+            buttons: [
+                {id:'very_slow', icon: 'fa-bicycle',        text: 'Bicycle', onClick: function(id, selected ){console.log('1: bsButtonGroup', id, selected)} },
+                {id:'medium',    icon: 'fa-car',            text: 'Car'},
+                {id:'fast',      icon: 'fa-fighter-jet',    text: 'Fighter Jet', _color:'danger', class:'min-width-10em'},
+            ]
+        }).appendTo( $body );
 
 
         header('Button groups');

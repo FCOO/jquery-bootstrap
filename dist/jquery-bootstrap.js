@@ -1616,7 +1616,7 @@
                 center      : true,
                 useTouchSize: true,
                 buttonOptions: {
-                    _class: 'flex-shrink-1 text-truncate'
+                    _class: 'flex-shrink-1 text-truncate ' + (options.buttonFullWidth ? '' : '')
                 }
             } );
 
