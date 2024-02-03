@@ -1239,6 +1239,9 @@
         if (options.prop)
             result.prop( options.prop );
 
+        if (options.css)
+            result.css( options.css );
+
         result.data('bsButton_options', options );
 
         if (options.addOnClick && options.onClick)
@@ -1616,7 +1619,8 @@
                 center      : true,
                 useTouchSize: true,
                 buttonOptions: {
-                    _class: 'flex-shrink-1 text-truncate ' + (options.buttonFullWidth ? 'flex-grow-1' : '')
+                    css: {'flex': options.buttonFullWidth ? '1 1 0' : '0 1 auto'},
+                    _class: 'text-truncate'
                 }
             } );
 
