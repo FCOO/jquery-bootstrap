@@ -500,7 +500,6 @@
         if (!options.content || (options.content === {}))
             $modalBody.addClass('modal-body-no-content');
 
-
         var $modalContent = parts.$content =
                 hasScroll ?
                     $modalBody
@@ -617,26 +616,28 @@
         //Set bsModal.cssWidth
         this.bsModal.cssWidth[MODAL_SIZE_NORMAL] = getWidthFromOptions( options );
 
-        if (options.minimized)
-            this.bsModal.cssWidth[MODAL_SIZE_MINIMIZED] = getWidthFromOptions(options.minimized);
 
-        if (options.extended){
-            //If options.extended.width == true or none width-options is set in extended => use same width as normal-mode
-            if ( (options.extended.width == true) ||
-                 ( (options.extended.flexWidth == undefined) &&
-                   (options.extended.extraWidth == undefined) &&
-                   (options.extended.megaWidth == undefined) &&
-                   (options.extended.maxWidth == undefined) &&
-                   (options.extended.fullWidth == undefined) &&
-                   (options.extended.fullScreen == undefined) &&
-                   (options.extended.fullScreenWithBorder == undefined) &&
-                   (options.extended.width == undefined)
-                 )
-              )
-                this.bsModal.cssWidth[MODAL_SIZE_EXTENDED] = this.bsModal.cssWidth[MODAL_SIZE_NORMAL];
-            else
-                this.bsModal.cssWidth[MODAL_SIZE_EXTENDED] = getWidthFromOptions( options.extended );
+        function useNormalWidth(options = {}){
+            return (options.width == true) ||
+                    (   (options.flexWidth == undefined) &&
+                        (options.extraWidth == undefined) &&
+                        (options.megaWidth == undefined) &&
+                        (options.maxWidth == undefined) &&
+                        (options.fullWidth == undefined) &&
+                        (options.fullScreen == undefined) &&
+                        (options.fullScreenWithBorder == undefined) &&
+                        (options.width == undefined)
+                    );
         }
+
+        if (options.minimized)
+            //If options.minimized.width == true or none width-options is set in extended => use same width as normal-mode
+            this.bsModal.cssWidth[MODAL_SIZE_MINIMIZED] = useNormalWidth(options.minimized) ? this.bsModal.cssWidth[MODAL_SIZE_NORMAL] : getWidthFromOptions( options.minimized );
+
+        if (options.extended)
+            //If options.extended.width == true or none width-options is set in extended => use same width as normal-mode
+            this.bsModal.cssWidth[MODAL_SIZE_EXTENDED] = useNormalWidth(options.extended) ? this.bsModal.cssWidth[MODAL_SIZE_NORMAL] : this.bsModal.cssWidth[MODAL_SIZE_EXTENDED] = getWidthFromOptions( options.extended );
+
 
         var $modalContent = this.bsModal.$modalContent =
                 $('<div/>')
@@ -987,7 +988,6 @@
         this._bsModalSetSizeClass(size);
         this._bsModalSetHeightAndWidth();
 
-
         /*
         NOTE: 2021-04-16
         Original this methods returns false to prevent onclick-event on the header.
@@ -1102,6 +1102,19 @@
                 options.extended.relativeHeightOffset = 0;
         }
 
+        //Set options for a modal inside a container
+        if (options.$container){
+            options.show      = true;
+            options.fullWidth = !options.width;
+            if (options.minimized){
+                options.minimized.fullWidth = !options.minimized.width;
+            }
+            if (options.extended){
+                options.extended.fullWidth = !options.extended.width;
+                options.extended.height = options.extended.height || true;
+            }
+        }
+
 
         //Create the modal
         $result =
@@ -1160,17 +1173,24 @@
             $result.getHeaderIcon('forward').css('visibility', 'hidden');
         }
 
-        $result.on({
-            'show.bs.modal'  : $.proxy(show_bs_modal, $result),//show_bs_modal,
-            'shown.bs.modal' : shown_bs_modal,
-            'hide.bs.modal'  : $.proxy(hide_bs_modal, $result),
-            'hidden.bs.modal': hidden_bs_modal
-        });
+        if (options.$container){
+            $result.addClass('show');
+            $result.appendTo( options.$container );
+            options.$container.addClass('modal-fixed-container');
+        }
+        else {
+            $result.on({
+                'show.bs.modal'  : show_bs_modal.bind($result),
+                'shown.bs.modal' : shown_bs_modal,
+                'hide.bs.modal'  : hide_bs_modal.bind($result),
+                'hidden.bs.modal': hidden_bs_modal
+            });
+            $result.appendTo( $('body') );
+            if (options.show)
+                $result.show();
+        }
 
-        $result.appendTo( $('body') );
 
-        if (options.show)
-            $result.show();
         return $result;
     };
 

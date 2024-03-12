@@ -2104,7 +2104,7 @@ clickable: true,
             closeButton: false,
             _noHeader: true,
             header:{
-                text: {da:'Modal med modal',en:'"Modal with modal'},
+                text: {da:'Modal med modal',en:'Modal with modal'},
             },
             show: false,
             minimized: {
@@ -2138,6 +2138,97 @@ clickable: true,
             .appendTo( $body)
             .on('click', function(){ modal_in_modal.show(); });
 
+        //************************************************************************************
+        var $fixedModalContainer = $('<div/>')
+                .css({
+                    'position': 'fixed',
+                    'z-index': 30000,
+                    'top': '100px',
+                    'left': '20px',
+                    'width': '500px',
+                    'max-height': '227px',
+                    'background-color': 'gray',
+                    'padding': '10px',
+                    'display': 'none'
+                })                    
+                .appendTo( $body);
+
+        var modal_fixed = $.bsModal({
+            closeButton: false,
+            _noHeader: true,
+            header:{
+                text: {da:'Fixed Modal #1 = max width = 480px'},
+            },
+            minimized: {
+                content: 'Minimized w=300px',
+                width: 300
+            },
+            //noVerticalPadding   : true,
+            //noHorizontalPadding : true,
+
+            content: 'Content<br>width = 400',
+            extended: {
+                content: 'Extended<br>full-width<br>extended 2<br>extended 3<br>extended 4<br>extended 5<br>extended 6<br>extended 7<br>extended 9<br>extended 9',
+                fullWidth: true,
+                footer: true
+            },
+            footer: 'FOOTER',            
+
+            width: 400,
+            maxHeight : 207,
+            $container: $fixedModalContainer,
+            noCloseIconOnHeader: true
+
+        });
+        $('<button>Fixed modal #1</button>')
+            .appendTo( $body)
+            .on('click', function(){ $fixedModalContainer.toggle() });
+      
+        //************************************************************************************
+        var $fixedModalContainer2 = $('<div/>')
+                .css({
+                    'position': 'fixed',
+                    'z-index': 30000,
+                    'top': '100px',
+                    'right': '20px',
+                    'max-height': '227px',
+                    'background-color': 'gray',
+                    'padding': '10px',
+                    'display': 'none'
+                })                    
+                .appendTo( $body);
+
+        var modal_fixed2 = $.bsModal({
+            closeButton: false,
+            _noHeader: true,
+            header:{
+                text: {da:'Fixed Modal #2 = flexiable width'},
+            },
+            minimized: {
+                content: 'Minimized w=200px',
+                width: 200
+            },
+            //noVerticalPadding   : true,
+            //noHorizontalPadding : true,
+
+            content: 'Content<br>width = 400',
+            extended: {
+                content: 'Extended<br>width = 600<br>extended 2<br>extended 3<br>extended 4<br>extended 5<br>extended 6<br>extended 7<br>extended 9<br>extended 9',
+                width: 600,
+                footer: true
+            },
+            footer: 'FOOTER',            
+
+            width: 400,
+            maxHeight : 207,
+            $container: $fixedModalContainer2,
+            noCloseIconOnHeader: true
+
+        });
+        $('<button>Fixed modal #2</button>')
+            .appendTo( $body)
+            .on('click', function(){ $fixedModalContainer2.toggle() });
+        //************************************************************************************
         var carouselModal;
         $('<button>Carousel in modal</button>')
             .appendTo( $body)

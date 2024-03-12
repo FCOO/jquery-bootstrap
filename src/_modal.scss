@@ -357,3 +357,19 @@ div.modal-dialog {
         }
     }
 }
+
+
+
+/****************************************************
+Adjustmernts when the modal is inside a fixed container
+****************************************************/
+.modal-fixed-container {
+    .modal {
+        display: block;
+        position: relative;
+
+        .modal-dialog {
+            height: auto !important;
+        }
+    }
+}
