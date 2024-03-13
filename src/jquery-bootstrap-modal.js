@@ -1107,9 +1107,11 @@
             options.show      = true;
             options.fullWidth = !options.width;
             if (options.minimized){
+                options.minimized.width = options.minimized.width || options.width;
                 options.minimized.fullWidth = !options.minimized.width;
             }
             if (options.extended){
+                options.extended.width = options.extended.width || options.width;
                 options.extended.fullWidth = !options.extended.width;
                 options.extended.height = options.extended.height || true;
             }
