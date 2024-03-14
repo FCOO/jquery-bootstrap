@@ -13916,6 +13916,16 @@ Adjustmernts when the modal is inside a fixed container
   height: auto !important;
 }
 
+/****************************************************
+Common styles to be used when a modal is being dragged
+****************************************************/
+.modal.modal-dragging, .modal-dragging .modal {
+  --jb-header-color: white;
+  --jb-header-bg: #0d6efd;
+  border-radius: calc(0.5 * var(--bs-modal-border-radius));
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
 /************************************************************
 MODAL-BACKDROP
 

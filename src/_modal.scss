@@ -358,8 +358,6 @@ div.modal-dialog {
     }
 }
 
-
-
 /****************************************************
 Adjustmernts when the modal is inside a fixed container
 ****************************************************/
@@ -373,3 +371,18 @@ Adjustmernts when the modal is inside a fixed container
         }
     }
 }
+
+
+/****************************************************
+Common styles to be used when a modal is being dragged
+****************************************************/
+.modal.modal-dragging, .modal-dragging .modal {
+
+    --jb-header-color: white;
+    --jb-header-bg: #{$dropdown-link-active-bg};
+
+    border-radius: calc(.5 * var(--bs-modal-border-radius) );
+    box-shadow   : $input-focus-box-shadow;
+}
+
+

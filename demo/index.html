@@ -2228,6 +2228,39 @@ clickable: true,
         $('<button>Fixed modal #2</button>')
             .appendTo( $body)
             .on('click', function(){ $fixedModalContainer2.toggle() });
+
+        
+        //************************************************************************************
+        var $fixedModalContainer3 = $('<div/>')
+                .css({
+                    'position': 'fixed',
+                    'z-index': 30000,
+                    'top': '0px',
+                    'right': '20px',
+                    'max-height': '227px',
+                    'background-color': 'lightgray',
+                    'padding': '10px',
+                    'display': 'none'
+                })
+                .addClass('modal-dragging')
+                .appendTo( $body);
+
+        var modal_fixed3 = $.bsModal({
+            closeButton: false,
+            header:{text: {da:'Fixed Modal #3 = dragging'} },
+            content: 'Content<br>Dragging-mode',
+            //footer: 'FOOTER',            
+
+            width: 260,
+            maxHeight : 207,
+            $container: $fixedModalContainer3,
+            noCloseIconOnHeader: true
+
+        });
+        $('<button>Fixed modal #3</button>')
+            .appendTo( $body)
+            .on('click', function(){ $fixedModalContainer3.toggle() });
+
         //************************************************************************************
         var carouselModal;
         $('<button>Carousel in modal</button>')
