@@ -2262,6 +2262,35 @@ clickable: true,
             .on('click', function(){ $fixedModalContainer3.toggle() });
 
         //************************************************************************************
+        var modal_minimized_with_heade_and_footer = $.bsModal({
+            header:{text: {da:'Minimized with header and footer'} },
+
+            fixedContent: 'Fixed content',
+            minimized: {
+                showHeader: true,
+                content: 'Minimized',
+                fixed: true,
+                footer: true,
+            },                
+            content: 'Content<br>content',
+            extended: {
+                fixed: true,
+                content: 'Extended<br>extended<br>extended<br>extended<br>extended<br>extended',
+                footer: true
+            },                
+            footer: 'FOOTER',            
+
+            width: 260,
+            maxHeight : 207,
+            show: false
+        });
+        $('<button>Minimized with header and footer</button>')
+            .appendTo( $body)
+            .on('click', function(){ modal_minimized_with_heade_and_footer.show() });
+
+        
+        
+        //************************************************************************************
         var carouselModal;
         $('<button>Carousel in modal</button>')
             .appendTo( $body)

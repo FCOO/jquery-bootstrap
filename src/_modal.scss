@@ -222,10 +222,18 @@ div.modal-dialog {
             border-top: none;
         }
 
-        //Special header version for minimized modal windows
+        /*
+        Special header version for minimized modal windows
+        There are tree modes for minimized-content:
+            normal: Only show icons
+            hide  : nothing class=modal-minimized-hide-header
+            full  : both text and icons class=modal-minimized-full-header
+        */
         &.modal-minimized {
-            &.modal-minimized-hide-header .modal-header { display: none; }
-            .modal-header {
+            &.modal-minimized-hide-header .modal-header {
+                display: none;
+            }
+            &:not(.modal-minimized-full-header) .modal-header {
                 .header-icon-container {
                     //Allow wrap of icons and let icons fill hole header
                     flex-wrap: wrap;

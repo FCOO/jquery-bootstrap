@@ -13649,6 +13649,13 @@ div.modal-dialog.modal-flex-width .modal-content .modal-body > .jquery-scroll-co
 div.modal-dialog .modal-content {
   word-break: break-word;
   word-wrap: break-word;
+  /*
+  Special header version for minimized modal windows
+  There are tree modes for minimized-content:
+      normal: Only show icons
+      hide  : nothing class=modal-minimized-hide-header
+      full  : both text and icons class=modal-minimized-full-header
+  */
 }
 div.modal-dialog .modal-content.no-shadow {
   box-shadow: none;
@@ -13827,17 +13834,17 @@ div.modal-dialog .modal-content:not(.modal-extended) .modal-body.hide-for-modal-
 div.modal-dialog .modal-content.modal-minimized.modal-minimized-hide-header .modal-header {
   display: none;
 }
-div.modal-dialog .modal-content.modal-minimized .modal-header .header-icon-container {
+div.modal-dialog .modal-content.modal-minimized:not(.modal-minimized-full-header) .modal-header .header-icon-container {
   flex-wrap: wrap;
   flex-shrink: initial;
   flex-grow: 1;
   margin-top: -0.2em;
 }
-div.modal-dialog .modal-content.modal-minimized .modal-header .header-icon-container > * {
+div.modal-dialog .modal-content.modal-minimized:not(.modal-minimized-full-header) .modal-header .header-icon-container > * {
   margin-top: 0.2em;
   margin-left: 0;
 }
-div.modal-dialog .modal-content.modal-minimized .modal-header > :not(.header-icon-container) {
+div.modal-dialog .modal-content.modal-minimized:not(.modal-minimized-full-header) .modal-header > :not(.header-icon-container) {
   display: none;
 }
 div.modal-dialog .modal-content .modal-body-fixed {

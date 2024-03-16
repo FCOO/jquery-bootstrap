@@ -4138,15 +4138,16 @@ jquery-bootstrap-modal-promise.js
         minimized,
         extended: {
             type
+            showHeader (only minimized) if true the header is also shown in minimized-mode
             showHeaderOnClick (only minimized)
-            fixedContent
+            fixedContent, fixed: content or true. If true the content is equal to normal or extended/minimized
             noVerticalPadding
             noHorizontalPadding
             alwaysMaxHeight
             content
             verticalButtons: BOOLEAN, default = options.verticalButtons, if true the buttons are vertical stacked and has width = 100%. If false and options.verticalButtons = true only normal gets vertival buttons
             scroll: boolean | 'vertical' | 'horizontal'
-            footer
+            footer: content or true. If true the content is equal to normal or extended/minimized
         }
         isExtended: boolean
         footer
@@ -4394,9 +4395,9 @@ jquery-bootstrap-modal-promise.js
         //If options.extended.fixedContent == true and/or options.extended.footer == true => normal and extended uses same fixed and/or footer content
         if (options.extended) {
             //If common fixed content => add it as normal fixed content
-            if ((options.fixedContent === true) || (options.extended.fixedContent === true)) {
+            if ((options.fixedContent === true) || (options.extended.fixedContent === true) || (options.extended.fixed === true)) {
                 options.fixedContent = options.fixedContent === true ? options.extended.fixedContent : options.fixedContent;
-                options.extended.fixedContent = options.extended.fixedContent === true ? options.fixedContent : options.extended.fixedContent;
+                options.extended.fixedContent = ((options.extended.fixedContent === true) || (options.extended.fixed === true)) ? options.fixedContent : options.extended.fixedContent;
             }
 
             //If common footer content => add it as extended footer content
@@ -4404,6 +4405,15 @@ jquery-bootstrap-modal-promise.js
                 options.footer = options.footer === true ? options.extended.footer : options.footer;
                 options.extended.footer = options.extended.footer === true ? options.footer : options.extended.footer;
             }
+        }
+
+        //If options.minimized.fixedContent/fixed == true and/or options.minimized.footer == true => normal and minimized uses same fixed and/or footer content
+        if (options.minimized){
+            if ((options.minimized.fixedContent === true) || (options.minimized.fixed === true))
+                options.minimized.fixedContent = options.fixedContent;
+
+            if (options.minimized.footer === true)
+                options.minimized.footer = options.footer;
         }
     }
 
@@ -4852,6 +4862,12 @@ jquery-bootstrap-modal-promise.js
         //Create minimized content
         if (options.minimized){
             this.bsModal.minimized = {};
+
+            if (options.minimized.showHeader){
+                $modalContent.addClass('modal-minimized-full-header');
+                options.minimized.showHeaderOnClick = false;
+            }
+            else {
                 $modalContent.addClass('modal-minimized-hide-header');
                 var bsModalToggleMinimizedHeader = $.proxy(this._bsModalToggleMinimizedHeader, this);
                 options.minimized.onClick =
@@ -4859,9 +4875,10 @@ jquery-bootstrap-modal-promise.js
                         bsModalToggleMinimizedHeader :
                         modalExtend;
 
-            //Close header when a icon is clicked
-            if (options.minimized.showHeaderOnClick)
-                this.bsModal.$header.on('click', bsModalToggleMinimizedHeader);
+                //Close header when a icon is clicked
+                if (options.minimized.showHeaderOnClick)
+                    this.bsModal.$header.on('click', bsModalToggleMinimizedHeader);
+            }
 
             $modalContent._bsModalBodyAndFooter( MODAL_SIZE_MINIMIZED/*'minimized'*/, options.minimized, this.bsModal.minimized, '', initSize, parentOptions );
 
@@ -4873,6 +4890,7 @@ jquery-bootstrap-modal-promise.js
 
                 this.bsModal.cssHeight[MODAL_SIZE_MINIMIZED] = null;
             }
+
         }
 
         //Create normal content
