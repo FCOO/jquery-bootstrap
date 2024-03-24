@@ -200,6 +200,13 @@ div.modal-dialog {
         }
 
         .modal-body {
+
+            --inner-height    : auto;
+            --inner-max-height: none;
+
+            height    : var(--inner-height);
+            max-height: var(--inner-max-height);
+
             //Adjust default style inside a modal-body
             p { margin: 0; }
             ol, ul, dl { margin: 0; padding-left: 2em;}
@@ -213,7 +220,7 @@ div.modal-dialog {
             &.modal-body-always-max-height {
                 display       : flex;
                 flex-direction: column;
-                height        : fit-content;
+                --inner-height: fit-content;    //Instead of height: fit-content;
             }
          }
 

@@ -2191,7 +2191,7 @@ clickable: true,
                     'z-index': 30000,
                     'top': '100px',
                     'right': '20px',
-                    'max-height': '227px',
+                    '_max-height': '227px',
                     'background-color': 'gray',
                     'padding': '10px',
                     'display': 'none'
@@ -2215,12 +2215,13 @@ clickable: true,
             extended: {
                 content: 'Extended<br>width = 600<br>extended 2<br>extended 3<br>extended 4<br>extended 5<br>extended 6<br>extended 7<br>extended 9<br>extended 9',
                 width: 600,
+                innerMaxHeight: 200,
                 footer: true
             },
             footer: 'FOOTER',            
 
             width: 400,
-            maxHeight : 207,
+            _maxHeight : 507,
             $container: $fixedModalContainer2,
             noCloseIconOnHeader: true
 
@@ -2249,6 +2250,7 @@ clickable: true,
             closeButton: false,
             header:{text: {da:'Fixed Modal #3 = dragging'} },
             content: 'Content<br>Dragging-mode',
+            innerHeight: 100,
             //footer: 'FOOTER',            
 
             width: 260,

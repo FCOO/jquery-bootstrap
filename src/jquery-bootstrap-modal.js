@@ -40,6 +40,9 @@
         alwaysMaxHeight: BOOLEAN - If true the modal is always the full height of it parent
 
 
+        innerHeight     : The fixed height of the content
+        innerMaxHeight  : The fixed max-height of the content
+
         flexWidth
         extraWidth
         megaWidth
@@ -61,6 +64,8 @@
             noVerticalPadding
             noHorizontalPadding
             alwaysMaxHeight
+            innerHeight
+            innerMaxHeight
             content
             verticalButtons: BOOLEAN, default = options.verticalButtons, if true the buttons are vertical stacked and has width = 100%. If false and options.verticalButtons = true only normal gets vertival buttons
             scroll: boolean | 'vertical' | 'horizontal'
@@ -506,6 +511,13 @@
                     .addClass( getAlertClass(options) )
                     .addClass(options.className || '')
                     .appendTo( this );
+
+        if (options.innerHeight)
+            $modalBody.css('--inner-height',     typeof options.innerHeight == 'number'    ? options.innerHeight + 'px'    : options.innerHeight    );
+        if (options.innerMaxHeight)
+            $modalBody.css('--inner-max-height', typeof options.innerMaxHeight == 'number' ? options.innerMaxHeight + 'px' : options.innerMaxHeight );
+
+
 
         if (!options.content || (options.content === {}))
             $modalBody.addClass('modal-body-no-content');
