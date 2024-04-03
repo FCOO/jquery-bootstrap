@@ -64,7 +64,7 @@
     }
 
     :root {
-        --jb-header-bg: red;
+        --jb-header-bg: lightgray;
         --jb-inner-header-bg: pink;
 
     }
@@ -150,6 +150,8 @@ $('body').on('wheel', function(e){
         i18next.changeLanguage('da');
         i18next.options.fallbackLng = i18next.language == 'da' ? 'en' : 'da';
         i18next.languages = ['da', 'en'];
+
+        $.BSMODAL_USE_SQUARE_ICONS = true;
 
         $.valueFormat.add({
             id: 'myNumberFormat',
@@ -1986,6 +1988,16 @@ width: 543,
             semiTransparent: true,
             header:{icon: 'fa-home', text:'Semi-transparent'},
             content: {da: 'Dette er en semi-transparent modal'},
+            closeButton: false,
+            minimized: {
+                content: 'Mini',
+                semiTransparent: true,
+                
+            },                
+            extended: {
+                content: 'Extended<br>1<br>2<br>3<br>4<br>5<br>6',
+                semiTransparent: true,
+            },                
             show: false,
         });
 
@@ -2027,7 +2039,7 @@ width: 543,
 
             icons: {
                 back    : {onClick: function(){ console.log('BACK: DONT close header'); return false}},
-                forward : {onClick: function(){ console.log('FORWARD: DONT close header'); return false}}
+                forward : function(){ console.log('FORWARD: DONT close header'); return false}
             },
 
             closeButton: false,
@@ -2040,11 +2052,10 @@ width: 543,
                     {da:', indhold med en meget meget meget meget lang overskrift, men det er kun denne her del, der skrumper',en:'"'}
                 ]/*
             }*/,
-            buttons: [
-                {icon: 'fa-home', text: 'Davs'}
-            ],
+            buttons: [{icon: 'fa-home', text: 'Davs'}],
+            footer: 'Footer',
             show: false,
-            width: 320,
+            width: 380,
             _content: 'max-height=300<br>Her kommer der nogle laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaange ord<br>SLUT',
             dynamic: true,
             content: function($body){
@@ -2078,6 +2089,7 @@ width: 543,
                 _flexHeight: true,
                 scroll: true,
                 flexWidth: true,
+footer: true,
 buttons: false,
 clickable: true,
                 dynamic: true,
@@ -2170,8 +2182,11 @@ clickable: true,
             extended: {
                 content: 'Extended<br>full-width<br>extended 2<br>extended 3<br>extended 4<br>extended 5<br>extended 6<br>extended 7<br>extended 9<br>extended 9',
                 fullWidth: true,
+                buttons: false, 
                 footer: true
             },
+            buttons: [{icon: 'fa-home', text: 'Davs'}],
+            
             footer: 'FOOTER',            
 
             width: 400,
@@ -2191,7 +2206,6 @@ clickable: true,
                     'z-index': 30000,
                     'top': '100px',
                     'right': '20px',
-                    '_max-height': '227px',
                     'background-color': 'gray',
                     'padding': '10px',
                     'display': 'none'
@@ -2351,7 +2365,6 @@ clickable: true,
                     footer: {text: 'footer='+number()},
 
                     minimized: {
-showHeaderOnClick: true,
                         fixedContent: {text: 'minimized fixed='+number()},
                         content: {text: 'minimized content='+number()},
                         footer: {text: 'minimized footer='+number()},
@@ -2551,6 +2564,9 @@ type: 'checkbox',
                 ],
         small    : true,
         vertical : true,
+icons: {
+    new: {onClick: function(){ console.log('Hmmm'); }}
+},    
         border   : true,
         fullWidth: true
     }).appendTo($body);

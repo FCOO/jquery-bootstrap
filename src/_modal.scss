@@ -136,6 +136,8 @@ div.modal-dialog {
         word-break: break-word;
         word-wrap : break-word;
 
+        overflow: hidden;
+
         //No shadow mode
         &.no-shadow {
             box-shadow: none;
@@ -200,7 +202,6 @@ div.modal-dialog {
         }
 
         .modal-body {
-
             --inner-height    : auto;
             --inner-max-height: none;
 
@@ -321,12 +322,13 @@ div.modal-dialog {
     } //end of .modal-content
 
     //Semi-transparent background when options.semiTransparent is set
-    //To have correct hover-effect on modal-body the bg of modal-content is set to none and the bg of modal-body and modal-footer is set
     .modal-content {
         &.modal-minimized.modal-minimized-semi-transparent,
         &.modal-normal.modal-normal-semi-transparent,
         &.modal-extended.modal-extended-semi-transparent {
-            background: none;
+            background: red;//none;
+//background: $modal-content-bg-semi-transparent;
+
             .modal-body, .modal-body-fixed, .modal-footer {
                 background: $modal-content-bg-semi-transparent;
             }
@@ -335,7 +337,7 @@ div.modal-dialog {
 
     //cursor = pointer for modal-content when content is clickable
     .modal-content {
-        //.modal-content.modal-SIZE.modal-SIZE-clickable .modal-body[-fixed]: background = button:hover-background on hover
+        //.modal-content.modal-SIZE.modal-SIZE-clickable .modal-body[-fixed]: cursor = pointer
         &.modal-minimized.modal-minimized-clickable,
         &.modal-normal.modal-normal-clickable,
         &.modal-extended.modal-extended-clickable {

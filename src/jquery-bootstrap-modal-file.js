@@ -14,7 +14,6 @@
 
     var objectWithFileClasses = 'border-0 w-100 h-100';
 
-    //$.bsHeaderIcons = class-names for the different icons on the header
     $.bsExternalLinkIcon = 'fa-external-link-alt';
 
     /**********************************************************

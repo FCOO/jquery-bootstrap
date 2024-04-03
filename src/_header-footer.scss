@@ -65,8 +65,15 @@ HEADER-CONTENT
     </div>
     ****************************************************/
     .header-icon-container {
+        --icon-height       : auto;
+        --icon-width        : 1em;
+        --icon-margin-left  : .2em;
+        --icon-border-radius: 50%;
+        --font-size         : calc(var(--bs-modal-content-font-size)* 4 / 3);
+        --container-height  : calc( 1.5 * var(--bs-modal-content-font-size) + 2 * var(--#{$prefix}modal-header-padding-y) );
+
         display        : flex;
-        align-items    : baseline;
+        align-items    : center;
         pointer-events : initial;
 
         flex-shrink    : 0;
@@ -74,9 +81,13 @@ HEADER-CONTENT
         margin-left    : auto;
         margin-right   : 0;
 
-        font-size : calc(4em / 3);
 
-        > * { margin-left: .2em; }
+        margin-top   : calc(-1 * var(--#{$prefix}modal-header-padding-y));
+        margin-bottom: calc(-1 * var(--#{$prefix}modal-header-padding-y));
+        height       : var(--container-height);
+        font-size    : var(--font-size);
+
+        > * { margin-left: var(--icon-margin-left); }
 
         .fa-stack {
             //Make stacked icon same size as single icons
@@ -88,14 +99,15 @@ HEADER-CONTENT
 
         .header-icon {
             //Common style
-            width      : 1em;
+            height     : var(--icon-height);
+            width      : var(--icon-width);
             text-align : center;
             cursor     : pointer;
 
             &.hidden   { display: none; }
 
             color: var(--#{$jb-prefix}header-color);
-            border-radius: 50%;
+            border-radius: var(--icon-border-radius);
 
             &:hover, &:active {
                 box-shadow: 0px 0px 3px 0px var(--#{$jb-prefix}header-color);
@@ -112,6 +124,53 @@ HEADER-CONTENT
                 }
             }
         } //end of .header-icon {
+
+        //If the header has square icons
+        &.with-square-icons {
+            --icon-height       : 100%;
+            --icon-width        : 1.3em;
+            --font-size         : calc(var(--bs-modal-content-font-size)* 5 / 4);
+            --icon-margin-left  : 0;
+            --icon-border-radius: 0;
+
+            --icon-bg       : none;
+            --icon-hover-bg : rgba(0,0,0, .10);
+            --icon-active-bg: rgba(0,0,0, .15);
+
+            //Move the icons to the right edge
+            margin-right: calc(-1 * var(--#{$prefix}modal-header-padding-x));
+
+            .header-icon {
+                background-color: var(--icon-bg);
+
+                padding-top: calc(var(--container-height) / 2 - calc(var(--font-size)) / 2);
+
+                &:hover, &:active { box-shadow: none; }
+                &:hover  { color: var(--icon-hover-color); background-color: var(--icon-hover-bg); }
+                &:active { color: var(--icon-hover-color); background-color: var(--icon-active-bg); }
+
+                &:last-child {
+                    border-top-right-radius: var(--bs-modal-inner-border-radius);
+                }
+
+                &.header-icon-close {
+                    width: var(--container-height);
+                    --icon-hover-color: white;
+                    --icon-hover-bg   : #{$red};
+                    --icon-active-bg  : #{darken($red, 10%)};
+                }
+                &.header-icon-warning {
+                    --icon-bg         : #{$warning};
+                    --icon-hover-bg   : #{darken($warning,  5%)};
+                    --icon-active-bg  : #{darken($warning, 10%)};
+                }
+                &.header-icon-selected {
+                    --icon-bg         : #{$form-check-input-checked-bg-color};
+                    --icon-hover-bg   : #{darken($form-check-input-checked-bg-color,  5%)};
+                    --icon-active-bg  : #{darken($form-check-input-checked-bg-color, 10%)};
+                }
+            }
+        }
     } //end of .header-icon-container {
 } //end of .header-content
 
@@ -146,12 +205,17 @@ div.modal-footer {
 
 
     border-top      : var(--#{$prefix}modal-header-border-width) solid var(--#{$prefix}modal-header-border-color);
+    @include border-bottom-radius(var(--#{$prefix}modal-inner-border-radius));
     &.no-border {
         border-top: none;
     }
 
+
+
+
     //Hide when empty
     &:empty { display: none !important; }
+
 
 } // end of .footer-content
 

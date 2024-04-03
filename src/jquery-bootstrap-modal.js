@@ -414,7 +414,7 @@
 
             //Update header
             var $iconContainer = this.bsModal.$header.find('.header-icon-container').detach();
-            updateElement(this.bsModal.$header, options, '_bsHeaderAndIcons');
+            updateElement(this.bsModal.$header, options, '_bsHeaderAndIcons', $.BSMODAL_USE_SQUARE_ICONS);
             this.bsModal.$header.append($iconContainer);
 
             _updateFixedAndFooterInOptions(options);
@@ -729,10 +729,10 @@
                 unpin   : { className: 'show-for-modal-pinned', onClick: options.onPin ? modalUnpin    : null },
                 extend  : { className: iconExtendClassName,     onClick: multiSize ? modalExtend   : null, altEvents:'swipeup'   },
                 diminish: { className: iconDiminishClassName,   onClick: multiSize ? modalDiminish : null, altEvents:'swipedown' },
-                new     : { className: '',                      onClick: options.onNew ? $.proxy(options.onNew, this) : null },
-                info    : { className: '',                      onClick: options.onInfo ? $.proxy(options.onInfo, this) : null },
-                warning : { className: '',                      onClick: options.onWarning ? $.proxy(options.onWarning, this) : null },
-                help    : { className: '',                      onClick: options.onHelp ? $.proxy(options.onHelp, this) : null },
+                new     : {                                     onClick: options.onNew ? $.proxy(options.onNew, this) : null },
+                info    : {                                     onClick: options.onInfo ? $.proxy(options.onInfo, this) : null },
+                warning : {                                     onClick: options.onWarning ? $.proxy(options.onWarning, this) : null },
+                help    : {                                     onClick: options.onHelp ? $.proxy(options.onHelp, this) : null },
             }
         }, options );
 
@@ -775,7 +775,7 @@
         if (!options.noHeader &&  (options.header || !$.isEmptyObject(options.icons) ) ){
             var $modalHeader = this.bsModal.$header =
                     $('<div/>')
-                        ._bsHeaderAndIcons( options )
+                        ._bsHeaderAndIcons( options, $.BSMODAL_USE_SQUARE_ICONS )
                         .appendTo( $modalContent );
 
             //Add dbl-click on header to change to/from extended

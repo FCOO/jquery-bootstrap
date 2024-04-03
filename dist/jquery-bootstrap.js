@@ -2898,51 +2898,86 @@ uri         : {default: "Please enter a valid URI"}
     diminish
     pin
     unpin
-
+    new
+    warning
+    info
+    help
     close (x)
+    */
+
+    /*
+    There are two ways to display icon-buttons on the header:
+    1: Small icons inside round borders (default), or
+    2: Full sized icons with square background changing color on hover - a la MS Windows
+
+    Popups and Noty always uses 1.
+
+    For bsModals a global variablecan be set to use square icons
+
+    bsHeaderIcons and bsHeaderIconsSquare = {icon, className, title} for the different icons on the header. Set by function to allow updating $.FONTAWESOME_PREFIX_??
+
 
     */
 
-    //$.bsHeaderIcons = class-names for the different icons on the header. Set by function to allow updating $.FONTAWESOME_PREFIX_??
-    $.bsHeaderIcons = {};
-    $._set_bsHeaderIcons = function( forceOptions = {}){
+    $.BSMODAL_USE_SQUARE_ICONS = $.BSMODAL_USE_SQUARE_ICONS || false;
 
-        $.bsHeaderIcons = $.extend( $.bsHeaderIcons, {
-            back    : 'fa-circle-chevron-left',
-            forward : 'fa-circle-chevron-right',
+    let bsHeaderIcons       = {},
+        bsHeaderIconsSquare = {};
 
-            pin     : ['fas fa-thumbtack fa-inside-circle', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
-            unpin   : 'fa-thumbtack',
+    function adjustHeaderIcon( headerIcon ){
+        if ((typeof headerIcon == 'string') || Array.isArray(headerIcon))
+                headerIcon = {icon: headerIcon};
+        return headerIcon;
+    }
 
-            extend  : 'fa-chevron-circle-up',
-            diminish: 'fa-chevron-circle-down',
+    function adjustHeaderIcons( headerIcons ){
+        $.each( headerIcons, (id, cont) => {
+            headerIcons[id] = adjustHeaderIcon(cont);
+        });
+        return headerIcons;
+    }
+    function getDefaultHeaderIcons( square ){
+        return adjustHeaderIcons({
+            back    : square ? 'fas fa-arrow-left'  : 'fa-circle-chevron-left',
+            forward : square ? 'fas fa-arrow-right' : 'fa-circle-chevron-right',
+
+            pin     : square ? 'fa-thumbtack' : ['fas fa-thumbtack fa-inside-circle', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
+            unpin   : {
+                icon: 'fa-thumbtack',
+                class: square ? 'header-icon-selected' : null
+            },
+
+            extend  : square ? 'fa-square-plus' : 'fa-chevron-circle-up',
+            diminish: square ? 'fa-square-minus' : 'fa-chevron-circle-down',
 
 
-            new     : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2',
-                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'  ],
+            new     : square ? 'fa-window-maximize' : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
 
-            warning : [ 'fas fa-circle back text-warning',
-                        $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle',
-                        'fas fa-exclamation fa-inside-circle-xmark'   ],
+            warning : {
+                icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
+                class: square ? 'header-icon-warning' : null
+            },
 
-            info    : 'fa-circle-info',
-            help    : 'fa-circle-question',
+            info    : square ? 'fa-info' : 'fa-circle-info',
+            help    : square ? 'fa-question' : 'fa-circle-question',
 
-            close   : [ 'fas fa-circle show-for-hover fa-hover-color-red',
-                        'fa-xmark fa-inside-circle-xmark fa-hover-color-white',
-                        $.FONTAWESOME_PREFIX_STANDARD+' fa-circle' ]
+            close   : {
+                icon : square ? 'fas fa-xmark' : ['fas fa-circle show-for-hover fa-hover-color-red', 'fa-xmark fa-inside-circle-xmark fa-hover-color-white', $.FONTAWESOME_PREFIX_STANDARD+' fa-circle'],
+                title: {da:'Luk', en:'Close'},
+                class: square ? 'header-icon-close' : null
+            }
+        });
+    }
 
-        }, forceOptions );
+    $._set_bsHeaderIcons = function( newHeaderIcons = {}, newHeaderIconsSquare = {}){
+        bsHeaderIcons       = $.extend(true, getDefaultHeaderIcons(),     bsHeaderIcons,       adjustHeaderIcons(newHeaderIcons)       );
+        bsHeaderIconsSquare = $.extend(true, getDefaultHeaderIcons(true), bsHeaderIconsSquare, adjustHeaderIcons(newHeaderIconsSquare) );
     };
+
     $._set_bsHeaderIcons();
 
-    //mandatoryHeaderIconClass = mandatory class-names and title for the different icons on the header
-    var mandatoryHeaderIconClassAndTitle = {
-        close  : {/*class:'',*/ title: {da:'Luk', en:'Close'}},
-    };
-
     /******************************************************
-    _bsHeaderAndIcons(options)
+    _bsHeaderAndIcons(options, useSquareIcons)
     Create the text and icon content of a header inside this
     options: {
         headerClassName: [string]
@@ -2957,23 +2992,24 @@ uri         : {default: "Please enter a valid URI"}
             event.stopImmediatePropagation();
     }
 
-    $.fn._bsHeaderAndIcons = function(options){
+    $.fn._bsHeaderAndIcons = function(options, useSquareIcons){
         var $this = this;
 
         options = $.extend( true, {text:'DAVS MED DIG', headerClassName: '', inclHeader: true, icons: {} }, options );
-        this.addClass( options.headerClassName );
-        this.addClass('header-content');
+        this
+            .addClass( options.headerClassName )
+            .addClass('header-content');
 
         if (options.inclHeader){
             options.header = $._bsAdjustIconAndText(options.header);
             //If header contents more than one text => set the first to "fixed" so that only the following text are truncated
-            if ($.isArray(options.header) && (options.header.length > 1)){
+            if (Array.isArray(options.header) && (options.header.length > 1))
                 options.header[0].textClass = 'fixed-header';
-            }
+
             this._bsAddHtml( options.header || $.EMPTY_TEXT );
         }
         //Add icons (if any)
-        if ( !$.isEmptyObject(options.icons) ) {
+        if ( !$.isEmptyObject(options.icons) ){
             //Container for icons
             var $iconContainer =
                     $('<div/>')
@@ -2981,22 +3017,23 @@ uri         : {default: "Please enter a valid URI"}
                             baseClass   :'header-icon-container',
                             useTouchSize: true
                         })
+                        .toggleClass('with-square-icons', !!useSquareIcons)
                         .appendTo( this );
 
             //Add icons
-            $.each( ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'warning', 'info', 'help', 'close'], function( index, id ){
-                var iconOptions = options.icons[id],
-                    classAndTitle = mandatoryHeaderIconClassAndTitle[id] || {};
-
-                if (iconOptions && iconOptions.onClick){
-                    var icon = iconOptions.icon || $.bsHeaderIcons[id];
-                    icon = $.isArray(icon) ? icon : [icon];
+            let headerIcons = useSquareIcons ? bsHeaderIconsSquare : bsHeaderIcons;
+            ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'warning', 'info', 'help', 'close'].forEach( (id) => {
+                let iconOptions = options.icons[id];
+                if (iconOptions && (iconOptions.onClick || (typeof iconOptions == 'function'))){
+                    if (typeof iconOptions == 'function')
+                        iconOptions = {onClick: iconOptions};
+                    iconOptions = $.extend(true, {}, headerIcons[id] || {}, iconOptions);
 
                     $._bsCreateIcon(
-                        icon,
+                        Array.isArray(iconOptions.icon) ? iconOptions.icon : [iconOptions.icon],
                         $iconContainer,
-                        iconOptions.title || classAndTitle.title || '',
-                        (iconOptions.className || '') + ' header-icon ' + (classAndTitle.class || '')
+                        iconOptions.title || '',
+                        'header-icon ' + (iconOptions.className || '') + ' ' + (iconOptions.class || '')
                     )
                     .toggleClass('hidden', !!iconOptions.hidden)
                     .toggleClass('disabled', !!iconOptions.disabled)
@@ -3574,7 +3611,6 @@ options
 
     var objectWithFileClasses = 'border-0 w-100 h-100';
 
-    //$.bsHeaderIcons = class-names for the different icons on the header
     $.bsExternalLinkIcon = 'fa-external-link-alt';
 
     /**********************************************************
@@ -4497,7 +4533,7 @@ jquery-bootstrap-modal-promise.js
 
             //Update header
             var $iconContainer = this.bsModal.$header.find('.header-icon-container').detach();
-            updateElement(this.bsModal.$header, options, '_bsHeaderAndIcons');
+            updateElement(this.bsModal.$header, options, '_bsHeaderAndIcons', $.BSMODAL_USE_SQUARE_ICONS);
             this.bsModal.$header.append($iconContainer);
 
             _updateFixedAndFooterInOptions(options);
@@ -4812,10 +4848,10 @@ jquery-bootstrap-modal-promise.js
                 unpin   : { className: 'show-for-modal-pinned', onClick: options.onPin ? modalUnpin    : null },
                 extend  : { className: iconExtendClassName,     onClick: multiSize ? modalExtend   : null, altEvents:'swipeup'   },
                 diminish: { className: iconDiminishClassName,   onClick: multiSize ? modalDiminish : null, altEvents:'swipedown' },
-                new     : { className: '',                      onClick: options.onNew ? $.proxy(options.onNew, this) : null },
-                info    : { className: '',                      onClick: options.onInfo ? $.proxy(options.onInfo, this) : null },
-                warning : { className: '',                      onClick: options.onWarning ? $.proxy(options.onWarning, this) : null },
-                help    : { className: '',                      onClick: options.onHelp ? $.proxy(options.onHelp, this) : null },
+                new     : {                                     onClick: options.onNew ? $.proxy(options.onNew, this) : null },
+                info    : {                                     onClick: options.onInfo ? $.proxy(options.onInfo, this) : null },
+                warning : {                                     onClick: options.onWarning ? $.proxy(options.onWarning, this) : null },
+                help    : {                                     onClick: options.onHelp ? $.proxy(options.onHelp, this) : null },
             }
         }, options );
 
@@ -4858,7 +4894,7 @@ jquery-bootstrap-modal-promise.js
         if (!options.noHeader &&  (options.header || !$.isEmptyObject(options.icons) ) ){
             var $modalHeader = this.bsModal.$header =
                     $('<div/>')
-                        ._bsHeaderAndIcons( options )
+                        ._bsHeaderAndIcons( options, $.BSMODAL_USE_SQUARE_ICONS )
                         .appendTo( $modalContent );
 
             //Add dbl-click on header to change to/from extended

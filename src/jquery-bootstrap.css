@@ -13298,17 +13298,26 @@ HEADER-CONTENT
   word-break: keep-all;
 }
 .header-content .header-icon-container {
+  --icon-height: auto;
+  --icon-width: 1em;
+  --icon-margin-left: .2em;
+  --icon-border-radius: 50%;
+  --font-size: calc(var(--bs-modal-content-font-size)* 4 / 3);
+  --container-height: calc( 1.5 * var(--bs-modal-content-font-size) + 2 * var(--bs-modal-header-padding-y) );
   display: flex;
-  align-items: baseline;
+  align-items: center;
   pointer-events: initial;
   flex-shrink: 0;
   justify-content: space-between;
   margin-left: auto;
   margin-right: 0;
-  font-size: 1.3333333333em;
+  margin-top: calc(-1 * var(--bs-modal-header-padding-y));
+  margin-bottom: calc(-1 * var(--bs-modal-header-padding-y));
+  height: var(--container-height);
+  font-size: var(--font-size);
 }
 .header-content .header-icon-container > * {
-  margin-left: 0.2em;
+  margin-left: var(--icon-margin-left);
 }
 .header-content .header-icon-container .fa-stack {
   height: 1em;
@@ -13316,11 +13325,12 @@ HEADER-CONTENT
   line-height: 1em;
 }
 .header-content .header-icon-container .header-icon {
-  width: 1em;
+  height: var(--icon-height);
+  width: var(--icon-width);
   text-align: center;
   cursor: pointer;
   color: var(--jb-header-color);
-  border-radius: 50%;
+  border-radius: var(--icon-border-radius);
 }
 .header-content .header-icon-container .header-icon.hidden {
   display: none;
@@ -13333,6 +13343,51 @@ HEADER-CONTENT
   position: relative;
   top: -0.25em;
   left: -0.3em;
+}
+.header-content .header-icon-container.with-square-icons {
+  --icon-height: 100%;
+  --icon-width: 1.3em;
+  --font-size: calc(var(--bs-modal-content-font-size)* 5 / 4);
+  --icon-margin-left: 0;
+  --icon-border-radius: 0;
+  --icon-bg: none;
+  --icon-hover-bg: rgba(0,0,0, .10);
+  --icon-active-bg: rgba(0,0,0, .15);
+  margin-right: calc(-1 * var(--bs-modal-header-padding-x));
+}
+.header-content .header-icon-container.with-square-icons .header-icon {
+  background-color: var(--icon-bg);
+  padding-top: calc(var(--container-height) / 2 - (var(--font-size)) / 2);
+}
+.header-content .header-icon-container.with-square-icons .header-icon:hover, .header-content .header-icon-container.with-square-icons .header-icon:active {
+  box-shadow: none;
+}
+.header-content .header-icon-container.with-square-icons .header-icon:hover {
+  color: var(--icon-hover-color);
+  background-color: var(--icon-hover-bg);
+}
+.header-content .header-icon-container.with-square-icons .header-icon:active {
+  color: var(--icon-hover-color);
+  background-color: var(--icon-active-bg);
+}
+.header-content .header-icon-container.with-square-icons .header-icon:last-child {
+  border-top-right-radius: var(--bs-modal-inner-border-radius);
+}
+.header-content .header-icon-container.with-square-icons .header-icon.header-icon-close {
+  width: var(--container-height);
+  --icon-hover-color: white;
+  --icon-hover-bg: #dc3545;
+  --icon-active-bg: #bd2130;
+}
+.header-content .header-icon-container.with-square-icons .header-icon.header-icon-warning {
+  --icon-bg: #ffc107;
+  --icon-hover-bg: #edb100;
+  --icon-active-bg: #d39e00;
+}
+.header-content .header-icon-container.with-square-icons .header-icon.header-icon-selected {
+  --icon-bg: rgb(30, 144, 255);
+  --icon-hover-bg: #0583ff;
+  --icon-active-bg: #0077ea;
 }
 
 /************************
@@ -13355,6 +13410,8 @@ div.modal-footer {
   color: var(--jb-footer-color);
   background-color: var(--jb-footer-bg);
   border-top: var(--bs-modal-header-border-width) solid var(--bs-modal-header-border-color);
+  border-bottom-right-radius: var(--bs-modal-inner-border-radius);
+  border-bottom-left-radius: var(--bs-modal-inner-border-radius);
 }
 .footer-content.no-border, .no-border.jb-footer-content {
   border-top: none;
@@ -13649,6 +13706,7 @@ div.modal-dialog.modal-flex-width .modal-content .modal-body > .jquery-scroll-co
 div.modal-dialog .modal-content {
   word-break: break-word;
   word-wrap: break-word;
+  overflow: hidden;
   /*
   Special header version for minimized modal windows
   There are tree modes for minimized-content:
@@ -13892,7 +13950,7 @@ div.modal-dialog .modal-content .modal-footer.vertical-buttons > .btn, div.modal
   margin: 1px;
 }
 div.modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent, div.modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent, div.modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent {
-  background: none;
+  background: red;
 }
 div.modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-body, div.modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-body-fixed, div.modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-footer, div.modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-body, div.modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-body-fixed, div.modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-footer, div.modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-body, div.modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-body-fixed, div.modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-footer {
   background: color-mix(in srgb, var(--bs-body-bg), transparent 50%);
