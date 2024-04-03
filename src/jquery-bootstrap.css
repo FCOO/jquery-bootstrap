@@ -13950,7 +13950,7 @@ div.modal-dialog .modal-content .modal-footer.vertical-buttons > .btn, div.modal
   margin: 1px;
 }
 div.modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent, div.modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent, div.modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent {
-  background: red;
+  background: none;
 }
 div.modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-body, div.modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-body-fixed, div.modal-dialog .modal-content.modal-minimized.modal-minimized-semi-transparent .modal-footer, div.modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-body, div.modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-body-fixed, div.modal-dialog .modal-content.modal-normal.modal-normal-semi-transparent .modal-footer, div.modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-body, div.modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-body-fixed, div.modal-dialog .modal-content.modal-extended.modal-extended-semi-transparent .modal-footer {
   background: color-mix(in srgb, var(--bs-body-bg), transparent 50%);

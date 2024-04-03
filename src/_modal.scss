@@ -326,9 +326,7 @@ div.modal-dialog {
         &.modal-minimized.modal-minimized-semi-transparent,
         &.modal-normal.modal-normal-semi-transparent,
         &.modal-extended.modal-extended-semi-transparent {
-            background: red;//none;
-//background: $modal-content-bg-semi-transparent;
-
+            background: none;
             .modal-body, .modal-body-fixed, .modal-footer {
                 background: $modal-content-bg-semi-transparent;
             }
