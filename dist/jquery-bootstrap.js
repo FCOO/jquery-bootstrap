@@ -5067,13 +5067,17 @@ jquery-bootstrap-modal-promise.js
     _bsModalSetHeightAndWidth - Set the height and width according to current cssHeight and cssWidth
     ******************************************************/
     $.fn._bsModalSetHeightAndWidth = function(){
-
         var bsModal = this.bsModal,
             $modalContent = get$modalContent(this),
             $modalDialog = $modalContent.parent(),
             size = $modalContent._bsModalGetSize(),
             cssHeight = bsModal.cssHeight[size],
             cssWidth = bsModal.cssWidth[size];
+
+        if (!cssWidth){
+            this._bsModalSetSize(MODAL_SIZE_NORMAL);
+            return;
+        }
 
         //Set height
         $modalContent

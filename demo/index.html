@@ -2030,7 +2030,6 @@ width: 543,
 
         //************************************************************************************
         var long_content = $.bsModal({
-
             onNew    : function(){ console.log('NEW:  DONT close header'); return false},
             onPin    : function(){ console.log('PIN: Close header'); return true},
             onInfo   : function(){ console.log('INFO: DONT Close header'); return false},
@@ -2043,6 +2042,7 @@ width: 543,
             },
 
             closeButton: false,
+            
             _noHeader: true,
             header:/*{
                 icon: 'fa-home',
@@ -2065,14 +2065,13 @@ width: 543,
 
             clickable: true,
 
-
-
 //HER            isMinimized: true,
             minimized: {
+                _showHeader: true,
                 _showHeaderOnClick: true,
                 semiTransparent: true,
-                _height: 56,
-                width : 62,
+                height: 56,
+                _width : 62,
                 dynamic: true,
                 content: function($body){
                     $body.html( moment().format("hh:mm:ss"));
@@ -2219,14 +2218,15 @@ clickable: true,
                 text: {da:'Fixed Modal #2 = flexiable width'},
             },
             minimized: {
+showHeader: true,                
                 content: 'Minimized w=200px',
-                width: 200
+                //width: 200
             },
             //noVerticalPadding   : true,
             //noHorizontalPadding : true,
 
             content: 'Content<br>width = 400',
-            extended: {
+            _extended: {
                 content: 'Extended<br>width = 600<br>extended 2<br>extended 3<br>extended 4<br>extended 5<br>extended 6<br>extended 7<br>extended 9<br>extended 9',
                 width: 600,
                 innerMaxHeight: 200,
