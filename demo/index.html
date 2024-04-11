@@ -2217,10 +2217,26 @@ clickable: true,
             header:{
                 text: {da:'Fixed Modal #2 = flexiable width'},
             },
+            
+            fixedContent: {
+                content: {
+                    text: {da:'Davs'},
+                    textClass: 'DAVS',
+                },                    
+                innerHeight: '3em',
+                border: true
+            },
+            fixedContentOptions: {
+                centerMiddle: true,
+            },                
+            
             minimized: {
-showHeader: true,                
+                showHeader: true,                
                 content: 'Minimized w=200px',
                 //width: 200
+                centerMiddle: true,
+                fixedContent: true,
+                
             },
             //noVerticalPadding   : true,
             //noHorizontalPadding : true,

@@ -143,6 +143,8 @@ div.modal-dialog {
             box-shadow: none;
         }
 
+        --display: block;
+
         //Create class show-for-modal-SIZE and hide-for-modal-SIZE
         //         and show-for-modal-pinned and hide-for-modal-pined
         @each $size in minimized, normal, extended {
@@ -151,7 +153,10 @@ div.modal-dialog {
                 $parent-element-type : '&',
                 $incl-no-selector    : true,
                 $incl-table-display  : false,
+                $display-value       : 'var(--display) !important'
             );
+
+
             //Special version for direct child to avoid problems with extended content in ex. popup inside a normal modal
             @include show-and-hide-for-modernizr-test(
                 $modernizr-test      : unquote("modal-#{$size}"),
@@ -159,7 +164,7 @@ div.modal-dialog {
                 $incl-no-selector    : false,
                 $incl-table-display  : false,
                 $only-direct-children: true,
-                $display-value       : 'initial !important'
+                $display-value       : 'var(--display) !important'
             );
 
            //Special version for modal-header to avoid problems with extended content in ex. popup inside a normal modal
@@ -201,7 +206,7 @@ div.modal-dialog {
             }
         }
 
-        .modal-body {
+        .modal-body, .modal-body-fixed {
             --inner-height    : auto;
             --inner-max-height: none;
 
@@ -223,7 +228,15 @@ div.modal-dialog {
                 flex-direction: column;
                 --inner-height: fit-content;    //Instead of height: fit-content;
             }
+
+            //Center and middle content
+            &.center-middle-content {
+                --display      : flex;
+                align-items    : center;
+                justify-content: center;
+            }
          }
+
 
         &:not(.modal-extended) .modal-body.hide-for-modal-extended.modal-body-no-content ~ .modal-footer,
         &.modal-extended       .modal-body.show-for-modal-extended.modal-body-no-content ~ .modal-footer {
@@ -269,6 +282,10 @@ div.modal-dialog {
             padding: var(--bs-modal-padding-y) var(--bs-modal-padding-x);
 
             &:empty { display: none !important; }
+
+            &.with-border {
+                border-bottom: var(--bs-modal-header-border-width) solid var(--bs-modal-header-border-color);
+            }
         }
         .modal-body {
             flex-shrink: 1; //Only .modal-body is shrink
