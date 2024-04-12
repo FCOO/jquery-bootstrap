@@ -488,9 +488,14 @@
         }
 
         //Append fixed content (if any)
-//If fixedContent.contetn exists => fixedContent is also the options for the fixed content
+        //If fixedContent.contetn exists => fixedContent is also the options for the fixed content
         //options.fixedContentOptions = options different from content for fixed-content
-        var fixedOptions = $.extend({}, options, options.fixedContent && options.fixedContent.content ? options.fixedContent : {}, options.fixedContentOptions || {}),
+        var fixedOptions = $.extend({},
+                options,
+                {innerHeight:'auto', innerMaxheight: 'none'},
+                options.fixedContent && options.fixedContent.content ? options.fixedContent : {},
+                options.fixedContentOptions || {}
+            ),
             $modalFixedContent = parts.$fixedContent =
                 $('<div/>')
                     .addClass('modal-body-fixed')
@@ -526,10 +531,6 @@
                     .appendTo( this );
 
         setInnerHeightAndInnerMaxHeight($modalBody, options);
-//HER           if (options.innerHeight)
-//HER               $modalBody.css('--inner-height',     typeof options.innerHeight == 'number'    ? options.innerHeight + 'px'    : options.innerHeight    );
-//HER           if (options.innerMaxHeight)
-//HER               $modalBody.css('--inner-max-height', typeof options.innerMaxHeight == 'number' ? options.innerMaxHeight + 'px' : options.innerMaxHeight );
 
         if (!options.content || (options.content === {}))
             $modalBody.addClass('modal-body-no-content');
