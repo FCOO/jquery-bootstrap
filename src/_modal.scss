@@ -312,6 +312,8 @@ div.modal-dialog {
         }
 
         .modal-footer {
+            --display      : flex;
+
             flex-shrink: 0; //Only .modal-body is shrink
             flex-grow  : 0; //Only .modal-body is growing
 
