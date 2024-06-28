@@ -1025,6 +1025,7 @@ longTableContent[i].stargazers_count = i;
                         {
                             header: {icon: 'fa-home', text: {da:'Overskrift#1-2', en:'Header#1-2'}},
                             content: 'Dette er en test 1-2<br>'+testContent2
+                            
                         },
                         {
                             header: {icon: 'fa-home', text: {da:'Overskrift#1-3', en:'Header#1-3'}},
@@ -1068,7 +1069,7 @@ longTableContent[i].stargazers_count = i;
 
         myBsTable = $.bsTable({
             //showHeader: false,
-            verticalBorder: false,
+            verticalBorder: true,//false,
             selectable: true,
             noBorder: false,
             noPadding: false,
@@ -1102,7 +1103,7 @@ longTableContent[i].stargazers_count = i;
                     */
                 },
 
-                { id: 'stargazers_count',                   align: 'center', header: 'Stars', vfFormat:"myNumberFormat",            sortable: true, sortBy: function(e1,e2){return e1-e2;},
+                { id: 'stargazers_count', align: 'center', header: 'Stars', vfFormat:"myNumberFormat",            sortable: true, sortBy: function(e1,e2){return e1-e2;},
                     sortHeader: true,
                     getHeaderContent: function(content){
                         return Math.floor(content/10);
@@ -1142,6 +1143,7 @@ longTableContent[i].stargazers_count = i;
 //            small: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             buttons: [
+                {text:'Toggle Stars',                onClick: function(){ myBsTable.toggleColumn(2); } },
                 {text:'Filter: Stats > 30',          onClick: function(){myBsTable.filterTable(null, {'stargazers_count': function(value){ return value > 30;    }})}},
                 {text:'Filter: Stats odd',           onClick: function() {myBsTable.filterTable(null, {'stargazers_count': function(value){ return !!(value % 2); }})}},
                 {text:'Filter: Navn <> "Dansk!!!"',  onClick: function() {myBsTable.filterTable(null, {'name': function(value){return !value || (value.da != "Dansk!!!"); }})}},

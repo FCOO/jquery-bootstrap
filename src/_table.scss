@@ -128,6 +128,20 @@ Adjustmernt to Bootstrap table
 
 
     /*************************************
+    Hidden column - only first 20 columns
+    *************************************/
+    @for $index from 0 through 19 {
+        &.hideColumnIndex#{$index} {
+            $cno: $index + 1;
+            tbody tr td:nth-child(#{$cno}),
+            thead tr th:nth-child(#{$cno}){
+                //background-color: red;
+                display: none !important;
+            }
+        }
+    }
+
+    /*************************************
     Truncation - TODO
     *************************************/
 /*

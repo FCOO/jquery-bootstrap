@@ -217,6 +217,9 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                       );
 
         if (showHeader){
+
+            this._toggleAllColumns();
+
             //Using timeout to wait for the browser to update DOM and get height of the header
             var setHeaderHeight = function(){
                     var height = _this.$tableWithHeader.outerHeight();
@@ -398,6 +401,31 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 this.css('margin-top', -headerHeight + 'px');
             }
         },
+
+
+        /**********************************************************
+        showColumn, hideColumn, toggleColumn
+        **********************************************************/
+        showColumn: function(index){ return this.toggleColumn(index, true); },
+        hideColumn: function(index){ return this.toggleColumn(index, false); },
+        toggleColumn: function(index, show){
+            this.columns[index].hidden = typeof show == 'boolean' ? show : !this.columns[index].hidden;
+            this._toggleAllColumns();
+            this.setHeaderWidthAndHeight();
+        },
+
+        _toggleAllColumns: function(){
+            this.columns.forEach((columnOptions, index) => {
+                const className = 'hideColumnIndex'+index,
+                      hide = !!columnOptions.hidden;
+
+                this.toggleClass(className, hide);
+                if (this.$tableWithHeader)
+                    this.$tableWithHeader.toggleClass(className, hide);
+
+            }, this );
+        },
+
 
         /**********************************************************
         sortBy - Sort the table
@@ -734,6 +762,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (sortDefaultId, sortDefaultDir)
                 $table.sortBy(sortDefaultId, sortDefaultDir);
         }
+
+        $table._toggleAllColumns();
 
         return $table;
     };
