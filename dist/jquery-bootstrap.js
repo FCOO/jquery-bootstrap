@@ -2921,8 +2921,11 @@ uri         : {default: "Please enter a valid URI"}
 
     $.BSMODAL_USE_SQUARE_ICONS = $.BSMODAL_USE_SQUARE_ICONS || false;
 
-    let bsHeaderIcons       = {},
-        bsHeaderIconsSquare = {};
+    let bsHeaderIcons       = $.bsHeaderIcons       = {},
+        bsHeaderIconsSquare = $.bsHeaderIconsSquare = {};
+
+    $.getBsHeaderIcons = $.getHeaderIcons = function( SquareIcons ){ return SquareIcons ? bsHeaderIconsSquare : bsHeaderIcons };
+    $.getModalHeaderIcons = function(){ return $.getBsHeaderIcons( $.BSMODAL_USE_SQUARE_ICONS ); };
 
     function adjustHeaderIcon( headerIcon ){
         if ((typeof headerIcon == 'string') || Array.isArray(headerIcon))
