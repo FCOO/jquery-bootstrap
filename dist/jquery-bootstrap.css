@@ -13032,12 +13032,16 @@ Also overwrite default bootstrap behaviour
   font-size: var(--bs-btn-smaller-font-size);
 }
 .btn-jb.btn-lg, .btn-group-lg > .btn-jb.btn {
-  --bs-btn-smaller-font-size: 1rem;
   --bs-btn-larger-font-size: 1.25rem;
+  --bs-btn-smaller-font-size: 1rem;
 }
 .btn-jb.btn-sm, .btn-group-sm > .btn-jb.btn, .btn-bar-sm > .btn-jb.btn {
-  --bs-btn-smaller-font-size: 0.75rem;
   --bs-btn-larger-font-size: 1rem;
+  --bs-btn-smaller-font-size: 0.75rem;
+}
+.btn-jb.btn-xs, .btn-group-xs > .btn-jb.btn, .btn-bar-xs > .btn-jb.btn {
+  --bs-btn-larger-font-size: 0.875rem;
+  --bs-btn-smaller-font-size: 0.6875rem;
 }
 
 /************************************************************

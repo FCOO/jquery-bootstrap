@@ -207,9 +207,6 @@
         var bsButtonOptions = $.extend({}, options);
         bsButtonOptions.selected = false;
         var $result = $.bsButton( bsButtonOptions ).checkbox( $.extend(options, {className: 'checked'}) );
-
-//        var $result = $.bsButton( bsButtonOptions ).checkbox( options );
-
         return $result;
     };
 
@@ -286,15 +283,11 @@
 
 
     $.bsBigIconButton = function( options ){
-        return $.bsButton({
-            id          : options.id,
+        return $.bsButton($.extend(true, {}, options, {
             class       : 'w-100 d-flex',
             content     : $._bsBigIconButtonContent( options ),
             allowContent: true,
-            radioGroup  : options.radioGroup,
-            onClick     : options.onClick,
-        });
-
+        }) );
     };
 
 

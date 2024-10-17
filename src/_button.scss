@@ -261,12 +261,16 @@ Also overwrite default bootstrap behaviour
     }
 
     &.btn-lg {
-        --#{$prefix}btn-smaller-font-size: #{$input-btn-font-size};
         --#{$prefix}btn-larger-font-size : #{$input-btn-font-size-lg};
+        --#{$prefix}btn-smaller-font-size: #{$input-btn-font-size};
     }
     &.btn-sm {
-        --#{$prefix}btn-smaller-font-size: #{$input-btn-font-size-xs};
         --#{$prefix}btn-larger-font-size : #{$input-btn-font-size};
+        --#{$prefix}btn-smaller-font-size: #{$input-btn-font-size-xs};
+    }
+    &.btn-xs {
+        --#{$prefix}btn-larger-font-size : #{$input-btn-font-size-sm};
+        --#{$prefix}btn-smaller-font-size: #{$input-btn-font-size-xxs};
     }
 }
 

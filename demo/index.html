@@ -670,7 +670,8 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
         header('Big Icon Button');
         $.bsBigIconButton({
             icon: 'fa-map',
-            text: 'Large and Bold',
+            text: 'Large and Bold and Primary',
+            primary: true,
             subtext: [
                 {da:'Nr 1', en:'No 1'},
                 {da:'Nr 2', en:'No 2'},
@@ -1964,7 +1965,7 @@ width: 543,
 
                     ]
                 });
-
+console.log('testModalFormValidation', testModalFormValidation );
                 testModalFormValidation.edit(myDataValidation);
             });
 
