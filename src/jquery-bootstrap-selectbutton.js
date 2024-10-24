@@ -16,9 +16,13 @@
         options.onClick = $.fn._bsSelectButton_onClick;
         options.list    = options.list || options.items;
         options._class  = (options._class || '') + ' text-truncate btn-select';
+
+        //isBB = true => use $.bsBigIconButton
+        options.isBB = options.isBB || options.useBigButtons || options.useBigButton || options.bigButtons || options.bigButton;
+
         delete options.items;
 
-        var $result = $.bsButton( options );
+        var $result = options.isBB ? $.bsBigIconButton( options ) : $.bsButton( options );
 
         options = $result.data('bsButton_options');
         options.context = $result,
@@ -46,14 +50,12 @@
         });
 
         if (selectedItem){
-            this
-                .empty()
-                ._bsAddHtml(
-                    $.extend(true,
-                        {textClass: 'text-truncate'},
-                        selectedItem
-                    )
-                );
+            this.empty();
+
+            if (options.isBB)
+                this.append( $._bsBigIconButtonContent( selectedItem ) );
+            else
+                this._bsAddHtml( $.extend(true, {textClass: 'text-truncate'}, selectedItem ) );
 
             if (options.onChange)
                 $.proxy(options.onChange, options.context)(value);
@@ -82,13 +84,15 @@
             clickable   : true,
             transparentBackground: true,
             scroll      : list.length > 5,
+
             content: {
-                type         : 'selectlist',
-                allowReselect: true,
-                list         : list,
-                onChange     : $.fn._bsSelectButton_onChange,
-                context      : this,
-                truncate     : true
+                type             : 'selectlist',
+                allowReselect    : true,
+                list             : list,
+                onChange         : $.fn._bsSelectButton_onChange,
+                context          : this,
+                truncate         : true,
+                createItemContent: options.isBB ? $.bsBigIconButton : null,
             },
             show: true,
             removeOnClose: true

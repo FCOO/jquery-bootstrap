@@ -45,7 +45,7 @@
     let bsHeaderIcons       = $.bsHeaderIcons       = {},
         bsHeaderIconsSquare = $.bsHeaderIconsSquare = {};
 
-    $.getBsHeaderIcons = $.getHeaderIcons = function( SquareIcons ){ return SquareIcons ? bsHeaderIconsSquare : bsHeaderIcons };
+    $.getBsHeaderIcons = $.getHeaderIcons = function( SquareIcons ){ return SquareIcons ? bsHeaderIconsSquare : bsHeaderIcons; };
     $.getModalHeaderIcons = function(){ return $.getBsHeaderIcons( $.BSMODAL_USE_SQUARE_ICONS ); };
 
     function adjustHeaderIcon( headerIcon ){

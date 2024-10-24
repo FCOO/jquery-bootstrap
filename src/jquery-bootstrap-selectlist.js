@@ -22,7 +22,8 @@
                 id          : '_bsSelectlist'+ selectlistId++,
                 baseClass   : 'select-list',
                 class       : 'form-control dropdown-menu',
-                useTouchSize: true
+                useTouchSize: true,
+                createItemContent: null, //function( itemOptions ) return a $-element
             });
 
         var $result =
@@ -40,14 +41,20 @@
 
         $result.data('radioGroup', radioGroup);
 
-        $.each( options.list, function( index, itemOptions ){
-            var isItem = (itemOptions.id != undefined ),
+        options.list.forEach( itemOptions => {
+            const isItem = (itemOptions.id != undefined);
+            let $item;
+
+            if (options.createItemContent)
+                $item = options.createItemContent( itemOptions );
+            else
                 $item = $(isItem ? '<a/>' : '<div/>')
                             .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
                             .toggleClass( 'text-center',   !!options.center )
                             .toggleClass( 'text-truncate', !!options.truncate )
-                            ._bsAddHtml( itemOptions, false, false, true )
-                            .appendTo( $result );
+                            ._bsAddHtml( itemOptions, false, false, true );
+
+            $item.appendTo( $result );
 
             if (isItem)
                 radioGroup.addElement( $item, itemOptions );

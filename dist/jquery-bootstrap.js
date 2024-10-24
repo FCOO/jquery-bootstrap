@@ -2917,7 +2917,7 @@ uri         : {default: "Please enter a valid URI"}
     let bsHeaderIcons       = $.bsHeaderIcons       = {},
         bsHeaderIconsSquare = $.bsHeaderIconsSquare = {};
 
-    $.getBsHeaderIcons = $.getHeaderIcons = function( SquareIcons ){ return SquareIcons ? bsHeaderIconsSquare : bsHeaderIcons };
+    $.getBsHeaderIcons = $.getHeaderIcons = function( SquareIcons ){ return SquareIcons ? bsHeaderIconsSquare : bsHeaderIcons; };
     $.getModalHeaderIcons = function(){ return $.getBsHeaderIcons( $.BSMODAL_USE_SQUARE_ICONS ); };
 
     function adjustHeaderIcon( headerIcon ){
@@ -6426,9 +6426,13 @@ options
         options.onClick = $.fn._bsSelectButton_onClick;
         options.list    = options.list || options.items;
         options._class  = (options._class || '') + ' text-truncate btn-select';
+
+        //isBB = true => use $.bsBigIconButton
+        options.isBB = options.isBB || options.useBigButtons || options.useBigButton || options.bigButtons || options.bigButton;
+
         delete options.items;
 
-        var $result = $.bsButton( options );
+        var $result = options.isBB ? $.bsBigIconButton( options ) : $.bsButton( options );
 
         options = $result.data('bsButton_options');
         options.context = $result,
@@ -6456,14 +6460,12 @@ options
         });
 
         if (selectedItem){
-            this
-                .empty()
-                ._bsAddHtml(
-                    $.extend(true,
-                        {textClass: 'text-truncate'},
-                        selectedItem
-                    )
-                );
+            this.empty();
+
+            if (options.isBB)
+                this.append( $._bsBigIconButtonContent( selectedItem ) );
+            else
+                this._bsAddHtml( $.extend(true, {textClass: 'text-truncate'}, selectedItem ) );
 
             if (options.onChange)
                 $.proxy(options.onChange, options.context)(value);
@@ -6492,13 +6494,15 @@ options
             clickable   : true,
             transparentBackground: true,
             scroll      : list.length > 5,
+
             content: {
-                type         : 'selectlist',
-                allowReselect: true,
-                list         : list,
-                onChange     : $.fn._bsSelectButton_onChange,
-                context      : this,
-                truncate     : true
+                type             : 'selectlist',
+                allowReselect    : true,
+                list             : list,
+                onChange         : $.fn._bsSelectButton_onChange,
+                context          : this,
+                truncate         : true,
+                createItemContent: options.isBB ? $.bsBigIconButton : null,
             },
             show: true,
             removeOnClose: true
@@ -6539,7 +6543,8 @@ options
                 id          : '_bsSelectlist'+ selectlistId++,
                 baseClass   : 'select-list',
                 class       : 'form-control dropdown-menu',
-                useTouchSize: true
+                useTouchSize: true,
+                createItemContent: null, //function( itemOptions ) return a $-element
             });
 
         var $result =
@@ -6557,14 +6562,20 @@ options
 
         $result.data('radioGroup', radioGroup);
 
-        $.each( options.list, function( index, itemOptions ){
-            var isItem = (itemOptions.id != undefined ),
+        options.list.forEach( itemOptions => {
+            const isItem = (itemOptions.id != undefined);
+            let $item;
+
+            if (options.createItemContent)
+                $item = options.createItemContent( itemOptions );
+            else
                 $item = $(isItem ? '<a/>' : '<div/>')
                             .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
                             .toggleClass( 'text-center',   !!options.center )
                             .toggleClass( 'text-truncate', !!options.truncate )
-                            ._bsAddHtml( itemOptions, false, false, true )
-                            .appendTo( $result );
+                            ._bsAddHtml( itemOptions, false, false, true );
+
+            $item.appendTo( $result );
 
             if (isItem)
                 radioGroup.addElement( $item, itemOptions );

@@ -518,14 +518,33 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             text: {da:'Valg et eller andet...', en:'Select something...'},
             width: '10em',
             list: [
-                {id:'item1', icon: 'fa-home', text: ["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:", {en: 'ES D 140 Bornholm W.', da: 'ES D 140 Bornholm W.'}] },
-                {id:'item2', icon: 'fa-map', text: ["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:", {en: 'ES D 140 Bornholm W.', da: 'ES D 140 Bornholm W.'}] },
+                {id:'item1', icon: 'fa-home', text: ["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1:", {en: 'D 140 Bornholm W.', da: 'D 140 Bornholm W.'}] },
+                {id:'item2', icon: 'fa-map', text: ["&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2:", {en: 'D 212 Drogden', da: 'D 212 Drogden'}] },
             ],
-            selectedId: 'item2',
+            //selectedId: 'item2',
             onChange: function(id){
                 console.log('Select-button:', id);
             }
         }).appendTo( $body );
+
+        $('<br>').appendTo( $body );
+
+        $.bsSelectButton({
+            text: {da:'Valg et eller andet...', en:'Select something...'},
+            subtext: '(sub-text)',
+            width: '10em',
+            useBigButtons: true,
+            big: true,
+            list: [
+                {id:'item1', icon: 'fa-home', text: {en: 'ES D 140 Bornholm W.', da: 'ES D 140 Bornholm W.'}, subtext:'Sub text for 140' },
+                {id:'item2', icon: 'fa-map', text: 'D 212 Drogden', subtext: 'Subtext for Drogden' },
+            ],
+            //selectedId: 'item2',
+            onChange: function(id){
+                console.log('Select-button:', id);
+            }
+        }).appendTo( $body );
+
 
 
         header('Checkbox, Radiobox, and checkbox-button');
