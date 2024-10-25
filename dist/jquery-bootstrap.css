@@ -13217,6 +13217,9 @@ BUTTON-SELECT
   background-repeat: no-repeat;
   background-size: 1em;
 }
+.btn-select.selected::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+}
 
 /************************************************************
 btn-shadow and btn-shadow-sm
