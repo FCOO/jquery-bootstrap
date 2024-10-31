@@ -14739,9 +14739,15 @@ Is a modification to Bootstrap modal-class
   width: 325px;
   max-width: 90%;
 }
+.modal.noty-container.noty-extra-width {
+  width: 500px;
+}
+.modal.noty-container.noty-mega-width {
+  width: 800px;
+}
 .modal.noty-container.noty-container-top, .modal.noty-container.noty-container-bottom {
   left: 5%;
-  width: 90%;
+  width: 90% !important;
 }
 .modal.noty-container.noty-container-top {
   top: 0;

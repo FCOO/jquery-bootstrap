@@ -5360,7 +5360,7 @@ jquery-bootstrap-modal-promise.js
 
 }(jQuery, this.bootstrap, this, document));
 ;
-/****************************************************************************
+/*****************************************************  ***********************
 	jquery-bootstrap-noty.js,
 
 	(c) 2017, FCOO
@@ -5686,6 +5686,13 @@ jquery-bootstrap-modal-promise.js
 
         var classNames = '.modal.noty-container.noty-container-'+options.layout,
             $container = $bsNotyLayerToUse.find(classNames);
+
+        //Adjust width
+        if (options.extraWidth)
+            classNames = classNames +'.noty-extra-width';
+        if (options.megaWidth)
+            classNames = classNames +'.noty-mega-width';
+
         if (!$container.length){
             $container =
                 $('<div/>')
@@ -5726,7 +5733,8 @@ jquery-bootstrap-modal-promise.js
     /********************************************************************
     *********************************************************************
     Create standard variations of bsNoty:
-    notySuccess/notyOk, notyError, notyWarning, notyAlert, notyInfo (and dito $bsNoty[TYPE]
+    notySuccess/notyOk, notyError, notyWarning, notyAlert, noty
+ (and dito $bsNoty[TYPE]
     The following default options is used
     queue: "global" but if != "global" options.killer is set to options.queue
     killer: if options.queue != "global" => killer = queue and the noty will close all noty with same queue.

@@ -97,14 +97,24 @@ Is a modification to Bootstrap modal-class
     backface-visibility: hidden;
     -webkit-font-smoothing: subpixel-antialiased;
     filter   : blur(0);
-    width    : 325px;
+    width    : 325px; //Could be $modal-sm = 300px
     max-width: 90%;
+
+    //Extra width
+    &.noty-extra-width {
+        width    : $modal-md;
+    }
+
+    //Mega width
+    &.noty-mega-width {
+        width    : $modal-lg;
+    }
 
     //Adjust width and left for full-width layout
     &.noty-container-top,
     &.noty-container-bottom {
         left : 5%;
-        width: 90%;
+        width: 90% !important;
     }
 
     //top or button position
