@@ -92,6 +92,7 @@
                 onChange         : $.fn._bsSelectButton_onChange,
                 context          : this,
                 truncate         : true,
+                center           : options.center,
                 createItemContent: options.isBB ? $.bsBigIconButton : null,
             },
             show: true,

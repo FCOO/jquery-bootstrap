@@ -386,7 +386,7 @@
         $.each( options.list, function(index, buttonOptions ){
 
            if ((buttonOptions.spaceBefore || buttonOptions.lineBefore || spaceAfter) && $previousButton){
-                $previousButton.addClass('space-after');
+                $previousButton.addClass('space-zafter');
             }
 
             spaceAfter      = buttonOptions.spaceAfter || buttonOptions.lineAfter;

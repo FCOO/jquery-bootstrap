@@ -1520,7 +1520,7 @@
         $.each( options.list, function(index, buttonOptions ){
 
            if ((buttonOptions.spaceBefore || buttonOptions.lineBefore || spaceAfter) && $previousButton){
-                $previousButton.addClass('space-after');
+                $previousButton.addClass('space-zafter');
             }
 
             spaceAfter      = buttonOptions.spaceAfter || buttonOptions.lineAfter;
@@ -6510,6 +6510,7 @@ options
                 onChange         : $.fn._bsSelectButton_onChange,
                 context          : this,
                 truncate         : true,
+                center           : options.center,
                 createItemContent: options.isBB ? $.bsBigIconButton : null,
             },
             show: true,
@@ -6574,14 +6575,26 @@ options
             const isItem = (itemOptions.id != undefined);
             let $item;
 
-            if (options.createItemContent)
-                $item = options.createItemContent( itemOptions );
-            else
-                $item = $(isItem ? '<a/>' : '<div/>')
-                            .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
-                            .toggleClass( 'text-center',   !!options.center )
-                            .toggleClass( 'text-truncate', !!options.truncate )
-                            ._bsAddHtml( itemOptions, false, false, true );
+            if (isItem){
+                if (options.createItemContent)
+                    $item = options.createItemContent( itemOptions );
+                else
+                    $item = $('<a/>')
+                        .addClass('dropdown-item')
+                        .toggleClass( 'text-center',   !!options.center )
+                        .toggleClass( 'text-truncate', !!options.truncate )
+                        ._bsAddHtml( itemOptions, false, false, true );
+            }
+            else {
+                if (options.createHeaderContent)
+                    $item = options.createHeaderContent( itemOptions );
+                else
+                    $item = $('<div/>')
+                        .addClass('dropdown-header')
+                        .toggleClass( 'text-center',   !!options.center )
+                        .toggleClass( 'text-truncate', !!options.truncate )
+                        ._bsAddHtml( itemOptions, false, false, true );
+            }
 
             $item.appendTo( $result );
 

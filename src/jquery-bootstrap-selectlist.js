@@ -45,14 +45,26 @@
             const isItem = (itemOptions.id != undefined);
             let $item;
 
-            if (options.createItemContent)
-                $item = options.createItemContent( itemOptions );
-            else
-                $item = $(isItem ? '<a/>' : '<div/>')
-                            .addClass( isItem ? 'dropdown-item' : 'dropdown-header' )
-                            .toggleClass( 'text-center',   !!options.center )
-                            .toggleClass( 'text-truncate', !!options.truncate )
-                            ._bsAddHtml( itemOptions, false, false, true );
+            if (isItem){
+                if (options.createItemContent)
+                    $item = options.createItemContent( itemOptions );
+                else
+                    $item = $('<a/>')
+                        .addClass('dropdown-item')
+                        .toggleClass( 'text-center',   !!options.center )
+                        .toggleClass( 'text-truncate', !!options.truncate )
+                        ._bsAddHtml( itemOptions, false, false, true );
+            }
+            else {
+                if (options.createHeaderContent)
+                    $item = options.createHeaderContent( itemOptions );
+                else
+                    $item = $('<div/>')
+                        .addClass('dropdown-header')
+                        .toggleClass( 'text-center',   !!options.center )
+                        .toggleClass( 'text-truncate', !!options.truncate )
+                        ._bsAddHtml( itemOptions, false, false, true );
+            }
 
             $item.appendTo( $result );
 
