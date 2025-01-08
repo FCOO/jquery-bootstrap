@@ -38,15 +38,14 @@
 
     $.BSASMODAL = $.BSASMODAL || {};
     $.fn.asModal = function(options){
-        var _this   = this,
-            asModal = null;
+        var asModal = null;
 
         $.each($.BSASMODAL, function(id, asModalFunc){
-            if (_this.hasClass(id)){
+            if (this.hasClass(id)){
                 asModal = asModalFunc;
                 return false;
             }
-        });
+        }.bind(this) );
         return asModal ? $.proxy(asModal, this)( options ) : null;
     };
 
@@ -88,9 +87,7 @@
             return options;
         if ($.isArray( options )){
             var result = [];
-            $.each( options, function(index, content){
-                result.push( $._bsAdjustIconAndText(content) );
-            });
+            options.forEach(content => result.push( $._bsAdjustIconAndText(content) ) );
             return result;
         }
 
@@ -127,9 +124,9 @@
 
             //If context is given => convert all function to proxy
             if (context)
-                $.each( options, function( id, value ){
+                $.each( options, ( id, value ) => {
                     if ($.isFunction( value ))
-                        options[id] = $.proxy( value, context );
+                        options[id] = value.bind(context);
                 });
 
             return options;
@@ -138,7 +135,7 @@
 
         options = $.extend( true, {}, defaultOptions || {}, options, forceOptions || {} );
 
-        $.each(['selected', 'checked', /*v3 'active',*/ 'open', 'isOpen'], function(index, id){
+        ['selected', 'checked', /*v3 'active',*/ 'open', 'isOpen'].forEach( id =>{
             if (options[id] !== undefined){
                 options.selected = !!options[id];
                 return false;
@@ -245,9 +242,7 @@
             //Create a stacked icon
              $icon = $._bsCreateElement( 'div', null, title, null, 'container-stacked-icons ' + (className || '')  );
 
-            $.each( options, function( index, opt ){
-                $._bsCreateIcon( opt, $icon, null, 'stacked-icon' );
-            });
+            options.forEach( opt => $._bsCreateIcon( opt, $icon, null, 'stacked-icon' ) );
 
             //If any of the stacked icons have class fa-no-margin, width-1-Xem => set if on the container
             ['fa-no-margin', 'width-1-1em', 'width-1-2em', 'width-1-3em', 'width-1-4em', 'width-1-5em'].forEach( (className) => {
@@ -390,9 +385,7 @@
             {left: true, right: true, center: true, lowercase: true, uppercase: true, capitalize: true, normal: true, bold: true, italic: true}
         ****************************************************************************************/
         _bsAddStyleClasses: function( options = {}){
-            var _this = this,
-
-                bsStyleClass = {
+            let bsStyleClass = {
                     //Text color
                     "primary"     : "text-primary",
                     "secondary"   : "text-secondary",
@@ -424,8 +417,8 @@
                       ( (typeof options == 'string') && (options.indexOf(style) > -1 )  ) ||
                       ( (typeof options == 'object') && (options[style]) )
                     )
-                    _this.addClass( className );
-            });
+                    this.addClass( className );
+            }.bind(this));
             return this;
         },
 
@@ -482,13 +475,11 @@
             if (options.content && checkForContent)
                 return this._bsAddHtml(options.content, htmlInDiv, ignoreLink);
 
-            var _this = this;
-
             //options = array => add each
             if ($.isArray( options )){
-                $.each( options, function( index, textOptions ){
-                    _this._bsAddHtml( textOptions, htmlInDiv, ignoreLink );
-                });
+                options.forEach( textOptions => {
+                    this._bsAddHtml( textOptions, htmlInDiv, ignoreLink );
+                }, this);
                 return this;
             }
 
@@ -525,23 +516,23 @@
                 textDataArray   = getArray( options.textData );
 
             //Add icons (optional)
-            $.each( iconArray, function( index, icon ){
-                $._bsCreateIcon( icon, _this, titleArray[ index ], iconClassArray[index] );
-            });
+            iconArray.forEach( ( icon, index ) => {
+                $._bsCreateIcon( icon, this, titleArray[ index ], iconClassArray[index] );
+            }, this);
 
             //Add color (optional)
             if (options.color)
-                _this.addClass('text-'+ options.color);
+                this.addClass('text-'+ options.color);
 
             //Add text
-            $.each( textArray, function( index, text ){
+            textArray.forEach( (text, index) => {
                 //If text ={da,en} and both da and is html-stirng => build inside div
                 var tagName = 'span';
                 if ( (text.hasOwnProperty('da') && isHtmlString(text.da)) || (text.hasOwnProperty('en') && isHtmlString(text.en)) )
                     tagName = 'div';
 
                 var $text = $._bsCreateElement( tagName, linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index], textDataArray[index] );
-                $text.appendTo( _this );
+                $text.appendTo( this );
 
                 if ($.isFunction( text ))
                     text( $text );
@@ -560,18 +551,18 @@
                 if (index < textClassArray.length)
                     $text.addClass( textClassArray[index] );
 
-            });
+            }, this);
 
             //Add value-format content
-            $.each( vfFormatArray, function( index ){
+            vfFormatArray.forEach( (dummy, index) => {
                 $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
                     .vfValueFormat(
                         vfValueArray[index] || '',
                         vfFormatArray[index],
                         vfOptionsArray[index]
                     )
-                    .appendTo( _this );
-            });
+                    .appendTo( this );
+            }, this);
 
             return this;
         },
@@ -579,7 +570,7 @@
         //_bsButtonOnClick
         _bsButtonOnClick: function(){
             var options = this.data('bsButton_options');
-            $.proxy( options.onClick, options.context )( options.id, null, this );
+            options.onClick.bind(options.context)( options.id, null, this );
             return options.returnFromClick || false;
         },
 
@@ -668,10 +659,9 @@
 
             //Array of $-element, function etc
             if ($.isArray( options )){
-                var _this = this;
-                $.each(options, function( index, opt){
-                    _this._bsAppendContent(opt, context, null, parentOptions );
-                });
+                options.forEach( opt =>{
+                    this._bsAppendContent(opt, context, null, parentOptions );
+                }, this);
                 return this;
             }
 
@@ -700,7 +690,7 @@
 
 
             //Set values fro parentOptions into options
-            $.each($.parentOptionsToInherit, function(index, id){
+            $.parentOptionsToInherit.forEach( id => {
                 if (parentOptions.hasOwnProperty(id) && !options.hasOwnProperty(id))
                     options[id] = parentOptions[id];
             });
@@ -996,7 +986,7 @@
                         });
 
         //Adding the children {icon, text, content}
-        $.each( options.list, function( index, opt ){
+        options.list.forEach( ( opt, index ) => {
             //Create the header
             opt = $._bsAdjustOptions( opt );
 
@@ -1091,7 +1081,7 @@
                     .appendTo( $contentContainer );
 
 
-        }); //End of $.each( options.list, function( index, opt ){
+        }); //End of options.list.forEach( ( opt, index ){
 
         if (options.onChange){
             $result.data('accordion_onChange', options.onChange);
@@ -1186,7 +1176,7 @@
         if (options._class)
             newClass.push(options._class);
 
-        $.each( optionToClassName, function( id, className ){
+        $.each( optionToClassName, ( id, className ) => {
             if (options[id] && (!$.isFunction(options[id]) || options[id]()))
                 newClass.push(className);
         });
@@ -1392,8 +1382,8 @@
             var subtextArray = $.isArray(options.subtext) ? options.subtext : [options.subtext];
             subtext = {};
 
-            $.each( subtextArray, function(index, next_subtext){
-                $.each($._bsAdjustText( next_subtext ), function(lang, text){
+            subtextArray.forEach( next_subtext => {
+                $.each($._bsAdjustText( next_subtext ), (lang, text) => {
                     subtext[lang] = subtext[lang] || '';
                     if (subtext[lang] && text)
                         subtext[lang] += separator;
@@ -1479,7 +1469,7 @@
             ._bsAddBaseClassAndSize( options );
 
         //Transfere generel button-options to buttonOptions
-        $.each(['square', 'bigSquare', 'bigIcon', 'extraLargeIcon'], function(index, id){
+        ['square', 'bigSquare', 'bigIcon', 'extraLargeIcon'].forEach( id => {
             if ((options[id] !== undefined) && (options.buttonOptions[id] === undefined))
                 options.buttonOptions[id] = options[id];
         });
@@ -1517,7 +1507,7 @@
 
         var $previousButton = null,
             spaceAfter     = false;
-        $.each( options.list, function(index, buttonOptions ){
+        options.list.forEach( buttonOptions => {
 
            if ((buttonOptions.spaceBefore || buttonOptions.lineBefore || spaceAfter) && $previousButton){
                 $previousButton.addClass('space-zafter');
@@ -1555,10 +1545,10 @@
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){
         options.items = options.items || options.list;
-        options.list = options.list || options.items;
+        options.list = options.list || options.items || [];
 
         //Set options for RadioGroup
-        $.each( options.list, function(index, buttonOptions ){
+        options.list.forEach( buttonOptions => {
             buttonOptions = $._bsAdjustOptions( buttonOptions );
             if (buttonOptions.id && buttonOptions.selected && (!$.isFunction(buttonOptions.selected) || buttonOptions.selected()) ) {
                 options.selectedId = buttonOptions.id;
@@ -1936,14 +1926,13 @@ options
             //Prevent default event and call the users onClick-function instead
             //The onClick-function must bee called with delay to allow update of the input-element
 
-            var _this       = this,
-                options     = this.cbxOptions(),
+            let options     = this.cbxOptions(),
                 state       = this.cbxGetState(),
                 onClickFunc = options.onClick;
 
             setTimeout(function(){
-                onClickFunc(options.id, state, _this);
-            }, 10);
+                onClickFunc(options.id, state, this);
+            }.bind(this), 10);
 
             event.preventDefault();
         }
@@ -2567,7 +2556,7 @@ options
                 return true;
             }
 
-            var _this = this,
+            let _this = this,
                 noty = $.bsNoty({
                     type     : 'info',
                     modal    : true,
@@ -2694,7 +2683,6 @@ options
         *******************************************************/
         onSubmit: function( event/*, data*/ ){
             var form = this.$form.get(0);
-
             if (form.checkValidity()) {
                 this.options.onSubmit ? this.options.onSubmit( this.getValues() ) : null;
                 this.$bsModal._close();
@@ -2702,6 +2690,12 @@ options
                 event.preventDefault();
             }
             else {
+                if (this.options.notyOnError)
+                    window.notyError(
+                        {da: 'Der er fejl i et eller flere felter', en: 'Error in one or more fields'},
+                        {textAlign: 'center', layout: 'center', timeout: 3000}
+                    );
+
                 event.preventDefault();
                 event.stopPropagation();
             }
@@ -3203,12 +3197,12 @@ options
 
         var nofColumns = 1;
         //Adjust options.content and count number of columns
-        $.each(options.content, function( index, rowContent ){
+        options.content.forEach( ( rowContent, index ) => {
             rowContent = $.isArray( rowContent ) ? rowContent : [rowContent];
             nofColumns = Math.max(nofColumns, rowContent.length);
 
             var rowContentObj = {};
-            $.each(rowContent, function( index, cellContent ){
+            rowContent.forEach( ( cellContent, index ) => {
                 rowContentObj['_'+index] = cellContent;
             });
 
@@ -3279,7 +3273,7 @@ options
 
         //Update all items
         var $firstItem, $lastItem;
-        $.each(options.list, function(index, itemOptions){
+        options.list.forEach( itemOptions => {
             var $item  = itemOptions.$item,
                 hidden = !!itemOptions.hidden();
 
@@ -3302,7 +3296,7 @@ options
     $.bsMenu = function( options = {}){
         //Adjust options.list
         var list = options.list = options.list || [];
-        $.each(list, function(index, itemOptions){
+        list.forEach( itemOptions => {
 
             //Set type from other values
             if (!itemOptions.type){
@@ -3353,7 +3347,7 @@ options
             spaceAfter    = false;
 
         //Append the items
-        $.each(list, function(index, itemOptions){
+        list.forEach( (itemOptions, index) => {
             var $item = null,
                 isItemWithSpaceAfter = false,
                 radioGroup = null;
@@ -3425,7 +3419,7 @@ options
     };
 
     function eachBsMenuListItem( itemFunc, values, $this ){
-        $.each($this.data('bsMenu_options').list, function(index, item){
+        $this.data('bsMenu_options').list.forEach( item => {
             if (item.id && ( (item.type == 'checkbox') || (item.type == 'radio') ) )
                 itemFunc(item, values, $this );
         });
@@ -3632,9 +3626,8 @@ options
 
     ZoomControl.prototype = {
         getButtons: function(){
-            var _this = this;
-            this.$zoomOutButton = $.bsButton({type:'button', icon:'fa-search-minus',  text:{da:'Zoom ud',  en:'Zoom Out'}, onClick: _this.zoomOut, context: _this });
-            this.$zoomInButton  = $.bsButton({type:'button', icon:'fa-search-plus',   text:{da:'Zoom ind', en:'Zoom In'},  onClick: _this.zoomIn,  context: _this });
+            this.$zoomOutButton = $.bsButton({type:'button', icon:'fa-search-minus',  text:{da:'Zoom ud',  en:'Zoom Out'}, onClick: this.zoomOut, context: this });
+            this.$zoomInButton  = $.bsButton({type:'button', icon:'fa-search-plus',   text:{da:'Zoom ind', en:'Zoom In'},  onClick: this.zoomIn,  context: this });
 
             return [this.$zoomOutButton, this.$zoomInButton];
         },
@@ -4058,16 +4051,15 @@ jquery-bootstrap-modal-promise.js
         },
 
         reject: function(){
-            var _this = this;
             this.loading = false;
             $.workingOff();
-            $.each(this.ownerList, function(index, ownerOptions){
+            this.ownerList.forEach( ownerOptions => {
                 var owner      = ownerOptions.owner,
-                    rejectFunc = owner._bsModalPromise_Reject || _this.options.reject;
+                    rejectFunc = owner._bsModalPromise_Reject || this.options.reject;
 
                 if (rejectFunc)
                     $.proxy(rejectFunc, owner)();
-            });
+            }, this);
             if (this.options.afterReject)
                 this.options.afterReject();
         },
@@ -4094,17 +4086,16 @@ jquery-bootstrap-modal-promise.js
 
         //updateOwner - update the owners with the new content
         updateOwner: function(){
-            var _this = this;
-            $.each(this.ownerList, function(index, ownerOptions){
+            this.ownerList.forEach( ownerOptions => {
                 //Convert this.data to modal-options
                 var owner        = ownerOptions.owner,
-                    convertFunc  = ownerOptions.getModalOptions || _this.options.getModalOptions || function(data){return data;},
-                    updateFunc   = owner._bsModalPromise_Update || _this.options.update,
-                    modalOptions = $.proxy(convertFunc, owner)(_this.data);
+                    convertFunc  = ownerOptions.getModalOptions || this.options.getModalOptions || function(data){return data;},
+                    updateFunc   = owner._bsModalPromise_Update || this.options.update,
+                    modalOptions = $.proxy(convertFunc, owner)(this.data);
 
                 if (updateFunc)
                     $.proxy(updateFunc, owner)(modalOptions);
-            });
+            }, this);
             if (this.options.afterUpdate)
                 this.options.afterUpdate();
         }
@@ -4329,13 +4320,12 @@ jquery-bootstrap-modal-promise.js
     $._bsModal_closeMethods = $._bsModal_closeMethods || [];
 
     $.fn._bsModalCloseElements = function(){
-        var _this = this;
         //'Close' alle elements (eg. select-box)
-        $.each($._bsModal_closeMethods, function(index, options){
-            _this.find(options.selector).each(function(){
+        $._bsModal_closeMethods.forEach( options => {
+            this.find(options.selector).each(function(){
                 options.method($(this));
             });
-        });
+        }, this);
     };
 
     var currentModal = null;
@@ -4517,7 +4507,6 @@ jquery-bootstrap-modal-promise.js
         Meaning that no new type can be added
         ******************************************************/
         update: function( options ){
-            var _this = this;
             //***********************************************************
             function updateElement($element, newOptions, methodName, param, param2, param3 ){
                 if ($element && newOptions){
@@ -4535,8 +4524,8 @@ jquery-bootstrap-modal-promise.js
             _updateFixedAndFooterInOptions(options);
 
             //Update the tree size-contents
-            $.each([null, 'minimized', 'extended'], function(index, id){
-                var containers     = id ? _this.bsModal[id] : _this.bsModal,
+            [null, 'minimized', 'extended'].forEach( id => {
+                var containers     = id ? this.bsModal[id] : this.bsModal,
                     contentOptions = id ? options[id]       : options;
 
                 if (containers && contentOptions){
@@ -4544,7 +4533,7 @@ jquery-bootstrap-modal-promise.js
                     updateElement(containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext,      contentOptions.contentArg,      options );
                     updateElement(containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
-            });
+            }, this);
             return this;
         },
 
@@ -4615,7 +4604,7 @@ jquery-bootstrap-modal-promise.js
                 $('<div/>')
                     .addClass('modal-body-fixed')
                     .addClass(className || '')
-                    .toggleClass(scrollbarClass, !!options._fixedContentHasScrollClass )
+                    .toggleClass(scrollbarClass,                !!options._fixedContentHasScrollClass )
                     .toggleClass('py-0',                        !!fixedOptions.noVerticalPadding)
                     .toggleClass('pt-0',                        !!fixedOptions.noTopPadding)
                     .toggleClass('pb-0',                        !!fixedOptions.noBottomPadding)
@@ -4671,11 +4660,15 @@ jquery-bootstrap-modal-promise.js
             $modalContent._bsAppendContent( options.content, options.contentContext, options.contentArg, options  );
 
         //Add scroll-event to close any bootstrapopen -select
-        if (hasScroll)
+        if (hasScroll){
             $modalBody.on('scroll', function(){
                 //Close all elements when scrolling
                 $(this).parents('.modal').first()._bsModalCloseElements();
             });
+
+            if (options.onScroll)
+                $modalBody.on('scroll', options.onScroll);
+        }
 
         //Add footer
         parts.$footer =
@@ -4725,7 +4718,7 @@ jquery-bootstrap-modal-promise.js
             var relativeOptions = null;
             if (!getHeightFromOptions(options)){
                 //Save only options different from default
-                $.each(['relativeHeight', 'relativeHeightOffset', 'parentContainerHeight'], function(index, id){
+                ['relativeHeight', 'relativeHeightOffset', 'parentContainerHeight'].forEach( id => {
                     var value = options[id];
                     if (value || (value === 0)){
                         relativeOptions = relativeOptions || {};
@@ -4867,10 +4860,10 @@ jquery-bootstrap-modal-promise.js
 
         //Save parentOptions for dynamic update
         var parentOptions = this.bsModal.parentOptions = {};
-        $.each($.parentOptionsToInherit, function(index, id){
+        $.parentOptionsToInherit.forEach( id => {
             if (options.hasOwnProperty(id))
                 parentOptions[id] = options[id];
-            });
+        });
 
 
         //Adjust for options.buttons: null
@@ -5009,7 +5002,7 @@ jquery-bootstrap-modal-promise.js
 
         //If no button is given focus by options.focus: true => Last button gets focus
         var focusAdded = false;
-        $.each( buttons, function( index, buttonOptions ){
+        buttons.forEach( ( buttonOptions, index ) => {
             if (buttonOptions instanceof $){
                 buttonOptions.appendTo( $modalButtonContainer );
                 $modalButtons.push( buttonOptions );
@@ -5031,7 +5024,7 @@ jquery-bootstrap-modal-promise.js
 
                 //Add onClick from icons (if any)
                 buttonOptions.equalIconId = buttonOptions.equalIconId || '';
-                $.each( buttonOptions.equalIconId.split(' '), function( index, iconId ){
+                buttonOptions.equalIconId.split(' ').forEach( iconId => {
                     if (iconId && options.icons[iconId] && options.icons[iconId].onClick)
                         $button.on('click', options.icons[iconId].onClick);
                 });
@@ -5582,13 +5575,12 @@ jquery-bootstrap-modal-promise.js
         //Add callbacks.onTemplate to add content (and close-icon) by converting the noty uinto a Bootstrap modal
         options.callbacks = options.callbacks || {};
         options.callbacks.onTemplate = function() {
-            var _this           = this,
-                $barDom         = $(this.barDom),
+            let $barDom         = $(this.barDom),
                 $body           = $barDom.find('.noty_body'),
                 closeFunc       = function( event ){
                                       event.stopPropagation();
-                                      _this.close();
-                                   },
+                                      this.close();
+                                   }.bind(this),
                 headerClassName = 'modal-header',
                 icons           = {close: { onClick: closeFunc } };
 
@@ -5636,7 +5628,7 @@ jquery-bootstrap-modal-promise.js
                         closeOnClick: true
                     };
 
-                $.each( buttons, function( index, buttonOptions ){
+                buttons.forEach( buttonOptions => {
                     buttonOptions = $.extend(true, defaultButtonOptions, buttonOptions );
                     var $button = $.bsButton(buttonOptions).appendTo($buttonContainer);
                     if (buttonOptions.closeOnClick)
@@ -6146,21 +6138,22 @@ jquery-bootstrap-modal-promise.js
     //adjustItemOptionsForPopover - Adjust class-name for buttons/items in a popover
     function adjustItemOptionsForPopover(options, listId){
         var result = $.extend({}, options);
-        $.each(options[listId], function(index, itemOptions){
-            var closeOnClickClass = '';
-            //If item has individuel clickOnClick => use it
-            if ($.type(itemOptions.closeOnClick) == 'boolean')
-                closeOnClickClass = itemOptions.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick;
-            else
-                if (!itemOptions.id && !itemOptions.list)
-                    closeOnClickClass = no_popoverCloseOnClick;
+        if (options[listId])
+            options[listId].forEach( (itemOptions, index) => {
+                var closeOnClickClass = '';
+                //If item has individuel clickOnClick => use it
+                if ($.type(itemOptions.closeOnClick) == 'boolean')
+                    closeOnClickClass = itemOptions.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick;
+                else
+                    if (!itemOptions.id && !itemOptions.list)
+                        closeOnClickClass = no_popoverCloseOnClick;
 
-            itemOptions.class = itemOptions.class || '';
-            itemOptions.class = (itemOptions.class ? itemOptions.class + ' ' : '') + closeOnClickClass;
+                itemOptions.class = itemOptions.class || '';
+                itemOptions.class = (itemOptions.class ? itemOptions.class + ' ' : '') + closeOnClickClass;
 
-            //Adjust child-list (if any)
-            result[listId][index] = adjustItemOptionsForPopover(itemOptions, listId);
-        });
+                //Adjust child-list (if any)
+                result[listId][index] = adjustItemOptionsForPopover(itemOptions, listId);
+            });
         return result;
     }
 
@@ -6381,7 +6374,7 @@ options
 
 
         options.optionList = [];
-        $.each( options.list, function( index, itemOptions ){
+        options.list.forEach( itemOptions => {
             var $option =
                     itemOptions.id ?
                     $('<option/>')
@@ -6653,7 +6646,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         sortHeader         : [boolean] false. If true a header-row is added every time the sorted value changes
         createHeaderContent: function(content, $span, sortBy) Create the content of a sort-group-heade insider $span. Optional
 
-        filter       : function(rawValue, colunmOptions) null. Return true if row is included based on single value
+        filter       : function(rawValue, columnOptions) null. Return true if row is included based on single value
 
     }
 
@@ -6672,7 +6665,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 	allowZeroSelected   [boolean] false. If true it is allowed to un-select a selected row
     allowReselect       [Boolean] false. If true the onChange is called when a selected item is reselected/clicked
 
-    defaultColunmOptions: {}. Any of the options for columns to be used as default values
+    defaultColumnOptions: {}. Any of the options for columns to be used as default values
 
     rowClassName      : [] of string. []. Class-names for each row
 
@@ -6736,7 +6729,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
     });
 
-
     var defaultOptions = {
             baseClass           : 'table',
             styleClass          : 'fixed',
@@ -6748,13 +6740,13 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             notFullWidth        : false,
             centerInContainer   : false,
             useTouchSize        : true,
-            defaultColunmOptions: {},
+            defaultColumnOptions: {},
             rowClassName        : [],
 
             stupidtable         : {}
         },
 
-        defaultColunmOptions = {
+        defaultColumnOptions = {
             align               : 'left',
             verticalAlign       : 'middle',
             noWrap              : false,
@@ -6793,65 +6785,29 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     asModal - display the table in a modal-window with fixed header and scrolling content
     **********************************************************/
     $.BSASMODAL.BSTABLE = function( modalOptions = {}){
-        var showHeader = this.find('.no-header').length == 0,
-            _this      = this,
-            $result,
-            count;
+        const showHeader  = !this.hasClass('no-header');
+        const isFullWidth = this.hasClass('table-full-width');
 
-        if (showHeader){
-            //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
-            //Add on-click on the clone to 'pass' the click to the original header
-            this.$theadClone = this.find('thead').clone( true, false );
+        let $result;
 
-            this.$theadClone.find('th').on('click', function( event ){
-                var columnIndex = $(event.delegateTarget).index();
-                _this.sortBy( columnIndex );
-            });
+        if (showHeader)
+            this.$thead_tr = this.find('thead tr');
 
-            this.$tableWithHeader =
-                $('<table/>')
-                    ._bsAddBaseClassAndSize( this.data(dataTableId) )
-                    .addClass('table-with-header')
-                    .append( this.$theadClone );
-            this.$thead = this.find('thead');
-            count  = 20;
-        }
+        $result =
+            $.bsModal(
+                $.extend( modalOptions, {
+                    scroll              : isFullWidth  ? 'horizontal' : true, //Full width set scroll to horizontal to avoid scroll shadow and add overflow-y: scroll in css
+                    flexWidth           : true,
+                    noVerticalPadding   : true,
+                    noHorizontalPadding : isFullWidth,
+                    content             : this,
+                    className           : isFullWidth  ? 'overflow-y-scroll' : '',
+                    onScroll            : showHeader ? function(event){ this.$thead_tr.toggleClass('scroll-top', event.target.scrollTop > 0); }.bind(this) : null
+                })
+            );
 
-        $result = $.bsModal(
-                        $.extend( modalOptions, {
-                            flexWidth        : true,
-                            noVerticalPadding: true,
-                            content          : this,
-                            fixedContent     : this.$tableWithHeader,
-                            _fixedContentHasScrollClass: true,      //Internal options to have scroll-bar-margin on fixed content
-                        })
-                      );
-
-        if (showHeader){
-
+        if (showHeader)
             this._toggleAllColumns();
-
-            //Using timeout to wait for the browser to update DOM and get height of the header
-            var setHeaderHeight = function(){
-                    var height = _this.$tableWithHeader.outerHeight();
-                    if (height <= 0){
-                        count--;
-                        if (count){
-                            //Using timeout to wait for the browser to update DOM and get height of the header
-                            setTimeout( setHeaderHeight, 50 );
-                            return;
-                        }
-                    }
-
-                    _this.setHeaderWidthAndHeight();
-
-                    //Only set header-height once
-                    $result.off('shown.bs.modal.table', setHeaderHeight );
-                };
-
-            $result.on('shown.bs.modal.table', setHeaderHeight );
-            this.$thead.resize( $.proxy(this.setHeaderWidthAndHeight, this) );
-        }
 
         return $result;
     };
@@ -6877,8 +6833,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
-            var _this = this;
-            $.each( options.columns, function( index, columnOptions ){
+            options.columns.forEach((columnOptions, index) => {
                 var content = rowContent[columnOptions.id],
                     $td = $('<td/>').appendTo($tr);
                 adjustThOrTd( $td, columnOptions, !options.showHeader );
@@ -6893,8 +6848,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     $td.data('raw-value', content );
 
                 //Build the content using the createContent-function, _bsAppendContent, or jquery-value-format
-                _this._createTdContent( content, $td, index );
-            });
+                this._createTdContent( content, $td, index );
+            }, this);
 
             //Add rows to radioGroup
             if (options.selectable)
@@ -6945,8 +6900,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         }
         **********************************************************/
         eachRow: function( rowFunc ){
-            var _this = this;
-
             this.find('tbody tr').each( function( rowIndex, tr ){
                 var $tr = $(tr),
                     id = $tr.attr('id'),
@@ -6962,8 +6915,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 });
 
                 //Find the "raw" content eq. before any display adjusting was made and the content used for sorting
-                $.each($tdList, function( columnIndex, $td ){
-                    var column    = _this._getColumn( columnIndex ),
+                $tdList.forEach( function( $td, columnIndex ){
+                    var column    = this._getColumn( columnIndex ),
                         sortValue = $td.data('sort-value'),
                         value     = column.getSortContent ? $td.data('raw-value') : sortValue;
 
@@ -6973,7 +6926,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     sortValueList.push(sortValue);
                     sortValues[column.id] = sortValue;
 
-                });
+                }.bind(this));
 
                 rowFunc({
                     id       : id,
@@ -6989,28 +6942,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     columns: this.columns
 
                 });
-            });
+            }.bind(this));
             return this;
-        },
-
-        /**********************************************************
-        setHeaderWidthAndHeight - Set the width of headers in the cloned table and adjust margin-top
-        **********************************************************/
-        setHeaderWidthAndHeight: function(){
-            var _this   = this,
-                options = _this.data(dataTableId);
-
-            if (options.showHeader){
-                this.$thead.find('th').each(function( index, th ){
-                    _this.$theadClone.find('th:nth-child(' + (index+1) + ')')
-                        .width( $(th).width()+'px' );
-                });
-                this.$tableWithHeader.width( this.width()+'px' );
-
-                //Set the margin-top of the table to hide its own header
-                var headerHeight = _this.$tableWithHeader.outerHeight();
-                this.css('margin-top', -headerHeight + 'px');
-            }
         },
 
 
@@ -7022,7 +6955,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         toggleColumn: function(index, show){
             this.columns[index].hidden = typeof show == 'boolean' ? show : !this.columns[index].hidden;
             this._toggleAllColumns();
-            this.setHeaderWidthAndHeight();
         },
 
         _toggleAllColumns: function(){
@@ -7033,7 +6965,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 this.toggleClass(className, hide);
                 if (this.$tableWithHeader)
                     this.$tableWithHeader.toggleClass(className, hide);
-
             }, this );
         },
 
@@ -7071,44 +7002,33 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         **********************************************************/
         afterTableSort: function(event, sortInfo){
             this.lastSortBy = {
-                    columnIndex: sortInfo.column,
-                    direction  : sortInfo.direction
+                columnIndex: sortInfo.column,
+                direction  : sortInfo.direction
             };
-
-            //Update the class-names of the cloned <thead>
-            var cloneThList = this.$theadClone.find('th');
-            this.find('thead th').each( function( index, th ){
-                $(cloneThList[index])
-                    .removeClass()
-                    .addClass( $(th).attr('class') );
-            });
-
 
             //Update all cells if column.options.updateAfterSorting == true
             var updateColumn = [],
                 updateAnyColumn = false;
 
-            $.each( this.columns, function( index, columnOptions ){
+            this.columns.forEach( ( columnOptions, index ) => {
                 updateColumn[index] = !!columnOptions.updateAfterSorting && !!columnOptions.createContent;
                 updateAnyColumn = updateAnyColumn || updateColumn[index];
             });
 
-            var _this = this;
             if (updateAnyColumn)
                 this.eachRow( function(rowOptions){
-
-                    $.each(updateColumn, function(columnIndex){
-                        if (updateColumn[columnIndex]){
+                    updateColumn.forEach( function(opt, columnIndex){
+                        if (opt){
                             var $td = rowOptions.$tdList[columnIndex];
                             $td.empty();
 
-                            _this._getColumn(columnIndex).createContent(
+                            this._getColumn(columnIndex).createContent(
                                 rowOptions.valueList[columnIndex],
                                 $td,
-                                _this.lastSortBy.columnIndex == columnIndex ? _this.lastSortBy.direction : false
+                                this.lastSortBy.columnIndex == columnIndex ? this.lastSortBy.direction : false
                             );
                         }
-                    });
+                    }.bind(this));
                 });
 
             var column = this._getColumn( sortInfo.column );
@@ -7138,7 +7058,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                         var $newTd = $tdBase.clone(true),
                             $span = $('<span/>').appendTo($newTd);
 
-                        _this._createTdContent( nextHeaderContent, $span/*$newTd*/, column.index, column.createHeaderContent );
+                        this._createTdContent( nextHeaderContent, $span/*$newTd*/, column.index, column.createHeaderContent );
 
                         //Create new row and insert before current row
                         $('<tr/>')
@@ -7148,12 +7068,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
                         lastHeaderContent = nextHeaderContent;
                     }
-                });
+                }.bind(this));
             }
-
-            //Re-calc and update width and height of headers
-            this.setHeaderWidthAndHeight();
-
         },
 
         /**********************************************************
@@ -7163,7 +7079,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             this.find('tbody tr').removeClass('filter-out');
             if (!dontSort)
                 this._resort();
-            this.setHeaderWidthAndHeight();
             return this;
         },
 
@@ -7171,8 +7086,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         filterTable -
         **********************************************************/
         filterTable: function( rowF, columnF ){
-            var _this = this,
-                options = $(this).data(dataTableId),
+            let options = $(this).data(dataTableId),
                 rowFilter = rowF || options.rowFilter,
                 columnFilter = {};
 
@@ -7195,19 +7109,17 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     result = rowFilter(opt.values, opt.id ); //<- HER: Måske nyt navn i stedet for values
                 else {
                     $.each(columnFilter, function(id, filterFunc){
-                        if (!filterFunc(opt.values[id], _this._getColumn(id))){ //<- HER: Måske nyt navn i stedet for values
+                        if (!filterFunc(opt.values[id], this._getColumn(id))){ //<- HER: Måske nyt navn i stedet for values
                             result = false;
                             return false;
                         }
-                    });
+                    }.bind(this));
                 }
                 opt.$tr.toggleClass('filter-out', !result);
-            });
+            }.bind(this));
 
             //Sort table again
             this._resort();
-
-            this.setHeaderWidthAndHeight();
 
             return this;
         }
@@ -7221,15 +7133,20 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         sortId     = 0;
 
     $.bsTable = function( options ){
-
         options = $._bsAdjustOptions( options, defaultOptions );
+
+        //Fixed first column only needed when horizontal scrolling ( = full width)
+        options.firstColumnFixed = options.firstColumnFixed && options.fullWidth;
+
         options.class =
             'jb-table ' +
             (options.verticalBorder && !options.noBorder ? 'table-bordered ' : '' ) +
             (options.noBorder ? 'table-borderless ' : '' ) +
             (options.hoverRow ? 'table-hover ' : '' ) +
             (options.noPadding ? 'table-no-padding ' : '' ) +
+            (options.fullWidth ? 'table-full-width ' : '' ) +
             (options.notFullWidth ? 'table-not-full-width ' : '' ) +
+            (options.firstColumnFixed ? 'table-first-column-fixed ' : '' ) +
             (options.centerInContainer ? 'mx-auto my-0 ' : '' ) +
             (options.selectable ? 'table-selectable ' : '' ) +
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' );
@@ -7237,15 +7154,15 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         //Adjust each column
         var columnIds = {};
 
-        $.each( options.columns, function( index, columnOptions ){
+        options.columns.forEach( ( columnOptions, index ) => {
             columnOptions.sortable = columnOptions.sortable || columnOptions.sortBy;
             columnOptions = $.extend( true,
                 {
                     index    : index,
                     sortIndex: (index+1)*100
                 },
-                defaultColunmOptions,
-                options.defaultColunmOptions,
+                defaultColumnOptions,
+                options.defaultColumnOptions || options.defaultColunmOptions, //Bug fix: Spelling error
                 columnOptions
             );
 
@@ -7282,7 +7199,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         //Create colgroup
         var $colgroup = $('<colgroup/>').appendTo($table);
-        $.each( options.columns, function( index, columnOptions ){
+        options.columns.forEach( columnOptions => {
             var $col = $('<col/>').appendTo( $colgroup );
             if (columnOptions.fixedWidth)
                 $col.attr('width', '1');
@@ -7301,7 +7218,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             multiSortList = []{columnIndex, sortIndex} sorted by sortIndex. Is used be each th to define alternative sort-order
         */
-        $.each( options.columns, function( index, columnOptions ){
+        options.columns.forEach( ( columnOptions, index ) => {
             if (columnOptions.sortable)
                 multiSortList.push( {columnId: columnOptions.id, columnIndex: ''+index, sortIndex: columnOptions.sortIndex });
         });
@@ -7309,7 +7226,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         //Create headers
         if (options.showHeader)
-            $.each( $table.columns, function( index, columnOptions ){
+            $table.columns.forEach( columnOptions => {
                 columnOptions.$th = $('<th/>').appendTo( $tr );
 
                 if (columnOptions.sortable){
@@ -7324,7 +7241,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
                     //Create alternative/secondary columns to sort by
                     var sortMulticolumn = '';
-                    $.each( multiSortList, function( index, multiSort ){
+                    multiSortList.forEach( multiSort => {
                         if (multiSort.columnIndex != columnOptions.index)
                             sortMulticolumn = (sortMulticolumn ? sortMulticolumn + ',' : '') + multiSort.columnIndex;
                     });
@@ -7361,14 +7278,12 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         //Create tbody and all rows
         $table.append( $('<tbody/>') );
 
-        $.each( options.content, function( index, rowContent ){
-            $table.addRow( rowContent );
-        });
+        options.content.forEach( rowContent => $table.addRow( rowContent ) );
 
         if (sortableTable){
             $table.stupidtable( options.stupidtable )
-                .bind('beforetablesort', $.proxy( $table.beforeTableSort, $table ) )
-                .bind('aftertablesort',  $.proxy( $table.afterTableSort,  $table ) );
+                .bind('beforetablesort', $table.beforeTableSort.bind( $table ) )
+                .bind('aftertablesort',  $table.afterTableSort.bind( $table ) );
 
             if (sortDefaultId, sortDefaultDir)
                 $table.sortBy(sortDefaultId, sortDefaultDir);
@@ -7472,7 +7387,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             $contents.height( options.height );
 
 
-        $.each( options.list, function( index, opt ){
+        options.list.forEach( ( opt, index ) => {
             opt = $._bsAdjustOptions( opt );
             var tabId = options.id || id + 'tab' + index,
                 contentId = tabId + 'content',

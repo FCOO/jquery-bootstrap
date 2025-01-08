@@ -127,7 +127,7 @@
                         });
 
         //Adding the children {icon, text, content}
-        $.each( options.list, function( index, opt ){
+        options.list.forEach( ( opt, index ) => {
             //Create the header
             opt = $._bsAdjustOptions( opt );
 
@@ -222,7 +222,7 @@
                     .appendTo( $contentContainer );
 
 
-        }); //End of $.each( options.list, function( index, opt ){
+        }); //End of options.list.forEach( ( opt, index ){
 
         if (options.onChange){
             $result.data('accordion_onChange', options.onChange);

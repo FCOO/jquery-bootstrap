@@ -63,12 +63,12 @@ options
 
         var nofColumns = 1;
         //Adjust options.content and count number of columns
-        $.each(options.content, function( index, rowContent ){
+        options.content.forEach( ( rowContent, index ) => {
             rowContent = $.isArray( rowContent ) ? rowContent : [rowContent];
             nofColumns = Math.max(nofColumns, rowContent.length);
 
             var rowContentObj = {};
-            $.each(rowContent, function( index, cellContent ){
+            rowContent.forEach( ( cellContent, index ) => {
                 rowContentObj['_'+index] = cellContent;
             });
 

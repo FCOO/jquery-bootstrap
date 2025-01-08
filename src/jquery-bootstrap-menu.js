@@ -48,7 +48,7 @@
 
         //Update all items
         var $firstItem, $lastItem;
-        $.each(options.list, function(index, itemOptions){
+        options.list.forEach( itemOptions => {
             var $item  = itemOptions.$item,
                 hidden = !!itemOptions.hidden();
 
@@ -71,7 +71,7 @@
     $.bsMenu = function( options = {}){
         //Adjust options.list
         var list = options.list = options.list || [];
-        $.each(list, function(index, itemOptions){
+        list.forEach( itemOptions => {
 
             //Set type from other values
             if (!itemOptions.type){
@@ -122,7 +122,7 @@
             spaceAfter    = false;
 
         //Append the items
-        $.each(list, function(index, itemOptions){
+        list.forEach( (itemOptions, index) => {
             var $item = null,
                 isItemWithSpaceAfter = false,
                 radioGroup = null;
@@ -194,7 +194,7 @@
     };
 
     function eachBsMenuListItem( itemFunc, values, $this ){
-        $.each($this.data('bsMenu_options').list, function(index, item){
+        $this.data('bsMenu_options').list.forEach( item => {
             if (item.id && ( (item.type == 'checkbox') || (item.type == 'radio') ) )
                 itemFunc(item, values, $this );
         });

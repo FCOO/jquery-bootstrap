@@ -42,7 +42,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         sortHeader         : [boolean] false. If true a header-row is added every time the sorted value changes
         createHeaderContent: function(content, $span, sortBy) Create the content of a sort-group-heade insider $span. Optional
 
-        filter       : function(rawValue, colunmOptions) null. Return true if row is included based on single value
+        filter       : function(rawValue, columnOptions) null. Return true if row is included based on single value
 
     }
 
@@ -61,7 +61,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 	allowZeroSelected   [boolean] false. If true it is allowed to un-select a selected row
     allowReselect       [Boolean] false. If true the onChange is called when a selected item is reselected/clicked
 
-    defaultColunmOptions: {}. Any of the options for columns to be used as default values
+    defaultColumnOptions: {}. Any of the options for columns to be used as default values
 
     rowClassName      : [] of string. []. Class-names for each row
 
@@ -125,7 +125,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
     });
 
-
     var defaultOptions = {
             baseClass           : 'table',
             styleClass          : 'fixed',
@@ -137,13 +136,13 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             notFullWidth        : false,
             centerInContainer   : false,
             useTouchSize        : true,
-            defaultColunmOptions: {},
+            defaultColumnOptions: {},
             rowClassName        : [],
 
             stupidtable         : {}
         },
 
-        defaultColunmOptions = {
+        defaultColumnOptions = {
             align               : 'left',
             verticalAlign       : 'middle',
             noWrap              : false,
@@ -182,65 +181,29 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     asModal - display the table in a modal-window with fixed header and scrolling content
     **********************************************************/
     $.BSASMODAL.BSTABLE = function( modalOptions = {}){
-        var showHeader = this.find('.no-header').length == 0,
-            _this      = this,
-            $result,
-            count;
+        const showHeader  = !this.hasClass('no-header');
+        const isFullWidth = this.hasClass('table-full-width');
 
-        if (showHeader){
-            //Clone the header and place them in fixed-body of the modal. Hide the original header by padding the table
-            //Add on-click on the clone to 'pass' the click to the original header
-            this.$theadClone = this.find('thead').clone( true, false );
+        let $result;
 
-            this.$theadClone.find('th').on('click', function( event ){
-                var columnIndex = $(event.delegateTarget).index();
-                _this.sortBy( columnIndex );
-            });
+        if (showHeader)
+            this.$thead_tr = this.find('thead tr');
 
-            this.$tableWithHeader =
-                $('<table/>')
-                    ._bsAddBaseClassAndSize( this.data(dataTableId) )
-                    .addClass('table-with-header')
-                    .append( this.$theadClone );
-            this.$thead = this.find('thead');
-            count  = 20;
-        }
+        $result =
+            $.bsModal(
+                $.extend( modalOptions, {
+                    scroll              : isFullWidth  ? 'horizontal' : true, //Full width set scroll to horizontal to avoid scroll shadow and add overflow-y: scroll in css
+                    flexWidth           : true,
+                    noVerticalPadding   : true,
+                    noHorizontalPadding : isFullWidth,
+                    content             : this,
+                    className           : isFullWidth  ? 'overflow-y-scroll' : '',
+                    onScroll            : showHeader ? function(event){ this.$thead_tr.toggleClass('scroll-top', event.target.scrollTop > 0); }.bind(this) : null
+                })
+            );
 
-        $result = $.bsModal(
-                        $.extend( modalOptions, {
-                            flexWidth        : true,
-                            noVerticalPadding: true,
-                            content          : this,
-                            fixedContent     : this.$tableWithHeader,
-                            _fixedContentHasScrollClass: true,      //Internal options to have scroll-bar-margin on fixed content
-                        })
-                      );
-
-        if (showHeader){
-
+        if (showHeader)
             this._toggleAllColumns();
-
-            //Using timeout to wait for the browser to update DOM and get height of the header
-            var setHeaderHeight = function(){
-                    var height = _this.$tableWithHeader.outerHeight();
-                    if (height <= 0){
-                        count--;
-                        if (count){
-                            //Using timeout to wait for the browser to update DOM and get height of the header
-                            setTimeout( setHeaderHeight, 50 );
-                            return;
-                        }
-                    }
-
-                    _this.setHeaderWidthAndHeight();
-
-                    //Only set header-height once
-                    $result.off('shown.bs.modal.table', setHeaderHeight );
-                };
-
-            $result.on('shown.bs.modal.table', setHeaderHeight );
-            this.$thead.resize( $.proxy(this.setHeaderWidthAndHeight, this) );
-        }
 
         return $result;
     };
@@ -266,8 +229,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
-            var _this = this;
-            $.each( options.columns, function( index, columnOptions ){
+            options.columns.forEach((columnOptions, index) => {
                 var content = rowContent[columnOptions.id],
                     $td = $('<td/>').appendTo($tr);
                 adjustThOrTd( $td, columnOptions, !options.showHeader );
@@ -282,8 +244,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     $td.data('raw-value', content );
 
                 //Build the content using the createContent-function, _bsAppendContent, or jquery-value-format
-                _this._createTdContent( content, $td, index );
-            });
+                this._createTdContent( content, $td, index );
+            }, this);
 
             //Add rows to radioGroup
             if (options.selectable)
@@ -334,8 +296,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         }
         **********************************************************/
         eachRow: function( rowFunc ){
-            var _this = this;
-
             this.find('tbody tr').each( function( rowIndex, tr ){
                 var $tr = $(tr),
                     id = $tr.attr('id'),
@@ -351,8 +311,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 });
 
                 //Find the "raw" content eq. before any display adjusting was made and the content used for sorting
-                $.each($tdList, function( columnIndex, $td ){
-                    var column    = _this._getColumn( columnIndex ),
+                $tdList.forEach( function( $td, columnIndex ){
+                    var column    = this._getColumn( columnIndex ),
                         sortValue = $td.data('sort-value'),
                         value     = column.getSortContent ? $td.data('raw-value') : sortValue;
 
@@ -362,7 +322,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     sortValueList.push(sortValue);
                     sortValues[column.id] = sortValue;
 
-                });
+                }.bind(this));
 
                 rowFunc({
                     id       : id,
@@ -378,28 +338,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     columns: this.columns
 
                 });
-            });
+            }.bind(this));
             return this;
-        },
-
-        /**********************************************************
-        setHeaderWidthAndHeight - Set the width of headers in the cloned table and adjust margin-top
-        **********************************************************/
-        setHeaderWidthAndHeight: function(){
-            var _this   = this,
-                options = _this.data(dataTableId);
-
-            if (options.showHeader){
-                this.$thead.find('th').each(function( index, th ){
-                    _this.$theadClone.find('th:nth-child(' + (index+1) + ')')
-                        .width( $(th).width()+'px' );
-                });
-                this.$tableWithHeader.width( this.width()+'px' );
-
-                //Set the margin-top of the table to hide its own header
-                var headerHeight = _this.$tableWithHeader.outerHeight();
-                this.css('margin-top', -headerHeight + 'px');
-            }
         },
 
 
@@ -411,7 +351,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         toggleColumn: function(index, show){
             this.columns[index].hidden = typeof show == 'boolean' ? show : !this.columns[index].hidden;
             this._toggleAllColumns();
-            this.setHeaderWidthAndHeight();
         },
 
         _toggleAllColumns: function(){
@@ -422,7 +361,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 this.toggleClass(className, hide);
                 if (this.$tableWithHeader)
                     this.$tableWithHeader.toggleClass(className, hide);
-
             }, this );
         },
 
@@ -460,44 +398,33 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         **********************************************************/
         afterTableSort: function(event, sortInfo){
             this.lastSortBy = {
-                    columnIndex: sortInfo.column,
-                    direction  : sortInfo.direction
+                columnIndex: sortInfo.column,
+                direction  : sortInfo.direction
             };
-
-            //Update the class-names of the cloned <thead>
-            var cloneThList = this.$theadClone.find('th');
-            this.find('thead th').each( function( index, th ){
-                $(cloneThList[index])
-                    .removeClass()
-                    .addClass( $(th).attr('class') );
-            });
-
 
             //Update all cells if column.options.updateAfterSorting == true
             var updateColumn = [],
                 updateAnyColumn = false;
 
-            $.each( this.columns, function( index, columnOptions ){
+            this.columns.forEach( ( columnOptions, index ) => {
                 updateColumn[index] = !!columnOptions.updateAfterSorting && !!columnOptions.createContent;
                 updateAnyColumn = updateAnyColumn || updateColumn[index];
             });
 
-            var _this = this;
             if (updateAnyColumn)
                 this.eachRow( function(rowOptions){
-
-                    $.each(updateColumn, function(columnIndex){
-                        if (updateColumn[columnIndex]){
+                    updateColumn.forEach( function(opt, columnIndex){
+                        if (opt){
                             var $td = rowOptions.$tdList[columnIndex];
                             $td.empty();
 
-                            _this._getColumn(columnIndex).createContent(
+                            this._getColumn(columnIndex).createContent(
                                 rowOptions.valueList[columnIndex],
                                 $td,
-                                _this.lastSortBy.columnIndex == columnIndex ? _this.lastSortBy.direction : false
+                                this.lastSortBy.columnIndex == columnIndex ? this.lastSortBy.direction : false
                             );
                         }
-                    });
+                    }.bind(this));
                 });
 
             var column = this._getColumn( sortInfo.column );
@@ -527,7 +454,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                         var $newTd = $tdBase.clone(true),
                             $span = $('<span/>').appendTo($newTd);
 
-                        _this._createTdContent( nextHeaderContent, $span/*$newTd*/, column.index, column.createHeaderContent );
+                        this._createTdContent( nextHeaderContent, $span/*$newTd*/, column.index, column.createHeaderContent );
 
                         //Create new row and insert before current row
                         $('<tr/>')
@@ -537,12 +464,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
                         lastHeaderContent = nextHeaderContent;
                     }
-                });
+                }.bind(this));
             }
-
-            //Re-calc and update width and height of headers
-            this.setHeaderWidthAndHeight();
-
         },
 
         /**********************************************************
@@ -552,7 +475,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             this.find('tbody tr').removeClass('filter-out');
             if (!dontSort)
                 this._resort();
-            this.setHeaderWidthAndHeight();
             return this;
         },
 
@@ -560,8 +482,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         filterTable -
         **********************************************************/
         filterTable: function( rowF, columnF ){
-            var _this = this,
-                options = $(this).data(dataTableId),
+            let options = $(this).data(dataTableId),
                 rowFilter = rowF || options.rowFilter,
                 columnFilter = {};
 
@@ -584,19 +505,17 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     result = rowFilter(opt.values, opt.id ); //<- HER: Måske nyt navn i stedet for values
                 else {
                     $.each(columnFilter, function(id, filterFunc){
-                        if (!filterFunc(opt.values[id], _this._getColumn(id))){ //<- HER: Måske nyt navn i stedet for values
+                        if (!filterFunc(opt.values[id], this._getColumn(id))){ //<- HER: Måske nyt navn i stedet for values
                             result = false;
                             return false;
                         }
-                    });
+                    }.bind(this));
                 }
                 opt.$tr.toggleClass('filter-out', !result);
-            });
+            }.bind(this));
 
             //Sort table again
             this._resort();
-
-            this.setHeaderWidthAndHeight();
 
             return this;
         }
@@ -610,15 +529,20 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         sortId     = 0;
 
     $.bsTable = function( options ){
-
         options = $._bsAdjustOptions( options, defaultOptions );
+
+        //Fixed first column only needed when horizontal scrolling ( = full width)
+        options.firstColumnFixed = options.firstColumnFixed && options.fullWidth;
+
         options.class =
             'jb-table ' +
             (options.verticalBorder && !options.noBorder ? 'table-bordered ' : '' ) +
             (options.noBorder ? 'table-borderless ' : '' ) +
             (options.hoverRow ? 'table-hover ' : '' ) +
             (options.noPadding ? 'table-no-padding ' : '' ) +
+            (options.fullWidth ? 'table-full-width ' : '' ) +
             (options.notFullWidth ? 'table-not-full-width ' : '' ) +
+            (options.firstColumnFixed ? 'table-first-column-fixed ' : '' ) +
             (options.centerInContainer ? 'mx-auto my-0 ' : '' ) +
             (options.selectable ? 'table-selectable ' : '' ) +
             (options.allowZeroSelected ? 'allow-zero-selected ' : '' );
@@ -626,15 +550,15 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         //Adjust each column
         var columnIds = {};
 
-        $.each( options.columns, function( index, columnOptions ){
+        options.columns.forEach( ( columnOptions, index ) => {
             columnOptions.sortable = columnOptions.sortable || columnOptions.sortBy;
             columnOptions = $.extend( true,
                 {
                     index    : index,
                     sortIndex: (index+1)*100
                 },
-                defaultColunmOptions,
-                options.defaultColunmOptions,
+                defaultColumnOptions,
+                options.defaultColumnOptions || options.defaultColunmOptions, //Bug fix: Spelling error
                 columnOptions
             );
 
@@ -671,7 +595,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         //Create colgroup
         var $colgroup = $('<colgroup/>').appendTo($table);
-        $.each( options.columns, function( index, columnOptions ){
+        options.columns.forEach( columnOptions => {
             var $col = $('<col/>').appendTo( $colgroup );
             if (columnOptions.fixedWidth)
                 $col.attr('width', '1');
@@ -690,7 +614,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             multiSortList = []{columnIndex, sortIndex} sorted by sortIndex. Is used be each th to define alternative sort-order
         */
-        $.each( options.columns, function( index, columnOptions ){
+        options.columns.forEach( ( columnOptions, index ) => {
             if (columnOptions.sortable)
                 multiSortList.push( {columnId: columnOptions.id, columnIndex: ''+index, sortIndex: columnOptions.sortIndex });
         });
@@ -698,7 +622,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         //Create headers
         if (options.showHeader)
-            $.each( $table.columns, function( index, columnOptions ){
+            $table.columns.forEach( columnOptions => {
                 columnOptions.$th = $('<th/>').appendTo( $tr );
 
                 if (columnOptions.sortable){
@@ -713,7 +637,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
                     //Create alternative/secondary columns to sort by
                     var sortMulticolumn = '';
-                    $.each( multiSortList, function( index, multiSort ){
+                    multiSortList.forEach( multiSort => {
                         if (multiSort.columnIndex != columnOptions.index)
                             sortMulticolumn = (sortMulticolumn ? sortMulticolumn + ',' : '') + multiSort.columnIndex;
                     });
@@ -750,14 +674,12 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         //Create tbody and all rows
         $table.append( $('<tbody/>') );
 
-        $.each( options.content, function( index, rowContent ){
-            $table.addRow( rowContent );
-        });
+        options.content.forEach( rowContent => $table.addRow( rowContent ) );
 
         if (sortableTable){
             $table.stupidtable( options.stupidtable )
-                .bind('beforetablesort', $.proxy( $table.beforeTableSort, $table ) )
-                .bind('aftertablesort',  $.proxy( $table.afterTableSort,  $table ) );
+                .bind('beforetablesort', $table.beforeTableSort.bind( $table ) )
+                .bind('aftertablesort',  $table.afterTableSort.bind( $table ) );
 
             if (sortDefaultId, sortDefaultDir)
                 $table.sortBy(sortDefaultId, sortDefaultDir);

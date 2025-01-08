@@ -52,7 +52,7 @@
         if (options._class)
             newClass.push(options._class);
 
-        $.each( optionToClassName, function( id, className ){
+        $.each( optionToClassName, ( id, className ) => {
             if (options[id] && (!$.isFunction(options[id]) || options[id]()))
                 newClass.push(className);
         });
@@ -258,8 +258,8 @@
             var subtextArray = $.isArray(options.subtext) ? options.subtext : [options.subtext];
             subtext = {};
 
-            $.each( subtextArray, function(index, next_subtext){
-                $.each($._bsAdjustText( next_subtext ), function(lang, text){
+            subtextArray.forEach( next_subtext => {
+                $.each($._bsAdjustText( next_subtext ), (lang, text) => {
                     subtext[lang] = subtext[lang] || '';
                     if (subtext[lang] && text)
                         subtext[lang] += separator;
@@ -345,7 +345,7 @@
             ._bsAddBaseClassAndSize( options );
 
         //Transfere generel button-options to buttonOptions
-        $.each(['square', 'bigSquare', 'bigIcon', 'extraLargeIcon'], function(index, id){
+        ['square', 'bigSquare', 'bigIcon', 'extraLargeIcon'].forEach( id => {
             if ((options[id] !== undefined) && (options.buttonOptions[id] === undefined))
                 options.buttonOptions[id] = options[id];
         });
@@ -383,7 +383,7 @@
 
         var $previousButton = null,
             spaceAfter     = false;
-        $.each( options.list, function(index, buttonOptions ){
+        options.list.forEach( buttonOptions => {
 
            if ((buttonOptions.spaceBefore || buttonOptions.lineBefore || spaceAfter) && $previousButton){
                 $previousButton.addClass('space-zafter');
@@ -421,10 +421,10 @@
     **********************************************************/
     $.bsRadioButtonGroup = function( options ){
         options.items = options.items || options.list;
-        options.list = options.list || options.items;
+        options.list = options.list || options.items || [];
 
         //Set options for RadioGroup
-        $.each( options.list, function(index, buttonOptions ){
+        options.list.forEach( buttonOptions => {
             buttonOptions = $._bsAdjustOptions( buttonOptions );
             if (buttonOptions.id && buttonOptions.selected && (!$.isFunction(buttonOptions.selected) || buttonOptions.selected()) ) {
                 options.selectedId = buttonOptions.id;

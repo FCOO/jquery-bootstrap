@@ -220,13 +220,12 @@
         //Add callbacks.onTemplate to add content (and close-icon) by converting the noty uinto a Bootstrap modal
         options.callbacks = options.callbacks || {};
         options.callbacks.onTemplate = function() {
-            var _this           = this,
-                $barDom         = $(this.barDom),
+            let $barDom         = $(this.barDom),
                 $body           = $barDom.find('.noty_body'),
                 closeFunc       = function( event ){
                                       event.stopPropagation();
-                                      _this.close();
-                                   },
+                                      this.close();
+                                   }.bind(this),
                 headerClassName = 'modal-header',
                 icons           = {close: { onClick: closeFunc } };
 
@@ -274,7 +273,7 @@
                         closeOnClick: true
                     };
 
-                $.each( buttons, function( index, buttonOptions ){
+                buttons.forEach( buttonOptions => {
                     buttonOptions = $.extend(true, defaultButtonOptions, buttonOptions );
                     var $button = $.bsButton(buttonOptions).appendTo($buttonContainer);
                     if (buttonOptions.closeOnClick)

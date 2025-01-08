@@ -214,13 +214,12 @@
     $._bsModal_closeMethods = $._bsModal_closeMethods || [];
 
     $.fn._bsModalCloseElements = function(){
-        var _this = this;
         //'Close' alle elements (eg. select-box)
-        $.each($._bsModal_closeMethods, function(index, options){
-            _this.find(options.selector).each(function(){
+        $._bsModal_closeMethods.forEach( options => {
+            this.find(options.selector).each(function(){
                 options.method($(this));
             });
-        });
+        }, this);
     };
 
     var currentModal = null;
@@ -402,7 +401,6 @@
         Meaning that no new type can be added
         ******************************************************/
         update: function( options ){
-            var _this = this;
             //***********************************************************
             function updateElement($element, newOptions, methodName, param, param2, param3 ){
                 if ($element && newOptions){
@@ -420,8 +418,8 @@
             _updateFixedAndFooterInOptions(options);
 
             //Update the tree size-contents
-            $.each([null, 'minimized', 'extended'], function(index, id){
-                var containers     = id ? _this.bsModal[id] : _this.bsModal,
+            [null, 'minimized', 'extended'].forEach( id => {
+                var containers     = id ? this.bsModal[id] : this.bsModal,
                     contentOptions = id ? options[id]       : options;
 
                 if (containers && contentOptions){
@@ -429,7 +427,7 @@
                     updateElement(containers.$content,      contentOptions.content,      '_bsAppendContent', contentOptions.contentContext,      contentOptions.contentArg,      options );
                     updateElement(containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
-            });
+            }, this);
             return this;
         },
 
@@ -500,7 +498,7 @@
                 $('<div/>')
                     .addClass('modal-body-fixed')
                     .addClass(className || '')
-                    .toggleClass(scrollbarClass, !!options._fixedContentHasScrollClass )
+                    .toggleClass(scrollbarClass,                !!options._fixedContentHasScrollClass )
                     .toggleClass('py-0',                        !!fixedOptions.noVerticalPadding)
                     .toggleClass('pt-0',                        !!fixedOptions.noTopPadding)
                     .toggleClass('pb-0',                        !!fixedOptions.noBottomPadding)
@@ -556,11 +554,15 @@
             $modalContent._bsAppendContent( options.content, options.contentContext, options.contentArg, options  );
 
         //Add scroll-event to close any bootstrapopen -select
-        if (hasScroll)
+        if (hasScroll){
             $modalBody.on('scroll', function(){
                 //Close all elements when scrolling
                 $(this).parents('.modal').first()._bsModalCloseElements();
             });
+
+            if (options.onScroll)
+                $modalBody.on('scroll', options.onScroll);
+        }
 
         //Add footer
         parts.$footer =
@@ -610,7 +612,7 @@
             var relativeOptions = null;
             if (!getHeightFromOptions(options)){
                 //Save only options different from default
-                $.each(['relativeHeight', 'relativeHeightOffset', 'parentContainerHeight'], function(index, id){
+                ['relativeHeight', 'relativeHeightOffset', 'parentContainerHeight'].forEach( id => {
                     var value = options[id];
                     if (value || (value === 0)){
                         relativeOptions = relativeOptions || {};
@@ -752,10 +754,10 @@
 
         //Save parentOptions for dynamic update
         var parentOptions = this.bsModal.parentOptions = {};
-        $.each($.parentOptionsToInherit, function(index, id){
+        $.parentOptionsToInherit.forEach( id => {
             if (options.hasOwnProperty(id))
                 parentOptions[id] = options[id];
-            });
+        });
 
 
         //Adjust for options.buttons: null
@@ -894,7 +896,7 @@
 
         //If no button is given focus by options.focus: true => Last button gets focus
         var focusAdded = false;
-        $.each( buttons, function( index, buttonOptions ){
+        buttons.forEach( ( buttonOptions, index ) => {
             if (buttonOptions instanceof $){
                 buttonOptions.appendTo( $modalButtonContainer );
                 $modalButtons.push( buttonOptions );
@@ -916,7 +918,7 @@
 
                 //Add onClick from icons (if any)
                 buttonOptions.equalIconId = buttonOptions.equalIconId || '';
-                $.each( buttonOptions.equalIconId.split(' '), function( index, iconId ){
+                buttonOptions.equalIconId.split(' ').forEach( iconId => {
                     if (iconId && options.icons[iconId] && options.icons[iconId].onClick)
                         $button.on('click', options.icons[iconId].onClick);
                 });

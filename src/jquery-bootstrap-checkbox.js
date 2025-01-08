@@ -127,14 +127,13 @@
             //Prevent default event and call the users onClick-function instead
             //The onClick-function must bee called with delay to allow update of the input-element
 
-            var _this       = this,
-                options     = this.cbxOptions(),
+            let options     = this.cbxOptions(),
                 state       = this.cbxGetState(),
                 onClickFunc = options.onClick;
 
             setTimeout(function(){
-                onClickFunc(options.id, state, _this);
-            }, 10);
+                onClickFunc(options.id, state, this);
+            }.bind(this), 10);
 
             event.preventDefault();
         }

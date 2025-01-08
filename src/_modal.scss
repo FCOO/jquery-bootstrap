@@ -235,6 +235,7 @@ div.modal-dialog {
                 align-items    : center;
                 justify-content: center;
             }
+
          }
 
 
@@ -367,11 +368,17 @@ div.modal-dialog {
 
 //Adjust padding-left and padding-right if the body is a scroll
 div.modal-dialog {
-    //Fixed content has never scroll, but gets same left/right padding as main content
-    .modal-body-fixed.scrollbar-vertical  {
+    //Fixed content has never scroll, but gets same left/right padding as main content when main content has vertical scroll
+    .modal-body-fixed.scrollbar-vertical {
         html.no-touchevents & {
             padding-left : $scroll-padding;
-            padding-right: $scroll-auto-padding;
+            padding-right: $scroll-padding !important;
+        }
+    }
+
+    .modal-body-fixed.scrollbar-both  {
+        html.no-touchevents & {
+            padding-right: $scroll-padding !important;
         }
     }
 

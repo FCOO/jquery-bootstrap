@@ -70,7 +70,7 @@
 
 
         options.optionList = [];
-        $.each( options.list, function( index, itemOptions ){
+        options.list.forEach( itemOptions => {
             var $option =
                     itemOptions.id ?
                     $('<option/>')

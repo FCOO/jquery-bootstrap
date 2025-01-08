@@ -459,7 +459,7 @@
                 return true;
             }
 
-            var _this = this,
+            let _this = this,
                 noty = $.bsNoty({
                     type     : 'info',
                     modal    : true,
@@ -586,7 +586,6 @@
         *******************************************************/
         onSubmit: function( event/*, data*/ ){
             var form = this.$form.get(0);
-
             if (form.checkValidity()) {
                 this.options.onSubmit ? this.options.onSubmit( this.getValues() ) : null;
                 this.$bsModal._close();
@@ -594,6 +593,12 @@
                 event.preventDefault();
             }
             else {
+                if (this.options.notyOnError)
+                    window.notyError(
+                        {da: 'Der er fejl i et eller flere felter', en: 'Error in one or more fields'},
+                        {textAlign: 'center', layout: 'center', timeout: 3000}
+                    );
+
                 event.preventDefault();
                 event.stopPropagation();
             }

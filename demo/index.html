@@ -15,6 +15,43 @@
     <link  href="demo.css" rel="stylesheet">
 
     <style>
+/* style the HTML table */
+table#fixed-headers {
+    display: block;
+    width: 50em;
+    max-width: 100%;
+    position: relative;
+}
+/* this will active the scrollbar */
+#fixed-headers {
+  border-collapse: collapse;
+  height: 300px; 
+  display: block; 
+  overflow: auto; 
+}
+/* force the cells to have the same width */
+#fixed-headers td {
+  padding: 0 4em !important; 
+  border: 1px solid #eee  !important;
+}
+#fixed-headers thead {
+  transform: translateZ(0);
+}
+#fixed-headers thead th {
+    background: #999;
+    text-align: center;
+}
+#fixed-headers tbody th {
+    text-align: right;
+    background: #999;
+    transform: translateZ(0);
+}    
+ 
+   
+   
+   
+   
+   
         _html {
             height  : 100%;
             overflow: hidden;
@@ -79,6 +116,7 @@
     <script>
         window.bsIsTouch = false;
         window.bsIsTouch = (window.location.search =='?touch');
+
     </script>
     <script src="bower_components.js"></script>
     <!-- <script src="../src/bootstrap-popover-extensions.js"></script> -->
@@ -1104,9 +1142,11 @@ longTableContent[i].stargazers_count = i;
 
             allowZeroSelected: true,
             allowReselect: true,
+            fullWidth: true,
+            firstColumnFixed: true,
             columns: [
-                { id: 'no',                                 align: 'center', header: '#',     width: '1rem', noHorizontalPadding: true},
-                { id: 'name',               _noWrap: true,   align: 'left',   header: {icon:'fa-home', text:{da:'Navn', en:'Name'}},  sortable: true, sortHeader: true, sortIndex:1000,
+                //{ id: 'no',                                 align: 'center', header: '#',     width: '1rem', noHorizontalPadding: true},
+                { id: 'name',               _noWrap: true,   align: 'left',   header: {icon:'fa-home', text:{da:'Navn', en:'Name'}},  sortable: true, sortHeader: true, sortIndex:1000, sortDefault: true
 
                     /* TEST
                     updateAfterSorting: true,
@@ -1134,9 +1174,9 @@ longTableContent[i].stargazers_count = i;
                     },
 
                 },
-                { id: 'date',                               align: 'center', header: 'Date',  vfFormat:"myMomentFormat",             sortable: true, sortBy:'moment', sortDefault: true/*'desc'*/},
+                { id: 'date',                               align: 'center', header: 'Date<br>ny linje',  vfFormat:"myMomentFormat",             sortable: true, sortBy:'moment', _sortDefault: true/*'desc'*/},
                 { id: 'forks_count',        _noWrap: true,   header: 'Forks', align: 'center'},
-//                { id: 'description',        truncate: true, header:{icon: 'fa-home', text: 'Description'}}
+                { id: 'description',        truncate: true, header:{icon: 'fa-home', text: 'Description'}, _width:'100em'}
             ],
             content: longTableContent,
             rowClassName: ['dette-er-en-test']
@@ -1154,7 +1194,7 @@ longTableContent[i].stargazers_count = i;
             closeText: {da:"Luk og rejs", en:"Close and go"},
             flexWidth:true,
             extraWidth: true,
-            static: true,
+            //static: true,
 
 //maxHeight: 400,
 //relativeHeight: 0.65,
@@ -1709,6 +1749,7 @@ width: 543,
                         console.log( 'SUBMIT=', data['formId2-1'], data ); 
                         myData = data; 
                     },
+                    notyOnError: true,
                     onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
                     useExtended: true,
                     isExtended: true,
@@ -2923,19 +2964,37 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
 </div>
 
 
+<table id="fixed-headers"><thead><tr><th style="transform: translateY(0px);">&nbsp;</th><th style="transform: translateY(0px);">Jan</th><th style="transform: translateY(0px);">Feb</th><th style="transform: translateY(0px);">Mar</th><th style="transform: translateY(0px);">Apr</th><th style="transform: translateY(0px);">May</th><th style="transform: translateY(0px);">Jun</th><th style="transform: translateY(0px);">Jul</th><th style="transform: translateY(0px);">Aug</th><th style="transform: translateY(0px);">Sep</th><th style="transform: translateY(0px);">Oct</th><th style="transform: translateY(0px);">Nov</th><th style="transform: translateY(0px);">Dec</th></tr></thead><tbody><tr><th style="transform: translateX(0px);">1st</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">2nd</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">3rd</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">4th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">5th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">6th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">7th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">8th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">9th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">10th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">11th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">12th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">13th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">14th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">15th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">16th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">17th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">18th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">19th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">20th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">21st</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">22nd</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">23rd</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">24th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">25th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">26th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">27th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">28th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">29th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">30th</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th style="transform: translateX(0px);">31st</th><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table>
+<br><br><br><br><br><br><br><br>Slut
+
 
 <script>
-    $.bsProgressBar({id:'pbTest', width: 200}).appendTo($body);
-    var v = 0;
-    function test(){
-        v = v + 2;
-        $('#pbTest')
-            ._pb_setValue(v)
-        if (v < 100)
-        window.setTimeout( test, 200);
-    }        
-    window.setTimeout( test, 3000);
+//HER       $.bsProgressBar({id:'pbTest', width: 200}).appendTo($body);
+//HER       var v = 0;
+//HER       function test(){
+//HER           v = v + 2;
+//HER           $('#pbTest')
+//HER               ._pb_setValue(v)
+//HER           if (v < 100)
+//HER           window.setTimeout( test, 200);
+//HER       }        
+//HER       window.setTimeout( test, 3000);
+    
+    $('html').modernizrToggle('touchevents', !!window.bsIsTouch);
+
+    
+    $(function() {
+        $('#fixed-headers').scroll(function(ev) {
+            /**
+            * where the table scroll, change the position of header and first column
+            */
+            $('thead th').css('transform', 'translateY(' + this.scrollTop + 'px)');
+            $('tbody th').css('transform', 'translateX(' + this.scrollLeft + 'px)');
+        });
+    });    
+    
 </script>
+
 
 </body>
 </html>

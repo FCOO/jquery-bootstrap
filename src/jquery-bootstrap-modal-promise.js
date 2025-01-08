@@ -63,16 +63,15 @@ jquery-bootstrap-modal-promise.js
         },
 
         reject: function(){
-            var _this = this;
             this.loading = false;
             $.workingOff();
-            $.each(this.ownerList, function(index, ownerOptions){
+            this.ownerList.forEach( ownerOptions => {
                 var owner      = ownerOptions.owner,
-                    rejectFunc = owner._bsModalPromise_Reject || _this.options.reject;
+                    rejectFunc = owner._bsModalPromise_Reject || this.options.reject;
 
                 if (rejectFunc)
                     $.proxy(rejectFunc, owner)();
-            });
+            }, this);
             if (this.options.afterReject)
                 this.options.afterReject();
         },
@@ -99,17 +98,16 @@ jquery-bootstrap-modal-promise.js
 
         //updateOwner - update the owners with the new content
         updateOwner: function(){
-            var _this = this;
-            $.each(this.ownerList, function(index, ownerOptions){
+            this.ownerList.forEach( ownerOptions => {
                 //Convert this.data to modal-options
                 var owner        = ownerOptions.owner,
-                    convertFunc  = ownerOptions.getModalOptions || _this.options.getModalOptions || function(data){return data;},
-                    updateFunc   = owner._bsModalPromise_Update || _this.options.update,
-                    modalOptions = $.proxy(convertFunc, owner)(_this.data);
+                    convertFunc  = ownerOptions.getModalOptions || this.options.getModalOptions || function(data){return data;},
+                    updateFunc   = owner._bsModalPromise_Update || this.options.update,
+                    modalOptions = $.proxy(convertFunc, owner)(this.data);
 
                 if (updateFunc)
                     $.proxy(updateFunc, owner)(modalOptions);
-            });
+            }, this);
             if (this.options.afterUpdate)
                 this.options.afterUpdate();
         }

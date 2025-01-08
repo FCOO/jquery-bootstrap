@@ -8,12 +8,14 @@ Adjustmernt to Bootstrap table
     @include padding-variant  ( 'table-cell', $size );
 }
 
+
 .table.jb-table {
     /*******************************************************
     For some (unknown) reason the height of the table needs
     to be 1px to allow height=100% of elements inside td
     ********************************************************/
     height: 1px;
+
 
     /*******************************************************
     For some (unknown) reason the padding and font-size of
@@ -53,6 +55,13 @@ Adjustmernt to Bootstrap table
         --#{$prefix}table-cell-padding-y: 0;
     }
 
+
+
+    &.table-full-width {
+        width: max-content;
+    }
+
+
     //Not full width (100%)
     &.table-not-full-width {
         width: inherit !important;
@@ -62,36 +71,47 @@ Adjustmernt to Bootstrap table
     Header
     *************************************/
     thead {
-        tr th {
-            cursor: default;
-            &.sortable {
-                cursor: pointer;
+        tr {
+            position: sticky;
+            top     : 0px;
+            z-index : 100;
 
-                background-position: right center;
-                background-repeat: no-repeat;
-                background-size: 0.8em;
+            &.scroll-top {
+                box-shadow: 0px 1px 6px 0px black;
+            }
 
-                padding-right: 1em; //Make space for sort-direction icons
-                &.text-center {
-                    padding-left: .5em; //Center text
-                }
+            th {
+                cursor: default;
 
-                // src/_images/table-thead-background-image-sort-arrows-no-sort.png
-                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwRJC7Z4CQBAAACPklEQVRo3u3Zu07DMBQG4N/EiA0hwQCIoRtMPAKoKzBCC2nLG8ALMCAGXgAWZi4pDR2BNRKPwAQbAwKGIrEiEh2GMqBc7VNbpahnqpyo/1dHjexjAXb5TlSlXUAcOa1KxP0WwY//OhVu9zN5o9tcAhPwO743AgsQj++FwAD4TniGrZQLTdnQJ2gDMuOZBE1AbjyLoAXwnfAcmwU3Xcq6DkEDoBSvTVAGKMdrEhQBvvN1IaqqWIBaozU1ghJAN16HoADgxKsTCgHceFXCSP7lQIYeNx4Q1dALZA8zEMjXC1S48T/lz9TKIQtgJL6QkAkI5JtHGwbiAYiraTeLkAEwGZ9PSAWYjs8jpAAC+drEutl4AEB7ZitJSPkbvuxbiQfWX/YVZuB27OMZU1YAQGdibuWzYAbeS9bigan3UnwoAWg84s4a4K7xWAgAsCOuQcbDSVxjJzmc8R44nxOGHwR16s/Gf9SwhjWsYf2L6vurOAXgLYpDWuW3r7IE4ob23Pv4cNq24ZiWDIcDgKA1jGO5cAbO5p0HC/E/FS3EVwSJ9cDkEzrW8juTT/GhBGDlk05s5dNJfEWYuiKaPUDbSn579iA5+Bc3JjYImlsz04S8zWlmg6IcTrvwjeT72fF/u0FhhFAQX9gjKofSpRY3nVrSzY8fhDYdl2CwUckhGG7Vdgl9bVZrEey065UJmgcWI+q3ApVI1tHMvaWpFz94h1a5BNaxndYj6FYlkg3y4qPkceIH9eg2TujD4XWXYOL4/htN/xm86wMQxwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wNy0xMlQxNzozNjo0NiswMjowMGyLBscAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDctMTJUMTc6MzY6NDYrMDI6MDAd1r57AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAABJRU5ErkJggg==');
+                &.sortable {
+                    cursor: pointer;
 
-                //Border-bottom-color darker when column is sorted
-                &.sorting-asc, &.sorting-desc {
-                    box-shadow: inset 0px calc(-#{$border-width} - 2px) 0px 0px #{$jb-structure-border-color};
-                }
+                    background-position: right center;
+                    background-repeat: no-repeat;
+                    background-size: 0.8em;
 
-                &.sorting-asc {
-                    // src/_images/table-thead-background-image-sort-arrows-sort-asc.png
-                    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPOR4W7fbLAAACBklEQVRo3u2ZvU7CUBSAz7FldcEBiYuTJiQ+goZVXS1awCcwvoATgy+gDswCRSqrs+9gYqKLYTDRgRcgtLmOEuv9Oz23MZEzNbTc70vbe3vOuQjkqInv42ekjoIc+DwKyIOnKyAXnqqAfHiaAnLiKQrIi7dXQG68rQLy4+0U0AXeRgHd4M0V0BXeVAHd4c0U0CXeRGFFffrRh5yhGwHVfz6bQ+64KdUTkgAPXqeA7vFqBSwCr1LAYvByBSwKL1NA/plvtypk1oHaGziM7OjZhWjTpUB29L/3CIoOdPMJ4kral7GMZSzjP4Rkeexv4BovSExb74YC0Q5eigPgXrkFPoiL8Onnz7+VDddi18W9FoewCnvaO9Db8l7cPfF0u/2qyQfKE5g640/LE21Csj8TXVd80d2fGWRE1Q6MnfDH1Y5xYfIZiSPmd/C+EhoWJi4UZHhlccqnIMcrsuJ6UgkhZuHHcry2QfExgCAvfr1JbFCwKGjw2sKknvihGJHn/cgP1XijNl3szQfYoOBLzSAlfo7zK5jhjVu1tgqmeItmdewlfTg2vPjOb5nhrdr1xgoWeMsNCyMFK7xlfyBI/RYMlZcM7fCETavYS3pwIsW37fCkbTupAgFPatEEqd8WUWbiRRQ8ees29ua3GC7iS6cUfI7N60UFOh7ylB+xlzbEOQBeeSMqHuALEGzMJuIB3qEAAAAASUVORK5CYII=');
-                }
+                    padding-right: 1em; //Make space for sort-direction icons
+                    &.text-center {
+                        padding-left: .5em; //Center text
+                    }
 
-                &.sorting-desc {
-                    // src/_images/table-thead-background-image-sort-arrows-sort-desc.png
-                    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPNhKYw6YvAAAB9klEQVRo3u2ZP04CURCHZ2CJrQWFJBT0nsLWGkH+eQLxCtzBeAKFRdCS2G7CHaagoiFoAYmtYclaWCm7+2Zm3zOa7FQkkN/38R67y5tBUNe0uG9GNwB4W5w09toU1ON399j+eh35pSutAmbHZ1NAG/gsCqjBhw/Qinlj7PXkCmgNr1RAi3iVAgrxQ7g0fOjR60oU0DJerIDW8UIFZF94I2zyVyualDo8BXSBlyigGzxfAV3huQqF9LcDL/S1eABshn7gZViBwHsdQQOy1bTSOQtVAlbwRgVMxr/50QVYKXw6aScpoHt8ugL+Bj5NAWP3fgx1sF/PldahQsxluB44wQPU1wPGCrwcva+gDG5qc1w9/zCswLbmDA9Q3taMW9BbwNyZwLy34NyK+ziDyDo8whn02feBYRUtb0S06a4gr7zyyisv/l+yU/vPAiBkCriAJ0sU/twWuPz+cWtwuAJLp/zlf/gN3JVc4eOSEw4m1zsXeObBxI1CPD71cGpTIQlvOJ7bUkjGGxsUNhTS8MYeUXaFdDyjSZX1rkCoehraUiBjPqtRqVUgRjqzVatRIFY2u1ktVSBmsqBdL1Egdq5oYMFVIEGqcGTDUSBRpnhoZVIgYaJibJemQOI81eAySYEUacrRbZwCqbLUw+ufCqRMUgt8VyB1ziesOMqPm7tGQgAAAABJRU5ErkJggg==');
+                    // src/_images/table-thead-background-image-sort-arrows-no-sort.png
+                    background-image:   url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QAAKqNIzIAAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwRJC7Z4CQBAAACPklEQVRo3u3Zu07DMBQG4N/EiA0hwQCIoRtMPAKoKzBCC2nLG8ALMCAGXgAWZi4pDR2BNRKPwAQbAwKGIrEiEh2GMqBc7VNbpahnqpyo/1dHjexjAXb5TlSlXUAcOa1KxP0WwY//OhVu9zN5o9tcAhPwO743AgsQj++FwAD4TniGrZQLTdnQJ2gDMuOZBE1AbjyLoAXwnfAcmwU3Xcq6DkEDoBSvTVAGKMdrEhQBvvN1IaqqWIBaozU1ghJAN16HoADgxKsTCgHceFXCSP7lQIYeNx4Q1dALZA8zEMjXC1S48T/lz9TKIQtgJL6QkAkI5JtHGwbiAYiraTeLkAEwGZ9PSAWYjs8jpAAC+drEutl4AEB7ZitJSPkbvuxbiQfWX/YVZuB27OMZU1YAQGdibuWzYAbeS9bigan3UnwoAWg84s4a4K7xWAgAsCOuQcbDSVxjJzmc8R44nxOGHwR16s/Gf9SwhjWsYf2L6vurOAXgLYpDWuW3r7IE4ob23Pv4cNq24ZiWDIcDgKA1jGO5cAbO5p0HC/E/FS3EVwSJ9cDkEzrW8juTT/GhBGDlk05s5dNJfEWYuiKaPUDbSn579iA5+Bc3JjYImlsz04S8zWlmg6IcTrvwjeT72fF/u0FhhFAQX9gjKofSpRY3nVrSzY8fhDYdl2CwUckhGG7Vdgl9bVZrEey065UJmgcWI+q3ApVI1tHMvaWpFz94h1a5BNaxndYj6FYlkg3y4qPkceIH9eg2TujD4XWXYOL4/htN/xm86wMQxwAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxNy0wNy0xMlQxNzozNjo0NiswMjowMGyLBscAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTctMDctMTJUMTc6MzY6NDYrMDI6MDAd1r57AAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAABJRU5ErkJggg==');
+
+                    //Border-bottom-color darker when column is sorted
+                    &.sorting-asc, &.sorting-desc {
+                        box-shadow: inset 0px calc(-#{$border-width} - 2px) 0px 0px #{$jb-structure-border-color};
+                    }
+
+                    &.sorting-asc {
+                        // src/_images/table-thead-background-image-sort-arrows-sort-asc.png
+                        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPOR4W7fbLAAACBklEQVRo3u2ZvU7CUBSAz7FldcEBiYuTJiQ+goZVXS1awCcwvoATgy+gDswCRSqrs+9gYqKLYTDRgRcgtLmOEuv9Oz23MZEzNbTc70vbe3vOuQjkqInv42ekjoIc+DwKyIOnKyAXnqqAfHiaAnLiKQrIi7dXQG68rQLy4+0U0AXeRgHd4M0V0BXeVAHd4c0U0CXeRGFFffrRh5yhGwHVfz6bQ+64KdUTkgAPXqeA7vFqBSwCr1LAYvByBSwKL1NA/plvtypk1oHaGziM7OjZhWjTpUB29L/3CIoOdPMJ4kral7GMZSzjP4Rkeexv4BovSExb74YC0Q5eigPgXrkFPoiL8Onnz7+VDddi18W9FoewCnvaO9Db8l7cPfF0u/2qyQfKE5g640/LE21Csj8TXVd80d2fGWRE1Q6MnfDH1Y5xYfIZiSPmd/C+EhoWJi4UZHhlccqnIMcrsuJ6UgkhZuHHcry2QfExgCAvfr1JbFCwKGjw2sKknvihGJHn/cgP1XijNl3szQfYoOBLzSAlfo7zK5jhjVu1tgqmeItmdewlfTg2vPjOb5nhrdr1xgoWeMsNCyMFK7xlfyBI/RYMlZcM7fCETavYS3pwIsW37fCkbTupAgFPatEEqd8WUWbiRRQ8ees29ua3GC7iS6cUfI7N60UFOh7ylB+xlzbEOQBeeSMqHuALEGzMJuIB3qEAAAAASUVORK5CYII=');
+                    }
+
+                    &.sorting-desc {
+                        // src/_images/table-thead-background-image-sort-arrows-sort-desc.png
+                        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAQAAAAAYLlVAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhBwwPNhKYw6YvAAAB9klEQVRo3u2ZP04CURCHZ2CJrQWFJBT0nsLWGkH+eQLxCtzBeAKFRdCS2G7CHaagoiFoAYmtYclaWCm7+2Zm3zOa7FQkkN/38R67y5tBUNe0uG9GNwB4W5w09toU1ON399j+eh35pSutAmbHZ1NAG/gsCqjBhw/Qinlj7PXkCmgNr1RAi3iVAgrxQ7g0fOjR60oU0DJerIDW8UIFZF94I2zyVyualDo8BXSBlyigGzxfAV3huQqF9LcDL/S1eABshn7gZViBwHsdQQOy1bTSOQtVAlbwRgVMxr/50QVYKXw6aScpoHt8ugL+Bj5NAWP3fgx1sF/PldahQsxluB44wQPU1wPGCrwcva+gDG5qc1w9/zCswLbmDA9Q3taMW9BbwNyZwLy34NyK+ziDyDo8whn02feBYRUtb0S06a4gr7zyyisv/l+yU/vPAiBkCriAJ0sU/twWuPz+cWtwuAJLp/zlf/gN3JVc4eOSEw4m1zsXeObBxI1CPD71cGpTIQlvOJ7bUkjGGxsUNhTS8MYeUXaFdDyjSZX1rkCoehraUiBjPqtRqVUgRjqzVatRIFY2u1ktVSBmsqBdL1Egdq5oYMFVIEGqcGTDUSBRpnhoZVIgYaJibJemQOI81eAySYEUacrRbZwCqbLUw+ufCqRMUgt8VyB1ziesOMqPm7tGQgAAAABJRU5ErkJggg==');
+                    }
                 }
             }
         }
@@ -126,16 +146,55 @@ Adjustmernt to Bootstrap table
         display: none;
     }
 
+    /*************************************
+    Fixed first column
+    Colors for shadow are hard copy from jquery-scroll-container
+    *************************************/
+    $shadow-color   : rgba(0, 0, 0, 0.4);
+    $no-shadow-color: rgba(0, 0, 0, 0);
+    $left-shadow    : linear-gradient(to right, $shadow-color ,   $no-shadow-color);
+    $right-shadow   : linear-gradient(to right, $no-shadow-color, $shadow-color   ) 100% 0;
+
+    &.table-first-column-fixed {
+        td:first-child, th:first-child {
+            @extend .table-light;
+
+            position: sticky;
+            left    : 0px;
+            z-index : 90;
+
+            //Shadow on right side when horizontal scrolled
+            .modal-body.no-scroll-at-start &:not([colspan]){
+                transform-style: preserve-3d;
+                &::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0px;
+                    transform: translate3d(6px, 0px, -1px);
+                    background: linear-gradient(to right, $shadow-color calc(100% - 6px), $no-shadow-color 100%);
+                }
+            }
+        }
+    }
 
     /*************************************
-    Hidden column - only first 20 columns
+    Hidden and minimized column - only first 20 columns
     *************************************/
     @for $index from 0 through 19 {
+        $cno: $index + 1;
         &.hideColumnIndex#{$index} {
-            $cno: $index + 1;
             tbody tr td:nth-child(#{$cno}),
             thead tr th:nth-child(#{$cno}){
-                //background-color: red;
+                display: none !important;
+            }
+        }
+        &.minimizedColumnIndex#{$index} {
+            tbody tr td:nth-child(#{$cno}){
+                visibility: hidden;
+            }
+            thead tr th:nth-child(#{$cno}){
+                width: 20px;
+                overflow: hidden;
                 display: none !important;
             }
         }

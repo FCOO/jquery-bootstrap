@@ -38,15 +38,14 @@
 
     $.BSASMODAL = $.BSASMODAL || {};
     $.fn.asModal = function(options){
-        var _this   = this,
-            asModal = null;
+        var asModal = null;
 
         $.each($.BSASMODAL, function(id, asModalFunc){
-            if (_this.hasClass(id)){
+            if (this.hasClass(id)){
                 asModal = asModalFunc;
                 return false;
             }
-        });
+        }.bind(this) );
         return asModal ? $.proxy(asModal, this)( options ) : null;
     };
 
@@ -88,9 +87,7 @@
             return options;
         if ($.isArray( options )){
             var result = [];
-            $.each( options, function(index, content){
-                result.push( $._bsAdjustIconAndText(content) );
-            });
+            options.forEach(content => result.push( $._bsAdjustIconAndText(content) ) );
             return result;
         }
 
@@ -127,9 +124,9 @@
 
             //If context is given => convert all function to proxy
             if (context)
-                $.each( options, function( id, value ){
+                $.each( options, ( id, value ) => {
                     if ($.isFunction( value ))
-                        options[id] = $.proxy( value, context );
+                        options[id] = value.bind(context);
                 });
 
             return options;
@@ -138,7 +135,7 @@
 
         options = $.extend( true, {}, defaultOptions || {}, options, forceOptions || {} );
 
-        $.each(['selected', 'checked', /*v3 'active',*/ 'open', 'isOpen'], function(index, id){
+        ['selected', 'checked', /*v3 'active',*/ 'open', 'isOpen'].forEach( id =>{
             if (options[id] !== undefined){
                 options.selected = !!options[id];
                 return false;
@@ -245,9 +242,7 @@
             //Create a stacked icon
              $icon = $._bsCreateElement( 'div', null, title, null, 'container-stacked-icons ' + (className || '')  );
 
-            $.each( options, function( index, opt ){
-                $._bsCreateIcon( opt, $icon, null, 'stacked-icon' );
-            });
+            options.forEach( opt => $._bsCreateIcon( opt, $icon, null, 'stacked-icon' ) );
 
             //If any of the stacked icons have class fa-no-margin, width-1-Xem => set if on the container
             ['fa-no-margin', 'width-1-1em', 'width-1-2em', 'width-1-3em', 'width-1-4em', 'width-1-5em'].forEach( (className) => {
@@ -390,9 +385,7 @@
             {left: true, right: true, center: true, lowercase: true, uppercase: true, capitalize: true, normal: true, bold: true, italic: true}
         ****************************************************************************************/
         _bsAddStyleClasses: function( options = {}){
-            var _this = this,
-
-                bsStyleClass = {
+            let bsStyleClass = {
                     //Text color
                     "primary"     : "text-primary",
                     "secondary"   : "text-secondary",
@@ -424,8 +417,8 @@
                       ( (typeof options == 'string') && (options.indexOf(style) > -1 )  ) ||
                       ( (typeof options == 'object') && (options[style]) )
                     )
-                    _this.addClass( className );
-            });
+                    this.addClass( className );
+            }.bind(this));
             return this;
         },
 
@@ -482,13 +475,11 @@
             if (options.content && checkForContent)
                 return this._bsAddHtml(options.content, htmlInDiv, ignoreLink);
 
-            var _this = this;
-
             //options = array => add each
             if ($.isArray( options )){
-                $.each( options, function( index, textOptions ){
-                    _this._bsAddHtml( textOptions, htmlInDiv, ignoreLink );
-                });
+                options.forEach( textOptions => {
+                    this._bsAddHtml( textOptions, htmlInDiv, ignoreLink );
+                }, this);
                 return this;
             }
 
@@ -525,23 +516,23 @@
                 textDataArray   = getArray( options.textData );
 
             //Add icons (optional)
-            $.each( iconArray, function( index, icon ){
-                $._bsCreateIcon( icon, _this, titleArray[ index ], iconClassArray[index] );
-            });
+            iconArray.forEach( ( icon, index ) => {
+                $._bsCreateIcon( icon, this, titleArray[ index ], iconClassArray[index] );
+            }, this);
 
             //Add color (optional)
             if (options.color)
-                _this.addClass('text-'+ options.color);
+                this.addClass('text-'+ options.color);
 
             //Add text
-            $.each( textArray, function( index, text ){
+            textArray.forEach( (text, index) => {
                 //If text ={da,en} and both da and is html-stirng => build inside div
                 var tagName = 'span';
                 if ( (text.hasOwnProperty('da') && isHtmlString(text.da)) || (text.hasOwnProperty('en') && isHtmlString(text.en)) )
                     tagName = 'div';
 
                 var $text = $._bsCreateElement( tagName, linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index], textDataArray[index] );
-                $text.appendTo( _this );
+                $text.appendTo( this );
 
                 if ($.isFunction( text ))
                     text( $text );
@@ -560,18 +551,18 @@
                 if (index < textClassArray.length)
                     $text.addClass( textClassArray[index] );
 
-            });
+            }, this);
 
             //Add value-format content
-            $.each( vfFormatArray, function( index ){
+            vfFormatArray.forEach( (dummy, index) => {
                 $._bsCreateElement( 'span', linkArray[ index ], titleArray[ index ], textStyleArray[ index ], textClassArray[index] )
                     .vfValueFormat(
                         vfValueArray[index] || '',
                         vfFormatArray[index],
                         vfOptionsArray[index]
                     )
-                    .appendTo( _this );
-            });
+                    .appendTo( this );
+            }, this);
 
             return this;
         },
@@ -579,7 +570,7 @@
         //_bsButtonOnClick
         _bsButtonOnClick: function(){
             var options = this.data('bsButton_options');
-            $.proxy( options.onClick, options.context )( options.id, null, this );
+            options.onClick.bind(options.context)( options.id, null, this );
             return options.returnFromClick || false;
         },
 
@@ -668,10 +659,9 @@
 
             //Array of $-element, function etc
             if ($.isArray( options )){
-                var _this = this;
-                $.each(options, function( index, opt){
-                    _this._bsAppendContent(opt, context, null, parentOptions );
-                });
+                options.forEach( opt =>{
+                    this._bsAppendContent(opt, context, null, parentOptions );
+                }, this);
                 return this;
             }
 
@@ -700,7 +690,7 @@
 
 
             //Set values fro parentOptions into options
-            $.each($.parentOptionsToInherit, function(index, id){
+            $.parentOptionsToInherit.forEach( id => {
                 if (parentOptions.hasOwnProperty(id) && !options.hasOwnProperty(id))
                     options[id] = parentOptions[id];
             });

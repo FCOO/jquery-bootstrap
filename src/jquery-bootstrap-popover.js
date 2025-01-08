@@ -251,21 +251,22 @@
     //adjustItemOptionsForPopover - Adjust class-name for buttons/items in a popover
     function adjustItemOptionsForPopover(options, listId){
         var result = $.extend({}, options);
-        $.each(options[listId], function(index, itemOptions){
-            var closeOnClickClass = '';
-            //If item has individuel clickOnClick => use it
-            if ($.type(itemOptions.closeOnClick) == 'boolean')
-                closeOnClickClass = itemOptions.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick;
-            else
-                if (!itemOptions.id && !itemOptions.list)
-                    closeOnClickClass = no_popoverCloseOnClick;
+        if (options[listId])
+            options[listId].forEach( (itemOptions, index) => {
+                var closeOnClickClass = '';
+                //If item has individuel clickOnClick => use it
+                if ($.type(itemOptions.closeOnClick) == 'boolean')
+                    closeOnClickClass = itemOptions.closeOnClick ? popoverCloseOnClick : no_popoverCloseOnClick;
+                else
+                    if (!itemOptions.id && !itemOptions.list)
+                        closeOnClickClass = no_popoverCloseOnClick;
 
-            itemOptions.class = itemOptions.class || '';
-            itemOptions.class = (itemOptions.class ? itemOptions.class + ' ' : '') + closeOnClickClass;
+                itemOptions.class = itemOptions.class || '';
+                itemOptions.class = (itemOptions.class ? itemOptions.class + ' ' : '') + closeOnClickClass;
 
-            //Adjust child-list (if any)
-            result[listId][index] = adjustItemOptionsForPopover(itemOptions, listId);
-        });
+                //Adjust child-list (if any)
+                result[listId][index] = adjustItemOptionsForPopover(itemOptions, listId);
+            });
         return result;
     }
 
