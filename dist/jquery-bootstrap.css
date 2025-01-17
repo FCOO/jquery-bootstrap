@@ -11968,6 +11968,23 @@ button-border-color-variant
 button-background-color-variant
 Adjust text-, border-, and background-color for a button
 ************************************************************/
+/************************************************************
+TABLE COLORS
+************************************************************/
+/*****************************************************************
+create-table-variant($postfix, $background, $default, $color)
+Adjusted copy of Bootstrap table-variant($state, $background) to
+create css-var to set colors in tables
+*****************************************************************/
+/*****************************************************************
+incl-table-variant($postfix)
+Include special version of Bootstrap table-var
+The var must have been created by create-table-variant first
+*****************************************************************/
+/*****************************************************************
+table-no-hover()
+Prevent any hover effect
+*****************************************************************/
 /***********************************************
 ROOT
 ************************************************/
@@ -14371,20 +14388,6 @@ TABLE
 Adjustmernt to Bootstrap table
 ************************************************************/
 /*****************************************************************
-create-table-variant($postfix, $background, $default, $color)
-Adjusted copy of Bootstrap table-variant($state, $background) to
-create css-var to set colors in tables
-*****************************************************************/
-/*****************************************************************
-incl-table-variant($postfix)
-Include special version of Bootstrap table-var
-The var must have been created by create-table-variant first
-*****************************************************************/
-/*****************************************************************
-table-no-hover()
-Prevent any hover effect
-*****************************************************************/
-/*****************************************************************
 Defines the default color-values for
 header                      : Table header
 selected                    : Selected row
@@ -14536,8 +14539,8 @@ fixed-first-column-selected : First column when it is fixed and selected
 }
 .table.jb-table thead tr th.clickable:hover {
   cursor: pointer;
-  --bs-table-color-state: var(--bs-table-hover-color);
-  --bs-table-bg-state: var(--bs-table-hover-bg);
+  --bs-table-color: var(--bs-table-hover-color);
+  --bs-table-bg: var(--bs-table-hover-bg);
 }
 .table.jb-table thead tr th.sortable {
   background-position: right center;
