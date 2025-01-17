@@ -64,7 +64,7 @@ options
         var nofColumns = 1;
         //Adjust options.content and count number of columns
         options.content.forEach( ( rowContent, index ) => {
-            rowContent = $.isArray( rowContent ) ? rowContent : [rowContent];
+            rowContent = Array.isArray( rowContent ) ? rowContent : [rowContent];
             nofColumns = Math.max(nofColumns, rowContent.length);
 
             var rowContentObj = {};

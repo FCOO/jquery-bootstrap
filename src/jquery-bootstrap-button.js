@@ -149,14 +149,14 @@
         options.className_semi = 'semi-selected';
 
         //Use modernizr-mode and classes if icon and/or text containe two values
-        if ($.isArray(options.icon) && (options.icon.length == 2)){
+        if (Array.isArray(options.icon) && (options.icon.length == 2)){
             options.icon = [[
                 options.icon[0]+ ' icon-hide-for-selected',
                 options.icon[1]+ ' icon-show-for-selected'
             ]];
             options.modernizr = true;
         }
-        if ($.isArray(options.text)){
+        if (Array.isArray(options.text)){
             options.textClassName = ['hide-for-selected', 'show-for-selected'];
             options.modernizr = true;
         }
@@ -255,7 +255,7 @@
 
         //Create subtext. It can be an array of STRING or {LANG: STRING}
         if (options.subtext){
-            var subtextArray = $.isArray(options.subtext) ? options.subtext : [options.subtext];
+            var subtextArray = Array.isArray(options.subtext) ? options.subtext : [options.subtext];
             subtext = {};
 
             subtextArray.forEach( next_subtext => {

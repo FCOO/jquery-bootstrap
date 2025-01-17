@@ -119,7 +119,7 @@ div.modal-dialog {
 
     //Size of .jquery-scroll-container in fixed in flex mode but only for the .jquery-scroll-container containing the modal-content
     &:not(.modal-flex-width) .modal-content .modal-body > .jquery-scroll-container {
-        width: calc( 100% - 2*#{$modal-content-border-width} - 2*#{$scroll-padding} );  //HER skal det ikke være uden $scroll-padding in touch-mode???????????
+        width: calc( 100% - 2*#{$modal-content-border-width} - 2*#{$scroll-padding} );
         margin-left : auto;
         margin-right: auto;
     }

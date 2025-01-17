@@ -32,38 +32,50 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         createContent : function(content, $td, sortBy) Create the content inside $td. Optional
 
-        sortable           :  [boolean] false
-        sortBy             : [string or function(e1, e2): int] "string". Possible values: "int" (sort as float), "moment", "moment_date", "moment_time" (sort as moment-obj) or function(e1, e2) return int
-        sortIndex          : [int] null. When sorting and to values are equal the values from an other column is used.
+        sortable            :  BOOLEAN false
+        sortBy              : [string or function(e1, e2): int] "string". Possible values: "int" (sort as float), "moment", "moment_date", "moment_time" (sort as moment-obj) or function(e1, e2) return int
+        sortIndex           : [int] null. When sorting and to values are equal the values from an other column is used.
                              The default order of the other columns to test is given by the its index in options.columns. Default sortIndex is (column-index+1)*100 (first column = 100). sortIndex can be set to alter the order.
-        sortDefault        : [string or boolean]. false. Possible values = false, true, "asc" or "desc". true => "asc"
-        updateAfterSorting : [boolean] false. If true and createContent is given the content of the coumun is updated after the tabel has been sorted
-        getSortContent     : function(content) return the part of content to be used when sorting. optional
-        sortHeader         : [boolean] false. If true a header-row is added every time the sorted value changes
+        sortDefault         : [string or boolean]. false. Possible values = false, true, "asc" or "desc". true => "asc"
+        updateAfterSorting  : BOOLEAN false. If true and createContent is given the content of the coumun is updated after the tabel has been sorted
+        getSortContent      : function(content) return the part of content to be used when sorting. optional
+        sortHeader          : BOOLEAN false. If true a header-row is added every time the sorted value changes
+
+        minimizable         : BOOLEAN false. If true the column can be minimized/maximized by clicking the header
+        minimized           : BOOLEAN false. Default state of minimizable column
+        minimizedIcon       : STRING or true. The icon shown when the column is minimized. default = icon from header. True = Force default icon
+
         createHeaderContent: function(content, $span, sortBy) Create the content of a sort-group-heade insider $span. Optional
 
         filter       : function(rawValue, columnOptions) null. Return true if row is included based on single value
 
     }
 
-    showHeader          [boolean] true
-    verticalBorder      [boolean] true. When true vertical borders are added together with default horizontal borders
-    noBorder            [boolean] false. When true no borders are visible
-    hoverRow            [boolean] true. When true the row get hightlightet when hovered
-    noPadding           [boolean] false. When true the vertical padding of all cells are 0px
+    showHeader          BOOLEAN true
+    verticalBorder      BOOLEAN true. When true vertical borders are added together with default horizontal borders
+    noBorder            BOOLEAN false. When true no borders are visible
+    hoverRow            BOOLEAN true. When true the row get hightlightet when hovered
+    noPadding           BOOLEAN false. When true the vertical padding of all cells are 0px
 
-    notFullWidth        [boolean] false. When true the table is not 100% width and will adjust to it content
-    centerInContainer   [boolean] false. When true the table is centered inside its container. Normaally it require notFullWidth: true
+    notFullWidth        BOOLEAN false. When true the table is not 100% width and will adjust to it content
+    centerInContainer   BOOLEAN false. When true the table is centered inside its container. Normaally it require notFullWidth: true
 
-    selectable          [boolean] false
+    saveState           BOOLEAN false. When true the table will save the state of the column (sorting, hidden, minimized) and set the state agian when the table is displayed again
+
+    selectable          BOOLEAN false
     selectedId          [string] "" id for selected row
     onChange            [function(id, selected, trElement)] null Called when a row is selected or unselected (if options.allowZeroSelected == true)
-	allowZeroSelected   [boolean] false. If true it is allowed to un-select a selected row
-    allowReselect       [Boolean] false. If true the onChange is called when a selected item is reselected/clicked
+	allowZeroSelected   BOOLEAN false. If true it is allowed to un-select a selected row
+    allowReselect       BOOLEAN false. If true the onChange is called when a selected item is reselected/clicked
 
     defaultColumnOptions: {}. Any of the options for columns to be used as default values
 
-    rowClassName      : [] of string. []. Class-names for each row
+    rowClassName      : [] of STRING or function(rowIndex) return STRING. []. Get or return class-names for each row
+
+    rowIsHighlighted     : [] of BOOLEAN or function(rowIndex) return BOOLEAN. []. Get or return true/false for each row
+    rowIsSemiHighlighted : [] of BOOLEAN or function(rowIndex) return BOOLEAN. []. Get or return true/false for each row
+
+    rowIsPrimary, rowIsSecondary, rowIsSuccess, rowIsDanger, rowIsWarning, rowIsInfo, rowIsLight, rowIsDark: BOOLEAN. Adds Bootstrap color-clases
 
     rowFilter         : function(rowData, rowId) null. Return true if row is to be included/shown. rowData = {id: value}
 
@@ -150,6 +162,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             fixedWidth          : false,
             sortBy              : 'string',
             sortable            : false,
+            minimizable         : false,
             noHorizontalPadding : false,
             noVerticalPadding   : false
         },
@@ -181,29 +194,39 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
     asModal - display the table in a modal-window with fixed header and scrolling content
     **********************************************************/
     $.BSASMODAL.BSTABLE = function( modalOptions = {}){
-        const showHeader  = !this.hasClass('no-header');
-        const isFullWidth = this.hasClass('table-full-width');
-
+        const options = this.bsTableOptions;
         let $result;
 
-        if (showHeader)
+        if (options.showHeader)
             this.$thead_tr = this.find('thead tr');
+
+        const show = !!modalOptions.show;
+        modalOptions.show = false,
 
         $result =
             $.bsModal(
                 $.extend( modalOptions, {
-                    scroll              : isFullWidth  ? 'horizontal' : true, //Full width set scroll to horizontal to avoid scroll shadow and add overflow-y: scroll in css
+                    scroll              : options.fullWidth ? 'horizontal' : true, //Full width set scroll to horizontal to avoid scroll shadow and add overflow-y: scroll in css
                     flexWidth           : true,
                     noVerticalPadding   : true,
-                    noHorizontalPadding : isFullWidth,
+                    noHorizontalPadding : options.fullWidth,
                     content             : this,
-                    className           : isFullWidth  ? 'overflow-y-scroll' : '',
-                    onScroll            : showHeader ? function(event){ this.$thead_tr.toggleClass('scroll-top', event.target.scrollTop > 0); }.bind(this) : null
+                    className           : options.fullWidth  ? 'overflow-y-scroll' : '',
+                    onScroll            : options.showHeader ? function(event){ this.$thead_tr.toggleClass('scroll-top', event.target.scrollTop > 0); }.bind(this) : null,
                 })
             );
 
-        if (showHeader)
+        if (options.saveState || modalOptions.saveState)
+            $result.on({
+                'shown.bs.modal' : this.loadState.bind(this),
+                'hidden.bs.modal': this.saveState.bind(this),
+            });
+
+        if (options.showHeader)
             this._toggleAllColumns();
+
+        if (show)
+            $result.show();
 
         return $result;
     };
@@ -216,16 +239,62 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         addRow( rowContent)  - add a new row to the table
         **********************************************************/
         addRow: function( rowContent ){
-            var options = this.data(dataTableId),
-                $tbody  = this.find('tbody').first(),
-                $tr     = $('<tr/>').appendTo( $tbody );
+            let options  = this.data(dataTableId),
+                $tbody   = this.find('tbody').first(),
+                $tr      = $('<tr/>').appendTo( $tbody ),
+                rowIndex = $tbody.children('tr').length - 1;
 
+
+            function getRowValue( id, defaultValue ){
+                let opt = options[id];
+                if (!opt)
+                    return defaultValue;
+
+                if ((typeof opt == 'string') || (typeof opt == 'boolean'))
+                    return opt;
+
+                if ($.isFunction(opt))
+                    return opt(rowIndex, rowContent);
+
+                if (Array.isArray(opt) && (opt.length > rowIndex))
+                    return opt[rowIndex];
+
+                return defaultValue;
+            }
+
+            function getRowClass( id, className ){
+                return getRowValue( id, false ) ? className + ' ' : '';
+            }
+
+            let className =
+                    getRowValue( 'rowClassName', '' ) + ' ' +
+                    getRowClass( 'rowIsHighlighted',       'row-is-highlighted') +
+                    getRowClass( 'rowIsHigh',              'row-is-highlighted') +
+                    getRowClass( 'rowIsSemiHighlighted',   'row-is-semi-highlighted') +
+                    getRowClass( 'rowIsSemiHigh',          'row-is-semi-highlighted') +
+
+                    //Bootstrap bg-color classes
+                    getRowClass('rowIsPrimary',     'table-primary') +
+                    getRowClass('rowIsSecondary',   'table-secondary') +
+                    getRowClass('rowIsSuccess',     'table-success') +
+                    getRowClass('rowIsDanger',      'table-danger') +
+                    getRowClass('rowIsWarning',     'table-warning') +
+                    getRowClass('rowIsInfo',        'table-info') +
+                    getRowClass('rowIsLight',       'table-light') +
+                    getRowClass('rowIsDark',        'table-dark') +
+
+                    '';
+
+            $tr.addClass(className);
+
+
+/*
             if (options.rowClassName.length){
                 var rowIndex = $tbody.children('tr').length - 1;
                 if (options.rowClassName.length > rowIndex)
                     $tr.addClass(options.rowClassName[rowIndex]);
             }
-
+*/
             if (options.selectable)
                 $tr.attr('id', rowContent.id || 'rowId_'+rowId++);
 
@@ -344,24 +413,88 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
 
         /**********************************************************
-        showColumn, hideColumn, toggleColumn
+        showColumn, hideColumn,
+        maximizeColumn, minimizeColumn,
+        toggleColumn, toggleMinimizedColumn
         **********************************************************/
         showColumn: function(index){ return this.toggleColumn(index, true); },
         hideColumn: function(index){ return this.toggleColumn(index, false); },
         toggleColumn: function(index, show){
-            this.columns[index].hidden = typeof show == 'boolean' ? show : !this.columns[index].hidden;
+            return this._toggleColumn('hidden', index, show);
+        },
+
+        maximizeColumn: function(index){ return this.toggleMinimizedColumn(index, true); },
+        minimizeColumn: function(index){ return this.toggleMinimizedColumn(index, false); },
+        toggleMinimizedColumn: function(index, show){
+            return this._toggleColumn('minimized', index, show);
+        },
+
+
+        _toggleColumn: function(id, index, show){
+            this.columns[index][id] = typeof show == 'boolean' ? show : !this.columns[index][id];
             this._toggleAllColumns();
         },
 
         _toggleAllColumns: function(){
-            this.columns.forEach((columnOptions, index) => {
-                const className = 'hideColumnIndex'+index,
-                      hide = !!columnOptions.hidden;
+            /* Not needed
+            let cssHeight = parseInt(this.$thead.css('min-height')),
+                height = this.$thead.height();
+            if (height > cssHeight)
+                this.$thead.css('height', height+'px');
+            */
 
-                this.toggleClass(className, hide);
-                if (this.$tableWithHeader)
-                    this.$tableWithHeader.toggleClass(className, hide);
+            this.columns.forEach((columnOptions, index) => {
+                //Toggle class-name for hidden and minimized column
+                this.toggleClass('hideColumnIndex'+index,      !!columnOptions.hidden);
+                this.toggleClass('minimizedColumnIndex'+index, !!columnOptions.minimized);
             }, this );
+        },
+
+
+        /**********************************************************
+        getState setState - get/set sort, hidden, minimized columns
+        loadState, saveState - load/save current setting internally
+        **********************************************************/
+        getState: function(){
+            let result = [];
+            this.columns.forEach( colOptions => {
+                result.push({
+                    id          : colOptions.id,
+                    hidden      : !!colOptions.hidden,
+                    minimizable : !!colOptions.minimizable,
+                    minimized   : !!colOptions.minimized,
+                    sortBy      : this.lastSortBy.columnIndex == colOptions.index ? this.lastSortBy.direction : false,
+                    sortable    : !!colOptions.sortable,
+                });
+            });
+            return result;
+        },
+
+
+        setState: function( columnState ){
+            columnState.forEach( stateOptions => {
+                let col = this._getColumn( stateOptions.id );
+                if (col){
+                    ['hidden', 'minimizable', 'minimized', 'sortable'].forEach( id => col[id] = stateOptions[id] );
+
+                    if (stateOptions.sortBy)
+                        this.sortBy(col.index, stateOptions.sortBy);
+                }
+            }, this);
+
+            this._toggleAllColumns();
+
+            return this;
+        },
+
+
+        loadState: function(){
+            if (this.savedState)
+                this.setState( this.savedState );
+        },
+
+        saveState: function(){
+            this.savedState = this.getState();
         },
 
 
@@ -458,7 +591,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
                         //Create new row and insert before current row
                         $('<tr/>')
-                            .addClass('table-light table-sort-group-header')
+                            .addClass('table-sort-group-header')
                             .append( $newTd )
                             .insertBefore( $td.parent() );
 
@@ -551,6 +684,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         var columnIds = {};
 
         options.columns.forEach( ( columnOptions, index ) => {
+            let titlePost = null;
+
             columnOptions.sortable = columnOptions.sortable || columnOptions.sortBy;
             columnOptions = $.extend( true,
                 {
@@ -571,6 +706,56 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                 options.stupidtable[stupidtableSortId] = columnOptions.sortBy;
                 columnOptions.sortBy = stupidtableSortId;
             }
+
+            if (columnOptions.sortable)
+               titlePost = {da:'(Klik: Sortér)', en:'(Click to sort)'};
+
+
+            //If column is not sortable and have options minimizable the column can be minimized
+            if (options.showHeader && !columnOptions.sortable && columnOptions.minimizable) {
+                columnOptions.minimizable = true;
+
+                let minIcon = 'fa-left-right',
+                    colIcon = (columnOptions.header && columnOptions.header.icon) ? columnOptions.header.icon : null;
+                if (columnOptions.minimizedIcon !== true)
+                    minIcon = columnOptions.minimizedIcon || colIcon || minIcon;
+
+                columnOptions.minimizedIcon = minIcon;
+
+                titlePost = {da:'(Klik: min/maksimere)', en:'(Click to min/maximize)'};
+            }
+
+            if (titlePost){
+                let title = {};
+                if (columnOptions.header){
+                    /*
+                    header = STRING
+                    header = {text: STRING}
+                    header = {text: {da:, en:STRING}
+                    */
+
+
+                    if (typeof columnOptions.header == 'string')
+                        title.da = columnOptions.header;
+                    else
+                        if (columnOptions.header.text){
+                            if (typeof columnOptions.header.text == 'string')
+                                title.da = columnOptions.header.text;
+                            else
+                                title = $.extend({}, columnOptions.header.text);
+                        }
+
+                    title = $._bsAdjustText(title);
+                }
+
+                $.each( titlePost, (lang, text) => {
+                    title[lang] = (title[lang] || '') + ' ' + text;
+                    title[lang] = title[lang].replace('<br>', ' - ');
+                });
+                columnOptions.title = title;
+            }
+
+
         });
 
         var id = 'bsTable'+ tableId++,
@@ -580,8 +765,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                         .attr({
                             'id': id
                         }),
-            $thead = $('<thead/>')
-                        .addClass('table-light')
+            $thead = $table.$thead = $('<thead/>')
                         .toggleClass('no-header', !options.showHeader )
                         .appendTo( $table ),
             $tr = $('<tr/>')
@@ -592,6 +776,9 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         $table.columns = options.columns;
         $table.columnIds = columnIds;
+
+//HER           $table.bsTable = this;
+        $table.bsTableOptions = options;
 
         //Create colgroup
         var $colgroup = $('<colgroup/>').appendTo($table);
@@ -622,12 +809,20 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         //Create headers
         if (options.showHeader)
-            $table.columns.forEach( columnOptions => {
-                columnOptions.$th = $('<th/>').appendTo( $tr );
+            $table.columns.forEach( (columnOptions, columnIndex) => {
+                let $th = columnOptions.$th = $('<th/>').appendTo( $tr );
+
+                if (columnOptions.minimizable){
+                    $th
+                        .addClass('minimizable clickable')
+                        ._bsAddHtml( {icon: columnOptions.minimizedIcon, iconClass: 'show-for-minimized'} )
+                        .on('click', $table.toggleMinimizedColumn.bind($table, columnIndex) );
+                }
+
 
                 if (columnOptions.sortable){
-                    columnOptions.$th
-                        .addClass('sortable')
+                    $th
+                        .addClass('sortable clickable')
                         .attr('data-sort', columnOptions.sortBy);
 
                     if (columnOptions.sortDefault){
@@ -651,20 +846,22 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                         if (sortMulticolumn.indexOf(',') == -1)
                             sortMulticolumn = sortMulticolumn + ',' + sortMulticolumn;
 
-                        columnOptions.$th.attr('data-sort-multicolumn', sortMulticolumn);
+                        $th.attr('data-sort-multicolumn', sortMulticolumn);
                     }
                     sortableTable = true;
                 }
 
+                if (columnOptions.title)
+                    $th.i18n(columnOptions.title, 'title');
 
-                adjustThOrTd( columnOptions.$th, columnOptions, true );
+                adjustThOrTd( $th, columnOptions, true );
 
-                columnOptions.$th._bsAddHtml( columnOptions.header );
-            });
+                $th._bsAddHtml( columnOptions.header );
+            }, this);
 
         if (options.selectable){
             var radioGroupOptions = $.extend( true, {}, options );
-            radioGroupOptions.className = 'selected';
+            radioGroupOptions.className = 'table-selected';
             options.radioGroup = $.radioGroup( radioGroupOptions );
         }
 

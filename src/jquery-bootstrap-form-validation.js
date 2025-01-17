@@ -34,7 +34,7 @@ https://getbootstrap.com/docs/5.2/forms/validation/
     $.extend($.BsModalInput.prototype, {
         addValidation: function(){
             var validators          = this.options.validators,
-                validatorList       = $.isArray(validators) ? validators : [validators],
+                validatorList       = Array.isArray(validators) ? validators : [validators],
                 $element            = this.getElement(),
                 $validationTooltip  = this.$validationTooltip =
                     $('<div/>')

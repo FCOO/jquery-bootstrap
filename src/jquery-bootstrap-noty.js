@@ -187,7 +187,7 @@
 
         //Add header (if any)
         if (options.header || options.defaultHeader){
-            if (!$.isArray(options.content))
+            if (!Array.isArray(options.content))
                 options.content = [options.content];
 
             options.header = $._bsAdjustIconAndText(options.header) || {};

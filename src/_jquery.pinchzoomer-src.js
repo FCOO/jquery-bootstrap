@@ -989,7 +989,7 @@ This is a copy of a license version of PinchZoomer
                     invalid = false;
 
 
-                if($.isArray(dataSrc))
+                if(Array.isArray(dataSrc))
                 {
                     if(dataSrc.length > 0)
                     {
@@ -1098,7 +1098,7 @@ This is a copy of a license version of PinchZoomer
 		if(AdaptiveImageLoader.allowCustomBreakpoints)
 		{
 
-			if($.isArray(breakpoints) && breakpoints.length > 0)
+			if(Array.isArray(breakpoints) && breakpoints.length > 0)
 			{
 
 				var valid = true,

@@ -91,8 +91,15 @@ table#fixed-headers {
         --bs-accordion-active-color: white;
         --bs-accordion-active-bg: green;
 
-        --bs-accordion-btn-color: green;
-        --bs-accordion-btn-bg   : lightgreen;   
+        --bs-accordion-active-hover-color: white;
+        --bs-accordion-active-hover-bg: green;
+
+        --bs-accordion-btn-color: yellow; //green;
+        --bs-accordion-btn-bg   : red; //lightgreen;   
+
+        --bs-accordion-btn-hover-color: red;
+        --bs-accordion-btn-hover-bg: yellow;
+
 
     }
 
@@ -103,6 +110,7 @@ table#fixed-headers {
     :root {
         --jb-header-bg: lightgray;
         --jb-inner-header-bg: pink;
+       
 
     }
 
@@ -1132,8 +1140,11 @@ longTableContent[i].stargazers_count = i;
             noBorder: false,
             noPadding: false,
 
+            //hoverRow: false,
             //centerInContainer: true,
             //notFullWidth: true,
+
+            saveState: true,
 
             selectedId: 'no4_0',
             onChange: function( id, selected, tr ){
@@ -1146,7 +1157,7 @@ longTableContent[i].stargazers_count = i;
             firstColumnFixed: true,
             columns: [
                 //{ id: 'no',                                 align: 'center', header: '#',     width: '1rem', noHorizontalPadding: true},
-                { id: 'name',               _noWrap: true,   align: 'left',   header: {icon:'fa-home', text:{da:'Navn', en:'Name'}},  sortable: true, sortHeader: true, sortIndex:1000, sortDefault: true
+                { id: 'name',               _noWrap: true,   align: 'left',   header: {icon:'fa-home', text:{da:'Navn', en:'Name'}},  sortable: true, sortHeader: true, sortIndex:1000, _sortDefault: true
 
                     /* TEST
                     updateAfterSorting: true,
@@ -1176,10 +1187,15 @@ longTableContent[i].stargazers_count = i;
                 },
                 { id: 'date',                               align: 'center', header: 'Date<br>ny linje',  vfFormat:"myMomentFormat",             sortable: true, sortBy:'moment', _sortDefault: true/*'desc'*/},
                 { id: 'forks_count',        _noWrap: true,   header: 'Forks', align: 'center'},
-                { id: 'description',        truncate: true, header:{icon: 'fa-home', text: 'Description'}, _width:'100em'}
+                { id: 'description',        truncate: true, header:{icon: 'fa-home', text: 'Description'}, _width:'100em', minimizable: true, minimized: true}
             ],
             content: longTableContent,
-            rowClassName: ['dette-er-en-test']
+            
+            rowIsDanger: function(rowIndex, data){
+                return data.name == 'blog' ? 'dette-er-en-blog' : '';
+            }                
+            
+            
         })
 // HER>         .filterTable(null, {
 // HER>             'name': function(value){
@@ -1203,11 +1219,13 @@ longTableContent[i].stargazers_count = i;
 //            small: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             buttons: [
-                {text:'Toggle Stars',                onClick: function(){ myBsTable.toggleColumn(2); } },
-                {text:'Filter: Stats > 30',          onClick: function(){myBsTable.filterTable(null, {'stargazers_count': function(value){ return value > 30;    }})}},
-                {text:'Filter: Stats odd',           onClick: function() {myBsTable.filterTable(null, {'stargazers_count': function(value){ return !!(value % 2); }})}},
-                {text:'Filter: Navn <> "Dansk!!!"',  onClick: function() {myBsTable.filterTable(null, {'name': function(value){return !value || (value.da != "Dansk!!!"); }})}},
-                {text:'Reset',                       onClick: function() {myBsTable.resetFilterTable();}},
+                {text:'setState',                           onClick: function(){ myBsTable.setState( myBsTable.state ); } },
+                {text:'Toggle Stars',                       onClick: function(){ myBsTable.toggleColumn(2); } },
+                {text:'Filter: Stats > 30',                 onClick: function(){myBsTable.filterTable(null, {'stargazers_count': function(value){ return value > 30;    }})}},
+                {text:'Filter: Stats odd',                  onClick: function() {myBsTable.filterTable(null, {'stargazers_count': function(value){ return !!(value % 2); }})}},
+                {text:'Filter: Navn <> "Dansk!!!"',         onClick: function() {myBsTable.filterTable(null, {'name': function(value){return !value || (value.da != "Dansk!!!"); }})}},
+                {text:'Filter: Navn <> "bootstrap..."',     onClick: function() {myBsTable.filterTable(null, {'name': function(value){console.log(value); return !value || (value != "bootstrap-show-password"); }})}},
+                {text:'Reset',                              onClick: function() {myBsTable.resetFilterTable();}},
             ],
             show: false
         }),
@@ -1410,6 +1428,13 @@ longTableContent[i].stargazers_count = i;
             $('<button>Table</button>')
                 .appendTo( $body)
         );
+
+        $('<button>Table2</button>')
+            .appendTo( $body)
+            .on('click', ()=> {
+                myBsTable.asModal({extraWidth: true, remove: true, show: true});
+            });                
+
 
         m.assignTo(
             $('<button>Flex-width</button>')

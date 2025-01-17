@@ -23,8 +23,11 @@ Using Bootstrap Collapse to create accordion
     @include _accordion-footer-variant($size);
 }
 
-.accordion {
 
+// $hover-bg           : mix($color, $background, percentage($table-hover-bg-factor));
+
+
+.accordion {
     &.no-transition .collapsing {
         @include transition(height 0s ease);
     }
@@ -37,6 +40,17 @@ Using Bootstrap Collapse to create accordion
     .accordion-body {
         font-size: var(--#{$prefix}accordion-font-size);
     }
+
+    //Set hover colors
+    .accordion-button.collapsed:hover {
+        color           : var(--#{$prefix}accordion-btn-hover-color, var(--#{$prefix}accordion-btn-color));
+        background-color: var(--#{$prefix}accordion-btn-hover-bg,    var(--#{$prefix}accordion-btn-bg));
+    }
+    .accordion-button:not(.collapsed):not(.accordion-never-close):hover {
+        color           : var(--#{$prefix}accordion-active-btn-hover-color, var(--#{$prefix}accordion-active-btn-color));
+        background-color: var(--#{$prefix}accordion-active-btn-hover-bg,    var(--#{$prefix}accordion-active-btn-bg));
+    }
+
 
     .accordion-button span,
     .accordion-footer span {

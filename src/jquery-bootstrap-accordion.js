@@ -212,7 +212,7 @@
                 $contentContainer._bsAppendContent( opt.content, opt.contentContext, null, options );
 
             //If opt.list exists => create a accordion inside $contentContainer
-            if ($.isArray(opt.list))
+            if (Array.isArray(opt.list))
                 $.bsAccordion( {
                     allOpen   : options.allOpen,
                     multiOpen : options.multiOpen,

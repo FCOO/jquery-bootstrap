@@ -226,9 +226,9 @@
     //******************************************************
     //show_bs_modal - called when a modal is opening
     function show_bs_modal( /*event*/ ) {
+
         //Close all popover
         $('.popover.show').popover('hide');
-
 
         //Close elements
         if (currentModal)

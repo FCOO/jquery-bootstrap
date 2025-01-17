@@ -15,7 +15,7 @@ Utilities for manipulation JSON and other objects
     *******************************************/
     $.mergeObjects = function mergeObjects(obj1, obj2){
         function objType( obj ){
-            if ($.isArray(obj)) return 'array';
+            if (Array.isArray(obj)) return 'array';
             if ($.isPlainObject(obj)) return 'object';
             if (obj === undefined)  return 'undefined';
             return 'simple';

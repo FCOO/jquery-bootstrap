@@ -85,7 +85,7 @@
     $._bsAdjustIconAndText = function( options ){
         if (!options)
             return options;
-        if ($.isArray( options )){
+        if (Array.isArray( options )){
             var result = [];
             options.forEach(content => result.push( $._bsAdjustIconAndText(content) ) );
             return result;
@@ -148,7 +148,7 @@
 
         //Adjust options.content
         if (options.content){
-            if ($.isArray( options.content ) )
+            if (Array.isArray( options.content ) )
                 //Adjust each record in options.content
                 for (var i=0; i<options.content.length; i++ )
                     options.content[i] = adjustContentAndContextOptions( options.content[i], options.context );
@@ -229,7 +229,7 @@
     var iconfontPrefixRegExp = null;
     $._bsCreateIcon = function( options, $appendTo, title, className/*, insideStack*/ ){
         if (!iconfontPrefixRegExp){
-            var prefixes = $.isArray($.ICONFONT_PREFIXES) ? $.ICONFONT_PREFIXES : [$.ICONFONT_PREFIXES];
+            var prefixes = Array.isArray($.ICONFONT_PREFIXES) ? $.ICONFONT_PREFIXES : [$.ICONFONT_PREFIXES];
             iconfontPrefixRegExp = new window.RegExp('(\\s|^)(' + prefixes.join('|') + ')(\\s|$)', 'g');
         }
 
@@ -238,7 +238,7 @@
         if ($.type(options) == 'string')
             options = {class: options};
 
-        if ($.isArray( options)){
+        if (Array.isArray( options)){
             //Create a stacked icon
              $icon = $._bsCreateElement( 'div', null, title, null, 'container-stacked-icons ' + (className || '')  );
 
@@ -446,7 +446,7 @@
 
             //**************************************************
             function getArray( input ){
-                return input ? ($.isArray( input ) ? input : [input]) : [];
+                return input ? (Array.isArray( input ) ? input : [input]) : [];
             }
             //**************************************************
             function isHtmlString( str ){
@@ -476,7 +476,7 @@
                 return this._bsAddHtml(options.content, htmlInDiv, ignoreLink);
 
             //options = array => add each
-            if ($.isArray( options )){
+            if (Array.isArray( options )){
                 options.forEach( textOptions => {
                     this._bsAddHtml( textOptions, htmlInDiv, ignoreLink );
                 }, this);
@@ -658,7 +658,7 @@
                 return this;
 
             //Array of $-element, function etc
-            if ($.isArray( options )){
+            if (Array.isArray( options )){
                 options.forEach( opt =>{
                     this._bsAppendContent(opt, context, null, parentOptions );
                 }, this);
@@ -667,7 +667,7 @@
 
             //Function: Include arg (if any) in call to method (=options)
             if ($.isFunction( options )){
-                arg = arg ? ($.isArray(arg) ? arg.slice() : [arg]) : [];
+                arg = arg ? (Array.isArray(arg) ? arg.slice() : [arg]) : [];
                 arg.unshift(this);
                 options.apply( context, arg );
                 return this;

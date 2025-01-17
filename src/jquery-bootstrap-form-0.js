@@ -228,15 +228,15 @@
                 var show = !this.options.showWhen; //If showWhen is given default is false = not show
                 $.each( this.options.hideWhen || {}, function( userId, hideValue ){
                     var value = values[userId];
-                    if ( ( $.isArray(hideValue) && (hideValue.indexOf(value) != -1)) ||
-                         (!$.isArray(hideValue) && (hideValue == value))
+                    if ( ( Array.isArray(hideValue) && (hideValue.indexOf(value) != -1)) ||
+                         (!Array.isArray(hideValue) && (hideValue == value))
                        )
                         show = false;
                 });
                 $.each( this.options.showWhen || {}, function( userId, showValue ){
                     var value = values[userId];
-                    if ( ( $.isArray(showValue) && (showValue.indexOf(value) != -1)) ||
-                         (!$.isArray(showValue) && (showValue == value))
+                    if ( ( Array.isArray(showValue) && (showValue.indexOf(value) != -1)) ||
+                         (!Array.isArray(showValue) && (showValue == value))
                        )
                         show = true;
                 });

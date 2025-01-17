@@ -33,7 +33,7 @@
 
         var className =
                 options.faClassName + ' ' +
-                ($.isArray(options.extraClassName) ? options.extraClassName.join(' ') : options.extraClassName) +
+                (Array.isArray(options.extraClassName) ? options.extraClassName.join(' ') : options.extraClassName) +
                 ' ';
         var result = [
             'fas ' + className + colorClassName,
