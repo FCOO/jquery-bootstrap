@@ -383,30 +383,32 @@
 
         var $previousButton = null,
             spaceAfter     = false;
-        options.list.forEach( buttonOptions => {
 
-           if ((buttonOptions.spaceBefore || buttonOptions.lineBefore || spaceAfter) && $previousButton){
-                $previousButton.addClass('space-zafter');
-            }
+        if (options.list)
+            options.list.forEach( buttonOptions => {
 
-            spaceAfter      = buttonOptions.spaceAfter || buttonOptions.lineAfter;
-            $previousButton = null;
+               if ((buttonOptions.spaceBefore || buttonOptions.lineBefore || spaceAfter) && $previousButton){
+                    $previousButton.addClass('space-zafter');
+                }
 
-            if (buttonOptions.id || buttonOptions.onClick  || buttonOptions.onChange)
-                $previousButton =
-                    $._anyBsButton( $.extend(true, {}, options.buttonOptions, buttonOptions ) )
-                        .appendTo( result );
-            else
-                if (options.inclHeader)
-                    //Create content as header
-                    $('<div/>')
-                        .addClass('btn header-content')
-                        .toggleClass('header-main', !!buttonOptions.mainHeader)
+                spaceAfter      = buttonOptions.spaceAfter || buttonOptions.lineAfter;
+                $previousButton = null;
 
-                        .addClass( buttonOptions.class )
-                        ._bsHeaderAndIcons( {header: buttonOptions} )
-                        .appendTo( result );
-        });
+                if (buttonOptions.id || buttonOptions.onClick  || buttonOptions.onChange)
+                    $previousButton =
+                        $._anyBsButton( $.extend(true, {}, options.buttonOptions, buttonOptions ) )
+                            .appendTo( result );
+                else
+                    if (options.inclHeader)
+                        //Create content as header
+                        $('<div/>')
+                            .addClass('btn header-content')
+                            .toggleClass('header-main', !!buttonOptions.mainHeader)
+
+                            .addClass( buttonOptions.class )
+                            ._bsHeaderAndIcons( {header: buttonOptions} )
+                            .appendTo( result );
+            });
         return result;
     };
 

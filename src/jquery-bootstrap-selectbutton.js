@@ -44,10 +44,11 @@
         options.selectedId = value;
         this.data('bsButton_options', options);
 
-        options.list.forEach( function(item){
-            if (item.id == value)
-                selectedItem = item;
-        });
+        if (options.list)
+            options.list.forEach( item => {
+                if (item.id == value)
+                    selectedItem = item;
+            });
 
         if (selectedItem){
             this.empty();
@@ -74,9 +75,10 @@
             selectedId = options.selectedId,
             list       = $.extend(true, {}, options).list;
 
-        list.forEach(function(item){
-            item.selected = item.id ? item.id == selectedId : false;
-        });
+        if (list)
+            list.forEach( item => {
+                item.selected = item.id ? item.id == selectedId : false;
+            });
 
         $selectButton_Modal = $.bsModal({
             noHeader    : true,

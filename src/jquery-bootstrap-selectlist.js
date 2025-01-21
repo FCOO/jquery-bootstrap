@@ -41,6 +41,7 @@
 
         $result.data('radioGroup', radioGroup);
 
+        options.list = options.list || [];
         options.list.forEach( itemOptions => {
             const isItem = (itemOptions.id != undefined);
             let $item;

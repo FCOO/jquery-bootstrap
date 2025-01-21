@@ -127,6 +127,7 @@
                         });
 
         //Adding the children {icon, text, content}
+        options.list = options.list || [];
         options.list.forEach( ( opt, index ) => {
             //Create the header
             opt = $._bsAdjustOptions( opt );

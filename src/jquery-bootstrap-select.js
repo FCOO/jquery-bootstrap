@@ -52,7 +52,7 @@
     $.bsSelect = $.bsSelectBox = $.bsSelectbox = function( options ){
 
         //options.items = options.items || options.list;
-        options.list = options.list || options.items;
+        options.list = options.list || options.items || [];
 
         options =
             $._bsAdjustOptions( options, {

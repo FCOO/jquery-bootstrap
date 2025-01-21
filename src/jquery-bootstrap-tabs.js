@@ -88,7 +88,7 @@
         if (options.height)
             $contents.height( options.height );
 
-
+        options.list = options.list || [];
         options.list.forEach( ( opt, index ) => {
             opt = $._bsAdjustOptions( opt );
             var tabId = options.id || id + 'tab' + index,

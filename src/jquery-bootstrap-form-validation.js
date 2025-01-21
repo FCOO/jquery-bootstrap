@@ -57,7 +57,7 @@ https://getbootstrap.com/docs/5.2/forms/validation/
                     max === undefined ? minText :
                     min == max ? exactlyText :
                     minMaxText;
-                i18next.languages.forEach(function(lang){
+                i18next.languages.forEach( lang => {
                     nextError[lang] = nextError[lang] ? nextError[lang].replace('%min', min).replace('%max', max) : '';
                 });
 
@@ -70,7 +70,7 @@ https://getbootstrap.com/docs/5.2/forms/validation/
                     attr['max'+postfix] = max;
             }
 
-            validatorList.forEach(function(validator){
+            validatorList.forEach( validator => {
                 validator = typeof validator == 'string' ? {type: validator} : validator;
                 nextError = '';
                 switch (validator.type.toUpperCase()){
@@ -108,8 +108,8 @@ https://getbootstrap.com/docs/5.2/forms/validation/
             if (firstError)
                 errorList.unshift(firstError);
             var errorText = {};
-            errorList.forEach(function(error){
-                i18next.languages.forEach(function(lang){
+            errorList.forEach(error => {
+                i18next.languages.forEach( lang => {
                     var langText = errorText[lang] || '';
                     if (error[lang])
                         langText = langText + (langText.length ? '&nbsp;- ' : '') + error[lang];

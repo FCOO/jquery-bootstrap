@@ -472,15 +472,16 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
 
         setState: function( columnState ){
-            columnState.forEach( stateOptions => {
-                let col = this._getColumn( stateOptions.id );
-                if (col){
-                    ['hidden', 'minimizable', 'minimized', 'sortable'].forEach( id => col[id] = stateOptions[id] );
+            if (columnState)
+                columnState.forEach( stateOptions => {
+                    let col = this._getColumn( stateOptions.id );
+                    if (col){
+                        ['hidden', 'minimizable', 'minimized', 'sortable'].forEach( id => col[id] = stateOptions[id] );
 
-                    if (stateOptions.sortBy)
-                        this.sortBy(col.index, stateOptions.sortBy);
-                }
-            }, this);
+                        if (stateOptions.sortBy)
+                            this.sortBy(col.index, stateOptions.sortBy);
+                    }
+                }, this);
 
             this._toggleAllColumns();
 
