@@ -14645,13 +14645,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex0 thead tr th:nth-child(1) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex0 thead tr th:nth-child(1) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex0 thead tr th:nth-child(1) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex0 thead tr th:nth-child(1) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex0 thead tr th:nth-child(1) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex0 thead tr th:nth-child(1) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex0 tbody tr td:nth-child(1) {
@@ -14669,13 +14669,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex1 thead tr th:nth-child(2) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex1 thead tr th:nth-child(2) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex1 thead tr th:nth-child(2) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex1 thead tr th:nth-child(2) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex1 thead tr th:nth-child(2) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex1 thead tr th:nth-child(2) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex1 tbody tr td:nth-child(2) {
@@ -14693,13 +14693,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex2 thead tr th:nth-child(3) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex2 thead tr th:nth-child(3) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex2 thead tr th:nth-child(3) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex2 thead tr th:nth-child(3) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex2 thead tr th:nth-child(3) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex2 thead tr th:nth-child(3) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex2 tbody tr td:nth-child(3) {
@@ -14717,13 +14717,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex3 thead tr th:nth-child(4) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex3 thead tr th:nth-child(4) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex3 thead tr th:nth-child(4) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex3 thead tr th:nth-child(4) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex3 thead tr th:nth-child(4) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex3 thead tr th:nth-child(4) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex3 tbody tr td:nth-child(4) {
@@ -14741,13 +14741,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex4 thead tr th:nth-child(5) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex4 thead tr th:nth-child(5) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex4 thead tr th:nth-child(5) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex4 thead tr th:nth-child(5) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex4 thead tr th:nth-child(5) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex4 thead tr th:nth-child(5) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex4 tbody tr td:nth-child(5) {
@@ -14765,13 +14765,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex5 thead tr th:nth-child(6) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex5 thead tr th:nth-child(6) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex5 thead tr th:nth-child(6) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex5 thead tr th:nth-child(6) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex5 thead tr th:nth-child(6) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex5 thead tr th:nth-child(6) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex5 tbody tr td:nth-child(6) {
@@ -14789,13 +14789,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex6 thead tr th:nth-child(7) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex6 thead tr th:nth-child(7) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex6 thead tr th:nth-child(7) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex6 thead tr th:nth-child(7) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex6 thead tr th:nth-child(7) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex6 thead tr th:nth-child(7) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex6 tbody tr td:nth-child(7) {
@@ -14813,13 +14813,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex7 thead tr th:nth-child(8) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex7 thead tr th:nth-child(8) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex7 thead tr th:nth-child(8) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex7 thead tr th:nth-child(8) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex7 thead tr th:nth-child(8) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex7 thead tr th:nth-child(8) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex7 tbody tr td:nth-child(8) {
@@ -14837,13 +14837,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex8 thead tr th:nth-child(9) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex8 thead tr th:nth-child(9) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex8 thead tr th:nth-child(9) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex8 thead tr th:nth-child(9) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex8 thead tr th:nth-child(9) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex8 thead tr th:nth-child(9) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex8 tbody tr td:nth-child(9) {
@@ -14861,13 +14861,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex9 thead tr th:nth-child(10) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex9 thead tr th:nth-child(10) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex9 thead tr th:nth-child(10) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex9 thead tr th:nth-child(10) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex9 thead tr th:nth-child(10) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex9 thead tr th:nth-child(10) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex9 tbody tr td:nth-child(10) {
@@ -14885,13 +14885,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex10 thead tr th:nth-child(11) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex10 thead tr th:nth-child(11) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex10 thead tr th:nth-child(11) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex10 thead tr th:nth-child(11) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex10 thead tr th:nth-child(11) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex10 thead tr th:nth-child(11) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex10 tbody tr td:nth-child(11) {
@@ -14909,13 +14909,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex11 thead tr th:nth-child(12) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex11 thead tr th:nth-child(12) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex11 thead tr th:nth-child(12) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex11 thead tr th:nth-child(12) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex11 thead tr th:nth-child(12) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex11 thead tr th:nth-child(12) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex11 tbody tr td:nth-child(12) {
@@ -14933,13 +14933,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex12 thead tr th:nth-child(13) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex12 thead tr th:nth-child(13) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex12 thead tr th:nth-child(13) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex12 thead tr th:nth-child(13) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex12 thead tr th:nth-child(13) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex12 thead tr th:nth-child(13) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex12 tbody tr td:nth-child(13) {
@@ -14957,13 +14957,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex13 thead tr th:nth-child(14) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex13 thead tr th:nth-child(14) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex13 thead tr th:nth-child(14) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex13 thead tr th:nth-child(14) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex13 thead tr th:nth-child(14) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex13 thead tr th:nth-child(14) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex13 tbody tr td:nth-child(14) {
@@ -14981,13 +14981,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex14 thead tr th:nth-child(15) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex14 thead tr th:nth-child(15) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex14 thead tr th:nth-child(15) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex14 thead tr th:nth-child(15) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex14 thead tr th:nth-child(15) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex14 thead tr th:nth-child(15) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex14 tbody tr td:nth-child(15) {
@@ -15005,13 +15005,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex15 thead tr th:nth-child(16) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex15 thead tr th:nth-child(16) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex15 thead tr th:nth-child(16) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex15 thead tr th:nth-child(16) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex15 thead tr th:nth-child(16) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex15 thead tr th:nth-child(16) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex15 tbody tr td:nth-child(16) {
@@ -15029,13 +15029,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex16 thead tr th:nth-child(17) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex16 thead tr th:nth-child(17) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex16 thead tr th:nth-child(17) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex16 thead tr th:nth-child(17) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex16 thead tr th:nth-child(17) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex16 thead tr th:nth-child(17) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex16 tbody tr td:nth-child(17) {
@@ -15053,13 +15053,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex17 thead tr th:nth-child(18) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex17 thead tr th:nth-child(18) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex17 thead tr th:nth-child(18) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex17 thead tr th:nth-child(18) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex17 thead tr th:nth-child(18) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex17 thead tr th:nth-child(18) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex17 tbody tr td:nth-child(18) {
@@ -15077,13 +15077,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex18 thead tr th:nth-child(19) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex18 thead tr th:nth-child(19) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex18 thead tr th:nth-child(19) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex18 thead tr th:nth-child(19) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex18 thead tr th:nth-child(19) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex18 thead tr th:nth-child(19) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex18 tbody tr td:nth-child(19) {
@@ -15101,13 +15101,13 @@ fixed-first-column-selected : First column when it is fixed and selected
   text-align: center !important;
   padding: 0;
 }
-.table.jb-table.minimizedColumnIndex19 thead tr th:nth-child(20) * {
-  margin: 0;
+.table.jb-table.minimizedColumnIndex19 thead tr th:nth-child(20) > * {
+  margin: 0 !important;
 }
-.table.jb-table.minimizedColumnIndex19 thead tr th:nth-child(20) *.show-for-minimized {
+.table.jb-table.minimizedColumnIndex19 thead tr th:nth-child(20) > *.show-for-minimized {
   display: initial !important;
 }
-.table.jb-table.minimizedColumnIndex19 thead tr th:nth-child(20) *:not(.show-for-minimized) {
+.table.jb-table.minimizedColumnIndex19 thead tr th:nth-child(20) > *:not(.show-for-minimized) {
   display: none !important;
 }
 .table.jb-table.minimizedColumnIndex19 tbody tr td:nth-child(20) {

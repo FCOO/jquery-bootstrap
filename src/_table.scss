@@ -228,16 +228,15 @@ fixed-first-column-selected : First column when it is fixed and selected
                 width     : 1.5em;
                 text-align: center !important;
                 padding   : 0;
-                * {margin: 0}
-                *.show-for-minimized       { display: initial !important; }
-                *:not(.show-for-minimized) { display: none !important; }
+                & > * {margin: 0 !important;}
+                & > *.show-for-minimized       { display: initial !important; }
+                & > *:not(.show-for-minimized) { display: none !important;  }
             }
 
             tbody tr td:nth-child(#{$cno}){
                 width       : 1.5em;
                 padding     : 0;
                 font-size   : 0;
-                //content-visibility: hidden;
                 height      : calc(1px + 2 * var(--bs-table-cell-padding-y) + var(--bs-body-line-height) * 1em);
             }
 
