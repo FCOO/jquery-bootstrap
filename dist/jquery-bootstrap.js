@@ -7344,8 +7344,9 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                     if (newTitle && !titleFound){
                         /*
                         newTitle = STRING
+                        newTitle = {da:, en:STRING}
                         newTitle = {text: STRING}
-                        newTitle = {text: {da:, en:STRING}
+                        newTitle = {text: {da:, en:STRING}}
                         */
                         titleFound = true;
                         if (typeof newTitle == 'string')
@@ -7357,6 +7358,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                                 else
                                     title = $.extend({}, newTitle.text);
                             }
+                            else
+                                title = $.extend({}, newTitle);
 
                         title = $._bsAdjustText(title);
                     }
