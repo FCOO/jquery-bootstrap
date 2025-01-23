@@ -727,27 +727,30 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             }
 
             if (titlePost){
-                let title = {};
-                if (columnOptions.header){
-                    /*
-                    header = STRING
-                    header = {text: STRING}
-                    header = {text: {da:, en:STRING}
-                    */
+                let title = {},
+                    titleFound = false;
 
+                [columnOptions.title, columnOptions.header].forEach( newTitle => {
+                    if (newTitle && !titleFound){
+                        /*
+                        newTitle = STRING
+                        newTitle = {text: STRING}
+                        newTitle = {text: {da:, en:STRING}
+                        */
+                        titleFound = true;
+                        if (typeof newTitle == 'string')
+                            title.da = newTitle;
+                        else
+                            if (newTitle.text){
+                                if (typeof newTitle.text == 'string')
+                                    title.da = newTitle.text;
+                                else
+                                    title = $.extend({}, newTitle.text);
+                            }
 
-                    if (typeof columnOptions.header == 'string')
-                        title.da = columnOptions.header;
-                    else
-                        if (columnOptions.header.text){
-                            if (typeof columnOptions.header.text == 'string')
-                                title.da = columnOptions.header.text;
-                            else
-                                title = $.extend({}, columnOptions.header.text);
-                        }
-
-                    title = $._bsAdjustText(title);
-                }
+                        title = $._bsAdjustText(title);
+                    }
+                });
 
                 $.each( titlePost, (lang, text) => {
                     title[lang] = (title[lang] || '') + ' ' + text;
@@ -778,7 +781,6 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         $table.columns = options.columns;
         $table.columnIds = columnIds;
 
-//HER           $table.bsTable = this;
         $table.bsTableOptions = options;
 
         //Create colgroup
