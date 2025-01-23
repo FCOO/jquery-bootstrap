@@ -150,7 +150,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             useTouchSize        : true,
             defaultColumnOptions: {},
             rowClassName        : [],
-
+            columns             : [],
             stupidtable         : {}
         },
 
@@ -877,7 +877,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         //Create tbody and all rows
         $table.append( $('<tbody/>') );
 
-        options.content.forEach( rowContent => $table.addRow( rowContent ) );
+        if (options.content)
+            options.content.forEach( rowContent => $table.addRow( rowContent ) );
 
         if (sortableTable){
             $table.stupidtable( options.stupidtable )

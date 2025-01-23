@@ -48,19 +48,20 @@
 
         //Update all items
         var $firstItem, $lastItem;
-        options.list.forEach( itemOptions => {
-            var $item  = itemOptions.$item,
-                hidden = !!itemOptions.hidden();
+        if (options.list)
+            options.list.forEach( itemOptions => {
+                var $item  = itemOptions.$item,
+                    hidden = !!itemOptions.hidden();
 
-            $item.removeClass('first last');
-            hidden ? $item.hide() : $item.show();
-            $item.toggleClass('disabled', !!itemOptions.disabled() );
+                $item.removeClass('first last');
+                hidden ? $item.hide() : $item.show();
+                $item.toggleClass('disabled', !!itemOptions.disabled() );
 
-            if (!hidden){
-                $firstItem = $firstItem || $item;
-                $lastItem = $item;
-            }
-        });
+                if (!hidden){
+                    $firstItem = $firstItem || $item;
+                    $lastItem = $item;
+                }
+            });
 
         if ($firstItem)
             $firstItem.addClass('first');

@@ -1734,67 +1734,65 @@ options
                 .appendTo($result);
         }
 
-        this.options.list.forEach( (item, index) => {
-            var active = index == 0;
+        if (this.options.list)
+            this.options.list.forEach( (item, index) => {
+                var active = index == 0;
 
-            item.index = index;
+                item.index = index;
 
-            if (multiItems)
-                $('<button type="button" data-bs-target="#' + id + '" data-bs-slide-to="' + index + '"></button>')
-                    .toggleClass('active', !!active)
-                        .appendTo($indicators);
+                if (multiItems)
+                    $('<button type="button" data-bs-target="#' + id + '" data-bs-slide-to="' + index + '"></button>')
+                        .toggleClass('active', !!active)
+                            .appendTo($indicators);
 
-            var $item = $('<div/>')
-                    .addClass('carousel-item')
-                    .toggleClass('active', !!active)
-                    .appendTo($inner),
+                var $item = $('<div/>')
+                        .addClass('carousel-item')
+                        .toggleClass('active', !!active)
+                        .appendTo($inner),
 
-                //The image
-                $img = $('<img src="' + item.url + '"/>')
-                    .addClass('d-block w-100')
-                    .appendTo($item);
-                if (options.innerHeight && options.fitHeight)
-                    $img.css('max-height', options.innerHeight);
-
-                //Find onClick (if any)
-                item.onClick =
-                    item.onClick ? item.onClick :
-                    item.defaultOnClick ? defaultOnClick :
-                    options.onClick ? options.onClick :
-                    options.defaultOnClick ? defaultOnClick : null;
-                if (item.onClick)
-                    $img
-                        .data('bsc-item-options', item)
-                        .attr('role', 'button')
-                        .on('click', item_onClick);
-
-
-
-            //Caption
-            if (item.icon || item.text || item.subIcon || item.subText){
-                var $caption = $('<div />')
-                        .addClass('carousel-caption _d-none')
-                        .addClass('_d-md-block')     //<= set when the capition is visible. MANGLER skal justeres!!!
+                    //The image
+                    $img = $('<img src="' + item.url + '"/>')
+                        .addClass('d-block w-100')
                         .appendTo($item);
+                    if (options.innerHeight && options.fitHeight)
+                        $img.css('max-height', options.innerHeight);
 
-                var $innerCation = $('<div/>')
-                        .addClass('carousel-caption-inner w-100 d-flex flex-column align-items-center')
-                        .appendTo($caption);
+                    //Find onClick (if any)
+                    item.onClick =
+                        item.onClick ? item.onClick :
+                        item.defaultOnClick ? defaultOnClick :
+                        options.onClick ? options.onClick :
+                        options.defaultOnClick ? defaultOnClick : null;
+                    if (item.onClick)
+                        $img
+                            .data('bsc-item-options', item)
+                            .attr('role', 'button')
+                            .on('click', item_onClick);
 
+                //Caption
+                if (item.icon || item.text || item.subIcon || item.subText){
+                    var $caption = $('<div />')
+                            .addClass('carousel-caption _d-none')
+                            .addClass('_d-md-block')     //<= set when the capition is visible. MANGLER skal justeres!!!
+                            .appendTo($item);
 
-                    if (item.icon || item.text)
-                        $('<div/>')
-                            .addClass('caption')
-                            ._bsAddHtml({icon: item.icon, text: item.text})
-                            .appendTo($innerCation);
+                    var $innerCation = $('<div/>')
+                            .addClass('carousel-caption-inner w-100 d-flex flex-column align-items-center')
+                            .appendTo($caption);
 
-                    if (item.subIcon || item.subText)
-                        $('<div/>')
-                            .addClass('caption caption-sm')
-                            ._bsAddHtml({icon: item.subIcon, text: item.subText})
-                            .appendTo($innerCation);
-            }
-        });
+                        if (item.icon || item.text)
+                            $('<div/>')
+                                .addClass('caption')
+                                ._bsAddHtml({icon: item.icon, text: item.text})
+                                .appendTo($innerCation);
+
+                        if (item.subIcon || item.subText)
+                            $('<div/>')
+                                .addClass('caption caption-sm')
+                                ._bsAddHtml({icon: item.subIcon, text: item.subText})
+                                .appendTo($innerCation);
+                }
+            });
 
         return $result;
     };
@@ -3276,19 +3274,20 @@ options
 
         //Update all items
         var $firstItem, $lastItem;
-        options.list.forEach( itemOptions => {
-            var $item  = itemOptions.$item,
-                hidden = !!itemOptions.hidden();
+        if (options.list)
+            options.list.forEach( itemOptions => {
+                var $item  = itemOptions.$item,
+                    hidden = !!itemOptions.hidden();
 
-            $item.removeClass('first last');
-            hidden ? $item.hide() : $item.show();
-            $item.toggleClass('disabled', !!itemOptions.disabled() );
+                $item.removeClass('first last');
+                hidden ? $item.hide() : $item.show();
+                $item.toggleClass('disabled', !!itemOptions.disabled() );
 
-            if (!hidden){
-                $firstItem = $firstItem || $item;
-                $lastItem = $item;
-            }
-        });
+                if (!hidden){
+                    $firstItem = $firstItem || $item;
+                    $lastItem = $item;
+                }
+            });
 
         if ($firstItem)
             $firstItem.addClass('first');
@@ -6760,7 +6759,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             useTouchSize        : true,
             defaultColumnOptions: {},
             rowClassName        : [],
-
+            columns             : [],
             stupidtable         : {}
         },
 
@@ -7487,7 +7486,8 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         //Create tbody and all rows
         $table.append( $('<tbody/>') );
 
-        options.content.forEach( rowContent => $table.addRow( rowContent ) );
+        if (options.content)
+            options.content.forEach( rowContent => $table.addRow( rowContent ) );
 
         if (sortableTable){
             $table.stupidtable( options.stupidtable )
