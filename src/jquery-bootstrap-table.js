@@ -670,7 +670,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
         options.class =
             'jb-table ' +
-            (options.verticalBorder && !options.noBorder ? 'table-bordered ' : '' ) +
+            (options.verticalBorder && !options.noBorder ? 'table-bordered border-black ' : '' ) +
             (options.noBorder ? 'table-borderless ' : '' ) +
             (options.hoverRow ? 'table-hover ' : '' ) +
             (options.noPadding ? 'table-no-padding ' : '' ) +

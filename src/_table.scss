@@ -91,6 +91,15 @@ fixed-first-column-selected : First column when it is fixed and selected
         width: inherit !important;
     }
 
+
+    &.table-bordered {
+        td,th {
+            border-width: 1px !important;
+            border-color: black !important;
+        }
+    }
+
+
     /*************************************
     Header
     *************************************/
