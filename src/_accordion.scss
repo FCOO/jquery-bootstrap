@@ -51,6 +51,12 @@ Using Bootstrap Collapse to create accordion
         background-color: var(--#{$prefix}accordion-active-btn-hover-bg,    var(--#{$prefix}accordion-active-btn-bg));
     }
 
+    //Remove shadow on focus when not open
+    .accordion-button.collapsed:focus {
+        box-shadow: none; //var(--#{$prefix}accordion-btn-focus-box-shadow);
+    }
+
+
 
     .accordion-button span,
     .accordion-footer span {
