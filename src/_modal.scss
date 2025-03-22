@@ -185,7 +185,8 @@ div.modal-dialog {
                 $incl-no-selector    : false,
                 $incl-table-display  : false,
                 $only-direct-children: true,
-                $display-value       : 'flex !important'
+                $display-value       : 'flex !important',
+                $class-postfix       :':not(:empty)'
             );
         }
 
@@ -196,6 +197,7 @@ div.modal-dialog {
             $incl-no-selector   : false,
             $incl-table-display : false
         );
+
 
         //When not fixed-height and not normal and/or extended contents always max-height => height adjust to content
         &:not(.modal-fixed-height) {
@@ -427,3 +429,31 @@ Common styles to be used when a modal is being dragged
 }
 
 
+
+/****************************************************
+Spedcial classes for icons when full-screen mode is allowed at is set on/off
+****************************************************/
+//Create class hide-for-modal-full-screen = icon hidden when in full-screen-mode
+div.modal-dialog .modal-content.modal-set-to-full-screen > .modal-header .hide-for-modal-set-to-full-screen {
+  display: none !important;
+}
+
+//Classes for the show-in-full-screen-on icon:
+//Shown when the size is the max size and not in full-screen-mode
+div.modal-header-icon-full-screen-on {
+    display: none;
+
+    .modal-dialog.modal-full-screen-at-normal   .modal-content.modal-normal:not(.modal-set-to-full-screen) &,
+    .modal-dialog.modal-full-screen-at-extended .modal-content.modal-extended:not(.modal-set-to-full-screen) & {
+        display: initial !important;
+    }
+}
+
+//Classes for the show-in-full-screen-off icon:
+//Shown when in full-screen-mode
+div.modal-header-icon-full-screen-off {
+    display: none;
+    .modal-dialog .modal-content.modal-set-to-full-screen & {
+        display: initial !important;
+    }
+}
