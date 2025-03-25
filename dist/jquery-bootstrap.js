@@ -2882,6 +2882,8 @@ uri         : {default: "Please enter a valid URI"}
     A header can contain any of the following icons:
     back (<)
     forward (>)
+    fullScreenOn
+    fullScreenOff
     extend (^)
     diminish
     pin
@@ -2938,8 +2940,11 @@ uri         : {default: "Please enter a valid URI"}
                 class: square ? 'header-icon-selected' : null
             },
 
-            extend  : square ? 'fa-square-plus' : 'fa-chevron-circle-up',
+            extend  : square ? 'fa-square-plus'  : 'fa-chevron-circle-up',
             diminish: square ? 'fa-square-minus' : 'fa-chevron-circle-down',
+
+            fullScreenOn : square ? 'fa-expand'   : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-expand fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
+            fullScreenOff: square ? 'fa-compress' : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-compress fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
 
 
             new     : square ? 'fa-window-maximize' : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
@@ -3013,7 +3018,7 @@ uri         : {default: "Please enter a valid URI"}
 
             //Add icons
             let headerIcons = useSquareIcons ? bsHeaderIconsSquare : bsHeaderIcons;
-            ['back', 'forward', 'pin', 'unpin', 'extend', 'diminish', 'new', 'warning', 'info', 'help', 'close'].forEach( (id) => {
+            ['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'warning', 'info', 'help', 'close'].forEach( (id) => {
                 let iconOptions = options.icons[id];
                 if (iconOptions && (iconOptions.onClick || (typeof iconOptions == 'function'))){
                     if (typeof iconOptions == 'function')
@@ -4225,6 +4230,7 @@ jquery-bootstrap-modal-promise.js
     By default it return the original options but they can be overwriten by applications/packages
     **********************************************************/
     $.MODAL_ADJUST_OPTIONS = function(modalOptions/*, modal*/){
+
         return modalOptions;
     };
     $.MODAL_NO_VERTICAL_MARGIN = false;
@@ -4241,10 +4247,10 @@ jquery-bootstrap-modal-promise.js
     function adjustModalMaxHeight( $modalContent ){
         var $modalContents = $modalContent || $('.modal-content.modal-flex-height');
 
-
         //For each $modalContent: Get the current data with options on relative size and set the height and max-height
         $modalContents.each(function(index, elem){
             var $modalContent = $(elem);
+
             $.each(modalSizeClassName, function(size, className){
                 if ($modalContent.hasClass(className)){
                     //The current percent/offset info is in .data('relativeHeightOptions')[size];
@@ -4261,7 +4267,8 @@ jquery-bootstrap-modal-promise.js
                         relativeOptions[id] = $.isFunction(value) ? value($modalContent) : value;
                     });
 
-                    var maxHeight = relativeOptions.relativeHeight * relativeOptions.parentContainerHeight - relativeOptions.relativeHeightOffset;
+                    const maxHeight = relativeOptions.relativeHeight * relativeOptions.parentContainerHeight - relativeOptions.relativeHeightOffset;
+
                     $modalContent.css({
                         'max-height': maxHeight+'px',
                         'height'    : maxHeight+'px'
@@ -4384,6 +4391,10 @@ jquery-bootstrap-modal-promise.js
     //hide_bs_modal - called when a modal is closing
     function hide_bs_modal() {
         currentModal = this.previousModal;
+
+        //If in full.screen mode => reset back
+        if (this.bsModal.isFullScreenMode)
+            this._bsModalFullScreenOff();
 
         //Close elements
         this._bsModalCloseElements();
@@ -4790,6 +4801,7 @@ jquery-bootstrap-modal-promise.js
                     .addClass(options.modalContentClassName)
                     .toggleClass('no-shadow', !!options.noShadow)
                     .modernizrOff('modal-pinned')
+                    .modernizrOff('modal-set-to-full-screen')
                     .appendTo( this );
 
         //Set modal-[SIZE]-[STATE] class
@@ -4819,19 +4831,19 @@ jquery-bootstrap-modal-promise.js
         this._bsModalSetSizeClass(initSize);
         this._bsModalSetHeightAndWidth();
 
-        var modalExtend       = $.proxy( this._bsModalExtend,       this),
-            modalDiminish     = $.proxy( this._bsModalDiminish,     this),
-            modalToggleHeight = $.proxy( this._bsModalToggleHeight, this),
-            modalPin          = $.proxy( this._bsModalPin,          this),
-            modalUnpin        = $.proxy( this._bsModalUnpin,        this),
+        var modalExtend       = this._bsModalExtend.bind(this),
+            modalDiminish     = this._bsModalDiminish.bind(this),
+            modalToggleHeight = this._bsModalToggleHeight.bind(this),
+            modalPin          = this._bsModalPin.bind(this),
+            modalUnpin        = this._bsModalUnpin.bind(this),
             iconExtendClassName   = '',
             iconDiminishClassName = '',
             multiSize = this.bsModal.sizes > MODAL_SIZE_NORMAL;
 
         //If multi size: Set the class-name for the extend and diminish icons.
         if (multiSize){
-            iconExtendClassName   = this.bsModal.sizes & MODAL_SIZE_EXTENDED  ? 'hide-for-modal-extended'  : 'hide-for-modal-normal';
-            iconDiminishClassName = this.bsModal.sizes & MODAL_SIZE_MINIMIZED ? 'hide-for-modal-minimized' : 'hide-for-modal-normal';
+            iconExtendClassName   = 'hide-for-modal-set-to-full-screen ' + (this.bsModal.sizes & MODAL_SIZE_EXTENDED  ? 'hide-for-modal-extended'  : 'hide-for-modal-normal');
+            iconDiminishClassName = 'hide-for-modal-set-to-full-screen ' + (this.bsModal.sizes & MODAL_SIZE_MINIMIZED ? 'hide-for-modal-minimized' : 'hide-for-modal-normal');
         }
 
         this.bsModal.onPin = options.onPin;
@@ -4848,14 +4860,18 @@ jquery-bootstrap-modal-promise.js
 
             //Icons
             icons    : {
-                pin     : { className: 'hide-for-modal-pinned', onClick: options.onPin ? modalPin      : null },
-                unpin   : { className: 'show-for-modal-pinned', onClick: options.onPin ? modalUnpin    : null },
-                extend  : { className: iconExtendClassName,     onClick: multiSize ? modalExtend   : null, altEvents:'swipeup'   },
-                diminish: { className: iconDiminishClassName,   onClick: multiSize ? modalDiminish : null, altEvents:'swipedown' },
-                new     : {                                     onClick: options.onNew ? $.proxy(options.onNew, this) : null },
-                info    : {                                     onClick: options.onInfo ? $.proxy(options.onInfo, this) : null },
-                warning : {                                     onClick: options.onWarning ? $.proxy(options.onWarning, this) : null },
-                help    : {                                     onClick: options.onHelp ? $.proxy(options.onHelp, this) : null },
+                pin             : { className: 'hide-for-modal-pinned', onClick: options.onPin ? modalPin   : null },
+                unpin           : { className: 'show-for-modal-pinned', onClick: options.onPin ? modalUnpin : null },
+
+                fullScreenOn    : { className: 'modal-header-icon-full-screen-on hide-for-modal-set-to-full-screen',  onClick: options.allowFullScreen ? this._bsModalFullScreenOn.bind(this)  : null, altEvents:'swipeup'   },
+                fullScreenOff   : { className: 'modal-header-icon-full-screen-off show-for-modal-set-to-full-screen', onClick: options.allowFullScreen ? this._bsModalFullScreenOff.bind(this) : null, altEvents:'swipedown' },
+
+                extend          : { className: iconExtendClassName,     onClick: multiSize ? modalExtend   : null,                        altEvents:'swipeup'   },
+                diminish        : { className: iconDiminishClassName,   onClick: multiSize ? modalDiminish : null,                        altEvents:'swipedown' },
+                new             : {                                     onClick: options.onNew     ? options.onNew.bind(this)     : null                        },
+                info            : {                                     onClick: options.onInfo    ? options.onInfo.bind(this)    : null                        },
+                warning         : {                                     onClick: options.onWarning ? options.onWarning.bind(this) : null                        },
+                help            : {                                     onClick: options.onHelp    ? options.onHelp.bind(this)    : null                        },
             }
         }, options );
 
@@ -5109,7 +5125,8 @@ jquery-bootstrap-modal-promise.js
 
     /******************************************************
     _bsModalExtend, _bsModalDiminish, _bsModalToggleHeight,
-    _bsModalSetSize, _bsModalToggleMinimizedHeader
+    _bsModalSetSize, _bsModalToggleMinimizedHeader,
+    _bsModalFullScreenOn, _bsModalFullScreenOff
     Methods to change extended-mode
     ******************************************************/
     $.fn._bsModalExtend = function(){
@@ -5144,15 +5161,6 @@ jquery-bootstrap-modal-promise.js
 
         this._bsModalSetSizeClass(size);
         this._bsModalSetHeightAndWidth();
-
-        /*
-        NOTE: 2021-04-16
-        Original this methods returns false to prevent onclick-event on the header.
-        That prevented other more general events to be fired. Eg. in fcoo/leaflet-bootstrap
-        where the focus of a popup window was set when the window was clicked
-        It appear not to have any other effect when removed.
-        */
-        //return false; //Prevent onclick-event on header
     };
 
     //hid/show header for size = minimized
@@ -5160,6 +5168,87 @@ jquery-bootstrap-modal-promise.js
         if (this._bsModalGetSize() == MODAL_SIZE_MINIMIZED)
             get$modalContent(this).toggleClass('modal-minimized-hide-header');
     };
+
+    //Toggle full screen
+    $.fn._bsModalFullScreenOn = function(){
+        let bsModal       = this.bsModal,
+            $modalDialog  = bsModal.$modalDialog,
+            isExtended    = $modalDialog.hasClass('modal-full-screen-at-extended'),
+            $modalContent = bsModal.$modalContent,
+            $modalBody    = isExtended ? bsModal.extended.$body : bsModal.$body;
+
+        //Save and remove width and height set direct in css and
+        bsModal.saveWidth  = $modalDialog.css('width');
+        $modalDialog.css('width', '');
+        bsModal.saveHeight = $modalContent.css('height');
+        $modalContent.css('height', '');
+
+        //Save and remove any 'size'-classes
+        bsModal.saveDialogContentClass = $modalDialog.get(0).className;
+        bsModal.saveModalContentClass  = $modalContent.get(0).className;
+        bsModal.saveBodyClass          = $modalBody.get(0).className;
+
+        let classNames = [
+                'modal-fixed-height',
+                'modal-flex-height',
+                'modal-flex-width',
+                'modal-extra-width',
+                'modal-mega-width',
+                'modal-full-width',
+            ].join(' ');
+
+        $modalDialog.removeClass(classNames);
+        $modalContent.removeClass(classNames);
+        $modalBody.removeClass(classNames);
+
+        //Set new classes to make size = full screen
+        $modalDialog.addClass ('modal-max-width modal-full-screen modal-full-screen-with-border');
+        $modalContent.addClass('modal-flex-height');
+        $modalContent.addClass('modal-' + (isExtended ? 'extended' : 'normal') + '-always-max-height');
+
+        $modalBody.addClass   ('modal-body-always-max-height');
+
+        //Save data-relativeHeightOptions from modal-content and set new with no margin
+        bsModal.save_relativeHeightOptions = $modalContent.data('relativeHeightOptions') || {};
+
+        let newData = {};
+        newData[MODAL_SIZE_NORMAL] = newData[MODAL_SIZE_EXTENDED] = {  relativeHeightOffset: 0 };
+        $modalContent.data('relativeHeightOptions', newData);
+        adjustModalMaxHeight( $modalContent );
+
+        $modalContent.modernizrOn('modal-set-to-full-screen');
+
+        bsModal.isFullScreenMode = true;
+    };
+
+
+    $.fn._bsModalFullScreenOff = function(){
+        let bsModal       = this.bsModal,
+            $modalDialog  = bsModal.$modalDialog,
+            isExtended    = $modalDialog.hasClass('modal-full-screen-at-extended'),
+            $modalContent = bsModal.$modalContent,
+            $modalBody    = isExtended ? bsModal.extended.$body : bsModal.$body;
+
+        //Reset original size-classes
+        $modalDialog.get(0).className   = bsModal.saveDialogContentClass;
+        $modalContent.get(0).className  = bsModal.saveModalContentClass;
+        $modalBody.get(0).className     = bsModal.saveBodyClass;
+
+        //Reset data-relativeHeightOptions
+        $modalContent.data('relativeHeightOptions', bsModal.save_relativeHeightOptions);
+        adjustModalMaxHeight( $modalContent );
+
+        //Reset original width and height set direct in css
+        $modalDialog.css('width',   bsModal.saveWidth || '');
+        $modalContent.css('height', bsModal.saveHeight || '');
+
+        $modalContent.modernizrOff('modal-set-to-full-screen');
+
+        bsModal.isFullScreenMode = false;
+    };
+
+
+
 
 /* TODO: animate changes in height and width - Use Bootstrtap 5 collaps
        var $this = this.bsModal.$container,
@@ -5241,6 +5330,10 @@ jquery-bootstrap-modal-promise.js
              (options.removeOnClose === undefined) )
             options.remove = !!options.defaultRemoveOnClose || !!options.defaultRemove;
 
+        //Prevent allow-full-screen if already set
+        if (options.fullScreen || options.fullScreenWithBorder)
+            options.allowFullScreen = false;
+
         //Set options for full screen with border
         if (options.fullScreenWithBorder)
             options.fullScreen = true;
@@ -5274,6 +5367,9 @@ jquery-bootstrap-modal-promise.js
             }
         }
 
+        //If allowFullScreen: Find the largest size-mode and set the differnet class-names etc.
+        if (options.allowFullScreen)
+            options.sizeWithFullScreen = options.extended ? MODAL_SIZE_EXTENDED : MODAL_SIZE_NORMAL;
 
         //Create the modal
         $result =
@@ -5291,6 +5387,10 @@ jquery-bootstrap-modal-promise.js
                 ._bsAddBaseClassAndSize( options )
                 .attr( 'role', 'document')
                 .appendTo( $result );
+
+        if (options.allowFullScreen)
+            $modalDialog.addClass('modal-full-screen-at-' + (options.extended ? 'extended' : 'normal') );
+
 
         //Extend with prototype
         $result.extend( bsModal_prototype );
@@ -5323,6 +5423,8 @@ jquery-bootstrap-modal-promise.js
            show	    :   false                               //  boolean	            true	Shows the modal when initialized.
         });
         $result.bsModal = $modalDialog.bsModal;
+
+        $result.bsModal.$modalDialog = $modalDialog;
 
         $result.removeOnClose = options.remove || options.removeOnClose;
 
@@ -7035,8 +7137,20 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         maximizeColumn: function(index){ return this.toggleMinimizedColumn(index, true); },
         minimizeColumn: function(index){ return this.toggleMinimizedColumn(index, false); },
         toggleMinimizedColumn: function(index, show){
+            this.columns[index].minimizeTimeoutId = null;
             return this._toggleColumn('minimized', index, show);
         },
+
+        maximizeAllColumns: function(){ return this.toggleMinimizedAllColumns(false); },
+        minimizeAllColumns: function(){ return this.toggleMinimizedAllColumns(true); },
+        toggleMinimizedAllColumns: function(minimize){
+            this.columns.forEach( (columnOptions, index) => {
+                if (columnOptions.minimizable)
+                    this.toggleMinimizedColumn(index, minimize);
+            });
+        },
+
+
 
 
         _toggleColumn: function(id, index, show){
@@ -7423,17 +7537,28 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         multiSortList.sort(function( c1, c2){ return c1.sortIndex - c2.sortIndex; });
 
         //Create headers
-        if (options.showHeader)
+        if (options.showHeader){
+            let anyColumnMinimizable = false;
+
+
             $table.columns.forEach( (columnOptions, columnIndex) => {
+                if (columnOptions.minimizable)
+                    anyColumnMinimizable = true;
+
+
                 let $th = columnOptions.$th = $('<th/>').appendTo( $tr );
 
-                if (columnOptions.minimizable){
+                if (columnOptions.minimizable)
                     $th
                         .addClass('minimizable clickable')
                         ._bsAddHtml( {icon: columnOptions.minimizedIcon, iconClass: 'show-for-minimized'} )
-                        .on('click', $table.toggleMinimizedColumn.bind($table, columnIndex) );
-                }
-
+                        .on('click', function(columnIndex){
+                            //Delay toggle minimize to allow dbl-click to take over
+                            let column = this.columns[columnIndex];
+                            if (!column.minimizeTimeoutId)
+                                column.minimizeTimeoutId = window.setTimeout(
+                                    this.toggleMinimizedColumn.bind(this, columnIndex), 200 );
+                        }.bind($table, columnIndex) );
 
                 if (columnOptions.sortable){
                     $th
@@ -7473,6 +7598,29 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
                 $th._bsAddHtml( columnOptions.header );
             }, this);
+
+
+            if (anyColumnMinimizable)
+                $tr.on('dblclick', function(){
+                    let minimize = true;
+                    this.columns.forEach( columnOptions => {
+                        if (columnOptions.minimized)
+                            minimize = false;
+
+                        if (columnOptions.minimizeTimeoutId){
+                            window.clearTimeout(columnOptions.minimizeTimeoutId);
+                            columnOptions.minimizeTimeoutId = null;
+                        }
+                    });
+                    this.toggleMinimizedAllColumns( minimize );
+
+                }.bind($table) );
+
+
+
+
+        }
+
 
         if (options.selectable){
             var radioGroupOptions = $.extend( true, {}, options );

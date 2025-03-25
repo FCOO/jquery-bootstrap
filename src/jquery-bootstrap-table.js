@@ -426,8 +426,20 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         maximizeColumn: function(index){ return this.toggleMinimizedColumn(index, true); },
         minimizeColumn: function(index){ return this.toggleMinimizedColumn(index, false); },
         toggleMinimizedColumn: function(index, show){
+            this.columns[index].minimizeTimeoutId = null;
             return this._toggleColumn('minimized', index, show);
         },
+
+        maximizeAllColumns: function(){ return this.toggleMinimizedAllColumns(false); },
+        minimizeAllColumns: function(){ return this.toggleMinimizedAllColumns(true); },
+        toggleMinimizedAllColumns: function(minimize){
+            this.columns.forEach( (columnOptions, index) => {
+                if (columnOptions.minimizable)
+                    this.toggleMinimizedColumn(index, minimize);
+            });
+        },
+
+
 
 
         _toggleColumn: function(id, index, show){
@@ -814,17 +826,28 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         multiSortList.sort(function( c1, c2){ return c1.sortIndex - c2.sortIndex; });
 
         //Create headers
-        if (options.showHeader)
+        if (options.showHeader){
+            let anyColumnMinimizable = false;
+
+
             $table.columns.forEach( (columnOptions, columnIndex) => {
+                if (columnOptions.minimizable)
+                    anyColumnMinimizable = true;
+
+
                 let $th = columnOptions.$th = $('<th/>').appendTo( $tr );
 
-                if (columnOptions.minimizable){
+                if (columnOptions.minimizable)
                     $th
                         .addClass('minimizable clickable')
                         ._bsAddHtml( {icon: columnOptions.minimizedIcon, iconClass: 'show-for-minimized'} )
-                        .on('click', $table.toggleMinimizedColumn.bind($table, columnIndex) );
-                }
-
+                        .on('click', function(columnIndex){
+                            //Delay toggle minimize to allow dbl-click to take over
+                            let column = this.columns[columnIndex];
+                            if (!column.minimizeTimeoutId)
+                                column.minimizeTimeoutId = window.setTimeout(
+                                    this.toggleMinimizedColumn.bind(this, columnIndex), 200 );
+                        }.bind($table, columnIndex) );
 
                 if (columnOptions.sortable){
                     $th
@@ -864,6 +887,29 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
                 $th._bsAddHtml( columnOptions.header );
             }, this);
+
+
+            if (anyColumnMinimizable)
+                $tr.on('dblclick', function(){
+                    let minimize = true;
+                    this.columns.forEach( columnOptions => {
+                        if (columnOptions.minimized)
+                            minimize = false;
+
+                        if (columnOptions.minimizeTimeoutId){
+                            window.clearTimeout(columnOptions.minimizeTimeoutId);
+                            columnOptions.minimizeTimeoutId = null;
+                        }
+                    });
+                    this.toggleMinimizedAllColumns( minimize );
+
+                }.bind($table) );
+
+
+
+
+        }
+
 
         if (options.selectable){
             var radioGroupOptions = $.extend( true, {}, options );
