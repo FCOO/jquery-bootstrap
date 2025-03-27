@@ -333,6 +333,44 @@
         return true;
     };
 
+    /****************************************************************************************
+    $.getTextWidth(text:STRING or []STRING, options:{} OR NUMBER)
+    Return the (maximum) length of text
+    options = font-size (NUMBER) or {fontFamily, fontSize, italic, bold, padding}
+    ****************************************************************************************/
+    $._getTextWidthCanvas = null;
+    $.getTextWidth = $.getTextWidth || function(text, options = {}){
+        $._getTextWidthCanvas = $._getTextWidthCanvas || $('<canvas></canvas>').get(0);
+        const ctx = $._getTextWidthCanvas.getContext("2d");
+
+        let textList = Array.isArray( text ) ? text : [text],
+            result = 0;
+
+        if (typeof options == 'number')
+            options = {fontSize: options};
+
+        options = $.extend({
+            fontFamily: 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color',
+            fontSize  : 12},
+            options
+        );
+
+        options.fontSize = options.fontSize + (typeof options.fontSize == 'number' ? 'px' : '');
+
+        ctx.font = options.fontSize + ' ' + options.fontFamily;
+        if (options.italic)
+            ctx.font = 'italic ' + ctx.font;
+        if (options.bold)
+            ctx.font = 'bold ' + ctx.font;
+
+        textList.forEach( txt => result = Math.max( result, ctx.measureText(txt).width ) );
+
+        return result + (options.padding || 0);
+    };
+
+
+
+
 
     //$.parentOptionsToInherit = []ID = id of options that modal-content can inherit from the modal itself
     $.parentOptionsToInherit = ['small'];

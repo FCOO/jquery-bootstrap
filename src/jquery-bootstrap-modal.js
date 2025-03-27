@@ -986,6 +986,8 @@
             return;
         }
 
+
+
         //Set height
         $modalContent
             .toggleClass('modal-fixed-height', !!cssHeight)
