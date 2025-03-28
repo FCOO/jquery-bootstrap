@@ -801,7 +801,7 @@
                     case 'formControlGroup' :
                     case 'inputgroup'       :   buildFunc = buildFormControlGroup;  addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
 
-                    case 'content'          : buildFunc = typeof func === "function" ? options.content : function(){ return options.content; }; break;
+                    case 'content'          :   buildFunc = (typeof options.content === "function") ? options.content : function(){ return options.content; }; break;
 
                   //case 'xx'               :   buildFunc = $.bsXx;               break;
 
