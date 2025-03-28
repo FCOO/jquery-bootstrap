@@ -688,7 +688,7 @@
             function buildFormControlGroup( options, $parent ){
                 return $parent
                            .attr('id', options.id)
-                           .addClass('flex-column')
+                           .addClass(options.horizontal ? 'flex-row' : 'flex-column')
                            ._bsAppendContent(options.content, null, null, options);
             }
 
@@ -800,7 +800,10 @@
 
                     case 'formControlGroup' :
                     case 'inputgroup'       :   buildFunc = buildFormControlGroup;  addBorder = true; insideFormGroup = true; buildInsideParent = true; break;
-//                    case 'xx'               :   buildFunc = $.bsXx;               break;
+
+                    case 'content'          : buildFunc = typeof func === "function" ? options.content : function(){ return options.content; }; break;
+
+                  //case 'xx'               :   buildFunc = $.bsXx;               break;
 
                     default                 :   buildFunc = $.fn._bsAddHtml;        noPadding = true; buildInsideParent = true;
                 }
