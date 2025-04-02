@@ -868,8 +868,9 @@
                             .appendTo( $inputGroup );
                 }
                 else
-                    //No-border => the input-group is just a container to keep vertival distance => no horizontal padding
-                    $inputGroup.addClass('px-0');
+                    //No-border => the input-group is just a container to keep vertival distance => no horizontal padding unless horizontalPadding = true
+                    if (!options.horizontalPadding)
+                        $inputGroup.addClass('px-0');
 
                 if (hasLabel)
                     $parent.addClass('child-with-label');
