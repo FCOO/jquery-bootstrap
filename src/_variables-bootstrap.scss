@@ -476,6 +476,9 @@ $input-padding-x-xs    : $jb-padding-x-xs; // (*)
 $input-font-size-xs    : $input-btn-font-size-xs;
 $input-border-radius-xs: $border-radius-xs;
 
+//Opacity for disabled buttons
+$btn-disabled-opacity  : .4;    //Default is .65
+
 /***********************************************
 Adjust bootstrap-variables to only have dimensions
 in integer px from rem
