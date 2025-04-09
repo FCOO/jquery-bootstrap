@@ -53,3 +53,11 @@ bsSelectList
         @include _select-list-variant( 'xs' );
     }
 }
+
+//Add background-color to dropdown-header in selectlist
+.dropdown-menu {
+    --#{$prefix}dropdown-header-background-color: inherit;
+}  
+.dropdown-header {
+    background-color: var(--#{$prefix}dropdown-header-background-color);
+}    

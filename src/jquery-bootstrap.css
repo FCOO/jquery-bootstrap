@@ -13615,6 +13615,14 @@ bsSelectList
   --bs-dropdown-inner-border-radius: calc(0.125rem - 1px);
 }
 
+.dropdown-menu {
+  --bs-dropdown-header-background-color: inherit;
+}
+
+.dropdown-header {
+  background-color: var(--bs-dropdown-header-background-color);
+}
+
 /************************************************************
 MODAL
 

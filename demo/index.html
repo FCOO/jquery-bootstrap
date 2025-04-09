@@ -87,7 +87,7 @@ table#fixed-headers {
 
     }
 
-    .accordion {
+    .accordion2 {
         --bs-accordion-active-color: white;
         --bs-accordion-active-bg: green;
 
@@ -558,6 +558,24 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             scroll: true
         });
 
+        demoBtn({
+            text: 'Selectlist',
+            header: 'Selectlist',
+            footer: '',
+
+            content: $.bsSelectlist({
+                        fullWidth   : true,
+                        selectedId : 'item5',
+                        placeholder: {da:'Vælg hastighed...', en:'Select speed...'},
+                        center: true,
+                        items      : selectItems3,
+                        onChange   : function(id, selected, $buttonGroup){
+                                        console.log('bsSelectlist', id, selected)
+                                    },
+                    }),
+
+            scroll: true
+        });
 
         header('Select-button');
         $.bsSelectButton({
