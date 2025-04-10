@@ -79,6 +79,10 @@
         noCloseIconOnHeader
         historyList         - The modal gets backward and forward icons in header to go backward and forward in the historyList. See demo and https://github.com/fcoo/history.js
 
+        keepScrollWhenReopen: false, - if true the scrolling of the content is reused. If false all content starts at scroll 0,0 when shown
+
+
+
     **********************************************************/
     var modalId = 0,
         openModals = 0,
@@ -355,6 +359,16 @@
 
                     if (this.bsModal.onChange)
                         this.bsModal.onChange( this.bsModal );
+
+                    //Scroll all "body" back if keepScrollWhenReopen = false is set
+                    if (!this.keepScrollWhenReopen)
+                        ['', 'extended', 'minimized'].forEach( size => {
+                            let obj = size ? this.bsModal[size] : this.bsModal;
+                            if (obj && obj.$body){
+                                obj.$body.scrollTop(0);
+                                obj.$body.scrollLeft(0);
+                            }
+                        }, this);
                 },
 
         _close: function(){
@@ -1270,6 +1284,10 @@
         //If allowFullScreen: Find the largest size-mode and set the differnet class-names etc.
         if (options.allowFullScreen)
             options.sizeWithFullScreen = options.extended ? MODAL_SIZE_EXTENDED : MODAL_SIZE_NORMAL;
+
+
+        //Set keepScrollWhenReopen to allow the content to be scrolled back to 0,0 when reopen a modal
+        this.keepScrollWhenReopen = options.keepScrollWhenReopen;
 
         //Create the modal
         $result =
