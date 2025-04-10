@@ -4391,7 +4391,6 @@ jquery-bootstrap-modal-promise.js
         if (currentModal)
             currentModal._bsModalCloseElements();
 
-
         openModals++;
         this.previousModal = currentModal;
         currentModal = this;
@@ -5378,17 +5377,29 @@ jquery-bootstrap-modal-promise.js
         if (options.fullScreen || options.fullScreenWithBorder)
             options.allowFullScreen = false;
 
-        //Set options for full screen with border
-        if (options.fullScreenWithBorder)
-            options.fullScreen = true;
 
-        //Set options for full screen
-        if (options.fullScreen){
-            options.maxWidth             = true;
-            options.alwaysMaxHeight      = true;
-            options.relativeHeightOffset = 0;
+        function adjustFullScreenOptions( opt, defaultOpt={} ){
+            if (!opt) return;
+            ['fullScreenWithBorder', 'fullScreen'].forEach( id => {
+                if (opt[id] === undefined)
+                    opt[id] = defaultOpt[id] || false;
+            });
+            if (opt.fullScreenWithBorder)
+                opt.fullScreen = true;
+
+            //Set options for full screen
+            if (opt.fullScreen){
+                opt.maxWidth             = true;
+                opt.alwaysMaxHeight      = true;
+                opt.relativeHeightOffset = 0;
+            }
         }
 
+        //Set options for full screen with border
+        adjustFullScreenOptions(options);
+        adjustFullScreenOptions(options.minimized, options);
+        adjustFullScreenOptions(options.extended, options);
+        
         //Check $.MODAL_NO_VERTICAL_MARGIN
         if ($.MODAL_NO_VERTICAL_MARGIN){
             options.relativeHeightOffset = 0;

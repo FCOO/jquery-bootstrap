@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+ff<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="da" style="_font-size: 200%; width:100%; height:100%;">
 <head>
 	<title>fcoo.dk - jquery-bootstrap - Demo</title>
@@ -2610,14 +2610,22 @@ clickable: true,
                         $.bsModal({
                             header: options.header,
                             content: 'Dette er '+options.header +'<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17',
-                            flexWidth: options.flexWidth,
-                            extraWidth: options.extraWidth,
-                            megaWidth: options.megaWidth,
-                            maxWidth: options.maxWidth,
-                            fullWidth: options.fullWidth,
+							minimized: {
+								width: true, 
+								content: 'Dette er MINIMIZED version af '+options.header +'<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17',
+							},								
+							extended: {
+								width: true, 
+								content: 'Dette er EXTENDED version af '+options.header +'<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17',
+							},								
+                            flexWidth			: options.flexWidth,
+                            extraWidth			: options.extraWidth,
+                            megaWidth			: options.megaWidth,
+                            maxWidth			: options.maxWidth,
+                            fullWidth			: options.fullWidth,
                             fullScreenWithBorder: options.fullScreenWithBorder,
-                            fullScreen: options.fullScreen,
-                            alwaysMaxHeight: options.alwaysMaxHeight,
+                            fullScreen			: options.fullScreen,
+                            alwaysMaxHeight		: options.alwaysMaxHeight,
                         })
                     modal.show();
                 });
