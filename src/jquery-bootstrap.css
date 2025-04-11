@@ -14551,6 +14551,9 @@ fixed-first-column-selected : First column when it is fixed and selected
   border-width: 1px !important;
   border-color: black !important;
 }
+.table.jb-table thead.no-header {
+  display: none;
+}
 .table.jb-table thead tr {
   position: sticky;
   top: 0px;

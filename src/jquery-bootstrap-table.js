@@ -571,7 +571,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                             );
                         }
                     }.bind(this));
-                });
+                }.bind(this));
 
             var column = this._getColumn( sortInfo.column );
 
@@ -675,6 +675,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         sortId     = 0;
 
     $.bsTable = function( options ){
+        
         options = $._bsAdjustOptions( options, defaultOptions );
 
         //Fixed first column only needed when horizontal scrolling ( = full width)
@@ -819,14 +820,17 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             multiSortList = []{columnIndex, sortIndex} sorted by sortIndex. Is used be each th to define alternative sort-order
         */
+        let anyColumnSortable = false;
         options.columns.forEach( ( columnOptions, index ) => {
-            if (columnOptions.sortable)
+            if (columnOptions.sortable){
                 multiSortList.push( {columnId: columnOptions.id, columnIndex: ''+index, sortIndex: columnOptions.sortIndex });
+                anyColumnSortable = true;
+            }                
         });
         multiSortList.sort(function( c1, c2){ return c1.sortIndex - c2.sortIndex; });
 
         //Create headers
-        if (options.showHeader){
+        if (options.showHeader || anyColumnSortable){
             let anyColumnMinimizable = false;
 
 
@@ -889,7 +893,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             }, this);
 
 
-            if (anyColumnMinimizable)
+            if (anyColumnMinimizable && options.showHeader)
                 $tr.on('dblclick', function(){
                     let minimize = true;
                     this.columns.forEach( columnOptions => {

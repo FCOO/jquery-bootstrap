@@ -104,6 +104,9 @@ fixed-first-column-selected : First column when it is fixed and selected
     Header
     *************************************/
     thead {
+
+        &.no-header { display: none; }
+        
         tr {
             position: sticky;
             top     : 0px;
