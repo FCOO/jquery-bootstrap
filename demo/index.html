@@ -2522,7 +2522,8 @@ clickable: true,
                     fixedContent: {text: 'fixed='+number()},
                     content: {text: 'content='+number()},
                     footer: {text: 'footer='+number()},
-
+					allowFullScreen: true,
+					//noReopenFullScreen: true,
                     minimized: {
                         fixedContent: {text: 'minimized fixed='+number()},
                         content: {text: 'minimized content='+number()},
@@ -2530,7 +2531,7 @@ clickable: true,
                     },
                     extended: {
                         fixedContent: true,
-                        content: {text: 'extended content='+number()},
+                        content: {text: 'extended content='+number()+'<br>1<br>2<br>3<br>4<br>5<br>6'},
                         footer: true,//{text: 'extended footer='+number()},
                     },
                 }
@@ -2587,7 +2588,7 @@ clickable: true,
         [{
                 header: 'alwaysMaxHeight', flexWidth: true, alwaysMaxHeight: true
             }, {
-                header: 'flexWidth (500px)', flexWidth: true, extraWidth: false
+                header: 'flexWidth (500px)', flexWidth: true, extraWidth: false, allowFullScreen: true
             }, {
                 header: 'extraWidth (800px)', flexWidth: true, extraWidth: true
             }, {
@@ -2630,6 +2631,7 @@ clickable: true,
                             fullWidth			: options.fullWidth,
                             fullScreenWithBorder: options.fullScreenWithBorder,
                             fullScreen			: options.fullScreen,
+							allowFullScreen		: options.allowFullScreen,
                             alwaysMaxHeight		: options.alwaysMaxHeight,
                         })
                     modal.show();

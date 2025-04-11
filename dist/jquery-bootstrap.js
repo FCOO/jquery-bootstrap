@@ -4194,6 +4194,8 @@ jquery-bootstrap-modal-promise.js
 
         alwaysMaxHeight: BOOLEAN - If true the modal is always the full height of it parent
 
+        allowFullScreen: BOOLEAN - if true the largest size (normal or extended) gets the possibility to be displayed in full-screen
+        noReopenFullScreen: BOOLEAN - if false and allowFullScreen = true and the modal was in full-screen when closed => It will reopen in full-screen. If true the modal will reopen in prevoius size (minimized, normal or extended)
 
         innerHeight     : The fixed height of the content
         innerMaxHeight  : The fixed max-height of the content
@@ -4437,8 +4439,8 @@ jquery-bootstrap-modal-promise.js
     function hide_bs_modal() {
         currentModal = this.previousModal;
 
-        //If in full.screen mode => reset back
-        if (this.bsModal.isFullScreenMode)
+        //If in full-screen mode and dont reopen in full-screen => reset back
+        if (this.bsModal.isFullScreenMode && this.bsModal.noReopenFullScreen)
             this._bsModalFullScreenOff();
 
         //Close elements
@@ -4508,23 +4510,23 @@ jquery-bootstrap-modal-promise.js
     ******************************************************/
     var bsModal_prototype = {
         show  : function(){
-                    this.modal('show');
+            this.modal('show');
 
-                    this.data('bsModalDialog')._bsModalSetHeightAndWidth();
+            this.data('bsModalDialog')._bsModalSetHeightAndWidth();
 
-                    if (this.bsModal.onChange)
-                        this.bsModal.onChange( this.bsModal );
+            if (this.bsModal.onChange)
+                this.bsModal.onChange( this.bsModal );
 
-                    //Scroll all "body" back if keepScrollWhenReopen = false is set
-                    if (!this.keepScrollWhenReopen)
-                        ['', 'extended', 'minimized'].forEach( size => {
-                            let obj = size ? this.bsModal[size] : this.bsModal;
-                            if (obj && obj.$body){
-                                obj.$body.scrollTop(0);
-                                obj.$body.scrollLeft(0);
-                            }
-                        }, this);
-                },
+            //Scroll all "body" back if keepScrollWhenReopen = false is set
+            if (!this.keepScrollWhenReopen)
+                ['', 'extended', 'minimized'].forEach( size => {
+                    let obj = size ? this.bsModal[size] : this.bsModal;
+                    if (obj && obj.$body){
+                        obj.$body.scrollTop(0);
+                        obj.$body.scrollLeft(0);
+                    }
+                }, this);
+        },
 
         _close: function(){
             this.modal('hide');
@@ -4583,7 +4585,6 @@ jquery-bootstrap-modal-promise.js
                 }
             }
             //***********************************************************
-
             //Update header
             var $iconContainer = this.bsModal.$header.find('.header-icon-container').detach();
             updateElement(this.bsModal.$header, options, '_bsHeaderAndIcons', $.BSMODAL_USE_SQUARE_ICONS);
@@ -4602,6 +4603,8 @@ jquery-bootstrap-modal-promise.js
                     updateElement(containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
             }, this);
+            
+            
             return this;
         },
 
@@ -5154,8 +5157,6 @@ jquery-bootstrap-modal-promise.js
             return;
         }
 
-
-
         //Set height
         $modalContent
             .toggleClass('modal-fixed-height', !!cssHeight)
@@ -5174,6 +5175,12 @@ jquery-bootstrap-modal-promise.js
             .toggleClass('modal-full-screen'            , cssWidth.fullScreen           )
             .toggleClass('modal-full-screen-with-border', cssWidth.fullScreenWithBorder )
             .css('width', cssWidth.width ? cssWidth.width : '' );
+
+
+        if (this.bsModal.isFullScreenMode){
+            this._bsModalFullScreenOff();
+            this._bsModalFullScreenOn();
+        }            
 
         //Call onChange (if any)
         if (bsModal.onChange)
@@ -5392,6 +5399,7 @@ jquery-bootstrap-modal-promise.js
             options.allowFullScreen = false;
 
 
+
         function adjustFullScreenOptions( opt, defaultOpt={} ){
             if (!opt) return;
             ['fullScreenWithBorder', 'fullScreen'].forEach( id => {
@@ -5524,6 +5532,10 @@ jquery-bootstrap-modal-promise.js
                 $result.show();
         }
 
+        //Save some options in bsModal
+        ['noReopenFullScreen'].forEach( id => {
+            $result.bsModal[id] = options[id];
+        }); 
 
         return $result;
     };
