@@ -111,6 +111,11 @@ div.modal-dialog {
         }
     }
 
+    //Width when ffixed-wisth is set
+    &.modal-fit-width {
+        width: fit-content;
+    }        
+    
     //No box-shadow on modal-content when inside a modal-dialog-inline
     &.modal-dialog-inline .modal-content {
         box-shadow: none;

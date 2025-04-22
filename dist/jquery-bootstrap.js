@@ -4200,6 +4200,7 @@ jquery-bootstrap-modal-promise.js
         innerHeight     : The fixed height of the content
         innerMaxHeight  : The fixed max-height of the content
 
+        fitWidth
         flexWidth
         extraWidth
         megaWidth
@@ -4336,6 +4337,7 @@ jquery-bootstrap-modal-promise.js
     3: fixed height. options.height
 
     The width of a modal is by default 300px.
+    options.fitWidth  : If true the width of the modal is set by the with of the content
     options.flexWidth : If true the width of the modal will adjust to the width of the browser up to 500px
     options.extraWidth: Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
     options.megaWidth : Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
@@ -4354,6 +4356,7 @@ jquery-bootstrap-modal-promise.js
 
     function getWidthFromOptions( options ){
         return {
+            fitWidth            : !!options.fitWidth,
             flexWidth           : !!options.flexWidth,
             extraWidth          : !!options.extraWidth,
             megaWidth           : !!options.megaWidth,

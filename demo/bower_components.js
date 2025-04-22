@@ -10717,8 +10717,8 @@ return jQuery;
 
 ;
 /*!
-  * Bootstrap v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap v5.3.5 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 (function (global, factory) {
@@ -10923,7 +10923,7 @@ return jQuery;
    * @param {HTMLElement} element
    * @return void
    *
-   * @see https://www.charistheo.io/blog/2021/02/restart-a-css-animation-with-javascript/#restarting-a-css-animation
+   * @see https://www.harrytheo.com/blog/2021/02/restart-a-css-animation-with-javascript/#restarting-a-css-animation
    */
   const reflow = element => {
     element.offsetHeight; // eslint-disable-line no-unused-expressions
@@ -10968,7 +10968,7 @@ return jQuery;
     });
   };
   const execute = (possibleCallback, args = [], defaultValue = possibleCallback) => {
-    return typeof possibleCallback === 'function' ? possibleCallback(...args) : defaultValue;
+    return typeof possibleCallback === 'function' ? possibleCallback.call(...args) : defaultValue;
   };
   const executeAfterTransition = (callback, transitionElement, waitForTransition = true) => {
     if (!waitForTransition) {
@@ -11290,7 +11290,7 @@ return jQuery;
       const bsKeys = Object.keys(element.dataset).filter(key => key.startsWith('bs') && !key.startsWith('bsConfig'));
       for (const key of bsKeys) {
         let pureKey = key.replace(/^bs/, '');
-        pureKey = pureKey.charAt(0).toLowerCase() + pureKey.slice(1, pureKey.length);
+        pureKey = pureKey.charAt(0).toLowerCase() + pureKey.slice(1);
         attributes[pureKey] = normalizeData(element.dataset[key]);
       }
       return attributes;
@@ -11365,7 +11365,7 @@ return jQuery;
    * Constants
    */
 
-  const VERSION = '5.3.3';
+  const VERSION = '5.3.5';
 
   /**
    * Class definition
@@ -13384,7 +13384,6 @@ return jQuery;
     var popperOffsets = computeOffsets({
       reference: referenceClientRect,
       element: popperRect,
-      strategy: 'absolute',
       placement: placement
     });
     var popperClientRect = rectToClientRect(Object.assign({}, popperRect, popperOffsets));
@@ -13712,7 +13711,6 @@ return jQuery;
     state.modifiersData[name] = computeOffsets({
       reference: state.rects.reference,
       element: state.rects.popper,
-      strategy: 'absolute',
       placement: state.placement
     });
   } // eslint-disable-next-line import/no-unused-modules
@@ -14419,7 +14417,7 @@ return jQuery;
     }
     _createPopper() {
       if (typeof Popper === 'undefined') {
-        throw new TypeError('Bootstrap\'s dropdowns require Popper (https://popper.js.org)');
+        throw new TypeError('Bootstrap\'s dropdowns require Popper (https://popper.js.org/docs/v2/)');
       }
       let referenceElement = this._element;
       if (this._config.reference === 'parent') {
@@ -14498,7 +14496,7 @@ return jQuery;
       }
       return {
         ...defaultBsPopperConfig,
-        ...execute(this._config.popperConfig, [defaultBsPopperConfig])
+        ...execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
       };
     }
     _selectMenuItem({
@@ -15685,7 +15683,7 @@ return jQuery;
       return this._config.sanitize ? sanitizeHtml(arg, this._config.allowList, this._config.sanitizeFn) : arg;
     }
     _resolvePossibleFunction(arg) {
-      return execute(arg, [this]);
+      return execute(arg, [undefined, this]);
     }
     _putElementInTemplate(element, templateElement) {
       if (this._config.html) {
@@ -15784,7 +15782,7 @@ return jQuery;
   class Tooltip extends BaseComponent {
     constructor(element, config) {
       if (typeof Popper === 'undefined') {
-        throw new TypeError('Bootstrap\'s tooltips require Popper (https://popper.js.org)');
+        throw new TypeError('Bootstrap\'s tooltips require Popper (https://popper.js.org/docs/v2/)');
       }
       super(element, config);
 
@@ -15830,7 +15828,6 @@ return jQuery;
       if (!this._isEnabled) {
         return;
       }
-      this._activeTrigger.click = !this._activeTrigger.click;
       if (this._isShown()) {
         this._leave();
         return;
@@ -16018,7 +16015,7 @@ return jQuery;
       return offset;
     }
     _resolvePossibleFunction(arg) {
-      return execute(arg, [this._element]);
+      return execute(arg, [this._element, this._element]);
     }
     _getPopperConfig(attachment) {
       const defaultBsPopperConfig = {
@@ -16056,7 +16053,7 @@ return jQuery;
       };
       return {
         ...defaultBsPopperConfig,
-        ...execute(this._config.popperConfig, [defaultBsPopperConfig])
+        ...execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
       };
     }
     _setListeners() {
@@ -17172,10 +17169,10 @@ return jQuery;
   }
 
   /*!
-   * GSAP 3.12.5
+   * GSAP 3.12.7
    * https://gsap.com
    *
-   * @license Copyright 2008-2024, GreenSock. All rights reserved.
+   * @license Copyright 2008-2025, GreenSock. All rights reserved.
    * Subject to the terms at https://gsap.com/standard-license or for
    * Club GSAP members, the agreement issued with that membership.
    * @author: Jack Doyle, jack@greensock.com
@@ -17517,7 +17514,7 @@ return jQuery;
     return animation._repeat ? _animationCycle(animation._tTime, animation = animation.duration() + animation._rDelay) * animation : 0;
   },
       _animationCycle = function _animationCycle(tTime, cycleDuration) {
-    var whole = Math.floor(tTime /= cycleDuration);
+    var whole = Math.floor(tTime = _roundPrecise(tTime / cycleDuration));
     return tTime && whole === tTime ? whole - 1 : whole;
   },
       _parentToChildTotalTime = function _parentToChildTotalTime(parentTime, child) {
@@ -18647,7 +18644,7 @@ return jQuery;
   })(7.5625, 2.75);
 
   _insertEase("Expo", function (p) {
-    return p ? Math.pow(2, 10 * (p - 1)) : 0;
+    return Math.pow(2, 10 * (p - 1)) * p + p * p * p * p * p * p * (1 - p);
   });
 
   _insertEase("Circ", function (p) {
@@ -18780,7 +18777,7 @@ return jQuery;
     };
 
     _proto.totalProgress = function totalProgress(value, suppressEvents) {
-      return arguments.length ? this.totalTime(this.totalDuration() * value, suppressEvents) : this.totalDuration() ? Math.min(1, this._tTime / this._tDur) : this.rawTime() > 0 ? 1 : 0;
+      return arguments.length ? this.totalTime(this.totalDuration() * value, suppressEvents) : this.totalDuration() ? Math.min(1, this._tTime / this._tDur) : this.rawTime() >= 0 && this._initted ? 1 : 0;
     };
 
     _proto.progress = function progress(value, suppressEvents) {
@@ -18920,7 +18917,9 @@ return jQuery;
     };
 
     _proto.restart = function restart(includeDelay, suppressEvents) {
-      return this.play().totalTime(includeDelay ? -this._delay : 0, _isNotFalse(suppressEvents));
+      this.play().totalTime(includeDelay ? -this._delay : 0, _isNotFalse(suppressEvents));
+      this._dur || (this._zTime = -_tinyNum);
+      return this;
     };
 
     _proto.play = function play(from, suppressEvents) {
@@ -19157,9 +19156,10 @@ return jQuery;
             iteration = this._repeat;
             time = dur;
           } else {
-            iteration = ~~(tTime / cycleDuration);
+            prevIteration = _roundPrecise(tTime / cycleDuration);
+            iteration = ~~prevIteration;
 
-            if (iteration && iteration === tTime / cycleDuration) {
+            if (iteration && iteration === prevIteration) {
               time = dur;
               iteration--;
             }
@@ -19395,7 +19395,7 @@ return jQuery;
         return this.killTweensOf(child);
       }
 
-      _removeLinkedListItem(this, child);
+      child.parent === this && _removeLinkedListItem(this, child);
 
       if (child === this._recent) {
         this._recent = this._last;
@@ -20269,7 +20269,7 @@ return jQuery;
 
       if (!dur) {
         _renderZeroDurationTween(this, totalTime, suppressEvents, force);
-      } else if (tTime !== this._tTime || !totalTime || force || !this._initted && this._tTime || this._startAt && this._zTime < 0 !== isNegative) {
+      } else if (tTime !== this._tTime || !totalTime || force || !this._initted && this._tTime || this._startAt && this._zTime < 0 !== isNegative || this._lazy) {
         time = tTime;
         timeline = this.timeline;
 
@@ -20286,14 +20286,15 @@ return jQuery;
             iteration = this._repeat;
             time = dur;
           } else {
-            iteration = ~~(tTime / cycleDuration);
+            prevIteration = _roundPrecise(tTime / cycleDuration);
+            iteration = ~~prevIteration;
 
-            if (iteration && iteration === _roundPrecise(tTime / cycleDuration)) {
+            if (iteration && iteration === prevIteration) {
               time = dur;
               iteration--;
+            } else if (time > dur) {
+              time = dur;
             }
-
-            time > dur && (time = dur);
           }
 
           isYoyo = this._yoyo && iteration & 1;
@@ -20313,7 +20314,7 @@ return jQuery;
           if (iteration !== prevIteration) {
             timeline && this._yEase && _propagateYoyoEase(timeline, isYoyo);
 
-            if (this.vars.repeatRefresh && !isYoyo && !this._lock && this._time !== cycleDuration && this._initted) {
+            if (this.vars.repeatRefresh && !isYoyo && !this._lock && time !== cycleDuration && this._initted) {
               this._lock = force = 1;
               this.render(_roundPrecise(cycleDuration * iteration), true).invalidate()._lock = 0;
             }
@@ -20426,7 +20427,8 @@ return jQuery;
 
       if (!targets && (!vars || vars === "all")) {
         this._lazy = this._pt = 0;
-        return this.parent ? _interrupt(this) : this;
+        this.parent ? _interrupt(this) : this.scrollTrigger && this.scrollTrigger.kill(!!_reverting);
+        return this;
       }
 
       if (this.timeline) {
@@ -21028,9 +21030,9 @@ return jQuery;
       };
     },
     quickTo: function quickTo(target, property, vars) {
-      var _merge2;
+      var _setDefaults2;
 
-      var tween = gsap.to(target, _merge((_merge2 = {}, _merge2[property] = "+=0.1", _merge2.paused = true, _merge2), vars || {})),
+      var tween = gsap.to(target, _setDefaults((_setDefaults2 = {}, _setDefaults2[property] = "+=0.1", _setDefaults2.paused = true, _setDefaults2.stagger = 0, _setDefaults2), vars || {})),
           func = function func(value, start, startIsRelative) {
         return tween.resetTo(property, value, start, startIsRelative);
       };
@@ -21296,7 +21298,7 @@ return jQuery;
       }
     }
   }, _buildModifierPlugin("roundProps", _roundModifier), _buildModifierPlugin("modifiers"), _buildModifierPlugin("snap", snap)) || _gsap;
-  Tween.version = Timeline.version = gsap.version = "3.12.5";
+  Tween.version = Timeline.version = gsap.version = "3.12.7";
   _coreReady = 1;
   _windowExists() && _wake();
   var Power0 = _easeMap.Power0,
@@ -21437,7 +21439,13 @@ return jQuery;
         p;
 
     for (i = 0; i < props.length; i += 3) {
-      props[i + 1] ? target[props[i]] = props[i + 2] : props[i + 2] ? style[props[i]] = props[i + 2] : style.removeProperty(props[i].substr(0, 2) === "--" ? props[i] : props[i].replace(_capsExp, "-$1").toLowerCase());
+      if (!props[i + 1]) {
+        props[i + 2] ? style[props[i]] = props[i + 2] : style.removeProperty(props[i].substr(0, 2) === "--" ? props[i] : props[i].replace(_capsExp, "-$1").toLowerCase());
+      } else if (props[i + 1] === 2) {
+        target[props[i]](props[i + 2]);
+      } else {
+        target[props[i]] = props[i + 2];
+      }
     }
 
     if (this.tfm) {
@@ -21473,7 +21481,7 @@ return jQuery;
       save: _saveStyle
     };
     target._gsap || gsap.core.getCache(target);
-    properties && properties.split(",").forEach(function (p) {
+    properties && target.style && target.nodeType && properties.split(",").forEach(function (p) {
       return saver.save(p);
     });
     return saver;
@@ -21520,39 +21528,25 @@ return jQuery;
       _pluginInitted = 1;
     }
   },
-      _getBBoxHack = function _getBBoxHack(swapIfPossible) {
-    var svg = _createElement("svg", this.ownerSVGElement && this.ownerSVGElement.getAttribute("xmlns") || "http://www.w3.org/2000/svg"),
-        oldParent = this.parentNode,
-        oldSibling = this.nextSibling,
-        oldCSS = this.style.cssText,
+      _getReparentedCloneBBox = function _getReparentedCloneBBox(target) {
+    var owner = target.ownerSVGElement,
+        svg = _createElement("svg", owner && owner.getAttribute("xmlns") || "http://www.w3.org/2000/svg"),
+        clone = target.cloneNode(true),
         bbox;
+
+    clone.style.display = "block";
+    svg.appendChild(clone);
 
     _docElement.appendChild(svg);
 
-    svg.appendChild(this);
-    this.style.display = "block";
+    try {
+      bbox = clone.getBBox();
+    } catch (e) {}
 
-    if (swapIfPossible) {
-      try {
-        bbox = this.getBBox();
-        this._gsapBBox = this.getBBox;
-        this.getBBox = _getBBoxHack;
-      } catch (e) {}
-    } else if (this._gsapBBox) {
-      bbox = this._gsapBBox();
-    }
-
-    if (oldParent) {
-      if (oldSibling) {
-        oldParent.insertBefore(this, oldSibling);
-      } else {
-        oldParent.appendChild(this);
-      }
-    }
+    svg.removeChild(clone);
 
     _docElement.removeChild(svg);
 
-    this.style.cssText = oldCSS;
     return bbox;
   },
       _getAttributeFallbacks = function _getAttributeFallbacks(target, attributesArray) {
@@ -21565,15 +21559,16 @@ return jQuery;
     }
   },
       _getBBox = function _getBBox(target) {
-    var bounds;
+    var bounds, cloned;
 
     try {
       bounds = target.getBBox();
     } catch (error) {
-      bounds = _getBBoxHack.call(target, true);
+      bounds = _getReparentedCloneBBox(target);
+      cloned = 1;
     }
 
-    bounds && (bounds.width || bounds.height) || target.getBBox === _getBBoxHack || (bounds = _getBBoxHack.call(target, true));
+    bounds && (bounds.width || bounds.height) || cloned || (bounds = _getReparentedCloneBBox(target));
     return bounds && !bounds.width && !bounds.x && !bounds.y ? {
       x: +_getAttributeFallbacks(target, ["x", "cx", "x1"]) || 0,
       y: +_getAttributeFallbacks(target, ["y", "cy", "y1"]) || 0,
@@ -21653,7 +21648,7 @@ return jQuery;
     }
 
     style[horizontal ? "width" : "height"] = amount + (toPixels ? curUnit : unit);
-    parent = ~property.indexOf("adius") || unit === "em" && target.appendChild && !isRootSVG ? target : target.parentNode;
+    parent = unit !== "rem" && ~property.indexOf("adius") || unit === "em" && target.appendChild && !isRootSVG ? target : target.parentNode;
 
     if (isSVG) {
       parent = (target.ownerSVGElement || {}).parentNode;
@@ -21872,6 +21867,7 @@ return jQuery;
 
         if (cache) {
           cache.svg && target.removeAttribute("transform");
+          style.scale = style.rotate = style.translate = "none";
 
           _parseTransform(target, 1);
 
@@ -21924,7 +21920,7 @@ return jQuery;
       style.display = "block";
       parent = target.parentNode;
 
-      if (!parent || !target.offsetParent) {
+      if (!parent || !target.offsetParent && !target.getBoundingClientRect().width) {
         addedToDOM = 1;
         nextSibling = target.nextElementSibling;
 
@@ -22678,7 +22674,7 @@ return jQuery;
             _tweenComplexCSSString.call(this, target, p, startValue, relative ? relative + endValue : endValue);
           }
 
-          isTransformRelated || (p in style ? inlineProps.push(p, 0, style[p]) : inlineProps.push(p, 1, startValue || target[p]));
+          isTransformRelated || (p in style ? inlineProps.push(p, 0, style[p]) : typeof target[p] === "function" ? inlineProps.push(p, 2, target[p]()) : inlineProps.push(p, 1, startValue || target[p]));
           props.push(p);
         }
       }
@@ -22983,7 +22979,7 @@ return jQuery;
       e = `${p[p.length - 1]}.${e}`;
       p = p.slice(0, p.length - 1);
       last = getLastOfPath(object, p, Object);
-      if (last && last.obj && typeof last.obj[`${last.k}.${e}`] !== 'undefined') {
+      if (last?.obj && typeof last.obj[`${last.k}.${e}`] !== 'undefined') {
         last.obj = undefined;
       }
     }
@@ -23003,6 +22999,7 @@ return jQuery;
       k
     } = getLastOfPath(object, path);
     if (!obj) return undefined;
+    if (!Object.prototype.hasOwnProperty.call(obj, k)) return undefined;
     return obj[k];
   };
   const getPathWithDefaults = (data, defaultData, key) => {
@@ -23083,7 +23080,10 @@ return jQuery;
   const deepFind = function (obj, path) {
     let keySeparator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '.';
     if (!obj) return undefined;
-    if (obj[path]) return obj[path];
+    if (obj[path]) {
+      if (!Object.prototype.hasOwnProperty.call(obj, path)) return undefined;
+      return obj[path];
+    }
     const tokens = path.split(keySeparator);
     let current = obj;
     for (let i = 0; i < tokens.length;) {
@@ -23110,7 +23110,7 @@ return jQuery;
     }
     return current;
   };
-  const getCleanedCode = code => code && code.replace('_', '-');
+  const getCleanedCode = code => code?.replace('_', '-');
 
   const consoleLogger = {
     type: 'logger',
@@ -23124,7 +23124,7 @@ return jQuery;
       this.output('error', args);
     },
     output(type, args) {
-      if (console && console[type]) console[type].apply(console, args);
+      console?.[type]?.apply?.(console, args);
     }
   };
   class Logger {
@@ -23282,7 +23282,7 @@ return jQuery;
         key = path.slice(2).join('.');
       }
       if (result || !ignoreJSONStructure || !isString(key)) return result;
-      return deepFind(this.data && this.data[lng] && this.data[lng][ns], key, keySeparator);
+      return deepFind(this.data?.[lng]?.[ns], key, keySeparator);
     }
     addResource(lng, ns, key, value) {
       let options = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {
@@ -23349,10 +23349,6 @@ return jQuery;
     }
     getResourceBundle(lng, ns) {
       if (!ns) ns = this.options.defaultNS;
-      if (this.options.compatibilityAPI === 'v1') return {
-        ...{},
-        ...this.getResource(lng, ns)
-      };
       return this.getResource(lng, ns);
     }
     getDataByLanguage(lng) {
@@ -23375,13 +23371,14 @@ return jQuery;
     },
     handle(processors, value, key, options, translator) {
       processors.forEach(processor => {
-        if (this.processors[processor]) value = this.processors[processor].process(value, key, options, translator);
+        value = this.processors[processor]?.process(value, key, options, translator) ?? value;
       });
       return value;
     }
   };
 
   const checkedLoadedFor = {};
+  const shouldHandleAsObject = res => !isString(res) && typeof res !== 'boolean' && typeof res !== 'number';
   class Translator extends EventEmitter {
     constructor(services) {
       let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -23400,59 +23397,58 @@ return jQuery;
       let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
         interpolation: {}
       };
-      if (key === undefined || key === null) {
+      if (key == null) {
         return false;
       }
       const resolved = this.resolve(key, options);
-      return resolved && resolved.res !== undefined;
+      return resolved?.res !== undefined;
     }
-    extractFromKey(key, options) {
-      let nsSeparator = options.nsSeparator !== undefined ? options.nsSeparator : this.options.nsSeparator;
+    extractFromKey(key, opt) {
+      let nsSeparator = opt.nsSeparator !== undefined ? opt.nsSeparator : this.options.nsSeparator;
       if (nsSeparator === undefined) nsSeparator = ':';
-      const keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
-      let namespaces = options.ns || this.options.defaultNS || [];
+      const keySeparator = opt.keySeparator !== undefined ? opt.keySeparator : this.options.keySeparator;
+      let namespaces = opt.ns || this.options.defaultNS || [];
       const wouldCheckForNsInKey = nsSeparator && key.indexOf(nsSeparator) > -1;
-      const seemsNaturalLanguage = !this.options.userDefinedKeySeparator && !options.keySeparator && !this.options.userDefinedNsSeparator && !options.nsSeparator && !looksLikeObjectPath(key, nsSeparator, keySeparator);
+      const seemsNaturalLanguage = !this.options.userDefinedKeySeparator && !opt.keySeparator && !this.options.userDefinedNsSeparator && !opt.nsSeparator && !looksLikeObjectPath(key, nsSeparator, keySeparator);
       if (wouldCheckForNsInKey && !seemsNaturalLanguage) {
         const m = key.match(this.interpolator.nestingRegexp);
         if (m && m.length > 0) {
           return {
             key,
-            namespaces
+            namespaces: isString(namespaces) ? [namespaces] : namespaces
           };
         }
         const parts = key.split(nsSeparator);
         if (nsSeparator !== keySeparator || nsSeparator === keySeparator && this.options.ns.indexOf(parts[0]) > -1) namespaces = parts.shift();
         key = parts.join(keySeparator);
       }
-      if (isString(namespaces)) namespaces = [namespaces];
       return {
         key,
-        namespaces
+        namespaces: isString(namespaces) ? [namespaces] : namespaces
       };
     }
-    translate(keys, options, lastKey) {
-      if (typeof options !== 'object' && this.options.overloadTranslationOptionHandler) {
-        options = this.options.overloadTranslationOptionHandler(arguments);
+    translate(keys, opt, lastKey) {
+      if (typeof opt !== 'object' && this.options.overloadTranslationOptionHandler) {
+        opt = this.options.overloadTranslationOptionHandler(arguments);
       }
-      if (typeof options === 'object') options = {
-        ...options
+      if (typeof options === 'object') opt = {
+        ...opt
       };
-      if (!options) options = {};
-      if (keys === undefined || keys === null) return '';
+      if (!opt) opt = {};
+      if (keys == null) return '';
       if (!Array.isArray(keys)) keys = [String(keys)];
-      const returnDetails = options.returnDetails !== undefined ? options.returnDetails : this.options.returnDetails;
-      const keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
+      const returnDetails = opt.returnDetails !== undefined ? opt.returnDetails : this.options.returnDetails;
+      const keySeparator = opt.keySeparator !== undefined ? opt.keySeparator : this.options.keySeparator;
       const {
         key,
         namespaces
-      } = this.extractFromKey(keys[keys.length - 1], options);
+      } = this.extractFromKey(keys[keys.length - 1], opt);
       const namespace = namespaces[namespaces.length - 1];
-      const lng = options.lng || this.language;
-      const appendNamespaceToCIMode = options.appendNamespaceToCIMode || this.options.appendNamespaceToCIMode;
-      if (lng && lng.toLowerCase() === 'cimode') {
+      const lng = opt.lng || this.language;
+      const appendNamespaceToCIMode = opt.appendNamespaceToCIMode || this.options.appendNamespaceToCIMode;
+      if (lng?.toLowerCase() === 'cimode') {
         if (appendNamespaceToCIMode) {
-          const nsSeparator = options.nsSeparator || this.options.nsSeparator;
+          const nsSeparator = opt.nsSeparator || this.options.nsSeparator;
           if (returnDetails) {
             return {
               res: `${namespace}${nsSeparator}${key}`,
@@ -23460,7 +23456,7 @@ return jQuery;
               exactUsedKey: key,
               usedLng: lng,
               usedNS: namespace,
-              usedParams: this.getUsedParamsDetails(options)
+              usedParams: this.getUsedParamsDetails(opt)
             };
           }
           return `${namespace}${nsSeparator}${key}`;
@@ -23472,69 +23468,84 @@ return jQuery;
             exactUsedKey: key,
             usedLng: lng,
             usedNS: namespace,
-            usedParams: this.getUsedParamsDetails(options)
+            usedParams: this.getUsedParamsDetails(opt)
           };
         }
         return key;
       }
-      const resolved = this.resolve(keys, options);
-      let res = resolved && resolved.res;
-      const resUsedKey = resolved && resolved.usedKey || key;
-      const resExactUsedKey = resolved && resolved.exactUsedKey || key;
-      const resType = Object.prototype.toString.apply(res);
+      const resolved = this.resolve(keys, opt);
+      let res = resolved?.res;
+      const resUsedKey = resolved?.usedKey || key;
+      const resExactUsedKey = resolved?.exactUsedKey || key;
       const noObject = ['[object Number]', '[object Function]', '[object RegExp]'];
-      const joinArrays = options.joinArrays !== undefined ? options.joinArrays : this.options.joinArrays;
+      const joinArrays = opt.joinArrays !== undefined ? opt.joinArrays : this.options.joinArrays;
       const handleAsObjectInI18nFormat = !this.i18nFormat || this.i18nFormat.handleAsObject;
-      const handleAsObject = !isString(res) && typeof res !== 'boolean' && typeof res !== 'number';
-      if (handleAsObjectInI18nFormat && res && handleAsObject && noObject.indexOf(resType) < 0 && !(isString(joinArrays) && Array.isArray(res))) {
-        if (!options.returnObjects && !this.options.returnObjects) {
+      const needsPluralHandling = opt.count !== undefined && !isString(opt.count);
+      const hasDefaultValue = Translator.hasDefaultValue(opt);
+      const defaultValueSuffix = needsPluralHandling ? this.pluralResolver.getSuffix(lng, opt.count, opt) : '';
+      const defaultValueSuffixOrdinalFallback = opt.ordinal && needsPluralHandling ? this.pluralResolver.getSuffix(lng, opt.count, {
+        ordinal: false
+      }) : '';
+      const needsZeroSuffixLookup = needsPluralHandling && !opt.ordinal && opt.count === 0;
+      const defaultValue = needsZeroSuffixLookup && opt[`defaultValue${this.options.pluralSeparator}zero`] || opt[`defaultValue${defaultValueSuffix}`] || opt[`defaultValue${defaultValueSuffixOrdinalFallback}`] || opt.defaultValue;
+      let resForObjHndl = res;
+      if (handleAsObjectInI18nFormat && !res && hasDefaultValue) {
+        resForObjHndl = defaultValue;
+      }
+      const handleAsObject = shouldHandleAsObject(resForObjHndl);
+      const resType = Object.prototype.toString.apply(resForObjHndl);
+      if (handleAsObjectInI18nFormat && resForObjHndl && handleAsObject && noObject.indexOf(resType) < 0 && !(isString(joinArrays) && Array.isArray(resForObjHndl))) {
+        if (!opt.returnObjects && !this.options.returnObjects) {
           if (!this.options.returnedObjectHandler) {
             this.logger.warn('accessing an object - but returnObjects options is not enabled!');
           }
-          const r = this.options.returnedObjectHandler ? this.options.returnedObjectHandler(resUsedKey, res, {
-            ...options,
+          const r = this.options.returnedObjectHandler ? this.options.returnedObjectHandler(resUsedKey, resForObjHndl, {
+            ...opt,
             ns: namespaces
           }) : `key '${key} (${this.language})' returned an object instead of string.`;
           if (returnDetails) {
             resolved.res = r;
-            resolved.usedParams = this.getUsedParamsDetails(options);
+            resolved.usedParams = this.getUsedParamsDetails(opt);
             return resolved;
           }
           return r;
         }
         if (keySeparator) {
-          const resTypeIsArray = Array.isArray(res);
+          const resTypeIsArray = Array.isArray(resForObjHndl);
           const copy = resTypeIsArray ? [] : {};
           const newKeyToUse = resTypeIsArray ? resExactUsedKey : resUsedKey;
-          for (const m in res) {
-            if (Object.prototype.hasOwnProperty.call(res, m)) {
+          for (const m in resForObjHndl) {
+            if (Object.prototype.hasOwnProperty.call(resForObjHndl, m)) {
               const deepKey = `${newKeyToUse}${keySeparator}${m}`;
-              copy[m] = this.translate(deepKey, {
-                ...options,
-                ...{
-                  joinArrays: false,
-                  ns: namespaces
-                }
-              });
-              if (copy[m] === deepKey) copy[m] = res[m];
+              if (hasDefaultValue && !res) {
+                copy[m] = this.translate(deepKey, {
+                  ...opt,
+                  defaultValue: shouldHandleAsObject(defaultValue) ? defaultValue[m] : undefined,
+                  ...{
+                    joinArrays: false,
+                    ns: namespaces
+                  }
+                });
+              } else {
+                copy[m] = this.translate(deepKey, {
+                  ...opt,
+                  ...{
+                    joinArrays: false,
+                    ns: namespaces
+                  }
+                });
+              }
+              if (copy[m] === deepKey) copy[m] = resForObjHndl[m];
             }
           }
           res = copy;
         }
       } else if (handleAsObjectInI18nFormat && isString(joinArrays) && Array.isArray(res)) {
         res = res.join(joinArrays);
-        if (res) res = this.extendTranslation(res, keys, options, lastKey);
+        if (res) res = this.extendTranslation(res, keys, opt, lastKey);
       } else {
         let usedDefault = false;
         let usedKey = false;
-        const needsPluralHandling = options.count !== undefined && !isString(options.count);
-        const hasDefaultValue = Translator.hasDefaultValue(options);
-        const defaultValueSuffix = needsPluralHandling ? this.pluralResolver.getSuffix(lng, options.count, options) : '';
-        const defaultValueSuffixOrdinalFallback = options.ordinal && needsPluralHandling ? this.pluralResolver.getSuffix(lng, options.count, {
-          ordinal: false
-        }) : '';
-        const needsZeroSuffixLookup = needsPluralHandling && !options.ordinal && options.count === 0 && this.pluralResolver.shouldUseIntlApi();
-        const defaultValue = needsZeroSuffixLookup && options[`defaultValue${this.options.pluralSeparator}zero`] || options[`defaultValue${defaultValueSuffix}`] || options[`defaultValue${defaultValueSuffixOrdinalFallback}`] || options.defaultValue;
         if (!this.isValidLookup(res) && hasDefaultValue) {
           usedDefault = true;
           res = defaultValue;
@@ -23543,47 +23554,47 @@ return jQuery;
           usedKey = true;
           res = key;
         }
-        const missingKeyNoValueFallbackToKey = options.missingKeyNoValueFallbackToKey || this.options.missingKeyNoValueFallbackToKey;
+        const missingKeyNoValueFallbackToKey = opt.missingKeyNoValueFallbackToKey || this.options.missingKeyNoValueFallbackToKey;
         const resForMissing = missingKeyNoValueFallbackToKey && usedKey ? undefined : res;
         const updateMissing = hasDefaultValue && defaultValue !== res && this.options.updateMissing;
         if (usedKey || usedDefault || updateMissing) {
           this.logger.log(updateMissing ? 'updateKey' : 'missingKey', lng, namespace, key, updateMissing ? defaultValue : res);
           if (keySeparator) {
             const fk = this.resolve(key, {
-              ...options,
+              ...opt,
               keySeparator: false
             });
             if (fk && fk.res) this.logger.warn('Seems the loaded translations were in flat JSON format instead of nested. Either set keySeparator: false on init or make sure your translations are published in nested format.');
           }
           let lngs = [];
-          const fallbackLngs = this.languageUtils.getFallbackCodes(this.options.fallbackLng, options.lng || this.language);
+          const fallbackLngs = this.languageUtils.getFallbackCodes(this.options.fallbackLng, opt.lng || this.language);
           if (this.options.saveMissingTo === 'fallback' && fallbackLngs && fallbackLngs[0]) {
             for (let i = 0; i < fallbackLngs.length; i++) {
               lngs.push(fallbackLngs[i]);
             }
           } else if (this.options.saveMissingTo === 'all') {
-            lngs = this.languageUtils.toResolveHierarchy(options.lng || this.language);
+            lngs = this.languageUtils.toResolveHierarchy(opt.lng || this.language);
           } else {
-            lngs.push(options.lng || this.language);
+            lngs.push(opt.lng || this.language);
           }
           const send = (l, k, specificDefaultValue) => {
             const defaultForMissing = hasDefaultValue && specificDefaultValue !== res ? specificDefaultValue : resForMissing;
             if (this.options.missingKeyHandler) {
-              this.options.missingKeyHandler(l, namespace, k, defaultForMissing, updateMissing, options);
-            } else if (this.backendConnector && this.backendConnector.saveMissing) {
-              this.backendConnector.saveMissing(l, namespace, k, defaultForMissing, updateMissing, options);
+              this.options.missingKeyHandler(l, namespace, k, defaultForMissing, updateMissing, opt);
+            } else if (this.backendConnector?.saveMissing) {
+              this.backendConnector.saveMissing(l, namespace, k, defaultForMissing, updateMissing, opt);
             }
             this.emit('missingKey', l, namespace, k, res);
           };
           if (this.options.saveMissing) {
             if (this.options.saveMissingPlurals && needsPluralHandling) {
               lngs.forEach(language => {
-                const suffixes = this.pluralResolver.getSuffixes(language, options);
-                if (needsZeroSuffixLookup && options[`defaultValue${this.options.pluralSeparator}zero`] && suffixes.indexOf(`${this.options.pluralSeparator}zero`) < 0) {
+                const suffixes = this.pluralResolver.getSuffixes(language, opt);
+                if (needsZeroSuffixLookup && opt[`defaultValue${this.options.pluralSeparator}zero`] && suffixes.indexOf(`${this.options.pluralSeparator}zero`) < 0) {
                   suffixes.push(`${this.options.pluralSeparator}zero`);
                 }
                 suffixes.forEach(suffix => {
-                  send([language], key + suffix, options[`defaultValue${suffix}`] || defaultValue);
+                  send([language], key + suffix, opt[`defaultValue${suffix}`] || defaultValue);
                 });
               });
             } else {
@@ -23591,87 +23602,83 @@ return jQuery;
             }
           }
         }
-        res = this.extendTranslation(res, keys, options, resolved, lastKey);
+        res = this.extendTranslation(res, keys, opt, resolved, lastKey);
         if (usedKey && res === key && this.options.appendNamespaceToMissingKey) res = `${namespace}:${key}`;
         if ((usedKey || usedDefault) && this.options.parseMissingKeyHandler) {
-          if (this.options.compatibilityAPI !== 'v1') {
-            res = this.options.parseMissingKeyHandler(this.options.appendNamespaceToMissingKey ? `${namespace}:${key}` : key, usedDefault ? res : undefined);
-          } else {
-            res = this.options.parseMissingKeyHandler(res);
-          }
+          res = this.options.parseMissingKeyHandler(this.options.appendNamespaceToMissingKey ? `${namespace}:${key}` : key, usedDefault ? res : undefined);
         }
       }
       if (returnDetails) {
         resolved.res = res;
-        resolved.usedParams = this.getUsedParamsDetails(options);
+        resolved.usedParams = this.getUsedParamsDetails(opt);
         return resolved;
       }
       return res;
     }
-    extendTranslation(res, key, options, resolved, lastKey) {
+    extendTranslation(res, key, opt, resolved, lastKey) {
       var _this = this;
-      if (this.i18nFormat && this.i18nFormat.parse) {
+      if (this.i18nFormat?.parse) {
         res = this.i18nFormat.parse(res, {
           ...this.options.interpolation.defaultVariables,
-          ...options
-        }, options.lng || this.language || resolved.usedLng, resolved.usedNS, resolved.usedKey, {
+          ...opt
+        }, opt.lng || this.language || resolved.usedLng, resolved.usedNS, resolved.usedKey, {
           resolved
         });
-      } else if (!options.skipInterpolation) {
-        if (options.interpolation) this.interpolator.init({
-          ...options,
+      } else if (!opt.skipInterpolation) {
+        if (opt.interpolation) this.interpolator.init({
+          ...opt,
           ...{
             interpolation: {
               ...this.options.interpolation,
-              ...options.interpolation
+              ...opt.interpolation
             }
           }
         });
-        const skipOnVariables = isString(res) && (options && options.interpolation && options.interpolation.skipOnVariables !== undefined ? options.interpolation.skipOnVariables : this.options.interpolation.skipOnVariables);
+        const skipOnVariables = isString(res) && (opt?.interpolation?.skipOnVariables !== undefined ? opt.interpolation.skipOnVariables : this.options.interpolation.skipOnVariables);
         let nestBef;
         if (skipOnVariables) {
           const nb = res.match(this.interpolator.nestingRegexp);
           nestBef = nb && nb.length;
         }
-        let data = options.replace && !isString(options.replace) ? options.replace : options;
+        let data = opt.replace && !isString(opt.replace) ? opt.replace : opt;
         if (this.options.interpolation.defaultVariables) data = {
           ...this.options.interpolation.defaultVariables,
           ...data
         };
-        res = this.interpolator.interpolate(res, data, options.lng || this.language || resolved.usedLng, options);
+        res = this.interpolator.interpolate(res, data, opt.lng || this.language || resolved.usedLng, opt);
         if (skipOnVariables) {
           const na = res.match(this.interpolator.nestingRegexp);
           const nestAft = na && na.length;
-          if (nestBef < nestAft) options.nest = false;
+          if (nestBef < nestAft) opt.nest = false;
         }
-        if (!options.lng && this.options.compatibilityAPI !== 'v1' && resolved && resolved.res) options.lng = this.language || resolved.usedLng;
-        if (options.nest !== false) res = this.interpolator.nest(res, function () {
+        if (!opt.lng && resolved && resolved.res) opt.lng = this.language || resolved.usedLng;
+        if (opt.nest !== false) res = this.interpolator.nest(res, function () {
           for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
             args[_key] = arguments[_key];
           }
-          if (lastKey && lastKey[0] === args[0] && !options.context) {
+          if (lastKey?.[0] === args[0] && !opt.context) {
             _this.logger.warn(`It seems you are nesting recursively key: ${args[0]} in key: ${key[0]}`);
             return null;
           }
           return _this.translate(...args, key);
-        }, options);
-        if (options.interpolation) this.interpolator.reset();
+        }, opt);
+        if (opt.interpolation) this.interpolator.reset();
       }
-      const postProcess = options.postProcess || this.options.postProcess;
+      const postProcess = opt.postProcess || this.options.postProcess;
       const postProcessorNames = isString(postProcess) ? [postProcess] : postProcess;
-      if (res !== undefined && res !== null && postProcessorNames && postProcessorNames.length && options.applyPostProcessor !== false) {
+      if (res != null && postProcessorNames?.length && opt.applyPostProcessor !== false) {
         res = postProcessor.handle(postProcessorNames, res, key, this.options && this.options.postProcessPassResolved ? {
           i18nResolved: {
             ...resolved,
-            usedParams: this.getUsedParamsDetails(options)
+            usedParams: this.getUsedParamsDetails(opt)
           },
-          ...options
-        } : options, this);
+          ...opt
+        } : opt, this);
       }
       return res;
     }
     resolve(keys) {
-      let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      let opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       let found;
       let usedKey;
       let exactUsedKey;
@@ -23680,19 +23687,19 @@ return jQuery;
       if (isString(keys)) keys = [keys];
       keys.forEach(k => {
         if (this.isValidLookup(found)) return;
-        const extracted = this.extractFromKey(k, options);
+        const extracted = this.extractFromKey(k, opt);
         const key = extracted.key;
         usedKey = key;
         let namespaces = extracted.namespaces;
         if (this.options.fallbackNS) namespaces = namespaces.concat(this.options.fallbackNS);
-        const needsPluralHandling = options.count !== undefined && !isString(options.count);
-        const needsZeroSuffixLookup = needsPluralHandling && !options.ordinal && options.count === 0 && this.pluralResolver.shouldUseIntlApi();
-        const needsContextHandling = options.context !== undefined && (isString(options.context) || typeof options.context === 'number') && options.context !== '';
-        const codes = options.lngs ? options.lngs : this.languageUtils.toResolveHierarchy(options.lng || this.language, options.fallbackLng);
+        const needsPluralHandling = opt.count !== undefined && !isString(opt.count);
+        const needsZeroSuffixLookup = needsPluralHandling && !opt.ordinal && opt.count === 0;
+        const needsContextHandling = opt.context !== undefined && (isString(opt.context) || typeof opt.context === 'number') && opt.context !== '';
+        const codes = opt.lngs ? opt.lngs : this.languageUtils.toResolveHierarchy(opt.lng || this.language, opt.fallbackLng);
         namespaces.forEach(ns => {
           if (this.isValidLookup(found)) return;
           usedNS = ns;
-          if (!checkedLoadedFor[`${codes[0]}-${ns}`] && this.utils && this.utils.hasLoadedNamespace && !this.utils.hasLoadedNamespace(usedNS)) {
+          if (!checkedLoadedFor[`${codes[0]}-${ns}`] && this.utils?.hasLoadedNamespace && !this.utils?.hasLoadedNamespace(usedNS)) {
             checkedLoadedFor[`${codes[0]}-${ns}`] = true;
             this.logger.warn(`key "${usedKey}" for languages "${codes.join(', ')}" won't get resolved as namespace "${usedNS}" was not yet loaded`, 'This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!');
           }
@@ -23700,16 +23707,16 @@ return jQuery;
             if (this.isValidLookup(found)) return;
             usedLng = code;
             const finalKeys = [key];
-            if (this.i18nFormat && this.i18nFormat.addLookupKeys) {
-              this.i18nFormat.addLookupKeys(finalKeys, key, code, ns, options);
+            if (this.i18nFormat?.addLookupKeys) {
+              this.i18nFormat.addLookupKeys(finalKeys, key, code, ns, opt);
             } else {
               let pluralSuffix;
-              if (needsPluralHandling) pluralSuffix = this.pluralResolver.getSuffix(code, options.count, options);
+              if (needsPluralHandling) pluralSuffix = this.pluralResolver.getSuffix(code, opt.count, opt);
               const zeroSuffix = `${this.options.pluralSeparator}zero`;
               const ordinalPrefix = `${this.options.pluralSeparator}ordinal${this.options.pluralSeparator}`;
               if (needsPluralHandling) {
                 finalKeys.push(key + pluralSuffix);
-                if (options.ordinal && pluralSuffix.indexOf(ordinalPrefix) === 0) {
+                if (opt.ordinal && pluralSuffix.indexOf(ordinalPrefix) === 0) {
                   finalKeys.push(key + pluralSuffix.replace(ordinalPrefix, this.options.pluralSeparator));
                 }
                 if (needsZeroSuffixLookup) {
@@ -23717,11 +23724,11 @@ return jQuery;
                 }
               }
               if (needsContextHandling) {
-                const contextKey = `${key}${this.options.contextSeparator}${options.context}`;
+                const contextKey = `${key}${this.options.contextSeparator}${opt.context}`;
                 finalKeys.push(contextKey);
                 if (needsPluralHandling) {
                   finalKeys.push(contextKey + pluralSuffix);
-                  if (options.ordinal && pluralSuffix.indexOf(ordinalPrefix) === 0) {
+                  if (opt.ordinal && pluralSuffix.indexOf(ordinalPrefix) === 0) {
                     finalKeys.push(contextKey + pluralSuffix.replace(ordinalPrefix, this.options.pluralSeparator));
                   }
                   if (needsZeroSuffixLookup) {
@@ -23734,7 +23741,7 @@ return jQuery;
             while (possibleKey = finalKeys.pop()) {
               if (!this.isValidLookup(found)) {
                 exactUsedKey = possibleKey;
-                found = this.getResource(code, ns, possibleKey, options);
+                found = this.getResource(code, ns, possibleKey, opt);
               }
             }
           });
@@ -23753,7 +23760,7 @@ return jQuery;
     }
     getResource(code, ns, key) {
       let options = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-      if (this.i18nFormat && this.i18nFormat.getResource) return this.i18nFormat.getResource(code, ns, key, options);
+      if (this.i18nFormat?.getResource) return this.i18nFormat.getResource(code, ns, key, options);
       return this.resourceStore.getResource(code, ns, key, options);
     }
     getUsedParamsDetails() {
@@ -23791,7 +23798,6 @@ return jQuery;
     }
   }
 
-  const capitalize = string => string.charAt(0).toUpperCase() + string.slice(1);
   class LanguageUtil {
     constructor(options) {
       this.options = options;
@@ -23815,31 +23821,18 @@ return jQuery;
     }
     formatLanguageCode(code) {
       if (isString(code) && code.indexOf('-') > -1) {
-        if (typeof Intl !== 'undefined' && typeof Intl.getCanonicalLocales !== 'undefined') {
-          try {
-            let formattedCode = Intl.getCanonicalLocales(code)[0];
-            if (formattedCode && this.options.lowerCaseLng) {
-              formattedCode = formattedCode.toLowerCase();
-            }
-            if (formattedCode) return formattedCode;
-          } catch (e) {}
+        let formattedCode;
+        try {
+          formattedCode = Intl.getCanonicalLocales(code)[0];
+        } catch (e) {}
+        if (formattedCode && this.options.lowerCaseLng) {
+          formattedCode = formattedCode.toLowerCase();
         }
-        const specialCases = ['hans', 'hant', 'latn', 'cyrl', 'cans', 'mong', 'arab'];
-        let p = code.split('-');
+        if (formattedCode) return formattedCode;
         if (this.options.lowerCaseLng) {
-          p = p.map(part => part.toLowerCase());
-        } else if (p.length === 2) {
-          p[0] = p[0].toLowerCase();
-          p[1] = p[1].toUpperCase();
-          if (specialCases.indexOf(p[1].toLowerCase()) > -1) p[1] = capitalize(p[1].toLowerCase());
-        } else if (p.length === 3) {
-          p[0] = p[0].toLowerCase();
-          if (p[1].length === 2) p[1] = p[1].toUpperCase();
-          if (p[0] !== 'sgn' && p[2].length === 2) p[2] = p[2].toUpperCase();
-          if (specialCases.indexOf(p[1].toLowerCase()) > -1) p[1] = capitalize(p[1].toLowerCase());
-          if (specialCases.indexOf(p[2].toLowerCase()) > -1) p[2] = capitalize(p[2].toLowerCase());
+          return code.toLowerCase();
         }
-        return p.join('-');
+        return code;
       }
       return this.options.cleanCode || this.options.lowerCaseLng ? code.toLowerCase() : code;
     }
@@ -23860,6 +23853,8 @@ return jQuery;
       if (!found && this.options.supportedLngs) {
         codes.forEach(code => {
           if (found) return;
+          const lngScOnly = this.getScriptPartFromCode(code);
+          if (this.isSupportedCode(lngScOnly)) return found = lngScOnly;
           const lngOnly = this.getLanguagePartFromCode(code);
           if (this.isSupportedCode(lngOnly)) return found = lngOnly;
           found = this.options.supportedLngs.find(supportedLng => {
@@ -23911,125 +23906,6 @@ return jQuery;
     }
   }
 
-  let sets = [{
-    lngs: ['ach', 'ak', 'am', 'arn', 'br', 'fil', 'gun', 'ln', 'mfe', 'mg', 'mi', 'oc', 'pt', 'pt-BR', 'tg', 'tl', 'ti', 'tr', 'uz', 'wa'],
-    nr: [1, 2],
-    fc: 1
-  }, {
-    lngs: ['af', 'an', 'ast', 'az', 'bg', 'bn', 'ca', 'da', 'de', 'dev', 'el', 'en', 'eo', 'es', 'et', 'eu', 'fi', 'fo', 'fur', 'fy', 'gl', 'gu', 'ha', 'hi', 'hu', 'hy', 'ia', 'it', 'kk', 'kn', 'ku', 'lb', 'mai', 'ml', 'mn', 'mr', 'nah', 'nap', 'nb', 'ne', 'nl', 'nn', 'no', 'nso', 'pa', 'pap', 'pms', 'ps', 'pt-PT', 'rm', 'sco', 'se', 'si', 'so', 'son', 'sq', 'sv', 'sw', 'ta', 'te', 'tk', 'ur', 'yo'],
-    nr: [1, 2],
-    fc: 2
-  }, {
-    lngs: ['ay', 'bo', 'cgg', 'fa', 'ht', 'id', 'ja', 'jbo', 'ka', 'km', 'ko', 'ky', 'lo', 'ms', 'sah', 'su', 'th', 'tt', 'ug', 'vi', 'wo', 'zh'],
-    nr: [1],
-    fc: 3
-  }, {
-    lngs: ['be', 'bs', 'cnr', 'dz', 'hr', 'ru', 'sr', 'uk'],
-    nr: [1, 2, 5],
-    fc: 4
-  }, {
-    lngs: ['ar'],
-    nr: [0, 1, 2, 3, 11, 100],
-    fc: 5
-  }, {
-    lngs: ['cs', 'sk'],
-    nr: [1, 2, 5],
-    fc: 6
-  }, {
-    lngs: ['csb', 'pl'],
-    nr: [1, 2, 5],
-    fc: 7
-  }, {
-    lngs: ['cy'],
-    nr: [1, 2, 3, 8],
-    fc: 8
-  }, {
-    lngs: ['fr'],
-    nr: [1, 2],
-    fc: 9
-  }, {
-    lngs: ['ga'],
-    nr: [1, 2, 3, 7, 11],
-    fc: 10
-  }, {
-    lngs: ['gd'],
-    nr: [1, 2, 3, 20],
-    fc: 11
-  }, {
-    lngs: ['is'],
-    nr: [1, 2],
-    fc: 12
-  }, {
-    lngs: ['jv'],
-    nr: [0, 1],
-    fc: 13
-  }, {
-    lngs: ['kw'],
-    nr: [1, 2, 3, 4],
-    fc: 14
-  }, {
-    lngs: ['lt'],
-    nr: [1, 2, 10],
-    fc: 15
-  }, {
-    lngs: ['lv'],
-    nr: [1, 2, 0],
-    fc: 16
-  }, {
-    lngs: ['mk'],
-    nr: [1, 2],
-    fc: 17
-  }, {
-    lngs: ['mnk'],
-    nr: [0, 1, 2],
-    fc: 18
-  }, {
-    lngs: ['mt'],
-    nr: [1, 2, 11, 20],
-    fc: 19
-  }, {
-    lngs: ['or'],
-    nr: [2, 1],
-    fc: 2
-  }, {
-    lngs: ['ro'],
-    nr: [1, 2, 20],
-    fc: 20
-  }, {
-    lngs: ['sl'],
-    nr: [5, 1, 2, 3],
-    fc: 21
-  }, {
-    lngs: ['he', 'iw'],
-    nr: [1, 2, 20, 21],
-    fc: 22
-  }];
-  let _rulesPluralsTypes = {
-    1: n => Number(n > 1),
-    2: n => Number(n != 1),
-    3: n => 0,
-    4: n => Number(n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2),
-    5: n => Number(n == 0 ? 0 : n == 1 ? 1 : n == 2 ? 2 : n % 100 >= 3 && n % 100 <= 10 ? 3 : n % 100 >= 11 ? 4 : 5),
-    6: n => Number(n == 1 ? 0 : n >= 2 && n <= 4 ? 1 : 2),
-    7: n => Number(n == 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2),
-    8: n => Number(n == 1 ? 0 : n == 2 ? 1 : n != 8 && n != 11 ? 2 : 3),
-    9: n => Number(n >= 2),
-    10: n => Number(n == 1 ? 0 : n == 2 ? 1 : n < 7 ? 2 : n < 11 ? 3 : 4),
-    11: n => Number(n == 1 || n == 11 ? 0 : n == 2 || n == 12 ? 1 : n > 2 && n < 20 ? 2 : 3),
-    12: n => Number(n % 10 != 1 || n % 100 == 11),
-    13: n => Number(n !== 0),
-    14: n => Number(n == 1 ? 0 : n == 2 ? 1 : n == 3 ? 2 : 3),
-    15: n => Number(n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2),
-    16: n => Number(n % 10 == 1 && n % 100 != 11 ? 0 : n !== 0 ? 1 : 2),
-    17: n => Number(n == 1 || n % 10 == 1 && n % 100 != 11 ? 0 : 1),
-    18: n => Number(n == 0 ? 0 : n == 1 ? 1 : 2),
-    19: n => Number(n == 1 ? 0 : n == 0 || n % 100 > 1 && n % 100 < 11 ? 1 : n % 100 > 10 && n % 100 < 20 ? 2 : 3),
-    20: n => Number(n == 1 ? 0 : n == 0 || n % 100 > 0 && n % 100 < 20 ? 1 : 2),
-    21: n => Number(n % 100 == 1 ? 1 : n % 100 == 2 ? 2 : n % 100 == 3 || n % 100 == 4 ? 3 : 0),
-    22: n => Number(n == 1 ? 0 : n == 2 ? 1 : (n < 0 || n > 10) && n % 10 == 0 ? 2 : 3)
-  };
-  const nonIntlVersions = ['v1', 'v2', 'v3'];
-  const intlVersions = ['v4'];
   const suffixesOrder = {
     zero: 0,
     one: 1,
@@ -24038,17 +23914,11 @@ return jQuery;
     many: 4,
     other: 5
   };
-  const createRules = () => {
-    const rules = {};
-    sets.forEach(set => {
-      set.lngs.forEach(l => {
-        rules[l] = {
-          numbers: set.nr,
-          plurals: _rulesPluralsTypes[set.fc]
-        };
-      });
-    });
-    return rules;
+  const dummyRule = {
+    select: count => count === 1 ? 'one' : 'other',
+    resolvedOptions: () => ({
+      pluralCategories: ['one', 'other']
+    })
   };
   class PluralResolver {
     constructor(languageUtils) {
@@ -24056,11 +23926,6 @@ return jQuery;
       this.languageUtils = languageUtils;
       this.options = options;
       this.logger = baseLogger.create('pluralResolver');
-      if ((!this.options.compatibilityJSON || intlVersions.includes(this.options.compatibilityJSON)) && (typeof Intl === 'undefined' || !Intl.PluralRules)) {
-        this.options.compatibilityJSON = 'v3';
-        this.logger.error('Your environment seems not to be Intl API compatible, use an Intl.PluralRules polyfill. Will fallback to the compatibilityJSON v3 format handling.');
-      }
-      this.rules = createRules();
       this.pluralRulesCache = {};
     }
     addRule(lng, obj) {
@@ -24071,35 +23936,37 @@ return jQuery;
     }
     getRule(code) {
       let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      if (this.shouldUseIntlApi()) {
-        try {
-          const cleanedCode = getCleanedCode(code === 'dev' ? 'en' : code);
-          const type = options.ordinal ? 'ordinal' : 'cardinal';
-          const cacheKey = JSON.stringify({
-            cleanedCode,
-            type
-          });
-          if (cacheKey in this.pluralRulesCache) {
-            return this.pluralRulesCache[cacheKey];
-          }
-          const rule = new Intl.PluralRules(cleanedCode, {
-            type
-          });
-          this.pluralRulesCache[cacheKey] = rule;
-          return rule;
-        } catch (err) {
-          return;
-        }
+      const cleanedCode = getCleanedCode(code === 'dev' ? 'en' : code);
+      const type = options.ordinal ? 'ordinal' : 'cardinal';
+      const cacheKey = JSON.stringify({
+        cleanedCode,
+        type
+      });
+      if (cacheKey in this.pluralRulesCache) {
+        return this.pluralRulesCache[cacheKey];
       }
-      return this.rules[code] || this.rules[this.languageUtils.getLanguagePartFromCode(code)];
+      let rule;
+      try {
+        rule = new Intl.PluralRules(cleanedCode, {
+          type
+        });
+      } catch (err) {
+        if (!Intl) {
+          this.logger.error('No Intl support, please use an Intl polyfill!');
+          return dummyRule;
+        }
+        if (!code.match(/-|_/)) return dummyRule;
+        const lngPart = this.languageUtils.getLanguagePartFromCode(code);
+        rule = this.getRule(lngPart, options);
+      }
+      this.pluralRulesCache[cacheKey] = rule;
+      return rule;
     }
     needsPlural(code) {
       let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      const rule = this.getRule(code, options);
-      if (this.shouldUseIntlApi()) {
-        return rule && rule.resolvedOptions().pluralCategories.length > 1;
-      }
-      return rule && rule.numbers.length > 1;
+      let rule = this.getRule(code, options);
+      if (!rule) rule = this.getRule('dev', options);
+      return rule?.resolvedOptions().pluralCategories.length > 1;
     }
     getPluralFormsOfKey(code, key) {
       let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
@@ -24107,51 +23974,19 @@ return jQuery;
     }
     getSuffixes(code) {
       let options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      const rule = this.getRule(code, options);
-      if (!rule) {
-        return [];
-      }
-      if (this.shouldUseIntlApi()) {
-        return rule.resolvedOptions().pluralCategories.sort((pluralCategory1, pluralCategory2) => suffixesOrder[pluralCategory1] - suffixesOrder[pluralCategory2]).map(pluralCategory => `${this.options.prepend}${options.ordinal ? `ordinal${this.options.prepend}` : ''}${pluralCategory}`);
-      }
-      return rule.numbers.map(number => this.getSuffix(code, number, options));
+      let rule = this.getRule(code, options);
+      if (!rule) rule = this.getRule('dev', options);
+      if (!rule) return [];
+      return rule.resolvedOptions().pluralCategories.sort((pluralCategory1, pluralCategory2) => suffixesOrder[pluralCategory1] - suffixesOrder[pluralCategory2]).map(pluralCategory => `${this.options.prepend}${options.ordinal ? `ordinal${this.options.prepend}` : ''}${pluralCategory}`);
     }
     getSuffix(code, count) {
       let options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
       const rule = this.getRule(code, options);
       if (rule) {
-        if (this.shouldUseIntlApi()) {
-          return `${this.options.prepend}${options.ordinal ? `ordinal${this.options.prepend}` : ''}${rule.select(count)}`;
-        }
-        return this.getSuffixRetroCompatible(rule, count);
+        return `${this.options.prepend}${options.ordinal ? `ordinal${this.options.prepend}` : ''}${rule.select(count)}`;
       }
       this.logger.warn(`no plural rule found for: ${code}`);
-      return '';
-    }
-    getSuffixRetroCompatible(rule, count) {
-      const idx = rule.noAbs ? rule.plurals(count) : rule.plurals(Math.abs(count));
-      let suffix = rule.numbers[idx];
-      if (this.options.simplifyPluralSuffix && rule.numbers.length === 2 && rule.numbers[0] === 1) {
-        if (suffix === 2) {
-          suffix = 'plural';
-        } else if (suffix === 1) {
-          suffix = '';
-        }
-      }
-      const returnSuffix = () => this.options.prepend && suffix.toString() ? this.options.prepend + suffix.toString() : suffix.toString();
-      if (this.options.compatibilityJSON === 'v1') {
-        if (suffix === 1) return '';
-        if (typeof suffix === 'number') return `_plural_${suffix.toString()}`;
-        return returnSuffix();
-      } else if (this.options.compatibilityJSON === 'v2') {
-        return returnSuffix();
-      } else if (this.options.simplifyPluralSuffix && rule.numbers.length === 2 && rule.numbers[0] === 1) {
-        return returnSuffix();
-      }
-      return this.options.prepend && idx.toString() ? this.options.prepend + idx.toString() : idx.toString();
-    }
-    shouldUseIntlApi() {
-      return !nonIntlVersions.includes(this.options.compatibilityJSON);
+      return this.getSuffix('dev', count, options);
     }
   }
 
@@ -24171,7 +24006,7 @@ return jQuery;
       let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       this.logger = baseLogger.create('interpolator');
       this.options = options;
-      this.format = options.interpolation && options.interpolation.format || (value => value);
+      this.format = options?.interpolation?.format || (value => value);
       this.init(options);
     }
     init() {
@@ -24218,7 +24053,7 @@ return jQuery;
     }
     resetRegExp() {
       const getOrResetRegExp = (existingRegExp, pattern) => {
-        if (existingRegExp && existingRegExp.source === pattern) {
+        if (existingRegExp?.source === pattern) {
           existingRegExp.lastIndex = 0;
           return existingRegExp;
         }
@@ -24252,8 +24087,8 @@ return jQuery;
         });
       };
       this.resetRegExp();
-      const missingInterpolationHandler = options && options.missingInterpolationHandler || this.options.missingInterpolationHandler;
-      const skipOnVariables = options && options.interpolation && options.interpolation.skipOnVariables !== undefined ? options.interpolation.skipOnVariables : this.options.interpolation.skipOnVariables;
+      const missingInterpolationHandler = options?.missingInterpolationHandler || this.options.missingInterpolationHandler;
+      const skipOnVariables = options?.interpolation?.skipOnVariables !== undefined ? options.interpolation.skipOnVariables : this.options.interpolation.skipOnVariables;
       const todos = [{
         regex: this.regexpUnescape,
         safeValue: val => regexSafe(val)
@@ -24312,7 +24147,7 @@ return jQuery;
         optionsString = this.interpolate(optionsString, clonedOptions);
         const matchedSingleQuotes = optionsString.match(/'/g);
         const matchedDoubleQuotes = optionsString.match(/"/g);
-        if (matchedSingleQuotes && matchedSingleQuotes.length % 2 === 0 && !matchedDoubleQuotes || matchedDoubleQuotes.length % 2 !== 0) {
+        if ((matchedSingleQuotes?.length ?? 0) % 2 === 0 && !matchedDoubleQuotes || matchedDoubleQuotes.length % 2 !== 0) {
           optionsString = optionsString.replace(/'/g, '"');
         }
         try {
@@ -24480,7 +24315,7 @@ return jQuery;
         if (this.formats[formatName]) {
           let formatted = mem;
           try {
-            const valOptions = options && options.formatParams && options.formatParams[options.interpolationkey] || {};
+            const valOptions = options?.formatParams?.[options.interpolationkey] || {};
             const l = valOptions.locale || valOptions.lng || options.locale || options.lng || lng;
             formatted = this.formats[formatName](mem, l, {
               ...formatOptions,
@@ -24523,9 +24358,7 @@ return jQuery;
       this.retryTimeout = options.retryTimeout >= 1 ? options.retryTimeout : 350;
       this.state = {};
       this.queue = [];
-      if (this.backend && this.backend.init) {
-        this.backend.init(services, options.backend, options);
-      }
+      this.backend?.init?.(services, options.backend, options);
     }
     queueLoad(languages, namespaces, options, callback) {
       const toLoad = {};
@@ -24691,12 +24524,12 @@ return jQuery;
     saveMissing(languages, namespace, key, fallbackValue, isUpdate) {
       let options = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : {};
       let clb = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : () => {};
-      if (this.services.utils && this.services.utils.hasLoadedNamespace && !this.services.utils.hasLoadedNamespace(namespace)) {
+      if (this.services?.utils?.hasLoadedNamespace && !this.services?.utils?.hasLoadedNamespace(namespace)) {
         this.logger.warn(`did not save key "${key}" as the namespace "${namespace}" was not yet loaded`, 'This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!');
         return;
       }
       if (key === undefined || key === null || key === '') return;
-      if (this.backend && this.backend.create) {
+      if (this.backend?.create) {
         const opts = {
           ...options,
           isUpdate
@@ -24729,7 +24562,7 @@ return jQuery;
 
   const get = () => ({
     debug: false,
-    initImmediate: true,
+    initAsync: true,
     ns: ['translation'],
     defaultNS: ['translation'],
     fallbackLng: ['dev'],
@@ -24791,9 +24624,10 @@ return jQuery;
     if (isString(options.ns)) options.ns = [options.ns];
     if (isString(options.fallbackLng)) options.fallbackLng = [options.fallbackLng];
     if (isString(options.fallbackNS)) options.fallbackNS = [options.fallbackNS];
-    if (options.supportedLngs && options.supportedLngs.indexOf('cimode') < 0) {
+    if (options.supportedLngs?.indexOf?.('cimode') < 0) {
       options.supportedLngs = options.supportedLngs.concat(['cimode']);
     }
+    if (typeof options.initImmediate === 'boolean') options.initAsync = options.initImmediate;
     return options;
   };
 
@@ -24819,7 +24653,7 @@ return jQuery;
       };
       bindMemberFunctions(this);
       if (callback && !this.isInitialized && !options.isClone) {
-        if (!this.options.initImmediate) {
+        if (!this.options.initAsync) {
           this.init(options, callback);
           return this;
         }
@@ -24837,7 +24671,7 @@ return jQuery;
         callback = options;
         options = {};
       }
-      if (!options.defaultNS && options.defaultNS !== false && options.ns) {
+      if (options.defaultNS == null && options.ns) {
         if (isString(options.ns)) {
           options.defaultNS = options.ns;
         } else if (options.ns.indexOf('translation') < 0) {
@@ -24850,12 +24684,10 @@ return jQuery;
         ...this.options,
         ...transformOptions(options)
       };
-      if (this.options.compatibilityAPI !== 'v1') {
-        this.options.interpolation = {
-          ...defOpts.interpolation,
-          ...this.options.interpolation
-        };
-      }
+      this.options.interpolation = {
+        ...defOpts.interpolation,
+        ...this.options.interpolation
+      };
       if (options.keySeparator !== undefined) {
         this.options.userDefinedKeySeparator = options.keySeparator;
       }
@@ -24876,7 +24708,7 @@ return jQuery;
         let formatter;
         if (this.modules.formatter) {
           formatter = this.modules.formatter;
-        } else if (typeof Intl !== 'undefined') {
+        } else {
           formatter = Formatter;
         }
         const lu = new LanguageUtil(this.options);
@@ -24887,7 +24719,6 @@ return jQuery;
         s.languageUtils = lu;
         s.pluralResolver = new PluralResolver(lu, {
           prepend: this.options.pluralSeparator,
-          compatibilityJSON: this.options.compatibilityJSON,
           simplifyPluralSuffix: this.options.simplifyPluralSuffix
         });
         if (formatter && (!this.options.interpolation.format || this.options.interpolation.format === defOpts.interpolation.format)) {
@@ -24958,10 +24789,10 @@ return jQuery;
           deferred.resolve(t);
           callback(err, t);
         };
-        if (this.languages && this.options.compatibilityAPI !== 'v1' && !this.isInitialized) return finish(null, this.t.bind(this));
+        if (this.languages && !this.isInitialized) return finish(null, this.t.bind(this));
         this.changeLanguage(this.options.lng, finish);
       };
-      if (this.options.resources || !this.options.initImmediate) {
+      if (this.options.resources || !this.options.initAsync) {
         load();
       } else {
         setTimeout(load, 0);
@@ -24974,7 +24805,7 @@ return jQuery;
       const usedLng = isString(language) ? language : this.language;
       if (typeof language === 'function') usedCallback = language;
       if (!this.options.resources || this.options.partialBundledLanguages) {
-        if (usedLng && usedLng.toLowerCase() === 'cimode' && (!this.options.preload || this.options.preload.length === 0)) return usedCallback();
+        if (usedLng?.toLowerCase() === 'cimode' && (!this.options.preload || this.options.preload.length === 0)) return usedCallback();
         const toLoad = [];
         const append = lng => {
           if (!lng) return;
@@ -24991,9 +24822,7 @@ return jQuery;
         } else {
           append(usedLng);
         }
-        if (this.options.preload) {
-          this.options.preload.forEach(l => append(l));
-        }
+        this.options.preload?.forEach?.(l => append(l));
         this.services.backendConnector.load(toLoad, this.options.ns, e => {
           if (!e && !this.resolvedLanguage && this.language) this.setResolvedLanguage(this.language);
           usedCallback(e);
@@ -25058,6 +24887,10 @@ return jQuery;
           break;
         }
       }
+      if (!this.resolvedLanguage && this.languages.indexOf(l) < 0 && this.store.hasLanguageSomeTranslations(l)) {
+        this.resolvedLanguage = l;
+        if (this.languages.indexOf(l) < 0) this.languages.unshift(l);
+      }
     }
     changeLanguage(lng, callback) {
       var _this2 = this;
@@ -25072,11 +24905,13 @@ return jQuery;
       };
       const done = (err, l) => {
         if (l) {
-          setLngProps(l);
-          this.translator.changeLanguage(l);
-          this.isLanguageChangingTo = undefined;
-          this.emit('languageChanged', l);
-          this.logger.log('languageChanged', l);
+          if (this.isLanguageChangingTo === lng) {
+            setLngProps(l);
+            this.translator.changeLanguage(l);
+            this.isLanguageChangingTo = undefined;
+            this.emit('languageChanged', l);
+            this.logger.log('languageChanged', l);
+          }
         } else {
           this.isLanguageChangingTo = undefined;
         }
@@ -25089,13 +24924,14 @@ return jQuery;
       };
       const setLng = lngs => {
         if (!lng && !lngs && this.services.languageDetector) lngs = [];
-        const l = isString(lngs) ? lngs : this.services.languageUtils.getBestMatchFromCodes(lngs);
+        const fl = isString(lngs) ? lngs : lngs && lngs[0];
+        const l = this.store.hasLanguageSomeTranslations(fl) ? fl : this.services.languageUtils.getBestMatchFromCodes(isString(lngs) ? [lngs] : lngs);
         if (l) {
           if (!this.language) {
             setLngProps(l);
           }
           if (!this.translator.language) this.translator.changeLanguage(l);
-          if (this.services.languageDetector && this.services.languageDetector.cacheUserLanguage) this.services.languageDetector.cacheUserLanguage(l);
+          this.services.languageDetector?.cacheUserLanguage?.(l);
         }
         this.loadResources(l, err => {
           done(err, l);
@@ -25117,29 +24953,29 @@ return jQuery;
     getFixedT(lng, ns, keyPrefix) {
       var _this3 = this;
       const fixedT = function (key, opts) {
-        let options;
+        let o;
         if (typeof opts !== 'object') {
           for (var _len3 = arguments.length, rest = new Array(_len3 > 2 ? _len3 - 2 : 0), _key3 = 2; _key3 < _len3; _key3++) {
             rest[_key3 - 2] = arguments[_key3];
           }
-          options = _this3.options.overloadTranslationOptionHandler([key, opts].concat(rest));
+          o = _this3.options.overloadTranslationOptionHandler([key, opts].concat(rest));
         } else {
-          options = {
+          o = {
             ...opts
           };
         }
-        options.lng = options.lng || fixedT.lng;
-        options.lngs = options.lngs || fixedT.lngs;
-        options.ns = options.ns || fixedT.ns;
-        if (options.keyPrefix !== '') options.keyPrefix = options.keyPrefix || keyPrefix || fixedT.keyPrefix;
+        o.lng = o.lng || fixedT.lng;
+        o.lngs = o.lngs || fixedT.lngs;
+        o.ns = o.ns || fixedT.ns;
+        if (o.keyPrefix !== '') o.keyPrefix = o.keyPrefix || keyPrefix || fixedT.keyPrefix;
         const keySeparator = _this3.options.keySeparator || '.';
         let resultKey;
-        if (options.keyPrefix && Array.isArray(key)) {
-          resultKey = key.map(k => `${options.keyPrefix}${keySeparator}${k}`);
+        if (o.keyPrefix && Array.isArray(key)) {
+          resultKey = key.map(k => `${o.keyPrefix}${keySeparator}${k}`);
         } else {
-          resultKey = options.keyPrefix ? `${options.keyPrefix}${keySeparator}${key}` : key;
+          resultKey = o.keyPrefix ? `${o.keyPrefix}${keySeparator}${key}` : key;
         }
-        return _this3.t(resultKey, options);
+        return _this3.t(resultKey, o);
       };
       if (isString(lng)) {
         fixedT.lng = lng;
@@ -25151,10 +24987,16 @@ return jQuery;
       return fixedT;
     }
     t() {
-      return this.translator && this.translator.translate(...arguments);
+      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+      return this.translator?.translate(...args);
     }
     exists() {
-      return this.translator && this.translator.exists(...arguments);
+      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+        args[_key5] = arguments[_key5];
+      }
+      return this.translator?.exists(...args);
     }
     setDefaultNamespace(ns) {
       this.options.defaultNS = ns;
@@ -25219,10 +25061,10 @@ return jQuery;
       return deferred;
     }
     dir(lng) {
-      if (!lng) lng = this.resolvedLanguage || (this.languages && this.languages.length > 0 ? this.languages[0] : this.language);
+      if (!lng) lng = this.resolvedLanguage || (this.languages?.length > 0 ? this.languages[0] : this.language);
       if (!lng) return 'rtl';
       const rtlLngs = ['ar', 'shu', 'sqr', 'ssh', 'xaa', 'yhd', 'yud', 'aao', 'abh', 'abv', 'acm', 'acq', 'acw', 'acx', 'acy', 'adf', 'ads', 'aeb', 'aec', 'afb', 'ajp', 'apc', 'apd', 'arb', 'arq', 'ars', 'ary', 'arz', 'auz', 'avl', 'ayh', 'ayl', 'ayn', 'ayp', 'bbz', 'pga', 'he', 'iw', 'ps', 'pbt', 'pbu', 'pst', 'prp', 'prd', 'ug', 'ur', 'ydd', 'yds', 'yih', 'ji', 'yi', 'hbo', 'men', 'xmn', 'fa', 'jpr', 'peo', 'pes', 'prs', 'dv', 'sam', 'ckb'];
-      const languageUtils = this.services && this.services.languageUtils || new LanguageUtil(get());
+      const languageUtils = this.services?.languageUtils || new LanguageUtil(get());
       return rtlLngs.indexOf(languageUtils.getLanguagePartFromCode(lng)) > -1 || lng.toLowerCase().indexOf('-arab') > 1 ? 'rtl' : 'ltr';
     }
     static createInstance() {
@@ -25257,13 +25099,24 @@ return jQuery;
         hasLoadedNamespace: clone.hasLoadedNamespace.bind(clone)
       };
       if (forkResourceStore) {
-        clone.store = new ResourceStore(this.store.data, mergedOptions);
+        const clonedData = Object.keys(this.store.data).reduce((prev, l) => {
+          prev[l] = {
+            ...this.store.data[l]
+          };
+          return Object.keys(prev[l]).reduce((acc, n) => {
+            acc[n] = {
+              ...prev[l][n]
+            };
+            return acc;
+          }, {});
+        }, {});
+        clone.store = new ResourceStore(clonedData, mergedOptions);
         clone.services.resourceStore = clone.store;
       }
       clone.translator = new Translator(clone.services, mergedOptions);
       clone.translator.on('*', function (event) {
-        for (var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
-          args[_key4 - 1] = arguments[_key4];
+        for (var _len6 = arguments.length, args = new Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+          args[_key6 - 1] = arguments[_key6];
         }
         clone.emit(event, ...args);
       });
@@ -32412,78 +32265,85 @@ if (typeof define === 'function' && define.amd) {
 }(jQuery, window.Hammer));
 ;
 /*!
- * jQuery Mousewheel 3.1.13
- *
- * Copyright jQuery Foundation and other contributors
- * Released under the MIT license
- * http://jquery.org/license
+ * jQuery Mousewheel 3.2.2
+ * Copyright OpenJS Foundation and other contributors
  */
 
-(function (factory) {
-    if ( typeof define === 'function' && define.amd ) {
+( function( factory ) {
+    "use strict";
+
+    if ( typeof define === "function" && define.amd ) {
+
         // AMD. Register as an anonymous module.
-        define(['jquery'], factory);
-    } else if (typeof exports === 'object') {
+        define( [ "jquery" ], factory );
+    } else if ( typeof exports === "object" ) {
+
         // Node/CommonJS style for Browserify
         module.exports = factory;
     } else {
-        // Browser globals
-        factory(jQuery);
-    }
-}(function ($) {
 
-    var toFix  = ['wheel', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll'],
-        toBind = ( 'onwheel' in document || document.documentMode >= 9 ) ?
-                    ['wheel'] : ['mousewheel', 'DomMouseScroll', 'MozMousePixelScroll'],
-        slice  = Array.prototype.slice,
-        nullLowestDeltaTimeout, lowestDelta;
+        // Browser globals
+        factory( jQuery );
+    }
+} )( function( $ ) {
+    "use strict";
+
+    var nullLowestDeltaTimeout, lowestDelta,
+        modernEvents = !!$.fn.on,
+        toFix  = [ "wheel", "mousewheel", "DOMMouseScroll", "MozMousePixelScroll" ],
+        toBind = ( "onwheel" in window.document || window.document.documentMode >= 9 ) ?
+            [ "wheel" ] : [ "mousewheel", "DomMouseScroll", "MozMousePixelScroll" ],
+        slice  = Array.prototype.slice;
 
     if ( $.event.fixHooks ) {
         for ( var i = toFix.length; i; ) {
-            $.event.fixHooks[ toFix[--i] ] = $.event.mouseHooks;
+            $.event.fixHooks[ toFix[ --i ] ] = $.event.mouseHooks;
         }
     }
 
     var special = $.event.special.mousewheel = {
-        version: '3.1.12',
+        version: "3.2.2",
 
         setup: function() {
             if ( this.addEventListener ) {
                 for ( var i = toBind.length; i; ) {
-                    this.addEventListener( toBind[--i], handler, false );
+                    this.addEventListener( toBind[ --i ], handler, false );
                 }
             } else {
                 this.onmousewheel = handler;
             }
+
             // Store the line height and page height for this particular element
-            $.data(this, 'mousewheel-line-height', special.getLineHeight(this));
-            $.data(this, 'mousewheel-page-height', special.getPageHeight(this));
+            $.data( this, "mousewheel-line-height", special.getLineHeight( this ) );
+            $.data( this, "mousewheel-page-height", special.getPageHeight( this ) );
         },
 
         teardown: function() {
             if ( this.removeEventListener ) {
                 for ( var i = toBind.length; i; ) {
-                    this.removeEventListener( toBind[--i], handler, false );
+                    this.removeEventListener( toBind[ --i ], handler, false );
                 }
             } else {
                 this.onmousewheel = null;
             }
+
             // Clean up the data we added to the element
-            $.removeData(this, 'mousewheel-line-height');
-            $.removeData(this, 'mousewheel-page-height');
+            $.removeData( this, "mousewheel-line-height" );
+            $.removeData( this, "mousewheel-page-height" );
         },
 
-        getLineHeight: function(elem) {
-            var $elem = $(elem),
-                $parent = $elem['offsetParent' in $.fn ? 'offsetParent' : 'parent']();
-            if (!$parent.length) {
-                $parent = $('body');
+        getLineHeight: function( elem ) {
+            var $elem = $( elem ),
+                $parent = $elem[ "offsetParent" in $.fn ? "offsetParent" : "parent" ]();
+            if ( !$parent.length ) {
+                $parent = $( "body" );
             }
-            return parseInt($parent.css('fontSize'), 10) || parseInt($elem.css('fontSize'), 10) || 16;
+            return parseInt( $parent.css( "fontSize" ), 10 ) ||
+                parseInt( $elem.css( "fontSize" ), 10 ) || 16;
         },
 
-        getPageHeight: function(elem) {
-            return $(elem).height();
+        getPageHeight: function( elem ) {
+            return $( elem ).height();
         },
 
         settings: {
@@ -32492,56 +32352,68 @@ if (typeof define === 'function' && define.amd) {
         }
     };
 
-    $.fn.extend({
-        mousewheel: function(fn) {
-            return fn ? this.bind('mousewheel', fn) : this.trigger('mousewheel');
+    $.fn.extend( {
+        mousewheel: function( fn ) {
+            return fn ?
+                this[ modernEvents ? "on" : "bind" ]( "mousewheel", fn ) :
+                this.trigger( "mousewheel" );
         },
 
-        unmousewheel: function(fn) {
-            return this.unbind('mousewheel', fn);
+        unmousewheel: function( fn ) {
+            return this[ modernEvents ? "off" : "unbind" ]( "mousewheel", fn );
         }
-    });
+    } );
 
 
-    function handler(event) {
+    function handler( event ) {
         var orgEvent   = event || window.event,
-            args       = slice.call(arguments, 1),
+            args       = slice.call( arguments, 1 ),
             delta      = 0,
             deltaX     = 0,
             deltaY     = 0,
-            absDelta   = 0,
-            offsetX    = 0,
-            offsetY    = 0;
-        event = $.event.fix(orgEvent);
-        event.type = 'mousewheel';
+            absDelta   = 0;
+        event = $.event.fix( orgEvent );
+        event.type = "mousewheel";
 
         // Old school scrollwheel delta
-        if ( 'detail'      in orgEvent ) { deltaY = orgEvent.detail * -1;      }
-        if ( 'wheelDelta'  in orgEvent ) { deltaY = orgEvent.wheelDelta;       }
-        if ( 'wheelDeltaY' in orgEvent ) { deltaY = orgEvent.wheelDeltaY;      }
-        if ( 'wheelDeltaX' in orgEvent ) { deltaX = orgEvent.wheelDeltaX * -1; }
+        if ( "detail" in orgEvent ) {
+            deltaY = orgEvent.detail * -1;
+        }
+        if ( "wheelDelta" in orgEvent ) {
+            deltaY = orgEvent.wheelDelta;
+        }
+        if ( "wheelDeltaY" in orgEvent ) {
+            deltaY = orgEvent.wheelDeltaY;
+        }
+        if ( "wheelDeltaX" in orgEvent ) {
+            deltaX = orgEvent.wheelDeltaX * -1;
+        }
 
         // Firefox < 17 horizontal scrolling related to DOMMouseScroll event
-        if ( 'axis' in orgEvent && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
+        if ( "axis" in orgEvent && orgEvent.axis === orgEvent.HORIZONTAL_AXIS ) {
             deltaX = deltaY * -1;
             deltaY = 0;
         }
 
-        // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatabilitiy
+        // Set delta to be deltaY or deltaX if deltaY is 0 for backwards compatability
         delta = deltaY === 0 ? deltaX : deltaY;
 
         // New school wheel delta (wheel event)
-        if ( 'deltaY' in orgEvent ) {
+        if ( "deltaY" in orgEvent ) {
             deltaY = orgEvent.deltaY * -1;
             delta  = deltaY;
         }
-        if ( 'deltaX' in orgEvent ) {
+        if ( "deltaX" in orgEvent ) {
             deltaX = orgEvent.deltaX;
-            if ( deltaY === 0 ) { delta  = deltaX * -1; }
+            if ( deltaY === 0 ) {
+                delta  = deltaX * -1;
+            }
         }
 
         // No change actually happened, no reason to go any further
-        if ( deltaY === 0 && deltaX === 0 ) { return; }
+        if ( deltaY === 0 && deltaX === 0 ) {
+            return;
+        }
 
         // Need to convert lines and pages to pixels if we aren't already in pixels
         // There are three delta modes:
@@ -32549,31 +32421,32 @@ if (typeof define === 'function' && define.amd) {
         //   * deltaMode 1 is by lines
         //   * deltaMode 2 is by pages
         if ( orgEvent.deltaMode === 1 ) {
-            var lineHeight = $.data(this, 'mousewheel-line-height');
+            var lineHeight = $.data( this, "mousewheel-line-height" );
             delta  *= lineHeight;
             deltaY *= lineHeight;
             deltaX *= lineHeight;
         } else if ( orgEvent.deltaMode === 2 ) {
-            var pageHeight = $.data(this, 'mousewheel-page-height');
+            var pageHeight = $.data( this, "mousewheel-page-height" );
             delta  *= pageHeight;
             deltaY *= pageHeight;
             deltaX *= pageHeight;
         }
 
         // Store lowest absolute delta to normalize the delta values
-        absDelta = Math.max( Math.abs(deltaY), Math.abs(deltaX) );
+        absDelta = Math.max( Math.abs( deltaY ), Math.abs( deltaX ) );
 
         if ( !lowestDelta || absDelta < lowestDelta ) {
             lowestDelta = absDelta;
 
             // Adjust older deltas if necessary
-            if ( shouldAdjustOldDeltas(orgEvent, absDelta) ) {
+            if ( shouldAdjustOldDeltas( orgEvent, absDelta ) ) {
                 lowestDelta /= 40;
             }
         }
 
         // Adjust older deltas if necessary
-        if ( shouldAdjustOldDeltas(orgEvent, absDelta) ) {
+        if ( shouldAdjustOldDeltas( orgEvent, absDelta ) ) {
+
             // Divide all the things by 40!
             delta  /= 40;
             deltaX /= 40;
@@ -32581,57 +32454,58 @@ if (typeof define === 'function' && define.amd) {
         }
 
         // Get a whole, normalized value for the deltas
-        delta  = Math[ delta  >= 1 ? 'floor' : 'ceil' ](delta  / lowestDelta);
-        deltaX = Math[ deltaX >= 1 ? 'floor' : 'ceil' ](deltaX / lowestDelta);
-        deltaY = Math[ deltaY >= 1 ? 'floor' : 'ceil' ](deltaY / lowestDelta);
+        delta  = Math[ delta  >= 1 ? "floor" : "ceil" ]( delta  / lowestDelta );
+        deltaX = Math[ deltaX >= 1 ? "floor" : "ceil" ]( deltaX / lowestDelta );
+        deltaY = Math[ deltaY >= 1 ? "floor" : "ceil" ]( deltaY / lowestDelta );
 
         // Normalise offsetX and offsetY properties
         if ( special.settings.normalizeOffset && this.getBoundingClientRect ) {
             var boundingRect = this.getBoundingClientRect();
-            offsetX = event.clientX - boundingRect.left;
-            offsetY = event.clientY - boundingRect.top;
+            event.offsetX = event.clientX - boundingRect.left;
+            event.offsetY = event.clientY - boundingRect.top;
         }
 
         // Add information to the event object
         event.deltaX = deltaX;
         event.deltaY = deltaY;
         event.deltaFactor = lowestDelta;
-        event.offsetX = offsetX;
-        event.offsetY = offsetY;
+
         // Go ahead and set deltaMode to 0 since we converted to pixels
         // Although this is a little odd since we overwrite the deltaX/Y
         // properties with normalized deltas.
         event.deltaMode = 0;
 
         // Add event and delta to the front of the arguments
-        args.unshift(event, delta, deltaX, deltaY);
+        args.unshift( event, delta, deltaX, deltaY );
 
-        // Clearout lowestDelta after sometime to better
+        // Clear out lowestDelta after sometime to better
         // handle multiple device types that give different
         // a different lowestDelta
         // Ex: trackpad = 3 and mouse wheel = 120
-        if (nullLowestDeltaTimeout) { clearTimeout(nullLowestDeltaTimeout); }
-        nullLowestDeltaTimeout = setTimeout(nullLowestDelta, 200);
+        if ( nullLowestDeltaTimeout ) {
+            window.clearTimeout( nullLowestDeltaTimeout );
+        }
+        nullLowestDeltaTimeout = window.setTimeout( function() {
+            lowestDelta = null;
+        }, 200 );
 
-        return ($.event.dispatch || $.event.handle).apply(this, args);
+        return ( $.event.dispatch || $.event.handle ).apply( this, args );
     }
 
-    function nullLowestDelta() {
-        lowestDelta = null;
-    }
+    function shouldAdjustOldDeltas( orgEvent, absDelta ) {
 
-    function shouldAdjustOldDeltas(orgEvent, absDelta) {
-        // If this is an older event and the delta is divisable by 120,
+        // If this is an older event and the delta is divisible by 120,
         // then we are assuming that the browser is treating this as an
         // older mouse wheel event and that we should divide the deltas
         // by 40 to try and get a more usable deltaFactor.
         // Side note, this actually impacts the reported scroll distance
         // in older browsers and can cause scrolling to be slower than native.
         // Turn this off by setting $.event.special.mousewheel.settings.adjustOldDeltas to false.
-        return special.settings.adjustOldDeltas && orgEvent.type === 'mousewheel' && absDelta % 120 === 0;
+        return special.settings.adjustOldDeltas && orgEvent.type === "mousewheel" &&
+            absDelta % 120 === 0;
     }
 
-}));
+} );
 
 ;
 /****************************************************************************
@@ -43596,6 +43470,7 @@ module.exports = Yaml;
 
     //Set event handler for unhandled rejections
     window.onunhandledrejection = function(e, promise){
+
         if (e && e.preventDefault)
             e.preventDefault();
 
@@ -43603,7 +43478,20 @@ module.exports = Yaml;
         if (e && e.detail)
             return false;
 
-        var url = promise && promise.promiseOptions ? promise.promiseOptions.url : null;
+        let url = '';
+
+
+        if (promise){
+            //Try different ways to get the url
+            if (promise.toJSON){
+                const pJSON = promise.toJSON();
+                url = pJSON && pJSON.rejectionReason ? pJSON.rejectionReason.url : '';
+            }
+
+            if (!url)
+                url = promise.promiseOptions ? promise.promiseOptions.url : '';
+        }
+
 
         Promise.defaultErrorHandler( createErrorObject( e, url ) );
     };
@@ -43661,9 +43549,14 @@ module.exports = Yaml;
 */
         }, options || {});
 
-        //Adding parame dummy=12345678 if options.noCache: true to force no-cache. TODO: Replaced with correct header
+        //Adding parame dummy=12345678 if options.noCache: true to force no-cache
         if (options.noCache)
             url = url + (url.indexOf('?') > 0 ? '&' : '?') + 'dummy='+Math.random().toString(36).substr(2, 9);
+        //Tried cache: 'reload' but did not seam to work
+        //if (options.noCache && !options.cache)
+        //    options.cache = 'reload';
+
+
 
         if (Promise.defaultPrefetch && !options.noDefaultPrefetch)
             Promise.defaultPrefetch(url, options);
@@ -43673,11 +43566,12 @@ module.exports = Yaml;
                 .then((response) => {
                     if (response.ok)
                         resolve(response);
-                    else
+                    else {
                         return Promise.reject(createErrorObject(response, options.url));
                         //return Promise.reject(new Error(response));
                         //return Promise.reject(response);
                         //return createErrorObject(response, options.url);
+                    }
                 })
                 .catch((/*error*/reason) => {
                     if (options.retries > 0){
@@ -43775,10 +43669,12 @@ module.exports = Yaml;
         fin     = fin     || options.finally || options.always;
 
         if (options.context){
-            resolve = resolve ? $.proxy( resolve, options.context ) : null;
-            reject = reject   ? $.proxy( reject,  options.context ) : null;
-            fin    = fin      ? $.proxy( fin,     options.context ) : null;
+            resolve = resolve ? resolve.bind(options.context) : null;
+            reject = reject   ? reject.bind(options.context)  : null;
+            fin    = fin      ? fin.bind(options.context)     : null;
         }
+
+        options.reject = reject;
 
         var result =
             Promise.fetch(url, options) //Get the file
@@ -52830,7 +52726,7 @@ See https://ilyashubin.github.io/scrollbooster/
 }).call(this);
 ;
 //! moment-timezone.js
-//! version : 0.5.46
+//! version : 0.5.48
 //! Copyright (c) JS Foundation and other contributors
 //! license : MIT
 //! github.com/moment/moment-timezone
@@ -52860,7 +52756,7 @@ See https://ilyashubin.github.io/scrollbooster/
 	// 	return moment;
 	// }
 
-	var VERSION = "0.5.46",
+	var VERSION = "0.5.48",
 		zones = {},
 		links = {},
 		countries = {},
@@ -53555,78 +53451,75 @@ See https://ilyashubin.github.io/scrollbooster/
 	}
 
 	loadData({
-		"version": "2024b",
+		"version": "2025b",
 		"zones": [
 			"Africa/Abidjan|GMT|0|0||48e5",
 			"Africa/Nairobi|EAT|-30|0||47e5",
 			"Africa/Algiers|CET|-10|0||26e5",
 			"Africa/Lagos|WAT|-10|0||17e6",
 			"Africa/Khartoum|CAT|-20|0||51e5",
-			"Africa/Cairo|EET EEST|-20 -30|010101010101010|29NW0 1cL0 1cN0 1fz0 1a10 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0|15e6",
-			"Africa/Casablanca|+01 +00|-10 0|010101010101010101010101|208q0 e00 2600 gM0 2600 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 2600|32e5",
-			"Europe/Paris|CET CEST|-10 -20|01010101010101010101010|1XSp0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0|11e6",
+			"Africa/Cairo|EET EEST|-20 -30|01010101010101010|29NW0 1cL0 1cN0 1fz0 1a10 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0|15e6",
+			"Africa/Casablanca|+01 +00|-10 0|010101010101010101010101|22sq0 gM0 2600 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 2600 gM0 2600|32e5",
+			"Europe/Paris|CET CEST|-10 -20|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|11e6",
 			"Africa/Johannesburg|SAST|-20|0||84e5",
 			"Africa/Juba|EAT CAT|-30 -20|01|24nx0|",
-			"Africa/Sao_Tome|WAT GMT|-10 0|01|1XiN0|",
 			"Africa/Tripoli|EET|-20|0||11e5",
-			"America/Adak|HST HDT|a0 90|01010101010101010101010|1XKc0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|326",
-			"America/Anchorage|AKST AKDT|90 80|01010101010101010101010|1XKb0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|30e4",
+			"America/Adak|HST HDT|a0 90|01010101010101010101010|22bM0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|326",
+			"America/Anchorage|AKST AKDT|90 80|01010101010101010101010|22bL0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|30e4",
 			"America/Santo_Domingo|AST|40|0||29e5",
-			"America/Fortaleza|-03|30|0||34e5",
-			"America/Asuncion|-03 -04|30 40|01010101010101010101010|1XPD0 1ip0 17b0 1ip0 19X0 1fB0 19X0 1fB0 19X0 1fB0 19X0 1ip0 17b0 1ip0 17b0 1ip0 19X0 1fB0 19X0 1fB0 19X0 1ip0|28e5",
+			"America/Sao_Paulo|-03|30|0||20e6",
+			"America/Asuncion|-03 -04|30 40|01010101010|22hf0 1ip0 19X0 1fB0 19X0 1fB0 19X0 1fB0 19X0 1ip0|28e5",
 			"America/Panama|EST|50|0||15e5",
-			"America/Mexico_City|CST CDT|60 50|010101010|1XVk0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0|20e6",
+			"America/Mexico_City|CST CDT|60 50|0101010|22mU0 1lb0 14p0 1nX0 11B0 1nX0|20e6",
 			"America/Managua|CST|60|0||22e5",
 			"America/Caracas|-04|40|0||29e5",
 			"America/Lima|-05|50|0||11e6",
-			"America/Denver|MST MDT|70 60|01010101010101010101010|1XK90 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|26e5",
-			"America/Campo_Grande|-03 -04|30 40|01|1XBD0|77e4",
-			"America/Chicago|CST CDT|60 50|01010101010101010101010|1XK80 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|92e5",
-			"America/Chihuahua|MST MDT CST|70 60 60|010101012|1XVl0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0|81e4",
-			"America/Ciudad_Juarez|MST MDT CST|70 60 60|010101012010101010101010|1XK90 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1wn0 cm0 EP0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/Denver|MST MDT|70 60|01010101010101010101010|22bJ0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|26e5",
+			"America/Chicago|CST CDT|60 50|01010101010101010101010|22bI0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|92e5",
+			"America/Chihuahua|MST MDT CST|70 60 60|0101012|22mV0 1lb0 14p0 1nX0 11B0 1nX0|81e4",
+			"America/Ciudad_Juarez|MST MDT CST|70 60 60|010101201010101010101010|22bJ0 1zb0 Rd0 1zb0 Op0 1wn0 cm0 EP0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/Coyhaique|-03 -04|30 40|01010101010|22mP0 11B0 1nX0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0|",
 			"America/Phoenix|MST|70|0||42e5",
-			"America/Whitehorse|PST PDT MST|80 70 70|01012|1XKa0 1zb0 Op0 1z90|23e3",
-			"America/New_York|EST EDT|50 40|01010101010101010101010|1XK70 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|21e6",
-			"America/Los_Angeles|PST PDT|80 70|01010101010101010101010|1XKa0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|15e6",
-			"America/Halifax|AST ADT|40 30|01010101010101010101010|1XK60 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|39e4",
-			"America/Godthab|-03 -02 -01|30 20 10|0101010101212121212121|1XSp0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 2so0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0|17e3",
-			"America/Havana|CST CDT|50 40|01010101010101010101010|1XK50 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0|21e5",
-			"America/Mazatlan|MST MDT|70 60|010101010|1XVl0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0|44e4",
-			"America/Metlakatla|PST AKST AKDT|80 90 80|012121212121212121212121|1Xqy0 jB0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|14e2",
-			"America/Miquelon|-03 -02|30 20|01010101010101010101010|1XK50 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|61e2",
+			"America/Whitehorse|PST PDT MST|80 70 70|012|22bK0 1z90|23e3",
+			"America/New_York|EST EDT|50 40|01010101010101010101010|22bH0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|21e6",
+			"America/Los_Angeles|PST PDT|80 70|01010101010101010101010|22bK0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|15e6",
+			"America/Halifax|AST ADT|40 30|01010101010101010101010|22bG0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|39e4",
+			"America/Godthab|-03 -02 -01|30 20 10|0101010121212121212121|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 2so0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|17e3",
+			"America/Havana|CST CDT|50 40|01010101010101010101010|22bF0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0|21e5",
+			"America/Mazatlan|MST MDT|70 60|0101010|22mV0 1lb0 14p0 1nX0 11B0 1nX0|44e4",
+			"America/Miquelon|-03 -02|30 20|01010101010101010101010|22bF0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|61e2",
 			"America/Noronha|-02|20|0||30e2",
-			"America/Ojinaga|MST MDT CST CDT|70 60 60 50|01010101232323232323232|1XK90 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1wn0 Rc0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|23e3",
-			"America/Santiago|-03 -04|30 40|01010101010101010101010|1XVf0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0|62e5",
-			"America/Sao_Paulo|-02 -03|20 30|01|1XBC0|20e6",
-			"America/Scoresbysund|-01 +00 -02|10 0 20|0101010101020202020202|1XSp0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 2pA0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0|452",
-			"America/St_Johns|NST NDT|3u 2u|01010101010101010101010|1XK5u 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0|11e4",
-			"Antarctica/Casey|+11 +08|-b0 -80|0101010101|1XME0 1kr0 12l0 1o01 14kX 1lf1 14kX 1lf1 13bX|10",
+			"America/Ojinaga|MST MDT CST CDT|70 60 60 50|01010123232323232323232|22bJ0 1zb0 Rd0 1zb0 Op0 1wn0 Rc0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|23e3",
+			"America/Santiago|-03 -04|30 40|01010101010101010101010|22mP0 11B0 1nX0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0|62e5",
+			"America/Scoresbysund|-01 +00 -02|10 0 20|0101010102020202020202|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 2pA0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|452",
+			"America/St_Johns|NST NDT|3u 2u|01010101010101010101010|22bFu 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|11e4",
+			"Antarctica/Casey|+11 +08|-b0 -80|01010101|22bs0 1o01 14kX 1lf1 14kX 1lf1 13bX|10",
 			"Asia/Bangkok|+07|-70|0||15e6",
 			"Asia/Vladivostok|+10|-a0|0||60e4",
-			"Australia/Sydney|AEDT AEST|-b0 -a0|01010101010101010101010|1XV40 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0|40e5",
+			"Australia/Sydney|AEDT AEST|-b0 -a0|01010101010101010101010|22mE0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0|40e5",
 			"Asia/Tashkent|+05|-50|0||23e5",
-			"Pacific/Auckland|NZDT NZST|-d0 -c0|01010101010101010101010|1XV20 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1io0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0|14e5",
+			"Pacific/Auckland|NZDT NZST|-d0 -c0|01010101010101010101010|22mC0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1io0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00|14e5",
 			"Europe/Istanbul|+03|-30|0||13e6",
-			"Antarctica/Troll|+00 +02|0 -20|01010101010101010101010|1XSp0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0|40",
+			"Antarctica/Troll|+00 +02|0 -20|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|40",
 			"Antarctica/Vostok|+07 +05|-70 -50|01|2bnv0|25",
 			"Asia/Almaty|+06 +05|-60 -50|01|2bR60|15e5",
-			"Asia/Amman|EET EEST +03|-20 -30 -30|010101012|1XRy0 1o00 11A0 1qM0 WM0 1qM0 LA0 1C00|25e5",
+			"Asia/Amman|EET EEST +03|-20 -30 -30|0101012|22ja0 1qM0 WM0 1qM0 LA0 1C00|25e5",
 			"Asia/Kamchatka|+12|-c0|0||18e4",
 			"Asia/Dubai|+04|-40|0||39e5",
-			"Asia/Beirut|EET EEST|-20 -30|01010101010101010101010|1XSm0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0|22e5",
+			"Asia/Beirut|EET EEST|-20 -30|01010101010101010101010|22jW0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0|22e5",
 			"Asia/Dhaka|+06|-60|0||16e6",
 			"Asia/Kuala_Lumpur|+08|-80|0||71e5",
 			"Asia/Kolkata|IST|-5u|0||15e6",
 			"Asia/Chita|+09|-90|0||33e4",
 			"Asia/Shanghai|CST|-80|0||23e6",
 			"Asia/Colombo|+0530|-5u|0||22e5",
-			"Asia/Damascus|EET EEST +03|-20 -30 -30|010101012|1XRy0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0|26e5",
-			"Europe/Athens|EET EEST|-20 -30|01010101010101010101010|1XSp0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0|35e5",
-			"Asia/Gaza|EET EEST|-20 -30|01010101010101010101010|1XRy0 1on0 11B0 1o00 11A0 1qo0 XA0 1qp0 1cN0 1cL0 1a10 1fz0 17d0 1in0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0|18e5",
+			"Asia/Damascus|EET EEST +03|-20 -30 -30|0101012|22ja0 1qL0 WN0 1qL0 WN0 1qL0|26e5",
+			"Europe/Athens|EET EEST|-20 -30|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|35e5",
+			"Asia/Gaza|EET EEST|-20 -30|01010101010101010101010|22jy0 1o00 11A0 1qo0 XA0 1qp0 1cN0 1cL0 1a10 1fz0 17d0 1in0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0|18e5",
 			"Asia/Hong_Kong|HKT|-80|0||73e5",
 			"Asia/Jakarta|WIB|-70|0||31e6",
 			"Asia/Jayapura|WIT|-90|0||26e4",
-			"Asia/Jerusalem|IST IDT|-20 -30|01010101010101010101010|1XRA0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0|81e4",
+			"Asia/Jerusalem|IST IDT|-20 -30|01010101010101010101010|22jc0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0|81e4",
 			"Asia/Kabul|+0430|-4u|0||46e5",
 			"Asia/Karachi|PKT|-50|0||24e6",
 			"Asia/Kathmandu|+0545|-5J|0||12e5",
@@ -53635,19 +53528,19 @@ See https://ilyashubin.github.io/scrollbooster/
 			"Asia/Manila|PST|-80|0||24e6",
 			"Asia/Seoul|KST|-90|0||23e6",
 			"Asia/Rangoon|+0630|-6u|0||48e5",
-			"Asia/Tehran|+0330 +0430|-3u -4u|010101010|1XOIu 1dz0 1cp0 1dz0 1cN0 1dz0 1cp0 1dz0|14e6",
+			"Asia/Tehran|+0330 +0430|-3u -4u|0101010|22gIu 1dz0 1cN0 1dz0 1cp0 1dz0|14e6",
 			"Asia/Tokyo|JST|-90|0||38e6",
-			"Atlantic/Azores|-01 +00|10 0|01010101010101010101010|1XSp0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0|25e4",
-			"Europe/Lisbon|WET WEST|0 -10|01010101010101010101010|1XSp0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0|27e5",
+			"Atlantic/Azores|-01 +00|10 0|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|25e4",
+			"Europe/Lisbon|WET WEST|0 -10|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|27e5",
 			"Atlantic/Cape_Verde|-01|10|0||50e4",
-			"Australia/Adelaide|ACDT ACST|-au -9u|01010101010101010101010|1XV4u 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0|11e5",
+			"Australia/Adelaide|ACDT ACST|-au -9u|01010101010101010101010|22mEu 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0|11e5",
 			"Australia/Brisbane|AEST|-a0|0||20e5",
 			"Australia/Darwin|ACST|-9u|0||12e4",
 			"Australia/Eucla|+0845|-8J|0||368",
-			"Australia/Lord_Howe|+11 +1030|-b0 -au|01010101010101010101010|1XV30 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1fzu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1fAu|347",
+			"Australia/Lord_Howe|+11 +1030|-b0 -au|01010101010101010101010|22mD0 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1fzu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1fAu 1cLu 1cMu|347",
 			"Australia/Perth|AWST|-80|0||18e5",
-			"Pacific/Easter|-05 -06|50 60|01010101010101010101010|1XVf0 11B0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0|30e2",
-			"Europe/Dublin|GMT IST|0 -10|01010101010101010101010|1XSp0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0|12e5",
+			"Pacific/Easter|-05 -06|50 60|01010101010101010101010|22mP0 11B0 1nX0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0|30e2",
+			"Europe/Dublin|GMT IST|0 -10|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|12e5",
 			"Etc/GMT-1|+01|-10|0||",
 			"Pacific/Tongatapu|+13|-d0|0||75e3",
 			"Pacific/Kiritimati|+14|-e0|0||51e2",
@@ -53660,18 +53553,18 @@ See https://ilyashubin.github.io/scrollbooster/
 			"Pacific/Pitcairn|-08|80|0||56",
 			"Pacific/Gambier|-09|90|0||125",
 			"Etc/UTC|UTC|0|0||",
-			"Europe/London|GMT BST|0 -10|01010101010101010101010|1XSp0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0|10e6",
-			"Europe/Chisinau|EET EEST|-20 -30|01010101010101010101010|1XSo0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0|67e4",
+			"Europe/London|GMT BST|0 -10|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|10e6",
+			"Europe/Chisinau|EET EEST|-20 -30|01010101010101010101010|22k00 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|67e4",
 			"Europe/Moscow|MSK|-30|0||16e6",
 			"Europe/Volgograd|+04 MSK|-40 -30|01|249a0|10e5",
 			"Pacific/Honolulu|HST|a0|0||37e4",
-			"Pacific/Chatham|+1345 +1245|-dJ -cJ|01010101010101010101010|1XV20 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1io0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0|600",
-			"Pacific/Apia|+14 +13|-e0 -d0|010101|1XV20 1a00 1fA0 1a00 1fA0|37e3",
-			"Pacific/Fiji|+13 +12|-d0 -c0|010101|1Xnq0 20o0 pc0 2hc0 bc0|88e4",
+			"Pacific/Chatham|+1345 +1245|-dJ -cJ|01010101010101010101010|22mC0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1io0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00|600",
+			"Pacific/Apia|+14 +13|-e0 -d0|0101|22mC0 1a00 1fA0|37e3",
+			"Pacific/Fiji|+13 +12|-d0 -c0|0101|21N20 2hc0 bc0|88e4",
 			"Pacific/Guam|ChST|-a0|0||17e4",
 			"Pacific/Marquesas|-0930|9u|0||86e2",
 			"Pacific/Pago_Pago|SST|b0|0||37e2",
-			"Pacific/Norfolk|+11 +12|-b0 -c0|0101010101010101010101|219P0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0|25e4"
+			"Pacific/Norfolk|+12 +11|-c0 -b0|01010101010101010101010|22mD0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0|25e4"
 		],
 		"links": [
 			"Africa/Abidjan|Africa/Accra",
@@ -53685,6 +53578,7 @@ See https://ilyashubin.github.io/scrollbooster/
 			"Africa/Abidjan|Africa/Monrovia",
 			"Africa/Abidjan|Africa/Nouakchott",
 			"Africa/Abidjan|Africa/Ouagadougou",
+			"Africa/Abidjan|Africa/Sao_Tome",
 			"Africa/Abidjan|Africa/Timbuktu",
 			"Africa/Abidjan|America/Danmarkshavn",
 			"Africa/Abidjan|Atlantic/Reykjavik",
@@ -53739,12 +53633,14 @@ See https://ilyashubin.github.io/scrollbooster/
 			"America/Adak|America/Atka",
 			"America/Adak|US/Aleutian",
 			"America/Anchorage|America/Juneau",
+			"America/Anchorage|America/Metlakatla",
 			"America/Anchorage|America/Nome",
 			"America/Anchorage|America/Sitka",
 			"America/Anchorage|America/Yakutat",
 			"America/Anchorage|US/Alaska",
-			"America/Campo_Grande|America/Cuiaba",
 			"America/Caracas|America/Boa_Vista",
+			"America/Caracas|America/Campo_Grande",
+			"America/Caracas|America/Cuiaba",
 			"America/Caracas|America/Guyana",
 			"America/Caracas|America/La_Paz",
 			"America/Caracas|America/Manaus",
@@ -53777,39 +53673,6 @@ See https://ilyashubin.github.io/scrollbooster/
 			"America/Denver|MST7MDT",
 			"America/Denver|Navajo",
 			"America/Denver|US/Mountain",
-			"America/Fortaleza|America/Araguaina",
-			"America/Fortaleza|America/Argentina/Buenos_Aires",
-			"America/Fortaleza|America/Argentina/Catamarca",
-			"America/Fortaleza|America/Argentina/ComodRivadavia",
-			"America/Fortaleza|America/Argentina/Cordoba",
-			"America/Fortaleza|America/Argentina/Jujuy",
-			"America/Fortaleza|America/Argentina/La_Rioja",
-			"America/Fortaleza|America/Argentina/Mendoza",
-			"America/Fortaleza|America/Argentina/Rio_Gallegos",
-			"America/Fortaleza|America/Argentina/Salta",
-			"America/Fortaleza|America/Argentina/San_Juan",
-			"America/Fortaleza|America/Argentina/San_Luis",
-			"America/Fortaleza|America/Argentina/Tucuman",
-			"America/Fortaleza|America/Argentina/Ushuaia",
-			"America/Fortaleza|America/Bahia",
-			"America/Fortaleza|America/Belem",
-			"America/Fortaleza|America/Buenos_Aires",
-			"America/Fortaleza|America/Catamarca",
-			"America/Fortaleza|America/Cayenne",
-			"America/Fortaleza|America/Cordoba",
-			"America/Fortaleza|America/Jujuy",
-			"America/Fortaleza|America/Maceio",
-			"America/Fortaleza|America/Mendoza",
-			"America/Fortaleza|America/Montevideo",
-			"America/Fortaleza|America/Paramaribo",
-			"America/Fortaleza|America/Punta_Arenas",
-			"America/Fortaleza|America/Recife",
-			"America/Fortaleza|America/Rosario",
-			"America/Fortaleza|America/Santarem",
-			"America/Fortaleza|Antarctica/Palmer",
-			"America/Fortaleza|Antarctica/Rothera",
-			"America/Fortaleza|Atlantic/Stanley",
-			"America/Fortaleza|Etc/GMT+3",
 			"America/Godthab|America/Nuuk",
 			"America/Halifax|America/Glace_Bay",
 			"America/Halifax|America/Goose_Bay",
@@ -53912,7 +53775,41 @@ See https://ilyashubin.github.io/scrollbooster/
 			"America/Santo_Domingo|America/St_Vincent",
 			"America/Santo_Domingo|America/Tortola",
 			"America/Santo_Domingo|America/Virgin",
+			"America/Sao_Paulo|America/Araguaina",
+			"America/Sao_Paulo|America/Argentina/Buenos_Aires",
+			"America/Sao_Paulo|America/Argentina/Catamarca",
+			"America/Sao_Paulo|America/Argentina/ComodRivadavia",
+			"America/Sao_Paulo|America/Argentina/Cordoba",
+			"America/Sao_Paulo|America/Argentina/Jujuy",
+			"America/Sao_Paulo|America/Argentina/La_Rioja",
+			"America/Sao_Paulo|America/Argentina/Mendoza",
+			"America/Sao_Paulo|America/Argentina/Rio_Gallegos",
+			"America/Sao_Paulo|America/Argentina/Salta",
+			"America/Sao_Paulo|America/Argentina/San_Juan",
+			"America/Sao_Paulo|America/Argentina/San_Luis",
+			"America/Sao_Paulo|America/Argentina/Tucuman",
+			"America/Sao_Paulo|America/Argentina/Ushuaia",
+			"America/Sao_Paulo|America/Bahia",
+			"America/Sao_Paulo|America/Belem",
+			"America/Sao_Paulo|America/Buenos_Aires",
+			"America/Sao_Paulo|America/Catamarca",
+			"America/Sao_Paulo|America/Cayenne",
+			"America/Sao_Paulo|America/Cordoba",
+			"America/Sao_Paulo|America/Fortaleza",
+			"America/Sao_Paulo|America/Jujuy",
+			"America/Sao_Paulo|America/Maceio",
+			"America/Sao_Paulo|America/Mendoza",
+			"America/Sao_Paulo|America/Montevideo",
+			"America/Sao_Paulo|America/Paramaribo",
+			"America/Sao_Paulo|America/Punta_Arenas",
+			"America/Sao_Paulo|America/Recife",
+			"America/Sao_Paulo|America/Rosario",
+			"America/Sao_Paulo|America/Santarem",
+			"America/Sao_Paulo|Antarctica/Palmer",
+			"America/Sao_Paulo|Antarctica/Rothera",
+			"America/Sao_Paulo|Atlantic/Stanley",
 			"America/Sao_Paulo|Brazil/East",
+			"America/Sao_Paulo|Etc/GMT+3",
 			"America/St_Johns|Canada/Newfoundland",
 			"America/Whitehorse|America/Dawson",
 			"America/Whitehorse|Canada/Yukon",
@@ -54165,11 +54062,11 @@ See https://ilyashubin.github.io/scrollbooster/
 			"AL|Europe/Tirane",
 			"AM|Asia/Yerevan",
 			"AO|Africa/Lagos Africa/Luanda",
-			"AQ|Antarctica/Casey Antarctica/Davis Antarctica/Mawson Antarctica/Palmer Antarctica/Rothera Antarctica/Troll Antarctica/Vostok Pacific/Auckland Pacific/Port_Moresby Asia/Riyadh Antarctica/McMurdo Antarctica/DumontDUrville Antarctica/Syowa",
+			"AQ|Antarctica/Casey Antarctica/Davis Antarctica/Mawson Antarctica/Palmer Antarctica/Rothera Antarctica/Troll Antarctica/Vostok Pacific/Auckland Pacific/Port_Moresby Asia/Riyadh Asia/Singapore Antarctica/McMurdo Antarctica/DumontDUrville Antarctica/Syowa",
 			"AR|America/Argentina/Buenos_Aires America/Argentina/Cordoba America/Argentina/Salta America/Argentina/Jujuy America/Argentina/Tucuman America/Argentina/Catamarca America/Argentina/La_Rioja America/Argentina/San_Juan America/Argentina/Mendoza America/Argentina/San_Luis America/Argentina/Rio_Gallegos America/Argentina/Ushuaia",
 			"AS|Pacific/Pago_Pago",
 			"AT|Europe/Vienna",
-			"AU|Australia/Lord_Howe Antarctica/Macquarie Australia/Hobart Australia/Melbourne Australia/Sydney Australia/Broken_Hill Australia/Brisbane Australia/Lindeman Australia/Adelaide Australia/Darwin Australia/Perth Australia/Eucla",
+			"AU|Australia/Lord_Howe Antarctica/Macquarie Australia/Hobart Australia/Melbourne Australia/Sydney Australia/Broken_Hill Australia/Brisbane Australia/Lindeman Australia/Adelaide Australia/Darwin Australia/Perth Australia/Eucla Asia/Tokyo",
 			"AW|America/Puerto_Rico America/Aruba",
 			"AX|Europe/Helsinki Europe/Mariehamn",
 			"AZ|Asia/Baku",
@@ -54201,7 +54098,7 @@ See https://ilyashubin.github.io/scrollbooster/
 			"CH|Europe/Zurich",
 			"CI|Africa/Abidjan",
 			"CK|Pacific/Rarotonga",
-			"CL|America/Santiago America/Punta_Arenas Pacific/Easter",
+			"CL|America/Santiago America/Coyhaique America/Punta_Arenas Pacific/Easter",
 			"CM|Africa/Lagos Africa/Douala",
 			"CN|Asia/Shanghai Asia/Urumqi",
 			"CO|America/Bogota",
@@ -58672,10 +58569,10 @@ module.exports = g;
 //# sourceMappingURL=noty.js.map
 ;
 /**
- *  PDFObject v2.3.0
+ *  PDFObject v2.3.1
  *  https://github.com/pipwerks/PDFObject
  *  @license
- *  Copyright (c) 2008-2024 Philip Hutchison
+ *  Copyright (c) 2008-2025 Philip Hutchison
  *  MIT-style license: http://pipwerks.mit-license.org/
  *  UMD module pattern from https://github.com/umdjs/umd/blob/master/templates/returnExports.js
  */
@@ -58703,7 +58600,7 @@ module.exports = g;
 
     if(typeof window === "undefined" || window.navigator === undefined || window.navigator.userAgent === undefined){ return false; }
 
-    let pdfobjectversion = "2.3.0";
+    let pdfobjectversion = "2.3.1";
     let win = window;
     let nav = win.navigator;
     let ua = nav.userAgent;
@@ -58713,9 +58610,9 @@ module.exports = g;
     let isModernBrowser = function (){
 
         /*
-           userAgent sniffing is not the ideal path, but most browsers revoked the ability to check navigator.mimeTypes 
+           userAgent sniffing is not the ideal path, but most browsers revoked the ability to check navigator.mimeTypes
            for security purposes. As of 2023, browsers have begun implementing navigator.pdfViewerEnabled, but older versions
-           do not have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser 
+           do not have navigator.pdfViewerEnabled or the ability to check navigator.mimeTypes. We're left with basic browser
            sniffing and assumptions of PDF support based on browser vendor.
         */
 
@@ -58725,21 +58622,21 @@ module.exports = g;
         //Note that MS Edge opts to use a different PDF rendering engine. As of 2024, Edge uses a version of Adobe's Reader
         let isChromium = (win.chrome !== undefined);
 
-        //Safari on macOS has provided native PDF support since 2009. 
+        //Safari on macOS has provided native PDF support since 2009.
         //This code snippet also detects the DuckDuckGo browser, which uses Safari/Webkit under the hood.
         let isSafari = (win.safari !== undefined || (nav.vendor !== undefined && /Apple/.test(nav.vendor) && /Safari/.test(ua)));
 
         //Firefox has provided PDF support via PDFJS since 2013.
         let isFirefox = (win.Mozilla !== undefined || /irefox/.test(ua));
 
-        return isChromium || isSafari || isFirefox;  
+        return isChromium || isSafari || isFirefox;
 
     };
 
     /*
        Special handling for Internet Explorer 11.
        Check for ActiveX support, then whether "AcroPDF.PDF" or "PDF.PdfCtrl" are valid.
-       IE11 uses ActiveX for Adobe Reader and other PDF plugins, but window.ActiveXObject will evaluate to false. 
+       IE11 uses ActiveX for Adobe Reader and other PDF plugins, but window.ActiveXObject will evaluate to false.
        ("ActiveXObject" in window) evaluates to true.
        MS Edge does not support ActiveX so this test will evaluate false for MS Edge.
     */
@@ -58765,7 +58662,7 @@ module.exports = g;
 
         //As of June 2023, no mobile browsers properly support inline PDFs. If mobile, just say no.
         if(isMobileDevice){ return false; }
-        
+
         //Modern browsers began supporting navigator.pdfViewerEnabled in late 2022 and early 2023.
         let supportsPDFVE = (typeof nav.pdfViewerEnabled === "boolean");
 
@@ -58786,20 +58683,20 @@ module.exports = g;
         let prop;
         let paramArray = [];
         let fdf = "";
-        
-        //The comment, viewrect, and highlight parameters require page to be set first. 
+
+        //The comment, viewrect, and highlight parameters require page to be set first.
 
         //Check to ensure page is used if comment, viewrect, or highlight are specified
         if(pdfParams.comment || pdfParams.viewrect || pdfParams.highlight){
 
             if(!pdfParams.page){
-                
+
                 //If page is not set, use the first page
                 pdfParams.page = 1;
-                
+
                 //Inform user that page needs to be set properly
                 embedError("The comment, viewrect, and highlight parameters require a page parameter, but none was specified. Defaulting to page 1.");
-            
+
             }
 
         }
@@ -58815,7 +58712,7 @@ module.exports = g;
             fdf = pdfParams.fdf;
             delete pdfParams.fdf;
         }
-        
+
         //Add all other parameters, as needed
         if(pdfParams){
 
@@ -58898,7 +58795,7 @@ module.exports = g;
             xhr.onload = function() {
 
                 if (xhr.status === 200) {
- 
+
                     var blob = xhr.response;
                     var link = document.createElement('a');
                     link.innerText = "Download PDF";
@@ -58911,7 +58808,7 @@ module.exports = g;
             };
 
             xhr.send();
-            
+
         }
 
     };
@@ -58924,9 +58821,9 @@ module.exports = g;
 
         let source = url;
 
-        if(embedType === "pdfjs"){ 
+        if(embedType === "pdfjs"){
             //If PDFJS_URL already contains a ?, assume querystring is in place, and use an ampersand to append PDFJS's file parameter
-            let connector = (PDFJS_URL.indexOf("?") !== -1) ? "&" : "?"; 
+            let connector = (PDFJS_URL.indexOf("?") !== -1) ? "&" : "?";
             source = PDFJS_URL + connector + "file=" + encodeURIComponent(url) + pdfOpenFragment;
         } else {
             source += pdfOpenFragment;
@@ -58953,7 +58850,7 @@ module.exports = g;
                 style += "position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%;";
             }
 
-            el.style.cssText = style; 
+            el.style.cssText = style;
 
         }
 
@@ -58993,6 +58890,7 @@ module.exports = g;
         let targetNode = getTargetElement(selector);
         let pdfOpenFragment = "";
         let customAttribute = opt.customAttribute || {};
+        let fallbackFileNameForBase64 = opt.fallbackFileNameForBase64;
         let fallbackHTML_default = "<p>This browser does not support inline PDFs. Please download the PDF to view it: [pdflink]</p>";
 
         //Ensure URL is available. If not, exit now.
@@ -59014,22 +58912,22 @@ module.exports = g;
         if(forcePDFJS && PDFJS_URL){
             return generatePDFObjectMarkup("pdfjs", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute, PDFJS_URL);
         }
- 
+
         // --== Embed attempt #2 ==--
 
-        //Embed PDF if support is detected, or if this is a relatively modern browser 
+        //Embed PDF if support is detected, or if this is a relatively modern browser
         if(supportsPDFs){
             return generatePDFObjectMarkup("iframe", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute);
         }
-        
+
         // --== Embed attempt #3 ==--
-        
+
         //If everything else has failed and a PDFJS fallback is provided, try to use it
         if(PDFJS_URL){
             return generatePDFObjectMarkup("pdfjs", targetNode, url, pdfOpenFragment, width, height, id, title, omitInlineStyles, customAttribute, PDFJS_URL);
         }
-        
-        // --== PDF embed not supported! Use fallback ==-- 
+
+        // --== PDF embed not supported! Use fallback ==--
 
         //Display the fallback link if available
         if(fallbackLink){
@@ -59043,11 +58941,17 @@ module.exports = g;
             } else {
 
                 //If the PDF is a base64 string, convert it to a downloadable link
-                if(url.indexOf("data:application/pdf;base64") !== -1){
+                const match = url.match(/data:application\/pdf;(?:.*filename=([^;]+);)?.*base64,/i);
+                if(match){
+
+                    fallbackFileNameForBase64 =
+                        fallbackFileNameForBase64 // from options
+                        || match[1] // from data URI metadata
+                        || "file.pdf"; // default
 
                     //Asynchronously append the link to the targetNode
-                    convertBase64ToDownloadableLink(url, "file.pdf", targetNode, fallbackHTML_default);
-                
+                    convertBase64ToDownloadableLink(url, fallbackFileNameForBase64, targetNode, fallbackHTML_default);
+
                 } else {
 
                     //Use default fallback link
