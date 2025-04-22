@@ -681,7 +681,8 @@
 
         function useNormalWidth(options = {}){
             return (options.width == true) ||
-                    (   (options.flexWidth == undefined) &&
+                    (   (options.fitWidth == undefined) &&
+                        (options.flexWidth == undefined) &&
                         (options.extraWidth == undefined) &&
                         (options.megaWidth == undefined) &&
                         (options.maxWidth == undefined) &&
@@ -1015,6 +1016,7 @@
 
         //Set width
         $modalDialog
+            .toggleClass('modal-fit-width'              , cssWidth.fitWidth             )
             .toggleClass('modal-flex-width'             , cssWidth.flexWidth            )
             .toggleClass('modal-extra-width'            , cssWidth.extraWidth           )
             .toggleClass('modal-mega-width'             , cssWidth.megaWidth            )
