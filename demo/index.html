@@ -25,13 +25,13 @@ table#fixed-headers {
 /* this will active the scrollbar */
 #fixed-headers {
   border-collapse: collapse;
-  height: 300px; 
-  display: block; 
-  overflow: auto; 
+  height: 300px;
+  display: block;
+  overflow: auto;
 }
 /* force the cells to have the same width */
 #fixed-headers td {
-  padding: 0 4em !important; 
+  padding: 0 4em !important;
   border: 1px solid #eee  !important;
 }
 #fixed-headers thead {
@@ -45,13 +45,13 @@ table#fixed-headers {
     text-align: right;
     background: #999;
     transform: translateZ(0);
-}    
- 
-   
-   
-   
-   
-   
+}
+
+
+
+
+
+
         _html {
             height  : 100%;
             overflow: hidden;
@@ -95,7 +95,7 @@ table#fixed-headers {
         --bs-accordion-active-hover-bg: green;
 
         --bs-accordion-btn-color: yellow; //green;
-        --bs-accordion-btn-bg   : red; //lightgreen;   
+        --bs-accordion-btn-bg   : red; //lightgreen;
 
         --bs-accordion-btn-hover-color: red;
         --bs-accordion-btn-hover-bg: yellow;
@@ -110,7 +110,7 @@ table#fixed-headers {
     :root {
         --jb-header-bg: lightgray;
         --jb-inner-header-bg: pink;
-       
+
 
     }
 
@@ -283,7 +283,7 @@ $('body').on('wheel', function(e){
 
         $.bsButton({icon: 'fa-home', square: true, bigIcon: true, small: true   }).appendTo( $body );
         $.bsButton({icon: 'fa-home', square: true, bigIcon: true                }).appendTo( $body );
-        
+
         $.bsButton({icon: 'fa-home', square: true, extraLargeIcon: true, bigSquare: true }).appendTo( $body );
         $.bsButton({icon: 'fa-home', square: true, extraLargeIcon: true, bigSquare: true, noShadow: true, noBorder: true, transparent:true }).appendTo( $body );
 
@@ -328,8 +328,8 @@ $('body').on('wheel', function(e){
             onClick:function(e){
                 notyConfirm({
                     type: 'warning',
-                    text: 'Davs', 
-                    onOk: function(){ console.log('OK!');} 
+                    text: 'Davs',
+                    onOk: function(){ console.log('OK!');}
                 });
 
 var $elem = $('<div/>').text('Dette er helt almindelig tekst');
@@ -426,11 +426,11 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 
 
         header('Button bars');
-        
+
         $.bsButtonBar({
             //small: true,
             //square: true,
-            justify: 'evenly',                
+            justify: 'evenly',
             inclHeader: true,
             buttons: [
                 {id:'very_slow', icon: 'fa-bicycle',        text: 'Bicycle', onClick: function(id, selected ){console.log('1: bsButtonGroup', id, selected)} },
@@ -443,8 +443,8 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             //small: true,
             buttonFullWidth: true,
             //square: true,
-            
-            justify: 'evenly',                
+
+            justify: 'evenly',
             inclHeader: true,
             buttons: [
                 {id:'very_slow', icon: 'fa-bicycle',        text: 'Bicycle', onClick: function(id, selected ){console.log('1: bsButtonGroup', id, selected)} },
@@ -617,7 +617,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             type: 'radio',
             icon: ['far fa-map', 'fa fa-home'],
             text: {da:'Vælg mig', en:'Check me'},
-            onChange: function(id, selected, $buttonGroup){
+            onClick/*onChange*/: function(id, selected, $buttonGroup){
                         console.log('bsCheckbox', id, selected)
                       },
         })
@@ -643,14 +643,14 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
         })
         .appendTo( $body );
 
-        var cb = 
+        var cb =
             $.bsCheckbox({
                 content: {da:'Dette er content med flere linier<br>Dette er linie #2', en:'This is content with multi lines<br>This is line #2'},
                 selected: false,
                 semiSelected: true,
                 onClick: function(id, state, checkbox){
                     checkbox.cbxSetState(confirm('Set as SELECTED?'));
-                },                    
+                },
                 onChange: function(id, selected, $buttonGroup){
                     console.log('ONCHANGE >>>>>>>>>>>>>>>>>>>>>> checkbox multiline', id, selected)
                 },
@@ -660,7 +660,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 //HER        cb.cbxSetSemiSelected();
         cb.cbxSetSelected();
 //HER        cb.cbxSetUnselected();
-        
+
         //semiTransparent and square and multi icon
         $.bsCheckboxButton({
             semiTransparent: true,
@@ -678,7 +678,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             text: {da:'Vælg mig (semi)', en:'Select me (semi)'},
             icon: 'fa-home',
             selected: true,
-            semiSelected: true, 
+            semiSelected: true,
             onChange: function(id, selected, _this){
                 console.log('1: bsCheckboxButton',id,selected, _this);
             }
@@ -695,10 +695,10 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
         }).appendTo($body);
 
         $.bsStandardCheckboxButton({
-            icon: 'fa-map', 
+            icon: 'fa-map',
             text: {da:'Radio #2', en:'Radio #2'},
             selected: true,
-            //semiSelected: true, 
+            //semiSelected: true,
             type    : 'radio',
             onChange: function(id, selected){
                 console.log('radio#2',id,selected);
@@ -718,7 +718,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             text: {da:'Vælg mig #3', en:'Select me #3'},
             selected: false,
             width: '20rem',
-            checkboxAtLeft: true, 
+            checkboxAtLeft: true,
             onChange: function(id, selected){
                 console.log('Vælg mig #3',id,selected);
             }
@@ -758,11 +758,11 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             subtext: [
                 {da:'Nr 1', en:'No 1'},
                 {da:'Nr 2', en:'No 2'},
-                'Altid det samme',                    
+                'Altid det samme',
                 {da:'Nr 3', en:'No 3'}
             ],
             subtextSeparator:'<->',
-            bold: true,                
+            bold: true,
             onClick: function(){ console.log('big-icon-button click', arguments); }
 
         }).appendTo($body);
@@ -773,7 +773,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             subtext: [
                 {da:'Nr 1', en:'No 1'},
                 {da:'Nr 2', en:'No 2'},
-                'Altid det samme',                    
+                'Altid det samme',
                 {da:'Nr 3', en:'No 3'}
             ],
             subtextSeparator:'<->',
@@ -781,7 +781,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             onClick: function(){ console.log('big-icon-button click', arguments); }
 
         }).appendTo($body);
-        
+
         $.bsButtonGroup({
             vertical : true,
             fullWidth: true,
@@ -789,29 +789,29 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             list: [{
                 id: 'test',
                 type: 'bigiconbutton',
-                icon: 'fa-home',                    
+                icon: 'fa-home',
                 text: 'Small',
                 small: true,
-            },{                
+            },{
                 id: 'test2',
                 type: 'bigiconbutton',
-                icon: 'fa-home',                    
+                icon: 'fa-home',
                 text: 'Large',
                 bold: true,
-            },{                
+            },{
                 id: 'test3',
                 type: 'bigiconbutton',
-                icon: 'fa-home',                    
+                icon: 'fa-home',
                 text: 'Small and bold',
-                subtext: 'The subtext',                    
+                subtext: 'The subtext',
                 small: true,
                 bold: true,
             }]
         }).appendTo($body);
-                
-        
-        
-        
+
+
+
+
         header('Button-group');
         $.bsButtonGroup({
             small: true, square: true,
@@ -848,7 +848,7 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
             onClick: function(){ console.log('bigIconButton-radioGroup', arguments); },
             buttonType: 'bigiconbutton',
             buttonOptions: {
-                 subtext: 'Sub-text', 
+                 subtext: 'Sub-text',
                  bold   : true
 
             },
@@ -1108,7 +1108,7 @@ longTableContent[i].stargazers_count = i;
                         {
                             header: {icon: 'fa-home', text: {da:'Overskrift#1-2', en:'Header#1-2'}},
                             content: 'Dette er en test 1-2<br>'+testContent2
-                            
+
                         },
                         {
                             header: {icon: 'fa-home', text: {da:'Overskrift#1-3', en:'Header#1-3'}},
@@ -1205,12 +1205,12 @@ allowFullScreen: true,
                 { id: 'description',        truncate: true, header:{icon: [['fa-home', 'fa-circle']], text: 'Description'}, _width:'100em', minimizable: true, minimized: true, title: {da:'Beskr.', en:'Desc.'}}
             ],
             content: longTableContent,
-            
+
             rowIsDanger: function(rowIndex, data){
                 return data.name == 'blog' ? 'dette-er-en-blog' : '';
-            }                
-            
-            
+            }
+
+
         })
 // HER>         .filterTable(null, {
 // HER>             'name': function(value){
@@ -1349,10 +1349,10 @@ allowFullScreen: true,
 
                             $.bsStandardCheckboxButton({
                                 id:'popup_radion_button', type:'radio', text: {da:'Vælg mig', en:'Select me'}, selected: true,
-                                onChange: function(id, selected, _this, map){ 
-                                    console.log('bsStandardCheckboxButton', id,selected, _this, map); 
+                                onChange: function(id, selected, _this, map){
+                                    console.log('bsStandardCheckboxButton', id,selected, _this, map);
                                 }
-                            }) , 
+                            }) ,
                         {
                             text: 'Noty',
                             onClick: function(){
@@ -1428,7 +1428,7 @@ allowFullScreen: true,
                     scroll : false
                 },
                 extended: {
-                    content: 'Maksimeret<br> 1<br> 2<br> 3<br> 4<br> 5<br> 6<br> 7<br> 8<br> 9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>26<br>27<br>28<br>29<br>30',                    
+                    content: 'Maksimeret<br> 1<br> 2<br> 3<br> 4<br> 5<br> 6<br> 7<br> 8<br> 9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>26<br>27<br>28<br>29<br>30',
                     footer: false,
                     flexWidth: true,
                     megaWidth: true,
@@ -1439,9 +1439,9 @@ allowFullScreen: true,
                 show: true,
                 remove: true
             });
-        });        
-        
-        
+        });
+
+
         $('<button>6xModal-file</button>')
             .appendTo( $body)
             .on('click', function(e){
@@ -1486,7 +1486,7 @@ allowFullScreen: true,
             .appendTo( $body)
             .on('click', ()=> {
                 myBsTable.asModal({extraWidth: true, remove: true, show: true, allowFullScreen: true});
-            });                
+            });
 
 
         m.assignTo(
@@ -1599,9 +1599,9 @@ width: 543,
                                     type:'checkbox', text: 'Vælg mig'
                                 },
                                 {
-                                    type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', 
+                                    type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)',
 
-                                    after : {type:'button', text:{da:'kr.', en:'£'}}, 
+                                    after : {type:'button', text:{da:'kr.', en:'£'}},
                                     before: {type:'button', icon:'fa-calculator'}
                                 },
                                 {
@@ -1682,13 +1682,13 @@ width: 543,
             show:false,
         });
 
-       
+
         $('<button>Tabs modal</button>')
             .appendTo( $body)
             .on('click', function(){ tab_modal.show(); });
 
         //************************************************************************************
-        var smallModal = null;            
+        var smallModal = null;
         $('<button>Modal small content</button>')
             .appendTo( $body)
             .on('click', function(){
@@ -1704,25 +1704,25 @@ width: 543,
                         text: 'Text - Dette er en enkel linie'
                     },{
                         type: 'text', label: {icon:'fa-map', text:'Text small:true'},
-                        text: 'Text - Dette er en enkel linie', 
+                        text: 'Text - Dette er en enkel linie',
                         small: true
                     },{
                         type: 'text', label: {icon:'fa-map', text:'Text small:false'},
-                        text: 'Text - Dette er en enkel linie', 
+                        text: 'Text - Dette er en enkel linie',
                         small: false,
 //HER                    },{
 //HER                        type: 'textbox', label: {icon:'fa-map', text:'TextBox small'},
-//HER                        text: 'TextBox - Dette er en lang linie med mange ord', 
-//HER                        center: false, 
+//HER                        text: 'TextBox - Dette er en lang linie med mange ord',
+//HER                        center: false,
 //HER                        small: true
 //HER                    },{
 //HER                        type: 'textbox', label: {icon:'fa-map', text:'TextBox'},
-//HER                        text: 'TextBox - Dette er en lang linie med mange ord', 
+//HER                        text: 'TextBox - Dette er en lang linie med mange ord',
 //HER                        center: false,
                     },{
                         type: 'textarea', label: {icon:'fa-map', text:'TextArea small'},
-                        text: 'TextArea - Dette er en lang linie med mange ord<br>Anden linie', 
-                        center: false, 
+                        text: 'TextArea - Dette er en lang linie med mange ord<br>Anden linie',
+                        center: false,
                         small: true
                     },{
                         type: 'textarea', _label: {icon:'fa-map', text:'TextArea'},
@@ -1730,12 +1730,12 @@ width: 543,
                         small: false, compact: true
 
                     }],
-                    isMinimized: true,                        
+                    isMinimized: true,
                     minimized: {
                         content: [{
                             type: 'compact', label: {icon:'fa-map', text:'Text small:undefined'},
                             text: 'Compact - Dette er en enkel linie',
-                            center: true                                
+                            center: true
                         },{
                             type: 'compact', label: {icon:'fa-map', text:'Text small:true'},
                             text: 'Compact - Dette er en enkel linie', small: true
@@ -1783,8 +1783,8 @@ width: 543,
                 });
                 smallModal.show();
             });
-        
-        
+
+
         //************************************************************************************
         var testModalForm = null;
         var testValue = 'semi';
@@ -1823,9 +1823,9 @@ width: 543,
                     buttons: [
                         {text:'Set=2', onClick: function(){ testModalForm.setValue('theSelectBox', 'theSelectBox1');} }
                     ],
-                    onSubmit: function( data ){ 
-                        console.log( 'SUBMIT=', data['formId2-1'], data ); 
-                        myData = data; 
+                    onSubmit: function( data ){
+                        console.log( 'SUBMIT=', data['formId2-1'], data );
+                        myData = data;
                     },
                     notyOnError: true,
                     onCancel: function( data ){ console.log( 'CANCEL=', data ); myData = data; },
@@ -1834,10 +1834,10 @@ width: 543,
                     scroll: true,
                     content: '',
                     extended: {
-                        scroll: true, 
+                        scroll: true,
                         fixedContent: 'Dette er en testksd fhuksd hakd ghksdjh gs kjghks gh sks dhfgks hdgksh kfdgh ksh ksdfjhksdjhg ksdjfg ksjdzhg ksjdhg k jhxkjh kzdf j',
                         content: {
-                            type: 'accordion', 
+                            type: 'accordion',
                             list: [
 
                                 {
@@ -1878,8 +1878,8 @@ width: 543,
                                         {id: 'bigiconbutton',           type: 'bigiconbutton',          icon: 'fa-home', text: 'Big icon Button', subtext: 'Big and Bold', big: true, bold: true, label: 'The label'},
                                         {id: 'bigiconbutton2',          type: 'bigiconbutton',          icon: 'fa-home', text: 'Big icon Button', subtext: 'Normal', label: 'The label'},
 
-                                        
-                                        
+
+
                                         {
                                             type: 'text', label: 'Text',
                                             text: 'Dette er en lang linie med mange ord', center: false
@@ -1890,7 +1890,7 @@ width: 543,
                                         },
                                         {
                                             type: 'textbox', label: 'Small TextBox',
-                                            text: 'Davs med dig<br>Ny linie', center: true, small: true, lineBefore: true, 
+                                            text: 'Davs med dig<br>Ny linie', center: true, small: true, lineBefore: true,
                                         },
                                         {
                                             label: {text:'Header'},
@@ -1911,7 +1911,7 @@ width: 543,
                                             text: 'Davs igen dfk  kdjf dkfgsdkfj sdkj skdj fghsdk sdjkf s kjh sdkfj gsdkfj g',
                                         },
                                         {
-                                            id: 'theSelectButton',                                                    
+                                            id: 'theSelectButton',
                                             type: 'selectbutton',
                                             label: {text:'theSelectButton'},
                                             fullWidth: true,
@@ -1936,7 +1936,7 @@ width: 543,
                                             text: 'Davs med dig<br>Ny linie'
                                         },
                                         {
-                                            type: 'text', 
+                                            type: 'text',
                                             label: 'Text',
                                             icon:' fa-home',
                                             text: {da:'Davs med dig',en:'Hello with you'},
@@ -1977,14 +1977,14 @@ width: 543,
                                                 {id:'mySelection4', type:'checkbox', text: 'Vælg mig #4', noValidation: true},
                                                 {
                                                     id:'formId2', validators: 'notEmpty _MYvalidatorName', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)',
-                                                    validators: 'notEmpty',  
+                                                    validators: 'notEmpty',
                                                     after : {type:'button', square: true, text:{da:'kr.', en:'£'}}, before:    {type:'button', icon:'fa-calculator', square: true}
                                                 },
                                             ]
                                         },
 
                                         {
-                                            id:'theSelectBox', type: 'selectbutton', validators: 'notEmpty', placeholder:"Placeholder", 
+                                            id:'theSelectBox', type: 'selectbutton', validators: 'notEmpty', placeholder:"Placeholder",
                                             label:'theSelectBox',
                                             _before:    {type:'button', icon:'fa-calculator'},
                                             _after : {type:'button', text:{da:'kr.', en:'£'}},
@@ -2030,10 +2030,10 @@ width: 543,
                                             id:'formId3', type:'input', inputmask:{"mask": "(999) 999-9999"}, placeholder:'Placeholder (with inputmask)', label: 'Label (with inputmask)', after : {type:'button', text:{da:'kr.', en:'£'}}, before: {           type:'button',  icon:'fa-calculator'}
                                         },
                                         {
-                                            id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)', 
+                                            id:'formId4', type:'input',placeholder:'Placeholder (INPUT)', label: 'Label (NIELS)',
                                             validators: 'required',
 
-                                            after : {type:'button',  text:{da:'kr.', en:'£'}, square: true}, 
+                                            after : {type:'button',  text:{da:'kr.', en:'£'}, square: true},
                                             before: {type:'button',  icon:'fa-calculator'}
                                         },
 
@@ -2074,25 +2074,25 @@ width: 543,
                     header: 'Form - Validation',
 // HER>                     height: '200px',
 
-                    onSubmit: function( data ){ 
-                        console.log( 'SUBMIT form-validation=', data ); 
-                        myDataValidation = data; 
+                    onSubmit: function( data ){
+                        console.log( 'SUBMIT form-validation=', data );
+                        myDataValidation = data;
                     },
                     scroll: true,
                     content: [
                         {
-                            id:'value1', type:'input', 
-                            inputmask:{_mask: "(999) 999-9999"}, _placeholder:'Placeholder (with inputmask)', label: 'Label (required)', 
+                            id:'value1', type:'input',
+                            inputmask:{_mask: "(999) 999-9999"}, _placeholder:'Placeholder (with inputmask)', label: 'Label (required)',
                             after : {type:'button', text:{da:'kr.', en:'£'}}, before: {type:'button',  icon:'fa-calculator'},
                             validators: 'required'
                         },{
-                            id:'value2', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length=3-10)', 
+                            id:'value2', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length=3-10)',
                             validators: {type: 'length', min:3, max:10},
                         },{
-                            id:'value3', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length>=5)', 
+                            id:'value3', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length>=5)',
                             validators: {type: 'length', min:5},
                         },{
-                            id:'value4', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length<=15)', 
+                            id:'value4', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length<=15)',
                             validators: {type: 'length', max:15},
                         },{
                             id:'value5', type:'input', placeholder:'Placeholder (INPUT)', label: 'Label (Length=7 and small)',
@@ -2133,12 +2133,12 @@ console.log('testModalFormValidation', testModalFormValidation );
             minimized: {
                 content: 'Mini',
                 semiTransparent: true,
-                
-            },                
+
+            },
             extended: {
                 content: 'Extended<br>1<br>2<br>3<br>4<br>5<br>6',
                 semiTransparent: true,
-            },                
+            },
             show: false,
         });
 
@@ -2183,7 +2183,7 @@ console.log('testModalFormValidation', testModalFormValidation );
             },
 
             closeButton: false,
-            
+
             _noHeader: true,
             header:/*{
                 icon: 'fa-home',
@@ -2234,7 +2234,7 @@ buttons: false,
 clickable: true,
                 dynamic: true,
                 content: function($body){
-                    $body.html(moment().format("hh:mm:ss") + '<br>' + 
+                    $body.html(moment().format("hh:mm:ss") + '<br>' +
                         'max-height=300 flex-width <br>Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord'+
                             'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +
                             'Ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord_ord' +
@@ -2302,7 +2302,7 @@ clickable: true,
                     'background-color': 'gray',
                     'padding': '10px',
                     'display': 'none'
-                })                    
+                })
                 .appendTo( $body);
 
         var modal_fixed = $.bsModal({
@@ -2322,12 +2322,12 @@ clickable: true,
             extended: {
                 content: 'Extended<br>full-width<br>extended 2<br>extended 3<br>extended 4<br>extended 5<br>extended 6<br>extended 7<br>extended 9<br>extended 9',
                 fullWidth: true,
-                buttons: false, 
+                buttons: false,
                 footer: true
             },
             buttons: [{icon: 'fa-home', text: 'Davs'}],
-            
-            footer: 'FOOTER',            
+
+            footer: 'FOOTER',
 
             width: 400,
             maxHeight : 207,
@@ -2338,7 +2338,7 @@ clickable: true,
         $('<button>Fixed modal #1</button>')
             .appendTo( $body)
             .on('click', function(){ $fixedModalContainer.toggle() });
-      
+
         //************************************************************************************
         var $fixedModalContainer2 = $('<div/>')
                 .css({
@@ -2349,7 +2349,7 @@ clickable: true,
                     'background-color': 'gray',
                     'padding': '10px',
                     'display': 'none'
-                })                    
+                })
                 .appendTo( $body);
 
         var modal_fixed2 = $.bsModal({
@@ -2358,26 +2358,26 @@ clickable: true,
             header:{
                 text: {da:'Fixed Modal #2 = flexiable width'},
             },
-            
+
             fixedContent: {
                 content: {
                     text: {da:'Davs'},
                     textClass: 'DAVS',
-                },                    
+                },
                 border: true
             },
             fixedContentOptions: {
                 centerMiddle: true,
-            },                
-            
+            },
+
             minimized: {
-                showHeader: true,                
+                showHeader: true,
                 content: 'Minimized w=200px',
                 //width: 200
                 centerMiddle: true,
                 fixedContent: true,
                 innerHeight: '5em',
-                
+
             },
             //noVerticalPadding   : true,
             //noHorizontalPadding : true,
@@ -2390,7 +2390,7 @@ clickable: true,
                 innerMaxHeight: 200,
                 footer: true
             },
-            footer: 'FOOTER',            
+            footer: 'FOOTER',
 
             width: 400,
             _maxHeight : 507,
@@ -2402,7 +2402,7 @@ clickable: true,
             .appendTo( $body)
             .on('click', function(){ $fixedModalContainer2.toggle() });
 
-        
+
         //************************************************************************************
         var $fixedModalContainer3 = $('<div/>')
                 .css({
@@ -2423,7 +2423,7 @@ clickable: true,
             header:{text: {da:'Fixed Modal #3 = dragging'} },
             content: 'Content<br>Dragging-mode',
             innerHeight: 100,
-            //footer: 'FOOTER',            
+            //footer: 'FOOTER',
 
             width: 260,
             maxHeight : 207,
@@ -2445,14 +2445,14 @@ clickable: true,
                 content: 'Minimized',
                 fixed: true,
                 footer: true,
-            },                
+            },
             content: 'Content<br>content',
             extended: {
                 fixed: true,
                 content: 'Extended<br>extended<br>extended<br>extended<br>extended<br>extended',
                 footer: true
-            },                
-            footer: 'FOOTER',            
+            },
+            footer: 'FOOTER',
 
             width: 260,
             maxHeight : 207,
@@ -2462,13 +2462,13 @@ clickable: true,
             .appendTo( $body)
             .on('click', function(){ modal_minimized_with_heade_and_footer.show() });
 
-        
-        
+
+
         //************************************************************************************
         var carouselModal;
         $('<button>Carousel in modal</button>')
             .appendTo( $body)
-            .on('click', () =>{ 
+            .on('click', () =>{
 
                 carouselModal = carouselModal || $.bsModal({
                     header:{
@@ -2482,33 +2482,33 @@ clickable: true,
                         type    : 'carousel',
                         label   : {da:'En Karousel', en:'A Carousel'},
                         defaultOnClick: true,
-                        
+
                         list: [{
                             text: {da:'FØRSTE', en:'First'},
                             url: "images/image1.png"
-                        }, {            
+                        }, {
                             text: {da:'ANDEN', en:'Second'},
                             url: "images/second.png"
-                        }, {            
+                        }, {
                             text: {da:'3. BILLEDE', en:'Third'},
                             subText: 'Sub-text', subIcon: 'fa-home',
-                            url: "images/third.png"            
-                        }, {            
+                            url: "images/third.png"
+                        }, {
                             text: {da:'4. BILLEDE', en:'Fourth'},
                             subText: 'Sub-text', subIcon: 'fa-home',
-                            url: "images/fourth.png"            
+                            url: "images/fourth.png"
                         }],
                         innerHeight: 345,
                         fitHeight: true,
                         //itemsMaxOwnSize: true
-                    }]                        
+                    }]
                 });
-                
+
                 carouselModal.show();
             });
 
-        
-        
+
+
         //************************************************************************************
 
         function newNumberModal( _number ){
@@ -2562,7 +2562,7 @@ clickable: true,
         $.bsTabs({
 // HER>             height:'100px',scroll: false,
             list: [
-                {id: 'NIELS', icon: 'fa-home',  text:{da:'Hjem', en:'Home'}, 
+                {id: 'NIELS', icon: 'fa-home',  text:{da:'Hjem', en:'Home'},
                 scroll: true,
                 content: 'FIRST Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna. Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.Sint sit mollit irure quis est nostrud cillum consequat Lorem esse do quis dolor esse fugiat sunt do. Eu ex commodo veniam Lorem aliquip laborum occaecat qui Lorem esse mollit dolore anim cupidatat. Deserunt officia id Lorem nostrud aute id commodo elit eiusmod enim irure amet eiusmod qui reprehenderit nostrud tempor. Fugiat ipsum excepteur in aliqua non et quis aliquip ad irure in labore cillum elit enim. Consequat aliquip incididunt ipsum et minim laborum laborum laborum et cillum labore. Deserunt adipisicing cillum id nulla minim nostrud labore eiusmod et amet. Laboris consequat consequat commodo non ut non aliquip reprehenderit nulla anim occaecat. Sunt sit ullamco reprehenderit irure ea ullamco Lorem aute nostrud magna.'},
                 {icon: 'fa-globe', title:{da:'Tidszone', en:'Time zone'}, content: 'SECOND'},
@@ -2603,7 +2603,7 @@ clickable: true,
             }, {
                 header: 'fullScreenWithBorder (100%)', fullScreenWithBorder: true
 
-        
+
         }].forEach( (options, index) => {
             $('<button>'+options.header+'</button>')
                 .appendTo( $body)
@@ -2613,15 +2613,15 @@ clickable: true,
                             header: options.header,
 							fixedContent: {
 								content: '<span class="d-block">Første</span><span class="d-block">Anden</span><span class="d-block">Sidste</span>',
-							},								
+							},
                             content: 'Dette er '+options.header +'<br>2<br>3<br>4<br>5',
 							minimized: {
-								width: true, 
+								width: true,
 								fixedContent: true,
 								content: 'Dette er MINIMIZED version af '+options.header +'<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10',
-							},								
+							},
 							extended: {
-								width: true, 
+								width: true,
 								fixedContent: true,
 								content: 'Dette er EXTENDED version af '+options.header +'<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17',
 							},
@@ -2745,7 +2745,7 @@ type: 'checkbox',
         vertical : true,
 icons: {
     new: {onClick: function(){ console.log('Hmmm'); }}
-},    
+},
         border   : true,
         fullWidth: true
     }).appendTo($body);
@@ -2757,7 +2757,7 @@ icons: {
     var selected_test = true;
     header('bsMenu');
     var list1 = [
-            {id: 'radio1', type:'standardcheckboxbutton', isRadio: true, icon: 'fa-home', text:{da:'En radio', en:'A Radio'}, 
+            {id: 'radio1', type:'standardcheckboxbutton', isRadio: true, icon: 'fa-home', text:{da:'En radio', en:'A Radio'},
                 selected: function(){
                     return selected_test;
                 },
@@ -3035,24 +3035,24 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
             text: {da:'FØRSTE', en:'First'},
             subText: {da:'Meget lang sja sdfkasd kaskdjfh askdj ask k asdkj faskdj askdfj askdfj askjfaskdjf askdfjh askfjh kasdjfk a hfaks jdfkasj dfhkasjfhkasdfhkas jfhklasjdfhkasjdfhkasjfhaskdjf haskdfj h', en:'First'},
             url: "images/image1.png"
-        }, {            
+        }, {
             text: {da:'ANDEN', en:'Second'},
             url: "images/second.png"
-        }, {            
+        }, {
             text: {da:'3. BILLEDE', en:'Third'},
             subText: 'Sub-text', subIcon: 'fa-home',
-            url: "images/third.png"            
-        }, {            
+            url: "images/third.png"
+        }, {
             icon   : 'fa-home', text   : {da:'4. BILLEDE', en:'Fourth'},
             subIcon: 'fa-home', subText: {da:'Meget lang sja sdfkasd kaskdjfh askdj ask k asdkj faskdj askdfj askdfj askjfaskdjf askdfjh askfjh kasdjfk a hfaks jdfkasj dfhkasjfhkasdfhkas jfhklasjdfhkasjdfhkasjfhaskdjf haskdfj h', en:'First'},
 
-            url: "images/fourth.png"            
+            url: "images/fourth.png"
         }],
         innerHeight: 234,
         fitHeight: true,
         //itemsMaxOwnSize: true
         defaultOnClick: true
-    }).appendTo($body);        
+    }).appendTo($body);
 
 </script>
 
@@ -3076,12 +3076,12 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
 //HER               ._pb_setValue(v)
 //HER           if (v < 100)
 //HER           window.setTimeout( test, 200);
-//HER       }        
+//HER       }
 //HER       window.setTimeout( test, 3000);
-    
+
     $('html').modernizrToggle('touchevents', !!window.bsIsTouch);
 
-    
+
     $(function() {
         $('#fixed-headers').scroll(function(ev) {
             /**
@@ -3090,8 +3090,8 @@ var b = $.bsButton({text:'2: Klik mig (Small popup og klik på cykel lukker!)', 
             $('thead th').css('transform', 'translateY(' + this.scrollTop + 'px)');
             $('tbody th').css('transform', 'translateX(' + this.scrollLeft + 'px)');
         });
-    });    
-    
+    });
+
 </script>
 
 
