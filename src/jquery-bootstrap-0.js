@@ -653,7 +653,6 @@
 
                 var $content = $('<div/>')
                         ._bsAddHtml( options )
-.css('background-color', 'red')
                         .addClass('flex-grow-1');
 
                 if (options.title)
@@ -667,8 +666,6 @@
             function buildTextBox( options ){
                 return $('<div/>')
                         ._bsAddHtml( options )
-.css('background-color', 'red')
-
                         .addClass('input-group-with-text');
             }
 
