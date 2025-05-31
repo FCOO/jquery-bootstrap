@@ -653,6 +653,7 @@
 
                 var $content = $('<div/>')
                         ._bsAddHtml( options )
+.css('background-color', 'red')
                         .addClass('flex-grow-1');
 
                 if (options.title)
@@ -666,6 +667,8 @@
             function buildTextBox( options ){
                 return $('<div/>')
                         ._bsAddHtml( options )
+.css('background-color', 'red')
+
                         .addClass('input-group-with-text');
             }
 
@@ -888,6 +891,10 @@
 
             if (options.center)
                 $parent.addClass('justify-content-center text-center');
+
+            if (options.middle || options.verticalAlignMiddle)
+                $parent.addClass('align-items-center');
+
 
             $parent._bsAppendContent( options.append || options.after, options.contentContext, null, options  );
 
