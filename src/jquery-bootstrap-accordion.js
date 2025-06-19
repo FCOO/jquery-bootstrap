@@ -236,12 +236,13 @@
     $.fn.bsAccordionStatus = function(){
         function getStatus($elem){
             var result = [];
-            $elem.children('.card').each( function(index, elem){
+            $elem.children('.accordion-item').each( function(index, elem){
                 var $elem = $(elem);
-                result[index] = $elem.hasClass('show') ? getStatus($elem.find('> .collapse > .card-block > .accordion')) : false;
+                result[index] = $elem.hasClass('show') ? getStatus($elem.find('> .collapse > .accordion-body > .accordion')) : false;
             });
             return result.length ? result : true;
         }
+
         return getStatus(this);
     };
 
