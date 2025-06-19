@@ -301,6 +301,10 @@
         //Remove all noty added on the modal and move down global backdrop
         $._bsNotyRemoveLayer();
 
+        //Call onHide
+        if (this.onHide)
+            this.onHide(this);
+
         //Remove the modal from DOM
         if (this.removeOnClose)
             this.get(0).remove();
@@ -451,8 +455,8 @@
                     updateElement(containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
             }, this);
-            
-            
+
+
             return this;
         },
 
@@ -1030,7 +1034,7 @@
         if (this.bsModal.isFullScreenMode){
             this._bsModalFullScreenOff();
             this._bsModalFullScreenOn();
-        }            
+        }
 
         //Call onChange (if any)
         if (bsModal.onChange)
@@ -1271,7 +1275,7 @@
         adjustFullScreenOptions(options);
         adjustFullScreenOptions(options.minimized, options);
         adjustFullScreenOptions(options.extended, options);
-        
+
         //Check $.MODAL_NO_VERTICAL_MARGIN
         if ($.MODAL_NO_VERTICAL_MARGIN){
             options.relativeHeightOffset = 0;
@@ -1344,6 +1348,8 @@
 
         $result.onShow = options.onShow;
         $result.onClose = options.onClose;
+        $result.onHide = options.onHide;
+
 
         //Create as modal and adds methods - only allow close by esc for non-static modal (typical a non-form)
         new bootstrap.Modal($result, {
@@ -1385,7 +1391,7 @@
         //Save some options in bsModal
         ['noReopenFullScreen'].forEach( id => {
             $result.bsModal[id] = options[id];
-        }); 
+        });
 
         return $result;
     };
