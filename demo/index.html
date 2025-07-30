@@ -1276,7 +1276,8 @@ allowFullScreen: true,
 
         $accordion = $.bsAccordion({neverClose: true, multiOpen: true, allOpen: true, children: accor_children, footer: 'footer'}),
         $accordion2 = $.bsAccordion({
-            children: accor_children, footer: 'footer',
+            children: accor_children,
+            footer: 'footer',
             onChange: function(acc, status){
                 //console.log('>> >> >>',status);
             }
