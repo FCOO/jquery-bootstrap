@@ -164,6 +164,14 @@ HEADER-CONTENT
                     --icon-hover-bg   : #{darken($warning,  5%)};
                     --icon-active-bg  : #{darken($warning, 10%)};
                 }
+                &.header-icon-error {
+                    --icon-bg         : #{$danger};
+                    --icon-hover-bg   : #{darken($danger,  5%)};
+                    --icon-active-bg  : #{darken($danger, 10%)};
+                }
+
+
+
                 &.header-icon-selected {
                     --icon-bg         : #{$form-check-input-checked-bg-color};
                     --icon-hover-bg   : #{darken($form-check-input-checked-bg-color,  5%)};

@@ -22,6 +22,7 @@
     pin
     unpin
     new
+    error
     warning
     info
     help
@@ -81,6 +82,11 @@
 
 
             new     : square ? 'fa-window-maximize' : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
+
+            error : {
+                icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-error', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
+                class: square ? 'header-icon-error' : null
+            },
 
             warning : {
                 icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
@@ -151,7 +157,7 @@
 
             //Add icons
             let headerIcons = useSquareIcons ? bsHeaderIconsSquare : bsHeaderIcons;
-            ['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'warning', 'info', 'help', 'close'].forEach( (id) => {
+            ['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'error', 'warning', 'info', 'help', 'close'].forEach( (id) => {
                 let iconOptions = options.icons[id];
                 if (iconOptions && (iconOptions.onClick || (typeof iconOptions == 'function'))){
                     if (typeof iconOptions == 'function')

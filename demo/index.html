@@ -1415,6 +1415,7 @@ allowFullScreen: true,
                 onPin    : function(){ console.log('PIN: Close header'); return true},
                 onInfo   : function(){ console.log('INFO: DONT Close header'); return false},
                 onWarning: function(){ console.log('WARNING: DONT Close header'); return false},
+                onError  : function(){ console.log('ERROR: DONT Close header'); return false},
                 onHelp   : function(){ console.log('HELP: DONT Close header'); return false},
                 icons: {
                     back    : {onClick: function(){ console.log('BACK: DONT close header'); return false}},

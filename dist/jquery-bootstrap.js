@@ -2936,6 +2936,7 @@ uri         : {default: "Please enter a valid URI"}
     pin
     unpin
     new
+    error
     warning
     info
     help
@@ -2995,6 +2996,11 @@ uri         : {default: "Please enter a valid URI"}
 
 
             new     : square ? 'fa-window-maximize' : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
+
+            error : {
+                icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-error', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
+                class: square ? 'header-icon-error' : null
+            },
 
             warning : {
                 icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
@@ -3065,7 +3071,7 @@ uri         : {default: "Please enter a valid URI"}
 
             //Add icons
             let headerIcons = useSquareIcons ? bsHeaderIconsSquare : bsHeaderIcons;
-            ['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'warning', 'info', 'help', 'close'].forEach( (id) => {
+            ['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'error', 'warning', 'info', 'help', 'close'].forEach( (id) => {
                 let iconOptions = options.icons[id];
                 if (iconOptions && (iconOptions.onClick || (typeof iconOptions == 'function'))){
                     if (typeof iconOptions == 'function')
@@ -4942,10 +4948,10 @@ jquery-bootstrap-modal-promise.js
                 new             : {                                     onClick: options.onNew     ? options.onNew.bind(this)     : null                        },
                 info            : {                                     onClick: options.onInfo    ? options.onInfo.bind(this)    : null                        },
                 warning         : {                                     onClick: options.onWarning ? options.onWarning.bind(this) : null                        },
+                error           : {                                     onClick: options.onError   ? options.onError.bind(this)   : null                        },
                 help            : {                                     onClick: options.onHelp    ? options.onHelp.bind(this)    : null                        },
             }
         }, options );
-
 
         //Save parentOptions for dynamic update
         var parentOptions = this.bsModal.parentOptions = {};
