@@ -389,8 +389,8 @@
         information : 'fa-info-circle',
         alert       : '',
         success     : 'fa-check',
-        error       : 'fa-ban',
-        warning     : 'fa-exclamation-triangle',
+        error       : 'fa-exclamation-triangle',
+        warning     : 'fa-exclamation-circle',
         help        : 'fa-question-circle'
     };
 
