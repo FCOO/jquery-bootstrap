@@ -104,6 +104,12 @@ Bootstrap allready have the following classes
     color: $form-check-input-checked-bg-color;
 }
 
+//color-class for icon = alert
+.text-alert {
+  color: $orange;
+}
+
+
 /************************************************************
 Modernizr-test for stacted icon with parent with
 class="active" or "checked" when selected

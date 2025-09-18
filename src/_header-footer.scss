@@ -164,6 +164,13 @@ HEADER-CONTENT
                     --icon-hover-bg   : #{darken($warning,  5%)};
                     --icon-active-bg  : #{darken($warning, 10%)};
                 }
+
+                &.header-icon-alert {
+                    --icon-bg         : #{$orange};
+                    --icon-hover-bg   : #{darken($orange,  5%)};
+                    --icon-active-bg  : #{darken($orange, 10%)};
+                }
+
                 &.header-icon-error {
                     --icon-bg         : #{$danger};
                     --icon-hover-bg   : #{darken($danger,  5%)};

@@ -782,6 +782,7 @@
                 new             : {                                     onClick: options.onNew     ? options.onNew.bind(this)     : null                        },
                 info            : {                                     onClick: options.onInfo    ? options.onInfo.bind(this)    : null                        },
                 warning         : {                                     onClick: options.onWarning ? options.onWarning.bind(this) : null                        },
+                alert           : {                                     onClick: options.onAlert   ? options.onAlert.bind(this)   : null                        },
                 error           : {                                     onClick: options.onError   ? options.onError.bind(this)   : null                        },
                 help            : {                                     onClick: options.onHelp    ? options.onHelp.bind(this)    : null                        },
             }

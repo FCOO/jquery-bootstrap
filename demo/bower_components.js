@@ -25116,6 +25116,8 @@ return jQuery;
   const instance = I18n.createInstance();
   instance.createInstance = I18n.createInstance;
 
+  instance.keyFromSelector = keysFromSelector;
+
   return instance;
 
 }));
@@ -33167,7 +33169,7 @@ if (typeof define === 'function' && define.amd) {
             *******************************************************************/
             this.cache.$container =
                 $('<div/>')
-                    .addClass('base-slider-container ' + this.options.handle + ' js-base-slider-' + this.pluginCount );
+                    .addClass(['base-slider-container', this.options.handle, 'js-base-slider-' + this.pluginCount ]);
 
 
             this.cache.$input.before(this.cache.$container);
@@ -33178,11 +33180,7 @@ if (typeof define === 'function' && define.amd) {
             //if options.handleFixed: Remove margin for the handle and put inside outer-container
             if (this.options.handleFixed){
                 this.cache.$container
-                    .css({
-                        'width'       : '100%',
-                        'margin-left' : 0,
-                        'margin-right': 0
-                    })
+                    .addClass('handle-is-fixed')
                     .wrap('<div/>');
                 this.cache.$fullWidthContainer = this.cache.$container.parent();
                 this.cache.$fullWidthContainer.addClass('base-slider-container-full-width');
