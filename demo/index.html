@@ -154,6 +154,7 @@ table#fixed-headers {
     <script src="../src/jquery-bootstrap-tabs.js"></script>
     <script src="../src/jquery-bootstrap-input.js"></script>
     <script src="../src/jquery-bootstrap-modal-promise.js"></script>
+    <script src="../src/jquery-bootstrap-icon.js"></script>
     <script src="../src/jquery-utilities.js"></script>
     <script src="../src/jquery.pinchzoomer.js"></script>
 
@@ -302,6 +303,12 @@ $('body').on('wheel', function(e){
         $.bsButton({text: {da:'På dansk', en:'In English'}, icon: 'far fa-check-square'}).appendTo( $body );
         $.bsButton({icon: 'fa-home', square: true}).appendTo( $body );
         $.bsButton({icon: 'fa-home', extraLargeIcon: true}).appendTo( $body );
+
+        $.bsButton({icon: $.bsIcon('fa-home', 'success'), text:'Success'}).appendTo( $body );
+        $.bsButton({icon: $.bsIcon('fa-home', 'error'), text:'Error'}).appendTo( $body );
+        $.bsButton({icon: $.bsIcon('fa-home', 'alert'), text:'Alert'}).appendTo( $body );
+        $.bsButton({icon: $.bsIcon('fa-home', 'warning'), text:'Warning'}).appendTo( $body );
+
         $.bsButton({
             icon: 'fa-adjust',
             bigIcon: true,

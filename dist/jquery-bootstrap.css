@@ -12701,6 +12701,64 @@ Common classes for differnet elements
 STYLE FOR DIFFERENT ELEMENTS
 *************************************************/
 /************************************************************
+Icon
+
+Classes for special BS icons
+************************************************************/
+i[class*=FRONT-TEXT-COLOR-], i[class*=BACK-TEXT-COLOR-] {
+  --icon-bs-color: inherit;
+  color: var(--icon-bs-color);
+}
+
+i.FRONT-TEXT-COLOR-success {
+  --icon-bs-color: var(--bs-success-text-emphasis);
+}
+
+i.BACK-TEXT-COLOR-success {
+  --icon-bs-color: var(--bs-success-bg-subtle);
+}
+
+i.FRONT-TEXT-COLOR-alert {
+  --icon-bs-color: var(--bs-alert-text-emphasis);
+}
+
+i.BACK-TEXT-COLOR-alert {
+  --icon-bs-color: var(--bs-alert-bg-subtle);
+}
+
+i.FRONT-TEXT-COLOR-warning {
+  --icon-bs-color: var(--bs-warning-text-emphasis);
+}
+
+i.BACK-TEXT-COLOR-warning {
+  --icon-bs-color: var(--bs-warning-bg-subtle);
+}
+
+i.FRONT-TEXT-COLOR-error {
+  --icon-bs-color: var(--bs-danger-text-emphasis);
+}
+
+i.BACK-TEXT-COLOR-error {
+  --icon-bs-color: var(--bs-danger-bg-subtle);
+}
+
+i.FRONT-TEXT-COLOR-info {
+  --icon-bs-color: var(--bs-info-text-emphasis);
+}
+
+i.BACK-TEXT-COLOR-info {
+  --icon-bs-color: var(--bs-info-bg-subtle);
+}
+
+i.FRONT-TEXT-COLOR-help {
+  --icon-bs-color: var(--bs-light-text-emphasis);
+}
+
+i.BACK-TEXT-COLOR-help {
+  --icon-bs-color: var(--bs-light-bg-subtle);
+}
+
+/************************************************************
 TEXT
 
 Additional classes for text
@@ -12736,6 +12794,12 @@ Bootstrap allready have the following classes
 .fst-normal     Text with normal font style>
 
 */
+:root {
+  --bs-alert-text-emphasis: rgb(101.2, 50.4, 8);
+  --bs-alert-bg-subtle: rgb(254.6, 229.2, 208);
+  --bs-alert-border-subtle: tint-color #fd7e14, 60%;
+}
+
 .alert-alert, .noty_theme__jquery-bootstrap.noty_type__alert, .input-group-container.has-alert-background.noty_theme__jquery-bootstrap.noty_type__alert, .input-group-container.has-alert-background.alert-alert {
   --bs-alert-color: rgb(101.2, 50.4, 8);
   --bs-alert-bg: rgb(254.6, 229.2, 208);

@@ -34,6 +34,13 @@ $alert-text-emphasis: shade-color($orange, 60%);
 $alert-bg-subtle    : tint-color( $orange, 80%);
 $alert-border-subtle: tint-color ($orange, 60%);
 
+:root {
+    --bs-alert-text-emphasis: #{$alert-text-emphasis};
+    --bs-alert-bg-subtle    : #{$alert-bg-subtle};
+    --bs-alert-border-subtle: #{$alert-border-subtle};
+
+}
+
 .alert-#{$state} {
     --#{$prefix}alert-color       : #{$alert-text-emphasis};
     --#{$prefix}alert-bg          : #{$alert-bg-subtle};
