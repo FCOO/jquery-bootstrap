@@ -1,4 +1,4 @@
-ff<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="da" style="_font-size: 200%; width:100%; height:100%;">
 <head>
 	<title>fcoo.dk - jquery-bootstrap - Demo</title>
@@ -350,15 +350,15 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
         $.bsButton({text: 'ALL Noty', onClick:function(){
 
             var layout = ['topLeft', 'topCenter', 'topRight', 'centerRight', 'center','centerLeft', 'bottomLeft', 'bottomCenter', 'bottomRight', 'bottom', 'top'];
-            $.each(['alert', 'help', 'warning', 'error', 'info', 'alert', 'success', 'warning', 'error', 'info', 'info'], function(index, type){
+            ['alert', 'help', 'warning', 'error', 'info', 'alert', 'success', 'warning', 'error', 'info', 'info'].forEach( (type, index) => {
                 $.bsNoty({
                     type: type,
                     queue: type,
                     layout: layout[index],
                     modal: (type=='info'),
                     //force: (type=='info'),
-                    defaultHeader: index % 5,
-                    header       : (index+1) % 5 ? null : {da:'DANSK', en:'ENGLISH'},//{icon: 'fa-home', text:{da:'Hjem', en:'Home'}},
+                    defaultHeader: true,//index % 5,
+                    //header       : (index+1) % 5 ? null : {da:'DANSK', en:'ENGLISH'},//{icon: 'fa-home', text:{da:'Hjem', en:'Home'}},
 
                     buttons      : (index+2) % 5 ? null : [
                                                             {icon:'fa-bicycle', text:{da:'En cykel', en:'A bicycle'}, onClick: function(){ console.log('En cykel klikket');}},

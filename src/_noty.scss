@@ -15,8 +15,23 @@ the complete scss for noty is copyed and modified
 *****************************************/
 $noty-theme-name: jquery-bootstrap;
 
+//Create new Bootstrap alert-class = .alert-alert to have orange as noty alert color
+$state              : alert;
+$alert-text-emphasis: shade-color($orange, 60%);
+$alert-bg-subtle    : tint-color( $orange, 80%);
+$alert-border-subtle: tint-color ($orange, 60%);
+
+.alert-#{$state} {
+    --#{$prefix}alert-color       : #{$alert-text-emphasis};
+    --#{$prefix}alert-bg          : #{$alert-bg-subtle};
+    --#{$prefix}alert-border-color: #{$alert-border-subtle};
+    --#{$prefix}alert-link-color  : #{$alert-text-emphasis};
+}
+
+
+
 $type-2-alert-color: (
-    alert  : primary,
+    alert  : alert, //was primary,
     success: success,
     warning: warning,
     error  : danger,

@@ -387,24 +387,23 @@
     $.bsNotyIcon = {
         info        : 'fa-info-circle',
         information : 'fa-info-circle',
-        alert       : '',
         success     : 'fa-check',
-        error       : 'fa-exclamation-triangle',
-        warning     : 'fa-exclamation-circle',
+        error       : 'fa-exclamation', //'fa-exclamation-triangle',
+        alert       : 'fa-exclamation', //'fa-exclamation-diamond',
+        warning     : 'fa-exclamation', //'fa-exclamation-circle',
         help        : 'fa-question-circle'
     };
 
     //$.bsNotyName = Name for different noty-type
     $.bsNotyName = {
-        info        : {da:'Information', en:'Information'},
-        information : {da:'Information', en:'Information'},
-        alert       : {da:'Bemærk', en:'Note'},
-        success     : {da:'Succes', en:'Success'},
-        error       : {da:'Fejl', en:'Error'},
-        warning     : {da:'Advarsel', en:'Warning'},
-        help        : {da:'Hjælp', en:'Help'}
+        info        : {da: 'Information', en: 'Information' },
+        information : {da: 'Information', en: 'Information' },
+        success     : {da: 'Succes',      en: 'Success'     },
+        error       : {da: 'Fejl',        en: 'Error'       },
+        alert       : {da: 'Advarsel',    en: 'Alert'       },
+        warning     : {da: 'Advarsel',    en: 'Warning'     },
+        help        : {da: 'Hjælp',       en: 'Help'        }
     };
-
 
 
     /***************************************************************

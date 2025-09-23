@@ -84,17 +84,17 @@
             new     : square ? 'fa-window-maximize' : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
 
             error : {
-                icon : square ? /*'fa-exclamation'*/'fa-triangle-exclamation' : [ 'fas fa-circle back text-danger', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
+                icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-danger', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
                 class: square ? 'header-icon-error' : null
             },
 
             alert : {
-                icon : square ? /*'fa-exclamation'*/'fa-diamond-exclamation' : [ 'fas fa-circle back text-alert', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
+                icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-alert', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
                 class: square ? 'header-icon-alert' : null
             },
 
             warning : {
-                icon : square ? /*'fa-exclamation'*/'fa-circle-exclamation' : [ 'fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
+                icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
                 class: square ? 'header-icon-warning' : null
             },
 
