@@ -102,6 +102,29 @@ form.form-xs, .input-group-container-xs, .input-group-xs {
 }
 
 /************************************************************
+Style for different background/text-color a la Bootsrap alert
+************************************************************/
+/****************************************************
+Use Bootstrap alert-COLOR for different types
+****************************************************/
+.input-group-container.has-alert-background {
+    @each $type, $alert-color in $type-2-alert-color {
+        &.alert-#{$type} {
+            @extend .alert-#{$alert-color};
+        }
+    }
+
+    .input-group { //TODO: Perhaps extnd with other "inner" elemens
+        color           : var(--bs-alert-color);
+        background-color: var(--bs-alert-bg);
+        border-color    : var(--bs-alert-color); //Note: Different from Bootstrap default = var(--bs-alert-border-color)
+    }
+
+}
+
+
+
+/************************************************************
 Style for input-group
 ************************************************************/
 //Making input-group single line inside input-group-container

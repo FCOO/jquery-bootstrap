@@ -114,8 +114,8 @@ div.modal-dialog {
     //Width when ffixed-wisth is set
     &.modal-fit-width {
         width: fit-content;
-    }        
-    
+    }
+
     //No box-shadow on modal-content when inside a modal-dialog-inline
     &.modal-dialog-inline .modal-content {
         box-shadow: none;
@@ -194,7 +194,7 @@ div.modal-dialog {
                 $display-value       : 'flex !important',
                 $class-postfix       :':not(:empty)'
             );
-*/            
+*/
         }
 
         //Create class show-for-modal-pinned and hide-for-modal-pined
@@ -464,3 +464,4 @@ div.modal-header-icon-full-screen-off {
         display: initial !important;
     }
 }
+

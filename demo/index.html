@@ -411,6 +411,33 @@ window.setTimeout(function(){ flashingNoty.flash(); }, 4*1000);
 
         });
 
+        let alertList = ['success', 'alert', 'warning', 'error', 'info', 'help'],
+            content = [];
+        alertList.forEach( (id,index) => {
+            content.push({
+                type: index ? 'textarea' : 'input',
+                label: id,
+                colorName: id,
+                center: true,
+                icon:'fa fa-home',
+                text:'Dette er '+id
+            })
+        });
+        content.push({
+            type:'checkbox',
+            label: 'Checkbox',
+            alert: 'info',
+            text : 'Checkbox',
+            center: true,
+        });
+
+        demoBtn({
+            text: 'Alert bg-color',
+            header: 'Alert bg-color',
+            footer: '',
+            scroll: false,
+            content: content
+        });
 
 
         $.bsButton({

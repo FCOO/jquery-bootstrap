@@ -835,8 +835,12 @@
             if (insideFormGroup){
                 //Create outer input-group-container
                 insideInputGroup = true;
+                let alertName = options.colorName || options.alert || options.alertName;
                 $parent =
                     $divXXGroup('input-group-container', options)
+
+                        .addClass(alertName ? 'has-alert-background alert-'+alertName : '')
+
                         .toggleClass('small-bottom-padding', !!options.smallBottomPadding)
                         .toggleClass('py-0',                 !!options.noVerticalPadding)
                         .toggleClass('line-before',          !!options.lineBefore)
@@ -845,6 +849,9 @@
                         .toggleClass('no-validation',        !!(noValidation || options.noValidation))  //HER skal den bruges hvis der bruges tooltips til validation errors?
 
                         .appendTo( $parent );
+
+
+
             }
 
             if (insideInputGroup || hasPreOrPost){

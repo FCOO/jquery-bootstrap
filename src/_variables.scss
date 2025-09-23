@@ -54,3 +54,20 @@ Opacity for semi-transparent and transparent content using color-mix
 $modal-content-bg-semi-transparent      : color-mix(in srgb, $modal-content-bg, transparent #{$jb-element-semi-transparent-opacity       * 100%});
 $modal-content-bg-semi-transparent-hover: color-mix(in srgb, $modal-content-bg, transparent #{$jb-element-semi-transparent-hover-opacity * 100%});
 
+
+
+
+
+/***********************************************
+$type-2-alert-color
+Conections between "type" and Bootstrap color-class-names
+Used in _noty.scss and _modal.scss
+************************************************/
+$type-2-alert-color: (
+    success: success,
+    alert  : alert,
+    warning: warning,
+    error  : danger,
+    info   : info,
+    help   : light
+);
