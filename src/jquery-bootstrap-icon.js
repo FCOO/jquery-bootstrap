@@ -11,7 +11,7 @@ jquery-bootstrap-icon.js
         Return a [] with classes for a icon in color = Bootstrap alert colorName ('success', 'warning', 'alert', 'error', 'ingo', 'help'...)
         ******************************************************/
         bsIcon: function( icon, colorName ){
-            return [['fas '+icon+' BACK-TEXT-COLOR-'+colorName, $.FONTAWESOME_PREFIX +' '+icon+' FRONT-TEXT-COLOR-'+colorName]];
+            return [['fas '+icon+' bs-icon-back-color-'+colorName, $.FONTAWESOME_PREFIX +' '+icon+' bs-icon-front-color-'+colorName]];
         },
     });
 

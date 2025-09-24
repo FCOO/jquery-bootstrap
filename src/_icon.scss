@@ -1,24 +1,19 @@
 /************************************************************
 Icon
-
-Classes for special BS icons
+Classes for special BS icons = colored icon using Bootstrap alert colors
 ************************************************************/
 
-
-
-
-
 //Use Bootstrap alert-COLOR for different colors of icons
-i[class*="FRONT-TEXT-COLOR-"], i[class*="BACK-TEXT-COLOR-"]{
+i[class*="bs-icon-front-color-"], i[class*="bs-icon-back-color-"]{
     --icon-bs-color: inherit;
     color: var(--icon-bs-color);
 }
 
 @each $type, $alert-color in $type-2-alert-color {
-    i.FRONT-TEXT-COLOR-#{$type} {
+    i.bs-icon-front-color-#{$type} {
         --icon-bs-color: var(--bs-#{$alert-color}-text-emphasis);;
     }
-    i.BACK-TEXT-COLOR-#{$type} {
+    i.bs-icon-back-color-#{$type} {
         --icon-bs-color: var(--bs-#{$alert-color}-bg-subtle);
     }
 }

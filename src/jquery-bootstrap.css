@@ -12702,59 +12702,58 @@ STYLE FOR DIFFERENT ELEMENTS
 *************************************************/
 /************************************************************
 Icon
-
-Classes for special BS icons
+Classes for special BS icons = colored icon using Bootstrap alert colors
 ************************************************************/
-i[class*=FRONT-TEXT-COLOR-], i[class*=BACK-TEXT-COLOR-] {
+i[class*=bs-icon-front-color-], i[class*=bs-icon-back-color-] {
   --icon-bs-color: inherit;
   color: var(--icon-bs-color);
 }
 
-i.FRONT-TEXT-COLOR-success {
+i.bs-icon-front-color-success {
   --icon-bs-color: var(--bs-success-text-emphasis);
 }
 
-i.BACK-TEXT-COLOR-success {
+i.bs-icon-back-color-success {
   --icon-bs-color: var(--bs-success-bg-subtle);
 }
 
-i.FRONT-TEXT-COLOR-alert {
+i.bs-icon-front-color-alert {
   --icon-bs-color: var(--bs-alert-text-emphasis);
 }
 
-i.BACK-TEXT-COLOR-alert {
+i.bs-icon-back-color-alert {
   --icon-bs-color: var(--bs-alert-bg-subtle);
 }
 
-i.FRONT-TEXT-COLOR-warning {
+i.bs-icon-front-color-warning {
   --icon-bs-color: var(--bs-warning-text-emphasis);
 }
 
-i.BACK-TEXT-COLOR-warning {
+i.bs-icon-back-color-warning {
   --icon-bs-color: var(--bs-warning-bg-subtle);
 }
 
-i.FRONT-TEXT-COLOR-error {
+i.bs-icon-front-color-error {
   --icon-bs-color: var(--bs-danger-text-emphasis);
 }
 
-i.BACK-TEXT-COLOR-error {
+i.bs-icon-back-color-error {
   --icon-bs-color: var(--bs-danger-bg-subtle);
 }
 
-i.FRONT-TEXT-COLOR-info {
+i.bs-icon-front-color-info {
   --icon-bs-color: var(--bs-info-text-emphasis);
 }
 
-i.BACK-TEXT-COLOR-info {
+i.bs-icon-back-color-info {
   --icon-bs-color: var(--bs-info-bg-subtle);
 }
 
-i.FRONT-TEXT-COLOR-help {
+i.bs-icon-front-color-help {
   --icon-bs-color: var(--bs-light-text-emphasis);
 }
 
-i.BACK-TEXT-COLOR-help {
+i.bs-icon-back-color-help {
   --icon-bs-color: var(--bs-light-bg-subtle);
 }
 
