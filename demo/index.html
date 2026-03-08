@@ -2474,6 +2474,26 @@ clickable: true,
             .on('click', function(){ $fixedModalContainer3.toggle() });
 
         //************************************************************************************
+        var $fitContent =
+                $('<div/>')
+                    .css({
+                        border: '1px solid red',
+                        width: 200, height: 40
+                    })
+                    .text('Dette er indhold')
+
+        var modal_fit = $.bsModal({
+            closeButton: false,
+            header:{text: {da:'Fit Modal'} },
+            content: $fitContent,
+            fitWidth: true,
+            show: false
+        });
+        $('<button>Fit modal</button>')
+            .appendTo( $body)
+            .on('click', () => modal_fit.show() );
+
+        //************************************************************************************
         var modal_minimized_with_heade_and_footer = $.bsModal({
             header:{text: {da:'Minimized with header and footer'} },
 
