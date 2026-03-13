@@ -250,18 +250,23 @@
                     $icon.addClass(className);
             });
         }
-        else {
-            var allClassNames = options.icon || options.class || '';
+        else
+            if (options instanceof $){
+                $icon = options.clone();
+                $icon.addClass(className);
+            }
+                else {
+                var allClassNames = options.icon || options.class || '';
 
-            //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
-            if (allClassNames.search(iconfontPrefixRegExp) == -1)
-                allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
+                //Append $.FONTAWESOME_PREFIX if icon don't contain fontawesome prefix ("fa?")
+                if (allClassNames.search(iconfontPrefixRegExp) == -1)
+                    allClassNames = $.FONTAWESOME_PREFIX + ' ' + allClassNames;
 
-            allClassNames = allClassNames + ' ' + (className || '');
+                allClassNames = allClassNames + ' ' + (className || '');
 
-            $icon = $._bsCreateElement( 'i', null, title, null, allClassNames );
+                $icon = $._bsCreateElement( 'i', null, title, null, allClassNames );
 
-        }
+            }
         $icon.appendTo( $appendTo );
         return $icon;
     };
