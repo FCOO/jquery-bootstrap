@@ -788,6 +788,17 @@
             }
         }, options );
 
+
+        //Special case - option set to use fullScreenOn/Off-icons for extend/diminish
+        if (options.useFullScreenAsExtendIcon){
+            options.icons.fullScreenOn = options.icons.extend;
+            delete options.icons.extend;
+            options.icons.fullScreenOff = options.icons.diminish;
+            delete options.icons.diminish;
+        }
+
+
+
         //Save parentOptions for dynamic update
         var parentOptions = this.bsModal.parentOptions = {};
         $.parentOptionsToInherit.forEach( id => {

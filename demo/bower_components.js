@@ -22962,7 +22962,7 @@ return jQuery;
   };
   const makeString = object => {
     if (object == null) return '';
-    return '' + object;
+    return String(object);
   };
   const copy = (a, s, t) => {
     a.forEach(m => {
@@ -22970,7 +22970,7 @@ return jQuery;
     });
   };
   const lastOfPathSeparatorRegExp = /###/g;
-  const cleanKey = key => key && key.indexOf('###') > -1 ? key.replace(lastOfPathSeparatorRegExp, '.') : key;
+  const cleanKey = key => key && key.includes('###') ? key.replace(lastOfPathSeparatorRegExp, '.') : key;
   const canNotTraverseDeeper = object => !object || isString(object);
   const getLastOfPath = (object, path, Empty) => {
     const stack = !isString(path) ? path : path.split('.');
@@ -23055,7 +23055,7 @@ return jQuery;
     return target;
   };
   const regexEscape = str => str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
-  var _entityMap = {
+  const _entityMap = {
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
@@ -23094,7 +23094,7 @@ return jQuery;
   const looksLikeObjectPath = (key, nsSeparator, keySeparator) => {
     nsSeparator = nsSeparator || '';
     keySeparator = keySeparator || '';
-    const possibleChars = chars.filter(c => nsSeparator.indexOf(c) < 0 && keySeparator.indexOf(c) < 0);
+    const possibleChars = chars.filter(c => !nsSeparator.includes(c) && !keySeparator.includes(c));
     if (possibleChars.length === 0) return true;
     const r = looksLikeObjectPathRegExpCache.getRegExp(`(${possibleChars.map(c => c === '?' ? '\\?' : c).join('|')})`);
     let matched = !r.test(key);
@@ -23127,7 +23127,7 @@ return jQuery;
         nextPath += tokens[j];
         next = current[nextPath];
         if (next !== undefined) {
-          if (['string', 'number', 'boolean'].indexOf(typeof next) > -1 && j < tokens.length - 1) {
+          if (['string', 'number', 'boolean'].includes(typeof next) && j < tokens.length - 1) {
             continue;
           }
           i += j - i + 1;
@@ -23218,6 +23218,14 @@ return jQuery;
       }
       this.observers[event].delete(listener);
     }
+    once(event, listener) {
+      const wrapper = (...args) => {
+        listener(...args);
+        this.off(event, wrapper);
+      };
+      this.on(event, wrapper);
+      return this;
+    }
     emit(event, ...args) {
       if (this.observers[event]) {
         const cloned = Array.from(this.observers[event].entries());
@@ -23231,7 +23239,7 @@ return jQuery;
         const cloned = Array.from(this.observers['*'].entries());
         cloned.forEach(([observer, numTimesAdded]) => {
           for (let i = 0; i < numTimesAdded; i++) {
-            observer.apply(observer, [event, ...args]);
+            observer(event, ...args);
           }
         });
       }
@@ -23254,7 +23262,7 @@ return jQuery;
       }
     }
     addNamespaces(ns) {
-      if (this.options.ns.indexOf(ns) < 0) {
+      if (!this.options.ns.includes(ns)) {
         this.options.ns.push(ns);
       }
     }
@@ -23268,7 +23276,7 @@ return jQuery;
       const keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
       const ignoreJSONStructure = options.ignoreJSONStructure !== undefined ? options.ignoreJSONStructure : this.options.ignoreJSONStructure;
       let path;
-      if (lng.indexOf('.') > -1) {
+      if (lng.includes('.')) {
         path = lng.split('.');
       } else {
         path = [lng, ns];
@@ -23283,7 +23291,7 @@ return jQuery;
         }
       }
       const result = getPath(this.data, path);
-      if (!result && !ns && !key && lng.indexOf('.') > -1) {
+      if (!result && !ns && !key && lng.includes('.')) {
         lng = path[0];
         ns = path[1];
         key = path.slice(2).join('.');
@@ -23297,7 +23305,7 @@ return jQuery;
       const keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
       let path = [lng, ns];
       if (key) path = path.concat(keySeparator ? key.split(keySeparator) : key);
-      if (lng.indexOf('.') > -1) {
+      if (lng.includes('.')) {
         path = lng.split('.');
         value = ns;
         ns = path[1];
@@ -23321,7 +23329,7 @@ return jQuery;
       skipCopy: false
     }) {
       let path = [lng, ns];
-      if (lng.indexOf('.') > -1) {
+      if (lng.includes('.')) {
         path = lng.split('.');
         deep = resources;
         resources = ns;
@@ -23399,10 +23407,18 @@ return jQuery;
     const {
       [PATH_KEY]: path
     } = selector(createProxy());
-    return path.join(opts?.keySeparator ?? '.');
+    const keySeparator = opts?.keySeparator ?? '.';
+    const nsSeparator = opts?.nsSeparator ?? ':';
+    if (path.length > 1 && nsSeparator) {
+      const ns = opts?.ns;
+      const nsArray = Array.isArray(ns) ? ns : null;
+      if (nsArray && nsArray.length > 1 && nsArray.slice(1).includes(path[0])) {
+        return `${path[0]}${nsSeparator}${path.slice(1).join(keySeparator)}`;
+      }
+    }
+    return path.join(keySeparator);
   }
 
-  const checkedLoadedFor = {};
   const shouldHandleAsObject = res => !isString(res) && typeof res !== 'boolean' && typeof res !== 'number';
   class Translator extends EventEmitter {
     constructor(services, options = {}) {
@@ -23413,6 +23429,7 @@ return jQuery;
         this.options.keySeparator = '.';
       }
       this.logger = baseLogger.create('translator');
+      this.checkedLoadedFor = {};
     }
     changeLanguage(lng) {
       if (lng) this.language = lng;
@@ -23437,7 +23454,7 @@ return jQuery;
       if (nsSeparator === undefined) nsSeparator = ':';
       const keySeparator = opt.keySeparator !== undefined ? opt.keySeparator : this.options.keySeparator;
       let namespaces = opt.ns || this.options.defaultNS || [];
-      const wouldCheckForNsInKey = nsSeparator && key.indexOf(nsSeparator) > -1;
+      const wouldCheckForNsInKey = nsSeparator && key.includes(nsSeparator);
       const seemsNaturalLanguage = !this.options.userDefinedKeySeparator && !opt.keySeparator && !this.options.userDefinedNsSeparator && !opt.nsSeparator && !looksLikeObjectPath(key, nsSeparator, keySeparator);
       if (wouldCheckForNsInKey && !seemsNaturalLanguage) {
         const m = key.match(this.interpolator.nestingRegexp);
@@ -23448,7 +23465,7 @@ return jQuery;
           };
         }
         const parts = key.split(nsSeparator);
-        if (nsSeparator !== keySeparator || nsSeparator === keySeparator && this.options.ns.indexOf(parts[0]) > -1) namespaces = parts.shift();
+        if (nsSeparator !== keySeparator || nsSeparator === keySeparator && this.options.ns.includes(parts[0])) namespaces = parts.shift();
         key = parts.join(keySeparator);
       }
       return {
@@ -23473,6 +23490,10 @@ return jQuery;
         ...opt
       });
       if (!Array.isArray(keys)) keys = [String(keys)];
+      keys = keys.map(k => typeof k === 'function' ? keysFromSelector(k, {
+        ...this.options,
+        ...opt
+      }) : String(k));
       const returnDetails = opt.returnDetails !== undefined ? opt.returnDetails : this.options.returnDetails;
       const keySeparator = opt.keySeparator !== undefined ? opt.keySeparator : this.options.keySeparator;
       const {
@@ -23531,7 +23552,7 @@ return jQuery;
       }
       const handleAsObject = shouldHandleAsObject(resForObjHndl);
       const resType = Object.prototype.toString.apply(resForObjHndl);
-      if (handleAsObjectInI18nFormat && resForObjHndl && handleAsObject && noObject.indexOf(resType) < 0 && !(isString(joinArrays) && Array.isArray(resForObjHndl))) {
+      if (handleAsObjectInI18nFormat && resForObjHndl && handleAsObject && !noObject.includes(resType) && !(isString(joinArrays) && Array.isArray(resForObjHndl))) {
         if (!opt.returnObjects && !this.options.returnObjects) {
           if (!this.options.returnedObjectHandler) {
             this.logger.warn('accessing an object - but returnObjects options is not enabled!');
@@ -23627,7 +23648,7 @@ return jQuery;
             if (this.options.saveMissingPlurals && needsPluralHandling) {
               lngs.forEach(language => {
                 const suffixes = this.pluralResolver.getSuffixes(language, opt);
-                if (needsZeroSuffixLookup && opt[`defaultValue${this.options.pluralSeparator}zero`] && suffixes.indexOf(`${this.options.pluralSeparator}zero`) < 0) {
+                if (needsZeroSuffixLookup && opt[`defaultValue${this.options.pluralSeparator}zero`] && !suffixes.includes(`${this.options.pluralSeparator}zero`)) {
                   suffixes.push(`${this.options.pluralSeparator}zero`);
                 }
                 suffixes.forEach(suffix => {
@@ -23719,6 +23740,10 @@ return jQuery;
       let usedLng;
       let usedNS;
       if (isString(keys)) keys = [keys];
+      if (Array.isArray(keys)) keys = keys.map(k => typeof k === 'function' ? keysFromSelector(k, {
+        ...this.options,
+        ...opt
+      }) : k);
       keys.forEach(k => {
         if (this.isValidLookup(found)) return;
         const extracted = this.extractFromKey(k, opt);
@@ -23733,8 +23758,8 @@ return jQuery;
         namespaces.forEach(ns => {
           if (this.isValidLookup(found)) return;
           usedNS = ns;
-          if (!checkedLoadedFor[`${codes[0]}-${ns}`] && this.utils?.hasLoadedNamespace && !this.utils?.hasLoadedNamespace(usedNS)) {
-            checkedLoadedFor[`${codes[0]}-${ns}`] = true;
+          if (!this.checkedLoadedFor[`${codes[0]}-${ns}`] && this.utils?.hasLoadedNamespace && !this.utils?.hasLoadedNamespace(usedNS)) {
+            this.checkedLoadedFor[`${codes[0]}-${ns}`] = true;
             this.logger.warn(`key "${usedKey}" for languages "${codes.join(', ')}" won't get resolved as namespace "${usedNS}" was not yet loaded`, 'This means something IS WRONG in your setup. You access the t function before i18next.init / i18next.loadNamespace / i18next.changeLanguage was done. Wait for the callback or Promise to resolve before accessing it!!!');
           }
           codes.forEach(code => {
@@ -23749,7 +23774,7 @@ return jQuery;
               const zeroSuffix = `${this.options.pluralSeparator}zero`;
               const ordinalPrefix = `${this.options.pluralSeparator}ordinal${this.options.pluralSeparator}`;
               if (needsPluralHandling) {
-                if (opt.ordinal && pluralSuffix.indexOf(ordinalPrefix) === 0) {
+                if (opt.ordinal && pluralSuffix.startsWith(ordinalPrefix)) {
                   finalKeys.push(key + pluralSuffix.replace(ordinalPrefix, this.options.pluralSeparator));
                 }
                 finalKeys.push(key + pluralSuffix);
@@ -23761,7 +23786,7 @@ return jQuery;
                 const contextKey = `${key}${this.options.contextSeparator || '_'}${opt.context}`;
                 finalKeys.push(contextKey);
                 if (needsPluralHandling) {
-                  if (opt.ordinal && pluralSuffix.indexOf(ordinalPrefix) === 0) {
+                  if (opt.ordinal && pluralSuffix.startsWith(ordinalPrefix)) {
                     finalKeys.push(contextKey + pluralSuffix.replace(ordinalPrefix, this.options.pluralSeparator));
                   }
                   finalKeys.push(contextKey + pluralSuffix);
@@ -23822,7 +23847,7 @@ return jQuery;
     static hasDefaultValue(options) {
       const prefix = 'defaultValue';
       for (const option in options) {
-        if (Object.prototype.hasOwnProperty.call(options, option) && prefix === option.substring(0, prefix.length) && undefined !== options[option]) {
+        if (Object.prototype.hasOwnProperty.call(options, option) && option.startsWith(prefix) && undefined !== options[option]) {
           return true;
         }
       }
@@ -23838,7 +23863,7 @@ return jQuery;
     }
     getScriptPartFromCode(code) {
       code = getCleanedCode(code);
-      if (!code || code.indexOf('-') < 0) return null;
+      if (!code || !code.includes('-')) return null;
       const p = code.split('-');
       if (p.length === 2) return null;
       p.pop();
@@ -23847,12 +23872,12 @@ return jQuery;
     }
     getLanguagePartFromCode(code) {
       code = getCleanedCode(code);
-      if (!code || code.indexOf('-') < 0) return code;
+      if (!code || !code.includes('-')) return code;
       const p = code.split('-');
       return this.formatLanguageCode(p[0]);
     }
     formatLanguageCode(code) {
-      if (isString(code) && code.indexOf('-') > -1) {
+      if (isString(code) && code.includes('-')) {
         let formattedCode;
         try {
           formattedCode = Intl.getCanonicalLocales(code)[0];
@@ -23872,7 +23897,7 @@ return jQuery;
       if (this.options.load === 'languageOnly' || this.options.nonExplicitSupportedLngs) {
         code = this.getLanguagePartFromCode(code);
       }
-      return !this.supportedLngs || !this.supportedLngs.length || this.supportedLngs.indexOf(code) > -1;
+      return !this.supportedLngs || !this.supportedLngs.length || this.supportedLngs.includes(code);
     }
     getBestMatchFromCodes(codes) {
       if (!codes) return null;
@@ -23890,10 +23915,11 @@ return jQuery;
           const lngOnly = this.getLanguagePartFromCode(code);
           if (this.isSupportedCode(lngOnly)) return found = lngOnly;
           found = this.options.supportedLngs.find(supportedLng => {
-            if (supportedLng === lngOnly) return supportedLng;
-            if (supportedLng.indexOf('-') < 0 && lngOnly.indexOf('-') < 0) return;
-            if (supportedLng.indexOf('-') > 0 && lngOnly.indexOf('-') < 0 && supportedLng.substring(0, supportedLng.indexOf('-')) === lngOnly) return supportedLng;
-            if (supportedLng.indexOf(lngOnly) === 0 && lngOnly.length > 1) return supportedLng;
+            if (supportedLng === lngOnly) return true;
+            if (!supportedLng.includes('-') && !lngOnly.includes('-')) return false;
+            if (supportedLng.includes('-') && !lngOnly.includes('-') && supportedLng.slice(0, supportedLng.indexOf('-')) === lngOnly) return true;
+            if (supportedLng.startsWith(lngOnly) && lngOnly.length > 1) return true;
+            return false;
           });
         });
       }
@@ -23924,7 +23950,7 @@ return jQuery;
           this.logger.warn(`rejecting language code not found in supportedLngs: ${c}`);
         }
       };
-      if (isString(code) && (code.indexOf('-') > -1 || code.indexOf('_') > -1)) {
+      if (isString(code) && (code.includes('-') || code.includes('_'))) {
         if (this.options.load !== 'languageOnly') addCode(this.formatLanguageCode(code));
         if (this.options.load !== 'languageOnly' && this.options.load !== 'currentOnly') addCode(this.getScriptPartFromCode(code));
         if (this.options.load !== 'currentOnly') addCode(this.getLanguagePartFromCode(code));
@@ -23932,7 +23958,7 @@ return jQuery;
         addCode(this.formatLanguageCode(code));
       }
       fallbackCodes.forEach(fc => {
-        if (codes.indexOf(fc) < 0) addCode(this.formatLanguageCode(fc));
+        if (!codes.includes(fc)) addCode(this.formatLanguageCode(fc));
       });
       return codes;
     }
@@ -24088,7 +24114,7 @@ return jQuery;
       let replaces;
       const defaultData = this.options && this.options.interpolation && this.options.interpolation.defaultVariables || {};
       const handleFormat = key => {
-        if (key.indexOf(this.formatSeparator) < 0) {
+        if (!key.includes(this.formatSeparator)) {
           const path = deepFindWithDefaults(data, defaultData, key, this.options.keySeparator, this.options.ignoreJSONStructure);
           return this.alwaysFormat ? this.format(path, undefined, lng, {
             ...options,
@@ -24158,7 +24184,7 @@ return jQuery;
       let clonedOptions;
       const handleHasOptions = (key, inheritedOptions) => {
         const sep = this.nestingOptionsSeparator;
-        if (key.indexOf(sep) < 0) return key;
+        if (!key.includes(sep)) return key;
         const c = key.split(new RegExp(`${regexEscape(sep)}[ ]*{`));
         let optionsString = `{${c[1]}`;
         key = c[0];
@@ -24178,7 +24204,7 @@ return jQuery;
           this.logger.warn(`failed parsing options string in nesting for key ${key}`, e);
           return `${key}${sep}${optionsString}`;
         }
-        if (clonedOptions.defaultValue && clonedOptions.defaultValue.indexOf(this.prefix) > -1) delete clonedOptions.defaultValue;
+        if (clonedOptions.defaultValue && clonedOptions.defaultValue.includes(this.prefix)) delete clonedOptions.defaultValue;
         return key;
       };
       while (match = this.nestingRegexp.exec(str)) {
@@ -24217,13 +24243,13 @@ return jQuery;
   const parseFormatStr = formatStr => {
     let formatName = formatStr.toLowerCase().trim();
     const formatOptions = {};
-    if (formatStr.indexOf('(') > -1) {
+    if (formatStr.includes('(')) {
       const p = formatStr.split('(');
       formatName = p[0].toLowerCase().trim();
-      const optStr = p[1].substring(0, p[1].length - 1);
-      if (formatName === 'currency' && optStr.indexOf(':') < 0) {
+      const optStr = p[1].slice(0, -1);
+      if (formatName === 'currency' && !optStr.includes(':')) {
         if (!formatOptions.currency) formatOptions.currency = optStr.trim();
-      } else if (formatName === 'relativetime' && optStr.indexOf(':') < 0) {
+      } else if (formatName === 'relativetime' && !optStr.includes(':')) {
         if (!formatOptions.range) formatOptions.range = optStr.trim();
       } else {
         const opts = optStr.split(';');
@@ -24317,9 +24343,11 @@ return jQuery;
       this.formats[name.toLowerCase().trim()] = createCachedFormatter(fc);
     }
     format(value, format, lng, options = {}) {
+      if (!format) return value;
+      if (value == null) return value;
       const formats = format.split(this.formatSeparator);
-      if (formats.length > 1 && formats[0].indexOf('(') > 1 && formats[0].indexOf(')') < 0 && formats.find(f => f.indexOf(')') > -1)) {
-        const lastIndex = formats.findIndex(f => f.indexOf(')') > -1);
+      if (formats.length > 1 && formats[0].indexOf('(') > 1 && !formats[0].includes(')') && formats.find(f => f.includes(')'))) {
+        const lastIndex = formats.findIndex(f => f.includes(')'));
         formats[0] = [formats[0], ...formats.splice(1, lastIndex)].join(this.formatSeparator);
       }
       const result = formats.reduce((mem, f) => {
@@ -24473,7 +24501,7 @@ return jQuery;
         }
         if (err && data && tried < this.maxRetries) {
           setTimeout(() => {
-            this.read.call(this, lng, ns, fcName, tried + 1, wait * 2, callback);
+            this.read(lng, ns, fcName, tried + 1, wait * 2, callback);
           }, wait);
           return;
         }
@@ -24577,7 +24605,6 @@ return jQuery;
     nonExplicitSupportedLngs: false,
     load: 'all',
     preload: false,
-    simplifyPluralSuffix: true,
     keySeparator: '.',
     nsSeparator: ':',
     pluralSeparator: '_',
@@ -24614,7 +24641,6 @@ return jQuery;
     },
     interpolation: {
       escapeValue: true,
-      format: value => value,
       prefix: '{{',
       suffix: '}}',
       formatSeparator: ',',
@@ -24631,10 +24657,9 @@ return jQuery;
     if (isString(options.ns)) options.ns = [options.ns];
     if (isString(options.fallbackLng)) options.fallbackLng = [options.fallbackLng];
     if (isString(options.fallbackNS)) options.fallbackNS = [options.fallbackNS];
-    if (options.supportedLngs?.indexOf?.('cimode') < 0) {
+    if (options.supportedLngs && !options.supportedLngs.includes('cimode')) {
       options.supportedLngs = options.supportedLngs.concat(['cimode']);
     }
-    if (typeof options.initImmediate === 'boolean') options.initAsync = options.initImmediate;
     return options;
   };
 
@@ -24646,23 +24671,6 @@ return jQuery;
         inst[mem] = inst[mem].bind(inst);
       }
     });
-  };
-  const SUPPORT_NOTICE_KEY = '__i18next_supportNoticeShown';
-  const getSupportNoticeShown = () => typeof globalThis !== 'undefined' && !!globalThis[SUPPORT_NOTICE_KEY];
-  const setSupportNoticeShown = () => {
-    if (typeof globalThis !== 'undefined') globalThis[SUPPORT_NOTICE_KEY] = true;
-  };
-  const usesLocize = inst => {
-    if (inst?.modules?.backend?.name?.indexOf('Locize') > 0) return true;
-    if (inst?.modules?.backend?.constructor?.name?.indexOf('Locize') > 0) return true;
-    if (inst?.options?.backend?.backends) {
-      if (inst.options.backend.backends.some(b => b?.name?.indexOf('Locize') > 0 || b?.constructor?.name?.indexOf('Locize') > 0)) return true;
-    }
-    if (inst?.options?.backend?.projectId) return true;
-    if (inst?.options?.backend?.backendOptions) {
-      if (inst.options.backend.backendOptions.some(b => b?.projectId)) return true;
-    }
-    return false;
   };
   class I18n extends EventEmitter {
     constructor(options = {}, callback) {
@@ -24693,7 +24701,7 @@ return jQuery;
       if (options.defaultNS == null && options.ns) {
         if (isString(options.ns)) {
           options.defaultNS = options.ns;
-        } else if (options.ns.indexOf('translation') < 0) {
+        } else if (!options.ns.includes('translation')) {
           options.defaultNS = options.ns[0];
         }
       }
@@ -24715,10 +24723,6 @@ return jQuery;
       }
       if (typeof this.options.overloadTranslationOptionHandler !== 'function') {
         this.options.overloadTranslationOptionHandler = defOpts.overloadTranslationOptionHandler;
-      }
-      if (this.options.showSupportNotice !== false && !usesLocize(this) && !getSupportNoticeShown()) {
-        if (typeof console !== 'undefined' && typeof console.info !== 'undefined') console.info('🌐 i18next is maintained with support from Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙');
-        setSupportNoticeShown();
       }
       const createClassOnDemand = ClassOrObject => {
         if (!ClassOrObject) return null;
@@ -24744,14 +24748,9 @@ return jQuery;
         s.resourceStore = this.store;
         s.languageUtils = lu;
         s.pluralResolver = new PluralResolver(lu, {
-          prepend: this.options.pluralSeparator,
-          simplifyPluralSuffix: this.options.simplifyPluralSuffix
+          prepend: this.options.pluralSeparator
         });
-        const usingLegacyFormatFunction = this.options.interpolation.format && this.options.interpolation.format !== defOpts.interpolation.format;
-        if (usingLegacyFormatFunction) {
-          this.logger.deprecate(`init: you are still using the legacy format function, please use the new approach: https://www.i18next.com/translation-function/formatting`);
-        }
-        if (formatter && (!this.options.interpolation.format || this.options.interpolation.format === defOpts.interpolation.format)) {
+        if (formatter) {
           s.formatter = createClassOnDemand(formatter);
           if (s.formatter.init) s.formatter.init(s, this.options);
           this.options.interpolation.format = s.formatter.format.bind(s.formatter);
@@ -24834,7 +24833,7 @@ return jQuery;
           const lngs = this.services.languageUtils.toResolveHierarchy(lng);
           lngs.forEach(l => {
             if (l === 'cimode') return;
-            if (toLoad.indexOf(l) < 0) toLoad.push(l);
+            if (!toLoad.includes(l)) toLoad.push(l);
           });
         };
         if (!usedLng) {
@@ -24899,16 +24898,16 @@ return jQuery;
     }
     setResolvedLanguage(l) {
       if (!l || !this.languages) return;
-      if (['cimode', 'dev'].indexOf(l) > -1) return;
+      if (['cimode', 'dev'].includes(l)) return;
       for (let li = 0; li < this.languages.length; li++) {
         const lngInLngs = this.languages[li];
-        if (['cimode', 'dev'].indexOf(lngInLngs) > -1) continue;
+        if (['cimode', 'dev'].includes(lngInLngs)) continue;
         if (this.store.hasLanguageSomeTranslations(lngInLngs)) {
           this.resolvedLanguage = lngInLngs;
           break;
         }
       }
-      if (!this.resolvedLanguage && this.languages.indexOf(l) < 0 && this.store.hasLanguageSomeTranslations(l)) {
+      if (!this.resolvedLanguage && !this.languages.includes(l) && this.store.hasLanguageSomeTranslations(l)) {
         this.resolvedLanguage = l;
         this.languages.unshift(l);
       }
@@ -24980,21 +24979,20 @@ return jQuery;
         o.lngs = o.lngs || fixedT.lngs;
         o.ns = o.ns || fixedT.ns;
         if (o.keyPrefix !== '') o.keyPrefix = o.keyPrefix || keyPrefix || fixedT.keyPrefix;
+        const selectorOpts = {
+          ...this.options,
+          ...o
+        };
+        if (typeof o.keyPrefix === 'function') o.keyPrefix = keysFromSelector(o.keyPrefix, selectorOpts);
         const keySeparator = this.options.keySeparator || '.';
         let resultKey;
         if (o.keyPrefix && Array.isArray(key)) {
           resultKey = key.map(k => {
-            if (typeof k === 'function') k = keysFromSelector(k, {
-              ...this.options,
-              ...opts
-            });
+            if (typeof k === 'function') k = keysFromSelector(k, selectorOpts);
             return `${o.keyPrefix}${keySeparator}${k}`;
           });
         } else {
-          if (typeof key === 'function') key = keysFromSelector(key, {
-            ...this.options,
-            ...opts
-          });
+          if (typeof key === 'function') key = keysFromSelector(key, selectorOpts);
           resultKey = o.keyPrefix ? `${o.keyPrefix}${keySeparator}${key}` : key;
         }
         return this.t(resultKey, o);
@@ -25051,7 +25049,7 @@ return jQuery;
       }
       if (isString(ns)) ns = [ns];
       ns.forEach(n => {
-        if (this.options.ns.indexOf(n) < 0) this.options.ns.push(n);
+        if (!this.options.ns.includes(n)) this.options.ns.push(n);
       });
       this.loadResources(err => {
         deferred.resolve();
@@ -25063,7 +25061,7 @@ return jQuery;
       const deferred = defer();
       if (isString(lngs)) lngs = [lngs];
       const preloaded = this.options.preload || [];
-      const newLngs = lngs.filter(lng => preloaded.indexOf(lng) < 0 && this.services.languageUtils.isSupportedCode(lng));
+      const newLngs = lngs.filter(lng => !preloaded.includes(lng) && this.services.languageUtils.isSupportedCode(lng));
       if (!newLngs.length) {
         if (callback) callback();
         return Promise.resolve();
@@ -25088,7 +25086,7 @@ return jQuery;
       const rtlLngs = ['ar', 'shu', 'sqr', 'ssh', 'xaa', 'yhd', 'yud', 'aao', 'abh', 'abv', 'acm', 'acq', 'acw', 'acx', 'acy', 'adf', 'ads', 'aeb', 'aec', 'afb', 'ajp', 'apc', 'apd', 'arb', 'arq', 'ars', 'ary', 'arz', 'auz', 'avl', 'ayh', 'ayl', 'ayn', 'ayp', 'bbz', 'pga', 'he', 'iw', 'ps', 'pbt', 'pbu', 'pst', 'prp', 'prd', 'ug', 'ur', 'ydd', 'yds', 'yih', 'ji', 'yi', 'hbo', 'men', 'xmn', 'fa', 'jpr', 'peo', 'pes', 'prs', 'dv', 'sam', 'ckb'];
       const languageUtils = this.services?.languageUtils || new LanguageUtil(get());
       if (lng.toLowerCase().indexOf('-latn') > 1) return 'ltr';
-      return rtlLngs.indexOf(languageUtils.getLanguagePartFromCode(lng)) > -1 || lng.toLowerCase().indexOf('-arab') > 1 ? 'rtl' : 'ltr';
+      return rtlLngs.includes(languageUtils.getLanguagePartFromCode(lng)) || lng.toLowerCase().indexOf('-arab') > 1 ? 'rtl' : 'ltr';
     }
     static createInstance(options = {}, callback) {
       const instance = new I18n(options, callback);
@@ -56848,7 +56846,7 @@ See https://ilyashubin.github.io/scrollbooster/
 }).call(this);
 ;
 //! moment-timezone.js
-//! version : 0.6.0
+//! version : 0.6.1
 //! Copyright (c) JS Foundation and other contributors
 //! license : MIT
 //! github.com/moment/moment-timezone
@@ -56878,7 +56876,7 @@ See https://ilyashubin.github.io/scrollbooster/
 	// 	return moment;
 	// }
 
-	var VERSION = "0.6.0",
+	var VERSION = "0.6.1",
 		zones = {},
 		links = {},
 		countries = {},
@@ -57573,75 +57571,74 @@ See https://ilyashubin.github.io/scrollbooster/
 	}
 
 	loadData({
-		"version": "2025b",
+		"version": "2026a",
 		"zones": [
 			"Africa/Abidjan|GMT|0|0||48e5",
 			"Africa/Nairobi|EAT|-30|0||47e5",
 			"Africa/Algiers|CET|-10|0||26e5",
 			"Africa/Lagos|WAT|-10|0||17e6",
 			"Africa/Khartoum|CAT|-20|0||51e5",
-			"Africa/Cairo|EET EEST|-20 -30|01010101010101010|29NW0 1cL0 1cN0 1fz0 1a10 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0|15e6",
-			"Africa/Casablanca|+01 +00|-10 0|010101010101010101010101|22sq0 gM0 2600 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 2600 gM0 2600|32e5",
-			"Europe/Paris|CET CEST|-10 -20|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|11e6",
+			"Africa/Cairo|EET EEST|-20 -30|0101010101010101010|29NW0 1cL0 1cN0 1fz0 1a10 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0|15e6",
+			"Africa/Casablanca|+01 +00|-10 0|010101010101010101010101|24Pe0 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 28M0 e00 2600 gM0 2600 e00 2600 gM0 2600 e00 28M0|32e5",
+			"Europe/Paris|CET CEST|-10 -20|01010101010101010101010|24JB0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|11e6",
 			"Africa/Johannesburg|SAST|-20|0||84e5",
 			"Africa/Juba|EAT CAT|-30 -20|01|24nx0|",
 			"Africa/Tripoli|EET|-20|0||11e5",
-			"America/Adak|HST HDT|a0 90|01010101010101010101010|22bM0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|326",
-			"America/Anchorage|AKST AKDT|90 80|01010101010101010101010|22bL0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|30e4",
+			"America/Adak|HST HDT|a0 90|01010101010101010101010|24Ec0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|326",
+			"America/Anchorage|AKST AKDT|90 80|01010101010101010101010|24Eb0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|30e4",
 			"America/Santo_Domingo|AST|40|0||29e5",
 			"America/Sao_Paulo|-03|30|0||20e6",
-			"America/Asuncion|-03 -04|30 40|01010101010|22hf0 1ip0 19X0 1fB0 19X0 1fB0 19X0 1fB0 19X0 1ip0|28e5",
+			"America/Asuncion|-03 -04|30 40|010101010|24JD0 1fB0 19X0 1fB0 19X0 1fB0 19X0 1ip0|28e5",
 			"America/Panama|EST|50|0||15e5",
-			"America/Mexico_City|CST CDT|60 50|0101010|22mU0 1lb0 14p0 1nX0 11B0 1nX0|20e6",
+			"America/Mexico_City|CST CDT|60 50|01010|24Mw0 1nX0 11B0 1nX0|20e6",
 			"America/Managua|CST|60|0||22e5",
 			"America/Caracas|-04|40|0||29e5",
 			"America/Lima|-05|50|0||11e6",
-			"America/Denver|MST MDT|70 60|01010101010101010101010|22bJ0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|26e5",
-			"America/Chicago|CST CDT|60 50|01010101010101010101010|22bI0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|92e5",
-			"America/Chihuahua|MST MDT CST|70 60 60|0101012|22mV0 1lb0 14p0 1nX0 11B0 1nX0|81e4",
-			"America/Ciudad_Juarez|MST MDT CST|70 60 60|010101201010101010101010|22bJ0 1zb0 Rd0 1zb0 Op0 1wn0 cm0 EP0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
-			"America/Coyhaique|-03 -04|30 40|01010101010|22mP0 11B0 1nX0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0|",
+			"America/Denver|MST MDT|70 60|01010101010101010101010|24E90 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|26e5",
+			"America/Chicago|CST CDT|60 50|01010101010101010101010|24E80 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|92e5",
+			"America/Chihuahua|MST MDT CST|70 60 60|01012|24Mx0 1nX0 11B0 1nX0|81e4",
+			"America/Ciudad_Juarez|MST MDT CST|70 60 60|010120101010101010101010|24E90 1zb0 Op0 1wn0 cm0 EP0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|",
+			"America/Coyhaique|-03 -04|30 40|010101010|24Mr0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0|",
 			"America/Phoenix|MST|70|0||42e5",
-			"America/Whitehorse|PST PDT MST|80 70 70|012|22bK0 1z90|23e3",
-			"America/New_York|EST EDT|50 40|01010101010101010101010|22bH0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|21e6",
-			"America/Los_Angeles|PST PDT|80 70|01010101010101010101010|22bK0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|15e6",
-			"America/Halifax|AST ADT|40 30|01010101010101010101010|22bG0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|39e4",
-			"America/Godthab|-03 -02 -01|30 20 10|0101010121212121212121|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 2so0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|17e3",
-			"America/Havana|CST CDT|50 40|01010101010101010101010|22bF0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0|21e5",
-			"America/Mazatlan|MST MDT|70 60|0101010|22mV0 1lb0 14p0 1nX0 11B0 1nX0|44e4",
-			"America/Miquelon|-03 -02|30 20|01010101010101010101010|22bF0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|61e2",
+			"America/New_York|EST EDT|50 40|01010101010101010101010|24E70 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|21e6",
+			"America/Los_Angeles|PST PDT|80 70|01010101010101010101010|24Ea0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|15e6",
+			"America/Halifax|AST ADT|40 30|01010101010101010101010|24E60 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|39e4",
+			"America/Godthab|-03 -02 -01|30 20 10|0101012121212121212121|24JB0 1qM0 WM0 1qM0 WM0 2so0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|17e3",
+			"America/Havana|CST CDT|50 40|01010101010101010101010|24E50 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Rc0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0 Oo0 1zc0|21e5",
+			"America/Mazatlan|MST MDT|70 60|01010|24Mx0 1nX0 11B0 1nX0|44e4",
+			"America/Miquelon|-03 -02|30 20|01010101010101010101010|24E50 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|61e2",
 			"America/Noronha|-02|20|0||30e2",
-			"America/Ojinaga|MST MDT CST CDT|70 60 60 50|01010123232323232323232|22bJ0 1zb0 Rd0 1zb0 Op0 1wn0 Rc0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|23e3",
-			"America/Santiago|-03 -04|30 40|01010101010101010101010|22mP0 11B0 1nX0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0|62e5",
-			"America/Scoresbysund|-01 +00 -02|10 0 20|0101010102020202020202|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 2pA0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|452",
-			"America/St_Johns|NST NDT|3u 2u|01010101010101010101010|22bFu 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|11e4",
-			"Antarctica/Casey|+11 +08|-b0 -80|01010101|22bs0 1o01 14kX 1lf1 14kX 1lf1 13bX|10",
+			"America/Ojinaga|MST MDT CST CDT|70 60 60 50|01012323232323232323232|24E90 1zb0 Op0 1wn0 Rc0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|23e3",
+			"America/Santiago|-03 -04|30 40|01010101010101010101010|24Mr0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0|62e5",
+			"America/Scoresbysund|-01 +00 -02|10 0 20|0101010202020202020202|24JB0 1qM0 WM0 1qM0 WM0 1qM0 2pA0 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|452",
+			"America/St_Johns|NST NDT|3u 2u|01010101010101010101010|24E5u 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0|11e4",
+			"Antarctica/Casey|+11 +08|-b0 -80|010101|24DN0 1lf1 14kX 1lf1 13bX|10",
 			"Asia/Bangkok|+07|-70|0||15e6",
 			"Asia/Vladivostok|+10|-a0|0||60e4",
-			"Australia/Sydney|AEDT AEST|-b0 -a0|01010101010101010101010|22mE0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0|40e5",
+			"Australia/Sydney|AEDT AEST|-b0 -a0|01010101010101010101010|24Mg0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0|40e5",
 			"Asia/Tashkent|+05|-50|0||23e5",
-			"Pacific/Auckland|NZDT NZST|-d0 -c0|01010101010101010101010|22mC0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1io0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00|14e5",
+			"Pacific/Auckland|NZDT NZST|-d0 -c0|01010101010101010101010|24Me0 1a00 1fA0 1a00 1fA0 1a00 1io0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00 1fA0 1a00|14e5",
 			"Europe/Istanbul|+03|-30|0||13e6",
-			"Antarctica/Troll|+00 +02|0 -20|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|40",
+			"Antarctica/Troll|+00 +02|0 -20|01010101010101010101010|24JB0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|40",
 			"Antarctica/Vostok|+07 +05|-70 -50|01|2bnv0|25",
 			"Asia/Almaty|+06 +05|-60 -50|01|2bR60|15e5",
-			"Asia/Amman|EET EEST +03|-20 -30 -30|0101012|22ja0 1qM0 WM0 1qM0 LA0 1C00|25e5",
+			"Asia/Amman|EET EEST +03|-20 -30 -30|01012|24IK0 1qM0 LA0 1C00|25e5",
 			"Asia/Kamchatka|+12|-c0|0||18e4",
 			"Asia/Dubai|+04|-40|0||39e5",
-			"Asia/Beirut|EET EEST|-20 -30|01010101010101010101010|22jW0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0|22e5",
+			"Asia/Beirut|EET EEST|-20 -30|01010101010101010101010|24Jy0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0|22e5",
 			"Asia/Dhaka|+06|-60|0||16e6",
 			"Asia/Kuala_Lumpur|+08|-80|0||71e5",
 			"Asia/Kolkata|IST|-5u|0||15e6",
 			"Asia/Chita|+09|-90|0||33e4",
 			"Asia/Shanghai|CST|-80|0||23e6",
 			"Asia/Colombo|+0530|-5u|0||22e5",
-			"Asia/Damascus|EET EEST +03|-20 -30 -30|0101012|22ja0 1qL0 WN0 1qL0 WN0 1qL0|26e5",
-			"Europe/Athens|EET EEST|-20 -30|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|35e5",
-			"Asia/Gaza|EET EEST|-20 -30|01010101010101010101010|22jy0 1o00 11A0 1qo0 XA0 1qp0 1cN0 1cL0 1a10 1fz0 17d0 1in0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0|18e5",
+			"Asia/Damascus|EET EEST +03|-20 -30 -30|01012|24IK0 1qL0 WN0 1qL0|26e5",
+			"Europe/Athens|EET EEST|-20 -30|01010101010101010101010|24JB0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|35e5",
+			"Asia/Gaza|EET EEST|-20 -30|01010101010101010101010|24Ja0 1qo0 XA0 1qp0 1cN0 1cL0 1a10 1fz0 17d0 1in0 11B0 1nX0 11B0 1qL0 WN0 1qL0 WN0 1qL0 11B0 1nX0 11B0 1nX0|18e5",
 			"Asia/Hong_Kong|HKT|-80|0||73e5",
 			"Asia/Jakarta|WIB|-70|0||31e6",
 			"Asia/Jayapura|WIT|-90|0||26e4",
-			"Asia/Jerusalem|IST IDT|-20 -30|01010101010101010101010|22jc0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0|81e4",
+			"Asia/Jerusalem|IST IDT|-20 -30|01010101010101010101010|24IM0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0 10N0 1oL0 10N0 1rz0 W10 1rz0 W10 1rz0 10N0 1oL0 10N0 1oL0|81e4",
 			"Asia/Kabul|+0430|-4u|0||46e5",
 			"Asia/Karachi|PKT|-50|0||24e6",
 			"Asia/Kathmandu|+0545|-5J|0||12e5",
@@ -57650,19 +57647,19 @@ See https://ilyashubin.github.io/scrollbooster/
 			"Asia/Manila|PST|-80|0||24e6",
 			"Asia/Seoul|KST|-90|0||23e6",
 			"Asia/Rangoon|+0630|-6u|0||48e5",
-			"Asia/Tehran|+0330 +0430|-3u -4u|0101010|22gIu 1dz0 1cN0 1dz0 1cp0 1dz0|14e6",
+			"Asia/Tehran|+0330 +0430|-3u -4u|01010|24H8u 1dz0 1cp0 1dz0|14e6",
 			"Asia/Tokyo|JST|-90|0||38e6",
-			"Atlantic/Azores|-01 +00|10 0|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|25e4",
-			"Europe/Lisbon|WET WEST|0 -10|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|27e5",
+			"Atlantic/Azores|-01 +00|10 0|01010101010101010101010|24JB0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|25e4",
+			"Europe/Lisbon|WET WEST|0 -10|01010101010101010101010|24JB0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|27e5",
 			"Atlantic/Cape_Verde|-01|10|0||50e4",
-			"Australia/Adelaide|ACDT ACST|-au -9u|01010101010101010101010|22mEu 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0|11e5",
+			"Australia/Adelaide|ACDT ACST|-au -9u|01010101010101010101010|24Mgu 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0|11e5",
 			"Australia/Brisbane|AEST|-a0|0||20e5",
 			"Australia/Darwin|ACST|-9u|0||12e4",
 			"Australia/Eucla|+0845|-8J|0||368",
-			"Australia/Lord_Howe|+11 +1030|-b0 -au|01010101010101010101010|22mD0 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1fzu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1fAu 1cLu 1cMu|347",
+			"Australia/Lord_Howe|+11 +1030|-b0 -au|01010101010101010101010|24Mf0 1cMu 1cLu 1cMu 1cLu 1cMu 1fzu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1cMu 1cLu 1fAu 1cLu 1cMu 1cLu 1cMu|347",
 			"Australia/Perth|AWST|-80|0||18e5",
-			"Pacific/Easter|-05 -06|50 60|01010101010101010101010|22mP0 11B0 1nX0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0|30e2",
-			"Europe/Dublin|GMT IST|0 -10|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|12e5",
+			"Pacific/Easter|-05 -06|50 60|01010101010101010101010|24Mr0 11B0 1nX0 14p0 1lb0 11B0 1qL0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1nX0 11B0 1qL0 WN0 1qL0 11B0 1nX0 11B0|30e2",
+			"Europe/Dublin|GMT IST|0 -10|01010101010101010101010|24JB0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|12e5",
 			"Etc/GMT-1|+01|-10|0||",
 			"Pacific/Tongatapu|+13|-d0|0||75e3",
 			"Pacific/Kiritimati|+14|-e0|0||51e2",
@@ -57675,18 +57672,17 @@ See https://ilyashubin.github.io/scrollbooster/
 			"Pacific/Pitcairn|-08|80|0||56",
 			"Pacific/Gambier|-09|90|0||125",
 			"Etc/UTC|UTC|0|0||",
-			"Europe/London|GMT BST|0 -10|01010101010101010101010|22k10 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|10e6",
-			"Europe/Chisinau|EET EEST|-20 -30|01010101010101010101010|22k00 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00|67e4",
+			"Europe/London|GMT BST|0 -10|01010101010101010101010|24JB0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|10e6",
+			"Europe/Chisinau|EET EEST|-20 -30|01010101010101010101010|24JA0 1qM0 WN0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00 11A0 1o00 11A0 1qM0 WM0 1qM0 WM0 1qM0 11A0 1o00 11A0 1o00|67e4",
 			"Europe/Moscow|MSK|-30|0||16e6",
-			"Europe/Volgograd|+04 MSK|-40 -30|01|249a0|10e5",
 			"Pacific/Honolulu|HST|a0|0||37e4",
-			"Pacific/Chatham|+1345 +1245|-dJ -cJ|01010101010101010101010|22mC0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1io0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00|600",
-			"Pacific/Apia|+14 +13|-e0 -d0|0101|22mC0 1a00 1fA0|37e3",
-			"Pacific/Fiji|+13 +12|-d0 -c0|0101|21N20 2hc0 bc0|88e4",
+			"Pacific/Chatham|+1345 +1245|-dJ -cJ|01010101010101010101010|24Me0 1a00 1fA0 1a00 1fA0 1a00 1io0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1a00 1fA0 1cM0 1fA0 1a00 1fA0 1a00|600",
+			"Pacific/Apia|+14 +13|-e0 -d0|01|24Me0|37e3",
+			"Pacific/Fiji|+13 +12|-d0 -c0|01|24hq0|88e4",
 			"Pacific/Guam|ChST|-a0|0||17e4",
 			"Pacific/Marquesas|-0930|9u|0||86e2",
 			"Pacific/Pago_Pago|SST|b0|0||37e2",
-			"Pacific/Norfolk|+12 +11|-c0 -b0|01010101010101010101010|22mD0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0|25e4"
+			"Pacific/Norfolk|+12 +11|-c0 -b0|01010101010101010101010|24Mf0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1cM0 1fA0 1cM0 1cM0 1cM0 1cM0|25e4"
 		],
 		"links": [
 			"Africa/Abidjan|Africa/Accra",
@@ -57868,9 +57864,12 @@ See https://ilyashubin.github.io/scrollbooster/
 			"America/Panama|EST",
 			"America/Panama|Jamaica",
 			"America/Phoenix|America/Creston",
+			"America/Phoenix|America/Dawson",
 			"America/Phoenix|America/Dawson_Creek",
 			"America/Phoenix|America/Fort_Nelson",
 			"America/Phoenix|America/Hermosillo",
+			"America/Phoenix|America/Whitehorse",
+			"America/Phoenix|Canada/Yukon",
 			"America/Phoenix|MST",
 			"America/Phoenix|US/Arizona",
 			"America/Santiago|Chile/Continental",
@@ -57933,8 +57932,6 @@ See https://ilyashubin.github.io/scrollbooster/
 			"America/Sao_Paulo|Brazil/East",
 			"America/Sao_Paulo|Etc/GMT+3",
 			"America/St_Johns|Canada/Newfoundland",
-			"America/Whitehorse|America/Dawson",
-			"America/Whitehorse|Canada/Yukon",
 			"Asia/Almaty|Asia/Qostanay",
 			"Asia/Bangkok|Antarctica/Davis",
 			"Asia/Bangkok|Asia/Barnaul",
@@ -58114,6 +58111,7 @@ See https://ilyashubin.github.io/scrollbooster/
 			"Europe/London|GB-Eire",
 			"Europe/Moscow|Europe/Kirov",
 			"Europe/Moscow|Europe/Simferopol",
+			"Europe/Moscow|Europe/Volgograd",
 			"Europe/Moscow|W-SU",
 			"Europe/Paris|Africa/Ceuta",
 			"Europe/Paris|Arctic/Longyearbyen",
