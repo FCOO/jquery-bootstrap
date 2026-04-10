@@ -166,7 +166,7 @@
             //Add icons
             let headerIcons = useSquareIcons ? bsHeaderIconsSquare : bsHeaderIcons;
             //['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'error', 'alert', 'warning', 'info', 'help', 'close'].forEach( (id) => {
-            ['back', 'forward', 'pin', 'unpin', 'new', 'error', 'alert', 'warning', 'info', 'help', 'diminish', 'diminish2', 'extend', 'extend2', 'fullScreenOn', 'fullScreenOff', 'close'].forEach( (id) => {
+            ['back', 'forward', 'pin', 'unpin', 'new', 'error', 'alert', 'warning', 'info', 'help', 'diminish2', 'extend2', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'close'].forEach( (id) => {
                 let iconOptions = options.icons[id];
                 if (iconOptions && (iconOptions.onClick || (typeof iconOptions == 'function'))){
                     if (typeof iconOptions == 'function')
