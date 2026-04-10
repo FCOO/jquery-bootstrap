@@ -14223,6 +14223,16 @@ div.modal-header-icon-full-screen-off {
   display: initial !important;
 }
 
+/****************************************************
+Spedcial classes for header-icons up and down to be used as "radio" (one on at the time)
+****************************************************/
+.modal-header-icon-up-and-down-as-radio .modal-header-icon-up-on .hide-for-modal-header-icon-up-on {
+  display: none !important;
+}
+.modal-header-icon-up-and-down-as-radio .no-modal-header-icon-up-on .show-for-modal-header-icon-up-on {
+  display: none !important;
+}
+
 /************************************************************
 MODAL-BACKDROP
 

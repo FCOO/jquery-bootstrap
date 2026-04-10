@@ -63,7 +63,7 @@
         });
         return headerIcons;
     }
-    function getDefaultHeaderIcons( square ){
+    function getDefaultHeaderIcons( square ){ square = false;
         return adjustHeaderIcons({
             back    : square ? 'fas fa-arrow-left'  : 'fa-circle-chevron-left',
             forward : square ? 'fas fa-arrow-right' : 'fa-circle-chevron-right',
@@ -92,10 +92,11 @@
             info    : square ? 'fa-info' : 'fa-circle-info',
             help    : square ? 'fa-question' : 'fa-circle-question',
 
+            down: square ? 'fa-square-arrow-down' : 'fa-circle-arrow-down',
+            up  : square ? 'fa-square-arrow-up'   : 'fa-circle-arrow-up',
+
             extend   : square ? 'fa-square-plus'  : 'fa-chevron-circle-up',
-            extend2  : square ? 'fa-square-plus'  : 'fa-chevron-circle-up',
             diminish : square ? 'fa-square-minus' : 'fa-chevron-circle-down',
-            diminish2: square ? 'fa-square-minus' : 'fa-chevron-circle-down',
 
             fullScreenOn : square ? 'fa-expand'   : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-expand fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
             fullScreenOff: square ? 'fa-compress' : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-compress fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
@@ -165,8 +166,7 @@
 
             //Add icons
             let headerIcons = useSquareIcons ? bsHeaderIconsSquare : bsHeaderIcons;
-            //['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'error', 'alert', 'warning', 'info', 'help', 'close'].forEach( (id) => {
-            ['back', 'forward', 'pin', 'unpin', 'new', 'error', 'alert', 'warning', 'info', 'help', 'diminish2', 'extend2', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'close'].forEach( (id) => {
+            ['back', 'forward', 'pin', 'unpin', 'new', 'error', 'alert', 'warning', 'info', 'help', 'down', 'up', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'close'].forEach( (id) => {
                 let iconOptions = options.icons[id];
                 if (iconOptions && (iconOptions.onClick || (typeof iconOptions == 'function'))){
                     if (typeof iconOptions == 'function')

@@ -465,3 +465,13 @@ div.modal-header-icon-full-screen-off {
     }
 }
 
+/****************************************************
+Spedcial classes for header-icons up and down to be used as "radio" (one on at the time)
+****************************************************/
+.modal-header-icon-up-and-down-as-radio {
+    @include show-and-hide-for-modernizr-test(
+        $modernizr-test      : modal-header-icon-up-on,
+        $incl-no-selector    : false,
+        $incl-table-display  : false,
+    );
+}

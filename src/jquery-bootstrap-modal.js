@@ -418,6 +418,12 @@
             this.setHeaderIconEnabled(id, true);
         },
 
+        headerIconUpOn : function(){ return this.headerIconUpToggle(true); },
+        headerIconUpOff: function(){ return this.headerIconUpToggle(false); },
+        headerIconUpToggle: function(on){
+            this.bsModal.$header.modernizrToggle('modal-header-icon-up-on', !!on);
+        },
+
 
         /******************************************************
         update
@@ -779,7 +785,9 @@
 
                 extend          : { className: iconExtendClassName,     onClick: multiSize ? modalExtend   : null,                        altEvents:'swipeup'   },
                 diminish        : { className: iconDiminishClassName,   onClick: multiSize ? modalDiminish : null,                        altEvents:'swipedown' },
+
                 new             : {                                     onClick: options.onNew     ? options.onNew.bind(this)     : null                        },
+
                 info            : {                                     onClick: options.onInfo    ? options.onInfo.bind(this)    : null                        },
                 warning         : {                                     onClick: options.onWarning ? options.onWarning.bind(this) : null                        },
                 alert           : {                                     onClick: options.onAlert   ? options.onAlert.bind(this)   : null                        },
@@ -787,17 +795,6 @@
                 help            : {                                     onClick: options.onHelp    ? options.onHelp.bind(this)    : null                        },
             }
         }, options );
-
-
-        //Special case - option set to use fullScreenOn/Off-icons for extend/diminish
-        if (options.useFullScreenAsExtendIcon){
-            options.icons.fullScreenOn = options.icons.extend;
-            delete options.icons.extend;
-            options.icons.fullScreenOff = options.icons.diminish;
-            delete options.icons.diminish;
-        }
-
-
 
         //Save parentOptions for dynamic update
         var parentOptions = this.bsModal.parentOptions = {};
@@ -813,6 +810,23 @@
         //Hide the close icon on the header
         if (options.noCloseIconOnHeader && options.icons && options.icons.close)
             options.icons.close.hidden = true;
+
+        //If options.upDownIconAsRadio is set => adjust icons and show up- and down-icons in header as radio
+        if (options.upDownIconAsRadio && options.icons.down && options.icons.up){
+            $modalContent.addClass('modal-header-icon-up-and-down-as-radio');
+            ['up', 'down'].forEach( id => {
+                let iconOpt = options.icons[id];
+                if (typeof iconOpt == 'function')
+                    iconOpt = {onClick: iconOpt};
+
+                iconOpt.className = iconOpt.className || '';
+                iconOpt.className = iconOpt.className +  ' ' + (id == 'up' ? 'show-for-modal-header-icon-up-on' : 'hide-for-modal-header-icon-up-on');
+
+                options.icons[id] = iconOpt;
+            });
+        }
+
+
 
         //Add close-botton at beginning. Avoid by setting options.closeButton = false
         if (options.closeButton)
@@ -1399,6 +1413,12 @@
             if (options.show)
                 $result.show();
         }
+
+        if (options.upDownIconAsRadio){
+            $result.headerIconUpOff();
+        }
+
+
 
         //Save some options in bsModal
         ['noReopenFullScreen'].forEach( id => {

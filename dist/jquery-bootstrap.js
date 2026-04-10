@@ -2989,7 +2989,7 @@ uri         : {default: "Please enter a valid URI"}
         });
         return headerIcons;
     }
-    function getDefaultHeaderIcons( square ){
+    function getDefaultHeaderIcons( square ){ square = false;
         return adjustHeaderIcons({
             back    : square ? 'fas fa-arrow-left'  : 'fa-circle-chevron-left',
             forward : square ? 'fas fa-arrow-right' : 'fa-circle-chevron-right',
@@ -3018,10 +3018,11 @@ uri         : {default: "Please enter a valid URI"}
             info    : square ? 'fa-info' : 'fa-circle-info',
             help    : square ? 'fa-question' : 'fa-circle-question',
 
+            down: square ? 'fa-square-arrow-down' : 'fa-circle-arrow-down',
+            up  : square ? 'fa-square-arrow-up'   : 'fa-circle-arrow-up',
+
             extend   : square ? 'fa-square-plus'  : 'fa-chevron-circle-up',
-            extend2  : square ? 'fa-square-plus'  : 'fa-chevron-circle-up',
             diminish : square ? 'fa-square-minus' : 'fa-chevron-circle-down',
-            diminish2: square ? 'fa-square-minus' : 'fa-chevron-circle-down',
 
             fullScreenOn : square ? 'fa-expand'   : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-expand fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
             fullScreenOff: square ? 'fa-compress' : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-compress fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
@@ -3091,8 +3092,7 @@ uri         : {default: "Please enter a valid URI"}
 
             //Add icons
             let headerIcons = useSquareIcons ? bsHeaderIconsSquare : bsHeaderIcons;
-            //['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'error', 'alert', 'warning', 'info', 'help', 'close'].forEach( (id) => {
-            ['back', 'forward', 'pin', 'unpin', 'new', 'error', 'alert', 'warning', 'info', 'help', 'diminish2', 'extend2', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'close'].forEach( (id) => {
+            ['back', 'forward', 'pin', 'unpin', 'new', 'error', 'alert', 'warning', 'info', 'help', 'down', 'up', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'close'].forEach( (id) => {
                 let iconOptions = options.icons[id];
                 if (iconOptions && (iconOptions.onClick || (typeof iconOptions == 'function'))){
                     if (typeof iconOptions == 'function')
@@ -4625,6 +4625,12 @@ jquery-bootstrap-modal-promise.js
             this.setHeaderIconEnabled(id, true);
         },
 
+        headerIconUpOn : function(){ return this.headerIconUpToggle(true); },
+        headerIconUpOff: function(){ return this.headerIconUpToggle(false); },
+        headerIconUpToggle: function(on){
+            this.bsModal.$header.modernizrToggle('modal-header-icon-up-on', !!on);
+        },
+
 
         /******************************************************
         update
@@ -4986,7 +4992,9 @@ jquery-bootstrap-modal-promise.js
 
                 extend          : { className: iconExtendClassName,     onClick: multiSize ? modalExtend   : null,                        altEvents:'swipeup'   },
                 diminish        : { className: iconDiminishClassName,   onClick: multiSize ? modalDiminish : null,                        altEvents:'swipedown' },
+
                 new             : {                                     onClick: options.onNew     ? options.onNew.bind(this)     : null                        },
+
                 info            : {                                     onClick: options.onInfo    ? options.onInfo.bind(this)    : null                        },
                 warning         : {                                     onClick: options.onWarning ? options.onWarning.bind(this) : null                        },
                 alert           : {                                     onClick: options.onAlert   ? options.onAlert.bind(this)   : null                        },
@@ -4994,17 +5002,6 @@ jquery-bootstrap-modal-promise.js
                 help            : {                                     onClick: options.onHelp    ? options.onHelp.bind(this)    : null                        },
             }
         }, options );
-
-
-        //Special case - option set to use fullScreenOn/Off-icons for extend/diminish
-        if (options.useFullScreenAsExtendIcon){
-            options.icons.fullScreenOn = options.icons.extend;
-            delete options.icons.extend;
-            options.icons.fullScreenOff = options.icons.diminish;
-            delete options.icons.diminish;
-        }
-
-
 
         //Save parentOptions for dynamic update
         var parentOptions = this.bsModal.parentOptions = {};
@@ -5020,6 +5017,23 @@ jquery-bootstrap-modal-promise.js
         //Hide the close icon on the header
         if (options.noCloseIconOnHeader && options.icons && options.icons.close)
             options.icons.close.hidden = true;
+
+        //If options.upDownIconAsRadio is set => adjust icons and show up- and down-icons in header as radio
+        if (options.upDownIconAsRadio && options.icons.down && options.icons.up){
+            $modalContent.addClass('modal-header-icon-up-and-down-as-radio');
+            ['up', 'down'].forEach( id => {
+                let iconOpt = options.icons[id];
+                if (typeof iconOpt == 'function')
+                    iconOpt = {onClick: iconOpt};
+
+                iconOpt.className = iconOpt.className || '';
+                iconOpt.className = iconOpt.className +  ' ' + (id == 'up' ? 'show-for-modal-header-icon-up-on' : 'hide-for-modal-header-icon-up-on');
+
+                options.icons[id] = iconOpt;
+            });
+        }
+
+
 
         //Add close-botton at beginning. Avoid by setting options.closeButton = false
         if (options.closeButton)
@@ -5606,6 +5620,12 @@ jquery-bootstrap-modal-promise.js
             if (options.show)
                 $result.show();
         }
+
+        if (options.upDownIconAsRadio){
+            $result.headerIconUpOff();
+        }
+
+
 
         //Save some options in bsModal
         ['noReopenFullScreen'].forEach( id => {
