@@ -2989,7 +2989,7 @@ uri         : {default: "Please enter a valid URI"}
         });
         return headerIcons;
     }
-    function getDefaultHeaderIcons( square ){ square = false;
+    function getDefaultHeaderIcons( square ){
         return adjustHeaderIcons({
             back    : square ? 'fas fa-arrow-left'  : 'fa-circle-chevron-left',
             forward : square ? 'fas fa-arrow-right' : 'fa-circle-chevron-right',
