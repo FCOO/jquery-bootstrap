@@ -7310,18 +7310,18 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         showColumn: function(index){ return this.toggleColumn(index, true); },
         hideColumn: function(index){ return this.toggleColumn(index, false); },
         toggleColumn: function(index, show){
-            return this._toggleColumn('hidden', index, show);
+            return this._toggleColumn('hidden', index, !show);
         },
 
-        maximizeColumn: function(index){ return this.toggleMinimizedColumn(index, true); },
-        minimizeColumn: function(index){ return this.toggleMinimizedColumn(index, false); },
-        toggleMinimizedColumn: function(index, show){
+        minimizeColumn: function(index){ return this.toggleMinimizedColumn(index, true);  },
+        maximizeColumn: function(index){ return this.toggleMinimizedColumn(index, false); },
+        toggleMinimizedColumn: function(index, minimized){
             this.columns[index].minimizeTimeoutId = null;
-            return this._toggleColumn('minimized', index, show);
+            return this._toggleColumn('minimized', index, minimized);
         },
 
-        maximizeAllColumns: function(){ return this.toggleMinimizedAllColumns(false); },
         minimizeAllColumns: function(){ return this.toggleMinimizedAllColumns(true); },
+        maximizeAllColumns: function(){ return this.toggleMinimizedAllColumns(false); },
         toggleMinimizedAllColumns: function(minimize){
             this.columns.forEach( (columnOptions, index) => {
                 if (columnOptions.minimizable)
@@ -7565,7 +7565,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         sortId     = 0;
 
     $.bsTable = function( options ){
-        
+
         options = $._bsAdjustOptions( options, defaultOptions );
 
         //Fixed first column only needed when horizontal scrolling ( = full width)
@@ -7715,7 +7715,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (columnOptions.sortable){
                 multiSortList.push( {columnId: columnOptions.id, columnIndex: ''+index, sortIndex: columnOptions.sortIndex });
                 anyColumnSortable = true;
-            }                
+            }
         });
         multiSortList.sort(function( c1, c2){ return c1.sortIndex - c2.sortIndex; });
 

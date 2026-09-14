@@ -1270,7 +1270,14 @@ allowFullScreen: true,
             footer: [{icon: 'fa-globe', iconStyle:"underline", title:{da:'Tidszone', en:'Time zone'}}, {text: {da:'Formatet', en:'The format'}, link:function(){ console.log('Skide godt')} }],
             buttons: [
                 {text:'setState',                           onClick: function(){ myBsTable.setState( myBsTable.state ); } },
-                {text:'Toggle Stars',                       onClick: function(){ myBsTable.toggleColumn(2); } },
+                {text:'Toggle Stars',                       onClick: function(){ myBsTable.toggleColumn(1); } },
+
+                {text:'Hide Stars',                         onClick: function(){ myBsTable.hideColumn(1); } },
+                {text:'Show Stars',                         onClick: function(){ myBsTable.showColumn(1); } },
+
+                {text:'Minimize Stars',                     onClick: function(){ myBsTable.minimizeColumn(1); } },
+                {text:'Maximize Stars',                     onClick: function(){ myBsTable.maximizeColumn(1); } },
+
                 {text:'Filter: Stats > 30',                 onClick: function(){myBsTable.filterTable(null, {'stargazers_count': function(value){ return value > 30;    }})}},
                 {text:'Filter: Stats odd',                  onClick: function() {myBsTable.filterTable(null, {'stargazers_count': function(value){ return !!(value % 2); }})}},
                 {text:'Filter: Navn <> "Dansk!!!"',         onClick: function() {myBsTable.filterTable(null, {'name': function(value){return !value || (value.da != "Dansk!!!"); }})}},
